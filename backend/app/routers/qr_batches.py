@@ -97,6 +97,7 @@ def _batch_to_out(batch: QrBatch) -> QrBatchOut:
 def _generate_pdf(batch: QrBatch) -> bytes:
     from reportlab.lib.pagesizes import A4
     from reportlab.lib.units import cm
+    from reportlab.lib.utils import ImageReader
     from reportlab.pdfgen import canvas as rl_canvas
 
     buf = io.BytesIO()
@@ -126,7 +127,7 @@ def _generate_pdf(batch: QrBatch) -> bytes:
         qr_buf.seek(0)
 
         img_size = label_w - 1 * cm
-        c.drawInlineImage(qr_buf, x, y + 0.6 * cm, width=img_size, height=img_size)
+        c.drawImage(ImageReader(qr_buf), x, y + 0.6 * cm, width=img_size, height=img_size)
         c.setFontSize(6)
         c.drawCentredString(x + img_size / 2, y + 0.1 * cm, token.token[:16] + "…")
 
