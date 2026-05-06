@@ -110,18 +110,13 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode.app
 
-      - name: Check for Xcode project
-        id: check
-        run: |
-          if [ -f ios/ApiScan.xcodeproj/project.pbxproj ]; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-            echo "::warning::ios/ApiScan.xcodeproj not found — run the 'Generate Xcode project' workflow first"
-          fi
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: cd ios && xcodegen generate --spec project.yml
 
       - name: Build & test
-        if: steps.check.outputs.exists == 'true'
         run: |
           xcodebuild test \
             -project ios/ApiScan.xcodeproj \
@@ -130,7 +125,7 @@ jobs:
             -resultBundlePath TestResults
 
       - name: Upload test results
-        if: steps.check.outputs.exists == 'true'
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ios-test-results
