@@ -147,12 +147,31 @@ jobs:
       - name: Generate Xcode project
         run: cd ios && xcodegen generate --spec project.yml
 
+      - name: Resolve simulator
+        run: |
+          UDID=$(xcrun simctl list devices available -j \
+            | python3 -c "
+    import json, sys
+    d = json.load(sys.stdin)
+    for devs in d['devices'].values():
+        for dev in devs:
+            if dev['name'] == 'iPhone 16' and dev['isAvailable']:
+                print(dev['udid'])
+                exit(0)
+    " 2>/dev/null)
+          if [ -z "$UDID" ]; then
+            echo "No iPhone 16 found, listing available simulators:"
+            xcrun simctl list devices available
+            exit 1
+          fi
+          echo "SIMULATOR_UDID=$UDID" >> "$GITHUB_ENV"
+
       - name: Build & test
         run: |
           xcodebuild test \
             -project ios/ApiScan.xcodeproj \
             -scheme ApiScan \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
             -resultBundlePath TestResults
 
       - name: Upload test results
