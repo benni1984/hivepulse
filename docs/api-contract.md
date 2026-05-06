@@ -17,8 +17,9 @@ All endpoints require `Authorization: Bearer <access_token>` unless marked **pub
 7. [Hives](#hives)
 8. [Inspections](#inspections)
 9. [Stats](#stats)
-10. [Object Reference](#object-reference)
-11. [Error Codes](#error-codes)
+10. [Public Dashboard](#public-dashboard)
+11. [Object Reference](#object-reference)
+12. [Error Codes](#error-codes)
 
 ---
 
@@ -560,6 +561,79 @@ Stats can be filtered by a preset window or an explicit date range. Both query p
   "per_apiary": [ /* array of ApiaryStats summary */ ]
 }
 ```
+
+---
+
+## Public Dashboard
+
+All endpoints in this section are **public** — no `Authorization` header required.
+They expose only aggregate, anonymised data. Individual inspection records and user identity are never exposed.
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/public/stats` | Global aggregate stats + all apiary pins |
+| GET | `/public/apiaries/{id}` | Public detail for one apiary |
+
+---
+
+### GET `/public/stats`
+
+Returns platform-wide aggregate numbers and the coordinates of every apiary that has at least one hive, for use as map markers.
+
+**Response 200**
+
+```json
+{
+  "apiary_count": 12,
+  "hive_count": 87,
+  "inspection_count": 634,
+  "apiaries": [
+    {
+      "id": "uuid",
+      "name": "string",
+      "latitude": 48.8566,
+      "longitude": 2.3522,
+      "hive_count": 7
+    }
+  ]
+}
+```
+
+Only apiaries with `latitude != null AND longitude != null` appear in `apiaries`.
+
+---
+
+### GET `/public/apiaries/{id}`
+
+Returns a public summary of one apiary: location, hives, and aggregated inspection activity. No user-identifiable information is included.
+
+**Response 200**
+
+```json
+{
+  "id": "uuid",
+  "name": "string",
+  "description": "string | null",
+  "latitude": "float | null",
+  "longitude": "float | null",
+  "address": "string | null",
+  "hive_count": 7,
+  "inspection_count": 52,
+  "last_inspection_date": "date | null",
+  "average_varroa": 2.1,
+  "mood_distribution": { "calm": 40, "nervous": 8, "aggressive": 2 },
+  "hives": [
+    {
+      "id": "uuid",
+      "name": "string",
+      "hive_type": "langstroth",
+      "last_inspection_date": "date | null"
+    }
+  ]
+}
+```
+
+**Response 404** — `APIARY_NOT_FOUND`
 
 ---
 
