@@ -149,21 +149,14 @@ jobs:
 
       - name: Resolve simulator
         run: |
-          UDID=$(xcrun simctl list devices available -j \
-            | python3 -c "
-    import json, sys
-    d = json.load(sys.stdin)
-    for devs in d['devices'].values():
-        for dev in devs:
-            if dev['name'] == 'iPhone 16' and dev['isAvailable']:
-                print(dev['udid'])
-                exit(0)
-    " 2>/dev/null)
+          UDID=$(xcrun simctl list devices available \
+            | grep 'iPhone 16 (' | head -1 | awk -F'[()]' '{print $2}')
           if [ -z "$UDID" ]; then
-            echo "No iPhone 16 found, listing available simulators:"
+            echo "No iPhone 16 simulator found:"
             xcrun simctl list devices available
             exit 1
           fi
+          echo "Found simulator: $UDID"
           echo "SIMULATOR_UDID=$UDID" >> "$GITHUB_ENV"
 
       - name: Build & test
