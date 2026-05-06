@@ -26,14 +26,14 @@ class AuthViewModel @Inject constructor(private val repo: AuthRepository) : View
         _state.update { it.copy(isLoading = true, error = null) }
         runCatching { repo.login(email, password) }
             .onSuccess { user -> _state.update { it.copy(isLoading = false, success = true, user = user) } }
-            .onFailure { e -> _state.update { it.copy(isLoading = false, error = e.message) } }
+            .onFailure { e -> _state.update { it.copy(isLoading = false, error = e.message ?: e.cause?.message) } }
     }
 
     fun register(email: String, password: String, name: String, locale: String) = viewModelScope.launch {
         _state.update { it.copy(isLoading = true, error = null) }
         runCatching { repo.register(email, password, name, locale) }
             .onSuccess { user -> _state.update { it.copy(isLoading = false, success = true, user = user) } }
-            .onFailure { e -> _state.update { it.copy(isLoading = false, error = e.message) } }
+            .onFailure { e -> _state.update { it.copy(isLoading = false, error = e.message ?: e.cause?.message) } }
     }
 
     fun clearError() = _state.update { it.copy(error = null) }
