@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0DBF28007ACC607AA187001A /* InspectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DF1139B354145EC3034365 /* InspectionViewModelTests.swift */; };
 		23904D1A1A1F6A1A57AF0CC6 /* QrBatchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB7C4FB2E45A5191AAC615F /* QrBatchService.swift */; };
 		2CF05045E3706D83F74EF832 /* HiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADA5A7013DC46E36F841F94 /* HiveDetailView.swift */; };
+		39370302CDB214880C27D599 /* HiveViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5990B83997A361A9589838E /* HiveViewModelTests.swift */; };
 		3B38421595B511475D56DACD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015CFC7B070B9A84F432AFC2 /* LoginView.swift */; };
 		3C7E4E6A0BFD46FBF0CE13B0 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6403002E5F4C57AD438179DD /* APIClient.swift */; };
 		3D55664A5BA8E5C0B2219BD8 /* ApiaryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4CA568B4108A2FD3DD5CF31 /* ApiaryListView.swift */; };
@@ -18,11 +20,16 @@
 		4766712F30593A44A28E1B24 /* DTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA36F36F9770498BA076C702 /* DTOs.swift */; };
 		50DF0378FC623F92711B1A3D /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7251187A62AE737E6FA7C984 /* AuthViewModel.swift */; };
 		53A957C38FC307F7B088A6C3 /* InspectionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5208C8573864250EBB5EA51 /* InspectionFormView.swift */; };
+		54AEE724FF77B83B577796E3 /* AuthViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55834A349B47298BAE51356 /* AuthViewModelTests.swift */; };
 		7D6604EFAA03CE97C7CD5477 /* ErrorBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0147E4149242B720D406514E /* ErrorBanner.swift */; };
 		815BFCEC28FBAF73D475B9B2 /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70F6632C2DF2DA0C0357610 /* QRScannerView.swift */; };
 		881BE68E4EE01C69275A4658 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB34E72CB30D91730BAEFEFB /* MainTabView.swift */; };
 		898B1593B20EA31642037ED0 /* ApiaryFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7D882271C79538A6EEBF47 /* ApiaryFormView.swift */; };
+		8B1A86DB19D6DF664FA2759F /* ApiaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E441C687DA63F8C887E209B /* ApiaryViewModelTests.swift */; };
+		9B2765F6385139F487B2B6A6 /* LoginUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E883F443716C37627F39C8 /* LoginUITests.swift */; };
 		9E00D960407A8C31CBE0CB73 /* HiveQRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FAD39B7C80306C5573380F /* HiveQRView.swift */; };
+		A5C89B01832221E94E32AD85 /* DTOTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9F8F01ADF3E1BA55FD124E /* DTOTests.swift */; };
+		ABB2E6B512081EF0AAD64419 /* MockServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC555ACD8A8F329CB75E790 /* MockServices.swift */; };
 		ACAD3AD358E3BFACA3C07912 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E6C2EABAF07BF293C194AC /* RegisterView.swift */; };
 		B8CA3FB2AEEE76DD7EBF0177 /* HiveService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70548F11D7D5854EAE630C5F /* HiveService.swift */; };
 		C227A7DB05733C8888749D24 /* ApiaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12977EB8A42757BA974868AB /* ApiaryViewModel.swift */; };
@@ -40,6 +47,23 @@
 		F8A9EEC0700D6875BDAFFD06 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2210F9DE897EF85A7A99A2D /* AuthService.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		C164F7B75801F8522E16D5EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A3BA2E9AB47A13FFA31674D8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A758AC5F16907B7F06475F7D;
+			remoteInfo = ApiScan;
+		};
+		DF8118DF00A0FF5B243DE5CF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A3BA2E9AB47A13FFA31674D8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A758AC5F16907B7F06475F7D;
+			remoteInfo = ApiScan;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0147E4149242B720D406514E /* ErrorBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorBanner.swift; sourceTree = "<group>"; };
 		015CFC7B070B9A84F432AFC2 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -52,7 +76,9 @@
 		39381A63552D3ACEF0697E9A /* ApiaryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiaryDetailView.swift; sourceTree = "<group>"; };
 		3E7D882271C79538A6EEBF47 /* ApiaryFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiaryFormView.swift; sourceTree = "<group>"; };
 		477E723D5D45F857E0CBAEEE /* HiveInitializeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveInitializeView.swift; sourceTree = "<group>"; };
+		4E441C687DA63F8C887E209B /* ApiaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiaryViewModelTests.swift; sourceTree = "<group>"; };
 		50FAD39B7C80306C5573380F /* HiveQRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveQRView.swift; sourceTree = "<group>"; };
+		52E883F443716C37627F39C8 /* LoginUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUITests.swift; sourceTree = "<group>"; };
 		56BFAD841177234D0918FE5D /* InspectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionService.swift; sourceTree = "<group>"; };
 		5ADA5A7013DC46E36F841F94 /* HiveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveDetailView.swift; sourceTree = "<group>"; };
 		5F7DE5F11137B089C1DD80A9 /* InspectionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionDetailView.swift; sourceTree = "<group>"; };
@@ -62,16 +88,23 @@
 		7251187A62AE737E6FA7C984 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		79E11A07DC4EBF7D10727D69 /* InspectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionViewModel.swift; sourceTree = "<group>"; };
 		7AE1D08B79E35BD3A33294D1 /* ApiScanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiScanApp.swift; sourceTree = "<group>"; };
+		912618CC212D55D28F9C52BD /* ApiScanTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ApiScanTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A09C30998C3F3408D7FD9490 /* HiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveViewModel.swift; sourceTree = "<group>"; };
+		A55834A349B47298BAE51356 /* AuthViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModelTests.swift; sourceTree = "<group>"; };
 		A70F6632C2DF2DA0C0357610 /* QRScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerView.swift; sourceTree = "<group>"; };
 		AA36F36F9770498BA076C702 /* DTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTOs.swift; sourceTree = "<group>"; };
 		AB34E72CB30D91730BAEFEFB /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		BCC555ACD8A8F329CB75E790 /* MockServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockServices.swift; sourceTree = "<group>"; };
+		C5990B83997A361A9589838E /* HiveViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveViewModelTests.swift; sourceTree = "<group>"; };
+		C6DF1139B354145EC3034365 /* InspectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionViewModelTests.swift; sourceTree = "<group>"; };
 		CB5F69247DB6163A3AC4C379 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		CDFE33C0057F8D03C32244F4 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D4A033EE63CBCFD33CB20FB9 /* ApiScanUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ApiScanUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D588C67211772B8C3E67C844 /* QRBatchListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRBatchListView.swift; sourceTree = "<group>"; };
 		DDB7C4FB2E45A5191AAC615F /* QrBatchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QrBatchService.swift; sourceTree = "<group>"; };
 		E4CA568B4108A2FD3DD5CF31 /* ApiaryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiaryListView.swift; sourceTree = "<group>"; };
 		E5208C8573864250EBB5EA51 /* InspectionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionFormView.swift; sourceTree = "<group>"; };
+		EA9F8F01ADF3E1BA55FD124E /* DTOTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTOTests.swift; sourceTree = "<group>"; };
 		EE109536E44A41CA231E721C /* StatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsService.swift; sourceTree = "<group>"; };
 		F2210F9DE897EF85A7A99A2D /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		F6E6C2EABAF07BF293C194AC /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
@@ -111,6 +144,14 @@
 				E4CA568B4108A2FD3DD5CF31 /* ApiaryListView.swift */,
 			);
 			path = Apiaries;
+			sourceTree = "<group>";
+		};
+		4B1374818D29282CCC8A60AE /* ApiScanUITests */ = {
+			isa = PBXGroup;
+			children = (
+				52E883F443716C37627F39C8 /* LoginUITests.swift */,
+			);
+			path = ApiScanUITests;
 			sourceTree = "<group>";
 		};
 		4E5B9678E1960115280A3B36 /* Main */ = {
@@ -184,6 +225,19 @@
 			path = ApiScan;
 			sourceTree = "<group>";
 		};
+		A4966E315CA91500B023C461 /* ApiScanTests */ = {
+			isa = PBXGroup;
+			children = (
+				4E441C687DA63F8C887E209B /* ApiaryViewModelTests.swift */,
+				A55834A349B47298BAE51356 /* AuthViewModelTests.swift */,
+				EA9F8F01ADF3E1BA55FD124E /* DTOTests.swift */,
+				C5990B83997A361A9589838E /* HiveViewModelTests.swift */,
+				C6DF1139B354145EC3034365 /* InspectionViewModelTests.swift */,
+				BCC555ACD8A8F329CB75E790 /* MockServices.swift */,
+			);
+			path = ApiScanTests;
+			sourceTree = "<group>";
+		};
 		A61F520BBBFEE8BC568144E2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -196,6 +250,8 @@
 			isa = PBXGroup;
 			children = (
 				97FDD36D18BD89B8AF040580 /* ApiScan */,
+				A4966E315CA91500B023C461 /* ApiScanTests */,
+				4B1374818D29282CCC8A60AE /* ApiScanUITests */,
 				E51FA21AC6927B3D4314A3C7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -229,6 +285,8 @@
 			isa = PBXGroup;
 			children = (
 				22D849415BA91C4B4252FA25 /* ApiScan.app */,
+				912618CC212D55D28F9C52BD /* ApiScanTests.xctest */,
+				D4A033EE63CBCFD33CB20FB9 /* ApiScanUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -247,6 +305,42 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		36688C8B6AD79CE863786685 /* ApiScanUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0F208B988AAE2D737407A965 /* Build configuration list for PBXNativeTarget "ApiScanUITests" */;
+			buildPhases = (
+				7CDA108822917D4531765E7D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				537927FFE9CDB76731A4DFEB /* PBXTargetDependency */,
+			);
+			name = ApiScanUITests;
+			packageProductDependencies = (
+			);
+			productName = ApiScanUITests;
+			productReference = D4A033EE63CBCFD33CB20FB9 /* ApiScanUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		4B2DE2732691C3264C31E0F7 /* ApiScanTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9C6A8A5E61C2696A65FE0C6D /* Build configuration list for PBXNativeTarget "ApiScanTests" */;
+			buildPhases = (
+				38ABD503D9EC94DCDCA3BC9E /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FD95BFB352F0357A4B190D76 /* PBXTargetDependency */,
+			);
+			name = ApiScanTests;
+			packageProductDependencies = (
+			);
+			productName = ApiScanTests;
+			productReference = 912618CC212D55D28F9C52BD /* ApiScanTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		A758AC5F16907B7F06475F7D /* ApiScan */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2052869073968EC7FEAD59A1 /* Build configuration list for PBXNativeTarget "ApiScan" */;
@@ -274,6 +368,9 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
+					36688C8B6AD79CE863786685 = {
+						TestTargetID = A758AC5F16907B7F06475F7D;
+					};
 					A758AC5F16907B7F06475F7D = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
@@ -297,6 +394,8 @@
 			projectRoot = "";
 			targets = (
 				A758AC5F16907B7F06475F7D /* ApiScan */,
+				4B2DE2732691C3264C31E0F7 /* ApiScanTests */,
+				36688C8B6AD79CE863786685 /* ApiScanUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -313,6 +412,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		38ABD503D9EC94DCDCA3BC9E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B1A86DB19D6DF664FA2759F /* ApiaryViewModelTests.swift in Sources */,
+				54AEE724FF77B83B577796E3 /* AuthViewModelTests.swift in Sources */,
+				A5C89B01832221E94E32AD85 /* DTOTests.swift in Sources */,
+				39370302CDB214880C27D599 /* HiveViewModelTests.swift in Sources */,
+				0DBF28007ACC607AA187001A /* InspectionViewModelTests.swift in Sources */,
+				ABB2E6B512081EF0AAD64419 /* MockServices.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7CDA108822917D4531765E7D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9B2765F6385139F487B2B6A6 /* LoginUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		869ED4FCA166BAB1B963C07B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -352,6 +472,19 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		537927FFE9CDB76731A4DFEB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A758AC5F16907B7F06475F7D /* ApiScan */;
+			targetProxy = C164F7B75801F8522E16D5EC /* PBXContainerItemProxy */;
+		};
+		FD95BFB352F0357A4B190D76 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A758AC5F16907B7F06475F7D /* ApiScan */;
+			targetProxy = DF8118DF00A0FF5B243DE5CF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		6472F5061105D5999C9B0385 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
@@ -384,6 +517,23 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
+		};
+		1D123F5CED97F8633AA5EAA4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.apiscan.ApiScanUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ApiScan;
+			};
+			name = Debug;
 		};
 		385F51B3520ABF973AFE7222 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -450,6 +600,23 @@
 			};
 			name = Debug;
 		};
+		5D50633AAD5D210592D2C092 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.apiscan.ApiScanUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ApiScan;
+			};
+			name = Release;
+		};
 		D9513F1F6C1BBCE63EBDA487 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -508,6 +675,23 @@
 			};
 			name = Release;
 		};
+		E8CA8B4D8F3D9EEB153D2D0F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.apiscan.ApiScanTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ApiScan.app/ApiScan";
+			};
+			name = Debug;
+		};
 		FE2A929B9CFD519841E997A7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -527,9 +711,35 @@
 			};
 			name = Debug;
 		};
+		FF31AC615088F465800024C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.apiscan.ApiScanTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ApiScan.app/ApiScan";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0F208B988AAE2D737407A965 /* Build configuration list for PBXNativeTarget "ApiScanUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D123F5CED97F8633AA5EAA4 /* Debug */,
+				5D50633AAD5D210592D2C092 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		17B372A30376179009233D2C /* Build configuration list for PBXProject "ApiScan" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -544,6 +754,15 @@
 			buildConfigurations = (
 				FE2A929B9CFD519841E997A7 /* Debug */,
 				05BBFB823C05A88E8206F1A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9C6A8A5E61C2696A65FE0C6D /* Build configuration list for PBXNativeTarget "ApiScanTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E8CA8B4D8F3D9EEB153D2D0F /* Debug */,
+				FF31AC615088F465800024C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

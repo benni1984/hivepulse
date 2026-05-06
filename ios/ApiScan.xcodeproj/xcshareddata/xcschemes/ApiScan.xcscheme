@@ -21,6 +21,34 @@
                ReferencedContainer = "container:ApiScan.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4B2DE2732691C3264C31E0F7"
+               BuildableName = "ApiScanTests.xctest"
+               BlueprintName = "ApiScanTests"
+               ReferencedContainer = "container:ApiScan.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "36688C8B6AD79CE863786685"
+               BuildableName = "ApiScanUITests.xctest"
+               BlueprintName = "ApiScanUITests"
+               ReferencedContainer = "container:ApiScan.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -39,6 +67,28 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4B2DE2732691C3264C31E0F7"
+               BuildableName = "ApiScanTests.xctest"
+               BlueprintName = "ApiScanTests"
+               ReferencedContainer = "container:ApiScan.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "36688C8B6AD79CE863786685"
+               BuildableName = "ApiScanUITests.xctest"
+               BlueprintName = "ApiScanUITests"
+               ReferencedContainer = "container:ApiScan.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <CommandLineArguments>
       </CommandLineArguments>
