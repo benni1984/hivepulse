@@ -1,3 +1,6 @@
+# Claude Code
+.claude/
+
 # Python / Backend
 __pycache__/
 *.py[cod]
