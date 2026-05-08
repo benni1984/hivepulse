@@ -21,7 +21,7 @@ function esc(s: string) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-export default function MapClient({ labels }: { labels: { apiaries: string; hives: string; inspections: string } }) {
+export default function MapClient({ labels }: { labels: { apiaries: string; hives: string; inspections: string; hiveSingular: string; hivePlural: string; viewDetails: string } }) {
   const mapRef = useRef<HTMLDivElement>(null);
   const [stats, setStats] = useState({ apiaries: '—', hives: '—', inspections: '—' });
 
@@ -61,7 +61,7 @@ export default function MapClient({ labels }: { labels: { apiaries: string; hive
             bounds.push([a.latitude, a.longitude]);
             const marker = L.default.marker([a.latitude, a.longitude], { icon: hiveIcon }).addTo(map);
             marker.bindPopup(
-              `<div class="map-popup"><h3>${esc(a.name)}</h3><p>🐝 ${a.hive_count} hive${a.hive_count !== 1 ? 's' : ''}</p><a href="/apiary?id=${a.id}">View details →</a></div>`,
+              `<div class="map-popup"><h3>${esc(a.name)}</h3><p>🐝 ${a.hive_count} ${a.hive_count !== 1 ? labels.hivePlural : labels.hiveSingular}</p><a href="/apiary?id=${a.id}">${labels.viewDetails}</a></div>`,
               { maxWidth: 220 }
             );
           });
