@@ -44,7 +44,7 @@ export default function HomePage() {
             <h2>{t('stats.title')}</h2>
             <p>{t('stats.sub')}</p>
           </div>
-          <LiveStats labels={{ apiaries: t('stats.apiaries'), hives: t('stats.hives'), inspections: t('stats.inspections') }} />
+          <LiveStats labels={{ apiaries: t('stats.apiaries'), hives: t('stats.hives'), inspections: t('stats.inspections'), countries: t('stats.countries') }} />
         </div>
       </section>
 

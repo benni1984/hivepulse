@@ -133,6 +133,11 @@
       "apiaries": "Apiaries",
       "hives": "Hives",
       "inspections": "Inspections"
+    },
+    "popup": {
+      "hiveSingular": "hive",
+      "hivePlural": "hives",
+      "viewDetails": "View details →"
     }
   },
   "news": {

@@ -19,7 +19,7 @@ function animateCount(setter: (v: string) => void, target: number) {
   requestAnimationFrame(step);
 }
 
-export default function LiveStats({ labels }: { labels: { apiaries: string; hives: string; inspections: string } }) {
+export default function LiveStats({ labels }: { labels: { apiaries: string; hives: string; inspections: string; countries: string } }) {
   const [apiaries, setApiaries] = useState('—');
   const [hives, setHives] = useState('—');
   const [inspections, setInspections] = useState('—');
@@ -40,7 +40,7 @@ export default function LiveStats({ labels }: { labels: { apiaries: string; hive
       <div className="live-stat"><div className="live-num">{apiaries}</div><div className="live-label">{labels.apiaries}</div></div>
       <div className="live-stat"><div className="live-num">{hives}</div><div className="live-label">{labels.hives}</div></div>
       <div className="live-stat"><div className="live-num">{inspections}</div><div className="live-label">{labels.inspections}</div></div>
-      <div className="live-stat"><div className="live-num">42+</div><div className="live-label">Countries Reached</div></div>
+      <div className="live-stat"><div className="live-num">42+</div><div className="live-label">{labels.countries}</div></div>
     </div>
   );
 }
