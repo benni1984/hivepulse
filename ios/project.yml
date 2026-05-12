@@ -3,7 +3,7 @@ name: ApiScan
 options:
   bundleIdPrefix: com.apiscan
   deploymentTarget:
-    iOS: "16.0"
+    iOS: "17.0"
   xcodeVersion: "16"
   groupSortPosition: top
   createIntermediateGroups: true
@@ -19,7 +19,7 @@ targets:
   ApiScan:
     type: application
     platform: iOS
-    deploymentTarget: "16.0"
+    deploymentTarget: "17.0"
     sources:
       - path: ApiScan
         excludes:
@@ -36,7 +36,7 @@ targets:
   ApiScanTests:
     type: bundle.unit-test
     platform: iOS
-    deploymentTarget: "16.0"
+    deploymentTarget: "17.0"
     sources:
       - path: ApiScanTests
     dependencies:
@@ -50,7 +50,7 @@ targets:
   ApiScanUITests:
     type: bundle.ui-testing
     platform: iOS
-    deploymentTarget: "16.0"
+    deploymentTarget: "17.0"
     sources:
       - path: ApiScanUITests
     dependencies:
