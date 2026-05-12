@@ -238,7 +238,10 @@ jobs:
 
       - name: Install dependencies
         if: needs.changes.outputs.web == 'true'
-        run: npm ci
+        # npm ci fails on Linux when lock file was generated on Windows (missing
+        # @rollup/rollup-linux-x64-gnu optional dep). npm install resolves
+        # platform-specific optional deps correctly for the current OS.
+        run: npm install
 
       - name: Run unit tests (Vitest)
         if: needs.changes.outputs.web == 'true'
