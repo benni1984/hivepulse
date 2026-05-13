@@ -124,7 +124,7 @@ export default function MapClient({ labels }: { labels: Labels }) {
           ).addTo(map);
 
           // Legend control
-          const legend = L.default.control({ position: 'bottomleft' });
+          const legend = new L.default.Control({ position: 'bottomleft' });
           legend.onAdd = () => {
             const div = L.default.DomUtil.create('div', 'map-heatmap-legend');
             div.innerHTML =
