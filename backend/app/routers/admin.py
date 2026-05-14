@@ -8,8 +8,9 @@ from sqlalchemy import func, or_, and_
 from app.deps import CurrentAdmin, DB
 from app.models import Apiary, Hive, Inspection, User
 from app.schemas import (
-    AdminApiaryOut, AdminPlatformStats, AdminUserDetail, PaginatedResponse,
-    SignupDay, SupporterUpdate, UserOut,
+    AdminApiaryOut, AdminPlatformStats, AdminUserDetail, HealthSummary,
+    InactiveUserOut, NoVarroaApiaryOut, PaginatedResponse,
+    SignupDay, SupporterUpdate, UserOut, ZeroInspectionHiveOut,
 )
 
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -261,3 +262,125 @@ def delete_user(user_id: str, admin: CurrentAdmin, db: DB):
     db.query(Hive).filter(Hive.user_id == user_id).delete(synchronize_session=False)
     db.delete(user)
     db.commit()
+
+
+# ---------------------------------------------------------------------------
+# Data health
+# ---------------------------------------------------------------------------
+
+def _users_with_inspections_sq(db):
+    return db.query(Hive.user_id).join(Inspection, Inspection.hive_id == Hive.id).distinct()
+
+
+def _inactive_users_q(db):
+    thirty_days_ago = datetime.utcnow() - timedelta(days=30)
+    return (
+        db.query(User)
+        .filter(User.created_at < thirty_days_ago)
+        .filter(~User.id.in_(_users_with_inspections_sq(db)))
+    )
+
+
+def _zero_inspection_hives_q(db):
+    inspected = db.query(Inspection.hive_id).distinct()
+    return (
+        db.query(Hive, Apiary.name, User.email)
+        .join(Apiary, Apiary.id == Hive.apiary_id)
+        .join(User, User.id == Hive.user_id)
+        .filter(~Hive.id.in_(inspected))
+        .order_by(Hive.initialized_at.desc())
+    )
+
+
+@router.get("/health/summary")
+def health_summary(admin: CurrentAdmin, db: DB) -> HealthSummary:
+    inactive_users = _inactive_users_q(db).with_entities(func.count(User.id)).scalar() or 0
+    zero_inspection_hives = (
+        db.query(func.count(Hive.id))
+        .filter(~Hive.id.in_(db.query(Inspection.hive_id).distinct()))
+        .scalar() or 0
+    )
+    no_varroa_inspections = (
+        db.query(func.count(Inspection.id)).filter(Inspection.varroa_count.is_(None)).scalar() or 0
+    )
+    return HealthSummary(
+        inactive_users=inactive_users,
+        zero_inspection_hives=zero_inspection_hives,
+        no_varroa_inspections=no_varroa_inspections,
+    )
+
+
+@router.get("/health/inactive-users")
+def health_inactive_users(
+    admin: CurrentAdmin,
+    db: DB,
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
+) -> PaginatedResponse:
+    apiary_count_sq = (
+        db.query(Apiary.user_id, func.count(Apiary.id).label("ac"))
+        .group_by(Apiary.user_id)
+        .subquery()
+    )
+    base = (
+        _inactive_users_q(db)
+        .add_columns(func.coalesce(apiary_count_sq.c.ac, 0))
+        .outerjoin(apiary_count_sq, User.id == apiary_count_sq.c.user_id)
+        .order_by(User.created_at.asc())
+    )
+    total = _inactive_users_q(db).with_entities(func.count(User.id)).scalar() or 0
+    rows = base.offset((page - 1) * per_page).limit(per_page).all()
+    return PaginatedResponse(
+        items=[
+            InactiveUserOut(
+                id=u.id, email=u.email, name=u.name,
+                created_at=u.created_at, apiary_count=ac,
+            )
+            for u, ac in rows
+        ],
+        total=total,
+        page=page,
+        per_page=per_page,
+        pages=math.ceil(total / per_page) if total else 1,
+    )
+
+
+@router.get("/health/no-varroa-inspections")
+def health_no_varroa_inspections(admin: CurrentAdmin, db: DB) -> list:
+    rows = (
+        db.query(
+            Apiary.id,
+            Apiary.name,
+            User.email,
+            func.count(Inspection.id).label("missing"),
+        )
+        .join(Hive, Hive.apiary_id == Apiary.id)
+        .join(Inspection, Inspection.hive_id == Hive.id)
+        .join(User, User.id == Apiary.user_id)
+        .filter(Inspection.varroa_count.is_(None))
+        .group_by(Apiary.id, Apiary.name, User.email)
+        .order_by(func.count(Inspection.id).desc())
+        .all()
+    )
+    return [
+        NoVarroaApiaryOut(
+            apiary_id=apiary_id,
+            apiary_name=apiary_name,
+            owner_email=email,
+            missing_varroa_count=missing,
+        )
+        for apiary_id, apiary_name, email, missing in rows
+    ]
+
+
+@router.get("/health/zero-inspection-hives")
+def health_zero_inspection_hives(admin: CurrentAdmin, db: DB) -> list:
+    rows = _zero_inspection_hives_q(db).all()
+    return [
+        ZeroInspectionHiveOut(
+            id=hive.id, name=hive.name, hive_type=hive.hive_type,
+            apiary_id=hive.apiary_id, apiary_name=apiary_name,
+            owner_email=email, initialized_at=hive.initialized_at,
+        )
+        for hive, apiary_name, email in rows
+    ]

@@ -108,6 +108,37 @@ class SignupDay(BaseModel):
     count: int
 
 
+class HealthSummary(BaseModel):
+    inactive_users: int
+    zero_inspection_hives: int
+    no_varroa_inspections: int
+
+
+class InactiveUserOut(BaseModel):
+    id: str
+    email: str
+    name: str
+    created_at: datetime
+    apiary_count: int
+
+
+class NoVarroaApiaryOut(BaseModel):
+    apiary_id: str
+    apiary_name: str
+    owner_email: str
+    missing_varroa_count: int
+
+
+class ZeroInspectionHiveOut(BaseModel):
+    id: str
+    name: str
+    hive_type: str
+    apiary_id: str
+    apiary_name: str
+    owner_email: str
+    initialized_at: datetime
+
+
 class AdminPlatformStats(BaseModel):
     preset: str
     total_users: int
