@@ -88,6 +88,16 @@ def admin_client(client):
 
 
 @pytest.fixture
+def db_session():
+    """Direct access to the test DB — use to set up data that the API cannot (e.g. backdating timestamps)."""
+    db = TestingSession()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+@pytest.fixture
 def auth_client2(auth_client):
     # Use auth_client to register the second user (no-auth endpoints).
     # app.dependency_overrides is already set on the shared app object,
