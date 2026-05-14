@@ -6,11 +6,11 @@ from fastapi import APIRouter, HTTPException, Query, status
 from sqlalchemy import func, or_, and_
 
 from app.deps import CurrentAdmin, DB
-from app.models import Apiary, Hive, Inspection, User
+from app.models import Apiary, Hive, Inspection, RefreshToken, User
 from app.schemas import (
-    AdminApiaryOut, AdminPlatformStats, AdminUserDetail, HealthSummary,
-    InactiveUserOut, NoVarroaApiaryOut, PaginatedResponse,
-    SignupDay, SupporterUpdate, UserOut, ZeroInspectionHiveOut,
+    AdminApiaryOut, AdminPlatformStats, AdminUserDetail, AdminTokenOut,
+    AdminTokenStats, HealthSummary, InactiveUserOut, NoVarroaApiaryOut,
+    PaginatedResponse, SignupDay, SupporterUpdate, UserOut, ZeroInspectionHiveOut,
 )
 
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -384,3 +384,64 @@ def health_zero_inspection_hives(admin: CurrentAdmin, db: DB) -> list:
         )
         for hive, apiary_name, email in rows
     ]
+
+
+# ---------------------------------------------------------------------------
+# Token management (force-logout)
+# ---------------------------------------------------------------------------
+
+def _active_tokens_q(db, user_id: str):
+    now = datetime.utcnow()
+    return (
+        db.query(RefreshToken)
+        .filter(
+            RefreshToken.user_id == user_id,
+            RefreshToken.revoked.is_(False),
+            RefreshToken.expires_at > now,
+        )
+    )
+
+
+@router.get("/tokens/stats")
+def token_stats(admin: CurrentAdmin, db: DB) -> AdminTokenStats:
+    now = datetime.utcnow()
+    active_q = db.query(RefreshToken).filter(
+        RefreshToken.revoked.is_(False),
+        RefreshToken.expires_at > now,
+    )
+    total_active = active_q.count()
+    users_with_sessions = (
+        active_q.with_entities(func.count(func.distinct(RefreshToken.user_id))).scalar() or 0
+    )
+    avg_per_user = round(total_active / users_with_sessions, 2) if users_with_sessions else 0.0
+    return AdminTokenStats(
+        total_active_sessions=total_active,
+        users_with_active_sessions=users_with_sessions,
+        avg_sessions_per_user=avg_per_user,
+    )
+
+
+@router.get("/users/{user_id}/tokens")
+def list_user_tokens(user_id: str, admin: CurrentAdmin, db: DB) -> list:
+    user = db.get(User, user_id)
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"code": "USER_NOT_FOUND", "message": "User not found."},
+        )
+    tokens = _active_tokens_q(db, user_id).order_by(RefreshToken.expires_at.desc()).all()
+    return [AdminTokenOut(id=t.id, expires_at=t.expires_at) for t in tokens]
+
+
+@router.delete("/users/{user_id}/tokens", status_code=204)
+def revoke_user_tokens(user_id: str, admin: CurrentAdmin, db: DB):
+    user = db.get(User, user_id)
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"code": "USER_NOT_FOUND", "message": "User not found."},
+        )
+    db.query(RefreshToken).filter(RefreshToken.user_id == user_id).update(
+        {"revoked": True}, synchronize_session=False
+    )
+    db.commit()

@@ -139,6 +139,17 @@ class ZeroInspectionHiveOut(BaseModel):
     initialized_at: datetime
 
 
+class AdminTokenOut(BaseModel):
+    id: str
+    expires_at: datetime
+
+
+class AdminTokenStats(BaseModel):
+    total_active_sessions: int
+    users_with_active_sessions: int
+    avg_sessions_per_user: float
+
+
 class AdminPlatformStats(BaseModel):
     preset: str
     total_users: int
