@@ -126,6 +126,30 @@ export async function getApiary(id: string): Promise<Apiary> {
   return res.json();
 }
 
+export async function createApiary(data: { name: string; description?: string; address?: string; is_public: boolean }): Promise<Apiary> {
+  const res = await apiFetch('/apiaries', { method: 'POST', body: JSON.stringify(data) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail ?? 'Create failed');
+  }
+  return res.json();
+}
+
+export async function updateApiary(id: string, data: { name?: string; description?: string; address?: string; is_public?: boolean }): Promise<Apiary> {
+  const res = await apiFetch(`/apiaries/${id}`, { method: 'PUT', body: JSON.stringify(data) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail ?? 'Update failed');
+  }
+  return res.json();
+}
+
+export async function deleteApiary(id: string): Promise<void> {
+  const res = await apiFetch(`/apiaries/${id}`, { method: 'DELETE' });
+  if (res.status === 409) throw new Error('has_hives');
+  if (!res.ok) throw new Error('Delete failed');
+}
+
 export async function getHives(apiaryId: string): Promise<Paginated<Hive>> {
   const res = await apiFetch(`/apiaries/${apiaryId}/hives?per_page=100`);
   if (!res.ok) throw new Error('Failed to get hives');
@@ -158,7 +182,7 @@ export async function getInspections(hiveId: string): Promise<Paginated<Inspecti
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 export interface User { id: string; email: string; name: string; locale: string; created_at: string; is_admin: boolean; is_supporter: boolean; }
-export interface Apiary { id: string; name: string; hive_count: number; is_public: boolean; description?: string; }
+export interface Apiary { id: string; name: string; hive_count: number; is_public: boolean; description?: string; address?: string; latitude?: number; longitude?: number; created_at: string; }
 export interface Hive { id: string; name: string; hive_type: string; apiary_id: string; last_inspection_at?: string; }
 export interface Inspection {
   id: string; date: string; varroa_count?: number; mood?: string;

@@ -903,3 +903,22 @@ tr:last-child td { border-bottom: none; }
 .dash-admin-links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
 .dash-admin-link-card { flex: 1; min-width: 120px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; text-decoration: none; color: var(--green); font-weight: 600; text-align: center; transition: box-shadow .2s; }
 .dash-admin-link-card:hover { box-shadow: var(--shadow); }
+
+/* ── Apiary CRUD ──────────────────────────────────────────────────────────── */
+.dash-page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.dash-page-header .dash-page-title { margin-bottom: 0; }
+.dash-new-btn { background: var(--green); color: #fff; border: none; border-radius: 8px; padding: 8px 18px; font-size: .875rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.dash-new-btn:hover { background: var(--green-mid); }
+.dash-inline-form { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 24px; }
+.dash-inline-form h2 { font-size: .95rem; font-weight: 600; margin-bottom: 16px; color: var(--text); }
+.dash-inline-form textarea { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: .9rem; font-family: inherit; resize: vertical; min-height: 72px; box-sizing: border-box; color: var(--text); background: var(--surface); }
+.dash-inline-form textarea:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(20,83,45,.1); }
+.dash-inline-form .dash-form-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.dash-cancel-btn { background: var(--card); border: 1px solid var(--border); color: var(--muted); cursor: pointer; padding: 8px 18px; border-radius: 8px; font-size: .875rem; }
+.dash-cancel-btn:hover { background: var(--surface); }
+.dash-inline-checkbox { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; cursor: pointer; font-size: .9rem; color: var(--text); }
+.dash-inline-checkbox input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--green); cursor: pointer; }
+.dash-danger-zone { border: 1px solid #fecaca; border-radius: 10px; padding: 20px; margin-top: 24px; }
+.dash-danger-zone h3 { color: #dc2626; font-size: .95rem; font-weight: 600; margin: 0 0 8px; }
+.dash-danger-zone p { font-size: .875rem; color: var(--muted); margin: 0 0 12px; }
+.dash-danger-zone .dash-danger-actions { display: flex; gap: 8px; flex-wrap: wrap; }

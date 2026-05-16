@@ -6,6 +6,8 @@ import ApiaryPage from '@/app/[locale]/dashboard/apiary/[id]/page';
 const mockGetApiary = vi.hoisted(() => vi.fn());
 const mockGetHives = vi.hoisted(() => vi.fn());
 const mockGetApiaryStats = vi.hoisted(() => vi.fn());
+const mockUpdateApiary = vi.hoisted(() => vi.fn());
+const mockDeleteApiary = vi.hoisted(() => vi.fn());
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
@@ -14,6 +16,7 @@ vi.mock('next-intl', () => ({
 vi.mock('@/i18n/navigation', () => ({
   Link: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) =>
     <a href={href} className={className}>{children}</a>,
+  useRouter: () => ({ replace: vi.fn() }),
 }));
 
 vi.mock('next/navigation', () => ({
@@ -28,6 +31,8 @@ vi.mock('@/lib/api', () => ({
   getApiary: mockGetApiary,
   getHives: mockGetHives,
   getApiaryStats: mockGetApiaryStats,
+  updateApiary: mockUpdateApiary,
+  deleteApiary: mockDeleteApiary,
 }));
 
 const paginated = <T,>(items: T[]) => ({ items, total: items.length, page: 1, per_page: 100 });
@@ -37,10 +42,12 @@ describe('ApiaryPage', () => {
     mockGetApiary.mockClear();
     mockGetHives.mockClear();
     mockGetApiaryStats.mockClear();
+    mockUpdateApiary.mockClear();
+    mockDeleteApiary.mockClear();
   });
 
   function setupMocks({
-    apiary = { id: 'apiary-1', name: 'My Apiary', hive_count: 3, is_public: false },
+    apiary = { id: 'apiary-1', name: 'My Apiary', hive_count: 3, is_public: false, created_at: '2025-01-01T00:00:00Z' },
     hives = [] as { id: string; name: string; hive_type: string; apiary_id: string }[],
     stats = { hive_count: 3, inspections_total: 12, average_varroa: 2.5, mood_distribution: {} },
   } = {}) {

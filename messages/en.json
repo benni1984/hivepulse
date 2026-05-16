@@ -254,16 +254,37 @@
     },
     "apiaries": {
       "title": "My Apiaries",
-      "empty": "No apiaries yet. Add your first apiary in the app.",
+      "empty": "No apiaries yet.",
       "hives": "hives",
       "public": "Public",
-      "private": "Private"
+      "private": "Private",
+      "new": "New Apiary",
+      "createTitle": "Create New Apiary",
+      "name": "Name",
+      "description": "Description",
+      "address": "Address",
+      "isPublic": "Show on public map",
+      "cancel": "Cancel",
+      "createBtn": "Create Apiary",
+      "createSuccess": "Apiary created.",
+      "errorGeneric": "Something went wrong."
     },
     "apiary": {
       "hives": "Hives",
       "inspections": "Inspections",
       "avgVarroa": "Avg. Varroa",
-      "noHives": "No hives in this apiary yet."
+      "noHives": "No hives in this apiary yet.",
+      "editBtn": "Edit Apiary",
+      "editTitle": "Edit Apiary",
+      "saveBtn": "Save Changes",
+      "saveSuccess": "Apiary saved.",
+      "dangerTitle": "Danger Zone",
+      "deleteBtn": "Delete Apiary",
+      "deleteConfirmText": "This action cannot be undone.",
+      "deleteConfirmBtn": "Confirm Delete",
+      "deleteSuccess": "Apiary deleted.",
+      "deleteHasHives": "Cannot delete — this apiary still has hives. Delete all hives first.",
+      "errorGeneric": "Something went wrong."
     },
     "hive": {
       "inspections": "Inspections",
