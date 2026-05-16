@@ -7,6 +7,17 @@ import dynamic from 'next/dynamic';
 import DashboardShell from '@/components/DashboardShell';
 import { getHive, getHiveStats, getInspections, updateHive, deleteHive, createInspection, updateInspection, deleteInspection, type Hive, type HiveStats, type Inspection, type InspectionInput } from '@/lib/api';
 
+function moodPct(dist: { calm: number; nervous: number; aggressive: number }) {
+  const total = dist.calm + dist.nervous + dist.aggressive;
+  if (total === 0) return null;
+  return {
+    calm: dist.calm, nervous: dist.nervous, aggressive: dist.aggressive,
+    calmPct: Math.round((dist.calm / total) * 100),
+    nervousPct: Math.round((dist.nervous / total) * 100),
+    aggressivePct: Math.round((dist.aggressive / total) * 100),
+  };
+}
+
 const VarroaChart = dynamic(() => import('@/components/VarroaChart'), { ssr: false });
 
 const HIVE_TYPES = ['langstroth', 'dadant', 'top_bar', 'warre', 'other'] as const;
@@ -174,6 +185,16 @@ export default function HivePage() {
           <h1 className="dash-page-title">{hive.name}</h1>
           <p className="dash-hive-type-label">{hive.hive_type}</p>
 
+          {/* Stats row */}
+          {stats && (
+            <div className="dash-stat-row">
+              <div className="dash-stat-pill">
+                <span className="num">{stats.inspection_count}</span>
+                <span className="lbl">{t('hive.inspections')}</span>
+              </div>
+            </div>
+          )}
+
           {/* Varroa chart */}
           <h2 className="dash-section-title">{t('hive.varroaTrend')}</h2>
           <div className="dash-chart-box">
@@ -181,6 +202,32 @@ export default function HivePage() {
               ? <VarroaChart data={stats.varroa_trend} />
               : <p className="dash-empty">{t('hive.noTrend')}</p>}
           </div>
+
+          {/* Mood distribution */}
+          {stats && (() => {
+            const mood = moodPct(stats.mood_distribution);
+            return (
+              <div className="dash-mood-section">
+                <h2 className="dash-section-title">{t('hive.moodTitle')}</h2>
+                {mood ? (
+                  <>
+                    <div className="dash-mood-bar">
+                      {mood.calmPct > 0 && <div className="dash-mood-calm" style={{ width: `${mood.calmPct}%` }} />}
+                      {mood.nervousPct > 0 && <div className="dash-mood-nervous" style={{ width: `${mood.nervousPct}%` }} />}
+                      {mood.aggressivePct > 0 && <div className="dash-mood-aggressive" style={{ width: `${mood.aggressivePct}%` }} />}
+                    </div>
+                    <div className="dash-mood-legend">
+                      <span><span className="dash-mood-dot dash-mood-calm" />{t('hive.moodCalm')} {mood.calmPct}% ({mood.calm})</span>
+                      <span><span className="dash-mood-dot dash-mood-nervous" />{t('hive.moodNervous')} {mood.nervousPct}% ({mood.nervous})</span>
+                      <span><span className="dash-mood-dot dash-mood-aggressive" />{t('hive.moodAggressive')} {mood.aggressivePct}% ({mood.aggressive})</span>
+                    </div>
+                  </>
+                ) : (
+                  <p className="dash-empty">{t('hive.noMoodData')}</p>
+                )}
+              </div>
+            );
+          })()}
 
           {/* Inspection table */}
           <div className="dash-page-header" style={{ marginTop: 24 }}>
