@@ -71,3 +71,13 @@ def test_change_password_wrong_current(auth_client):
 def test_change_password_missing_current(auth_client):
     r = auth_client.put("/api/v1/users/me", json={"password": "newpassword123"})
     assert r.status_code == 422
+
+
+def test_delete_me(auth_client):
+    r = auth_client.delete("/api/v1/users/me")
+    assert r.status_code == 204
+    # Account is gone — login should fail
+    r2 = auth_client.post("/api/v1/auth/login", json={
+        "email": "test@example.com", "password": "password123",
+    })
+    assert r2.status_code == 401

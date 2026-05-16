@@ -99,6 +99,12 @@ export async function getMe(): Promise<User> {
   return res.json();
 }
 
+export async function deleteMe(): Promise<void> {
+  const res = await apiFetch('/users/me', { method: 'DELETE' });
+  if (!res.ok) throw new Error('Delete failed');
+  clearTokens();
+}
+
 export async function updateMe(data: { name?: string; locale?: string; password?: string; current_password?: string }): Promise<User> {
   const res = await apiFetch('/users/me', { method: 'PUT', body: JSON.stringify(data) });
   if (!res.ok) {

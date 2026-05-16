@@ -1,13 +1,15 @@
 'use client';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
-import { updateMe } from '@/lib/api';
+import { updateMe, deleteMe } from '@/lib/api';
 import { useDashboardAuth } from '@/hooks/useDashboardAuth';
 
 export default function ProfilePage() {
   const t = useTranslations('dash.profile');
   const { user, loading } = useDashboardAuth();
+  const router = useRouter();
 
   const [name, setName] = useState('');
   const [locale, setLocale] = useState('');
@@ -19,6 +21,9 @@ export default function ProfilePage() {
   const [confirmPw, setConfirmPw] = useState('');
   const [pwMsg, setPwMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
   const [pwSaving, setPwSaving] = useState(false);
+
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   // Initialise form fields once user loads
   if (!loading && user && name === '' && locale === '') {
@@ -58,6 +63,17 @@ export default function ProfilePage() {
       setPwMsg({ type: 'err', text: err instanceof Error ? err.message : t('errorGeneric') });
     } finally {
       setPwSaving(false);
+    }
+  }
+
+  async function handleDelete() {
+    setDeleting(true);
+    try {
+      await deleteMe();
+      router.replace('/dashboard/login');
+    } catch {
+      setDeleting(false);
+      setDeleteConfirm(false);
     }
   }
 
@@ -161,6 +177,28 @@ export default function ProfilePage() {
             </button>
           </form>
         </div>
+      </div>
+      {/* ── Danger zone ─────────────────────────────────────────────── */}
+      <div className="dash-profile-danger">
+        <h2 className="dash-section-title">{t('dangerTitle')}</h2>
+        <p className="dash-profile-danger-desc">{t('dangerDesc')}</p>
+        {!deleteConfirm ? (
+          <button className="dash-admin-btn dash-admin-btn-danger" onClick={() => setDeleteConfirm(true)}>
+            {t('deleteAccount')}
+          </button>
+        ) : (
+          <div className="dash-profile-danger-confirm">
+            <p className="dash-profile-danger-warning">{t('deleteConfirm')}</p>
+            <div className="dash-profile-danger-actions">
+              <button className="dash-admin-btn dash-admin-btn-danger" onClick={handleDelete} disabled={deleting}>
+                {deleting ? '…' : t('deleteConfirmBtn')}
+              </button>
+              <button className="dash-admin-btn" onClick={() => setDeleteConfirm(false)} disabled={deleting}>
+                {t('deleteCancel')}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </DashboardShell>
   );

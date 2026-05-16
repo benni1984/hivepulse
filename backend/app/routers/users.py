@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from passlib.context import CryptContext
 
 from app.deps import CurrentUser, DB
+from app.models import Hive, Inspection
 from app.schemas import UserOut, UserUpdate
 
 router = APIRouter(prefix="/users", tags=["users"])
@@ -26,3 +27,15 @@ def update_me(body: UserUpdate, current_user: CurrentUser, db: DB):
     db.commit()
     db.refresh(current_user)
     return current_user
+
+
+@router.delete("/me", status_code=204)
+def delete_me(current_user: CurrentUser, db: DB):
+    user_id = current_user.id
+    # Delete in FK order: inspections → hives → user (cascade handles rest)
+    db.query(Inspection).filter(
+        Inspection.hive_id.in_(db.query(Hive.id).filter(Hive.user_id == user_id))
+    ).delete(synchronize_session=False)
+    db.query(Hive).filter(Hive.user_id == user_id).delete(synchronize_session=False)
+    db.delete(current_user)
+    db.commit()

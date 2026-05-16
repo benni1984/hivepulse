@@ -237,7 +237,13 @@
       "errorGeneric": "Something went wrong. Please try again.",
       "badgeAdmin": "Admin",
       "badgeSupporter": "Supporter",
-      "memberSince": "Member since"
+      "memberSince": "Member since",
+      "dangerTitle": "Danger Zone",
+      "dangerDesc": "Permanently deletes your account and all associated data — apiaries, hives, inspections. This cannot be undone.",
+      "deleteAccount": "Delete My Account",
+      "deleteConfirm": "Are you sure? This will permanently delete all your data.",
+      "deleteConfirmBtn": "Yes, delete my account",
+      "deleteCancel": "Cancel"
     },
     "admin": {
       "nav": { "section": "Admin", "stats": "Platform Stats", "users": "Users", "map": "Map", "health": "Health" },

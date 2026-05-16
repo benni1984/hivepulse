@@ -851,6 +851,14 @@ tr:last-child td { border-bottom: none; }
   background: #f0fdf4; border: 1px solid #6ee7b7; border-radius: 8px;
   color: #065f46; padding: 10px 14px; font-size: .875rem; margin-bottom: 16px;
 }
+.dash-profile-danger { margin-top: 28px; border-top: 1px solid var(--border); padding-top: 24px; }
+.dash-profile-danger-desc { font-size: .875rem; color: var(--muted); margin-bottom: 14px; }
+.dash-profile-danger-confirm { margin-top: 12px; }
+.dash-profile-danger-warning {
+  font-size: .875rem; color: #991b1b; background: #fee2e2; border: 1px solid #fca5a5;
+  border-radius: 8px; padding: 10px 14px; margin-bottom: 12px;
+}
+.dash-profile-danger-actions { display: flex; gap: 8px; }
 
 /* ── Admin dashboard ─────────────────────────────────────────────────────────── */
 .dash-nav-section { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 12px 0 4px; }
