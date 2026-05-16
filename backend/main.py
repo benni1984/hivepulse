@@ -24,6 +24,8 @@ async def lifespan(app: FastAPI):
             if user and not user.is_admin:
                 user.is_admin = True
                 db.commit()
+        except Exception:
+            pass
         finally:
             db.close()
 
