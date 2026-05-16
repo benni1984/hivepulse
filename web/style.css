@@ -933,3 +933,10 @@ tr:last-child td { border-bottom: none; }
 .dash-token-status { font-size: .7rem; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
 .dash-token-linked .dash-token-status { background: var(--green-light); color: var(--green); }
 .dash-token-unlinked .dash-token-status { background: #f5f5f4; color: var(--muted); }
+.dash-mood-section { margin: 20px 0; }
+.dash-mood-bar { display: flex; height: 10px; border-radius: 6px; overflow: hidden; background: var(--border); margin-bottom: 10px; }
+.dash-mood-calm   { background: #16a34a; }
+.dash-mood-nervous { background: #d97706; }
+.dash-mood-aggressive { background: #dc2626; }
+.dash-mood-legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: .8rem; color: var(--muted); }
+.dash-mood-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }

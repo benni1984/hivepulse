@@ -62,7 +62,7 @@ describe('HivePage', () => {
 
   function setupMocks({
     hive = { id: 'hive-1', name: 'Hive Alpha', hive_type: 'langstroth', apiary_id: 'apiary-1' },
-    stats = { inspection_count: 0, varroa_trend: [] as { date: string; value: number }[], mood_distribution: {} },
+    stats = { inspection_count: 0, varroa_trend: [] as { date: string; value: number }[], mood_distribution: { calm: 0, nervous: 0, aggressive: 0 } },
     inspections = [] as { id: string; date: string; varroa_count?: number; mood?: string; queen_seen?: boolean; brood_frames?: number }[],
   } = {}) {
     mockGetHive.mockResolvedValueOnce(hive);
@@ -99,14 +99,14 @@ describe('HivePage', () => {
 
   it('shows varroa chart when trend data is present', async () => {
     setupMocks({
-      stats: { inspection_count: 1, varroa_trend: [{ date: '2024-06-01', value: 5 }], mood_distribution: {} },
+      stats: { inspection_count: 1, varroa_trend: [{ date: '2024-06-01', value: 5 }], mood_distribution: { calm: 0, nervous: 0, aggressive: 0 } },
     });
     render(<HivePage />);
     await waitFor(() => expect(screen.getByTestId('varroa-chart')).toBeInTheDocument());
   });
 
   it('shows no-trend message when varroa_trend is empty', async () => {
-    setupMocks({ stats: { inspection_count: 0, varroa_trend: [], mood_distribution: {} } });
+    setupMocks({ stats: { inspection_count: 0, varroa_trend: [], mood_distribution: { calm: 0, nervous: 0, aggressive: 0 } } });
     render(<HivePage />);
     await waitFor(() => expect(screen.getByText('hive.noTrend')).toBeInTheDocument());
   });
@@ -333,5 +333,37 @@ describe('HivePage', () => {
     fireEvent.click(screen.getByText('hive.inspectionConfirmDeleteBtn'));
     await waitFor(() => expect(screen.getByText('Delete failed')).toBeInTheDocument());
     expect(screen.getByText('3')).toBeInTheDocument();
+  });
+
+  it('shows inspection count stat pill', async () => {
+    setupMocks({ stats: { inspection_count: 7, varroa_trend: [], mood_distribution: { calm: 0, nervous: 0, aggressive: 0 } } });
+    render(<HivePage />);
+    await waitFor(() => screen.getByText('Hive Alpha'));
+    expect(screen.getByText('7')).toBeInTheDocument();
+  });
+
+  it('shows mood distribution title', async () => {
+    setupMocks();
+    render(<HivePage />);
+    await waitFor(() => screen.getByText('Hive Alpha'));
+    expect(screen.getByText('hive.moodTitle')).toBeInTheDocument();
+  });
+
+  it('shows mood percentages when mood data is present', async () => {
+    setupMocks({
+      stats: { inspection_count: 10, varroa_trend: [], mood_distribution: { calm: 5, nervous: 4, aggressive: 1 } },
+    });
+    render(<HivePage />);
+    await waitFor(() => screen.getByText('Hive Alpha'));
+    expect(screen.getByText(/50%/)).toBeInTheDocument();
+    expect(screen.getByText(/40%/)).toBeInTheDocument();
+    expect(screen.getByText(/10%/)).toBeInTheDocument();
+  });
+
+  it('shows no-mood-data message when all mood counts are zero', async () => {
+    setupMocks();
+    render(<HivePage />);
+    await waitFor(() => screen.getByText('Hive Alpha'));
+    expect(screen.getByText('hive.noMoodData')).toBeInTheDocument();
   });
 });

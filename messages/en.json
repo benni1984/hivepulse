@@ -288,7 +288,9 @@
       "deleteConfirmBtn": "Confirm Delete",
       "deleteSuccess": "Apiary deleted.",
       "deleteHasHives": "Cannot delete — this apiary still has hives. Delete all hives first.",
-      "errorGeneric": "Something went wrong."
+      "errorGeneric": "Something went wrong.",
+      "moodTitle": "Mood Distribution",
+      "noMoodData": "No mood data yet."
     },
     "hive": {
       "inspections": "Inspections",
@@ -330,7 +332,9 @@
       "moodCalm": "Calm",
       "moodNervous": "Nervous",
       "moodAggressive": "Aggressive",
-      "queenNotRecorded": "Not recorded"
+      "queenNotRecorded": "Not recorded",
+      "moodTitle": "Mood Distribution",
+      "noMoodData": "No mood data yet."
     },
     "qrBatches": {
       "title": "QR Code Batches",

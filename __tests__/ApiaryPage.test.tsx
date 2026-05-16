@@ -52,7 +52,7 @@ describe('ApiaryPage', () => {
   function setupMocks({
     apiary = { id: 'apiary-1', name: 'My Apiary', hive_count: 3, is_public: false, created_at: '2025-01-01T00:00:00Z' },
     hives = [] as { id: string; name: string; hive_type: string; apiary_id: string }[],
-    stats = { hive_count: 3, inspections_total: 12, average_varroa: 2.5, mood_distribution: {} },
+    stats = { hive_count: 3, inspections_total: 12, average_varroa: 2.5, mood_distribution: { calm: 0, nervous: 0, aggressive: 0 } },
   } = {}) {
     mockGetApiary.mockResolvedValueOnce(apiary);
     mockGetHives.mockResolvedValueOnce(paginated(hives));
@@ -125,7 +125,7 @@ describe('ApiaryPage', () => {
     const apiary = { id: 'apiary-1', name: 'My Apiary', hive_count: 0, is_public: false, created_at: '2025-01-01T00:00:00Z' };
     mockGetApiary.mockResolvedValueOnce(apiary);
     mockGetHives.mockResolvedValueOnce(paginated([]));
-    mockGetApiaryStats.mockResolvedValueOnce({ hive_count: 0, inspections_total: 0, mood_distribution: {} });
+    mockGetApiaryStats.mockResolvedValueOnce({ hive_count: 0, inspections_total: 0, mood_distribution: { calm: 0, nervous: 0, aggressive: 0 } });
     mockUpdateApiary.mockResolvedValueOnce({ ...apiary, name: 'Renamed Apiary' });
 
     render(<ApiaryPage />);
@@ -243,5 +243,30 @@ describe('ApiaryPage', () => {
     fireEvent.click(screen.getByText('apiary.deleteConfirmBtn'));
     await waitFor(() => expect(screen.getByText('apiary.deleteHasHives')).toBeInTheDocument());
     expect(screen.getByText('apiary.deleteBtn')).toBeInTheDocument();
+  });
+
+  it('shows mood distribution section title', async () => {
+    setupMocks();
+    render(<ApiaryPage />);
+    await waitFor(() => screen.getByText('My Apiary'));
+    expect(screen.getByText('apiary.moodTitle')).toBeInTheDocument();
+  });
+
+  it('shows mood percentages when mood data is present', async () => {
+    mockGetApiary.mockResolvedValueOnce({ id: 'apiary-1', name: 'My Apiary', hive_count: 2, is_public: false, created_at: '2025-01-01T00:00:00Z' });
+    mockGetHives.mockResolvedValueOnce(paginated([]));
+    mockGetApiaryStats.mockResolvedValueOnce({ hive_count: 2, inspections_total: 10, mood_distribution: { calm: 6, nervous: 3, aggressive: 1 } });
+    render(<ApiaryPage />);
+    await waitFor(() => screen.getByText('My Apiary'));
+    expect(screen.getByText(/60%/)).toBeInTheDocument();
+    expect(screen.getByText(/30%/)).toBeInTheDocument();
+    expect(screen.getByText(/10%/)).toBeInTheDocument();
+  });
+
+  it('shows no-mood-data message when all mood counts are zero', async () => {
+    setupMocks();
+    render(<ApiaryPage />);
+    await waitFor(() => screen.getByText('My Apiary'));
+    expect(screen.getByText('apiary.noMoodData')).toBeInTheDocument();
   });
 });
