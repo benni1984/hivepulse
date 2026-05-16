@@ -39,6 +39,7 @@ export default function DashboardShell({ children, adminOnly = false }: { childr
           </div>
           <nav className="dash-nav">
             <Link href="/dashboard" className="dash-nav-link">{t('nav.apiaries')}</Link>
+            <Link href="/dashboard/profile" className="dash-nav-link">{t('nav.profile')}</Link>
             {user.is_admin && (
               <>
                 <div className="dash-nav-section">{t('admin.nav.section')}</div>

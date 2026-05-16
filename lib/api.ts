@@ -99,6 +99,15 @@ export async function getMe(): Promise<User> {
   return res.json();
 }
 
+export async function updateMe(data: { name?: string; locale?: string; password?: string; current_password?: string }): Promise<User> {
+  const res = await apiFetch('/users/me', { method: 'PUT', body: JSON.stringify(data) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail ?? 'Update failed');
+  }
+  return res.json();
+}
+
 export async function getApiaries(): Promise<Paginated<Apiary>> {
   const res = await apiFetch('/apiaries?per_page=100');
   if (!res.ok) throw new Error('Failed to get apiaries');

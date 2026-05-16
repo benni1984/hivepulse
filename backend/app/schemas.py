@@ -69,6 +69,14 @@ class UserOut(BaseModel):
 class UserUpdate(BaseModel):
     name: Optional[str] = None
     locale: Optional[str] = Field(default=None, pattern="^(en|fr|de|es)$")
+    password: Optional[str] = Field(default=None, min_length=8)
+    current_password: Optional[str] = None
+
+    @model_validator(mode='after')
+    def password_requires_current(self) -> 'UserUpdate':
+        if self.password is not None and not self.current_password:
+            raise ValueError('current_password is required when changing password')
+        return self
 
 
 class AdminUserDetail(BaseModel):

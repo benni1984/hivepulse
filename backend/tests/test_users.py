@@ -45,3 +45,29 @@ def test_get_me_invalid_token_returns_401(client):
 def test_update_invalid_locale(auth_client):
     r = auth_client.put("/api/v1/users/me", json={"locale": "xx"})
     assert r.status_code == 422
+
+
+def test_change_password_success(auth_client):
+    r = auth_client.put("/api/v1/users/me", json={
+        "password": "newpassword123",
+        "current_password": "password123",
+    })
+    assert r.status_code == 200
+    # New password works
+    r2 = auth_client.post("/api/v1/auth/login", json={
+        "email": "test@example.com", "password": "newpassword123",
+    })
+    assert r2.status_code == 200
+
+
+def test_change_password_wrong_current(auth_client):
+    r = auth_client.put("/api/v1/users/me", json={
+        "password": "newpassword123",
+        "current_password": "wrongpassword",
+    })
+    assert r.status_code == 400
+
+
+def test_change_password_missing_current(auth_client):
+    r = auth_client.put("/api/v1/users/me", json={"password": "newpassword123"})
+    assert r.status_code == 422

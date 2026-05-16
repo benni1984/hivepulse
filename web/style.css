@@ -832,6 +832,26 @@ tr:last-child td { border-bottom: none; }
   .dash-main { padding: 16px; }
 }
 
+/* ── Profile page ───────────────────────────────────────────────────────────── */
+.dash-profile-meta { margin-bottom: 24px; }
+.dash-profile-email { font-size: .95rem; color: var(--muted); margin-bottom: 8px; }
+.dash-profile-badges { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dash-profile-badge { font-size: .72rem; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+.dash-profile-badge-admin { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+.dash-profile-badge-supporter { background: var(--green-light); color: var(--green); border: 1px solid #6ee7b7; }
+.dash-profile-since { font-size: .78rem; color: var(--muted); }
+.dash-profile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.dash-profile-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+.dash-profile-select {
+  width: 100%; padding: 10px 14px; border: 1px solid var(--border);
+  border-radius: 8px; font-size: .95rem; background: var(--surface); box-sizing: border-box;
+}
+.dash-profile-select:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(20,83,45,.1); }
+.dash-success-banner {
+  background: #f0fdf4; border: 1px solid #6ee7b7; border-radius: 8px;
+  color: #065f46; padding: 10px 14px; font-size: .875rem; margin-bottom: 16px;
+}
+
 /* ── Admin dashboard ─────────────────────────────────────────────────────────── */
 .dash-nav-section { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 12px 0 4px; }
 .dash-admin-preset-row { display: flex; gap: 6px; margin-bottom: 20px; }

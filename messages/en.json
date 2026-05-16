@@ -219,7 +219,26 @@
       "login": "Log in",
       "errorGeneric": "Registration failed. Please try again."
     },
-    "nav": { "apiaries": "My Apiaries", "logout": "Log out" },
+    "nav": { "apiaries": "My Apiaries", "profile": "Profile", "logout": "Log out" },
+    "profile": {
+      "title": "Profile",
+      "editTitle": "Edit Profile",
+      "passwordTitle": "Change Password",
+      "name": "Name",
+      "language": "Language",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password (min 8 characters)",
+      "confirmPassword": "Confirm New Password",
+      "saveProfile": "Save Profile",
+      "savePassword": "Change Password",
+      "profileSaved": "Profile saved.",
+      "passwordSaved": "Password changed successfully.",
+      "passwordMismatch": "New passwords do not match.",
+      "errorGeneric": "Something went wrong. Please try again.",
+      "badgeAdmin": "Admin",
+      "badgeSupporter": "Supporter",
+      "memberSince": "Member since"
+    },
     "admin": {
       "nav": { "section": "Admin", "stats": "Platform Stats", "users": "Users", "map": "Map", "health": "Health" },
       "stats": { "title": "Platform Statistics", "totalUsers": "Total Users", "newUsers": "New Users", "supporters": "Supporters", "totalApiaries": "Total Apiaries", "publicApiaries": "Public Apiaries", "totalHives": "Total Hives", "totalInspections": "Total Inspections", "activeUsers": "Active Users (30d)", "activeSessions": "Active Sessions", "preset": "Period" },

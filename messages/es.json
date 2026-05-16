@@ -22,7 +22,8 @@
   "dash": {
     "login": { "title": "Iniciar sesión en ApiScan", "email": "Correo electrónico", "password": "Contraseña", "submit": "Iniciar sesión", "noAccount": "¿Sin cuenta?", "register": "Registrarse", "errorGeneric": "Error al iniciar sesión. Inténtalo de nuevo." },
     "register": { "title": "Crear tu cuenta", "name": "Nombre", "email": "Correo electrónico", "password": "Contraseña (mín. 8 caracteres)", "submit": "Crear cuenta", "hasAccount": "¿Ya tienes cuenta?", "login": "Iniciar sesión", "errorGeneric": "Error al registrarse. Inténtalo de nuevo." },
-    "nav": { "apiaries": "Mis colmenares", "logout": "Cerrar sesión" },
+    "nav": { "apiaries": "Mis colmenares", "profile": "Perfil", "logout": "Cerrar sesión" },
+    "profile": { "title": "Perfil", "editTitle": "Editar perfil", "passwordTitle": "Cambiar contraseña", "name": "Nombre", "language": "Idioma", "currentPassword": "Contraseña actual", "newPassword": "Nueva contraseña (mín. 8 caracteres)", "confirmPassword": "Confirmar nueva contraseña", "saveProfile": "Guardar perfil", "savePassword": "Cambiar contraseña", "profileSaved": "Perfil guardado.", "passwordSaved": "Contraseña cambiada correctamente.", "passwordMismatch": "Las nuevas contraseñas no coinciden.", "errorGeneric": "Algo salió mal. Por favor, inténtalo de nuevo.", "badgeAdmin": "Admin", "badgeSupporter": "Supporter", "memberSince": "Miembro desde" },
     "admin": {
       "nav": { "section": "Admin", "stats": "Estadísticas", "users": "Usuarios", "map": "Mapa", "health": "Calidad datos" },
       "stats": { "title": "Estadísticas de la plataforma", "totalUsers": "Usuarios totales", "newUsers": "Nuevos usuarios", "supporters": "Supporters", "totalApiaries": "Colmenares totales", "publicApiaries": "Colmenares públicos", "totalHives": "Colmenas totales", "totalInspections": "Inspecciones totales", "activeUsers": "Usuarios activos (30d)", "activeSessions": "Sesiones activas", "preset": "Período" },
