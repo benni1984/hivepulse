@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import dynamic from 'next/dynamic';
 import DashboardShell from '@/components/DashboardShell';
-import { getHive, getHiveStats, getInspections, updateHive, deleteHive, createInspection, updateInspection, deleteInspection, type Hive, type HiveStats, type Inspection, type InspectionInput } from '@/lib/api';
+import { getHive, getHiveStats, getInspections, updateHive, deleteHive, createInspection, updateInspection, deleteInspection, getUserFieldDefs, getApiaryFieldDefs, type Hive, type HiveStats, type Inspection, type InspectionInput, type FieldDefinition } from '@/lib/api';
 
 function moodPct(dist: { calm: number; nervous: number; aggressive: number }) {
   const total = dist.calm + dist.nervous + dist.aggressive;
@@ -45,6 +45,8 @@ export default function HivePage() {
   const [inspectionFormMode, setInspectionFormMode] = useState<'create' | 'edit'>('create');
   const [editingInspectionId, setEditingInspectionId] = useState<string | null>(null);
   const [inspectionForm, setInspectionForm] = useState({ date: '', varroa_count: '', mood: '', queen_seen: '', brood_frames: '' });
+  const [inspectionFieldDefs, setInspectionFieldDefs] = useState<FieldDefinition[]>([]);
+  const [customFieldValues, setCustomFieldValues] = useState<Record<string, string>>({});
   const [savingInspection, setSavingInspection] = useState(false);
   const [inspectionMessage, setInspectionMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
@@ -62,6 +64,13 @@ export default function HivePage() {
           acquisition_date: h.acquisition_date ?? '',
           notes: h.notes ?? '',
         });
+        return Promise.all([getUserFieldDefs(), getApiaryFieldDefs(h.apiary_id)]);
+      })
+      .then(([userDefs, apiaryDefs]) => {
+        const merged = [...userDefs, ...apiaryDefs]
+          .filter(fd => fd.target === 'inspection')
+          .sort((a, b) => a.sort_order - b.sort_order);
+        setInspectionFieldDefs(merged);
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -100,6 +109,11 @@ export default function HivePage() {
     setInspectionFormMode('create');
     setEditingInspectionId(null);
     setInspectionForm({ date: new Date().toISOString().split('T')[0], varroa_count: '', mood: '', queen_seen: '', brood_frames: '' });
+    const defaults: Record<string, string> = {};
+    for (const fd of inspectionFieldDefs) {
+      defaults[fd.id] = fd.default_value != null ? String(fd.default_value) : '';
+    }
+    setCustomFieldValues(defaults);
     setInspectionMessage(null);
     setShowInspectionForm(true);
   }
@@ -114,6 +128,12 @@ export default function HivePage() {
       queen_seen: ins.queen_seen == null ? '' : ins.queen_seen ? 'true' : 'false',
       brood_frames: ins.brood_frames != null ? String(ins.brood_frames) : '',
     });
+    const existing: Record<string, string> = {};
+    for (const fd of inspectionFieldDefs) {
+      const val = ins.custom_fields?.[fd.id];
+      existing[fd.id] = val != null ? String(val) : (fd.default_value != null ? String(fd.default_value) : '');
+    }
+    setCustomFieldValues(existing);
     setInspectionMessage(null);
     setShowInspectionForm(true);
   }
@@ -122,12 +142,26 @@ export default function HivePage() {
     e.preventDefault();
     setSavingInspection(true);
     setInspectionMessage(null);
+    const custom_fields: Record<string, unknown> = {};
+    for (const fd of inspectionFieldDefs) {
+      const val = customFieldValues[fd.id] ?? '';
+      if (val === '') continue;
+      if (fd.type === 'number') {
+        const n = parseFloat(val);
+        if (!isNaN(n)) custom_fields[fd.id] = n;
+      } else if (fd.type === 'boolean') {
+        custom_fields[fd.id] = val === 'true';
+      } else {
+        custom_fields[fd.id] = val;
+      }
+    }
     const data: InspectionInput = {
       date: inspectionForm.date,
       varroa_count: inspectionForm.varroa_count !== '' ? parseInt(inspectionForm.varroa_count) : null,
       mood: inspectionForm.mood || null,
       queen_seen: inspectionForm.queen_seen === '' ? null : inspectionForm.queen_seen === 'true',
       brood_frames: inspectionForm.brood_frames !== '' ? parseInt(inspectionForm.brood_frames) : null,
+      custom_fields: Object.keys(custom_fields).length > 0 ? custom_fields : undefined,
     };
     try {
       if (inspectionFormMode === 'create') {
@@ -281,6 +315,45 @@ export default function HivePage() {
                   <input type="number" min="0" max="10" value={inspectionForm.brood_frames}
                     onChange={e => setInspectionForm(f => ({ ...f, brood_frames: e.target.value }))} />
                 </div>
+                {inspectionFieldDefs.length > 0 && (
+                  <>
+                    <h3 className="dash-section-title" style={{ margin: '16px 0 8px', fontSize: '.85rem' }}>{t('fieldDefs.title')}</h3>
+                    {inspectionFieldDefs.map(fd => (
+                      <div key={fd.id} className="dash-form-group">
+                        <label>{fd.name}{fd.required && ' *'}</label>
+                        {fd.type === 'text' && (
+                          <input type="text" value={customFieldValues[fd.id] ?? ''} required={fd.required}
+                            onChange={e => setCustomFieldValues(v => ({ ...v, [fd.id]: e.target.value }))} />
+                        )}
+                        {fd.type === 'number' && (
+                          <input type="number" value={customFieldValues[fd.id] ?? ''} required={fd.required}
+                            onChange={e => setCustomFieldValues(v => ({ ...v, [fd.id]: e.target.value }))} />
+                        )}
+                        {fd.type === 'date' && (
+                          <input type="date" value={customFieldValues[fd.id] ?? ''} required={fd.required}
+                            onChange={e => setCustomFieldValues(v => ({ ...v, [fd.id]: e.target.value }))} />
+                        )}
+                        {fd.type === 'boolean' && (
+                          <select className="dash-profile-select" value={customFieldValues[fd.id] ?? ''} required={fd.required}
+                            onChange={e => setCustomFieldValues(v => ({ ...v, [fd.id]: e.target.value }))}>
+                            {!fd.required && <option value="">—</option>}
+                            <option value="true">{t('hive.yes')}</option>
+                            <option value="false">{t('hive.no')}</option>
+                          </select>
+                        )}
+                        {fd.type === 'select' && (
+                          <select className="dash-profile-select" value={customFieldValues[fd.id] ?? ''} required={fd.required}
+                            onChange={e => setCustomFieldValues(v => ({ ...v, [fd.id]: e.target.value }))}>
+                            {!fd.required && <option value="">—</option>}
+                            {fd.options.map(opt => (
+                              <option key={opt} value={opt}>{opt}</option>
+                            ))}
+                          </select>
+                        )}
+                      </div>
+                    ))}
+                  </>
+                )}
                 <div className="dash-form-actions">
                   <button className="dash-submit-btn" type="submit" disabled={savingInspection}>
                     {savingInspection ? '…' : inspectionFormMode === 'create' ? t('hive.inspectionSaveBtn') : t('hive.inspectionUpdateBtn')}

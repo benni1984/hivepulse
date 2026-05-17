@@ -11,6 +11,8 @@ const mockDeleteHive = vi.hoisted(() => vi.fn());
 const mockCreateInspection = vi.hoisted(() => vi.fn());
 const mockUpdateInspection = vi.hoisted(() => vi.fn());
 const mockDeleteInspection = vi.hoisted(() => vi.fn());
+const mockGetUserFieldDefs = vi.hoisted(() => vi.fn());
+const mockGetApiaryFieldDefs = vi.hoisted(() => vi.fn());
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
@@ -44,6 +46,8 @@ vi.mock('@/lib/api', () => ({
   createInspection: mockCreateInspection,
   updateInspection: mockUpdateInspection,
   deleteInspection: mockDeleteInspection,
+  getUserFieldDefs: mockGetUserFieldDefs,
+  getApiaryFieldDefs: mockGetApiaryFieldDefs,
 }));
 
 const paginated = <T,>(items: T[]) => ({ items, total: items.length, page: 1, per_page: 50 });
@@ -58,6 +62,10 @@ describe('HivePage', () => {
     mockCreateInspection.mockClear();
     mockUpdateInspection.mockClear();
     mockDeleteInspection.mockClear();
+    mockGetUserFieldDefs.mockClear();
+    mockGetApiaryFieldDefs.mockClear();
+    mockGetUserFieldDefs.mockResolvedValue([]);
+    mockGetApiaryFieldDefs.mockResolvedValue([]);
   });
 
   function setupMocks({
@@ -365,5 +373,74 @@ describe('HivePage', () => {
     render(<HivePage />);
     await waitFor(() => screen.getByText('Hive Alpha'));
     expect(screen.getByText('hive.noMoodData')).toBeInTheDocument();
+  });
+
+  // ── Custom fields ──────────────────────────────────────────────────────────
+
+  it('renders custom field inputs in inspection form when field defs are present', async () => {
+    const fieldDef = { id: 'fd-1', scope: 'user', apiary_id: null, target: 'inspection', name: 'Honey kg', type: 'number', options: [], required: false, default_value: null, sort_order: 0 };
+    mockGetUserFieldDefs.mockResolvedValueOnce([fieldDef]);
+    setupMocks();
+    render(<HivePage />);
+    await waitFor(() => screen.getByText('Hive Alpha'));
+    fireEvent.click(screen.getByText('hive.newInspectionBtn'));
+    await waitFor(() => expect(screen.getByText('Honey kg')).toBeInTheDocument());
+    expect(screen.getByText('fieldDefs.title')).toBeInTheDocument();
+  });
+
+  it('only shows inspection-target field defs, not hive-target ones', async () => {
+    const inspectionDef = { id: 'fd-1', scope: 'user', apiary_id: null, target: 'inspection', name: 'Honey kg', type: 'number', options: [], required: false, default_value: null, sort_order: 0 };
+    const hiveDef = { id: 'fd-2', scope: 'user', apiary_id: null, target: 'hive', name: 'Location notes', type: 'text', options: [], required: false, default_value: null, sort_order: 1 };
+    mockGetUserFieldDefs.mockResolvedValueOnce([inspectionDef, hiveDef]);
+    setupMocks();
+    render(<HivePage />);
+    await waitFor(() => screen.getByText('Hive Alpha'));
+    fireEvent.click(screen.getByText('hive.newInspectionBtn'));
+    await waitFor(() => expect(screen.getByText('Honey kg')).toBeInTheDocument());
+    expect(screen.queryByText('Location notes')).not.toBeInTheDocument();
+  });
+
+  it('includes custom_fields in createInspection payload when filled', async () => {
+    const fieldDef = { id: 'fd-1', scope: 'user', apiary_id: null, target: 'inspection', name: 'Honey kg', type: 'number', options: [], required: false, default_value: null, sort_order: 0 };
+    mockGetUserFieldDefs.mockResolvedValueOnce([fieldDef]);
+    setupMocks();
+    const newInspection = { id: 'i-new', date: '2024-08-01', varroa_count: null, mood: null, queen_seen: null, brood_frames: null, custom_fields: { 'fd-1': 12.5 } };
+    mockCreateInspection.mockResolvedValueOnce(newInspection);
+    render(<HivePage />);
+    await waitFor(() => screen.getByText('Hive Alpha'));
+    fireEvent.click(screen.getByText('hive.newInspectionBtn'));
+    await waitFor(() => expect(screen.getByText('Honey kg')).toBeInTheDocument());
+    const inputs = screen.getAllByRole('spinbutton');
+    const honeyInput = inputs[inputs.length - 1];
+    fireEvent.change(honeyInput, { target: { value: '12.5' } });
+    fireEvent.submit(screen.getByText('hive.inspectionSaveBtn').closest('form')!);
+    await waitFor(() => expect(mockCreateInspection).toHaveBeenCalledWith(
+      'hive-1', expect.objectContaining({ custom_fields: { 'fd-1': 12.5 } })
+    ));
+  });
+
+  it('populates custom fields when editing an existing inspection', async () => {
+    const fieldDef = { id: 'fd-1', scope: 'user', apiary_id: null, target: 'inspection', name: 'Honey kg', type: 'number', options: [], required: false, default_value: null, sort_order: 0 };
+    mockGetUserFieldDefs.mockResolvedValueOnce([fieldDef]);
+    setupMocks({
+      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_count: 3, mood: 'calm', queen_seen: true, brood_frames: 5, custom_fields: { 'fd-1': 8 } }],
+    });
+    render(<HivePage />);
+    await waitFor(() => screen.getByText('3'));
+    fireEvent.click(screen.getByText('hive.inspectionEditBtn'));
+    await waitFor(() => expect(screen.getByText('Honey kg')).toBeInTheDocument());
+    expect(screen.getByDisplayValue('8')).toBeInTheDocument();
+  });
+
+  it('renders select-type custom field with options', async () => {
+    const fieldDef = { id: 'fd-1', scope: 'apiary', apiary_id: 'apiary-1', target: 'inspection', name: 'Treatment', type: 'select', options: ['Apivar', 'Oxalic acid'], required: false, default_value: null, sort_order: 0 };
+    mockGetApiaryFieldDefs.mockResolvedValueOnce([fieldDef]);
+    setupMocks();
+    render(<HivePage />);
+    await waitFor(() => screen.getByText('Hive Alpha'));
+    fireEvent.click(screen.getByText('hive.newInspectionBtn'));
+    await waitFor(() => expect(screen.getByText('Treatment')).toBeInTheDocument());
+    expect(screen.getByText('Apivar')).toBeInTheDocument();
+    expect(screen.getByText('Oxalic acid')).toBeInTheDocument();
   });
 });
