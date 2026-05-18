@@ -5,7 +5,7 @@ export default defineConfig({
   fullyParallel: false,
   forbidOnly: true,
   retries: 1,
-  reporter: process.env.CI ? ['github', ['html', { open: 'never' }]] : 'list',
+  reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   use: {
     baseURL: 'https://apiscan-staging.vercel.app',
     trace: 'on-first-retry',
