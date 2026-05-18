@@ -356,8 +356,22 @@ class InspectionCreate(BaseModel):
     custom_fields: Dict[str, Any] = Field(default_factory=dict)
 
 
-class InspectionUpdate(InspectionCreate):
+class InspectionUpdate(BaseModel):
     date: Optional[date] = None
+    queen_seen: Optional[bool] = None
+    queen_color: Optional[str] = Field(default=None, pattern="^(white|yellow|red|green|blue)$")
+    brood_frames: Optional[int] = Field(default=None, ge=0, le=10)
+    honey_frames: Optional[int] = Field(default=None, ge=0, le=10)
+    mood: Optional[str] = Field(default=None, pattern="^(calm|nervous|aggressive)$")
+    population_strength: Optional[int] = Field(default=None, ge=1, le=5)
+    varroa_count: Optional[int] = Field(default=None, ge=0)
+    swarm_cells_seen: Optional[bool] = None
+    treatment_applied: Optional[str] = None
+    feeding_done: Optional[bool] = None
+    feeding_type: Optional[str] = None
+    weight_kg: Optional[float] = None
+    notes: Optional[str] = None
+    custom_fields: Optional[Dict[str, Any]] = None
 
 
 class InspectionOut(BaseModel):
