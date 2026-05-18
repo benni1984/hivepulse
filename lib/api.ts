@@ -392,6 +392,21 @@ export interface FieldDefinitionUpdate {
   default_value?: string | number | boolean | null; sort_order?: number;
 }
 
+// ── Overview stats ─────────────────────────────────────────────────────────────
+export interface OverviewStats {
+  period: { from: string; to: string; preset: string };
+  apiary_count: number;
+  hive_count: number;
+  inspections_total: number;
+  per_apiary: { apiary_id: string; apiary_name: string; hive_count: number; inspections_total: number }[];
+}
+
+export async function getOverviewStats(preset = '365d'): Promise<OverviewStats> {
+  const res = await apiFetch(`/stats/overview?preset=${preset}`);
+  if (!res.ok) throw new Error('Failed to get overview stats');
+  return res.json();
+}
+
 // ── Admin types ────────────────────────────────────────────────────────────────
 export interface AdminUser { id: string; email: string; name: string; locale: string; is_admin: boolean; is_supporter: boolean; created_at: string; }
 export interface AdminApiary { id: string; name: string; owner_email: string; latitude?: number; longitude?: number; hive_count: number; is_public: boolean; created_at: string; }

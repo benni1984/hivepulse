@@ -39,6 +39,7 @@ export default function DashboardShell({ children, adminOnly = false }: { childr
           </div>
           <nav className="dash-nav">
             <Link href="/dashboard" className="dash-nav-link">{t('nav.apiaries')}</Link>
+            <Link href="/dashboard/stats" className="dash-nav-link">{t('nav.stats')}</Link>
             <Link href="/dashboard/qr-batches" className="dash-nav-link">{t('nav.qrBatches')}</Link>
             <Link href="/dashboard/field-definitions" className="dash-nav-link">{t('nav.customFields')}</Link>
             <Link href="/dashboard/profile" className="dash-nav-link">{t('nav.profile')}</Link>
