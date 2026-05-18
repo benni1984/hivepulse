@@ -1,5 +1,54 @@
 import { test, expect } from '@playwright/test';
 
+// ── /members login gate (anonymous) ─────────────────────────────────────────
+
+test('members page shows login gate and blurred stats for anonymous visitor', async ({ browser }) => {
+  // Use a fresh context with no storage state so the demo auth is not present.
+  const ctx = await browser.newContext({ storageState: { cookies: [], origins: [] } });
+  const page = await ctx.newPage();
+
+  await page.goto('/members');
+
+  // Login gate heading visible
+  await expect(page.getByText('Log in to see live statistics')).toBeVisible({ timeout: 10_000 });
+
+  // Login link goes to the dashboard login page
+  const loginLink = page.getByRole('link', { name: 'Log in' });
+  await expect(loginLink).toBeVisible();
+  await expect(loginLink).toHaveAttribute('href', /\/dashboard\/login/);
+
+  // Stats preview is blurred (inline style set by MembersTeaser)
+  const preview = page.locator('.members-preview');
+  await expect(preview).toBeVisible({ timeout: 10_000 });
+  await expect(preview).toHaveCSS('filter', /blur/);
+
+  await ctx.close();
+});
+
+// ── /members logged-in view (demo account) ──────────────────────────────────
+
+test('members page shows unblurred stats for logged-in user', async ({ page }) => {
+  // storageState from auth.setup.ts is already active for this project.
+  await page.goto('/members');
+
+  // Stats preview must NOT be blurred
+  const preview = page.locator('.members-preview');
+  await expect(preview).toBeVisible({ timeout: 15_000 });
+  // filter is either '' (empty string) or not blur when logged in
+  const filter = await preview.evaluate(el => (el as HTMLElement).style.filter);
+  expect(filter).not.toMatch(/blur/);
+
+  // Either the supporter gate or the unlocked badge is visible — never the login gate
+  const hasSupporter = await page.getByText('Unlock the full picture').isVisible().catch(() => false);
+  const hasUnlocked = await page.locator('.members-unlocked').isVisible().catch(() => false);
+  expect(hasSupporter || hasUnlocked).toBeTruthy();
+
+  // Login gate must NOT appear
+  await expect(page.getByText('Log in to see live statistics')).not.toBeVisible();
+});
+
+// ── /dashboard/stats ─────────────────────────────────────────────────────────
+
 test('My Statistics page shows summary pills and per-apiary table', async ({ page }) => {
   await page.goto('/dashboard/stats');
   await expect(page.locator('.spinner')).not.toBeVisible({ timeout: 15_000 });
