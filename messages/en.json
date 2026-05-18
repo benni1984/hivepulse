@@ -219,7 +219,21 @@
       "login": "Log in",
       "errorGeneric": "Registration failed. Please try again."
     },
-    "nav": { "apiaries": "My Apiaries", "qrBatches": "QR Batches", "customFields": "Custom Fields", "profile": "Profile", "logout": "Log out" },
+    "nav": { "apiaries": "My Apiaries", "stats": "My Statistics", "qrBatches": "QR Batches", "customFields": "Custom Fields", "profile": "Profile", "logout": "Log out" },
+    "overview": {
+      "title": "My Statistics",
+      "period": "Period",
+      "preset30d": "Last 30 days",
+      "preset90d": "Last 90 days",
+      "preset365d": "Last year",
+      "presetAll": "All time",
+      "apiaries": "Apiaries",
+      "hives": "Hives",
+      "inspections": "Inspections",
+      "perApiary": "By Apiary",
+      "apiary": "Apiary",
+      "noData": "No inspections in this period."
+    },
     "profile": {
       "title": "Profile",
       "editTitle": "Edit Profile",
