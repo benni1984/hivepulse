@@ -13,6 +13,7 @@ export default defineConfig({
   },
   projects: [
     { name: 'setup', testMatch: /auth\.setup\.ts/ },
+    { name: 'admin-setup', testMatch: /admin\.setup\.ts/ },
     {
       name: 'chromium',
       use: {
@@ -20,6 +21,15 @@ export default defineConfig({
         storageState: '.auth/user.json',
       },
       dependencies: ['setup'],
+    },
+    {
+      name: 'admin',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: '.auth/admin.json',
+      },
+      dependencies: ['admin-setup'],
+      testMatch: /admin\.spec\.ts/,
     },
   ],
 });

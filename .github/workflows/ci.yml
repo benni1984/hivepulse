@@ -340,6 +340,8 @@ jobs:
         env:
           STAGING_DEMO_EMAIL: ${{ secrets.STAGING_DEMO_EMAIL }}
           STAGING_DEMO_PASSWORD: ${{ secrets.STAGING_DEMO_PASSWORD }}
+          STAGING_ADMIN_EMAIL: ${{ secrets.STAGING_ADMIN_EMAIL }}
+          STAGING_ADMIN_PASSWORD: ${{ secrets.STAGING_ADMIN_PASSWORD }}
 
       - name: Upload Playwright report
         if: always()
