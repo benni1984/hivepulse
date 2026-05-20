@@ -29,7 +29,7 @@ export default defineConfig({
         storageState: '.auth/admin.json',
       },
       dependencies: ['admin-setup'],
-      testMatch: /admin\.spec\.ts/,
+      testMatch: /\/(admin|members)\.spec\.ts/,
     },
   ],
 });
