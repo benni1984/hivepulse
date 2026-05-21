@@ -81,8 +81,10 @@ class InspectionFormScreenTest {
     @Test
     fun inspectionForm_showsFramesAndColonySections() {
         navigateToInspectionForm()
-        composeRule.onNodeWithText("Frames").assertIsDisplayed()
-        composeRule.onNodeWithText("Colony").assertIsDisplayed()
+        // Scroll into view first — the bottom nav bar added in Phase 5 reduces
+        // visible height, pushing these sections off-screen without scrolling.
+        composeRule.onNodeWithText("Frames").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("Colony").performScrollTo().assertIsDisplayed()
     }
 
     @Test

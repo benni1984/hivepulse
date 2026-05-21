@@ -17,21 +17,21 @@ struct HornetInfoView: View {
                     systemImage: "exclamationmark.triangle.fill",
                     color: .orange,
                     title: NSLocalizedString("hornets.info.problem", comment: ""),
-                    body: NSLocalizedString("hornets.info.problemText", comment: "")
+                    content: NSLocalizedString("hornets.info.problemText", comment: "")
                 )
 
                 InfoCard(
                     systemImage: "arrow.triangle.2.circlepath",
                     color: .yellow,
                     title: NSLocalizedString("hornets.info.whyCatch", comment: ""),
-                    body: NSLocalizedString("hornets.info.whyCatchText", comment: "")
+                    content: NSLocalizedString("hornets.info.whyCatchText", comment: "")
                 )
 
                 InfoCard(
                     systemImage: "mappin.and.ellipse",
                     color: .red,
                     title: NSLocalizedString("hornets.info.reportNest", comment: ""),
-                    body: NSLocalizedString("hornets.info.reportNestText", comment: "")
+                    content: NSLocalizedString("hornets.info.reportNestText", comment: "")
                 )
             }
             .padding()
@@ -105,7 +105,7 @@ private struct InfoCard: View {
     let systemImage: String
     let color: Color
     let title: String
-    let body: String
+    let content: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -115,7 +115,7 @@ private struct InfoCard: View {
                 Text(title)
                     .font(.headline)
             }
-            Text(body)
+            Text(content)
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }
