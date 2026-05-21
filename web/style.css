@@ -318,6 +318,85 @@ body {
   color: #fff;
 }
 
+/* ── Nav user account dropdown (logged-in) ────────────────── */
+.nav-user {
+  position: relative;
+}
+
+.nav-user-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1.5px solid rgba(255,255,255,.35);
+  cursor: pointer;
+  font-size: .84rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: rgba(255,255,255,.9);
+  padding: 7px 14px;
+  border-radius: 7px;
+  white-space: nowrap;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.nav-user-btn:hover {
+  background: rgba(255,255,255,.14);
+  border-color: rgba(255,255,255,.6);
+  color: #fff;
+}
+.nav-user-btn .fa-user-circle { font-size: 1.05rem; }
+.nav-user-chevron { font-size: .7rem; opacity: .75; }
+
+.nav-user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg);
+  min-width: 170px;
+  overflow: hidden;
+  z-index: 200;
+}
+
+.nav-user-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 16px;
+  font-size: .88rem;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  border: none;
+  background: none;
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .15s;
+}
+.nav-user-item:hover { background: var(--surface); }
+.nav-user-item i { width: 16px; color: var(--muted); font-size: .9rem; }
+.nav-user-logout { color: #dc2626; }
+.nav-user-logout:hover { background: #fff5f5; }
+.nav-user-logout i { color: #dc2626; }
+
+/* ── Mobile-only account links in hamburger menu ─────────── */
+.nav-mobile-account { display: none; }
+.nav-mobile-logout {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: .95rem;
+  font-weight: 500;
+  color: #fca5a5;
+  padding: 10px 14px;
+  width: 100%;
+  text-align: left;
+}
+
 .nav-cta {
   display: inline-block;
   background: var(--amber);
@@ -357,6 +436,8 @@ body {
   .nav-toggle { display: flex; }
   .nav-right .nav-cta { display: none; }
   .nav-right .nav-login { display: none; }
+  .nav-right .nav-user { display: none; }
+  .nav-mobile-account { display: list-item; }
   .nav-links {
     display: none;
     position: absolute;

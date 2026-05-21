@@ -7,6 +7,8 @@
     "members": "Members",
     "dashboard": "My Hives",
     "login": "Log in",
+    "myAccount": "My Account",
+    "logout": "Log out",
     "download": "Download Free",
     "back": {
       "map": "← Live Map"

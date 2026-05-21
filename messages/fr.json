@@ -7,6 +7,8 @@
     "members": "Membres",
     "dashboard": "Mes ruches",
     "login": "Connexion",
+    "myAccount": "Mon compte",
+    "logout": "Déconnexion",
     "download": "Télécharger gratuitement",
     "back": {
       "map": "← Carte en direct"

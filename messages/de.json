@@ -7,6 +7,8 @@
     "members": "Mitglieder",
     "dashboard": "Meine Völker",
     "login": "Anmelden",
+    "myAccount": "Mein Konto",
+    "logout": "Abmelden",
     "download": "Kostenlos laden",
     "back": {
       "map": "← Live-Karte"

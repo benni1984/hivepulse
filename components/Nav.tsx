@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
+import { logout, clearTokens } from '@/lib/api';
 
 const LOCALE_FLAGS: Record<string, string> = {
   en: '🇬🇧 EN',
@@ -23,11 +24,19 @@ export default function Nav({ locale }: { locale: string }) {
   const t = useTranslations('nav');
   const [menuOpen, setMenuOpen] = useState(false);
   const [ddOpen, setDdOpen] = useState(false);
+  const [userDdOpen, setUserDdOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const ddRef = useRef<HTMLDivElement>(null);
+  const userDdRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
   const isHome = pathname === '/';
+
+  // Detect login state from localStorage (client-only)
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem('access_token'));
+  }, []);
 
   useEffect(() => {
     if (!isHome) return;
@@ -36,10 +45,22 @@ export default function Nav({ locale }: { locale: string }) {
     return () => window.removeEventListener('scroll', handler);
   }, [isHome]);
 
+  // Close language dropdown on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (ddRef.current && !ddRef.current.contains(e.target as Node)) {
         setDdOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  // Close user dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (userDdRef.current && !userDdRef.current.contains(e.target as Node)) {
+        setUserDdOpen(false);
       }
     };
     document.addEventListener('mousedown', handler);
@@ -54,6 +75,21 @@ export default function Nav({ locale }: { locale: string }) {
   function isActive(href: string) {
     if (href === '/') return pathname === '/';
     return pathname.startsWith(href);
+  }
+
+  async function handleLogout() {
+    setUserDdOpen(false);
+    setMenuOpen(false);
+    try {
+      await logout();
+    } catch {
+      clearTokens();
+    }
+    setIsLoggedIn(false);
+    // Redirect away from protected pages
+    if (pathname.startsWith('/dashboard')) {
+      router.replace('/');
+    }
   }
 
   const navClass = ['site-nav', !isHome && 'page-nav', isHome && scrolled && 'scrolled']
@@ -78,6 +114,16 @@ export default function Nav({ locale }: { locale: string }) {
           <li><Link href="/news"       className={isActive('/news') ? 'active' : ''}       onClick={() => setMenuOpen(false)}>{t('news')}</Link></li>
           <li><Link href="/contribute" className={isActive('/contribute') ? 'active' : ''} onClick={() => setMenuOpen(false)}>{t('contribute')}</Link></li>
           <li><Link href="/members"    className={isActive('/members') ? 'active' : ''}    onClick={() => setMenuOpen(false)}>{t('members')}</Link></li>
+          {isLoggedIn && (
+            <li className="nav-mobile-account">
+              <Link href="/dashboard" onClick={() => setMenuOpen(false)}>{t('dashboard')}</Link>
+            </li>
+          )}
+          {isLoggedIn && (
+            <li className="nav-mobile-account">
+              <button className="nav-mobile-logout" onClick={handleLogout}>{t('logout')}</button>
+            </li>
+          )}
         </ul>
 
         <div className="nav-right">
@@ -101,7 +147,32 @@ export default function Nav({ locale }: { locale: string }) {
             )}
           </div>
 
-          <Link href="/dashboard" className="nav-login">{t('login')}</Link>
+          {isLoggedIn ? (
+            <div className="nav-user" ref={userDdRef}>
+              <button
+                className="nav-login nav-user-btn"
+                aria-label="Account menu"
+                onClick={() => setUserDdOpen(o => !o)}
+              >
+                <i className="fas fa-user-circle" />
+                <span>{t('myAccount')}</span>
+                <i className="fas fa-chevron-down nav-user-chevron" />
+              </button>
+              {userDdOpen && (
+                <div className="nav-user-dropdown">
+                  <Link href="/dashboard" className="nav-user-item" onClick={() => setUserDdOpen(false)}>
+                    <i className="fas fa-th-large" />{t('dashboard')}
+                  </Link>
+                  <button className="nav-user-item nav-user-logout" onClick={handleLogout}>
+                    <i className="fas fa-sign-out-alt" />{t('logout')}
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link href="/dashboard" className="nav-login">{t('login')}</Link>
+          )}
+
           <Link href="/#download" className="nav-cta">{t('download')}</Link>
         </div>
       </div>
