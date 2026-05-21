@@ -1070,10 +1070,15 @@ tr:last-child td { border-bottom: none; }
 .hornets-action-card strong { font-size: .95rem; }
 .hornets-action-card span { font-size: .82rem; color: var(--muted); }
 
-/* Map page */
-.hornets-map-page { max-width: 960px; margin: 0 auto; padding: 32px 20px 80px; }
-.hornets-map-page h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
-.hornets-map-page p { color: var(--muted); margin-bottom: 20px; }
+/* ── Map page ─────────────────────────────────────────────── */
+.hornets-map-page { max-width: 960px; margin: 0 auto; padding: 88px 20px 80px; }
+.hornets-map-header { margin-bottom: 20px; }
+.hornets-map-page h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+.hornets-map-page p { color: var(--muted); margin-bottom: 12px; }
+.hornets-map-legend-inline {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  font-size: .82rem; color: var(--muted); margin-top: 10px;
+}
 .hornets-map-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; font-size: .82rem; }
 .hornets-legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
 .hornets-legend-dot.found { background: #ef4444; }
@@ -1081,56 +1086,102 @@ tr:last-child td { border-bottom: none; }
 .hornets-legend-dot.destroyed { background: #22c55e; }
 .hornets-map-container { height: 540px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
 
-/* Report page */
-.hornets-report-page { max-width: 640px; margin: 0 auto; padding: 40px 20px 80px; }
-.hornets-report-page h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+/* ── Report page ──────────────────────────────────────────── */
+.hornets-report-page { max-width: 640px; margin: 0 auto; padding: 88px 20px 80px; }
+.hornets-report-page h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
 .hornets-report-page > p { color: var(--muted); margin-bottom: 24px; }
 .hornets-tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 28px; }
 .hornets-tab { background: none; border: none; padding: 10px 20px; font-size: .9rem; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color .15s, border-color .15s; }
 .hornets-tab.active { color: var(--amber-dark); border-bottom-color: var(--amber); }
+
+/* Form: bare label+input structure (no .hornets-field wrapper) */
 .hornets-form { display: flex; flex-direction: column; gap: 16px; }
+.hornets-form label { display: flex; flex-direction: column; gap: 5px; font-size: .85rem; font-weight: 600; color: var(--text); }
+.hornets-form input:not([type="file"]),
+.hornets-form textarea,
+.hornets-form select {
+  border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 12px;
+  font-size: .9rem; color: var(--text); background: var(--card);
+  outline: none; transition: border-color .15s; font-family: inherit; width: 100%;
+}
+.hornets-form input:not([type="file"]):focus,
+.hornets-form textarea:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(245,158,11,.1); }
+.hornets-form input[type="file"] { font-size: .85rem; color: var(--muted); }
+.hornets-form textarea { resize: vertical; min-height: 80px; }
+
+/* .hornets-field wrapper (legacy, keep for compat) */
 .hornets-field { display: flex; flex-direction: column; gap: 6px; }
 .hornets-field label { font-size: .85rem; font-weight: 600; color: var(--text); }
-.hornets-field input, .hornets-field textarea { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: .9rem; color: var(--text); background: var(--card); outline: none; transition: border-color .15s; }
+.hornets-field input, .hornets-field textarea { border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: .9rem; color: var(--text); background: var(--card); outline: none; transition: border-color .15s; }
 .hornets-field input:focus, .hornets-field textarea:focus { border-color: var(--amber); }
 .hornets-field textarea { resize: vertical; min-height: 80px; }
+
+/* Location row: lat + lon + GPS button */
+.hornets-location-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end; }
+.hornets-location-row label { display: flex; flex-direction: column; gap: 5px; font-size: .85rem; font-weight: 600; color: var(--text); }
+.hornets-location-row input { border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: .88rem; color: var(--text); background: var(--card); outline: none; transition: border-color .15s; width: 100%; font-family: inherit; }
+.hornets-location-row input:focus { border-color: var(--amber); }
+
 .hornets-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.btn-sm { padding: 8px 14px !important; font-size: .82rem !important; line-height: 1.2 !important; }
+.hornets-uploading { font-size: .82rem; color: var(--muted); }
+.hornets-photo-ok { font-size: .82rem; color: var(--green-mid); font-weight: 600; }
 .hornets-submit { background: var(--amber); color: #fff; border: none; border-radius: 8px; padding: 12px 24px; font-size: .95rem; font-weight: 700; cursor: pointer; transition: background .15s, transform .15s; }
 .hornets-submit:hover { background: var(--amber-dark); transform: translateY(-1px); }
 .hornets-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
-.hornets-success { background: var(--green-light); color: var(--green); border-radius: 8px; padding: 14px 16px; font-weight: 600; font-size: .9rem; }
+.hornets-success { background: var(--green-light); color: var(--green-mid); border: 1px solid #bbf7d0; border-radius: 8px; padding: 14px 16px; font-weight: 600; font-size: .9rem; margin-bottom: 8px; }
 .hornets-error { background: #fef2f2; color: #dc2626; border-radius: 8px; padding: 14px 16px; font-size: .9rem; }
-.hornets-loc-btn { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; font-size: .82rem; cursor: pointer; color: var(--muted); transition: border-color .15s, color .15s; }
+.error-banner { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; border-radius: 8px; padding: 12px 16px; font-size: .9rem; margin-bottom: 4px; }
+.hornets-loc-btn { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; font-size: .82rem; cursor: pointer; color: var(--muted); transition: border-color .15s, color .15s; white-space: nowrap; }
 .hornets-loc-btn:hover { border-color: var(--amber); color: var(--amber-dark); }
 
-/* Community page */
-.hornets-community-page { max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; }
-.hornets-community-page h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
-.hornets-community-page > p { color: var(--muted); margin-bottom: 24px; }
+/* ── Community page ───────────────────────────────────────── */
+.hornets-community-page { max-width: 960px; margin: 0 auto; padding: 88px 20px 80px; }
+.hornets-community-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; margin-bottom: 28px; flex-wrap: wrap;
+}
+.hornets-community-header h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 4px; color: var(--text); }
+.hornets-community-header p { color: var(--muted); font-size: .95rem; }
+.hornets-community-form {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px; margin-bottom: 32px;
+}
 .hornets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-.hornets-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
-.hornets-card-img { width: 100%; height: 200px; object-fit: cover; background: #f5f5f4; }
+.hornets-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: box-shadow .2s; }
+.hornets-card:hover { box-shadow: var(--shadow-lg); }
+.hornets-card-img { width: 100%; height: 200px; object-fit: cover; background: #f5f5f4; display: block; }
 .hornets-card-img-placeholder { width: 100%; height: 200px; background: #f5f5f4; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
 .hornets-card-body { padding: 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .hornets-card-meta { font-size: .78rem; color: var(--muted); }
 .hornets-card-desc { font-size: .88rem; color: var(--text); line-height: 1.5; }
-.hornets-badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
-.hornets-badge.pending { background: #fef3c7; color: #d97706; }
-.hornets-badge.confirmed { background: var(--green-light); color: var(--green); }
-.hornets-badge.rejected { background: #fee2e2; color: #dc2626; }
-.hornets-vote-row { display: flex; gap: 8px; margin-top: auto; padding-top: 8px; border-top: 1px solid var(--border); }
-.hornets-vote-btn { flex: 1; padding: 7px 0; border: 1px solid var(--border); border-radius: 8px; font-size: .82rem; font-weight: 600; cursor: pointer; background: none; transition: background .15s, border-color .15s; }
-.hornets-vote-btn.yes:hover { background: var(--green-light); border-color: var(--green); color: var(--green); }
-.hornets-vote-btn.no:hover { background: #fee2e2; border-color: #dc2626; color: #dc2626; }
-.hornets-load-more { display: block; margin: 32px auto 0; padding: 10px 28px; border: 1px solid var(--border); border-radius: 8px; background: none; font-size: .9rem; font-weight: 600; cursor: pointer; color: var(--muted); transition: border-color .15s, color .15s; }
+.hornets-card-reporter { font-size: .8rem; color: var(--muted); font-style: italic; }
+
+/* Badges — both dot-notation (.hornets-badge.confirmed) and hyphen (.hornets-badge-confirmed) */
+.hornets-badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; width: fit-content; }
+.hornets-badge.pending,   .hornets-badge-pending   { background: #fef3c7; color: #d97706; }
+.hornets-badge.confirmed, .hornets-badge-confirmed { background: var(--green-light); color: var(--green-mid); }
+.hornets-badge.rejected,  .hornets-badge-rejected  { background: #fee2e2; color: #dc2626; }
+
+/* Vote buttons — both .hornets-vote-btn.yes and .hornets-vote-yes */
+.hornets-vote-row { display: flex; gap: 8px; margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border); }
+.hornets-vote-btn { flex: 1; padding: 8px 0; border: 1.5px solid var(--border); border-radius: 8px; font-size: .82rem; font-weight: 600; cursor: pointer; background: none; transition: background .15s, border-color .15s, color .15s; font-family: inherit; }
+.hornets-vote-btn:disabled { opacity: .5; cursor: not-allowed; }
+.hornets-vote-btn.yes:hover, .hornets-vote-yes:hover { background: var(--green-light); border-color: var(--green-mid); color: var(--green-mid); }
+.hornets-vote-btn.no:hover,  .hornets-vote-no:hover  { background: #fee2e2; border-color: #dc2626; color: #dc2626; }
+.hornets-load-more { display: block; margin: 32px auto 0; padding: 10px 28px; border: 1.5px solid var(--border); border-radius: 8px; background: none; font-size: .9rem; font-weight: 600; cursor: pointer; color: var(--muted); transition: border-color .15s, color .15s; font-family: inherit; }
 .hornets-load-more:hover { border-color: var(--amber); color: var(--amber-dark); }
 .hornets-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
 
-/* Responsive */
+/* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 600px) {
   .hornets-hero { padding: 48px 0 32px; }
   .hornets-stats { padding: 20px; }
   .hornets-stat-num { font-size: 1.5rem; }
   .hornets-row { grid-template-columns: 1fr; }
+  .hornets-location-row { grid-template-columns: 1fr 1fr; }
+  .hornets-location-row .btn-sm { grid-column: 1 / -1; width: fit-content; }
   .hornets-map-container { height: 380px; }
+  .hornets-community-header { flex-direction: column; }
+  .hornets-map-page, .hornets-report-page, .hornets-community-page { padding-top: 80px; }
 }
