@@ -102,7 +102,6 @@ test('admin map page: All tab shows data and Flagged tab renders without error',
   // Switch to Flagged tab — empty state or table (no JS error)
   await page.locator('button.dash-admin-tab', { hasText: 'Flagged' }).click();
   await expect(page.locator('.spinner')).not.toBeVisible({ timeout: 10_000 });
-  const hasFlaggedTable = await page.locator('table.dash-admin-table').isVisible().catch(() => false);
-  const hasFlaggedEmpty = await page.locator('.dash-empty').isVisible().catch(() => false);
-  expect(hasFlaggedTable || hasFlaggedEmpty).toBeTruthy();
+  // Use retrying assertion (same pattern as "All" tab above) to handle async renders
+  await expect(page.locator('table.dash-admin-table, .dash-empty').first()).toBeVisible({ timeout: 10_000 });
 });

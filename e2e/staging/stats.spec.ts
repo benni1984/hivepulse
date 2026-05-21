@@ -22,8 +22,8 @@ test('members page shows login gate and blurred stats for anonymous visitor', as
   // Login gate heading visible
   await expect(page.getByText('Log in to see live statistics')).toBeVisible({ timeout: 10_000 });
 
-  // Login link goes to the dashboard login page
-  const loginLink = page.getByRole('link', { name: 'Log in' });
+  // Login link goes to the dashboard login page (scope to main content, not the nav)
+  const loginLink = page.locator('main').getByRole('link', { name: 'Log in' });
   await expect(loginLink).toBeVisible();
   await expect(loginLink).toHaveAttribute('href', /\/dashboard\/login/);
 
