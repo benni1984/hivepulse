@@ -48,6 +48,7 @@ final class HornetViewModel: ObservableObject {
     func submitCatch(count: Int, latitude: Double? = nil, longitude: Double? = nil,
                      reporterName: String? = nil) async {
         isLoading = true
+        errorMessage = nil
         defer { isLoading = false }
         do {
             _ = try await service.submitCatch(HornetCatchCreate(
@@ -61,6 +62,7 @@ final class HornetViewModel: ObservableObject {
     func submitNest(latitude: Double, longitude: Double, notes: String? = nil,
                     photoUrl: String? = nil, reporterName: String? = nil) async {
         isLoading = true
+        errorMessage = nil
         defer { isLoading = false }
         do {
             _ = try await service.submitNest(HornetNestCreate(
@@ -75,6 +77,7 @@ final class HornetViewModel: ObservableObject {
                         latitude: Double? = nil, longitude: Double? = nil,
                         reporterName: String? = nil) async {
         isLoading = true
+        errorMessage = nil
         defer { isLoading = false }
         do {
             let sighting = try await service.submitSighting(HornetSightingCreate(
