@@ -22,8 +22,9 @@ test('members page shows login gate and blurred stats for anonymous visitor', as
   // Login gate heading visible
   await expect(page.getByText('Log in to see live statistics')).toBeVisible({ timeout: 10_000 });
 
-  // Login link goes to the dashboard login page (scope to main content, not the nav)
-  const loginLink = page.locator('main').getByRole('link', { name: 'Log in' });
+  // Login link goes to the dashboard login page — target by its unique analytics attribute
+  // to avoid matching the nav 'Log in' button added in the redesign
+  const loginLink = page.locator('[data-umami-event="members_login"]');
   await expect(loginLink).toBeVisible();
   await expect(loginLink).toHaveAttribute('href', /\/dashboard\/login/);
 
