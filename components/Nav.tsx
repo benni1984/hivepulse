@@ -19,7 +19,7 @@ const LOCALE_LABELS: Record<string, string> = {
   es: '🇪🇸 Español',
 };
 
-export default function Nav({ locale, isHome = false }: { locale: string; isHome?: boolean }) {
+export default function Nav({ locale }: { locale: string }) {
   const t = useTranslations('nav');
   const [menuOpen, setMenuOpen] = useState(false);
   const [ddOpen, setDdOpen] = useState(false);
@@ -27,6 +27,7 @@ export default function Nav({ locale, isHome = false }: { locale: string; isHome
   const ddRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
+  const isHome = pathname === '/';
 
   useEffect(() => {
     if (!isHome) return;
@@ -50,6 +51,11 @@ export default function Nav({ locale, isHome = false }: { locale: string; isHome
     router.replace(pathname, { locale: next });
   }
 
+  function isActive(href: string) {
+    if (href === '/') return pathname === '/';
+    return pathname.startsWith(href);
+  }
+
   const navClass = ['site-nav', !isHome && 'page-nav', isHome && scrolled && 'scrolled']
     .filter(Boolean).join(' ');
 
@@ -67,35 +73,37 @@ export default function Nav({ locale, isHome = false }: { locale: string; isHome
         </button>
 
         <ul className={`nav-links${menuOpen ? ' open' : ''}`} id="nav-links">
-          <li><Link href="/map"       onClick={() => setMenuOpen(false)}>{t('map')}</Link></li>
-          <li><Link href="/hornets"   onClick={() => setMenuOpen(false)}>{t('hornets')}</Link></li>
-          <li><Link href="/news"      onClick={() => setMenuOpen(false)}>{t('news')}</Link></li>
-          <li><Link href="/contribute"onClick={() => setMenuOpen(false)}>{t('contribute')}</Link></li>
-          <li><Link href="/members"   onClick={() => setMenuOpen(false)}>{t('members')}</Link></li>
-          <li><Link href="/dashboard" onClick={() => setMenuOpen(false)}>{t('dashboard')}</Link></li>
+          <li><Link href="/map"        className={isActive('/map') ? 'active' : ''}        onClick={() => setMenuOpen(false)}>{t('map')}</Link></li>
+          <li><Link href="/hornets"    className={isActive('/hornets') ? 'active' : ''}    onClick={() => setMenuOpen(false)}>{t('hornets')}</Link></li>
+          <li><Link href="/news"       className={isActive('/news') ? 'active' : ''}       onClick={() => setMenuOpen(false)}>{t('news')}</Link></li>
+          <li><Link href="/contribute" className={isActive('/contribute') ? 'active' : ''} onClick={() => setMenuOpen(false)}>{t('contribute')}</Link></li>
+          <li><Link href="/members"    className={isActive('/members') ? 'active' : ''}    onClick={() => setMenuOpen(false)}>{t('members')}</Link></li>
         </ul>
 
-        <div className="lang-switcher" ref={ddRef}>
-          <button
-            className="lang-current"
-            aria-label="Switch language"
-            onClick={() => setDdOpen(o => !o)}
-          >
-            <span className="lang-current-text">{LOCALE_FLAGS[locale] ?? LOCALE_FLAGS.en}</span>
-            <i className="fas fa-chevron-down" />
-          </button>
-          {ddOpen && (
-            <div className="lang-dropdown open">
-              {routing.locales.map(l => (
-                <button key={l} className="lang-option" onClick={() => switchLocale(l)}>
-                  {LOCALE_LABELS[l]}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        <div className="nav-right">
+          <div className="lang-switcher" ref={ddRef}>
+            <button
+              className="lang-current"
+              aria-label="Switch language"
+              onClick={() => setDdOpen(o => !o)}
+            >
+              <span className="lang-current-text">{LOCALE_FLAGS[locale] ?? LOCALE_FLAGS.en}</span>
+              <i className="fas fa-chevron-down" />
+            </button>
+            {ddOpen && (
+              <div className="lang-dropdown open">
+                {routing.locales.map(l => (
+                  <button key={l} className="lang-option" onClick={() => switchLocale(l)}>
+                    {LOCALE_LABELS[l]}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
-        <Link href="/#download" className="nav-cta">{t('download')}</Link>
+          <Link href="/dashboard" className="nav-login">{t('login')}</Link>
+          <Link href="/#download" className="nav-cta">{t('download')}</Link>
+        </div>
       </div>
     </nav>
   );

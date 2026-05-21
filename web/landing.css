@@ -214,7 +214,10 @@
 }
 
 .hero-highlight {
-  color: var(--amber);
+  background: linear-gradient(105deg, var(--amber) 0%, #fbbf24 45%, #fb923c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   position: relative;
 }
 
@@ -322,7 +325,10 @@
 .live-num {
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
-  color: var(--green-mid);
+  background: linear-gradient(135deg, var(--green-mid) 0%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   line-height: 1;
   margin-bottom: 8px;
 }
@@ -354,16 +360,17 @@
 }
 
 .feature-card {
-  background: var(--surface);
+  background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 28px 24px;
-  transition: transform .2s, box-shadow .2s, border-color .2s;
+  transition: transform .25s, box-shadow .25s, border-color .25s;
 }
 .feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: rgba(245,158,11,.3);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+  border-color: rgba(245,158,11,.35);
+  background: #fff;
 }
 
 .feature-icon {

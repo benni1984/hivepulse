@@ -3,8 +3,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import React from 'react';
 import Nav from '@/components/Nav';
 
-// vi.hoisted ensures mockReplace is available inside the hoisted vi.mock factory
+// vi.hoisted ensures these are available inside the hoisted vi.mock factory
 const mockReplace = vi.hoisted(() => vi.fn());
+const mockPathnameRef = vi.hoisted(() => ({ value: '/' }));
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
@@ -17,7 +18,7 @@ vi.mock('next/link', () => ({
 }));
 
 vi.mock('@/i18n/navigation', () => ({
-  usePathname: () => '/',
+  usePathname: () => mockPathnameRef.value,
   useRouter: () => ({ replace: mockReplace }),
 }));
 
@@ -101,13 +102,39 @@ describe('Nav', () => {
     expect(navLinks.className).not.toContain('open');
   });
 
-  it('adds page-nav class when isHome is false', () => {
-    render(<Nav locale="en" isHome={false} />);
+  it('adds page-nav class on non-home pages', () => {
+    mockPathnameRef.value = '/map';
+    render(<Nav locale="en" />);
     expect(document.querySelector('#site-nav')?.className).toContain('page-nav');
+    mockPathnameRef.value = '/';
   });
 
-  it('does not add page-nav class when isHome is true', () => {
-    render(<Nav locale="en" isHome={true} />);
+  it('does not add page-nav class on the home page', () => {
+    mockPathnameRef.value = '/';
+    render(<Nav locale="en" />);
     expect(document.querySelector('#site-nav')?.className).not.toContain('page-nav');
+  });
+
+  it('marks the current route link as active', () => {
+    mockPathnameRef.value = '/map';
+    render(<Nav locale="en" />);
+    const mapLink = screen.getByRole('link', { name: 'map' });
+    expect(mapLink.className).toContain('active');
+    mockPathnameRef.value = '/';
+  });
+
+  it('does not mark other links as active', () => {
+    mockPathnameRef.value = '/map';
+    render(<Nav locale="en" />);
+    const hornetLink = screen.getByRole('link', { name: 'hornets' });
+    expect(hornetLink.className).not.toContain('active');
+    mockPathnameRef.value = '/';
+  });
+
+  it('renders a login button linking to /dashboard', () => {
+    render(<Nav locale="en" />);
+    const loginLink = screen.getByRole('link', { name: 'login' });
+    expect(loginLink).toBeInTheDocument();
+    expect(loginLink).toHaveAttribute('href', '/dashboard');
   });
 });
