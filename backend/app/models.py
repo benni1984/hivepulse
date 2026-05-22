@@ -216,3 +216,45 @@ class HornetSighting(Base):
     yes_votes = Column(Integer, default=0, nullable=False)
     no_votes = Column(Integer, default=0, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+# ---------------------------------------------------------------------------
+# Hornet Traps (issue #134 — named traps with GPS + daily catch logging)
+# ---------------------------------------------------------------------------
+
+import secrets as _secrets
+
+
+def _trap_code():
+    """Generate a random 8-character uppercase alphanumeric access code."""
+    return _secrets.token_urlsafe(6)[:8].upper()
+
+
+class HornetTrap(Base):
+    __tablename__ = "hornet_traps"
+
+    id = Column(String, primary_key=True, default=_uuid)
+    access_code = Column(String(8), unique=True, nullable=False, index=True, default=_trap_code)
+    name = Column(String(200), nullable=False)
+    latitude = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
+    notes = Column(Text, nullable=True)
+    owner_name = Column(String(100), nullable=True)
+    # Optional: link to a registered user (nullable — anonymous traps allowed)
+    user_id = Column(String, ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    catches = relationship("HornetTrapCatch", back_populates="trap", cascade="all, delete-orphan")
+    owner = relationship("User")
+
+
+class HornetTrapCatch(Base):
+    __tablename__ = "hornet_trap_catches"
+
+    id = Column(String, primary_key=True, default=_uuid)
+    trap_id = Column(String, ForeignKey("hornet_traps.id", ondelete="CASCADE"), nullable=False, index=True)
+    count = Column(Integer, nullable=False, default=1)
+    caught_on = Column(Date, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    trap = relationship("HornetTrap", back_populates="catches")

@@ -1254,6 +1254,30 @@ tr:last-child td { border-bottom: none; }
 .hornets-load-more:hover { border-color: var(--amber); color: var(--amber-dark); }
 .hornets-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
 
+/* ── Traps page ───────────────────────────────────────────── */
+/* Standalone input (outside .hornets-form) */
+.hornets-input { border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: .9rem; color: var(--text); background: var(--card); outline: none; transition: border-color .15s; width: 100%; font-family: inherit; box-sizing: border-box; }
+.hornets-input:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(245,158,11,.1); }
+textarea.hornets-input { resize: vertical; min-height: 64px; }
+
+/* Primary submit button (alias for .hornets-submit) */
+.hornets-submit-btn { background: var(--amber); color: #fff; border: none; border-radius: 8px; padding: 10px 22px; font-size: .92rem; font-weight: 700; cursor: pointer; transition: background .15s, transform .15s; white-space: nowrap; font-family: inherit; }
+.hornets-submit-btn:hover { background: var(--amber-dark); transform: translateY(-1px); }
+.hornets-submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+/* GPS / icon button */
+.hornets-gps-btn { background: none; border: 1.5px solid var(--border); border-radius: 8px; padding: 9px 13px; font-size: .85rem; cursor: pointer; color: var(--muted); transition: border-color .15s, color .15s; white-space: nowrap; font-family: inherit; }
+.hornets-gps-btn:hover { border-color: var(--amber); color: var(--amber-dark); }
+.hornets-gps-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Back navigation button */
+.hornets-back-btn { background: none; border: 1.5px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: .85rem; font-weight: 600; cursor: pointer; color: var(--muted); transition: border-color .15s, color .15s; font-family: inherit; }
+.hornets-back-btn:hover { border-color: var(--amber); color: var(--amber-dark); }
+
+/* Trap action card (button variant of .hornets-action-card) */
+button.hornets-action-card { border: none; width: 100%; }
+button.hornets-action-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,.1); transform: translateY(-2px); }
+
 /* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 600px) {
   .hornets-hero { padding: 48px 0 32px; }

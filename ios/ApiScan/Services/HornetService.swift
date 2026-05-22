@@ -8,6 +8,12 @@ protocol HornetServiceProtocol {
     func getSightings(page: Int) async throws -> PaginatedResponse<HornetSightingOut>
     func submitSighting(_ body: HornetSightingCreate) async throws -> HornetSightingOut
     func vote(sightingId: String, vote: String) async throws
+    // Traps
+    func createTrap(_ body: HornetTrapCreate) async throws -> HornetTrapOut
+    func getTrap(accessCode: String) async throws -> HornetTrapOut
+    func addTrapCatch(accessCode: String, body: HornetTrapCatchCreate) async throws -> HornetTrapCatchOut
+    func getNearbyTraps(lat: Double, lon: Double, radiusM: Int) async throws -> [HornetTrapNearbyOut]
+    func getTrapsGeoJSON() async throws -> HornetTrapsGeoJSON
 }
 
 struct HornetService: HornetServiceProtocol {
@@ -42,5 +48,27 @@ struct HornetService: HornetServiceProtocol {
             "hornets/sightings/\(sightingId)/vote",
             body: HornetVote(vote: vote)
         )
+    }
+
+    // MARK: - Traps
+
+    func createTrap(_ body: HornetTrapCreate) async throws -> HornetTrapOut {
+        try await client.postNoAuth("hornets/traps", body: body)
+    }
+
+    func getTrap(accessCode: String) async throws -> HornetTrapOut {
+        try await client.getNoAuth("hornets/traps/\(accessCode.uppercased())")
+    }
+
+    func addTrapCatch(accessCode: String, body: HornetTrapCatchCreate) async throws -> HornetTrapCatchOut {
+        try await client.postNoAuth("hornets/traps/\(accessCode.uppercased())/catches", body: body)
+    }
+
+    func getNearbyTraps(lat: Double, lon: Double, radiusM: Int = 50) async throws -> [HornetTrapNearbyOut] {
+        try await client.getNoAuth("hornets/traps/nearby?lat=\(lat)&lon=\(lon)&radius_m=\(radiusM)")
+    }
+
+    func getTrapsGeoJSON() async throws -> HornetTrapsGeoJSON {
+        try await client.getNoAuth("hornets/traps/geojson")
     }
 }

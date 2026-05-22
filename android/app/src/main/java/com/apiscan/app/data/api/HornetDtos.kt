@@ -9,7 +9,8 @@ data class HornetStats(
     @SerializedName("total_nests")        val totalNests: Int,
     @SerializedName("destroyed_nests")    val destroyedNests: Int,
     @SerializedName("pending_sightings")  val pendingSightings: Int,
-    @SerializedName("confirmed_sightings") val confirmedSightings: Int
+    @SerializedName("confirmed_sightings") val confirmedSightings: Int,
+    @SerializedName("total_traps")        val totalTraps: Int = 0
 )
 
 // MARK: - Catches
@@ -100,3 +101,65 @@ data class HornetSightingOut(
 )
 
 data class HornetVoteRequest(val vote: String)
+
+// MARK: - Traps
+
+data class HornetTrapCreate(
+    val name: String,
+    val latitude: Double,
+    val longitude: Double,
+    val notes: String?,
+    @SerializedName("owner_name") val ownerName: String?
+)
+
+data class HornetTrapCatchCreate(
+    val count: Int,
+    @SerializedName("caught_on") val caughtOn: String   // YYYY-MM-DD
+)
+
+data class HornetTrapCatchOut(
+    val id: String,
+    @SerializedName("trap_id") val trapId: String,
+    val count: Int,
+    @SerializedName("caught_on") val caughtOn: String,
+    @SerializedName("created_at") val createdAt: String
+)
+
+data class HornetTrapOut(
+    val id: String,
+    @SerializedName("access_code") val accessCode: String,
+    val name: String,
+    val latitude: Double,
+    val longitude: Double,
+    val notes: String?,
+    @SerializedName("owner_name") val ownerName: String?,
+    @SerializedName("created_at") val createdAt: String,
+    @SerializedName("total_caught") val totalCaught: Int,
+    val catches: List<HornetTrapCatchOut>
+)
+
+data class HornetTrapNearbyOut(
+    @SerializedName("access_code") val accessCode: String,
+    val name: String,
+    val latitude: Double,
+    val longitude: Double,
+    @SerializedName("distance_m") val distanceM: Int,
+    @SerializedName("total_caught") val totalCaught: Int
+)
+
+data class HornetTrapsGeoJSON(
+    val type: String,
+    val features: List<HornetTrapFeature>
+)
+
+data class HornetTrapFeature(
+    val type: String,
+    val geometry: HornetNestGeometry,
+    val properties: HornetTrapProperties
+)
+
+data class HornetTrapProperties(
+    @SerializedName("access_code") val accessCode: String,
+    val name: String,
+    @SerializedName("total_caught") val totalCaught: Int
+)

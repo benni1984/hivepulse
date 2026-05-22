@@ -569,6 +569,58 @@ class HornetStatsOut(BaseModel):
     destroyed_nests: int
     pending_sightings: int
     confirmed_sightings: int
+    total_traps: int = 0
+
+
+# ---------------------------------------------------------------------------
+# Hornet Traps (issue #134)
+# ---------------------------------------------------------------------------
+
+class HornetTrapCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=200)
+    latitude: float = Field(ge=-90, le=90)
+    longitude: float = Field(ge=-180, le=180)
+    notes: Optional[str] = Field(default=None, max_length=2000)
+    owner_name: Optional[str] = Field(default=None, max_length=100)
+
+
+class HornetTrapCatchCreate(BaseModel):
+    count: int = Field(default=1, ge=1, le=500)
+    caught_on: date
+
+
+class HornetTrapCatchOut(BaseModel):
+    id: str
+    trap_id: str
+    count: int
+    caught_on: date
+    created_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class HornetTrapOut(BaseModel):
+    id: str
+    access_code: str
+    name: str
+    latitude: float
+    longitude: float
+    notes: Optional[str]
+    owner_name: Optional[str]
+    created_at: datetime
+    total_caught: int = 0
+    catches: list[HornetTrapCatchOut] = []
+
+    model_config = {"from_attributes": True}
+
+
+class HornetTrapNearbyOut(BaseModel):
+    access_code: str
+    name: str
+    latitude: float
+    longitude: float
+    distance_m: int
+    total_caught: int
 
 
 # Resolve forward references

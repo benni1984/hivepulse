@@ -7,6 +7,11 @@ import {
   getHornetSightings,
   submitHornetSighting,
   voteOnSighting,
+  createHornetTrap,
+  getHornetTrap,
+  addTrapCatch,
+  getNearbyTraps,
+  getHornetTrapsGeoJSON,
 } from '@/lib/api';
 
 function ok(body: unknown, status = 200) {
@@ -237,5 +242,172 @@ describe('voteOnSighting', () => {
   it('resolves without error on 204', async () => {
     vi.mocked(fetch).mockResolvedValueOnce(new Response(null, { status: 204 }));
     await expect(voteOnSighting('s1', 'yes')).resolves.toBeUndefined();
+  });
+});
+
+// ── Traps ──────────────────────────────────────────────────────────────────────
+
+const mockTrap = {
+  id: 't1',
+  access_code: 'ABCD1234',
+  name: 'Garden trap',
+  latitude: 48.85,
+  longitude: 2.35,
+  notes: 'Near roses',
+  owner_name: 'Bob',
+  created_at: '2026-05-01T10:00:00',
+  total_caught: 7,
+  catches: [
+    { id: 'c1', trap_id: 't1', count: 4, caught_on: '2026-05-10', created_at: '2026-05-10T12:00:00' },
+    { id: 'c2', trap_id: 't1', count: 3, caught_on: '2026-05-11', created_at: '2026-05-11T12:00:00' },
+  ],
+};
+
+const mockNearby = [
+  { access_code: 'ABCD1234', name: 'Garden trap', latitude: 48.85, longitude: 2.35, distance_m: 12, total_caught: 7 },
+  { access_code: 'XY789012', name: 'Orchard trap', latitude: 48.852, longitude: 2.353, distance_m: 340, total_caught: 2 },
+];
+
+const mockTrapsGeoJSON = {
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [2.35, 48.85] },
+      properties: { access_code: 'ABCD1234', name: 'Garden trap', total_caught: 7 },
+    },
+  ],
+};
+
+describe('createHornetTrap', () => {
+  it('posts to /hornets/traps and returns trap with access_code', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok(mockTrap, 201));
+    const result = await createHornetTrap({ name: 'Garden trap', latitude: 48.85, longitude: 2.35 });
+    const [url, init] = vi.mocked(fetch).mock.calls[0] as [string, RequestInit];
+    expect(url).toMatch('/hornets/traps');
+    expect(init.method).toBe('POST');
+    const body = JSON.parse(init.body as string);
+    expect(body.name).toBe('Garden trap');
+    expect(body.latitude).toBe(48.85);
+    expect(result.access_code).toBe('ABCD1234');
+    expect(result.catches).toHaveLength(2);
+  });
+
+  it('includes optional notes and owner_name when provided', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok(mockTrap, 201));
+    await createHornetTrap({ name: 'Garden trap', latitude: 48.85, longitude: 2.35, notes: 'Near roses', owner_name: 'Bob' });
+    const body = JSON.parse((vi.mocked(fetch).mock.calls[0][1] as RequestInit).body as string);
+    expect(body.notes).toBe('Near roses');
+    expect(body.owner_name).toBe('Bob');
+  });
+
+  it('throws on server error', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({}, 422));
+    await expect(createHornetTrap({ name: '', latitude: 0, longitude: 0 })).rejects.toThrow();
+  });
+});
+
+describe('getHornetTrap', () => {
+  it('fetches trap by access code', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok(mockTrap));
+    const result = await getHornetTrap('abcd1234');
+    const [url] = vi.mocked(fetch).mock.calls[0] as [string];
+    expect(url).toMatch('/hornets/traps/ABCD1234');
+    expect(result.name).toBe('Garden trap');
+    expect(result.total_caught).toBe(7);
+  });
+
+  it('normalises code to uppercase before sending', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok(mockTrap));
+    await getHornetTrap('abcd1234');
+    const [url] = vi.mocked(fetch).mock.calls[0] as [string];
+    expect(url).toMatch('ABCD1234');
+    expect(url).not.toMatch('abcd1234');
+  });
+
+  it('throws on 404', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ detail: 'not found' }, 404));
+    await expect(getHornetTrap('XXXXXXXX')).rejects.toThrow();
+  });
+});
+
+describe('addTrapCatch', () => {
+  it('posts catch data to correct endpoint', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ id: 'c3', trap_id: 't1', count: 5, caught_on: '2026-05-15' }, 201));
+    await addTrapCatch('ABCD1234', { count: 5, caught_on: '2026-05-15' });
+    const [url, init] = vi.mocked(fetch).mock.calls[0] as [string, RequestInit];
+    expect(url).toMatch('/hornets/traps/ABCD1234/catches');
+    expect(init.method).toBe('POST');
+    const body = JSON.parse(init.body as string);
+    expect(body.count).toBe(5);
+    expect(body.caught_on).toBe('2026-05-15');
+  });
+
+  it('normalises access code to uppercase', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({}, 201));
+    await addTrapCatch('abcd1234', { count: 1, caught_on: '2026-05-15' });
+    const [url] = vi.mocked(fetch).mock.calls[0] as [string];
+    expect(url).toMatch('ABCD1234');
+  });
+
+  it('throws on validation error', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({}, 422));
+    await expect(addTrapCatch('ABCD1234', { count: 0, caught_on: '2026-05-15' })).rejects.toThrow();
+  });
+});
+
+describe('getNearbyTraps', () => {
+  it('fetches nearby traps with lat/lon/radius params', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok(mockNearby));
+    const result = await getNearbyTraps(48.85, 2.35, 500);
+    const [url] = vi.mocked(fetch).mock.calls[0] as [string];
+    expect(url).toMatch('/hornets/traps/nearby');
+    expect(url).toMatch('lat=48.85');
+    expect(url).toMatch('lon=2.35');
+    expect(url).toMatch('radius_m=500');
+    expect(result).toHaveLength(2);
+    expect(result[0].distance_m).toBe(12);
+  });
+
+  it('returns traps sorted by distance (nearest first)', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok(mockNearby));
+    const result = await getNearbyTraps(48.85, 2.35, 1000);
+    expect(result[0].distance_m).toBeLessThan(result[1].distance_m);
+  });
+
+  it('uses default radius of 50m when not specified', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok([]));
+    await getNearbyTraps(48.85, 2.35);
+    const [url] = vi.mocked(fetch).mock.calls[0] as [string];
+    expect(url).toMatch('radius_m=50');
+  });
+
+  it('throws on error', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({}, 500));
+    await expect(getNearbyTraps(0, 0)).rejects.toThrow();
+  });
+});
+
+describe('getHornetTrapsGeoJSON', () => {
+  it('returns GeoJSON FeatureCollection', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok(mockTrapsGeoJSON));
+    const result = await getHornetTrapsGeoJSON();
+    expect(result.type).toBe('FeatureCollection');
+    expect(result.features).toHaveLength(1);
+    expect(result.features[0].properties.access_code).toBe('ABCD1234');
+    expect(result.features[0].properties.total_caught).toBe(7);
+  });
+
+  it('calls /hornets/traps/geojson without auth', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok(mockTrapsGeoJSON));
+    await getHornetTrapsGeoJSON();
+    const [url, init] = vi.mocked(fetch).mock.calls[0] as [string, RequestInit];
+    expect(url).toMatch('/hornets/traps/geojson');
+    expect((init?.headers as Record<string, string>)?.['Authorization']).toBeUndefined();
+  });
+
+  it('throws on server error', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({}, 500));
+    await expect(getHornetTrapsGeoJSON()).rejects.toThrow();
   });
 });

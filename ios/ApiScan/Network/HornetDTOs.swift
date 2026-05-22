@@ -8,6 +8,17 @@ struct HornetStats: Codable {
     let destroyedNests: Int
     let pendingSightings: Int
     let confirmedSightings: Int
+    let totalTraps: Int
+
+    init(totalCaught: Int, totalNests: Int, destroyedNests: Int,
+         pendingSightings: Int, confirmedSightings: Int, totalTraps: Int = 0) {
+        self.totalCaught = totalCaught
+        self.totalNests = totalNests
+        self.destroyedNests = destroyedNests
+        self.pendingSightings = pendingSightings
+        self.confirmedSightings = confirmedSightings
+        self.totalTraps = totalTraps
+    }
 
     enum CodingKeys: String, CodingKey {
         case totalCaught = "total_caught"
@@ -15,6 +26,7 @@ struct HornetStats: Codable {
         case destroyedNests = "destroyed_nests"
         case pendingSightings = "pending_sightings"
         case confirmedSightings = "confirmed_sightings"
+        case totalTraps = "total_traps"
     }
 }
 
@@ -155,4 +167,104 @@ struct HornetSightingOut: Codable, Identifiable {
 
 struct HornetVote: Codable {
     let vote: String
+}
+
+// MARK: - Traps
+
+struct HornetTrapCreate: Codable {
+    let name: String
+    let latitude: Double
+    let longitude: Double
+    let notes: String?
+    let ownerName: String?
+
+    enum CodingKeys: String, CodingKey {
+        case name, latitude, longitude, notes
+        case ownerName = "owner_name"
+    }
+}
+
+struct HornetTrapCatchCreate: Codable {
+    let count: Int
+    let caughtOn: String  // ISO date string YYYY-MM-DD
+
+    enum CodingKeys: String, CodingKey {
+        case count
+        case caughtOn = "caught_on"
+    }
+}
+
+struct HornetTrapCatchOut: Codable, Identifiable {
+    let id: String
+    let trapId: String
+    let count: Int
+    let caughtOn: String
+    let createdAt: Date
+
+    enum CodingKeys: String, CodingKey {
+        case id, count
+        case trapId = "trap_id"
+        case caughtOn = "caught_on"
+        case createdAt = "created_at"
+    }
+}
+
+struct HornetTrapOut: Codable, Identifiable {
+    let id: String
+    let accessCode: String
+    let name: String
+    let latitude: Double
+    let longitude: Double
+    let notes: String?
+    let ownerName: String?
+    let createdAt: Date
+    let totalCaught: Int
+    let catches: [HornetTrapCatchOut]
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, latitude, longitude, notes, catches
+        case accessCode = "access_code"
+        case ownerName = "owner_name"
+        case createdAt = "created_at"
+        case totalCaught = "total_caught"
+    }
+}
+
+struct HornetTrapNearbyOut: Codable {
+    let accessCode: String
+    let name: String
+    let latitude: Double
+    let longitude: Double
+    let distanceM: Int
+    let totalCaught: Int
+
+    enum CodingKeys: String, CodingKey {
+        case name, latitude, longitude
+        case accessCode = "access_code"
+        case distanceM = "distance_m"
+        case totalCaught = "total_caught"
+    }
+}
+
+struct HornetTrapsGeoJSON: Codable {
+    let type: String
+    let features: [HornetTrapFeature]
+}
+
+struct HornetTrapFeature: Codable {
+    let type: String
+    let geometry: HornetNestGeometry      // same shape: Point + [lon, lat]
+    let properties: HornetTrapProperties
+}
+
+struct HornetTrapProperties: Codable {
+    let accessCode: String
+    let name: String
+    let totalCaught: Int
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case accessCode = "access_code"
+        case totalCaught = "total_caught"
+    }
 }

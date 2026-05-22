@@ -652,3 +652,97 @@ export async function voteOnSighting(id: string, vote: 'yes' | 'no'): Promise<vo
   });
   if (!res.ok) throw new Error('Failed to vote');
 }
+
+// ---------------------------------------------------------------------------
+// Hornet Traps (issue #134)
+// ---------------------------------------------------------------------------
+
+export interface HornetTrapCatch {
+  id: string;
+  trap_id: string;
+  count: number;
+  caught_on: string;
+  created_at: string;
+}
+
+export interface HornetTrap {
+  id: string;
+  access_code: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  notes: string | null;
+  owner_name: string | null;
+  created_at: string;
+  total_caught: number;
+  catches: HornetTrapCatch[];
+}
+
+export interface HornetTrapNearby {
+  access_code: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  distance_m: number;
+  total_caught: number;
+}
+
+export interface HornetTrapCreate {
+  name: string;
+  latitude: number;
+  longitude: number;
+  notes?: string;
+  owner_name?: string;
+}
+
+export interface HornetTrapCatchCreate {
+  count: number;
+  caught_on: string; // ISO date YYYY-MM-DD
+}
+
+export async function createHornetTrap(data: HornetTrapCreate): Promise<HornetTrap> {
+  const res = await fetch(`${BASE}/hornets/traps`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('Failed to create trap');
+  return res.json();
+}
+
+export async function getHornetTrap(accessCode: string): Promise<HornetTrap> {
+  const res = await fetch(`${BASE}/hornets/traps/${encodeURIComponent(accessCode.toUpperCase())}`);
+  if (!res.ok) throw new Error('Trap not found');
+  return res.json();
+}
+
+export async function addTrapCatch(
+  accessCode: string,
+  data: HornetTrapCatchCreate,
+): Promise<HornetTrapCatch> {
+  const res = await fetch(`${BASE}/hornets/traps/${encodeURIComponent(accessCode.toUpperCase())}/catches`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('Failed to log catch');
+  return res.json();
+}
+
+export async function getNearbyTraps(
+  lat: number,
+  lon: number,
+  radiusM = 50,
+): Promise<HornetTrapNearby[]> {
+  const res = await fetch(
+    `${BASE}/hornets/traps/nearby?lat=${lat}&lon=${lon}&radius_m=${radiusM}`,
+  );
+  if (!res.ok) throw new Error('Failed to fetch nearby traps');
+  return res.json();
+}
+
+export async function getHornetTrapsGeoJSON(): Promise<{ type: string; features: unknown[] }> {
+  const res = await fetch(`${BASE}/hornets/traps/geojson`);
+  if (!res.ok) throw new Error('Failed to fetch traps geojson');
+  return res.json();
+}

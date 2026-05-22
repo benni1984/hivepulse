@@ -15,7 +15,8 @@ fun HornetHomeScreen(vm: HornetViewModel = hiltViewModel()) {
         stringResource(R.string.hornet_tab_info),
         stringResource(R.string.hornet_tab_map),
         stringResource(R.string.hornet_tab_report),
-        stringResource(R.string.hornet_tab_community)
+        stringResource(R.string.hornet_tab_community),
+        stringResource(R.string.hornet_tab_traps)
     )
     var selectedTab by remember { mutableIntStateOf(0) }
 
@@ -23,7 +24,7 @@ fun HornetHomeScreen(vm: HornetViewModel = hiltViewModel()) {
         topBar = {
             Column {
                 TopAppBar(title = { Text(stringResource(R.string.hornet_title)) })
-                TabRow(selectedTabIndex = selectedTab) {
+                ScrollableTabRow(selectedTabIndex = selectedTab) {
                     tabs.forEachIndexed { index, label ->
                         Tab(
                             selected = selectedTab == index,
@@ -41,6 +42,7 @@ fun HornetHomeScreen(vm: HornetViewModel = hiltViewModel()) {
                 1 -> HornetMapContent(vm = vm)
                 2 -> HornetReportContent(vm = vm)
                 3 -> HornetCommunityContent(vm = vm)
+                4 -> HornetTrapsContent(vm = vm)
             }
         }
     }

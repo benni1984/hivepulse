@@ -10,6 +10,13 @@ final class HornetViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
 
+    // MARK: - Trap state
+    @Published var currentTrap: HornetTrapOut? = nil
+    @Published var nearbyTraps: [HornetTrapNearbyOut] = []
+    @Published var trapLoading = false
+    @Published var trapError: String? = nil
+    @Published var trapSuccess: String? = nil
+
     private let service: HornetServiceProtocol
 
     init(service: HornetServiceProtocol = HornetService()) {
@@ -95,6 +102,67 @@ final class HornetViewModel: ObservableObject {
             await loadSightings(page: 1)
         } catch {
             errorMessage = error.localizedDescription
+        }
+    }
+
+    // MARK: - Traps
+
+    func loadNearbyTraps(lat: Double, lon: Double, radiusM: Int = 50) async {
+        trapLoading = true
+        trapError = nil
+        defer { trapLoading = false }
+        do {
+            nearbyTraps = try await service.getNearbyTraps(lat: lat, lon: lon, radiusM: radiusM)
+        } catch {
+            trapError = error.localizedDescription
+        }
+    }
+
+    func loadTrap(accessCode: String) async {
+        trapLoading = true
+        trapError = nil
+        defer { trapLoading = false }
+        do {
+            currentTrap = try await service.getTrap(accessCode: accessCode)
+        } catch {
+            trapError = error.localizedDescription
+        }
+    }
+
+    func createTrap(name: String, latitude: Double, longitude: Double,
+                    notes: String? = nil, ownerName: String? = nil) async -> HornetTrapOut? {
+        trapLoading = true
+        trapError = nil
+        trapSuccess = nil
+        defer { trapLoading = false }
+        do {
+            let trap = try await service.createTrap(HornetTrapCreate(
+                name: name, latitude: latitude, longitude: longitude,
+                notes: notes, ownerName: ownerName))
+            trapSuccess = NSLocalizedString("hornets.traps.success", comment: "")
+            return trap
+        } catch {
+            trapError = error.localizedDescription
+            return nil
+        }
+    }
+
+    func addTrapCatch(accessCode: String, count: Int, date: String) async {
+        trapLoading = true
+        trapError = nil
+        trapSuccess = nil
+        defer { trapLoading = false }
+        do {
+            _ = try await service.addTrapCatch(
+                accessCode: accessCode,
+                body: HornetTrapCatchCreate(count: count, caughtOn: date))
+            trapSuccess = NSLocalizedString("hornets.traps.logSuccess", comment: "")
+            // Refresh trap detail
+            if let code = currentTrap?.accessCode {
+                currentTrap = try await service.getTrap(accessCode: code)
+            }
+        } catch {
+            trapError = error.localizedDescription
         }
     }
 }

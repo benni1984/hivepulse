@@ -77,4 +77,58 @@ class HornetRepositoryTest {
         repo.vote("s-1", "yes")
         coVerify { api.voteOnSighting("s-1", HornetVoteRequest("yes")) }
     }
+
+    // MARK: - Traps
+
+    private fun trap(code: String = "ABCD1234") = HornetTrapOut(
+        id = "t-1", accessCode = code, name = "Garden trap",
+        latitude = 48.85, longitude = 2.35, notes = null, ownerName = null,
+        createdAt = "2026-05-01T10:00:00", totalCaught = 7, catches = emptyList()
+    )
+
+    private fun nearby() = HornetTrapNearbyOut(
+        accessCode = "ABCD1234", name = "Garden trap",
+        latitude = 48.85, longitude = 2.35, distanceM = 15, totalCaught = 7
+    )
+
+    @Test
+    fun `createTrap delegates to api and returns trap`() = runTest {
+        coEvery { api.createHornetTrap(any()) } returns trap()
+        val result = repo.createTrap("Garden trap", 48.85, 2.35)
+        assertEquals("ABCD1234", result.accessCode)
+        coVerify { api.createHornetTrap(HornetTrapCreate("Garden trap", 48.85, 2.35, null, null)) }
+    }
+
+    @Test
+    fun `getTrap uppercases access code`() = runTest {
+        coEvery { api.getHornetTrap("ABCD1234") } returns trap()
+        repo.getTrap("abcd1234")
+        coVerify { api.getHornetTrap("ABCD1234") }
+    }
+
+    @Test
+    fun `addTrapCatch delegates to api with uppercase code`() = runTest {
+        val catchOut = HornetTrapCatchOut("c-1", "t-1", 3, "2026-05-10", "2026-05-10T12:00:00")
+        coEvery { api.addTrapCatch("ABCD1234", any()) } returns catchOut
+        val result = repo.addTrapCatch("abcd1234", 3, "2026-05-10")
+        assertEquals(3, result.count)
+        coVerify { api.addTrapCatch("ABCD1234", HornetTrapCatchCreate(3, "2026-05-10")) }
+    }
+
+    @Test
+    fun `getNearbyTraps passes correct params`() = runTest {
+        coEvery { api.getNearbyTraps(48.85, 2.35, 50) } returns listOf(nearby())
+        val result = repo.getNearbyTraps(48.85, 2.35)
+        assertEquals(1, result.size)
+        assertEquals(15, result[0].distanceM)
+        coVerify { api.getNearbyTraps(48.85, 2.35, 50) }
+    }
+
+    @Test
+    fun `getTrapsGeoJSON returns feature collection`() = runTest {
+        val geoJson = HornetTrapsGeoJSON("FeatureCollection", emptyList())
+        coEvery { api.getTrapsGeoJSON() } returns geoJson
+        val result = repo.getTrapsGeoJSON()
+        assertEquals("FeatureCollection", result.type)
+    }
 }

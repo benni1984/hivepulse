@@ -121,4 +121,48 @@
     <!-- Auth -->
     <string name="login_subtitle">Anmelden, um deine Beuten zu verwalten</string>
     <string name="permission_camera_rationale">Kamerazugriff ist erforderlich, um QR-Codes auf deinen Beuten zu scannen.</string>
+
+    <!-- Hornissen-Tracker -->
+    <string name="hornet_title">Hornissen-Tracker</string>
+    <string name="hornet_tab_info">Info</string>
+    <string name="hornet_tab_map">Karte</string>
+    <string name="hornet_tab_report">Melden</string>
+    <string name="hornet_tab_community">Community</string>
+    <string name="hornet_tab_traps">Fallen</string>
+    <string name="hornet_stats_title">Live-Statistiken</string>
+    <string name="hornet_stats_caught">Gefangen</string>
+    <string name="hornet_stats_nests">Nester</string>
+    <string name="hornet_stats_destroyed">Vernichtet</string>
+    <string name="hornet_stats_sightings">Bestätigt</string>
+    <string name="hornet_traps_title">Fallenverwaltung</string>
+    <string name="hornet_traps_subtitle">Fallen registrieren, Fänge erfassen und Fallen in der Nähe finden.</string>
+    <string name="hornet_traps_hint">Keine Anmeldung erforderlich</string>
+    <string name="hornet_traps_new">Falle registrieren</string>
+    <string name="hornet_traps_name">Fallenname</string>
+    <string name="hornet_traps_name_placeholder">z. B. Gartenfalle beim Bienenstock</string>
+    <string name="hornet_traps_notes">Notizen (optional)</string>
+    <string name="hornet_traps_owner">Ihr Name (optional)</string>
+    <string name="hornet_traps_submit">Falle registrieren</string>
+    <string name="hornet_traps_success">Falle registriert!</string>
+    <string name="hornet_traps_code">Zugangscode</string>
+    <string name="hornet_traps_code_copy">Code kopieren</string>
+    <string name="hornet_traps_code_copied">Kopiert!</string>
+    <string name="hornet_traps_total">Gesamt gefangen</string>
+    <string name="hornet_traps_log_catch">Fang erfassen</string>
+    <string name="hornet_traps_count">Anzahl</string>
+    <string name="hornet_traps_date">Datum</string>
+    <string name="hornet_traps_log_submit">Speichern</string>
+    <string name="hornet_traps_log_success">Fang gespeichert!</string>
+    <string name="hornet_traps_log_error">Fang konnte nicht gespeichert werden</string>
+    <string name="hornet_traps_search_code">Zugangscode eingeben</string>
+    <string name="hornet_traps_search">Per Code suchen</string>
+    <string name="hornet_traps_not_found">Falle nicht gefunden</string>
+    <string name="hornet_traps_nearby">Fallen in der Nähe</string>
+    <string name="hornet_traps_nearby_searching">Suche in der Nähe…</string>
+    <string name="hornet_traps_no_nearby">Keine Fallen im Umkreis von 50 m</string>
+    <string name="hornet_traps_gps">GPS verwenden</string>
+    <string name="hornet_traps_gps_error">GPS-Standort konnte nicht ermittelt werden</string>
+    <string name="hornet_traps_no_catches">Noch keine Fänge erfasst</string>
+    <string name="hornet_traps_history">Fangverlauf</string>
+    <string name="hornet_traps_back">Zurück</string>
 </resources>

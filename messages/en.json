@@ -688,7 +688,8 @@
       "caught": "Hornets Caught",
       "nests": "Nests Reported",
       "destroyed": "Nests Destroyed",
-      "sightings": "Confirmed Sightings"
+      "sightings": "Confirmed Sightings",
+      "traps": "Active Traps"
     },
     "info": {
       "problem": "The Threat",
@@ -749,6 +750,40 @@
       "rejected": "Rejected",
       "pending": "Pending",
       "noSightings": "No photo sightings yet. Be the first to submit one!"
+    },
+    "traps": {
+      "title": "My Traps",
+      "subtitle": "Register your traps once — then quickly log daily catches by access code or GPS proximity.",
+      "hint": "Manage your hornet traps",
+      "new": "Register a Trap",
+      "name": "Trap name",
+      "namePlaceholder": "e.g. Garden North",
+      "notes": "Notes (optional)",
+      "owner": "Your name (optional)",
+      "submit": "Register Trap",
+      "success": "Trap registered!",
+      "code": "Access code",
+      "codeCopy": "Copy code",
+      "codeCopied": "Copied!",
+      "total": "Total caught",
+      "logCatch": "Log Today's Catch",
+      "count": "Count caught today",
+      "date": "Date",
+      "logSubmit": "Save",
+      "logSuccess": "Catch logged!",
+      "logError": "Failed to log catch. Please try again.",
+      "searchCode": "Enter access code",
+      "search": "Find Trap",
+      "notFound": "Trap not found. Check the code and try again.",
+      "nearby": "Traps Near Me",
+      "nearbySearching": "Searching for traps nearby…",
+      "noNearby": "No traps found within 50 m.",
+      "distanceM": "{m} m away",
+      "gps": "Use GPS Location",
+      "gpsError": "Could not get your location.",
+      "noCatches": "No catches logged yet.",
+      "history": "Catch History",
+      "backToList": "← Back"
     }
   }
 }

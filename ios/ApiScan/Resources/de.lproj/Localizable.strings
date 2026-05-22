@@ -145,6 +145,7 @@
 "hornets.tab.map" = "Karte";
 "hornets.tab.report" = "Melden";
 "hornets.tab.community" = "Community";
+"hornets.tab.traps" = "Fallen";
 "hornets.stats.title" = "Live-Statistiken";
 "hornets.stats.caught" = "Gefangen";
 "hornets.stats.nests" = "Nester";
@@ -177,6 +178,39 @@
 "hornets.community.confirmed" = "Bestätigt";
 "hornets.community.pending" = "Ausstehend";
 "hornets.community.rejected" = "Abgelehnt";
+/* Fallen */
+"hornets.traps.title" = "Fallenverwaltung";
+"hornets.traps.subtitle" = "Fallen registrieren, tägliche Fänge erfassen und Fallen in der Nähe finden.";
+"hornets.traps.hint" = "Keine Anmeldung erforderlich";
+"hornets.traps.new" = "Falle registrieren";
+"hornets.traps.name" = "Fallenname";
+"hornets.traps.namePlaceholder" = "z. B. Gartenfalle beim Bienenstock";
+"hornets.traps.notes" = "Notizen (optional)";
+"hornets.traps.owner" = "Ihr Name (optional)";
+"hornets.traps.submit" = "Falle registrieren";
+"hornets.traps.success" = "Falle registriert!";
+"hornets.traps.code" = "Zugangscode";
+"hornets.traps.codeCopy" = "Code kopieren";
+"hornets.traps.codeCopied" = "Kopiert!";
+"hornets.traps.total" = "Gesamt gefangen";
+"hornets.traps.logCatch" = "Fang erfassen";
+"hornets.traps.count" = "Anzahl";
+"hornets.traps.date" = "Datum";
+"hornets.traps.logSubmit" = "Speichern";
+"hornets.traps.logSuccess" = "Fang gespeichert!";
+"hornets.traps.logError" = "Fang konnte nicht gespeichert werden";
+"hornets.traps.searchCode" = "Zugangscode eingeben";
+"hornets.traps.search" = "Per Code suchen";
+"hornets.traps.notFound" = "Falle nicht gefunden";
+"hornets.traps.nearby" = "Fallen in der Nähe";
+"hornets.traps.nearbySearching" = "Suche in der Nähe…";
+"hornets.traps.noNearby" = "Keine Fallen im Umkreis von 50 m";
+"hornets.traps.distanceM" = "{m} m entfernt";
+"hornets.traps.gps" = "GPS verwenden";
+"hornets.traps.gpsError" = "GPS-Standort konnte nicht ermittelt werden";
+"hornets.traps.noCatches" = "Noch keine Fänge erfasst";
+"hornets.traps.history" = "Fangverlauf";
+"hornets.traps.backToList" = "Zurück";
 
 /* Admin */
 "admin.title" = "Admin";

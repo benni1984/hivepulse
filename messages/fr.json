@@ -683,27 +683,28 @@
   "hornets": {
     "tag": "Science citoyenne",
     "title": "Suivi du frelon asiatique",
-    "subtitle": "Aidez à protéger les abeilles en suivant Vespa velutina. Signalez des captures et des nids, identifiez des observations, consultez la carte en direct. Sans compte.",
+    "subtitle": "Aidez à protéger les abeilles en pistant Vespa velutina — le frelon asiatique. Signalez des captures et des nids, identifiez des observations et consultez la carte en direct. Sans compte requis.",
     "stats": {
       "caught": "Frelons capturés",
       "nests": "Nids signalés",
       "destroyed": "Nids détruits",
-      "sightings": "Observations confirmées"
+      "sightings": "Observations confirmées",
+      "traps": "Pièges actifs"
     },
     "info": {
       "problem": "La menace",
-      "problemText": "Vespa velutina (frelon asiatique) est un prédateur invasif qui attaque les colonies d'abeilles mellifères, menaçant la sécurité alimentaire. La détection précoce est essentielle.",
+      "problemText": "Vespa velutina (frelon asiatique) est un prédateur invasif qui attaque les colonies d'abeilles, affaiblit les ruches et menace la sécurité alimentaire. La détection précoce est essentielle.",
       "whyCatch": "Pourquoi piéger ?",
-      "whyCatchText": "Piéger les reines au printemps empêche la formation de nouvelles colonies. Chaque reine capturée peut prévenir des milliers d'ouvrières. Le piégeage collectif fait une vraie différence.",
+      "whyCatchText": "Piéger les reines au printemps empêche la formation de nouvelles colonies. Chaque reine capturée peut prévenir des milliers d'ouvrières. Le piégeage communautaire fait vraiment la différence.",
       "reportNest": "Signaler un nid",
-      "reportNestText": "Si vous repérez un nid, ne le dérangez pas. Signalez sa localisation ici pour que les autorités organisent une destruction sécurisée."
+      "reportNestText": "Si vous repérez un nid, ne le dérangez pas. Signalez l'emplacement ici pour que les autorités puissent organiser un retrait en toute sécurité. Votre signalement sauve des abeilles."
     },
     "map": {
       "title": "Carte des nids",
-      "subtitle": "Tous les nids signalés — code couleur selon le statut actuel.",
-      "hint": "Voir tous les nids sur la carte en direct",
+      "subtitle": "Tous les nids signalés — codés par couleur selon leur statut actuel.",
+      "hint": "Voir tous les nids signalés sur la carte en direct",
       "legend": "Statut du nid",
-      "noNests": "Aucun nid signalé. Soyez le premier !",
+      "noNests": "Aucun nid signalé pour l'instant. Soyez le premier !",
       "status": {
         "found": "Trouvé — actif",
         "ordered": "Destruction ordonnée",
@@ -711,10 +712,10 @@
       }
     },
     "report": {
-      "title": "Signaler",
+      "title": "Signalement",
       "catchTab": "Signaler une capture",
       "nestTab": "Signaler un nid",
-      "catchHint": "Enregistrez le nombre de frelons capturés",
+      "catchHint": "Combien de frelons avez-vous capturés ?",
       "count": "Nombre capturé",
       "countError": "Le nombre doit être compris entre 1 et 1000",
       "latitude": "Latitude",
@@ -723,24 +724,24 @@
       "namePlaceholder": "Anonyme",
       "notes": "Notes (optionnel)",
       "photo": "Photo (optionnel)",
-      "uploading": "Téléversement…",
-      "photoReady": "Photo téléversée",
-      "uploadError": "Échec du téléversement. Veuillez réessayer.",
-      "locationRequired": "La latitude et la longitude sont requises pour les signalements de nids.",
-      "submitError": "Échec de l'envoi. Veuillez réessayer.",
+      "uploading": "Téléchargement…",
+      "photoReady": "Photo téléchargée",
+      "uploadError": "Échec du téléchargement. Veuillez réessayer.",
+      "locationRequired": "La latitude et la longitude sont requises pour les signalements de nid.",
+      "submitError": "Échec de la soumission. Veuillez réessayer.",
       "submit": "Envoyer",
-      "success": "Merci ! Votre signalement a été transmis."
+      "success": "Merci ! Votre signalement a été soumis."
     },
     "community": {
-      "title": "ID communautaire",
-      "subtitle": "Aidez à identifier les frelons asiatiques sur photos. Votez oui si vous reconnaissez Vespa velutina, non sinon.",
-      "hint": "Voter sur les photos communautaires",
+      "title": "Identification communautaire",
+      "subtitle": "Aidez à identifier les frelons asiatiques sur les photos. Votez oui si vous reconnaissez Vespa velutina, non sinon.",
+      "hint": "Voter sur les observations photo de la communauté",
       "addPhoto": "Ajouter une photo",
       "photo": "Photo",
-      "photoRequired": "Veuillez d'abord téléverser une photo.",
+      "photoRequired": "Veuillez d'abord télécharger une photo.",
       "description": "Description (optionnel)",
       "submitPhoto": "Soumettre la photo",
-      "submitSuccess": "Photo soumise !",
+      "submitSuccess": "Photo soumise ! Elle apparaîtra après le téléchargement.",
       "vote": {
         "yes": "Vespa velutina",
         "no": "Pas un frelon"
@@ -748,7 +749,41 @@
       "confirmed": "Confirmé",
       "rejected": "Rejeté",
       "pending": "En attente",
-      "noSightings": "Aucune observation photo encore. Soyez le premier !"
+      "noSightings": "Aucune observation photo pour l'instant. Soyez le premier !"
+    },
+    "traps": {
+      "title": "Mes pièges",
+      "subtitle": "Enregistrez votre piège une fois — puis saisissez rapidement les captures quotidiennes par code d'accès ou détection GPS.",
+      "hint": "Gérer vos pièges à frelons",
+      "new": "Enregistrer un piège",
+      "name": "Nom du piège",
+      "namePlaceholder": "ex. Jardin Nord",
+      "notes": "Notes (optionnel)",
+      "owner": "Votre nom (optionnel)",
+      "submit": "Enregistrer le piège",
+      "success": "Piège enregistré !",
+      "code": "Code d'accès",
+      "codeCopy": "Copier le code",
+      "codeCopied": "Copié !",
+      "total": "Total capturé",
+      "logCatch": "Saisir la capture du jour",
+      "count": "Nombre capturé aujourd'hui",
+      "date": "Date",
+      "logSubmit": "Enregistrer",
+      "logSuccess": "Capture enregistrée !",
+      "logError": "Échec de l'enregistrement. Veuillez réessayer.",
+      "searchCode": "Entrez le code d'accès",
+      "search": "Trouver le piège",
+      "notFound": "Piège introuvable. Vérifiez le code et réessayez.",
+      "nearby": "Pièges à proximité",
+      "nearbySearching": "Recherche de pièges à proximité…",
+      "noNearby": "Aucun piège trouvé dans un rayon de 50 m.",
+      "distanceM": "{m} m",
+      "gps": "Utiliser la position GPS",
+      "gpsError": "Impossible d'obtenir votre position.",
+      "noCatches": "Aucune capture enregistrée.",
+      "history": "Historique des captures",
+      "backToList": "← Retour"
     }
   }
 }

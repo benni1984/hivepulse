@@ -342,3 +342,158 @@ def test_admin_set_status_requires_admin(client):
     r = client.put(f"/api/v1/admin/hornets/sightings/{sid}/status", json={"status": "confirmed"})
     # Missing Authorization header → FastAPI header-validation error (422)
     assert r.status_code == 422
+
+
+# ---------------------------------------------------------------------------
+# Traps (issue #134)
+# ---------------------------------------------------------------------------
+
+_TRAP_PAYLOAD = {
+    "name": "Garten Falle A",
+    "latitude": 48.2,
+    "longitude": 16.3,
+    "notes": "Neben dem Apfelbaum",
+    "owner_name": "Max Mustermann",
+}
+
+
+def _create_trap(client, payload=None) -> dict:
+    r = client.post("/api/v1/hornets/traps", json=payload or _TRAP_PAYLOAD)
+    assert r.status_code == 201, r.text
+    return r.json()
+
+
+def test_create_trap_returns_access_code(client):
+    data = _create_trap(client)
+    assert "access_code" in data
+    assert len(data["access_code"]) == 8
+    assert data["name"] == _TRAP_PAYLOAD["name"]
+    assert data["total_caught"] == 0
+    assert data["catches"] == []
+
+
+def test_create_trap_no_auth_required(client):
+    r = client.post("/api/v1/hornets/traps", json=_TRAP_PAYLOAD)
+    assert r.status_code == 201
+
+
+def test_create_trap_validates_name(client):
+    payload = {**_TRAP_PAYLOAD, "name": ""}
+    r = client.post("/api/v1/hornets/traps", json=payload)
+    assert r.status_code == 422
+
+
+def test_get_trap_by_access_code(client):
+    created = _create_trap(client)
+    code = created["access_code"]
+    r = client.get(f"/api/v1/hornets/traps/{code}")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["access_code"] == code
+    assert data["name"] == _TRAP_PAYLOAD["name"]
+
+
+def test_get_trap_case_insensitive(client):
+    created = _create_trap(client)
+    code = created["access_code"].lower()
+    r = client.get(f"/api/v1/hornets/traps/{code}")
+    assert r.status_code == 200
+
+
+def test_get_trap_not_found(client):
+    r = client.get("/api/v1/hornets/traps/NOTEXIST")
+    assert r.status_code == 404
+
+
+def test_add_catch_to_trap(client):
+    created = _create_trap(client)
+    code = created["access_code"]
+    r = client.post(
+        f"/api/v1/hornets/traps/{code}/catches",
+        json={"count": 7, "caught_on": "2026-05-21"},
+    )
+    assert r.status_code == 201
+    data = r.json()
+    assert data["count"] == 7
+    assert data["caught_on"] == "2026-05-21"
+
+
+def test_add_catch_upserts_same_day(client):
+    """Two POSTs for the same (trap, date) should upsert, not duplicate."""
+    created = _create_trap(client)
+    code = created["access_code"]
+    client.post(f"/api/v1/hornets/traps/{code}/catches", json={"count": 3, "caught_on": "2026-05-21"})
+    client.post(f"/api/v1/hornets/traps/{code}/catches", json={"count": 9, "caught_on": "2026-05-21"})
+
+    trap = client.get(f"/api/v1/hornets/traps/{code}").json()
+    # Only one entry, count updated to 9
+    assert len(trap["catches"]) == 1
+    assert trap["catches"][0]["count"] == 9
+    assert trap["total_caught"] == 9
+
+
+def test_add_catch_validates_count(client):
+    created = _create_trap(client)
+    code = created["access_code"]
+    r = client.post(
+        f"/api/v1/hornets/traps/{code}/catches",
+        json={"count": 0, "caught_on": "2026-05-21"},
+    )
+    assert r.status_code == 422
+
+
+def test_add_catch_trap_not_found(client):
+    r = client.post(
+        "/api/v1/hornets/traps/NOTEXIST/catches",
+        json={"count": 1, "caught_on": "2026-05-21"},
+    )
+    assert r.status_code == 404
+
+
+def test_nearby_returns_close_trap(client):
+    # Create trap at known location
+    _create_trap(client, {**_TRAP_PAYLOAD, "latitude": 48.2000, "longitude": 16.3000})
+    # Query from ~10 m away (same lat, tiny lon offset ≈ 8 m)
+    r = client.get("/api/v1/hornets/traps/nearby?lat=48.2000&lon=16.3001&radius_m=50")
+    assert r.status_code == 200
+    data = r.json()
+    assert len(data) >= 1
+    assert data[0]["name"] == _TRAP_PAYLOAD["name"]
+    assert data[0]["distance_m"] <= 50
+
+
+def test_nearby_excludes_distant_trap(client):
+    _create_trap(client, {**_TRAP_PAYLOAD, "latitude": 48.2, "longitude": 16.3})
+    # Query from >50 m away (different city)
+    r = client.get("/api/v1/hornets/traps/nearby?lat=47.0&lon=15.0&radius_m=50")
+    assert r.status_code == 200
+    assert r.json() == []
+
+
+def test_nearby_sorted_by_distance(client):
+    _create_trap(client, {**_TRAP_PAYLOAD, "name": "Far", "latitude": 48.2002, "longitude": 16.3000})
+    _create_trap(client, {**_TRAP_PAYLOAD, "name": "Close", "latitude": 48.2001, "longitude": 16.3000})
+    r = client.get("/api/v1/hornets/traps/nearby?lat=48.2000&lon=16.3000&radius_m=500")
+    data = r.json()
+    names = [d["name"] for d in data]
+    assert names.index("Close") < names.index("Far")
+
+
+def test_traps_geojson(client):
+    _create_trap(client)
+    r = client.get("/api/v1/hornets/traps/geojson")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["type"] == "FeatureCollection"
+    assert len(data["features"]) >= 1
+    feat = data["features"][0]
+    assert feat["geometry"]["type"] == "Point"
+    assert "access_code" in feat["properties"]
+    assert "total_caught" in feat["properties"]
+
+
+def test_stats_includes_total_traps(client):
+    _create_trap(client)
+    _create_trap(client, {**_TRAP_PAYLOAD, "name": "Zweite Falle"})
+    data = client.get("/api/v1/hornets/stats").json()
+    assert data["total_traps"] >= 2

@@ -220,6 +220,29 @@ interface ApiService {
         @Body body: HornetVoteRequest
     ): Response<Unit>
 
+    // Hornet Traps (public)
+    @POST("hornets/traps")
+    suspend fun createHornetTrap(@Body body: HornetTrapCreate): HornetTrapOut
+
+    @GET("hornets/traps/{accessCode}")
+    suspend fun getHornetTrap(@Path("accessCode") accessCode: String): HornetTrapOut
+
+    @POST("hornets/traps/{accessCode}/catches")
+    suspend fun addTrapCatch(
+        @Path("accessCode") accessCode: String,
+        @Body body: HornetTrapCatchCreate
+    ): HornetTrapCatchOut
+
+    @GET("hornets/traps/nearby")
+    suspend fun getNearbyTraps(
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
+        @Query("radius_m") radiusM: Int = 50
+    ): List<HornetTrapNearbyOut>
+
+    @GET("hornets/traps/geojson")
+    suspend fun getTrapsGeoJSON(): HornetTrapsGeoJSON
+
     // Stats
     @GET("hives/{id}/stats")
     suspend fun hiveStats(

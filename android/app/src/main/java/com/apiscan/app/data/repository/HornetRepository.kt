@@ -46,4 +46,27 @@ class HornetRepository @Inject constructor(private val api: ApiService) {
     suspend fun vote(sightingId: String, vote: String) {
         api.voteOnSighting(sightingId, HornetVoteRequest(vote))
     }
+
+    // MARK: - Traps
+
+    suspend fun createTrap(
+        name: String,
+        latitude: Double,
+        longitude: Double,
+        notes: String? = null,
+        ownerName: String? = null
+    ): HornetTrapOut = api.createHornetTrap(
+        HornetTrapCreate(name, latitude, longitude, notes, ownerName)
+    )
+
+    suspend fun getTrap(accessCode: String): HornetTrapOut =
+        api.getHornetTrap(accessCode.uppercase())
+
+    suspend fun addTrapCatch(accessCode: String, count: Int, caughtOn: String): HornetTrapCatchOut =
+        api.addTrapCatch(accessCode.uppercase(), HornetTrapCatchCreate(count, caughtOn))
+
+    suspend fun getNearbyTraps(lat: Double, lon: Double, radiusM: Int = 50): List<HornetTrapNearbyOut> =
+        api.getNearbyTraps(lat, lon, radiusM)
+
+    suspend fun getTrapsGeoJSON(): HornetTrapsGeoJSON = api.getTrapsGeoJSON()
 }

@@ -151,7 +151,24 @@ final class MockAdminService: AdminServiceProtocol {
 
 func makeHornetStats() -> HornetStats {
     HornetStats(totalCaught: 42, totalNests: 7, destroyedNests: 2,
-                pendingSightings: 3, confirmedSightings: 5)
+                pendingSightings: 3, confirmedSightings: 5, totalTraps: 4)
+}
+
+func makeHornetTrap(accessCode: String = "ABCD1234") -> HornetTrapOut {
+    HornetTrapOut(id: "t-1", accessCode: accessCode, name: "Garden trap",
+                  latitude: 48.85, longitude: 2.35, notes: "Near roses",
+                  ownerName: "Bob", createdAt: Date(), totalCaught: 7,
+                  catches: [
+                    HornetTrapCatchOut(id: "c-1", trapId: "t-1", count: 4,
+                                       caughtOn: "2026-05-10", createdAt: Date()),
+                    HornetTrapCatchOut(id: "c-2", trapId: "t-1", count: 3,
+                                       caughtOn: "2026-05-11", createdAt: Date()),
+                  ])
+}
+
+func makeHornetNearby() -> HornetTrapNearbyOut {
+    HornetTrapNearbyOut(accessCode: "ABCD1234", name: "Garden trap",
+                        latitude: 48.85, longitude: 2.35, distanceM: 15, totalCaught: 7)
 }
 
 func makeHornetNestGeoJSON() -> HornetNestGeoJSON {
@@ -189,6 +206,14 @@ final class MockHornetService: HornetServiceProtocol {
                       createdAt: Date(), updatedAt: Date()))
     var submitSightingResult: Result<HornetSightingOut, Error> = .success(makeHornetSighting())
     var voteError: Error? = nil
+    // Traps
+    var createTrapResult: Result<HornetTrapOut, Error> = .success(makeHornetTrap())
+    var getTrapResult: Result<HornetTrapOut, Error> = .success(makeHornetTrap())
+    var addCatchResult: Result<HornetTrapCatchOut, Error> = .success(
+        HornetTrapCatchOut(id: "c-new", trapId: "t-1", count: 2, caughtOn: "2026-05-15", createdAt: Date()))
+    var nearbyResult: Result<[HornetTrapNearbyOut], Error> = .success([makeHornetNearby()])
+    var geoJSONResult: Result<HornetTrapsGeoJSON, Error> = .success(
+        HornetTrapsGeoJSON(type: "FeatureCollection", features: []))
 
     func getStats() async throws -> HornetStats { try statsResult.get() }
     func submitCatch(_ body: HornetCatchCreate) async throws -> HornetCatchOut { try submitCatchResult.get() }
@@ -197,6 +222,11 @@ final class MockHornetService: HornetServiceProtocol {
     func getSightings(page: Int) async throws -> PaginatedResponse<HornetSightingOut> { try sightingsResult.get() }
     func submitSighting(_ body: HornetSightingCreate) async throws -> HornetSightingOut { try submitSightingResult.get() }
     func vote(sightingId: String, vote: String) async throws { if let e = voteError { throw e } }
+    func createTrap(_ body: HornetTrapCreate) async throws -> HornetTrapOut { try createTrapResult.get() }
+    func getTrap(accessCode: String) async throws -> HornetTrapOut { try getTrapResult.get() }
+    func addTrapCatch(accessCode: String, body: HornetTrapCatchCreate) async throws -> HornetTrapCatchOut { try addCatchResult.get() }
+    func getNearbyTraps(lat: Double, lon: Double, radiusM: Int) async throws -> [HornetTrapNearbyOut] { try nearbyResult.get() }
+    func getTrapsGeoJSON() async throws -> HornetTrapsGeoJSON { try geoJSONResult.get() }
 }
 
 // MARK: - MockInspectionService

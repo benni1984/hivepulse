@@ -1,10 +1,10 @@
 import math
-from datetime import datetime
+from datetime import datetime, date
 
 from fastapi import APIRouter, HTTPException, Query, status
 
 from app.deps import DB
-from app.models import HornetCatch, HornetNest, HornetSighting
+from app.models import HornetCatch, HornetNest, HornetSighting, HornetTrap, HornetTrapCatch
 from app.schemas import (
     HornetCatchCreate,
     HornetCatchOut,
@@ -14,6 +14,11 @@ from app.schemas import (
     HornetSightingOut,
     HornetStatsOut,
     HornetVote,
+    HornetTrapCreate,
+    HornetTrapCatchCreate,
+    HornetTrapCatchOut,
+    HornetTrapOut,
+    HornetTrapNearbyOut,
     PaginatedResponse,
 )
 
@@ -45,12 +50,14 @@ def get_stats(db: DB) -> HornetStatsOut:
         .filter(HornetSighting.status == "confirmed")
         .scalar() or 0
     )
+    total_traps = db.query(func.count(HornetTrap.id)).scalar() or 0
     return HornetStatsOut(
         total_caught=int(total_caught),
         total_nests=total_nests,
         destroyed_nests=destroyed_nests,
         pending_sightings=pending_sightings,
         confirmed_sightings=confirmed_sightings,
+        total_traps=total_traps,
     )
 
 
@@ -179,3 +186,142 @@ def vote_on_sighting(sighting_id: str, body: HornetVote, db: DB):
         sighting.status = "confirmed"
 
     db.commit()
+
+
+# ---------------------------------------------------------------------------
+# Traps (issue #134)
+# ---------------------------------------------------------------------------
+
+def _trap_total_caught(trap: HornetTrap) -> int:
+    return sum(c.count for c in trap.catches)
+
+
+def _trap_to_out(trap: HornetTrap) -> HornetTrapOut:
+    return HornetTrapOut(
+        id=trap.id,
+        access_code=trap.access_code,
+        name=trap.name,
+        latitude=trap.latitude,
+        longitude=trap.longitude,
+        notes=trap.notes,
+        owner_name=trap.owner_name,
+        created_at=trap.created_at,
+        total_caught=_trap_total_caught(trap),
+        catches=[HornetTrapCatchOut.model_validate(c) for c in trap.catches],
+    )
+
+
+@router.post("/traps", status_code=status.HTTP_201_CREATED)
+def create_trap(body: HornetTrapCreate, db: DB) -> HornetTrapOut:
+    trap = HornetTrap(
+        name=body.name,
+        latitude=body.latitude,
+        longitude=body.longitude,
+        notes=body.notes,
+        owner_name=body.owner_name,
+    )
+    db.add(trap)
+    db.commit()
+    db.refresh(trap)
+    return _trap_to_out(trap)
+
+
+@router.get("/traps/nearby")
+def get_nearby_traps(
+    lat: float = Query(..., ge=-90, le=90),
+    lon: float = Query(..., ge=-180, le=180),
+    radius_m: int = Query(50, ge=1, le=500),
+    db: DB = None,
+) -> list[HornetTrapNearbyOut]:
+    """Return all traps within radius_m metres, sorted by distance ascending (max 20)."""
+    traps = db.query(HornetTrap).all()
+
+    results: list[HornetTrapNearbyOut] = []
+    for trap in traps:
+        dist = _haversine_m(lat, lon, trap.latitude, trap.longitude)
+        if dist <= radius_m:
+            results.append(
+                HornetTrapNearbyOut(
+                    access_code=trap.access_code,
+                    name=trap.name,
+                    latitude=trap.latitude,
+                    longitude=trap.longitude,
+                    distance_m=round(dist),
+                    total_caught=_trap_total_caught(trap),
+                )
+            )
+
+    results.sort(key=lambda r: r.distance_m)
+    return results[:20]
+
+
+@router.get("/traps/geojson")
+def get_traps_geojson(db: DB) -> dict:
+    """Return all traps as a GeoJSON FeatureCollection."""
+    traps = db.query(HornetTrap).order_by(HornetTrap.created_at.desc()).all()
+    features = [
+        {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [t.longitude, t.latitude]},
+            "properties": {
+                "access_code": t.access_code,
+                "name": t.name,
+                "total_caught": _trap_total_caught(t),
+                "created_at": t.created_at.isoformat() if t.created_at else None,
+            },
+        }
+        for t in traps
+    ]
+    return {"type": "FeatureCollection", "features": features}
+
+
+@router.get("/traps/{access_code}")
+def get_trap(access_code: str, db: DB) -> HornetTrapOut:
+    trap = db.query(HornetTrap).filter(HornetTrap.access_code == access_code.upper()).first()
+    if trap is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"code": "TRAP_NOT_FOUND", "message": "Trap not found."},
+        )
+    return _trap_to_out(trap)
+
+
+@router.post("/traps/{access_code}/catches", status_code=status.HTTP_201_CREATED)
+def add_trap_catch(access_code: str, body: HornetTrapCatchCreate, db: DB) -> HornetTrapCatchOut:
+    trap = db.query(HornetTrap).filter(HornetTrap.access_code == access_code.upper()).first()
+    if trap is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"code": "TRAP_NOT_FOUND", "message": "Trap not found."},
+        )
+    # Upsert: one entry per (trap_id, caught_on)
+    existing = (
+        db.query(HornetTrapCatch)
+        .filter(HornetTrapCatch.trap_id == trap.id, HornetTrapCatch.caught_on == body.caught_on)
+        .first()
+    )
+    if existing:
+        existing.count = body.count
+        db.commit()
+        db.refresh(existing)
+        return HornetTrapCatchOut.model_validate(existing)
+
+    catch = HornetTrapCatch(trap_id=trap.id, count=body.count, caught_on=body.caught_on)
+    db.add(catch)
+    db.commit()
+    db.refresh(catch)
+    return HornetTrapCatchOut.model_validate(catch)
+
+
+# ---------------------------------------------------------------------------
+# Haversine helper
+# ---------------------------------------------------------------------------
+
+def _haversine_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    """Return great-circle distance in metres between two GPS points."""
+    R = 6_371_000  # Earth radius in metres
+    phi1, phi2 = math.radians(lat1), math.radians(lat2)
+    dphi = math.radians(lat2 - lat1)
+    dlam = math.radians(lon2 - lon1)
+    a = math.sin(dphi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlam / 2) ** 2
+    return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))

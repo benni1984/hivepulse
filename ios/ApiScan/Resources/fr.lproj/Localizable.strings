@@ -145,6 +145,7 @@
 "hornets.tab.map" = "Carte";
 "hornets.tab.report" = "Signaler";
 "hornets.tab.community" = "Communauté";
+"hornets.tab.traps" = "Pièges";
 "hornets.stats.title" = "Statistiques en direct";
 "hornets.stats.caught" = "Capturés";
 "hornets.stats.nests" = "Nids";
@@ -177,6 +178,39 @@
 "hornets.community.confirmed" = "Confirmé";
 "hornets.community.pending" = "En attente";
 "hornets.community.rejected" = "Rejeté";
+/* Pièges */
+"hornets.traps.title" = "Gestion des pièges";
+"hornets.traps.subtitle" = "Enregistrez des pièges, saisissez vos captures quotidiennes et trouvez les pièges proches.";
+"hornets.traps.hint" = "Aucune connexion requise";
+"hornets.traps.new" = "Enregistrer un piège";
+"hornets.traps.name" = "Nom du piège";
+"hornets.traps.namePlaceholder" = "ex. Piège jardin près des ruches";
+"hornets.traps.notes" = "Notes (optionnel)";
+"hornets.traps.owner" = "Votre nom (optionnel)";
+"hornets.traps.submit" = "Enregistrer le piège";
+"hornets.traps.success" = "Piège enregistré !";
+"hornets.traps.code" = "Code d'accès";
+"hornets.traps.codeCopy" = "Copier le code";
+"hornets.traps.codeCopied" = "Copié !";
+"hornets.traps.total" = "Total capturé";
+"hornets.traps.logCatch" = "Saisir une capture";
+"hornets.traps.count" = "Nombre";
+"hornets.traps.date" = "Date";
+"hornets.traps.logSubmit" = "Enregistrer";
+"hornets.traps.logSuccess" = "Capture enregistrée !";
+"hornets.traps.logError" = "Impossible d'enregistrer la capture";
+"hornets.traps.searchCode" = "Entrez le code d'accès";
+"hornets.traps.search" = "Rechercher par code";
+"hornets.traps.notFound" = "Piège introuvable";
+"hornets.traps.nearby" = "Pièges à proximité";
+"hornets.traps.nearbySearching" = "Recherche en cours…";
+"hornets.traps.noNearby" = "Aucun piège dans un rayon de 50 m";
+"hornets.traps.distanceM" = "À {m} m";
+"hornets.traps.gps" = "Utiliser le GPS";
+"hornets.traps.gpsError" = "Impossible d'obtenir la position GPS";
+"hornets.traps.noCatches" = "Aucune capture enregistrée";
+"hornets.traps.history" = "Historique des captures";
+"hornets.traps.backToList" = "Retour";
 
 /* Admin */
 "admin.title" = "Admin";

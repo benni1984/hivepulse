@@ -17,7 +17,20 @@ class HornetViewModelTest {
     private val repo = mockk<HornetRepository>()
     private lateinit var vm: HornetViewModel
 
-    private fun stats() = HornetStats(42, 7, 2, 3, 5)
+    private fun stats() = HornetStats(42, 7, 2, 3, 5, 4)
+    private fun trap(code: String = "ABCD1234") = com.apiscan.app.data.api.HornetTrapOut(
+        id = "t-1", accessCode = code, name = "Garden trap",
+        latitude = 48.85, longitude = 2.35, notes = null, ownerName = null,
+        createdAt = "2026-05-01T10:00:00", totalCaught = 7,
+        catches = listOf(
+            com.apiscan.app.data.api.HornetTrapCatchOut("c-1", "t-1", 4, "2026-05-10", "2026-05-10T12:00:00"),
+            com.apiscan.app.data.api.HornetTrapCatchOut("c-2", "t-1", 3, "2026-05-11", "2026-05-11T12:00:00")
+        )
+    )
+    private fun nearby() = com.apiscan.app.data.api.HornetTrapNearbyOut(
+        accessCode = "ABCD1234", name = "Garden trap",
+        latitude = 48.85, longitude = 2.35, distanceM = 15, totalCaught = 7
+    )
     private fun nestGeoJSON() = HornetNestGeoJSON(
         "FeatureCollection", listOf(
             HornetNestFeature(
@@ -181,5 +194,98 @@ class HornetViewModelTest {
         assertNotNull(vm.state.value.error)
         vm.clearError()
         assertNull(vm.state.value.error)
+    }
+
+    // MARK: - loadNearbyTraps
+
+    @Test
+    fun `loadNearbyTraps populates nearbyTraps`() = runTest {
+        coEvery { repo.getNearbyTraps(48.85, 2.35, 50) } returns listOf(nearby())
+        vm.loadNearbyTraps(48.85, 2.35)
+        assertEquals(1, vm.state.value.nearbyTraps.size)
+        assertEquals("ABCD1234", vm.state.value.nearbyTraps[0].accessCode)
+        assertNull(vm.state.value.trapError)
+        assertFalse(vm.state.value.trapLoading)
+    }
+
+    @Test
+    fun `loadNearbyTraps failure sets trapError`() = runTest {
+        coEvery { repo.getNearbyTraps(any(), any(), any()) } throws RuntimeException("GPS failed")
+        vm.loadNearbyTraps(0.0, 0.0)
+        assertTrue(vm.state.value.nearbyTraps.isEmpty())
+        assertEquals("GPS failed", vm.state.value.trapError)
+    }
+
+    // MARK: - loadTrap
+
+    @Test
+    fun `loadTrap sets currentTrap`() = runTest {
+        coEvery { repo.getTrap("ABCD1234") } returns trap()
+        vm.loadTrap("ABCD1234")
+        assertNotNull(vm.state.value.currentTrap)
+        assertEquals("ABCD1234", vm.state.value.currentTrap!!.accessCode)
+        assertEquals(7, vm.state.value.currentTrap!!.totalCaught)
+        assertNull(vm.state.value.trapError)
+    }
+
+    @Test
+    fun `loadTrap failure sets trapError`() = runTest {
+        coEvery { repo.getTrap(any()) } throws RuntimeException("Not found")
+        vm.loadTrap("XXXXXXXX")
+        assertNull(vm.state.value.currentTrap)
+        assertEquals("Not found", vm.state.value.trapError)
+    }
+
+    // MARK: - createTrap
+
+    @Test
+    fun `createTrap calls onSuccess with created trap`() = runTest {
+        coEvery { repo.createTrap("Garden trap", 48.85, 2.35, null, null) } returns trap()
+        var received: com.apiscan.app.data.api.HornetTrapOut? = null
+        vm.createTrap("Garden trap", 48.85, 2.35, onSuccess = { received = it })
+        assertNotNull(received)
+        assertEquals("ABCD1234", received!!.accessCode)
+        assertNotNull(vm.state.value.trapSuccess)
+    }
+
+    @Test
+    fun `createTrap failure sets trapError`() = runTest {
+        coEvery { repo.createTrap(any(), any(), any(), any(), any()) } throws RuntimeException("Create failed")
+        vm.createTrap("", 0.0, 0.0)
+        assertNull(vm.state.value.trapSuccess)
+        assertEquals("Create failed", vm.state.value.trapError)
+    }
+
+    // MARK: - addTrapCatch
+
+    @Test
+    fun `addTrapCatch sets trapSuccess and refreshes trap`() = runTest {
+        val catchOut = com.apiscan.app.data.api.HornetTrapCatchOut("c-new", "t-1", 5, "2026-05-15", "2026-05-15T12:00:00")
+        coEvery { repo.addTrapCatch("ABCD1234", 5, "2026-05-15") } returns catchOut
+        coEvery { repo.getTrap("ABCD1234") } returns trap()
+        vm.addTrapCatch("ABCD1234", 5, "2026-05-15")
+        assertNotNull(vm.state.value.trapSuccess)
+        assertNull(vm.state.value.trapError)
+        // currentTrap refreshed from getTrap
+        assertNotNull(vm.state.value.currentTrap)
+    }
+
+    @Test
+    fun `addTrapCatch failure sets trapError`() = runTest {
+        coEvery { repo.addTrapCatch(any(), any(), any()) } throws RuntimeException("Catch failed")
+        vm.addTrapCatch("ABCD1234", 1, "2026-05-15")
+        assertEquals("Catch failed", vm.state.value.trapError)
+    }
+
+    // MARK: - clearTrapState
+
+    @Test
+    fun `clearTrapState resets trap state`() = runTest {
+        coEvery { repo.getTrap("ABCD1234") } returns trap()
+        vm.loadTrap("ABCD1234")
+        assertNotNull(vm.state.value.currentTrap)
+        vm.clearTrapState()
+        assertNull(vm.state.value.currentTrap)
+        assertTrue(vm.state.value.nearbyTraps.isEmpty())
     }
 }

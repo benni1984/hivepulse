@@ -145,6 +145,7 @@
 "hornets.tab.map" = "Map";
 "hornets.tab.report" = "Report";
 "hornets.tab.community" = "Community";
+"hornets.tab.traps" = "Traps";
 "hornets.stats.title" = "Live Statistics";
 "hornets.stats.caught" = "Caught";
 "hornets.stats.nests" = "Nests";
@@ -177,6 +178,39 @@
 "hornets.community.confirmed" = "Confirmed";
 "hornets.community.pending" = "Pending";
 "hornets.community.rejected" = "Rejected";
+/* Traps */
+"hornets.traps.title" = "Trap Management";
+"hornets.traps.subtitle" = "Register traps, log daily catches, and find nearby traps by GPS or access code.";
+"hornets.traps.hint" = "No login required";
+"hornets.traps.new" = "Register a Trap";
+"hornets.traps.name" = "Trap name";
+"hornets.traps.namePlaceholder" = "e.g. Garden trap near the hives";
+"hornets.traps.notes" = "Notes (optional)";
+"hornets.traps.owner" = "Your name (optional)";
+"hornets.traps.submit" = "Register Trap";
+"hornets.traps.success" = "Trap registered!";
+"hornets.traps.code" = "Access code";
+"hornets.traps.codeCopy" = "Copy code";
+"hornets.traps.codeCopied" = "Copied!";
+"hornets.traps.total" = "Total caught";
+"hornets.traps.logCatch" = "Log catch";
+"hornets.traps.count" = "Count";
+"hornets.traps.date" = "Date";
+"hornets.traps.logSubmit" = "Save";
+"hornets.traps.logSuccess" = "Catch saved!";
+"hornets.traps.logError" = "Failed to save catch";
+"hornets.traps.searchCode" = "Enter access code";
+"hornets.traps.search" = "Find by code";
+"hornets.traps.notFound" = "Trap not found";
+"hornets.traps.nearby" = "Nearby traps";
+"hornets.traps.nearbySearching" = "Searching nearby…";
+"hornets.traps.noNearby" = "No traps found within 50 m";
+"hornets.traps.distanceM" = "{m} m away";
+"hornets.traps.gps" = "Use GPS";
+"hornets.traps.gpsError" = "Could not get GPS location";
+"hornets.traps.noCatches" = "No catches logged yet";
+"hornets.traps.history" = "Catch history";
+"hornets.traps.backToList" = "Back";
 
 /* Admin */
 "admin.title" = "Admin";

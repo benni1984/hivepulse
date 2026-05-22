@@ -1,7 +1,7 @@
 import SwiftUI
 
 private enum HornetTab: Int, CaseIterable {
-    case info, map, report, community
+    case info, map, report, community, traps
 
     var label: String {
         switch self {
@@ -9,6 +9,7 @@ private enum HornetTab: Int, CaseIterable {
         case .map:       return NSLocalizedString("hornets.tab.map", comment: "")
         case .report:    return NSLocalizedString("hornets.tab.report", comment: "")
         case .community: return NSLocalizedString("hornets.tab.community", comment: "")
+        case .traps:     return NSLocalizedString("hornets.tab.traps", comment: "")
         }
     }
 }
@@ -44,6 +45,9 @@ struct HornetView: View {
                             .environmentObject(vm)
                     case .community:
                         HornetCommunityView()
+                            .environmentObject(vm)
+                    case .traps:
+                        HornetTrapsView()
                             .environmentObject(vm)
                     }
                 }

@@ -183,6 +183,7 @@
     <string name="hornet_tab_map">Map</string>
     <string name="hornet_tab_report">Report</string>
     <string name="hornet_tab_community">Community</string>
+    <string name="hornet_tab_traps">Traps</string>
     <string name="hornet_stats_title">Live Statistics</string>
     <string name="hornet_stats_caught">Caught</string>
     <string name="hornet_stats_nests">Nests</string>
@@ -212,4 +213,36 @@
     <string name="hornet_community_confirmed">Confirmed</string>
     <string name="hornet_community_pending">Pending</string>
     <string name="hornet_community_rejected">Rejected</string>
+    <!-- Traps -->
+    <string name="hornet_traps_title">Trap Management</string>
+    <string name="hornet_traps_subtitle">Register traps, log daily catches, and find nearby traps.</string>
+    <string name="hornet_traps_hint">No login required</string>
+    <string name="hornet_traps_new">Register a Trap</string>
+    <string name="hornet_traps_name">Trap name</string>
+    <string name="hornet_traps_name_placeholder">e.g. Garden trap near the hives</string>
+    <string name="hornet_traps_notes">Notes (optional)</string>
+    <string name="hornet_traps_owner">Your name (optional)</string>
+    <string name="hornet_traps_submit">Register Trap</string>
+    <string name="hornet_traps_success">Trap registered!</string>
+    <string name="hornet_traps_code">Access code</string>
+    <string name="hornet_traps_code_copy">Copy code</string>
+    <string name="hornet_traps_code_copied">Copied!</string>
+    <string name="hornet_traps_total">Total caught</string>
+    <string name="hornet_traps_log_catch">Log catch</string>
+    <string name="hornet_traps_count">Count</string>
+    <string name="hornet_traps_date">Date</string>
+    <string name="hornet_traps_log_submit">Save</string>
+    <string name="hornet_traps_log_success">Catch saved!</string>
+    <string name="hornet_traps_log_error">Failed to save catch</string>
+    <string name="hornet_traps_search_code">Enter access code</string>
+    <string name="hornet_traps_search">Find by code</string>
+    <string name="hornet_traps_not_found">Trap not found</string>
+    <string name="hornet_traps_nearby">Nearby traps</string>
+    <string name="hornet_traps_nearby_searching">Searching nearby…</string>
+    <string name="hornet_traps_no_nearby">No traps found within 50 m</string>
+    <string name="hornet_traps_gps">Use GPS</string>
+    <string name="hornet_traps_gps_error">Could not get GPS location</string>
+    <string name="hornet_traps_no_catches">No catches logged yet</string>
+    <string name="hornet_traps_history">Catch history</string>
+    <string name="hornet_traps_back">Back</string>
 </resources>

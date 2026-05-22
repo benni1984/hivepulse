@@ -121,4 +121,48 @@
     <!-- Auth -->
     <string name="login_subtitle">Connectez-vous pour gérer vos ruches</string>
     <string name="permission_camera_rationale">L\'accès à la caméra est nécessaire pour scanner les QR codes sur vos ruches.</string>
+
+    <!-- Suivi Frelon -->
+    <string name="hornet_title">Suivi Frelon</string>
+    <string name="hornet_tab_info">Info</string>
+    <string name="hornet_tab_map">Carte</string>
+    <string name="hornet_tab_report">Signaler</string>
+    <string name="hornet_tab_community">Communauté</string>
+    <string name="hornet_tab_traps">Pièges</string>
+    <string name="hornet_stats_title">Statistiques en direct</string>
+    <string name="hornet_stats_caught">Capturés</string>
+    <string name="hornet_stats_nests">Nids</string>
+    <string name="hornet_stats_destroyed">Détruits</string>
+    <string name="hornet_stats_sightings">Confirmés</string>
+    <string name="hornet_traps_title">Gestion des pièges</string>
+    <string name="hornet_traps_subtitle">Enregistrez des pièges, saisissez vos captures et trouvez les pièges proches.</string>
+    <string name="hornet_traps_hint">Aucune connexion requise</string>
+    <string name="hornet_traps_new">Enregistrer un piège</string>
+    <string name="hornet_traps_name">Nom du piège</string>
+    <string name="hornet_traps_name_placeholder">ex. Piège jardin près des ruches</string>
+    <string name="hornet_traps_notes">Notes (optionnel)</string>
+    <string name="hornet_traps_owner">Votre nom (optionnel)</string>
+    <string name="hornet_traps_submit">Enregistrer le piège</string>
+    <string name="hornet_traps_success">Piège enregistré !</string>
+    <string name="hornet_traps_code">Code d\'accès</string>
+    <string name="hornet_traps_code_copy">Copier le code</string>
+    <string name="hornet_traps_code_copied">Copié !</string>
+    <string name="hornet_traps_total">Total capturé</string>
+    <string name="hornet_traps_log_catch">Saisir une capture</string>
+    <string name="hornet_traps_count">Nombre</string>
+    <string name="hornet_traps_date">Date</string>
+    <string name="hornet_traps_log_submit">Enregistrer</string>
+    <string name="hornet_traps_log_success">Capture enregistrée !</string>
+    <string name="hornet_traps_log_error">Impossible d\'enregistrer la capture</string>
+    <string name="hornet_traps_search_code">Entrez le code d\'accès</string>
+    <string name="hornet_traps_search">Rechercher par code</string>
+    <string name="hornet_traps_not_found">Piège introuvable</string>
+    <string name="hornet_traps_nearby">Pièges à proximité</string>
+    <string name="hornet_traps_nearby_searching">Recherche en cours…</string>
+    <string name="hornet_traps_no_nearby">Aucun piège dans un rayon de 50 m</string>
+    <string name="hornet_traps_gps">Utiliser le GPS</string>
+    <string name="hornet_traps_gps_error">Impossible d\'obtenir la position GPS</string>
+    <string name="hornet_traps_no_catches">Aucune capture enregistrée</string>
+    <string name="hornet_traps_history">Historique des captures</string>
+    <string name="hornet_traps_back">Retour</string>
 </resources>
