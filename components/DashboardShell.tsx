@@ -108,7 +108,7 @@ export default function DashboardShell({ children, adminOnly = false, memberOnly
 
           <button className="dash-logout" onClick={handleLogout}>{t('nav.logout')}</button>
         </aside>
-        <main className="dash-main">{children}</main>
+        <main className="dash-main"><div className="dash-main-inner">{children}</div></main>
       </div>
     </div>
   );
