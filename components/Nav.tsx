@@ -98,7 +98,7 @@ export default function Nav({ locale }: { locale: string }) {
   return (
     <nav className={navClass} id="site-nav">
       <div className="nav-inner">
-        <Link href="/" className="nav-logo">🐝 Api<span>Scan</span></Link>
+        <Link href="/" className="nav-logo">🐝 Hive<span>Pulse</span></Link>
 
         <button
           className="nav-toggle"
