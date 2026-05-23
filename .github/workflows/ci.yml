@@ -215,8 +215,8 @@ jobs:
         if: needs.changes.outputs.ios == 'true'
         run: |
           xcodebuild test \
-            -project ios/ApiScan.xcodeproj \
-            -scheme ApiScan \
+            -project ios/HivePulse.xcodeproj \
+            -scheme HivePulse \
             -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
             -resultBundlePath TestResults
 

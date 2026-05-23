@@ -11,7 +11,7 @@ env:
 
 jobs:
   generate:
-    name: Generate ApiScan.xcodeproj
+    name: Generate HivePulse.xcodeproj
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,6 +26,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add ios/ApiScan.xcodeproj
-          git commit -m "chore: generate ApiScan.xcodeproj via XcodeGen"
+          git add ios/HivePulse.xcodeproj
+          git commit -m "chore: generate HivePulse.xcodeproj via XcodeGen"
           git push origin HEAD:${{ github.ref_name }}

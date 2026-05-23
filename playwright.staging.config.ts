@@ -7,7 +7,7 @@ export default defineConfig({
   retries: 1,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   use: {
-    baseURL: 'https://apiscan-staging.vercel.app',
+    baseURL: 'https://HivePulse-staging.vercel.app',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },

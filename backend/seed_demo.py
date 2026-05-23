@@ -1,5 +1,5 @@
 """
-Demo data seeder for local ApiScan development.
+Demo data seeder for local HivePulse development.
 Run from the backend/ directory with the server already running:
 
     python seed_demo.py
@@ -15,7 +15,7 @@ import random
 
 BASE = "http://localhost:8000/api/v1"
 
-DEMO_EMAIL    = "demo@apiscan.dev"
+DEMO_EMAIL    = "demo@HivePulse.dev"
 DEMO_PASSWORD = "Demo1234!"
 DEMO_NAME     = "Demo Beekeeper"
 
@@ -155,7 +155,7 @@ def main():
     existing = requests.get(f"{BASE}/apiaries", headers={"Authorization": f"Bearer {access}"})
     if existing.status_code == 200 and existing.json().get("total", 0) >= len(APIARIES):
         print(f"  Already fully seeded ({existing.json()['total']} apiaries). Nothing to do.")
-        print("  Delete apiscan.db and restart the server to reseed from scratch.")
+        print("  Delete HivePulse.db and restart the server to reseed from scratch.")
         sys.exit(0)
     print("  OK")
 

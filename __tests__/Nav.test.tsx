@@ -45,7 +45,7 @@ describe('Nav', () => {
   it('renders the logo link', () => {
     render(<Nav locale="en" />);
     // Logo renders as: 🐝 Api<span>Scan</span> — use accessible name query
-    expect(screen.getByRole('link', { name: /ApiScan/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /HivePulse/i })).toBeInTheDocument();
   });
 
   it('shows the correct flag/code for EN locale', () => {

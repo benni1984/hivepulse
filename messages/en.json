@@ -21,14 +21,14 @@
     "support": "Support Us",
     "legal": "Legal",
     "privacy": "Privacy Policy",
-    "copyright": "© 2025 ApiScan. Released under the MIT License.",
+    "copyright": "© 2025 HivePulse. Released under the MIT License.",
     "made": "Made with 🐝 for beekeepers everywhere."
   },
   "hero": {
     "badge": "Open Source · Community Driven · Free to Use",
     "title1": "Saving Bees,",
     "title2": "One Scan at a Time",
-    "subtitle": "ApiScan turns every beekeeper into a citizen scientist. Log inspections, track hive health, and contribute to global data that helps researchers understand and protect honey bee populations worldwide.",
+    "subtitle": "HivePulse turns every beekeeper into a citizen scientist. Log inspections, track hive health, and contribute to global data that helps researchers understand and protect honey bee populations worldwide.",
     "apple": {
       "pre": "Download on the",
       "store": "App Store"
@@ -50,7 +50,7 @@
   "feat": {
     "tag": "The App",
     "title": "Everything a beekeeper needs",
-    "sub": "From first-time hobbyist to commercial operation, ApiScan grows with you — and your data grows with the planet.",
+    "sub": "From first-time hobbyist to commercial operation, HivePulse grows with you — and your data grows with the planet.",
     "qr": {
       "title": "QR Scan & Go",
       "desc": "Stick a QR code on each hive. Scan it on arrival and jump straight into your inspection — no searching, no typos, no forgotten hive names."
@@ -84,7 +84,7 @@
     "li2": "Varroa mite is the #1 threat to managed bee colonies globally",
     "li3": "Pesticides, habitat loss, and climate change compound the pressure",
     "li4": "Real-time beekeeper data is essential for early-warning systems",
-    "callout": "When you log an inspection in ApiScan, you're not just managing your hive — you're adding a data point to a global early-warning network for bee health."
+    "callout": "When you log an inspection in HivePulse, you're not just managing your hive — you're adding a data point to a global early-warning network for bee health."
   },
   "hex1": {
     "label": "of flowering crops depend on animal pollination"
@@ -145,7 +145,7 @@
   "support": {
     "tag": "Support the Mission",
     "title": "Keep the hives buzzing",
-    "sub": "ApiScan is free to use. A small contribution keeps the servers running, funds new features, and supports our research partnerships. No beekeeper should be priced out."
+    "sub": "HivePulse is free to use. A small contribution keeps the servers running, funds new features, and supports our research partnerships. No beekeeper should be priced out."
   },
   "price": {
     "free": {
@@ -176,7 +176,7 @@
     "donate": {
       "tier": "One-time Donation",
       "price": "Your choice",
-      "note": "Every contribution, no matter the size, helps keep ApiScan independent, ad-free, and free for beekeepers who need it most."
+      "note": "Every contribution, no matter the size, helps keep HivePulse independent, ad-free, and free for beekeepers who need it most."
     }
   },
   "btn": {
@@ -187,7 +187,7 @@
   },
   "dl": {
     "tag": "Get Started Today",
-    "title": "Download ApiScan — it's free",
+    "title": "Download HivePulse — it's free",
     "sub": "Available on iOS and Android. Scan your first hive in under two minutes."
   },
   "map": {
@@ -216,12 +216,12 @@
   "news": {
     "tag": "Updates",
     "title": "News & Announcements",
-    "sub": "New features, research partnerships, conservation milestones, and everything happening in the ApiScan community."
+    "sub": "New features, research partnerships, conservation milestones, and everything happening in the HivePulse community."
   },
   "contrib": {
     "tag": "Open Source",
-    "title": "Help Build ApiScan",
-    "sub": "ApiScan is an open-source project built by and for the beekeeping community. Every contribution — whether code, documentation, translation, or feedback — makes a difference.",
+    "title": "Help Build HivePulse",
+    "sub": "HivePulse is an open-source project built by and for the beekeeping community. Every contribution — whether code, documentation, translation, or feedback — makes a difference.",
     "ways": {
       "title": "Ways to Contribute",
       "sub": "You don't need to be a programmer to help. There's a meaningful role for everyone who cares about bees."
@@ -253,12 +253,12 @@
     },
     "spread": {
       "title": "Spread the Word",
-      "desc": "Tell your beekeeping club or online community about ApiScan. Every new beekeeper strengthens the global dataset.",
+      "desc": "Tell your beekeeping club or online community about HivePulse. Every new beekeeper strengthens the global dataset.",
       "link": "Share the download link →"
     },
     "github": {
       "title": "🐝 The Hive is on GitHub",
-      "desc": "ApiScan is fully open source under the MIT License. Read the code, open issues, fork it, and make it better.",
+      "desc": "HivePulse is fully open source under the MIT License. Read the code, open issues, fork it, and make it better.",
       "btn": "View on GitHub"
     }
   },
@@ -297,7 +297,7 @@
   "privacy": {
     "title": "Privacy Policy",
     "updated": "Last updated: May 2026",
-    "intro": "ApiScan is an open-source beekeeping app. This policy explains what data we collect, why we collect it, and the choices you have — including how you control whether your apiary appears on the public map.",
+    "intro": "HivePulse is an open-source beekeeping app. This policy explains what data we collect, why we collect it, and the choices you have — including how you control whether your apiary appears on the public map.",
     "s1title": "1. Data we collect",
     "s1body": "When you register: your email address, chosen display name, and preferred language. When you use the app: apiary names and GPS coordinates (if you enter them), hive details, and inspection records you log. We do not collect device identifiers, advertising IDs, or precise location data without you explicitly entering coordinates in the app.",
     "s2title": "2. Public map — opt-in",
@@ -309,15 +309,15 @@
     "s5title": "5. Data retention",
     "s5body": "Your account data is kept for as long as your account is active. You can request full deletion by contacting us at the address below — we will delete your account and all associated records within 30 days. Anonymised aggregate statistics (total counts) that have already been served publicly cannot be retracted.",
     "s6title": "6. Your rights",
-    "s6body": "Under GDPR you have the right to access, rectify, erase, and port your personal data, and to object to processing. To exercise these rights, contact us at privacy@apiscan.app. If you believe your rights have not been respected, you may lodge a complaint with your national data protection authority.",
+    "s6body": "Under GDPR you have the right to access, rectify, erase, and port your personal data, and to object to processing. To exercise these rights, contact us at privacy@HivePulse.app. If you believe your rights have not been respected, you may lodge a complaint with your national data protection authority.",
     "s7title": "7. Security",
     "s7body": "Passwords are hashed with bcrypt and never stored in plain text. API access requires a signed JWT token. Data in transit is encrypted via TLS. We review security practices regularly.",
     "s8title": "8. Contact",
-    "s8body": "Questions about this policy or your data? Email us at privacy@apiscan.app."
+    "s8body": "Questions about this policy or your data? Email us at privacy@HivePulse.app."
   },
   "dash": {
     "login": {
-      "title": "Log in to ApiScan",
+      "title": "Log in to HivePulse",
       "email": "Email",
       "password": "Password",
       "submit": "Log in",
@@ -631,17 +631,17 @@
       "title": "Unlock the full picture",
       "unlockedBadge": "Supporter",
       "unlockedNote": "Live global statistics will appear here when the web dashboard launches. All features are available now in the app.",
-      "desc": "Supporters see regional varroa trends, seasonal hive health curves, queen replacement rates, and cross-referenced weather & bloom data — all in the ApiScan app.",
+      "desc": "Supporters see regional varroa trends, seasonal hive health curves, queen replacement rates, and cross-referenced weather & bloom data — all in the HivePulse app.",
       "cta": "Get the App",
       "note": "Upgrade to Supporter (€2.99 / month) inside the app after signing up.",
       "loginTitle": "Log in to see live statistics",
-      "loginDesc": "Sign in with your ApiScan account to view live global community data.",
+      "loginDesc": "Sign in with your HivePulse account to view live global community data.",
       "loginCta": "Log in",
       "openDashboard": "Open Community Dashboard"
     },
     "benefits": {
       "title": "What Supporters Get",
-      "sub": "Every euro goes directly into keeping ApiScan independent and funding research partnerships."
+      "sub": "Every euro goes directly into keeping HivePulse independent and funding research partnerships."
     },
     "b1": {
       "title": "Global Health Dashboard",

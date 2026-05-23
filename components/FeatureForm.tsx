@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-const GITHUB_REPO = 'benni1984/apiscan';
+const GITHUB_REPO = 'benni1984/HivePulse';
 
 export default function FeatureForm() {
   const t = useTranslations('fr');
@@ -28,7 +28,7 @@ export default function FeatureForm() {
       platformLine.trim() ? platformLine : '',
       usecasePart,
       '---',
-      '*Submitted via [ApiScan website](https://apiscan.app)*',
+      '*Submitted via [HivePulse website](https://HivePulse.app)*',
     ].filter(Boolean).join('\n');
 
     const url = new URL(`https://github.com/${GITHUB_REPO}/issues/new`);

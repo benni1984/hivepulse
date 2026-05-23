@@ -15,5 +15,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "ApiScan"
+rootProject.name = "HivePulse"
 include(":app")

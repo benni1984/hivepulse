@@ -21,14 +21,14 @@
     "support": "Unterstützen",
     "legal": "Rechtliches",
     "privacy": "Datenschutzerklärung",
-    "copyright": "© 2025 ApiScan. Veröffentlicht unter der MIT-Lizenz.",
+    "copyright": "© 2025 HivePulse. Veröffentlicht unter der MIT-Lizenz.",
     "made": "Mit 🐝 für Imkerinnen und Imker weltweit."
   },
   "hero": {
     "badge": "Open Source · Gemeinschaftsprojekt · Kostenlos",
     "title1": "Bienen retten,",
     "title2": "Scan für Scan",
-    "subtitle": "ApiScan macht jeden Imker zum Bürgerwissenschaftler. Dokumentiere Kontrollen, verfolge den Gesundheitszustand deiner Völker und trage zu globalen Daten bei, die Forschern helfen, Bienenpopulationen weltweit zu verstehen und zu schützen.",
+    "subtitle": "HivePulse macht jeden Imker zum Bürgerwissenschaftler. Dokumentiere Kontrollen, verfolge den Gesundheitszustand deiner Völker und trage zu globalen Daten bei, die Forschern helfen, Bienenpopulationen weltweit zu verstehen und zu schützen.",
     "apple": {
       "pre": "Laden im",
       "store": "App Store"
@@ -50,7 +50,7 @@
   "feat": {
     "tag": "Die App",
     "title": "Alles, was ein Imker braucht",
-    "sub": "Vom Hobby-Imker bis zum Profi-Betrieb – ApiScan wächst mit dir und trägt gleichzeitig zum Schutz unseres Planeten bei.",
+    "sub": "Vom Hobby-Imker bis zum Profi-Betrieb – HivePulse wächst mit dir und trägt gleichzeitig zum Schutz unseres Planeten bei.",
     "qr": {
       "title": "QR-Code scannen & loslegen",
       "desc": "Klebe einen QR-Code auf jeden Stock. Beim Ankommen scannen und direkt mit der Kontrolle beginnen – kein Suchen, kein Vertippen."
@@ -84,7 +84,7 @@
     "li2": "Die Varroamilbe ist weltweit die größte Bedrohung für Honigbienen",
     "li3": "Pestizide, Habitatverlust und Klimawandel verstärken den Druck",
     "li4": "Echtzeitdaten von Imkern sind entscheidend für Frühwarnsysteme",
-    "callout": "Wenn du in ApiScan eine Kontrolle einträgst, verwaltest du nicht nur dein Volk – du fügst einem globalen Frühwarnnetz für Bienengesundheit einen Datenpunkt hinzu."
+    "callout": "Wenn du in HivePulse eine Kontrolle einträgst, verwaltest du nicht nur dein Volk – du fügst einem globalen Frühwarnnetz für Bienengesundheit einen Datenpunkt hinzu."
   },
   "hex1": {
     "label": "der Blütenpflanzen sind auf tierische Bestäubung angewiesen"
@@ -145,7 +145,7 @@
   "support": {
     "tag": "Unterstütze die Mission",
     "title": "Halte die Völker am Summen",
-    "sub": "ApiScan ist kostenlos nutzbar. Ein kleiner Beitrag hält die Server am Laufen, finanziert neue Funktionen und unterstützt unsere Forschungspartnerschaften."
+    "sub": "HivePulse ist kostenlos nutzbar. Ein kleiner Beitrag hält die Server am Laufen, finanziert neue Funktionen und unterstützt unsere Forschungspartnerschaften."
   },
   "price": {
     "free": {
@@ -176,7 +176,7 @@
     "donate": {
       "tier": "Einmalige Spende",
       "price": "Dein Betrag",
-      "note": "Jeder Beitrag, egal wie groß, hilft ApiScan unabhängig, werbefrei und für alle Imker zugänglich zu halten."
+      "note": "Jeder Beitrag, egal wie groß, hilft HivePulse unabhängig, werbefrei und für alle Imker zugänglich zu halten."
     }
   },
   "btn": {
@@ -187,7 +187,7 @@
   },
   "dl": {
     "tag": "Noch heute starten",
-    "title": "ApiScan herunterladen – kostenlos",
+    "title": "HivePulse herunterladen – kostenlos",
     "sub": "Für iOS und Android verfügbar. Scan dein erstes Volk in unter zwei Minuten."
   },
   "map": {
@@ -216,12 +216,12 @@
   "news": {
     "tag": "Aktuelles",
     "title": "News & Ankündigungen",
-    "sub": "Neue Funktionen, Forschungspartnerschaften, Naturschutzmeilensteine und alles Wichtige aus der ApiScan-Gemeinschaft."
+    "sub": "Neue Funktionen, Forschungspartnerschaften, Naturschutzmeilensteine und alles Wichtige aus der HivePulse-Gemeinschaft."
   },
   "contrib": {
     "tag": "Open Source",
-    "title": "Hilf ApiScan aufzubauen",
-    "sub": "ApiScan ist ein Open-Source-Projekt, das von und für die Imkergemeinschaft gebaut wird.",
+    "title": "Hilf HivePulse aufzubauen",
+    "sub": "HivePulse ist ein Open-Source-Projekt, das von und für die Imkergemeinschaft gebaut wird.",
     "ways": {
       "title": "Wie du beitragen kannst",
       "sub": "Du musst kein Programmierer sein, um zu helfen."
@@ -253,12 +253,12 @@
     },
     "spread": {
       "title": "Weiterempfehlen",
-      "desc": "Erzähl deinem Imkerverein oder deiner Online-Community von ApiScan.",
+      "desc": "Erzähl deinem Imkerverein oder deiner Online-Community von HivePulse.",
       "link": "Download-Link teilen →"
     },
     "github": {
       "title": "🐝 Der Bienenstock ist auf GitHub",
-      "desc": "ApiScan ist vollständig Open Source unter der MIT-Lizenz.",
+      "desc": "HivePulse ist vollständig Open Source unter der MIT-Lizenz.",
       "btn": "Auf GitHub ansehen"
     }
   },
@@ -297,7 +297,7 @@
   "privacy": {
     "title": "Datenschutzerklärung",
     "updated": "Zuletzt aktualisiert: Mai 2026",
-    "intro": "ApiScan ist eine Open-Source-Imker-App. Diese Datenschutzerklärung erläutert, welche Daten wir erheben, warum wir sie verarbeiten und welche Wahlmöglichkeiten du hast – insbesondere wie du steuerst, ob dein Bienenstand auf der öffentlichen Karte erscheint.",
+    "intro": "HivePulse ist eine Open-Source-Imker-App. Diese Datenschutzerklärung erläutert, welche Daten wir erheben, warum wir sie verarbeiten und welche Wahlmöglichkeiten du hast – insbesondere wie du steuerst, ob dein Bienenstand auf der öffentlichen Karte erscheint.",
     "s1title": "1. Erhobene Daten",
     "s1body": "Bei der Registrierung: deine E-Mail-Adresse, dein Anzeigename und deine bevorzugte Sprache. Bei der App-Nutzung: Bienenstands-Namen und GPS-Koordinaten (wenn du sie eingibst), Völkerdetails und Kontrolldaten. Wir erheben keine Gerätekennungen, Werbe-IDs oder genaue Standortdaten ohne ausdrückliche Eingabe durch dich.",
     "s2title": "2. Öffentliche Karte – Opt-in",
@@ -307,17 +307,17 @@
     "s4title": "4. Rechtsgrundlage (DSGVO)",
     "s4body": "Für EU/EWR-Nutzer verarbeiten wir deine Daten auf Basis der Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO) für die App-Kernfunktionen und auf Basis deiner ausdrücklichen Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) für die öffentliche Karte. Du kannst die Einwilligung jederzeit widerrufen.",
     "s5title": "5. Datenspeicherung",
-    "s5body": "Deine Daten werden gespeichert, solange dein Konto aktiv ist. Du kannst die vollständige Löschung unter privacy@apiscan.app beantragen – wir löschen alle Daten innerhalb von 30 Tagen.",
+    "s5body": "Deine Daten werden gespeichert, solange dein Konto aktiv ist. Du kannst die vollständige Löschung unter privacy@HivePulse.app beantragen – wir löschen alle Daten innerhalb von 30 Tagen.",
     "s6title": "6. Deine Rechte",
-    "s6body": "Du hast das Recht auf Auskunft, Berichtigung, Löschung und Datenübertragbarkeit sowie das Widerspruchsrecht. Kontakt: privacy@apiscan.app.",
+    "s6body": "Du hast das Recht auf Auskunft, Berichtigung, Löschung und Datenübertragbarkeit sowie das Widerspruchsrecht. Kontakt: privacy@HivePulse.app.",
     "s7title": "7. Sicherheit",
     "s7body": "Passwörter werden mit bcrypt gehasht. Der API-Zugriff erfordert ein signiertes JWT-Token. Datenübertragungen sind TLS-verschlüsselt.",
     "s8title": "8. Kontakt",
-    "s8body": "Fragen zu dieser Erklärung oder deinen Daten? Schreib uns an privacy@apiscan.app."
+    "s8body": "Fragen zu dieser Erklärung oder deinen Daten? Schreib uns an privacy@HivePulse.app."
   },
   "dash": {
     "login": {
-      "title": "Bei ApiScan anmelden",
+      "title": "Bei HivePulse anmelden",
       "email": "E-Mail",
       "password": "Passwort",
       "submit": "Anmelden",
@@ -635,13 +635,13 @@
       "cta": "App herunterladen",
       "note": "Nach der Anmeldung in der App auf Supporter upgraden (2,99 € / Monat).",
       "loginTitle": "Anmelden, um Live-Statistiken zu sehen",
-      "loginDesc": "Melde dich mit deinem ApiScan-Konto an, um globale Community-Daten in Echtzeit zu sehen.",
+      "loginDesc": "Melde dich mit deinem HivePulse-Konto an, um globale Community-Daten in Echtzeit zu sehen.",
       "loginCta": "Anmelden",
       "openDashboard": "Community-Dashboard öffnen"
     },
     "benefits": {
       "title": "Was Unterstützer erhalten",
-      "sub": "Jeder Euro fließt direkt in die Unabhängigkeit von ApiScan und die Finanzierung von Forschungspartnerschaften."
+      "sub": "Jeder Euro fließt direkt in die Unabhängigkeit von HivePulse und die Finanzierung von Forschungspartnerschaften."
     },
     "b1": {
       "title": "Globales Gesundheits-Dashboard",

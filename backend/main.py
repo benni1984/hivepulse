@@ -16,7 +16,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="ApiScan", version="1.0.0", lifespan=lifespan)
+app = FastAPI(title="HivePulse", version="1.0.0", lifespan=lifespan)
 
 # Promote ADMIN_EMAIL to admin at module import time so it runs on every cold
 # start in serverless environments where ASGI lifespan may not fire.

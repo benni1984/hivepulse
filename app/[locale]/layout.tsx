@@ -12,7 +12,7 @@ import '@/web/style.css';
 import '@/web/landing.css';
 
 export const metadata: Metadata = {
-  title: 'ApiScan — Protecting Pollinators Together',
+  title: 'HivePulse — Protecting Pollinators Together',
   description: 'The beekeeping community app that turns every inspection into global data for bee conservation. Free for iOS and Android.',
 };
 

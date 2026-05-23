@@ -18,7 +18,7 @@ def reverse_geocode_city(latitude: float, longitude: float) -> Optional[CityLoca
         resp = httpx.get(
             "https://nominatim.openstreetmap.org/reverse",
             params={"lat": latitude, "lon": longitude, "format": "json", "zoom": 10},
-            headers={"User-Agent": "ApiScan/1.0 (beekeeping-inspection-app)"},
+            headers={"User-Agent": "HivePulse/1.0 (beekeeping-inspection-app)"},
             timeout=5.0,
         )
         resp.raise_for_status()

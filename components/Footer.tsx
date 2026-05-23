@@ -13,7 +13,7 @@ export default function Footer() {
             <Link className="footer-logo" href="/">🐝 Api<span>Scan</span></Link>
             <p>{t('tagline')}</p>
             <div className="footer-social">
-              <a href="https://github.com/benni1984/apiscan" target="_blank" rel="noopener" aria-label="GitHub">
+              <a href="https://github.com/benni1984/HivePulse" target="_blank" rel="noopener" aria-label="GitHub">
                 <i className="fab fa-github" />
               </a>
             </div>
@@ -30,7 +30,7 @@ export default function Footer() {
             <h4>{t('community')}</h4>
             <ul>
               <li><Link href="/contribute">{tn('contribute')}</Link></li>
-              <li><a href="https://github.com/benni1984/apiscan" target="_blank" rel="noopener">GitHub</a></li>
+              <li><a href="https://github.com/benni1984/HivePulse" target="_blank" rel="noopener">GitHub</a></li>
             </ul>
           </div>
           <div className="footer-links">

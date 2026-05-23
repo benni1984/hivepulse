@@ -5,7 +5,7 @@ import * as path from 'path';
 const AUTH_FILE = '.auth/user.json';
 
 setup('authenticate as demo user', async ({ page, request }) => {
-  const email = process.env.STAGING_DEMO_EMAIL ?? 'demo@apiscan.dev';
+  const email = process.env.STAGING_DEMO_EMAIL ?? 'demo@HivePulse.dev';
   const password = process.env.STAGING_DEMO_PASSWORD ?? 'Demo1234!';
 
   // Ensure the demo account exists — silently no-ops if already registered.

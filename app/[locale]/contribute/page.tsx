@@ -25,31 +25,31 @@ export default function ContributePage() {
               <i className="fas fa-bug" />
               <h3>{t('bug.title')}</h3>
               <p>{t('bug.desc')}</p>
-              <a href="https://github.com/benni1984/apiscan/issues/new" className="card-link" target="_blank" rel="noopener">{t('bug.link')}</a>
+              <a href="https://github.com/benni1984/hivepulse/issues/new" className="card-link" target="_blank" rel="noopener">{t('bug.link')}</a>
             </div>
             <div className="contribute-card">
               <i className="fas fa-code-branch" />
               <h3>{t('code.title')}</h3>
               <p>{t('code.desc')}</p>
-              <a href="https://github.com/benni1984/apiscan" className="card-link" target="_blank" rel="noopener">{t('code.link')}</a>
+              <a href="https://github.com/benni1984/hivepulse" className="card-link" target="_blank" rel="noopener">{t('code.link')}</a>
             </div>
             <div className="contribute-card">
               <i className="fas fa-book" />
               <h3>{t('docs.title')}</h3>
               <p>{t('docs.desc')}</p>
-              <a href="https://github.com/benni1984/apiscan/tree/main/docs" className="card-link" target="_blank" rel="noopener">{t('docs.link')}</a>
+              <a href="https://github.com/benni1984/hivepulse/tree/main/docs" className="card-link" target="_blank" rel="noopener">{t('docs.link')}</a>
             </div>
             <div className="contribute-card">
               <i className="fas fa-language" />
               <h3>{t('trans.title')}</h3>
               <p>{t('trans.desc')}</p>
-              <a href="https://github.com/benni1984/apiscan/discussions" className="card-link" target="_blank" rel="noopener">{t('trans.link')}</a>
+              <a href="https://github.com/benni1984/hivepulse/discussions" className="card-link" target="_blank" rel="noopener">{t('trans.link')}</a>
             </div>
             <div className="contribute-card">
               <i className="fas fa-flask" />
               <h3>{t('test.title')}</h3>
               <p>{t('test.desc')}</p>
-              <a href="https://github.com/benni1984/apiscan/discussions" className="card-link" target="_blank" rel="noopener">{t('test.link')}</a>
+              <a href="https://github.com/benni1984/hivepulse/discussions" className="card-link" target="_blank" rel="noopener">{t('test.link')}</a>
             </div>
             <div className="contribute-card">
               <i className="fas fa-share-alt" />
@@ -62,7 +62,7 @@ export default function ContributePage() {
           <div className="github-cta" data-aos="fade-up">
             <h2>{t('github.title')}</h2>
             <p>{t('github.desc')}</p>
-            <a href="https://github.com/benni1984/apiscan" className="btn-github" target="_blank" rel="noopener">
+            <a href="https://github.com/benni1984/hivepulse" className="btn-github" target="_blank" rel="noopener">
               <i className="fab fa-github" /> {t('github.btn')}
             </a>
           </div>

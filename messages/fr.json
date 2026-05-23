@@ -21,14 +21,14 @@
     "support": "Nous soutenir",
     "legal": "Mentions légales",
     "privacy": "Politique de confidentialité",
-    "copyright": "© 2025 ApiScan. Publié sous la licence MIT.",
+    "copyright": "© 2025 HivePulse. Publié sous la licence MIT.",
     "made": "Fait avec 🐝 pour les apiculteurs du monde entier."
   },
   "hero": {
     "badge": "Open Source · Communautaire · Gratuit",
     "title1": "Sauvons les abeilles,",
     "title2": "un scan à la fois",
-    "subtitle": "ApiScan fait de chaque apiculteur un scientifique citoyen. Enregistrez les inspections, suivez la santé des ruches et contribuez aux données mondiales qui aident les chercheurs à comprendre et protéger les populations d'abeilles.",
+    "subtitle": "HivePulse fait de chaque apiculteur un scientifique citoyen. Enregistrez les inspections, suivez la santé des ruches et contribuez aux données mondiales qui aident les chercheurs à comprendre et protéger les populations d'abeilles.",
     "apple": {
       "pre": "Télécharger sur l'",
       "store": "App Store"
@@ -50,7 +50,7 @@
   "feat": {
     "tag": "L'application",
     "title": "Tout ce dont un apiculteur a besoin",
-    "sub": "Du débutant passionné à l'exploitation commerciale, ApiScan évolue avec vous.",
+    "sub": "Du débutant passionné à l'exploitation commerciale, HivePulse évolue avec vous.",
     "qr": {
       "title": "Scannez & partez",
       "desc": "Collez un QR code sur chaque ruche. Scannez à l'arrivée et commencez l'inspection directement."
@@ -84,7 +84,7 @@
     "li2": "L'acarien varroa est la principale menace pour les colonies d'abeilles gérées",
     "li3": "Pesticides, perte d'habitat et changement climatique aggravent la situation",
     "li4": "Les données en temps réel des apiculteurs sont essentielles pour les systèmes d'alerte précoce",
-    "callout": "Quand vous enregistrez une inspection dans ApiScan, vous ne gérez pas seulement votre ruche — vous ajoutez un point de données à un réseau mondial d'alerte précoce."
+    "callout": "Quand vous enregistrez une inspection dans HivePulse, vous ne gérez pas seulement votre ruche — vous ajoutez un point de données à un réseau mondial d'alerte précoce."
   },
   "hex1": {
     "label": "des cultures à fleurs dépendent de la pollinisation animale"
@@ -145,7 +145,7 @@
   "support": {
     "tag": "Soutenir la mission",
     "title": "Gardons les ruches bourdonnantes",
-    "sub": "ApiScan est gratuit. Une petite contribution maintient les serveurs en fonctionnement, finance de nouvelles fonctionnalités et soutient nos partenariats de recherche."
+    "sub": "HivePulse est gratuit. Une petite contribution maintient les serveurs en fonctionnement, finance de nouvelles fonctionnalités et soutient nos partenariats de recherche."
   },
   "price": {
     "free": {
@@ -176,7 +176,7 @@
     "donate": {
       "tier": "Don unique",
       "price": "Votre choix",
-      "note": "Chaque contribution, quelle que soit sa taille, aide à maintenir ApiScan indépendant, sans publicité et accessible à tous."
+      "note": "Chaque contribution, quelle que soit sa taille, aide à maintenir HivePulse indépendant, sans publicité et accessible à tous."
     }
   },
   "btn": {
@@ -187,7 +187,7 @@
   },
   "dl": {
     "tag": "Commencer aujourd'hui",
-    "title": "Téléchargez ApiScan — c'est gratuit",
+    "title": "Téléchargez HivePulse — c'est gratuit",
     "sub": "Disponible sur iOS et Android. Scannez votre première ruche en moins de deux minutes."
   },
   "map": {
@@ -216,12 +216,12 @@
   "news": {
     "tag": "Mises à jour",
     "title": "Actualités & Annonces",
-    "sub": "Nouvelles fonctionnalités, partenariats de recherche, jalons de conservation et tout ce qui se passe dans la communauté ApiScan."
+    "sub": "Nouvelles fonctionnalités, partenariats de recherche, jalons de conservation et tout ce qui se passe dans la communauté HivePulse."
   },
   "contrib": {
     "tag": "Open Source",
-    "title": "Aidez à construire ApiScan",
-    "sub": "ApiScan est un projet open source construit par et pour la communauté apicole.",
+    "title": "Aidez à construire HivePulse",
+    "sub": "HivePulse est un projet open source construit par et pour la communauté apicole.",
     "ways": {
       "title": "Comment contribuer",
       "sub": "Vous n'avez pas besoin d'être programmeur pour aider."
@@ -253,12 +253,12 @@
     },
     "spread": {
       "title": "Faire passer le mot",
-      "desc": "Parlez d'ApiScan à votre association apicole ou communauté en ligne.",
+      "desc": "Parlez d'HivePulse à votre association apicole ou communauté en ligne.",
       "link": "Partager le lien →"
     },
     "github": {
       "title": "🐝 La ruche est sur GitHub",
-      "desc": "ApiScan est totalement open source sous la licence MIT.",
+      "desc": "HivePulse est totalement open source sous la licence MIT.",
       "btn": "Voir sur GitHub"
     }
   },
@@ -297,7 +297,7 @@
   "privacy": {
     "title": "Politique de confidentialité",
     "updated": "Dernière mise à jour : mai 2026",
-    "intro": "ApiScan est une application d'apiculture open source. Cette politique explique les données que nous collectons, pourquoi nous les utilisons et les choix qui s'offrent à vous, notamment la façon dont vous contrôlez si votre rucher apparaît sur la carte publique.",
+    "intro": "HivePulse est une application d'apiculture open source. Cette politique explique les données que nous collectons, pourquoi nous les utilisons et les choix qui s'offrent à vous, notamment la façon dont vous contrôlez si votre rucher apparaît sur la carte publique.",
     "s1title": "1. Données collectées",
     "s1body": "Lors de l'inscription : votre adresse e-mail, votre nom d'affichage et votre langue préférée. Lors de l'utilisation de l'app : noms de ruchers et coordonnées GPS (si vous les saisissez), détails des ruches et registres d'inspections. Nous ne collectons ni identifiants d'appareil, ni identifiants publicitaires, ni données de localisation précises sans que vous les saisissiez explicitement.",
     "s2title": "2. Carte publique — opt-in",
@@ -307,17 +307,17 @@
     "s4title": "4. Base légale (RGPD)",
     "s4body": "Pour les utilisateurs UE/EEE, nous traitons vos données sur la base de l'exécution du contrat (Art. 6(1)(b) RGPD) pour les fonctions principales de l'app, et sur la base de votre consentement explicite (Art. 6(1)(a) RGPD) pour la carte publique. Vous pouvez retirer votre consentement à tout moment.",
     "s5title": "5. Conservation des données",
-    "s5body": "Vos données sont conservées tant que votre compte est actif. Vous pouvez demander leur suppression complète à privacy@apiscan.app — nous supprimerons votre compte et tous les enregistrements associés dans les 30 jours.",
+    "s5body": "Vos données sont conservées tant que votre compte est actif. Vous pouvez demander leur suppression complète à privacy@HivePulse.app — nous supprimerons votre compte et tous les enregistrements associés dans les 30 jours.",
     "s6title": "6. Vos droits",
-    "s6body": "Conformément au RGPD, vous disposez des droits d'accès, de rectification, d'effacement et de portabilité de vos données. Contact : privacy@apiscan.app.",
+    "s6body": "Conformément au RGPD, vous disposez des droits d'accès, de rectification, d'effacement et de portabilité de vos données. Contact : privacy@HivePulse.app.",
     "s7title": "7. Sécurité",
     "s7body": "Les mots de passe sont hachés avec bcrypt. L'accès à l'API nécessite un jeton JWT signé. Les données en transit sont chiffrées via TLS.",
     "s8title": "8. Contact",
-    "s8body": "Des questions sur cette politique ou vos données ? Écrivez-nous à privacy@apiscan.app."
+    "s8body": "Des questions sur cette politique ou vos données ? Écrivez-nous à privacy@HivePulse.app."
   },
   "dash": {
     "login": {
-      "title": "Se connecter à ApiScan",
+      "title": "Se connecter à HivePulse",
       "email": "E-mail",
       "password": "Mot de passe",
       "submit": "Se connecter",
@@ -635,13 +635,13 @@
       "cta": "Obtenir l'app",
       "note": "Passez à Supporter (2,99 € / mois) dans l'app après inscription.",
       "loginTitle": "Connectez-vous pour voir les statistiques en direct",
-      "loginDesc": "Connectez-vous avec votre compte ApiScan pour accéder aux données mondiales de la communauté en temps réel.",
+      "loginDesc": "Connectez-vous avec votre compte HivePulse pour accéder aux données mondiales de la communauté en temps réel.",
       "loginCta": "Se connecter",
       "openDashboard": "Ouvrir le tableau de bord communautaire"
     },
     "benefits": {
       "title": "Ce que les supporters obtiennent",
-      "sub": "Chaque euro va directement au maintien de l'indépendance d'ApiScan et au financement des partenariats de recherche."
+      "sub": "Chaque euro va directement au maintien de l'indépendance d'HivePulse et au financement des partenariats de recherche."
     },
     "b1": {
       "title": "Tableau de bord santé mondial",

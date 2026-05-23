@@ -1,4 +1,4 @@
-# ApiScan — API Contract
+# HivePulse — API Contract
 
 Base URL: `http://<host>:8000/api/v1`
 
