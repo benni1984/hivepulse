@@ -7,7 +7,7 @@ export default defineConfig({
   retries: 1,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   use: {
-    baseURL: 'https://HivePulse-staging.vercel.app',
+    baseURL: 'https://hivepulse-staging.vercel.app',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
