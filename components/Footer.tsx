@@ -1,15 +1,9 @@
-'use client';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { usePathname } from '@/i18n/navigation';
 
 export default function Footer() {
   const t = useTranslations('footer');
   const tn = useTranslations('nav');
-  const pathname = usePathname();
-
-  // Don't render the public footer inside the dashboard shell
-  if (pathname.startsWith('/dashboard')) return null;
 
   return (
     <footer className="site-footer">

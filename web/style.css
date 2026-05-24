@@ -921,7 +921,7 @@ tr:last-child td { border-bottom: none; }
 }
 .dash-logo {
   text-decoration: none;
-  display: flex; align-items: center; gap: 12px;
+  display: block;
   padding: 24px 20px 20px;
   border-bottom: 1px solid rgba(255,255,255,.10);
   margin-bottom: 0;
