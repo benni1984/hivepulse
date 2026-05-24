@@ -24,8 +24,15 @@ test('profile page: update display name saves successfully', async ({ page }) =>
   await nameInput.clear();
   await nameInput.fill(currentName || 'Demo Beekeeper');
 
-  await page.locator('.dash-profile-card').first().locator('button.dash-submit-btn').click();
-  await expect(page.locator('.dash-success-banner')).toBeVisible({ timeout: 10_000 });
+  const [response] = await Promise.all([
+    page.waitForResponse(resp =>
+      resp.url().includes('/users/me') && resp.request().method() === 'PUT',
+      { timeout: 20_000 }
+    ),
+    page.locator('.dash-profile-card').first().locator('button.dash-submit-btn').click(),
+  ]);
+  expect(response.status()).toBe(200);
+  await expect(page.locator('.dash-success-banner')).toBeVisible({ timeout: 5_000 });
 });
 
 test('profile page: mismatched new passwords show error without sending request', async ({ page }) => {
