@@ -18,8 +18,11 @@ test('profile page: update display name saves successfully', async ({ page }) =>
   await page.goto('/dashboard/profile');
   await expect(page.locator('.spinner')).not.toBeVisible({ timeout: 15_000 });
 
-  // Change name (keep same value so we don't mutate staging data permanently)
+  // Wait for form to hydrate with user data (name + locale are set together in one render)
   const nameInput = page.locator('input[type="text"]').first();
+  await expect(nameInput).not.toHaveValue('', { timeout: 10_000 });
+
+  // Change name (keep same value so we don't mutate staging data permanently)
   const currentName = await nameInput.inputValue();
   await nameInput.clear();
   await nameInput.fill(currentName || 'Demo Beekeeper');
