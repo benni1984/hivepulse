@@ -55,16 +55,31 @@ export default function QrBatchDetailPage() {
           <div className="dash-profile-card" style={{ marginBottom: 24 }}>
             <div className="dash-stat-row">
               <div className="dash-stat-pill">
-                <span className="dash-stat-value">{batch.count}</span>
-                <span className="dash-stat-label">{t('qrBatches.total')}</span>
+                <div className="dash-stat-pill-header">
+                  <span className="lbl">{t('qrBatches.total')}</span>
+                  <div className="dash-stat-icon dash-stat-icon-amber">
+                    <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                  </div>
+                </div>
+                <div className="num">{batch.count}</div>
               </div>
               <div className="dash-stat-pill">
-                <span className="dash-stat-value">{linkedCount}</span>
-                <span className="dash-stat-label">{t('qrBatches.linked')}</span>
+                <div className="dash-stat-pill-header">
+                  <span className="lbl">{t('qrBatches.linked')}</span>
+                  <div className="dash-stat-icon dash-stat-icon-green">
+                    <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  </div>
+                </div>
+                <div className="num">{linkedCount}</div>
               </div>
               <div className="dash-stat-pill">
-                <span className="dash-stat-value">{new Date(batch.created_at).toLocaleDateString()}</span>
-                <span className="dash-stat-label">{t('qrBatches.date')}</span>
+                <div className="dash-stat-pill-header">
+                  <span className="lbl">{t('qrBatches.date')}</span>
+                  <div className="dash-stat-icon dash-stat-icon-blue">
+                    <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  </div>
+                </div>
+                <div className="num" style={{ fontSize: '1.25rem' }}>{new Date(batch.created_at).toLocaleDateString()}</div>
               </div>
             </div>
             {dlError && <div className="dash-error-banner" style={{ marginTop: 12 }}>{dlError}</div>}

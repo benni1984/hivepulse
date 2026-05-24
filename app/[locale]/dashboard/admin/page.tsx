@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
@@ -44,15 +44,15 @@ export default function AdminStatsPage() {
       {!loading && stats && tokens && (
         <>
           <div className="dash-stat-row" style={{ flexWrap: 'wrap', gap: '0.75rem', marginBottom: '2rem' }}>
-            <StatPill label={t('admin.stats.totalUsers')} value={stats.total_users} />
-            <StatPill label={t('admin.stats.newUsers')} value={stats.new_users_in_period} />
-            <StatPill label={t('admin.stats.supporters')} value={stats.supporter_count} />
-            <StatPill label={t('admin.stats.activeUsers')} value={stats.active_users_30d} />
-            <StatPill label={t('admin.stats.totalApiaries')} value={stats.total_apiaries} />
-            <StatPill label={t('admin.stats.publicApiaries')} value={stats.public_apiaries} />
-            <StatPill label={t('admin.stats.totalHives')} value={stats.total_hives} />
-            <StatPill label={t('admin.stats.totalInspections')} value={stats.total_inspections} />
-            <StatPill label={t('admin.stats.activeSessions')} value={tokens.total_active_sessions} />
+            <StatPill label={t('admin.stats.totalUsers')} value={stats.total_users} color="amber" />
+            <StatPill label={t('admin.stats.newUsers')} value={stats.new_users_in_period} color="green" />
+            <StatPill label={t('admin.stats.supporters')} value={stats.supporter_count} color="amber" />
+            <StatPill label={t('admin.stats.activeUsers')} value={stats.active_users_30d} color="green" />
+            <StatPill label={t('admin.stats.totalApiaries')} value={stats.total_apiaries} color="amber" />
+            <StatPill label={t('admin.stats.publicApiaries')} value={stats.public_apiaries} color="blue" />
+            <StatPill label={t('admin.stats.totalHives')} value={stats.total_hives} color="amber" />
+            <StatPill label={t('admin.stats.totalInspections')} value={stats.total_inspections} color="amber" />
+            <StatPill label={t('admin.stats.activeSessions')} value={tokens.total_active_sessions} color="blue" />
           </div>
 
           <h2 className="dash-section-title">Signups by day</h2>
@@ -81,11 +81,20 @@ export default function AdminStatsPage() {
   );
 }
 
-function StatPill({ label, value }: { label: string; value: number }) {
+function StatPill({ label, value, color = 'amber' }: { label: string; value: number; color?: 'amber' | 'red' | 'green' | 'blue' }) {
+  const icons: Record<string, React.ReactNode> = {
+    amber: <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
+    red:   <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+    green: <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>,
+    blue:  <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>,
+  };
   return (
     <div className="dash-stat-pill">
-      <span className="num">{value.toLocaleString()}</span>
-      <span className="lbl">{label}</span>
+      <div className="dash-stat-pill-header">
+        <span className="lbl">{label}</span>
+        <div className={`dash-stat-icon dash-stat-icon-${color}`}>{icons[color]}</div>
+      </div>
+      <div className="num">{value.toLocaleString()}</div>
     </div>
   );
 }

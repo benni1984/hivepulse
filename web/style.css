@@ -908,7 +908,7 @@ tr:last-child td { border-bottom: none; }
   background: #0f2d1c;
   color: #fff;
   font-family: 'DM Sans', system-ui, sans-serif;
-  padding: 16px 12px;
+  padding: 0;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -943,11 +943,11 @@ tr:last-child td { border-bottom: none; }
 .dash-user-info { min-width: 0; }
 .dash-user-name { font-size: .85rem; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dash-user-email { font-size: .72rem; color: rgba(255,255,255,.5); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dash-nav { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.dash-nav { flex: 1; display: flex; flex-direction: column; gap: 2px; padding: 0 12px; }
 .dash-nav-link {
   display: flex; align-items: center; gap: 12px;
   color: rgba(255,255,255,.6); text-decoration: none;
-  padding: 9px 12px; border-radius: 8px; font-size: .875rem; font-weight: 500;
+  padding: 10px 12px; border-radius: 8px; font-size: .875rem; font-weight: 500;
   transition: all .15s; position: relative;
 }
 .dash-nav-link svg { flex-shrink: 0; }
@@ -958,9 +958,10 @@ tr:last-child td { border-bottom: none; }
   width: 3px; background: var(--amber); border-radius: 0 3px 3px 0;
 }
 .dash-logout {
-  margin-top: auto; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+  display: block; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
   color: rgba(255,255,255,.9); padding: 8px 16px; border-radius: 6px;
-  cursor: pointer; font-size: .85rem; width: 100%; margin-top: 16px;
+  cursor: pointer; font-size: .85rem; margin: auto 12px 16px;
+  width: calc(100% - 24px); box-sizing: border-box; text-align: center;
 }
 .dash-logout:hover { background: rgba(255,255,255,.2); }
 .dash-main { flex: 1; padding: 0; min-width: 0; background: var(--surface); overflow-y: auto; }

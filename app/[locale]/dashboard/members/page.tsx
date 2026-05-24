@@ -113,16 +113,31 @@ export default function MembersDashboardPage() {
           <h2 className="dash-section-title">{t('community.snapshot')}</h2>
           <div className="dash-stat-row">
             <div className="dash-stat-pill">
-              <span className="num">{stats.apiary_count.toLocaleString()}</span>
-              <span className="lbl">{t('overview.apiaries')}</span>
+              <div className="dash-stat-pill-header">
+                <span className="lbl">{t('overview.apiaries')}</span>
+                <div className="dash-stat-icon dash-stat-icon-amber">
+                  <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                </div>
+              </div>
+              <div className="num">{stats.apiary_count.toLocaleString()}</div>
             </div>
             <div className="dash-stat-pill">
-              <span className="num">{stats.hive_count.toLocaleString()}</span>
-              <span className="lbl">{t('overview.hives')}</span>
+              <div className="dash-stat-pill-header">
+                <span className="lbl">{t('overview.hives')}</span>
+                <div className="dash-stat-icon dash-stat-icon-amber">
+                  <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <div className="num">{stats.hive_count.toLocaleString()}</div>
             </div>
             <div className="dash-stat-pill">
-              <span className="num">{stats.inspection_count.toLocaleString()}</span>
-              <span className="lbl">{t('overview.inspections')}</span>
+              <div className="dash-stat-pill-header">
+                <span className="lbl">{t('overview.inspections')}</span>
+                <div className="dash-stat-icon dash-stat-icon-amber">
+                  <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                </div>
+              </div>
+              <div className="num">{stats.inspection_count.toLocaleString()}</div>
             </div>
           </div>
 
@@ -130,20 +145,40 @@ export default function MembersDashboardPage() {
           <h2 className="dash-section-title" style={{ marginTop: 32 }}>{t('community.health')}</h2>
           <div className="dash-stat-row">
             <div className="dash-stat-pill">
-              <span className="num">{stats.avg_varroa_count != null ? stats.avg_varroa_count.toFixed(1) : '—'}</span>
-              <span className="lbl">{t('community.avgVarroa')}</span>
+              <div className="dash-stat-pill-header">
+                <span className="lbl">{t('community.avgVarroa')}</span>
+                <div className="dash-stat-icon dash-stat-icon-red">
+                  <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+              </div>
+              <div className="num">{stats.avg_varroa_count != null ? stats.avg_varroa_count.toFixed(1) : '—'}</div>
             </div>
             <div className="dash-stat-pill">
-              <span className="num">{calmPct != null ? `${calmPct}%` : '—'}</span>
-              <span className="lbl">{t('community.goodMood')}</span>
+              <div className="dash-stat-pill-header">
+                <span className="lbl">{t('community.goodMood')}</span>
+                <div className="dash-stat-icon dash-stat-icon-green">
+                  <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                </div>
+              </div>
+              <div className="num">{calmPct != null ? `${calmPct}%` : '—'}</div>
             </div>
             <div className="dash-stat-pill">
-              <span className="num">{stats.avg_brood_frames != null ? stats.avg_brood_frames.toFixed(1) : '—'}</span>
-              <span className="lbl">{t('community.avgBrood')}</span>
+              <div className="dash-stat-pill-header">
+                <span className="lbl">{t('community.avgBrood')}</span>
+                <div className="dash-stat-icon dash-stat-icon-green">
+                  <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                </div>
+              </div>
+              <div className="num">{stats.avg_brood_frames != null ? stats.avg_brood_frames.toFixed(1) : '—'}</div>
             </div>
             <div className="dash-stat-pill">
-              <span className="num">{stats.avg_inspection_interval_days != null ? `${stats.avg_inspection_interval_days}d` : '—'}</span>
-              <span className="lbl">{t('community.interval')}</span>
+              <div className="dash-stat-pill-header">
+                <span className="lbl">{t('community.interval')}</span>
+                <div className="dash-stat-icon dash-stat-icon-blue">
+                  <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+              </div>
+              <div className="num">{stats.avg_inspection_interval_days != null ? `${stats.avg_inspection_interval_days}d` : '—'}</div>
             </div>
           </div>
 
