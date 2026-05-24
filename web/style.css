@@ -919,6 +919,16 @@ tr:last-child td { border-bottom: none; }
   scrollbar-width: thin;
   scrollbar-color: rgba(255,255,255,.1) transparent;
 }
+.dash-logo {
+  text-decoration: none;
+  display: block;
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  margin-bottom: 0;
+}
+.dash-logo-name { font-size: 1.25rem; font-weight: 800; color: #fff; line-height: 1; letter-spacing: -.02em; }
+.dash-logo-name strong { font-weight: 800; color: var(--amber); }
+.dash-logo-tagline { font-size: .72rem; color: rgba(255,255,255,.45); margin-top: 6px; font-weight: 500; }
 .dash-user {
   margin: 16px; padding: 14px;
   border-radius: 12px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
