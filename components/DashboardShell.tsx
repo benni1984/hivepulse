@@ -9,19 +9,6 @@ function initials(name: string) {
   return name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
 }
 
-const HivePulseLogo = () => (
-  <svg width="36" height="36" viewBox="0 0 44 44" aria-hidden="true" style={{ flexShrink: 0 }}>
-    <polygon points="22,2 39.12,12 39.12,32 22,42 4.88,32 4.88,12" fill="#f59e0b"/>
-    <polygon points="22,4.5 37,13.5 37,30.5 22,39.5 7,30.5 7,13.5" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1"/>
-    <polygon points="22,11 26.76,13.75 26.76,19.25 22,22 17.24,19.25 17.24,13.75" fill="rgba(255,255,255,0.18)" stroke="white" strokeWidth="1.4" strokeLinejoin="round"/>
-    <polygon points="17.24,19.25 22,22 22,27.5 17.24,30.25 12.48,27.5 12.48,22" fill="rgba(255,255,255,0.18)" stroke="white" strokeWidth="1.4" strokeLinejoin="round"/>
-    <polygon points="26.76,19.25 31.52,22 31.52,27.5 26.76,30.25 22,27.5 22,22" fill="rgba(255,255,255,0.18)" stroke="white" strokeWidth="1.4" strokeLinejoin="round"/>
-    <path d="M6,27 C12,27 15,24 20,25 C25,26 27,17 31,15 C34,14 36.5,13.5 36.5,13.5" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity={0.9}/>
-    <circle cx="6" cy="27" r="1.5" fill="white" opacity={0.55}/>
-    <circle cx="36.5" cy="13.5" r="2.2" fill="white" opacity={0.95}/>
-  </svg>
-);
-
 const I = {
   home:   <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
   stats:  <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
@@ -71,14 +58,6 @@ export default function DashboardShell({ children, adminOnly = false, memberOnly
     <div className="dash-overlay">
       <div className="dash-shell">
         <aside className="dash-sidebar">
-
-          <Link href="/" className="dash-logo">
-            <HivePulseLogo />
-            <div>
-              <div className="dash-logo-name">Hive<strong>Pulse</strong></div>
-              <div className="dash-logo-tagline">Hive Inspection Platform</div>
-            </div>
-          </Link>
 
           <div className="dash-user">
             <div className="dash-user-avatar">{initials(user.name)}</div>

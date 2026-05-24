@@ -304,8 +304,8 @@ body {
 
 .nav-login {
   display: inline-block;
-  color: rgba(255,255,255,.9);
-  border: 1.5px solid rgba(255,255,255,.35);
+  color: var(--amber);
+  border: 1.5px solid rgba(245,158,11,.5);
   font-weight: 600;
   font-size: .84rem;
   padding: 7px 16px;
@@ -316,9 +316,9 @@ body {
   flex-shrink: 0;
 }
 .nav-login:hover {
-  background: rgba(255,255,255,.14);
-  border-color: rgba(255,255,255,.6);
-  color: #fff;
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #1c1917;
 }
 
 /* ── Nav user account dropdown (logged-in) ────────────────── */
@@ -505,7 +505,9 @@ body {
 }
 
 .footer-logo {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-size: 1.2rem;
   font-weight: 800;
   color: #fff;
@@ -906,7 +908,7 @@ tr:last-child td { border-bottom: none; }
   background: #0f2d1c;
   color: #fff;
   font-family: 'DM Sans', system-ui, sans-serif;
-  padding: 20px 12px;
+  padding: 16px 12px;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;

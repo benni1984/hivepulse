@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -56,16 +57,43 @@ export default function HomePage() {
             <p>{t('feat.sub')}</p>
           </div>
           <div className="features-grid">
-            {[
-              { icon: '📱', key: 'qr', delay: 0 },
-              { icon: '📊', key: 'track', delay: 80 },
-              { icon: '🌍', key: 'global', delay: 160 },
-              { icon: '📈', key: 'trends', delay: 240 },
-              { icon: '🖨️', key: 'batch', delay: 320 },
-              { icon: '🔒', key: 'privacy', delay: 400 },
-            ].map(({ icon, key, delay }) => (
+            {([
+              { key: 'qr', delay: 0, icon: (
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                  <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+                  <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+                </svg>
+              )},
+              { key: 'track', delay: 80, icon: (
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                  <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                </svg>
+              )},
+              { key: 'global', delay: 160, icon: (
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+              )},
+              { key: 'trends', delay: 240, icon: (
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>
+                </svg>
+              )},
+              { key: 'batch', delay: 320, icon: (
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                  <polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>
+                </svg>
+              )},
+              { key: 'privacy', delay: 400, icon: (
+                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              )},
+            ] as { key: string; delay: number; icon: React.ReactNode }[]).map(({ icon, key, delay }) => (
               <div key={key} className="feature-card" data-aos="fade-up" data-aos-delay={delay}>
-                <span className="feature-icon">{icon}</span>
+                <div className="feature-icon-box">{icon}</div>
                 <h3>{t(`feat.${key}.title` as never)}</h3>
                 <p>{t(`feat.${key}.desc` as never)}</p>
               </div>

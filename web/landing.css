@@ -373,10 +373,22 @@
   background: #fff;
 }
 
-.feature-icon {
-  font-size: 2rem;
-  margin-bottom: 16px;
-  display: block;
+.feature-icon-box {
+  width: 52px;
+  height: 52px;
+  background: var(--amber-light);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+.feature-icon-box svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--amber-dark);
+  fill: none;
 }
 
 .feature-card h3 {
