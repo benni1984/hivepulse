@@ -59,11 +59,6 @@ export default function DashboardShell({ children, adminOnly = false, memberOnly
       <div className="dash-shell">
         <aside className="dash-sidebar">
 
-          <Link href="/" className="dash-logo">
-            <div className="dash-logo-name">Hive<strong>Pulse</strong></div>
-            <div className="dash-logo-tagline">Hive Inspection Platform</div>
-          </Link>
-
           <div className="dash-user">
             <div className="dash-user-avatar">{initials(user.name)}</div>
             <div className="dash-user-info">
