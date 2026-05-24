@@ -33,6 +33,9 @@ export default function Nav({ locale }: { locale: string }) {
   const router = useRouter();
   const isHome = pathname === '/';
 
+  // Don't render the public nav inside the dashboard shell
+  if (pathname.startsWith('/dashboard')) return null;
+
   // Detect login state from localStorage (client-only)
   useEffect(() => {
     setIsLoggedIn(!!localStorage.getItem('access_token'));
