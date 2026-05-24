@@ -224,17 +224,32 @@ export default function ApiaryPage() {
           {stats && (
             <div className="dash-stat-row">
               <div className="dash-stat-pill">
-                <span className="num">{stats.hive_count}</span>
-                <span className="lbl">{t('apiary.hives')}</span>
+                <div className="dash-stat-pill-header">
+                  <span className="lbl">{t('apiary.hives')}</span>
+                  <div className="dash-stat-icon dash-stat-icon-amber">
+                    <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                  </div>
+                </div>
+                <div className="num">{stats.hive_count}</div>
               </div>
               <div className="dash-stat-pill">
-                <span className="num">{stats.inspections_total}</span>
-                <span className="lbl">{t('apiary.inspections')}</span>
+                <div className="dash-stat-pill-header">
+                  <span className="lbl">{t('apiary.inspections')}</span>
+                  <div className="dash-stat-icon dash-stat-icon-amber">
+                    <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                  </div>
+                </div>
+                <div className="num">{stats.inspections_total}</div>
               </div>
               {stats.average_varroa != null && (
                 <div className="dash-stat-pill">
-                  <span className="num">{stats.average_varroa.toFixed(1)}</span>
-                  <span className="lbl">{t('apiary.avgVarroa')}</span>
+                  <div className="dash-stat-pill-header">
+                    <span className="lbl">{t('apiary.avgVarroa')}</span>
+                    <div className="dash-stat-icon dash-stat-icon-red">
+                      <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    </div>
+                  </div>
+                  <div className="num">{stats.average_varroa.toFixed(1)}</div>
                 </div>
               )}
             </div>

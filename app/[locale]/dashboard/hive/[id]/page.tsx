@@ -254,8 +254,13 @@ export default function HivePage() {
           {stats && (
             <div className="dash-stat-row">
               <div className="dash-stat-pill">
-                <span className="num">{stats.inspection_count}</span>
-                <span className="lbl">{t('hive.inspections')}</span>
+                <div className="dash-stat-pill-header">
+                  <span className="lbl">{t('hive.inspections')}</span>
+                  <div className="dash-stat-icon dash-stat-icon-amber">
+                    <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                  </div>
+                </div>
+                <div className="num">{stats.inspection_count}</div>
               </div>
             </div>
           )}

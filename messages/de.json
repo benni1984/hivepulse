@@ -336,6 +336,8 @@
       "errorGeneric": "Registrierung fehlgeschlagen. Bitte erneut versuchen."
     },
     "nav": {
+      "sectionBeekeeping": "Imkerei",
+      "sectionCommunity": "Gemeinschaft",
       "apiaries": "Meine Bienenstände",
       "stats": "Meine Statistiken",
       "qrBatches": "QR-Batches",

@@ -336,6 +336,8 @@
       "errorGeneric": "Inscription échouée. Veuillez réessayer."
     },
     "nav": {
+      "sectionBeekeeping": "Apiculture",
+      "sectionCommunity": "Communauté",
       "apiaries": "Mes ruchers",
       "stats": "Mes statistiques",
       "qrBatches": "Lots QR",

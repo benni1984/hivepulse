@@ -336,6 +336,8 @@
       "errorGeneric": "Registration failed. Please try again."
     },
     "nav": {
+      "sectionBeekeeping": "Beekeeping",
+      "sectionCommunity": "Community",
       "apiaries": "My Apiaries",
       "stats": "My Statistics",
       "qrBatches": "QR Batches",

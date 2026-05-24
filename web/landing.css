@@ -19,7 +19,7 @@
 .roadmap-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 20px;
   padding: 24px 20px;
   display: flex;
   flex-direction: column;
@@ -362,7 +362,7 @@
 .feature-card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 28px 24px;
   transition: transform .25s, box-shadow .25s, border-color .25s;
 }

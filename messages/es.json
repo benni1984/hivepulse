@@ -336,6 +336,8 @@
       "errorGeneric": "Error al registrarse. Inténtalo de nuevo."
     },
     "nav": {
+      "sectionBeekeeping": "Apicultura",
+      "sectionCommunity": "Comunidad",
       "apiaries": "Mis colmenares",
       "stats": "Mis estadísticas",
       "qrBatches": "Lotes QR",
