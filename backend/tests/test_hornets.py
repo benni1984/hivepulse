@@ -497,3 +497,49 @@ def test_stats_includes_total_traps(client):
     _create_trap(client, {**_TRAP_PAYLOAD, "name": "Zweite Falle"})
     data = client.get("/api/v1/hornets/stats").json()
     assert data["total_traps"] >= 2
+
+
+# ---------------------------------------------------------------------------
+# Authenticated trap management (issue #135)
+# ---------------------------------------------------------------------------
+
+
+def test_create_trap_links_user_when_authenticated(auth_client):
+    """Trap created while authenticated should be linked to the user."""
+    r = auth_client.post("/api/v1/hornets/traps", json=_TRAP_PAYLOAD)
+    assert r.status_code == 201
+    trap = r.json()
+
+    # The trap should appear in the user's list
+    r2 = auth_client.get("/api/v1/hornets/traps")
+    assert r2.status_code == 200
+    codes = [t["access_code"] for t in r2.json()]
+    assert trap["access_code"] in codes
+
+
+def test_list_my_traps_requires_auth(client):
+    """GET /hornets/traps without auth should return 401/422."""
+    r = client.get("/api/v1/hornets/traps")
+    assert r.status_code in (401, 422)
+
+
+def test_list_my_traps_empty(auth_client):
+    """Returns empty list when the user has no traps."""
+    r = auth_client.get("/api/v1/hornets/traps")
+    assert r.status_code == 200
+    assert r.json() == []
+
+
+def test_list_my_traps_excludes_other_users_traps(auth_client, auth_client2):
+    """Traps created by another user are not returned."""
+    auth_client.post("/api/v1/hornets/traps", json=_TRAP_PAYLOAD)
+
+    r = auth_client2.get("/api/v1/hornets/traps")
+    assert r.status_code == 200
+    assert r.json() == []
+
+
+def test_create_trap_anonymous_not_linked(client):
+    """Anonymous trap creation should still work but have no user_id."""
+    r = client.post("/api/v1/hornets/traps", json=_TRAP_PAYLOAD)
+    assert r.status_code == 201

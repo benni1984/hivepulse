@@ -613,6 +613,16 @@
       "other": "Otro / Desconocido",
       "noData": "No hay datos de comunidad disponibles.",
       "mapSection": "Mapa de salud regional"
+    },
+    "traps": {
+      "myTitle": "Mis trampas para avispas",
+      "myEmpty": "Aún no tienes trampas registradas.",
+      "register": "Registrar trampa",
+      "manage": "Gestionar",
+      "name": "Nombre",
+      "code": "Código de acceso",
+      "totalCaught": "Total capturado",
+      "lastCatch": "Última captura"
     }
   },
   "members": {
@@ -732,7 +742,9 @@
       "locationRequired": "La latitud y longitud son obligatorias para reportes de nido.",
       "submitError": "Error al enviar. Por favor, inténtalo de nuevo.",
       "submit": "Enviar",
-      "success": "¡Gracias! Tu reporte ha sido enviado."
+      "success": "¡Gracias! Tu reporte ha sido enviado.",
+      "trap": "Registrar en mi trampa (opcional)",
+      "trapNone": "— Sin trampa (reporte anónimo) —"
     },
     "community": {
       "title": "Identificación comunitaria",

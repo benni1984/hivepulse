@@ -5,11 +5,13 @@ import React from 'react';
 const mockReplace = vi.hoisted(() => vi.fn());
 const mockGetPublicStats = vi.hoisted(() => vi.fn());
 const mockGetCommunityHeatmap = vi.hoisted(() => vi.fn());
+const mockGetMyTraps = vi.hoisted(() => vi.fn());
 const mockUseDashboardAuth = vi.hoisted(() => vi.fn());
 
 vi.mock('@/lib/api', () => ({
   getPublicStats: mockGetPublicStats,
   getCommunityHeatmap: mockGetCommunityHeatmap,
+  getMyTraps: mockGetMyTraps,
   logout: vi.fn(),
 }));
 
@@ -44,6 +46,14 @@ vi.mock('next-intl', () => ({
       'overview.apiaries': 'Apiaries',
       'overview.hives': 'Hives',
       'overview.inspections': 'Inspections',
+      'traps.myTitle': 'My Hornet Traps',
+      'traps.myEmpty': 'You have no registered traps yet.',
+      'traps.register': 'Register a Trap',
+      'traps.manage': 'Manage',
+      'traps.name': 'Name',
+      'traps.code': 'Access Code',
+      'traps.totalCaught': 'Total Caught',
+      'traps.lastCatch': 'Last Catch',
     };
     return map[key] ?? key;
   },
@@ -110,7 +120,9 @@ describe('MembersDashboardPage', () => {
   beforeEach(() => {
     mockGetPublicStats.mockReset();
     mockGetCommunityHeatmap.mockReset();
+    mockGetMyTraps.mockReset();
     mockGetCommunityHeatmap.mockResolvedValue(HEATMAP);
+    mockGetMyTraps.mockResolvedValue([]);
     mockReplace.mockReset();
   });
 

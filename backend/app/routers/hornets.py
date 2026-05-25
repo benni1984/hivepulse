@@ -3,7 +3,7 @@ from datetime import datetime, date
 
 from fastapi import APIRouter, HTTPException, Query, status
 
-from app.deps import DB
+from app.deps import DB, CurrentUser, OptionalUser
 from app.models import HornetCatch, HornetNest, HornetSighting, HornetTrap, HornetTrapCatch
 from app.schemas import (
     HornetCatchCreate,
@@ -211,14 +211,27 @@ def _trap_to_out(trap: HornetTrap) -> HornetTrapOut:
     )
 
 
+@router.get("/traps")
+def list_my_traps(current_user: CurrentUser, db: DB) -> list[HornetTrapOut]:
+    """Return all traps owned by the authenticated user."""
+    traps = (
+        db.query(HornetTrap)
+        .filter(HornetTrap.user_id == current_user.id)
+        .order_by(HornetTrap.created_at.desc())
+        .all()
+    )
+    return [_trap_to_out(t) for t in traps]
+
+
 @router.post("/traps", status_code=status.HTTP_201_CREATED)
-def create_trap(body: HornetTrapCreate, db: DB) -> HornetTrapOut:
+def create_trap(body: HornetTrapCreate, db: DB, current_user: OptionalUser) -> HornetTrapOut:
     trap = HornetTrap(
         name=body.name,
         latitude=body.latitude,
         longitude=body.longitude,
         notes=body.notes,
         owner_name=body.owner_name,
+        user_id=current_user.id if current_user else None,
     )
     db.add(trap)
     db.commit()

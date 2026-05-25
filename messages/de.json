@@ -613,6 +613,16 @@
       "other": "Andere / Unbekannt",
       "noData": "Keine Community-Daten verfügbar.",
       "mapSection": "Regionale Gesundheitskarte"
+    },
+    "traps": {
+      "myTitle": "Meine Hornissenfallen",
+      "myEmpty": "Du hast noch keine Fallen registriert.",
+      "register": "Falle registrieren",
+      "manage": "Verwalten",
+      "name": "Name",
+      "code": "Zugangscode",
+      "totalCaught": "Gesamt gefangen",
+      "lastCatch": "Letzter Fang"
     }
   },
   "members": {
@@ -732,7 +742,9 @@
       "locationRequired": "Breiten- und Längengrad sind für Nestmeldungen erforderlich.",
       "submitError": "Übermittlung fehlgeschlagen. Bitte erneut versuchen.",
       "submit": "Absenden",
-      "success": "Danke! Deine Meldung wurde übermittelt."
+      "success": "Danke! Deine Meldung wurde übermittelt.",
+      "trap": "In meine Falle eintragen (optional)",
+      "trapNone": "— Keine Falle (anonyme Meldung) —"
     },
     "community": {
       "title": "Community-ID",

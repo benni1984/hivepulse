@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Annotated
+from typing import Annotated, Optional
 
 from fastapi import Depends, Header, HTTPException, status
 from jose import JWTError, jwt
@@ -54,6 +54,26 @@ def get_current_admin(current_user: Annotated[User, Depends(get_current_user)]) 
     return current_user
 
 
+def get_optional_user(
+    authorization: Annotated[Optional[str], Header()] = None,
+    db: Session = Depends(get_db),
+) -> Optional[User]:
+    """Return the current user if a valid Bearer token is present, otherwise None."""
+    if not authorization or not authorization.startswith("Bearer "):
+        return None
+    token = authorization.removeprefix("Bearer ")
+    try:
+        payload = jwt.decode(token, settings.secret_key, algorithms=[ALGORITHM])
+        user_id: str = payload.get("sub")
+        token_type: str = payload.get("type")
+        if user_id is None or token_type != "access":
+            return None
+    except JWTError:
+        return None
+    return db.get(User, user_id)
+
+
 CurrentUser = Annotated[User, Depends(get_current_user)]
 CurrentAdmin = Annotated[User, Depends(get_current_admin)]
+OptionalUser = Annotated[Optional[User], Depends(get_optional_user)]
 DB = Annotated[Session, Depends(get_db)]

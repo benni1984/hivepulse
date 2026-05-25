@@ -613,6 +613,16 @@
       "other": "Other / Unknown",
       "noData": "No community data available.",
       "mapSection": "Regional Health Map"
+    },
+    "traps": {
+      "myTitle": "My Hornet Traps",
+      "myEmpty": "You have no registered traps yet.",
+      "register": "Register a Trap",
+      "manage": "Manage",
+      "name": "Name",
+      "code": "Access Code",
+      "totalCaught": "Total Caught",
+      "lastCatch": "Last Catch"
     }
   },
   "members": {
@@ -732,7 +742,9 @@
       "locationRequired": "Latitude and longitude are required for nest reports.",
       "submitError": "Submission failed. Please try again.",
       "submit": "Submit",
-      "success": "Thank you! Your report has been submitted."
+      "success": "Thank you! Your report has been submitted.",
+      "trap": "Log to my trap (optional)",
+      "trapNone": "— No trap (anonymous report) —"
     },
     "community": {
       "title": "Community ID",

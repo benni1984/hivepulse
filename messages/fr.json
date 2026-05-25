@@ -613,6 +613,16 @@
       "other": "Autre / Inconnu",
       "noData": "Aucune donnée communautaire disponible.",
       "mapSection": "Carte de santé régionale"
+    },
+    "traps": {
+      "myTitle": "Mes pièges à frelons",
+      "myEmpty": "Vous n'avez pas encore de pièges enregistrés.",
+      "register": "Enregistrer un piège",
+      "manage": "Gérer",
+      "name": "Nom",
+      "code": "Code d'accès",
+      "totalCaught": "Total capturé",
+      "lastCatch": "Dernière capture"
     }
   },
   "members": {
@@ -732,7 +742,9 @@
       "locationRequired": "La latitude et la longitude sont requises pour les signalements de nid.",
       "submitError": "Échec de la soumission. Veuillez réessayer.",
       "submit": "Envoyer",
-      "success": "Merci ! Votre signalement a été soumis."
+      "success": "Merci ! Votre signalement a été soumis.",
+      "trap": "Enregistrer dans mon piège (optionnel)",
+      "trapNone": "— Aucun piège (signalement anonyme) —"
     },
     "community": {
       "title": "Identification communautaire",

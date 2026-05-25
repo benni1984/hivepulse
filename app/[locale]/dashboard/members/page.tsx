@@ -1,9 +1,10 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import DashboardShell from '@/components/DashboardShell';
-import { getPublicStats, getCommunityHeatmap, type PublicStats, type CommunityHeatmap } from '@/lib/api';
+import { getPublicStats, getCommunityHeatmap, getMyTraps, type PublicStats, type CommunityHeatmap, type HornetTrap } from '@/lib/api';
 
 const MoodChart = dynamic(() => import('@/components/MoodChart'), { ssr: false });
 const CityChart = dynamic(() => import('@/components/CityChart'), { ssr: false });
@@ -73,6 +74,8 @@ export default function MembersDashboardPage() {
   const [stats, setStats] = useState<PublicStats | null>(null);
   const [heatmap, setHeatmap] = useState<CommunityHeatmap | null>(null);
   const [loading, setLoading] = useState(true);
+  const [myTraps, setMyTraps] = useState<HornetTrap[]>([]);
+  const [trapsLoading, setTrapsLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
@@ -82,6 +85,11 @@ export default function MembersDashboardPage() {
       setStats(s);
       setHeatmap(h);
     }).finally(() => setLoading(false));
+
+    getMyTraps()
+      .then(setMyTraps)
+      .catch(() => setMyTraps([]))
+      .finally(() => setTrapsLoading(false));
   }, []);
 
   const calmPct = stats
@@ -240,6 +248,60 @@ export default function MembersDashboardPage() {
               </table>
             </div>
           )}
+        </>
+      )}
+
+      {/* My Hornet Traps */}
+      <h2 className="dash-section-title" style={{ marginTop: 40 }}>{t('traps.myTitle')}</h2>
+      {trapsLoading ? (
+        <div className="spinner" />
+      ) : myTraps.length === 0 ? (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 12 }}>
+          <p className="dash-empty">{t('traps.myEmpty')}</p>
+          <Link href="/hornets/traps" className="dash-new-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/></svg>
+            {t('traps.register')}
+          </Link>
+        </div>
+      ) : (
+        <>
+          <div style={{ overflowX: 'auto' }}>
+            <table className="dash-table">
+              <thead>
+                <tr>
+                  <th>{t('traps.name')}</th>
+                  <th>{t('traps.code')}</th>
+                  <th>{t('traps.totalCaught')}</th>
+                  <th>{t('traps.lastCatch')}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {myTraps.map(trap => {
+                  const lastCatch = trap.catches.length > 0
+                    ? [...trap.catches].sort((a, b) => b.caught_on.localeCompare(a.caught_on))[0].caught_on
+                    : null;
+                  return (
+                    <tr key={trap.id}>
+                      <td>{trap.name}</td>
+                      <td><code style={{ letterSpacing: 2, fontWeight: 700 }}>{trap.access_code}</code></td>
+                      <td>{trap.total_caught}</td>
+                      <td>{lastCatch ?? '—'}</td>
+                      <td>
+                        <Link href="/hornets/traps" className="dash-link">{t('traps.manage')}</Link>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ marginTop: 12 }}>
+            <Link href="/hornets/traps" className="dash-new-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/></svg>
+              {t('traps.register')}
+            </Link>
+          </div>
         </>
       )}
     </DashboardShell>

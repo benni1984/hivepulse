@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { submitHornetCatch, submitHornetNest } from '@/lib/api';
+import { submitHornetCatch, submitHornetNest, addTrapCatch, getMyTraps, type HornetTrap } from '@/lib/api';
 
 type Tab = 'catch' | 'nest';
 
@@ -18,6 +18,12 @@ export default function HornetReportPage() {
   const [catchLat, setCatchLat] = useState('');
   const [catchLon, setCatchLon] = useState('');
   const [catchName, setCatchName] = useState('');
+  const [catchTrapCode, setCatchTrapCode] = useState('');
+  const [myTraps, setMyTraps] = useState<HornetTrap[]>([]);
+
+  useEffect(() => {
+    getMyTraps().then(setMyTraps).catch(() => setMyTraps([]));
+  }, []);
 
   // Nest form
   const [nestLat, setNestLat] = useState('');
@@ -78,14 +84,20 @@ export default function HornetReportPage() {
     if (catchCount < 1 || catchCount > 1000) { setError(t('report.countError')); return; }
     setLoading(true);
     try {
-      await submitHornetCatch({
-        count: catchCount,
-        latitude: catchLat ? parseFloat(catchLat) : null,
-        longitude: catchLon ? parseFloat(catchLon) : null,
-        reporter_name: catchName || null,
-      });
+      if (catchTrapCode) {
+        // Log directly to the user's trap (upserts by date)
+        const today = new Date().toISOString().slice(0, 10);
+        await addTrapCatch(catchTrapCode, { count: catchCount, caught_on: today });
+      } else {
+        await submitHornetCatch({
+          count: catchCount,
+          latitude: catchLat ? parseFloat(catchLat) : null,
+          longitude: catchLon ? parseFloat(catchLon) : null,
+          reporter_name: catchName || null,
+        });
+      }
       setSuccess(true);
-      setCatchCount(1); setCatchLat(''); setCatchLon(''); setCatchName('');
+      setCatchCount(1); setCatchLat(''); setCatchLon(''); setCatchName(''); setCatchTrapCode('');
     } catch {
       setError(t('report.submitError'));
     } finally {
@@ -153,7 +165,25 @@ export default function HornetReportPage() {
             />
           </label>
 
-          <div className="hornets-location-row">
+          {myTraps.length > 0 && (
+            <label>
+              {t('report.trap')}
+              <select
+                value={catchTrapCode}
+                onChange={e => setCatchTrapCode(e.target.value)}
+                className="hornets-input"
+              >
+                <option value="">{t('report.trapNone')}</option>
+                {myTraps.map(trap => (
+                  <option key={trap.access_code} value={trap.access_code}>
+                    {trap.name} ({trap.access_code})
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
+
+          <div className="hornets-location-row" style={catchTrapCode ? { opacity: 0.4, pointerEvents: 'none' } : undefined}>
             <label>
               {t('report.latitude')}
               <input type="number" step="any" value={catchLat} onChange={e => setCatchLat(e.target.value)} placeholder="48.8566" />

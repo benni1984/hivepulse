@@ -747,3 +747,20 @@ export async function getHornetTrapsGeoJSON(): Promise<{ type: string; features:
   if (!res.ok) throw new Error('Failed to fetch traps geojson');
   return res.json();
 }
+
+/** Returns the authenticated user's own traps (requires login). */
+export async function getMyTraps(): Promise<HornetTrap[]> {
+  const res = await apiFetch('/hornets/traps');
+  if (!res.ok) throw new Error('Failed to fetch traps');
+  return res.json();
+}
+
+/** Create a trap linked to the current authenticated user. */
+export async function createMyTrap(data: HornetTrapCreate): Promise<HornetTrap> {
+  const res = await apiFetch('/hornets/traps', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('Failed to create trap');
+  return res.json();
+}
