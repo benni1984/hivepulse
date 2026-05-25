@@ -4,8 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Project Is
 
-**ApiScan** — a beekeeping inspection app for iOS and Android.
+**HivePulse** — a beekeeping inspection + community app for iOS, Android, and web.
 Beekeepers scan a QR code on a hive, log inspection data, and view stats over time.
+The public site includes a live hornet tracker, community map, and news feed.
+
+> **Note:** The repo was renamed from `apiscan` → `hivepulse`. Any old references to
+> "ApiScan" in comments or strings are stale and should be updated to "HivePulse".
 
 ## Claude Code Plugins (project scope)
 
@@ -13,38 +17,78 @@ Plugins installed at project scope for this repo (`claude plugin list`). Pull th
 
 | Plugin | Purpose |
 |--------|---------|
-| `vercel@claude-plugins-official` | Next.js / Vercel guidance for the `web/` Next.js 16 app — covers App Router, Turbopack, AI SDK, AI Gateway, deploys, env, shadcn, routing middleware, and more. Skills load as `vercel:<name>`. |
+| `vercel@claude-plugins-official` | Next.js / Vercel guidance for the Next.js app — covers App Router, Turbopack, AI SDK, AI Gateway, deploys, env, shadcn, routing middleware, and more. Skills load as `vercel:<name>`. |
 | `kotlin-lsp@claude-plugins-official` | Kotlin language server for the `android/` Jetpack Compose app — completions, go-to-definition, diagnostics in Kotlin sources. |
 | `swift-lsp@claude-plugins-official` | Swift language server for the `ios/` SwiftUI app — same capabilities for `.swift` sources. Note: full Xcode build/test still requires macOS. |
-| `frontend-design@claude-plugins-official` (user scope) | Design-quality UI guidance for the `web/` app. |
+| `frontend-design@claude-plugins-official` (user scope) | Design-quality UI guidance for the web app. |
 | `code-review@claude-plugins-official` (user scope) | PR review skill (`/code-review:code-review`). |
 | `code-simplifier@claude-plugins-official` (user scope) | Code simplification subagent. |
-
-No logo-design plugin is installed — that workflow is handled ad-hoc.
 
 ## Repository Structure
 
 ```
-apiscan/
-  backend/    Python (FastAPI) REST API — shared by both apps
-  ios/        Swift / SwiftUI iPhone app
-  android/    Kotlin / Jetpack Compose Android app
-  web/        Static public map (Leaflet.js, no build step)
-  docs/       API contract and architecture notes
+hivepulse/
+  backend/              Python (FastAPI) REST API — shared by all clients
+  ios/                  Swift / SwiftUI iPhone app
+  android/              Kotlin / Jetpack Compose Android app
+  app/                  Next.js 15 App Router (public site + member dashboard)
+  web/                  style.css, landing.css — global styles for the Next.js app
+  components/           Shared React components (Nav, Footer, DashboardShell, …)
+  lib/                  API client (lib/api.ts), hooks, utilities
+  messages/             next-intl locale files (en, de, fr, es)
+  e2e/staging/          Playwright end-to-end tests against the staging deployment
+  hivepulse-redesign/   Design ground truth — bundle.html (self-contained Tailwind prototype)
+  docs/                 API contract and architecture notes
+  .github/workflows/    CI/CD: ci.yml, seed-staging.yml, generate-xcodeproj.yml
 ```
+
+## Design System
+
+Design ground truth: **`hivepulse-redesign/bundle.html`** — open in a browser to see the full spec across all six tabs (Brand & Icons, Dashboard, Nav, Landing, Auth, Hornets).
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| Amber | `#f59e0b` | Primary CTA, active states, "Pulse" wordmark |
+| Amber dark | `#d97706` | Hover state for amber buttons |
+| Forest green | `#0f2d1c` | Dashboard sidebar background |
+| Stone 50 | `#fafaf9` | Page backgrounds |
+| Font | DM Sans | All UI text |
+
+**CSS namespaces:** `.dash-*` for dashboard, `.hornets-*` for hornet tracker, `.site-*` / `.nav-*` for public nav, `auth-*` for auth pages.
+
+**Logo:** Amber hex SVG (inline — no `<use>` because symbols aren't shared across Next.js pages). Top nav: icon + "Hive**Pulse**" wordmark. Dashboard sidebar: text-only "Hive**Pulse**" + "Hive Inspection Platform" tagline.
 
 ## API Contract
 
-The source of truth for all endpoints, request/response shapes, and field enums is `docs/api-contract.md`. Both app sessions must stay in sync with this file. When adding a new endpoint, update the contract first, then implement in backend, then consume in apps.
+The source of truth for all endpoints, request/response shapes, and field enums is `docs/api-contract.md`. All client sessions must stay in sync with this file. When adding a new endpoint, update the contract first, then implement in backend, then consume in clients.
 
 ## Backend (FastAPI / Python)
 
 - Entry point: `backend/main.py`
 - Run dev server: `uvicorn main:app --reload` (from `backend/`)
 - Run tests: `pytest` (from `backend/`)
-- Database: SQLite for development, PostgreSQL for production
-- ORM: SQLAlchemy with Alembic for migrations
-- QR code generation: `qrcode` library, encodes hive UUID
+- Database: SQLite for development, PostgreSQL (Neon) for staging/production
+- ORM: SQLAlchemy with Alembic for migrations (`backend/alembic/versions/`)
+- Latest migration: `006_add_hornet_traps.py`
+
+## Web / Next.js App
+
+- Framework: Next.js 15, App Router, TypeScript
+- i18n: `next-intl` — 4 locales (en, de, fr, es) in `messages/`
+- Styles: `web/style.css` (dashboard + global), `web/landing.css` (landing page)
+- API client: `lib/api.ts` — all fetch calls go through typed functions here
+- Auth: JWT stored in `localStorage` (`access_token`, `refresh_token`)
+- Dashboard shell: `components/DashboardShell.tsx` — sidebar nav, user card, auth guard
+- Run dev: `npm run dev` (from repo root)
+- Run unit tests: `npm test`
+- Run e2e (staging): `npm run test:e2e:staging`
+
+### E2E test notes
+- Tests live in `e2e/staging/` and run against the live staging deployment
+- Playwright config: `playwright.staging.config.ts`
+- **Known pattern:** After a spinner disappears, React may still be in a second render
+  hydrating form fields. Always use `await expect(input).not.toHaveValue('')` before
+  reading an input value to guarantee the form state has settled.
 
 ## iOS (Swift / SwiftUI)
 
@@ -68,6 +112,15 @@ The source of truth for all endpoints, request/response shapes, and field enums 
 - Run UI tests (requires emulator or device): `./gradlew connectedAndroidTest` (from `android/`)
 - Run single UI test class: `./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.apiscan.app.screen.LoginScreenTest`
 
+## Staging
+
+- URL: `apiscan-two.vercel.app`
+- Demo account: `demo@apiscan.app` / `demo1234` (supporter)
+- Admin account: `admin@apiscan.app` / `admin1234` (admin + supporter)
+- Seed script: `backend/scripts/seed_staging.py` — idempotent, run via GitHub Actions
+- Trigger seed: GitHub → Actions → "Seed Staging" → Run workflow
+- Vercel project ID: in user memory (`project_staging.md`)
+
 ## Domain Vocabulary
 
 - **Hive** — a single beehive, identified by UUID, has a QR code
@@ -75,10 +128,20 @@ The source of truth for all endpoints, request/response shapes, and field enums 
 - **Queen color** — follows SICAMM year cycle (see docs/api-contract.md)
 - **Brood frames** — number of frames with brood (0–10)
 - **Varroa count** — mite count from sugar roll or alcohol wash
+- **Hornet trap** — a named physical trap with GPS location and an 8-char access code
+- **Trap catch** — daily hornet count logged against a trap (one per trap per day — upsert)
 
 ## Git & PR Workflow
 
 After pushing a branch, always open a PR immediately. Once all CI checks are green, merge it — no need to ask first.
+
+## CI/CD Pipeline
+
+Sequential gates (all must pass before production deploy):
+1. **Quality gates** — TypeScript, lint, unit tests (`npm test`), backend `pytest`
+2. **deploy-staging** — Vercel preview deploy
+3. **e2e-staging** — Playwright tests against the staging URL
+4. **deploy-production** — Vercel production deploy
 
 ## Testing Rules
 
@@ -96,9 +159,10 @@ Always work in one component per session. Do not mix backend, iOS, and Android i
 
 1. Update `docs/api-contract.md` first
 2. Implement and test backend endpoint
-3. Implement iOS consumer
-4. Implement Android consumer
-5. Commit each step separately
+3. Implement web consumer (Next.js)
+4. Implement iOS consumer
+5. Implement Android consumer
+6. Commit each step separately
 
 ---
 
@@ -111,14 +175,55 @@ All routes implemented and tested. Run `pytest` from `backend/`.
 | Domain | Endpoints | Tests |
 |--------|-----------|-------|
 | Auth | POST /auth/register, login, refresh, logout | ✓ test_auth.py |
-| Users | GET/PUT /users/me | ✓ test_users.py |
+| Users | GET/PUT/DELETE /users/me | ✓ test_users.py |
 | Apiaries | CRUD /apiaries | ✓ test_apiaries.py |
 | Hives | CRUD + QR resolve + QR image | ✓ test_hives.py |
 | Inspections | CRUD /hives/{id}/inspections | ✓ test_inspections.py |
 | Field Definitions | CRUD, user-scope and apiary-scope | ✓ test_field_definitions.py |
 | QR Batches | Generate + PDF download | ✓ test_qr_batches.py |
-| Stats | Hive / apiary / overview | ✓ test_stats.py |
+| Stats | Hive / apiary / overview / community heatmap | ✓ test_stats.py |
 | Public API | Global stats + apiary map pins | ✓ test_public.py |
+| Hornet Tracker | Catches, nests, sightings, voting | ✓ test_hornets.py |
+| Hornet Traps | Named traps, nearby search, daily catches | ✓ test_hornets.py |
+| Admin | Stats, token mgmt, user list, sighting moderation | ✓ test_admin_*.py |
+
+### Web (Next.js) — COMPLETE ✓
+
+Full public site + authenticated member dashboard. All pages implemented.
+
+**Public pages:**
+| Route | Description |
+|-------|-------------|
+| `/` | Landing page — hero, features, mission section |
+| `/map` | Public apiary map (Leaflet) |
+| `/hornets` | Hornet tracker landing — stats, info cards, action links |
+| `/hornets/report` | Report a catch or nest |
+| `/hornets/map` | Nest + trap map (Leaflet, blue pins for traps) |
+| `/hornets/community` | Photo sightings + community voting |
+| `/hornets/traps` | Named trap management — nearby / code search / register / log catch |
+| `/members` | Community stats (public apiaries, charts, heatmap) |
+| `/news` | News feed |
+| `/contribute` | Contribute page |
+| `/privacy` | Privacy policy |
+
+**Dashboard (authenticated):**
+| Route | Description |
+|-------|-------------|
+| `/dashboard` | Apiary list |
+| `/dashboard/apiary/[id]` | Apiary detail + hive list |
+| `/dashboard/hive/[id]` | Hive detail + inspection list |
+| `/dashboard/stats` | Personal overview stats |
+| `/dashboard/qr-batches` | QR batch list |
+| `/dashboard/qr-batches/[id]` | Batch detail + PDF download |
+| `/dashboard/field-definitions` | Custom inspection fields |
+| `/dashboard/members` | Community dashboard (supporter/admin only) |
+| `/dashboard/profile` | Edit name/locale, change password, delete account |
+| `/dashboard/admin` | Admin stats |
+| `/dashboard/admin/users` | User management |
+| `/dashboard/admin/map` | Admin map |
+| `/dashboard/admin/health` | System health |
+| `/dashboard/login` | Login page |
+| `/dashboard/register` | Registration page |
 
 ### Android — IMPLEMENTED ✓ / FULLY TESTED ✓
 
@@ -154,6 +259,8 @@ All screens and ViewModels implemented and tested. Unit tests run with `./gradle
 | InspectionFormScreenTest | form sections shown, save success, save error banner |
 | QRBatchListScreenTest | nav title, empty state, FAB, batch creation |
 | SettingsScreenTest | email shown, language section, save on name edit, error banner |
+
+**Open:** #73 — user profile screen (edit name/language, change password, delete account) — not yet implemented on Android.
 
 ### iOS — IMPLEMENTED ✓ / TESTED VIA CI ✓
 
@@ -197,9 +304,7 @@ Full feature parity with Android. Tests run via GitHub Actions CI on `macos-late
 
 Screens: Login, Register, ApiaryList, ApiaryDetail, ApiaryForm, HiveDetail, HiveInitialize, HiveQR, InspectionForm, InspectionDetail, QRScanner, QRBatchList, HiveStats, Settings.
 
-### Web — COMPLETE ✓
-
-Static public map (`web/`). No build step, no automated tests. Shows apiary pins from `/api/v1/public/stats` and drill-down via `/api/v1/public/apiaries/{id}`.
+**Open:** #73 — user profile screen (edit name/language, change password, delete account) — not yet implemented on iOS.
 
 ---
 
@@ -257,3 +362,13 @@ Do NOT mix `-mockAuthenticated` / `-mockApiaryWithHive` with `-resetKeychain` (t
 
 ### coVerify for confirming mock calls
 Add `coVerify(timeout = 3_000) { apiService.login(any()) }` before the `waitUntil` check. If it passes, the mock was reached — helps distinguish "click not registered" from "state not reflected in UI".
+
+## Web / Next.js Notes (Lessons Learned)
+
+### React form hydration race in e2e tests
+After a loading spinner disappears, React may still be in a second render cycle writing user data into form fields. Do not read form input values immediately after `not.toBeVisible()` on a spinner — the state setters (`setName`, `setLocale`) are called in that same render and their DOM effect lands one render later.
+
+Fix: `await expect(nameInput).not.toHaveValue('', { timeout: 10_000 })` before reading or submitting. If `name` is non-empty, `locale` is guaranteed to be set too (they're written together in one `if` block).
+
+### Stat pill layout
+All `.dash-stat-pill` elements use a two-row layout — header row (label left, icon box right) then big number. Use `.dash-stat-pill-header` wrapper + `.dash-stat-icon dash-stat-icon-{amber|red|green|blue}` for the icon. Never put label and number flat inside the pill.
