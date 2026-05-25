@@ -21,6 +21,16 @@ function nestIcon(L: typeof import('leaflet'), status: string) {
   });
 }
 
+function trapIcon(L: typeof import('leaflet')) {
+  return L.divIcon({
+    className: '',
+    html: `<div style="background:#3b82f6;border:3px solid #fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.35);cursor:pointer;">🪤</div>`,
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+    popupAnchor: [0, -14],
+  });
+}
+
 function esc(s: string) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
@@ -31,14 +41,22 @@ interface Labels {
   statusDestroyed: string;
   legendTitle: string;
   noNests: string;
+  trap: string;
+}
+
+interface TrapFeature {
+  type: 'Feature';
+  geometry: { type: 'Point'; coordinates: [number, number] };
+  properties: { access_code: string; name: string; total_caught: number; owner_name?: string };
 }
 
 interface Props {
   geojson: HornetNestGeoJSON;
+  trapsGeojson?: { type: string; features: TrapFeature[] };
   labels: Labels;
 }
 
-export default function HornetMapClient({ geojson, labels }: Props) {
+export default function HornetMapClient({ geojson, trapsGeojson, labels }: Props) {
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -63,6 +81,7 @@ export default function HornetMapClient({ geojson, labels }: Props) {
 
       const bounds: [number, number][] = [];
 
+      // Nest markers
       geojson.features.forEach((feature: HornetNestFeature) => {
         const [lng, lat] = feature.geometry.coordinates;
         const p = feature.properties;
@@ -73,6 +92,22 @@ export default function HornetMapClient({ geojson, labels }: Props) {
             <p style="margin:0 0 4px;font-weight:600">${statusLabel[p.status] ?? p.status}</p>
             ${p.notes ? `<p style="margin:0 0 4px;font-size:.85rem">${esc(p.notes)}</p>` : ''}
             ${p.photo_url ? `<img src="${esc(p.photo_url)}" alt="" style="width:100%;border-radius:4px;margin-top:4px;max-height:120px;object-fit:cover"/>` : ''}
+          </div>`,
+          { maxWidth: 220 },
+        );
+      });
+
+      // Trap markers (blue)
+      trapsGeojson?.features.forEach((feature: TrapFeature) => {
+        const [lng, lat] = feature.geometry.coordinates;
+        const p = feature.properties;
+        bounds.push([lat, lng]);
+        const marker = L.marker([lat, lng], { icon: trapIcon(L) }).addTo(map);
+        marker.bindPopup(
+          `<div class="map-popup">
+            <p style="margin:0 0 4px;font-weight:600">${esc(p.name)}</p>
+            <p style="margin:0;font-size:.85rem;color:#3b82f6">${esc(labels.trap)} · ${esc(p.access_code)}</p>
+            <p style="margin:4px 0 0;font-size:.85rem">🪤 ${p.total_caught}</p>
           </div>`,
           { maxWidth: 220 },
         );
@@ -89,7 +124,8 @@ export default function HornetMapClient({ geojson, labels }: Props) {
           `<strong style="display:block;margin-bottom:4px">${esc(labels.legendTitle)}</strong>` +
           Object.entries(STATUS_COLORS).map(([k, c]) =>
             `<div class="legend-row"><span class="legend-dot" style="background:${c}"></span>${esc(statusLabel[k] ?? k)}</div>`
-          ).join('');
+          ).join('') +
+          `<div class="legend-row"><span class="legend-dot" style="background:#3b82f6"></span>${esc(labels.trap)}</div>`;
         return div;
       };
       legend.addTo(map);
@@ -98,7 +134,7 @@ export default function HornetMapClient({ geojson, labels }: Props) {
     });
 
     return () => { destroyed = true; };
-  }, [geojson, labels]);
+  }, [geojson, trapsGeojson, labels]);
 
   return (
     <div

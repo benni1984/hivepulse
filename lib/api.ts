@@ -543,6 +543,7 @@ export interface HornetStats {
   destroyed_nests: number;
   pending_sightings: number;
   confirmed_sightings: number;
+  total_traps: number;
 }
 
 export interface HornetCatchCreate {

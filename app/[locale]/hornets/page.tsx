@@ -46,6 +46,10 @@ export default async function HornetsPage() {
               <span className="hornets-stat-num">{stats.confirmed_sightings.toLocaleString()}</span>
               <span className="hornets-stat-label">{t('stats.sightings')}</span>
             </div>
+            <div className="hornets-stat-card">
+              <span className="hornets-stat-num">{stats.total_traps.toLocaleString()}</span>
+              <span className="hornets-stat-label">{t('stats.traps')}</span>
+            </div>
           </div>
         </section>
       )}
@@ -115,6 +119,13 @@ export default async function HornetsPage() {
             </div>
             <strong>{t('community.title')}</strong>
             <span>{t('community.hint')}</span>
+          </Link>
+          <Link href="/hornets/traps" className="hornets-action-card">
+            <div className="hornets-icon-box">
+              <svg fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/></svg>
+            </div>
+            <strong>{t('traps.title')}</strong>
+            <span>{t('traps.hint')}</span>
           </Link>
         </div>
       </section>

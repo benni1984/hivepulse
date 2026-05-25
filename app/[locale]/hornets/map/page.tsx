@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
-import { getHornetNests } from '@/lib/api';
+import { getHornetNests, getHornetTrapsGeoJSON } from '@/lib/api';
 import type { HornetNestGeoJSON } from '@/lib/api';
 
 const HornetMapClient = dynamic(() => import('@/components/HornetMapClient'), { ssr: false });
@@ -11,13 +11,17 @@ const HornetMapClient = dynamic(() => import('@/components/HornetMapClient'), { 
 export default function HornetMapPage() {
   const t = useTranslations('hornets');
   const [geojson, setGeojson] = useState<HornetNestGeoJSON>({ type: 'FeatureCollection', features: [] });
+  const [trapsGeojson, setTrapsGeojson] = useState<{ type: string; features: unknown[] }>({ type: 'FeatureCollection', features: [] });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getHornetNests()
-      .then(setGeojson)
-      .catch(() => {})
-      .finally(() => setLoading(false));
+    Promise.all([
+      getHornetNests().catch(() => ({ type: 'FeatureCollection', features: [] } as HornetNestGeoJSON)),
+      getHornetTrapsGeoJSON().catch(() => ({ type: 'FeatureCollection', features: [] })),
+    ]).then(([nests, traps]) => {
+      setGeojson(nests);
+      setTrapsGeojson(traps);
+    }).finally(() => setLoading(false));
   }, []);
 
   const labels = {
@@ -26,7 +30,10 @@ export default function HornetMapPage() {
     statusDestroyed: t('map.status.destroyed'),
     legendTitle: t('map.legend'),
     noNests: t('map.noNests'),
+    trap: t('traps.title'),
   };
+
+  const hasData = geojson.features.length > 0 || trapsGeojson.features.length > 0;
 
   return (
     <main className="hornets-map-page">
@@ -37,15 +44,16 @@ export default function HornetMapPage() {
           <span className="legend-dot" style={{ background: '#ef4444' }} />{t('map.status.found')}
           <span className="legend-dot" style={{ background: '#f59e0b', marginLeft: '1rem' }} />{t('map.status.ordered')}
           <span className="legend-dot" style={{ background: '#22c55e', marginLeft: '1rem' }} />{t('map.status.destroyed')}
+          <span className="legend-dot" style={{ background: '#3b82f6', marginLeft: '1rem' }} />{t('traps.title')}
         </div>
       </div>
 
       {loading ? (
         <div className="spinner" />
-      ) : geojson.features.length === 0 ? (
+      ) : !hasData ? (
         <p className="dash-empty">{t('map.noNests')}</p>
       ) : (
-        <HornetMapClient geojson={geojson} labels={labels} />
+        <HornetMapClient geojson={geojson} trapsGeojson={trapsGeojson as never} labels={labels} />
       )}
     </main>
   );
