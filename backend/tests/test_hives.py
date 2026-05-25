@@ -112,3 +112,20 @@ def test_delete_hive(auth_client, apiary, qr_token):
     hid = r.json()["id"]
     r2 = auth_client.delete(f"/api/v1/hives/{hid}")
     assert r2.status_code == 204
+
+
+def test_get_hive_qr_returns_png(auth_client, apiary, qr_token):
+    r = auth_client.post("/api/v1/hives/initialize", json={
+        "qr_token": qr_token, "apiary_id": apiary["id"], "name": "H1", "hive_type": "langstroth"
+    })
+    hid = r.json()["id"]
+    r2 = auth_client.get(f"/api/v1/hives/{hid}/qr")
+    assert r2.status_code == 200
+    assert r2.headers["content-type"] == "image/png"
+    # PNG magic bytes: \x89PNG
+    assert r2.content[:4] == b"\x89PNG"
+
+
+def test_get_hive_qr_not_found(auth_client):
+    r = auth_client.get("/api/v1/hives/does-not-exist/qr")
+    assert r.status_code == 404

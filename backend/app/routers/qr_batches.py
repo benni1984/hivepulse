@@ -3,11 +3,11 @@ import math
 import uuid
 from typing import Optional
 
-import qrcode
 from fastapi import APIRouter, Header, HTTPException, Query
 from fastapi.responses import StreamingResponse
 
 from app.deps import CurrentUser, DB
+from app.utils.qr import make_qr_png
 from app.i18n import error
 from app.models import QrBatch, QrToken
 from app.schemas import QrBatchCreate, QrBatchOut, QrBatchSummary, PaginatedResponse
@@ -121,10 +121,7 @@ def _generate_pdf(batch: QrBatch) -> bytes:
         x = col * label_w + 0.5 * cm
         y = page_h - (row + 1) * label_h + 0.5 * cm
 
-        qr = qrcode.make(token.token)
-        qr_buf = io.BytesIO()
-        qr.save(qr_buf, format="PNG")
-        qr_buf.seek(0)
+        qr_buf = io.BytesIO(make_qr_png(token.token))
 
         img_size = label_w - 1 * cm
         c.drawImage(ImageReader(qr_buf), x, y + 0.6 * cm, width=img_size, height=img_size)

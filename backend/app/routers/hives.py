@@ -2,9 +2,10 @@ import io
 import math
 from typing import Optional, Union
 
-import qrcode
 from fastapi import APIRouter, Header, HTTPException, Query
 from fastapi.responses import StreamingResponse
+
+from app.utils.qr import make_qr_png
 
 from app.deps import CurrentUser, DB
 from app.i18n import error
@@ -184,8 +185,5 @@ def get_hive_qr(
     accept_language: Optional[str] = Header(default=None),
 ):
     hive = _get_hive_or_404(hive_id, current_user.id, db, accept_language)
-    img = qrcode.make(hive.qr_token)
-    buf = io.BytesIO()
-    img.save(buf, format="PNG")
-    buf.seek(0)
-    return StreamingResponse(buf, media_type="image/png")
+    png = make_qr_png(hive.qr_token)
+    return StreamingResponse(io.BytesIO(png), media_type="image/png")
