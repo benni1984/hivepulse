@@ -183,4 +183,72 @@ describe('MembersDashboardPage', () => {
     render(<MembersDashboardPage />);
     await waitFor(() => expect(screen.getAllByText('—').length).toBeGreaterThanOrEqual(3));
   });
+
+  // ── My Traps section ──────────────────────────────────────────────────────
+
+  it('shows My Hornet Traps heading', async () => {
+    mockUseDashboardAuth.mockReturnValue({ user: SUPPORTER, loading: false });
+    mockGetPublicStats.mockResolvedValue(STATS);
+    render(<MembersDashboardPage />);
+    await waitFor(() => expect(screen.getByText('My Hornet Traps')).toBeTruthy());
+  });
+
+  it('shows empty-state message and Register link when user has no traps', async () => {
+    mockUseDashboardAuth.mockReturnValue({ user: SUPPORTER, loading: false });
+    mockGetPublicStats.mockResolvedValue(STATS);
+    mockGetMyTraps.mockResolvedValue([]);
+    render(<MembersDashboardPage />);
+    await waitFor(() => expect(screen.getByText('You have no registered traps yet.')).toBeTruthy());
+    expect(screen.getAllByText('Register a Trap').length).toBeGreaterThan(0);
+  });
+
+  it('renders trap table with name and access code when user has traps', async () => {
+    mockUseDashboardAuth.mockReturnValue({ user: SUPPORTER, loading: false });
+    mockGetPublicStats.mockResolvedValue(STATS);
+    mockGetMyTraps.mockResolvedValue([
+      {
+        id: 't1',
+        access_code: 'TRAP0001',
+        name: 'Garden Trap',
+        latitude: 48.85,
+        longitude: 2.35,
+        notes: null,
+        owner_name: null,
+        created_at: '2026-05-01T10:00:00',
+        total_caught: 12,
+        catches: [{ id: 'c1', trap_id: 't1', count: 5, caught_on: '2026-05-20', created_at: '2026-05-20T09:00:00' }],
+      },
+    ]);
+    render(<MembersDashboardPage />);
+    await waitFor(() => expect(screen.getByText('Garden Trap')).toBeTruthy());
+    expect(screen.getByText('TRAP0001')).toBeTruthy();
+    expect(screen.getByText('12')).toBeTruthy();
+    expect(screen.getByText('2026-05-20')).toBeTruthy();
+  });
+
+  it('shows — for last catch when trap has no catches', async () => {
+    mockUseDashboardAuth.mockReturnValue({ user: SUPPORTER, loading: false });
+    mockGetPublicStats.mockResolvedValue(STATS);
+    mockGetMyTraps.mockResolvedValue([
+      {
+        id: 't2', access_code: 'TRAP0002', name: 'Empty Trap',
+        latitude: 48.0, longitude: 2.0, notes: null, owner_name: null,
+        created_at: '2026-05-01T10:00:00', total_caught: 0, catches: [],
+      },
+    ]);
+    render(<MembersDashboardPage />);
+    await waitFor(() => expect(screen.getByText('Empty Trap')).toBeTruthy());
+    // last catch column should show —
+    expect(screen.getByText('—')).toBeTruthy();
+  });
+
+  it('still renders page when getMyTraps fails', async () => {
+    mockUseDashboardAuth.mockReturnValue({ user: SUPPORTER, loading: false });
+    mockGetPublicStats.mockResolvedValue(STATS);
+    mockGetMyTraps.mockRejectedValue(new Error('network error'));
+    render(<MembersDashboardPage />);
+    await waitFor(() => expect(screen.getByText('Community Dashboard')).toBeTruthy());
+    // My Traps section still renders with empty state
+    await waitFor(() => expect(screen.getByText('My Hornet Traps')).toBeTruthy());
+  });
 });

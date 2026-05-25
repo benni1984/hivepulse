@@ -12,6 +12,8 @@ import {
   addTrapCatch,
   getNearbyTraps,
   getHornetTrapsGeoJSON,
+  getMyTraps,
+  createMyTrap,
 } from '@/lib/api';
 
 function ok(body: unknown, status = 200) {
@@ -409,5 +411,77 @@ describe('getHornetTrapsGeoJSON', () => {
   it('throws on server error', async () => {
     vi.mocked(fetch).mockResolvedValueOnce(ok({}, 500));
     await expect(getHornetTrapsGeoJSON()).rejects.toThrow();
+  });
+});
+
+// ── getMyTraps (auth required) ─────────────────────────────────────────────
+
+describe('getMyTraps', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+  afterEach(() => {
+    localStorage.clear();
+  });
+
+  it('sends Authorization header and returns user traps', async () => {
+    localStorage.setItem('access_token', 'my-tok');
+    vi.mocked(fetch).mockResolvedValueOnce(ok([mockTrap]));
+    const result = await getMyTraps();
+    const [url, init] = vi.mocked(fetch).mock.calls[0] as [string, RequestInit];
+    expect(url).toMatch('/hornets/traps');
+    expect((init.headers as Record<string, string>)['Authorization']).toBe('Bearer my-tok');
+    expect(result).toHaveLength(1);
+    expect(result[0].access_code).toBe('ABCD1234');
+  });
+
+  it('returns empty array when user has no traps', async () => {
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(ok([]));
+    const result = await getMyTraps();
+    expect(result).toEqual([]);
+  });
+
+  it('throws on non-ok response (e.g. 401)', async () => {
+    localStorage.setItem('access_token', 'bad');
+    vi.mocked(fetch)
+      .mockResolvedValueOnce(ok({}, 401))   // apiFetch → 401
+      .mockResolvedValueOnce(ok({}, 401));  // refresh attempt → 401
+    await expect(getMyTraps()).rejects.toThrow();
+  });
+});
+
+// ── createMyTrap (auth required) ───────────────────────────────────────────
+
+describe('createMyTrap', () => {
+  beforeEach(() => {
+    localStorage.setItem('access_token', 'my-tok');
+  });
+  afterEach(() => {
+    localStorage.clear();
+  });
+
+  it('posts to /hornets/traps with auth and returns created trap', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok(mockTrap, 201));
+    const result = await createMyTrap({ name: 'Garden trap', latitude: 48.85, longitude: 2.35 });
+    const [url, init] = vi.mocked(fetch).mock.calls[0] as [string, RequestInit];
+    expect(url).toMatch('/hornets/traps');
+    expect(init.method).toBe('POST');
+    expect((init.headers as Record<string, string>)['Authorization']).toBe('Bearer my-tok');
+    const body = JSON.parse(init.body as string);
+    expect(body.name).toBe('Garden trap');
+    expect(result.access_code).toBe('ABCD1234');
+  });
+
+  it('includes optional notes when provided', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok(mockTrap, 201));
+    await createMyTrap({ name: 'Trap', latitude: 1, longitude: 1, notes: 'Near hedge' });
+    const body = JSON.parse((vi.mocked(fetch).mock.calls[0][1] as RequestInit).body as string);
+    expect(body.notes).toBe('Near hedge');
+  });
+
+  it('throws on server error', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({}, 422));
+    await expect(createMyTrap({ name: '', latitude: 0, longitude: 0 })).rejects.toThrow();
   });
 });
