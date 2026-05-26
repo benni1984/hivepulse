@@ -35,6 +35,20 @@ def test_list_users_returns_all_users(admin_client):
     assert "bob@example.com" in emails
 
 
+def test_list_users_includes_activity_counts(admin_client):
+    """Each user in the list should include apiary_count, hive_count, inspection_count."""
+    _register(admin_client, "counted@example.com", "Counted")
+    resp = admin_client.get("/api/v1/admin/users?q=counted")
+    assert resp.status_code == 200
+    user = resp.json()["items"][0]
+    assert "apiary_count" in user
+    assert "hive_count" in user
+    assert "inspection_count" in user
+    assert user["apiary_count"] == 0
+    assert user["hive_count"] == 0
+    assert user["inspection_count"] == 0
+
+
 def test_list_users_ordered_newest_first(admin_client):
     _register(admin_client, "first@example.com", "First")
     _register(admin_client, "second@example.com", "Second")

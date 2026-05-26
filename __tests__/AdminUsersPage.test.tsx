@@ -28,8 +28,8 @@ const mockAdmin = { id: 'a1', email: 'admin@example.com', name: 'Admin', locale:
 
 const mockUsersPage = {
   items: [
-    { id: 'u1', email: 'alice@example.com', name: 'Alice', locale: 'en', is_admin: false, is_supporter: true, created_at: '2024-03-01' },
-    { id: 'u2', email: 'bob@example.com', name: 'Bob', locale: 'en', is_admin: false, is_supporter: false, created_at: '2024-04-01' },
+    { id: 'u1', email: 'alice@example.com', name: 'Alice', locale: 'en', is_admin: false, is_supporter: true,  created_at: '2024-03-01', apiary_count: 3, hive_count: 12, inspection_count: 47 },
+    { id: 'u2', email: 'bob@example.com',   name: 'Bob',   locale: 'en', is_admin: false, is_supporter: false, created_at: '2024-04-01', apiary_count: 0, hive_count: 0,  inspection_count: 0  },
   ],
   total: 2, page: 1, per_page: 20, pages: 1,
 };
@@ -72,5 +72,13 @@ describe('AdminUsersPage', () => {
     await waitFor(() => screen.getAllByText('admin.users.delete'));
     fireEvent.click(screen.getAllByText('admin.users.delete')[0]);
     await waitFor(() => expect(mockAdminDeleteUser).toHaveBeenCalledWith('u1'));
+  });
+
+  it('shows apiary, hive, and inspection counts for each user', async () => {
+    render(<AdminUsersPage />);
+    await waitFor(() => expect(screen.getByText('alice@example.com')).toBeInTheDocument());
+    expect(screen.getByText('3')).toBeInTheDocument();   // alice's apiaries
+    expect(screen.getByText('12')).toBeInTheDocument();  // alice's hives
+    expect(screen.getByText('47')).toBeInTheDocument();  // alice's inspections
   });
 });
