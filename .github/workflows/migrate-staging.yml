@@ -41,8 +41,10 @@ jobs:
           set -a && source .vercel/.env.production.local && set +a
           STATE=$(python3 scripts/check_alembic_state.py)
           echo "Current alembic state: $STATE"
-          if [ "$STATE" = "no_version_table" ] || [ "$STATE" = "no_version_row" ]; then
-            echo "DB was bootstrapped via create_all — stamping to 006 before upgrade..."
-            cd backend && alembic stamp 006 && cd ..
-          fi
-          cd backend && alembic upgrade head
+          case "$STATE" in
+            no_version_table|no_version_row|001|002|003|004|005)
+              echo "Stamping to 006 (schema exists but tracking is at '$STATE')..."
+              (cd backend && alembic stamp 006)
+              ;;
+          esac
+          (cd backend && alembic upgrade head)
