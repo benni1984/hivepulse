@@ -102,10 +102,12 @@ class SettingsScreenTest {
     @Test
     fun settings_showsChangePasswordSection() {
         navigateToSettings()
+        // "Current password" is unique — the section header "Change Password" is
+        // ambiguous (also matches the button label).
         composeRule.waitUntil(5_000) {
-            composeRule.onAllNodesWithText("Change Password").fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("Current password").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithText("Change Password").assertIsDisplayed()
+        composeRule.onNodeWithText("Current password").performScrollTo().assertIsDisplayed()
     }
 
     @Test
@@ -114,9 +116,9 @@ class SettingsScreenTest {
         composeRule.waitUntil(5_000) {
             composeRule.onAllNodesWithText("Current password").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithText("Current password").assertIsDisplayed()
-        composeRule.onNodeWithText("New password").assertIsDisplayed()
-        composeRule.onNodeWithText("Confirm new password").assertIsDisplayed()
+        composeRule.onNodeWithText("Current password").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("New password").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("Confirm new password").performScrollTo().assertIsDisplayed()
     }
 
     @Test
@@ -125,7 +127,7 @@ class SettingsScreenTest {
         composeRule.waitUntil(5_000) {
             composeRule.onAllNodesWithText("Danger Zone").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithText("Danger Zone").assertIsDisplayed()
+        composeRule.onNodeWithText("Danger Zone").performScrollTo().assertIsDisplayed()
     }
 
     @Test
@@ -134,7 +136,7 @@ class SettingsScreenTest {
         composeRule.waitUntil(5_000) {
             composeRule.onAllNodesWithText("Delete Account").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithText("Delete Account").assertIsDisplayed()
+        composeRule.onNodeWithText("Delete Account").performScrollTo().assertIsDisplayed()
     }
 
     @Test

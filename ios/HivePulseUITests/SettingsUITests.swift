@@ -18,6 +18,8 @@ final class SettingsUITests: XCTestCase {
         super.tearDown()
     }
 
+    // MARK: - Top-of-form elements (no scroll needed)
+
     func test_settings_showsUserEmail() {
         XCTAssertTrue(app.staticTexts["tester@example.com"].waitForExistence(timeout: 5))
     }
@@ -30,10 +32,6 @@ final class SettingsUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Save Profile"].waitForExistence(timeout: 5))
     }
 
-    func test_settings_showsLogoutButton() {
-        XCTAssertTrue(app.buttons["Log Out"].waitForExistence(timeout: 5))
-    }
-
     func test_settings_showsChangePasswordSection() {
         XCTAssertTrue(app.staticTexts["Change Password"].waitForExistence(timeout: 5))
     }
@@ -43,15 +41,25 @@ final class SettingsUITests: XCTestCase {
             identifier: "currentPasswordField").waitForExistence(timeout: 5))
     }
 
+    // MARK: - Lower-form elements (scroll required)
+
     func test_settings_showsChangePasswordButton() {
+        app.swipeUp()
         XCTAssertTrue(app.buttons["Change Password"].waitForExistence(timeout: 5))
     }
 
+    func test_settings_showsLogoutButton() {
+        app.swipeUp()
+        XCTAssertTrue(app.buttons["Log Out"].waitForExistence(timeout: 5))
+    }
+
     func test_settings_showsDangerZoneSection() {
+        app.swipeUp()
         XCTAssertTrue(app.staticTexts["Danger Zone"].waitForExistence(timeout: 5))
     }
 
     func test_settings_showsDeleteAccountButton() {
+        app.swipeUp()
         XCTAssertTrue(app.buttons["Delete Account"].waitForExistence(timeout: 5))
     }
 

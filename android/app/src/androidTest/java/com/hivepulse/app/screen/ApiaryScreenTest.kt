@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.hivepulse.app.MainActivity
 import com.hivepulse.app.data.api.ApiService
@@ -93,7 +94,7 @@ class ApiaryScreenTest {
         composeRule.waitUntil(timeoutMillis = 5_000) {
             composeRule.onAllNodesWithText("Sign Out").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithText("Sign Out").assertIsDisplayed()
+        composeRule.onNodeWithText("Sign Out").performScrollTo().assertIsDisplayed()
     }
 
     @Test
@@ -104,7 +105,7 @@ class ApiaryScreenTest {
             composeRule.onAllNodesWithText("Sign Out").fetchSemanticsNodes().isNotEmpty()
         }
         // Click the "Sign Out" outlined button (not the icon button in the top bar)
-        composeRule.onNodeWithText("Sign Out").performClick()
+        composeRule.onNodeWithText("Sign Out").performScrollTo().performClick()
         composeRule.onNodeWithText("Are you sure you want to sign out?").assertIsDisplayed()
     }
 
