@@ -474,6 +474,20 @@ jobs:
       - name: Pull Vercel environment
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install Python dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Run database migrations (production)
+        run: |
+          set -a && source .vercel/.env.production.local && set +a
+          cd backend && alembic upgrade head
+
       - name: Build
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
@@ -505,6 +519,20 @@ jobs:
 
       - name: Pull Vercel environment
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install Python dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Run database migrations (staging)
+        run: |
+          set -a && source .vercel/.env.production.local && set +a
+          cd backend && alembic upgrade head
 
       - name: Build
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
