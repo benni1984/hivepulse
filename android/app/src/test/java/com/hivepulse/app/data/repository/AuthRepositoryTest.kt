@@ -109,5 +109,26 @@ class AuthRepositoryTest {
         assertEquals("Bob", result.name)
     }
 
+    @Test
+    fun `changePassword calls api with correct request and returns user`() = runTest {
+        val updated = user()
+        coEvery { api.changePassword(PasswordChangeRequest("new1234", "oldpass")) } returns updated
+
+        val result = repo.changePassword("oldpass", "new1234")
+
+        assertEquals(updated, result)
+        coVerify { api.changePassword(PasswordChangeRequest("new1234", "oldpass")) }
+    }
+
+    @Test
+    fun `deleteAccount calls api and clears token store`() = runTest {
+        coEvery { api.deleteMe() } returns mockk(relaxed = true)
+
+        repo.deleteAccount()
+
+        coVerify { api.deleteMe() }
+        verify { tokenStore.clear() }
+    }
+
     private fun user() = UserOut("u1", "a@b.com", "Alice", "en", "2024-01-01")
 }

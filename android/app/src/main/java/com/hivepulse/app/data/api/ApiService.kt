@@ -26,6 +26,12 @@ interface ApiService {
     @PUT("users/me")
     suspend fun updateMe(@Body body: UserUpdateRequest): UserOut
 
+    @PUT("users/me")
+    suspend fun changePassword(@Body body: PasswordChangeRequest): UserOut
+
+    @DELETE("users/me")
+    suspend fun deleteMe(): Response<Unit>
+
     // Field Definitions
     @GET("field-definitions")
     suspend fun listFieldDefinitions(): List<FieldDefinitionOut>

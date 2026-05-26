@@ -98,4 +98,51 @@ class SettingsScreenTest {
         }
         composeRule.onNodeWithText("Update failed").assertIsDisplayed()
     }
+
+    @Test
+    fun settings_showsChangePasswordSection() {
+        navigateToSettings()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Change Password").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Change Password").assertIsDisplayed()
+    }
+
+    @Test
+    fun settings_showsPasswordFields() {
+        navigateToSettings()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Current password").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Current password").assertIsDisplayed()
+        composeRule.onNodeWithText("New password").assertIsDisplayed()
+        composeRule.onNodeWithText("Confirm new password").assertIsDisplayed()
+    }
+
+    @Test
+    fun settings_showsDangerZoneSection() {
+        navigateToSettings()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Danger Zone").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Danger Zone").assertIsDisplayed()
+    }
+
+    @Test
+    fun settings_showsDeleteAccountButton() {
+        navigateToSettings()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Delete Account").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Delete Account").assertIsDisplayed()
+    }
+
+    @Test
+    fun settings_showsSpanishLocaleOption() {
+        navigateToSettings()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Español").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Español").assertIsDisplayed()
+    }
 }

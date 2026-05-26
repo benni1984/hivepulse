@@ -35,4 +35,12 @@ class AuthRepository @Inject constructor(
 
     suspend fun updateMe(name: String?, locale: String?): UserOut =
         api.updateMe(UserUpdateRequest(name, locale))
+
+    suspend fun changePassword(currentPassword: String, newPassword: String): UserOut =
+        api.changePassword(PasswordChangeRequest(newPassword, currentPassword))
+
+    suspend fun deleteAccount() {
+        api.deleteMe()
+        tokenStore.clear()
+    }
 }
