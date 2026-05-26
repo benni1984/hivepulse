@@ -764,3 +764,56 @@ export async function createMyTrap(data: HornetTrapCreate): Promise<HornetTrap> 
   if (!res.ok) throw new Error('Failed to create trap');
   return res.json();
 }
+
+// ---------------------------------------------------------------------------
+// Reminder settings & push tokens
+// ---------------------------------------------------------------------------
+
+export interface ReminderSettings {
+  reminder_enabled: boolean;
+  reminder_interval_days: number;
+  reminder_season_start: number;
+  reminder_season_end: number;
+  push_token_apns: string | null;
+  push_token_fcm: string | null;
+}
+
+export interface ReminderSettingsUpdate {
+  reminder_enabled?: boolean;
+  reminder_interval_days?: number;
+  reminder_season_start?: number;
+  reminder_season_end?: number;
+}
+
+export interface PushTokenRegister {
+  platform: 'ios' | 'android';
+  token: string;
+}
+
+/** Fetch the current user's inspection reminder preferences. */
+export async function getReminderSettings(): Promise<ReminderSettings> {
+  const res = await apiFetch('/users/me/reminder');
+  if (!res.ok) throw new Error('Failed to fetch reminder settings');
+  return res.json();
+}
+
+/** Update inspection reminder preferences (partial update). */
+export async function updateReminderSettings(
+  data: ReminderSettingsUpdate,
+): Promise<ReminderSettings> {
+  const res = await apiFetch('/users/me/reminder', {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('Failed to update reminder settings');
+  return res.json();
+}
+
+/** Register or replace a device push token. */
+export async function registerPushToken(data: PushTokenRegister): Promise<void> {
+  const res = await apiFetch('/users/me/push-token', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('Failed to register push token');
+}

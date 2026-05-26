@@ -1,6 +1,6 @@
 from datetime import date, datetime
-from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, EmailStr, Field, model_validator
+from typing import Any, Dict, List, Literal, Optional
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator
 
 
 # ---------------------------------------------------------------------------
@@ -101,6 +101,41 @@ class AdminUserDetail(BaseModel):
 
 class SupporterUpdate(BaseModel):
     is_supporter: bool
+
+
+# ---------------------------------------------------------------------------
+# Reminder settings & push tokens
+# ---------------------------------------------------------------------------
+
+
+class ReminderSettingsOut(BaseModel):
+    reminder_enabled: bool
+    reminder_interval_days: int
+    reminder_season_start: int
+    reminder_season_end: int
+    push_token_apns: Optional[str]
+    push_token_fcm: Optional[str]
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ReminderSettingsUpdate(BaseModel):
+    reminder_enabled: Optional[bool] = None
+    reminder_interval_days: Optional[int] = Field(default=None, ge=1, le=365)
+    reminder_season_start: Optional[int] = Field(default=None, ge=1, le=12)
+    reminder_season_end: Optional[int] = Field(default=None, ge=1, le=12)
+
+
+class PushTokenRegister(BaseModel):
+    platform: Literal["ios", "android"]
+    token: str = Field(min_length=1)
+
+
+class ReminderSendResult(BaseModel):
+    sent: int
+    skipped_off_season: int
+    skipped_disabled: int
+    skipped_no_token: int
 
 
 # ---------------------------------------------------------------------------

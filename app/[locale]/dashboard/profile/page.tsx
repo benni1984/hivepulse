@@ -1,10 +1,12 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
-import { updateMe, deleteMe } from '@/lib/api';
+import { updateMe, deleteMe, getReminderSettings, updateReminderSettings, ReminderSettings } from '@/lib/api';
 import { useDashboardAuth } from '@/hooks/useDashboardAuth';
+
+const MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default function ProfilePage() {
   const t = useTranslations('dash.profile');
@@ -25,11 +27,33 @@ export default function ProfilePage() {
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  // Initialise form fields once user loads
+  // ── Reminder state ──────────────────────────────────────────────────────
+  const [reminderEnabled, setReminderEnabled] = useState(true);
+  const [reminderInterval, setReminderInterval] = useState(7);
+  const [reminderSeasonStart, setReminderSeasonStart] = useState(4);
+  const [reminderSeasonEnd, setReminderSeasonEnd] = useState(8);
+  const [reminderLoaded, setReminderLoaded] = useState(false);
+  const [reminderMsg, setReminderMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
+  const [reminderSaving, setReminderSaving] = useState(false);
+
+  // Initialise profile fields once user loads
   if (!loading && user && name === '' && locale === '') {
     setName(user.name);
     setLocale(user.locale);
   }
+
+  // Load reminder settings on mount
+  useEffect(() => {
+    getReminderSettings()
+      .then((s: ReminderSettings) => {
+        setReminderEnabled(s.reminder_enabled);
+        setReminderInterval(s.reminder_interval_days);
+        setReminderSeasonStart(s.reminder_season_start);
+        setReminderSeasonEnd(s.reminder_season_end);
+        setReminderLoaded(true);
+      })
+      .catch(() => setReminderLoaded(true));
+  }, []);
 
   async function handleProfileSave(e: React.FormEvent) {
     e.preventDefault();
@@ -63,6 +87,25 @@ export default function ProfilePage() {
       setPwMsg({ type: 'err', text: err instanceof Error ? err.message : t('errorGeneric') });
     } finally {
       setPwSaving(false);
+    }
+  }
+
+  async function handleReminderSave(e: React.FormEvent) {
+    e.preventDefault();
+    setReminderMsg(null);
+    setReminderSaving(true);
+    try {
+      await updateReminderSettings({
+        reminder_enabled: reminderEnabled,
+        reminder_interval_days: reminderInterval,
+        reminder_season_start: reminderSeasonStart,
+        reminder_season_end: reminderSeasonEnd,
+      });
+      setReminderMsg({ type: 'ok', text: t('reminderSaved') });
+    } catch (err) {
+      setReminderMsg({ type: 'err', text: err instanceof Error ? err.message : t('errorGeneric') });
+    } finally {
+      setReminderSaving(false);
     }
   }
 
@@ -178,6 +221,90 @@ export default function ProfilePage() {
           </form>
         </div>
       </div>
+
+      {/* ── Inspection Reminders ─────────────────────────────────────── */}
+      {reminderLoaded && (
+        <div className="dash-profile-card" style={{ marginTop: 24 }}>
+          <h2 className="dash-section-title">
+            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"
+                 style={{ display: 'inline', verticalAlign: 'middle', marginRight: 6 }}>
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            {t('reminderTitle')}
+          </h2>
+          {reminderMsg && (
+            <div className={reminderMsg.type === 'ok' ? 'dash-success-banner' : 'dash-error-banner'}>
+              {reminderMsg.text}
+            </div>
+          )}
+          <form onSubmit={handleReminderSave}>
+            <div className="dash-form-group" style={{ marginBottom: 12 }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={reminderEnabled}
+                  onChange={e => setReminderEnabled(e.target.checked)}
+                  style={{ width: 16, height: 16 }}
+                />
+                {t('reminderEnabled')}
+              </label>
+            </div>
+
+            <div style={{ opacity: reminderEnabled ? 1 : 0.4, pointerEvents: reminderEnabled ? 'auto' : 'none' }}>
+              <div className="dash-form-group">
+                <label>{t('reminderInterval')}</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <input
+                    type="number"
+                    min={1}
+                    max={365}
+                    value={reminderInterval}
+                    onChange={e => setReminderInterval(Number(e.target.value))}
+                    style={{ width: 80 }}
+                    disabled={!reminderEnabled}
+                  />
+                  <span style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>{t('reminderIntervalUnit')}</span>
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="dash-form-group">
+                  <label>{t('reminderSeasonStart')}</label>
+                  <select
+                    className="dash-profile-select"
+                    value={reminderSeasonStart}
+                    onChange={e => setReminderSeasonStart(Number(e.target.value))}
+                    disabled={!reminderEnabled}
+                  >
+                    {MONTHS.map(m => (
+                      <option key={m} value={m}>{t(`month.${m}`)}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="dash-form-group">
+                  <label>{t('reminderSeasonEnd')}</label>
+                  <select
+                    className="dash-profile-select"
+                    value={reminderSeasonEnd}
+                    onChange={e => setReminderSeasonEnd(Number(e.target.value))}
+                    disabled={!reminderEnabled}
+                  >
+                    {MONTHS.map(m => (
+                      <option key={m} value={m}>{t(`month.${m}`)}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button className="dash-submit-btn" type="submit" disabled={reminderSaving} style={{ marginTop: 16 }}>
+              {reminderSaving ? '…' : t('reminderSave')}
+            </button>
+          </form>
+        </div>
+      )}
+
       {/* ── Danger zone ─────────────────────────────────────────────── */}
       <div className="dash-profile-danger">
         <h2 className="dash-section-title">{t('dangerTitle')}</h2>

@@ -25,6 +25,13 @@ class User(Base):
     is_admin = Column(Boolean, default=False, nullable=False)
     is_supporter = Column(Boolean, default=False, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+    # Inspection reminder preferences
+    reminder_enabled = Column(Boolean, default=True, nullable=False)
+    reminder_interval_days = Column(Integer, default=7, nullable=False)
+    reminder_season_start = Column(Integer, default=4, nullable=False)  # April
+    reminder_season_end = Column(Integer, default=8, nullable=False)    # August
+    push_token_apns = Column(String, nullable=True)
+    push_token_fcm = Column(String, nullable=True)
 
     refresh_tokens = relationship("RefreshToken", back_populates="user", cascade="all, delete-orphan")
     apiaries = relationship("Apiary", back_populates="user", cascade="all, delete-orphan")

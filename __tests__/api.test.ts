@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { login, register, logout, getMe, updateMe, deleteMe, getApiaries, createApiary, updateApiary, deleteApiary, createHive, updateHive, deleteHive, getHive, clearTokens, createInspection, updateInspection, deleteInspection, getQrBatches, createQrBatch, getQrBatch, downloadQrBatchPdf, getPublicStats, exportHiveInspections, exportApiaryInspections } from '@/lib/api';
+import { login, register, logout, getMe, updateMe, deleteMe, getApiaries, createApiary, updateApiary, deleteApiary, createHive, updateHive, deleteHive, getHive, clearTokens, createInspection, updateInspection, deleteInspection, getQrBatches, createQrBatch, getQrBatch, downloadQrBatchPdf, getPublicStats, exportHiveInspections, exportApiaryInspections, getReminderSettings, updateReminderSettings, registerPushToken } from '@/lib/api';
 
 const mockUser = { id: '1', email: 'a@b.com', name: 'Test', locale: 'en', created_at: '2024-01-01' };
 const mockTokens = { access_token: 'access-123', refresh_token: 'refresh-456', user: mockUser };
@@ -451,5 +451,90 @@ describe('exportApiaryInspections', () => {
     localStorage.setItem('access_token', 'tok');
     vi.mocked(fetch).mockResolvedValueOnce(ok({}, 403));
     await expect(exportApiaryInspections('apiary-1', 'csv')).rejects.toThrow('Export failed');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Reminder settings & push tokens
+// ---------------------------------------------------------------------------
+
+const mockReminderSettings = {
+  reminder_enabled: true,
+  reminder_interval_days: 7,
+  reminder_season_start: 4,
+  reminder_season_end: 8,
+  push_token_apns: null,
+  push_token_fcm: null,
+};
+
+describe('getReminderSettings', () => {
+  it('fetches /users/me/reminder with auth header', async () => {
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(ok(mockReminderSettings));
+    const result = await getReminderSettings();
+    expect(result.reminder_interval_days).toBe(7);
+    expect(result.reminder_season_start).toBe(4);
+    expect(result.reminder_season_end).toBe(8);
+    const call = vi.mocked(fetch).mock.calls[0];
+    expect(call[0]).toContain('/users/me/reminder');
+    expect((call[1] as RequestInit).headers as Record<string, string>).toMatchObject({
+      Authorization: 'Bearer tok',
+    });
+  });
+
+  it('throws when the request fails', async () => {
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(ok({}, 500));
+    await expect(getReminderSettings()).rejects.toThrow('Failed to fetch reminder settings');
+  });
+});
+
+describe('updateReminderSettings', () => {
+  it('PUTs to /users/me/reminder with auth header and body', async () => {
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ ...mockReminderSettings, reminder_interval_days: 14 }));
+    const result = await updateReminderSettings({ reminder_interval_days: 14 });
+    expect(result.reminder_interval_days).toBe(14);
+    const call = vi.mocked(fetch).mock.calls[0];
+    expect(call[0]).toContain('/users/me/reminder');
+    expect((call[1] as RequestInit).method).toBe('PUT');
+    expect((call[1] as RequestInit).body).toContain('"reminder_interval_days":14');
+  });
+
+  it('throws on server error', async () => {
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(ok({}, 422));
+    await expect(updateReminderSettings({ reminder_interval_days: 0 })).rejects.toThrow(
+      'Failed to update reminder settings'
+    );
+  });
+});
+
+describe('registerPushToken', () => {
+  it('POSTs to /users/me/push-token with platform and token', async () => {
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ ok: true }));
+    await registerPushToken({ platform: 'ios', token: 'apns-device-token' });
+    const call = vi.mocked(fetch).mock.calls[0];
+    expect(call[0]).toContain('/users/me/push-token');
+    expect((call[1] as RequestInit).method).toBe('POST');
+    expect((call[1] as RequestInit).body).toContain('"platform":"ios"');
+    expect((call[1] as RequestInit).body).toContain('"token":"apns-device-token"');
+  });
+
+  it('POSTs with android platform', async () => {
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ ok: true }));
+    await registerPushToken({ platform: 'android', token: 'fcm-token' });
+    const body = (vi.mocked(fetch).mock.calls[0][1] as RequestInit).body as string;
+    expect(body).toContain('"platform":"android"');
+  });
+
+  it('throws on server error', async () => {
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(ok({}, 400));
+    await expect(registerPushToken({ platform: 'ios', token: 'bad' })).rejects.toThrow(
+      'Failed to register push token'
+    );
   });
 });

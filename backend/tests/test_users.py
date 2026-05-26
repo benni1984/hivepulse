@@ -81,3 +81,110 @@ def test_delete_me(auth_client):
         "email": "test@example.com", "password": "password123",
     })
     assert r2.status_code == 401
+
+
+# ---------------------------------------------------------------------------
+# Reminder settings
+# ---------------------------------------------------------------------------
+
+
+def test_get_reminder_settings_default_values(auth_client):
+    r = auth_client.get("/api/v1/users/me/reminder")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["reminder_enabled"] is True
+    assert data["reminder_interval_days"] == 7
+    assert data["reminder_season_start"] == 4
+    assert data["reminder_season_end"] == 8
+    assert data["push_token_apns"] is None
+    assert data["push_token_fcm"] is None
+
+
+def test_get_reminder_settings_requires_auth(client):
+    r = client.get("/api/v1/users/me/reminder")
+    assert r.status_code == 422  # missing Authorization header
+
+
+def test_update_reminder_enabled_false(auth_client):
+    r = auth_client.put("/api/v1/users/me/reminder", json={"reminder_enabled": False})
+    assert r.status_code == 200
+    assert r.json()["reminder_enabled"] is False
+    # Verify persistence
+    r2 = auth_client.get("/api/v1/users/me/reminder")
+    assert r2.json()["reminder_enabled"] is False
+
+
+def test_update_reminder_interval_days(auth_client):
+    r = auth_client.put("/api/v1/users/me/reminder", json={"reminder_interval_days": 14})
+    assert r.status_code == 200
+    assert r.json()["reminder_interval_days"] == 14
+
+
+def test_update_reminder_season_start_and_end(auth_client):
+    r = auth_client.put("/api/v1/users/me/reminder", json={
+        "reminder_season_start": 3,
+        "reminder_season_end": 9,
+    })
+    assert r.status_code == 200
+    data = r.json()
+    assert data["reminder_season_start"] == 3
+    assert data["reminder_season_end"] == 9
+
+
+def test_update_reminder_partial_update_preserves_other_fields(auth_client):
+    auth_client.put("/api/v1/users/me/reminder", json={"reminder_interval_days": 21})
+    r = auth_client.put("/api/v1/users/me/reminder", json={"reminder_enabled": False})
+    data = r.json()
+    assert data["reminder_interval_days"] == 21
+    assert data["reminder_enabled"] is False
+
+
+def test_update_reminder_invalid_interval(auth_client):
+    r = auth_client.put("/api/v1/users/me/reminder", json={"reminder_interval_days": 0})
+    assert r.status_code == 422
+
+
+def test_update_reminder_invalid_season_month(auth_client):
+    r = auth_client.put("/api/v1/users/me/reminder", json={"reminder_season_start": 13})
+    assert r.status_code == 422
+
+
+# ---------------------------------------------------------------------------
+# Push token registration
+# ---------------------------------------------------------------------------
+
+
+def test_register_push_token_ios(auth_client):
+    r = auth_client.post("/api/v1/users/me/push-token", json={
+        "platform": "ios",
+        "token": "fake-apns-device-token",
+    })
+    assert r.status_code == 200
+    assert r.json() == {"ok": True}
+    # Verify token is stored
+    reminder = auth_client.get("/api/v1/users/me/reminder").json()
+    assert reminder["push_token_apns"] == "fake-apns-device-token"
+    assert reminder["push_token_fcm"] is None
+
+
+def test_register_push_token_android(auth_client):
+    r = auth_client.post("/api/v1/users/me/push-token", json={
+        "platform": "android",
+        "token": "fake-fcm-registration-token",
+    })
+    assert r.status_code == 200
+    reminder = auth_client.get("/api/v1/users/me/reminder").json()
+    assert reminder["push_token_fcm"] == "fake-fcm-registration-token"
+    assert reminder["push_token_apns"] is None
+
+
+def test_register_push_token_overwrites_previous(auth_client):
+    auth_client.post("/api/v1/users/me/push-token", json={"platform": "ios", "token": "old-token"})
+    auth_client.post("/api/v1/users/me/push-token", json={"platform": "ios", "token": "new-token"})
+    reminder = auth_client.get("/api/v1/users/me/reminder").json()
+    assert reminder["push_token_apns"] == "new-token"
+
+
+def test_register_push_token_requires_auth(client):
+    r = client.post("/api/v1/users/me/push-token", json={"platform": "ios", "token": "t"})
+    assert r.status_code == 422
