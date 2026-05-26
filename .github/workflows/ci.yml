@@ -486,7 +486,28 @@ jobs:
       - name: Run database migrations (production)
         run: |
           set -a && source .vercel/.env.production.local && set +a
-          cd backend && alembic upgrade head
+          cd backend
+          cat > /tmp/check_alembic.py << 'PYEOF'
+import os, sys
+from sqlalchemy import create_engine, text
+engine = create_engine(os.environ["DATABASE_URL"])
+with engine.connect() as conn:
+    r = conn.execute(text(
+        "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name='alembic_version')"
+    ))
+    if not r.scalar():
+        print("no_version_table"); sys.exit(0)
+    r2 = conn.execute(text("SELECT version_num FROM alembic_version LIMIT 1"))
+    row = r2.fetchone()
+    print(row[0] if row else "no_version_row")
+PYEOF
+          STATE=$(python3 /tmp/check_alembic.py)
+          echo "Alembic state: $STATE"
+          if [ "$STATE" = "no_version_table" ] || [ "$STATE" = "no_version_row" ]; then
+            echo "Stamping to 006 (DB bootstrapped via create_all)..."
+            alembic stamp 006
+          fi
+          alembic upgrade head
 
       - name: Build
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
@@ -532,7 +553,28 @@ jobs:
       - name: Run database migrations (staging)
         run: |
           set -a && source .vercel/.env.production.local && set +a
-          cd backend && alembic upgrade head
+          cd backend
+          cat > /tmp/check_alembic.py << 'PYEOF'
+import os, sys
+from sqlalchemy import create_engine, text
+engine = create_engine(os.environ["DATABASE_URL"])
+with engine.connect() as conn:
+    r = conn.execute(text(
+        "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name='alembic_version')"
+    ))
+    if not r.scalar():
+        print("no_version_table"); sys.exit(0)
+    r2 = conn.execute(text("SELECT version_num FROM alembic_version LIMIT 1"))
+    row = r2.fetchone()
+    print(row[0] if row else "no_version_row")
+PYEOF
+          STATE=$(python3 /tmp/check_alembic.py)
+          echo "Alembic state: $STATE"
+          if [ "$STATE" = "no_version_table" ] || [ "$STATE" = "no_version_row" ]; then
+            echo "Stamping to 006 (DB bootstrapped via create_all)..."
+            alembic stamp 006
+          fi
+          alembic upgrade head
 
       - name: Build
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
