@@ -36,16 +36,55 @@ def list_users(
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
 ) -> PaginatedResponse:
-    query = db.query(User)
+    # Subqueries for per-user counts
+    apiary_sq = (
+        db.query(Apiary.user_id, func.count(Apiary.id).label("ac"))
+        .group_by(Apiary.user_id)
+        .subquery()
+    )
+    hive_sq = (
+        db.query(Hive.user_id, func.count(Hive.id).label("hc"))
+        .group_by(Hive.user_id)
+        .subquery()
+    )
+    insp_sq = (
+        db.query(Hive.user_id, func.count(Inspection.id).label("ic"))
+        .join(Inspection, Inspection.hive_id == Hive.id)
+        .group_by(Hive.user_id)
+        .subquery()
+    )
+
+    base = (
+        db.query(
+            User,
+            func.coalesce(apiary_sq.c.ac, 0),
+            func.coalesce(hive_sq.c.hc, 0),
+            func.coalesce(insp_sq.c.ic, 0),
+        )
+        .outerjoin(apiary_sq, User.id == apiary_sq.c.user_id)
+        .outerjoin(hive_sq,   User.id == hive_sq.c.user_id)
+        .outerjoin(insp_sq,   User.id == insp_sq.c.user_id)
+    )
+
     if q:
-        query = query.filter(User.email.ilike(f"%{q}%"))
+        base = base.filter(User.email.ilike(f"%{q}%"))
     if supporter is not None:
-        query = query.filter(User.is_supporter == supporter)
-    query = query.order_by(User.created_at.desc())
-    total = query.count()
-    users = query.offset((page - 1) * per_page).limit(per_page).all()
+        base = base.filter(User.is_supporter == supporter)
+    base = base.order_by(User.created_at.desc())
+
+    total = base.with_entities(func.count(User.id)).scalar() or 0
+    rows = base.offset((page - 1) * per_page).limit(per_page).all()
+
     return PaginatedResponse(
-        items=[UserOut.model_validate(u) for u in users],
+        items=[
+            AdminUserDetail(
+                id=u.id, email=u.email, name=u.name, locale=u.locale,
+                is_admin=u.is_admin, is_supporter=u.is_supporter,
+                created_at=u.created_at,
+                apiary_count=ac, hive_count=hc, inspection_count=ic,
+            )
+            for u, ac, hc, ic in rows
+        ],
         total=total,
         page=page,
         per_page=per_page,

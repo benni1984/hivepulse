@@ -438,7 +438,7 @@ export async function getOverviewStats(preset = '365d'): Promise<OverviewStats> 
 }
 
 // ── Admin types ────────────────────────────────────────────────────────────────
-export interface AdminUser { id: string; email: string; name: string; locale: string; is_admin: boolean; is_supporter: boolean; created_at: string; }
+export interface AdminUser { id: string; email: string; name: string; locale: string; is_admin: boolean; is_supporter: boolean; created_at: string; apiary_count: number; hive_count: number; inspection_count: number; }
 export interface AdminApiary { id: string; name: string; owner_email: string; latitude?: number; longitude?: number; hive_count: number; is_public: boolean; created_at: string; }
 export interface PlatformStats { preset: string; total_users: number; new_users_in_period: number; supporter_count: number; total_apiaries: number; public_apiaries: number; total_hives: number; total_inspections: number; active_users_30d: number; signups_by_day: { date: string; count: number }[]; }
 export interface HealthSummary { inactive_users: number; zero_inspection_hives: number; no_varroa_inspections: number; }

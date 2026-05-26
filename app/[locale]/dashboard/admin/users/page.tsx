@@ -75,6 +75,9 @@ export default function AdminUsersPage() {
                   <th>{t('admin.users.email')}</th>
                   <th>{t('admin.users.name')}</th>
                   <th>{t('admin.users.joined')}</th>
+                  <th style={{ textAlign: 'right' }}>{t('admin.users.apiaries')}</th>
+                  <th style={{ textAlign: 'right' }}>{t('admin.users.hives')}</th>
+                  <th style={{ textAlign: 'right' }}>{t('admin.users.inspections')}</th>
                   <th>{t('admin.users.supporter')}</th>
                   <th>{t('admin.users.actions')}</th>
                 </tr>
@@ -85,6 +88,9 @@ export default function AdminUsersPage() {
                     <td>{u.email}</td>
                     <td>{u.name}</td>
                     <td>{u.created_at.slice(0, 10)}</td>
+                    <td style={{ textAlign: 'right' }}>{u.apiary_count}</td>
+                    <td style={{ textAlign: 'right' }}>{u.hive_count}</td>
+                    <td style={{ textAlign: 'right' }}>{u.inspection_count}</td>
                     <td>
                       <span className={`dash-badge ${u.is_supporter ? 'dash-badge-public' : 'dash-badge-private'}`}>
                         {u.is_supporter ? '✓' : '–'}
