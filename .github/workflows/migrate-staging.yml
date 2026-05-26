@@ -39,38 +39,10 @@ jobs:
       - name: Run database migrations
         run: |
           set -a && source .vercel/.env.production.local && set +a
-          cd backend
-
-          # Write a helper that checks the current alembic state.
-          # The staging DB was bootstrapped via Base.metadata.create_all(),
-          # so tables exist but there is no alembic_version table.
-          # In that case we stamp to 006 so that only migration 007
-          # (add reminder columns) is applied by the subsequent upgrade.
-          cat > /tmp/check_alembic.py << 'PYEOF'
-import os, sys
-from sqlalchemy import create_engine, text
-engine = create_engine(os.environ["DATABASE_URL"])
-with engine.connect() as conn:
-    r = conn.execute(text(
-        "SELECT EXISTS ("
-        "  SELECT 1 FROM information_schema.tables"
-        "  WHERE table_name='alembic_version'"
-        ")"
-    ))
-    if not r.scalar():
-        print("no_version_table")
-        sys.exit(0)
-    r2 = conn.execute(text("SELECT version_num FROM alembic_version LIMIT 1"))
-    row = r2.fetchone()
-    print(row[0] if row else "no_version_row")
-PYEOF
-
-          STATE=$(python3 /tmp/check_alembic.py)
+          STATE=$(python3 scripts/check_alembic_state.py)
           echo "Current alembic state: $STATE"
-
           if [ "$STATE" = "no_version_table" ] || [ "$STATE" = "no_version_row" ]; then
             echo "DB was bootstrapped via create_all — stamping to 006 before upgrade..."
-            alembic stamp 006
+            cd backend && alembic stamp 006 && cd ..
           fi
-
-          alembic upgrade head
+          cd backend && alembic upgrade head
