@@ -87,4 +87,39 @@ final class AuthViewModelTests: XCTestCase {
         let freshVM = AuthViewModel(service: svc)
         XCTAssertTrue(freshVM.isAuthenticated)
     }
+
+    func test_changePassword_success_updatesCurrentUser() async {
+        let updated = makeUser(id: "u-42", name: "Alice")
+        svc.changePasswordResult = .success(updated)
+        await vm.changePassword(currentPassword: "oldpass", newPassword: "newpass1")
+        XCTAssertNil(vm.errorMessage)
+        XCTAssertEqual(vm.currentUser?.id, "u-42")
+    }
+
+    func test_changePassword_failure_setsErrorMessage() async {
+        svc.changePasswordResult = .failure(NSError(domain: "test", code: 400,
+            userInfo: [NSLocalizedDescriptionKey: "Current password is incorrect"]))
+        await vm.changePassword(currentPassword: "wrong", newPassword: "newpass1")
+        XCTAssertEqual(vm.errorMessage, "Current password is incorrect")
+    }
+
+    func test_deleteAccount_success_clearsAuthentication() async {
+        await vm.login(email: "a@b.com", password: "pass")
+        XCTAssertTrue(vm.isAuthenticated)
+        await vm.deleteAccount()
+        XCTAssertFalse(vm.isAuthenticated)
+        XCTAssertNil(vm.currentUser)
+        XCTAssertNil(KeychainService.shared.accessToken)
+    }
+
+    func test_deleteAccount_failure_keepsUserAuthenticated() async {
+        await vm.login(email: "a@b.com", password: "pass")
+        XCTAssertTrue(vm.isAuthenticated)
+        svc.deleteMeError = NSError(domain: "test", code: 500,
+            userInfo: [NSLocalizedDescriptionKey: "Server error"])
+        await vm.deleteAccount()
+        XCTAssertEqual(vm.errorMessage, "Server error")
+        // Server error must not log the user out
+        XCTAssertTrue(vm.isAuthenticated)
+    }
 }

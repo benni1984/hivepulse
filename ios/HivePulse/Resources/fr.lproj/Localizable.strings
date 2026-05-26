@@ -249,3 +249,20 @@
 "admin.health.inactive" = "Utilisateurs inactifs";
 "admin.health.noVarroa" = "Pas de données varroa";
 "admin.health.zeroHives" = "Ruches sans inspection";
+
+/* Changement de mot de passe */
+"section.changePassword" = "Changer le mot de passe";
+"field.currentPassword" = "Mot de passe actuel";
+"field.newPassword" = "Nouveau mot de passe";
+"field.confirmPassword" = "Confirmer le nouveau mot de passe";
+"action.changePassword" = "Changer le mot de passe";
+"alert.passwordMismatch" = "Les mots de passe ne correspondent pas.";
+"alert.passwordTooShort" = "Le mot de passe doit contenir au moins 8 caractères.";
+"alert.passwordChanged" = "Mot de passe modifié avec succès.";
+
+/* Suppression du compte */
+"section.dangerZone" = "Zone dangereuse";
+"action.deleteAccount" = "Supprimer le compte";
+"alert.deleteAccountConfirm" = "Supprimer votre compte ?";
+"alert.deleteAccountMessage" = "Toutes vos données — ruchers, ruches et inspections — seront définitivement supprimées. Cette action est irréversible.";
+"alert.deleteAccountAction" = "Supprimer définitivement";

@@ -8,6 +8,18 @@ struct SettingsView: View {
     @State private var locale = "en"
     @State private var isSaving = false
 
+    // Password change
+    @State private var currentPassword = ""
+    @State private var newPassword = ""
+    @State private var confirmPassword = ""
+    @State private var isChangingPassword = false
+    @State private var passwordError: String?
+    @State private var passwordSuccess = false
+
+    // Delete account
+    @State private var showDeleteConfirm = false
+    @State private var isDeleting = false
+
     // Export
     @State private var apiaries: [ApiaryOut] = []
     @State private var showExportSheet = false
@@ -18,12 +30,13 @@ struct SettingsView: View {
     @State private var shareItems: [Any] = []
     @State private var showShareSheet = false
 
-    private let locales = [("en", "English"), ("fr", "Français"), ("de", "Deutsch")]
+    private let locales = [("en", "English"), ("fr", "Français"), ("de", "Deutsch"), ("es", "Español")]
     private let apiaryService = ApiaryService()
     private let exportService = ExportService()
 
     var body: some View {
         Form {
+            // MARK: - Profile
             Section(NSLocalizedString("section.profile", comment: "")) {
                 if let user = authVM.currentUser {
                     Text(user.email).foregroundColor(.secondary)
@@ -48,6 +61,37 @@ struct SettingsView: View {
                 .disabled(isSaving)
             }
 
+            // MARK: - Change Password
+            Section(NSLocalizedString("section.changePassword", comment: "")) {
+                SecureField(NSLocalizedString("field.currentPassword", comment: ""), text: $currentPassword)
+                    .accessibilityIdentifier("currentPasswordField")
+                SecureField(NSLocalizedString("field.newPassword", comment: ""), text: $newPassword)
+                    .accessibilityIdentifier("newPasswordField")
+                SecureField(NSLocalizedString("field.confirmPassword", comment: ""), text: $confirmPassword)
+                    .accessibilityIdentifier("confirmPasswordField")
+
+                if let err = passwordError {
+                    Text(err).foregroundColor(.red).font(.caption)
+                }
+                if passwordSuccess {
+                    Text(NSLocalizedString("alert.passwordChanged", comment: ""))
+                        .foregroundColor(.green).font(.caption)
+                }
+            }
+
+            Section {
+                Button {
+                    Task { await doChangePassword() }
+                } label: {
+                    HStack {
+                        if isChangingPassword { ProgressView() }
+                        Text(NSLocalizedString("action.changePassword", comment: ""))
+                    }
+                }
+                .disabled(isChangingPassword || currentPassword.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty)
+            }
+
+            // MARK: - Export
             if !apiaries.isEmpty {
                 Section(NSLocalizedString("section.export", comment: "")) {
                     Button {
@@ -64,6 +108,7 @@ struct SettingsView: View {
                 }
             }
 
+            // MARK: - Admin
             if authVM.currentUser?.isAdmin == true {
                 Section {
                     NavigationLink(destination: AdminView()) {
@@ -72,12 +117,27 @@ struct SettingsView: View {
                 }
             }
 
+            // MARK: - Log Out
             Section {
                 Button(role: .destructive) {
                     showLogoutConfirm = true
                 } label: {
                     Label(NSLocalizedString("action.logout", comment: ""), systemImage: "rectangle.portrait.and.arrow.right")
                 }
+            }
+
+            // MARK: - Danger Zone
+            Section(NSLocalizedString("section.dangerZone", comment: "")) {
+                Button(role: .destructive) {
+                    showDeleteConfirm = true
+                } label: {
+                    HStack {
+                        if isDeleting { ProgressView() }
+                        Label(NSLocalizedString("action.deleteAccount", comment: ""),
+                              systemImage: "trash")
+                    }
+                }
+                .disabled(isDeleting)
             }
 
             Section {
@@ -103,6 +163,17 @@ struct SettingsView: View {
                 Task { await authVM.logout() }
             }
         }
+        .alert(
+            NSLocalizedString("alert.deleteAccountConfirm", comment: ""),
+            isPresented: $showDeleteConfirm
+        ) {
+            Button(NSLocalizedString("alert.deleteAccountAction", comment: ""), role: .destructive) {
+                Task { await doDeleteAccount() }
+            }
+            Button(NSLocalizedString("action.cancel", comment: ""), role: .cancel) {}
+        } message: {
+            Text(NSLocalizedString("alert.deleteAccountMessage", comment: ""))
+        }
         .sheet(isPresented: $showExportSheet) {
             ExportPickerView(
                 apiaries: apiaries,
@@ -119,10 +190,46 @@ struct SettingsView: View {
         }
     }
 
+    // MARK: - Actions
+
     private func save() async {
         isSaving = true
         await authVM.updateProfile(name: name, locale: locale)
         isSaving = false
+    }
+
+    private func doChangePassword() async {
+        passwordError = nil
+        passwordSuccess = false
+
+        guard newPassword == confirmPassword else {
+            passwordError = NSLocalizedString("alert.passwordMismatch", comment: "")
+            return
+        }
+        guard newPassword.count >= 8 else {
+            passwordError = NSLocalizedString("alert.passwordTooShort", comment: "")
+            return
+        }
+
+        isChangingPassword = true
+        await authVM.changePassword(currentPassword: currentPassword, newPassword: newPassword)
+        isChangingPassword = false
+
+        if authVM.errorMessage == nil {
+            passwordSuccess = true
+            currentPassword = ""
+            newPassword = ""
+            confirmPassword = ""
+        } else {
+            passwordError = authVM.errorMessage
+            authVM.errorMessage = nil
+        }
+    }
+
+    private func doDeleteAccount() async {
+        isDeleting = true
+        await authVM.deleteAccount()
+        isDeleting = false
     }
 
     private func doExport() async {

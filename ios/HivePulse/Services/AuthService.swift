@@ -6,6 +6,8 @@ protocol AuthServiceProtocol {
     func logout(refreshToken: String) async throws
     func getMe() async throws -> UserOut
     func updateMe(name: String?, locale: String?) async throws -> UserOut
+    func changePassword(currentPassword: String, newPassword: String) async throws -> UserOut
+    func deleteMe() async throws
 }
 
 struct AuthService: AuthServiceProtocol {
@@ -31,5 +33,14 @@ struct AuthService: AuthServiceProtocol {
 
     func updateMe(name: String?, locale: String?) async throws -> UserOut {
         try await client.put("users/me", body: UserUpdateRequest(name: name, locale: locale))
+    }
+
+    func changePassword(currentPassword: String, newPassword: String) async throws -> UserOut {
+        let body = PasswordChangeRequest(password: newPassword, currentPassword: currentPassword)
+        return try await client.put("users/me", body: body)
+    }
+
+    func deleteMe() async throws {
+        try await client.delete("users/me")
     }
 }

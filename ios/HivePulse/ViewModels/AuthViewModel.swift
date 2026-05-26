@@ -64,6 +64,31 @@ final class AuthViewModel: ObservableObject {
         isLoading = false
     }
 
+    func changePassword(currentPassword: String, newPassword: String) async {
+        isLoading = true
+        errorMessage = nil
+        do {
+            currentUser = try await service.changePassword(currentPassword: currentPassword, newPassword: newPassword)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        isLoading = false
+    }
+
+    func deleteAccount() async {
+        isLoading = true
+        errorMessage = nil
+        do {
+            try await service.deleteMe()
+            KeychainService.shared.clearAll()
+            currentUser = nil
+            isAuthenticated = false
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        isLoading = false
+    }
+
     private func store(_ resp: TokenResponse) {
         KeychainService.shared.accessToken  = resp.accessToken
         KeychainService.shared.refreshToken = resp.refreshToken
