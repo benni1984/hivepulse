@@ -1,0 +1,16 @@
+name: Send Inspection Reminders
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # 06:00 UTC daily
+  workflow_dispatch:       # allow manual trigger from GitHub UI
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call send-reminders endpoint
+        run: |
+          curl -sf -X POST \
+            -H "X-Cron-Secret: ${{ secrets.CRON_SECRET }}" \
+            https://apiscan-two.vercel.app/api/v1/notifications/send-reminders

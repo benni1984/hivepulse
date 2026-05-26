@@ -11,16 +11,17 @@ All endpoints require `Authorization: Bearer <access_token>` unless marked **pub
 1. [Conventions](#conventions)
 2. [Auth](#auth)
 3. [Users & Preferences](#users--preferences)
-4. [Custom Field Definitions](#custom-field-definitions)
-5. [Apiaries](#apiaries)
-6. [QR Batches](#qr-batches)
-7. [Hives](#hives)
-8. [Inspections](#inspections)
-9. [Stats](#stats)
-10. [Public Dashboard](#public-dashboard)
-11. [Hornet Tracker](#hornet-tracker)
-12. [Object Reference](#object-reference)
-13. [Error Codes](#error-codes)
+4. [Notifications](#notifications)
+5. [Custom Field Definitions](#custom-field-definitions)
+6. [Apiaries](#apiaries)
+7. [QR Batches](#qr-batches)
+8. [Hives](#hives)
+9. [Inspections](#inspections)
+10. [Stats](#stats)
+11. [Public Dashboard](#public-dashboard)
+12. [Hornet Tracker](#hornet-tracker)
+13. [Object Reference](#object-reference)
+14. [Error Codes](#error-codes)
 
 ---
 
@@ -163,6 +164,83 @@ All fields optional.
 {
   "name": "string",
   "locale": "en | fr | de"
+}
+```
+
+### GET `/users/me/reminder`
+
+Returns the current user's inspection reminder preferences.
+
+**Response 200**
+```json
+{
+  "reminder_enabled": true,
+  "reminder_interval_days": 7,
+  "reminder_season_start": 4,
+  "reminder_season_end": 8,
+  "push_token_apns": null,
+  "push_token_fcm": null
+}
+```
+
+### PUT `/users/me/reminder`
+
+Updates reminder preferences. All fields optional.
+
+**Request**
+```json
+{
+  "reminder_enabled": false,
+  "reminder_interval_days": 14,
+  "reminder_season_start": 3,
+  "reminder_season_end": 9
+}
+```
+
+**Response 200** — same shape as GET.
+
+### POST `/users/me/push-token`
+
+Registers or replaces a device push token.
+
+**Request**
+```json
+{
+  "platform": "ios | android",
+  "token": "string"
+}
+```
+
+**Response 200**
+```json
+{ "ok": true }
+```
+
+---
+
+## Notifications
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/notifications/send-reminders` | Trigger inspection reminder push notifications (cron) |
+
+### POST `/notifications/send-reminders`
+
+Protected by `X-Cron-Secret` header. Called daily by GitHub Actions at 06:00 UTC.
+Returns 401 if the header is missing or incorrect.
+
+**Request headers**
+```
+X-Cron-Secret: <secret>
+```
+
+**Response 200**
+```json
+{
+  "sent": 3,
+  "skipped_off_season": 12,
+  "skipped_disabled": 1,
+  "skipped_no_token": 5
 }
 ```
 

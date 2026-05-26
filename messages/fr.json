@@ -383,7 +383,27 @@
       "deleteAccount": "Supprimer mon compte",
       "deleteConfirm": "Êtes-vous sûr ? Toutes vos données seront définitivement supprimées.",
       "deleteConfirmBtn": "Oui, supprimer mon compte",
-      "deleteCancel": "Annuler"
+      "deleteCancel": "Annuler",
+      "reminderTitle": "Rappels d'inspection",
+      "reminderEnabled": "Envoyer des rappels d'inspection",
+      "reminderInterval": "Me rappeler tous les",
+      "reminderIntervalUnit": "jours",
+      "reminderSeasonStart": "Début de saison (mois)",
+      "reminderSeasonEnd": "Fin de saison (mois)",
+      "reminderSave": "Enregistrer les paramètres de rappel",
+      "reminderSaved": "Paramètres de rappel enregistrés.",
+      "month.1": "Janvier",
+      "month.2": "Février",
+      "month.3": "Mars",
+      "month.4": "Avril",
+      "month.5": "Mai",
+      "month.6": "Juin",
+      "month.7": "Juillet",
+      "month.8": "Août",
+      "month.9": "Septembre",
+      "month.10": "Octobre",
+      "month.11": "Novembre",
+      "month.12": "Décembre"
     },
     "admin": {
       "nav": {

@@ -3,7 +3,13 @@ from passlib.context import CryptContext
 
 from app.deps import CurrentUser, DB
 from app.models import Hive, Inspection
-from app.schemas import UserOut, UserUpdate
+from app.schemas import (
+    PushTokenRegister,
+    ReminderSettingsOut,
+    ReminderSettingsUpdate,
+    UserOut,
+    UserUpdate,
+)
 
 router = APIRouter(prefix="/users", tags=["users"])
 _pwd = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -39,3 +45,36 @@ def delete_me(current_user: CurrentUser, db: DB):
     db.query(Hive).filter(Hive.user_id == user_id).delete(synchronize_session=False)
     db.delete(current_user)
     db.commit()
+
+
+# ---------------------------------------------------------------------------
+# Reminder settings & push tokens
+# ---------------------------------------------------------------------------
+
+
+@router.get("/me/reminder", response_model=ReminderSettingsOut)
+def get_reminder_settings(current_user: CurrentUser) -> ReminderSettingsOut:
+    return ReminderSettingsOut.model_validate(current_user)
+
+
+@router.put("/me/reminder", response_model=ReminderSettingsOut)
+def update_reminder_settings(
+    body: ReminderSettingsUpdate, current_user: CurrentUser, db: DB
+) -> ReminderSettingsOut:
+    for field, value in body.model_dump(exclude_none=True).items():
+        setattr(current_user, field, value)
+    db.commit()
+    db.refresh(current_user)
+    return ReminderSettingsOut.model_validate(current_user)
+
+
+@router.post("/me/push-token")
+def register_push_token(
+    body: PushTokenRegister, current_user: CurrentUser, db: DB
+) -> dict:
+    if body.platform == "ios":
+        current_user.push_token_apns = body.token
+    else:
+        current_user.push_token_fcm = body.token
+    db.commit()
+    return {"ok": True}
