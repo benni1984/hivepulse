@@ -98,4 +98,53 @@ class SettingsScreenTest {
         }
         composeRule.onNodeWithText("Update failed").assertIsDisplayed()
     }
+
+    @Test
+    fun settings_showsChangePasswordSection() {
+        navigateToSettings()
+        // "Current password" is unique — the section header "Change Password" is
+        // ambiguous (also matches the button label).
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Current password").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Current password").performScrollTo().assertIsDisplayed()
+    }
+
+    @Test
+    fun settings_showsPasswordFields() {
+        navigateToSettings()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Current password").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Current password").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("New password").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("Confirm new password").performScrollTo().assertIsDisplayed()
+    }
+
+    @Test
+    fun settings_showsDangerZoneSection() {
+        navigateToSettings()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Danger Zone").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Danger Zone").performScrollTo().assertIsDisplayed()
+    }
+
+    @Test
+    fun settings_showsDeleteAccountButton() {
+        navigateToSettings()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Delete Account").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Delete Account").performScrollTo().assertIsDisplayed()
+    }
+
+    @Test
+    fun settings_showsSpanishLocaleOption() {
+        navigateToSettings()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Español").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Español").assertIsDisplayed()
+    }
 }

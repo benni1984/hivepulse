@@ -249,3 +249,20 @@
 "admin.health.inactive" = "Inactive users";
 "admin.health.noVarroa" = "No varroa data";
 "admin.health.zeroHives" = "Zero-inspection hives";
+
+/* Password change */
+"section.changePassword" = "Change Password";
+"field.currentPassword" = "Current password";
+"field.newPassword" = "New password";
+"field.confirmPassword" = "Confirm new password";
+"action.changePassword" = "Change Password";
+"alert.passwordMismatch" = "Passwords do not match.";
+"alert.passwordTooShort" = "Password must be at least 8 characters.";
+"alert.passwordChanged" = "Password changed successfully.";
+
+/* Delete account */
+"section.dangerZone" = "Danger Zone";
+"action.deleteAccount" = "Delete Account";
+"alert.deleteAccountConfirm" = "Delete your account?";
+"alert.deleteAccountMessage" = "All your data — apiaries, hives, and inspections — will be permanently deleted. This cannot be undone.";
+"alert.deleteAccountAction" = "Delete Permanently";

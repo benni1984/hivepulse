@@ -110,5 +110,49 @@ class SettingsViewModelTest {
         assertNull(vm.state.value.error)
     }
 
+    @Test
+    fun `changePassword success sets passwordChanged flag`() = runTest {
+        coEvery { repo.changePassword("old", "new12345") } returns user()
+
+        vm.changePassword("old", "new12345")
+
+        assertTrue(vm.state.value.passwordChanged)
+        assertFalse(vm.state.value.isChangingPassword)
+        assertNull(vm.state.value.error)
+    }
+
+    @Test
+    fun `changePassword failure sets error`() = runTest {
+        coEvery { repo.changePassword(any(), any()) } throws RuntimeException("Current password is incorrect")
+
+        vm.changePassword("wrong", "new12345")
+
+        assertEquals("Current password is incorrect", vm.state.value.error)
+        assertFalse(vm.state.value.isChangingPassword)
+        assertFalse(vm.state.value.passwordChanged)
+    }
+
+    @Test
+    fun `deleteAccount success sets deleted flag`() = runTest {
+        coEvery { repo.deleteAccount() } just runs
+
+        vm.deleteAccount()
+
+        assertTrue(vm.state.value.deleted)
+        assertFalse(vm.state.value.isDeleting)
+        assertNull(vm.state.value.error)
+    }
+
+    @Test
+    fun `deleteAccount failure sets error and does not set deleted`() = runTest {
+        coEvery { repo.deleteAccount() } throws RuntimeException("Server error")
+
+        vm.deleteAccount()
+
+        assertEquals("Server error", vm.state.value.error)
+        assertFalse(vm.state.value.deleted)
+        assertFalse(vm.state.value.isDeleting)
+    }
+
     private fun user() = UserOut("u1", "a@b.com", "Alice", "en", "2024-01-01")
 }

@@ -26,6 +26,10 @@ data class UserOut(
     @SerializedName("is_supporter") val isSupporter: Boolean = false
 )
 data class UserUpdateRequest(val name: String?, val locale: String?)
+data class PasswordChangeRequest(
+    val password: String,
+    @SerializedName("current_password") val currentPassword: String
+)
 
 // MARK: - Field Definitions
 data class FieldDefinitionOut(

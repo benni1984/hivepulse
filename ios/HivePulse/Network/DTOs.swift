@@ -116,6 +116,15 @@ struct UserUpdateRequest: Encodable {
     let locale: String?
 }
 
+struct PasswordChangeRequest: Encodable {
+    let password: String
+    let currentPassword: String
+    enum CodingKeys: String, CodingKey {
+        case password
+        case currentPassword = "current_password"
+    }
+}
+
 // MARK: - Field Definitions
 struct FieldDefinitionOut: Codable, Identifiable {
     let id: String

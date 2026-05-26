@@ -43,12 +43,16 @@ final class MockAuthService: AuthServiceProtocol {
     var registerResult: Result<TokenResponse, Error> = .success(makeTokenResponse())
     var getMeResult: Result<UserOut, Error> = .success(makeUser())
     var updateMeResult: Result<UserOut, Error> = .success(makeUser())
+    var changePasswordResult: Result<UserOut, Error> = .success(makeUser())
+    var deleteMeError: Error? = nil
 
     func login(email: String, password: String) async throws -> TokenResponse { try loginResult.get() }
     func register(email: String, password: String, name: String, locale: String) async throws -> TokenResponse { try registerResult.get() }
     func logout(refreshToken: String) async throws {}
     func getMe() async throws -> UserOut { try getMeResult.get() }
     func updateMe(name: String?, locale: String?) async throws -> UserOut { try updateMeResult.get() }
+    func changePassword(currentPassword: String, newPassword: String) async throws -> UserOut { try changePasswordResult.get() }
+    func deleteMe() async throws { if let err = deleteMeError { throw err } }
 }
 
 // MARK: - MockApiaryService

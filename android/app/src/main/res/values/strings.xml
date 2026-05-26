@@ -19,6 +19,8 @@
 
     <!-- Actions -->
     <string name="action_save">Save</string>
+    <string name="action_change_password">Change Password</string>
+    <string name="action_delete_account">Delete Account</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
     <string name="action_login">Sign In</string>
@@ -41,6 +43,9 @@
     <!-- Fields -->
     <string name="field_email">Email</string>
     <string name="field_password">Password</string>
+    <string name="field_current_password">Current password</string>
+    <string name="field_new_password">New password</string>
+    <string name="field_confirm_password">Confirm new password</string>
     <string name="field_name">Name</string>
     <string name="field_display_name">Display Name</string>
     <string name="field_description">Description</string>
@@ -72,6 +77,8 @@
     <string name="field_batch_count">Number of QR Codes (1–100)</string>
 
     <!-- Sections -->
+    <string name="section_change_password">Change Password</string>
+    <string name="section_danger_zone">Danger Zone</string>
     <string name="section_date">Date</string>
     <string name="section_queen">Queen</string>
     <string name="section_frames">Frames</string>
@@ -118,6 +125,12 @@
     <!-- Alerts -->
     <string name="alert_delete_apiary">Delete apiary "%1$s"? This cannot be undone.</string>
     <string name="alert_logout_confirm">Are you sure you want to sign out?</string>
+    <string name="alert_password_mismatch">Passwords do not match.</string>
+    <string name="alert_password_too_short">Password must be at least 8 characters.</string>
+    <string name="alert_password_changed">Password changed successfully.</string>
+    <string name="alert_delete_account_confirm">Delete your account?</string>
+    <string name="alert_delete_account_message">All your data — apiaries, hives, and inspections — will be permanently deleted. This cannot be undone.</string>
+    <string name="alert_delete_account_action">Delete Permanently</string>
 
     <!-- Empty states -->
     <string name="empty_apiaries_title">No apiaries yet.\nTap + to add your first apiary.</string>
