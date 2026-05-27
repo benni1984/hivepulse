@@ -55,10 +55,12 @@ final class SettingsUITests: XCTestCase {
 
     func test_settings_showsDangerZoneSection() {
         app.swipeUp()
+        app.swipeUp()
         XCTAssertTrue(app.staticTexts["Danger Zone"].waitForExistence(timeout: 5))
     }
 
     func test_settings_showsDeleteAccountButton() {
+        app.swipeUp()
         app.swipeUp()
         XCTAssertTrue(app.buttons["Delete Account"].waitForExistence(timeout: 5))
     }
