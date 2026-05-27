@@ -17,8 +17,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.messaging.FirebaseMessaging
 import com.hivepulse.app.R
 import com.hivepulse.app.data.api.ApiaryOut
+import com.hivepulse.app.data.api.ReminderSettingsOut
+import com.hivepulse.app.data.api.ReminderSettingsUpdate
 import com.hivepulse.app.data.api.UserOut
 import com.hivepulse.app.data.repository.ApiaryRepository
 import com.hivepulse.app.data.repository.AuthRepository
@@ -26,6 +29,7 @@ import com.hivepulse.app.data.repository.ExportRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 data class SettingsState(
@@ -40,7 +44,10 @@ data class SettingsState(
     val exportMessage: String? = null,
     val error: String? = null,
     val loggedOut: Boolean = false,
-    val deleted: Boolean = false
+    val deleted: Boolean = false,
+    val reminderSettings: ReminderSettingsOut? = null,
+    val isSavingReminder: Boolean = false,
+    val reminderSaved: Boolean = false
 )
 
 @HiltViewModel
@@ -64,6 +71,31 @@ class SettingsViewModel @Inject constructor(
         }.onFailure { e ->
             _state.update { it.copy(isLoading = false, error = e.message) }
         }
+        loadReminderSettings()
+        tryRegisterFcmToken()
+    }
+
+    internal fun loadReminderSettings() = viewModelScope.launch {
+        runCatching { repo.getReminderSettings() }
+            .onSuccess { r -> _state.update { it.copy(reminderSettings = r) } }
+        // Best-effort: silently ignore failures (e.g. unauthenticated)
+    }
+
+    fun saveReminderSettings(update: ReminderSettingsUpdate) = viewModelScope.launch {
+        _state.update { it.copy(isSavingReminder = true, reminderSaved = false) }
+        runCatching { repo.updateReminderSettings(update) }
+            .onSuccess { r -> _state.update { it.copy(isSavingReminder = false, reminderSettings = r, reminderSaved = true) } }
+            .onFailure { e -> _state.update { it.copy(isSavingReminder = false, error = e.message) } }
+    }
+
+    fun clearReminderSaved() = _state.update { it.copy(reminderSaved = false) }
+
+    private fun tryRegisterFcmToken() = viewModelScope.launch {
+        runCatching {
+            val token = FirebaseMessaging.getInstance().token.await()
+            repo.registerFcmToken(token)
+        }
+        // Best-effort: silently ignore if Firebase not configured
     }
 
     fun updateName(name: String) = viewModelScope.launch {
@@ -151,6 +183,12 @@ fun SettingsScreen(
             pwError = null
             snackbarHostState.showSnackbar(message = "Password changed successfully.")
             vm.clearPasswordChanged()
+        }
+    }
+    LaunchedEffect(state.reminderSaved) {
+        if (state.reminderSaved) {
+            snackbarHostState.showSnackbar(message = "Reminder settings saved.")
+            vm.clearReminderSaved()
         }
     }
 
@@ -276,6 +314,146 @@ fun SettingsScreen(
                     ) {
                         if (state.isChangingPassword) CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
                         else Text(stringResource(R.string.action_change_password))
+                    }
+
+                    // Inspection Reminders
+                    var reminderEnabled by remember(state.reminderSettings) {
+                        mutableStateOf(state.reminderSettings?.reminderEnabled ?: true)
+                    }
+                    var reminderInterval by remember(state.reminderSettings) {
+                        mutableStateOf(state.reminderSettings?.reminderIntervalDays ?: 7)
+                    }
+                    var seasonStart by remember(state.reminderSettings) {
+                        mutableStateOf(state.reminderSettings?.reminderSeasonStart ?: 4)
+                    }
+                    var seasonEnd by remember(state.reminderSettings) {
+                        mutableStateOf(state.reminderSettings?.reminderSeasonEnd ?: 8)
+                    }
+
+                    Text(
+                        stringResource(R.string.section_reminders),
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(stringResource(R.string.reminder_enabled), style = MaterialTheme.typography.bodyMedium)
+                        Switch(
+                            checked = reminderEnabled,
+                            onCheckedChange = { reminderEnabled = it }
+                        )
+                    }
+                    if (reminderEnabled) {
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                stringResource(R.string.reminder_interval_label),
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.weight(1f)
+                            )
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                IconButton(
+                                    onClick = { if (reminderInterval > 1) reminderInterval-- },
+                                    enabled = reminderInterval > 1
+                                ) { Text("−") }
+                                Text(
+                                    stringResource(R.string.reminder_interval_format, reminderInterval),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                IconButton(
+                                    onClick = { if (reminderInterval < 365) reminderInterval++ },
+                                    enabled = reminderInterval < 365
+                                ) { Text("+") }
+                            }
+                        }
+
+                        val monthNames = listOf(
+                            "Jan","Feb","Mar","Apr","May","Jun",
+                            "Jul","Aug","Sep","Oct","Nov","Dec"
+                        )
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                stringResource(R.string.reminder_season_start),
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.weight(1f)
+                            )
+                            var expandStart by remember { mutableStateOf(false) }
+                            ExposedDropdownMenuBox(expanded = expandStart, onExpandedChange = { expandStart = it }) {
+                                OutlinedTextField(
+                                    value = monthNames[seasonStart - 1],
+                                    onValueChange = {},
+                                    readOnly = true,
+                                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandStart) },
+                                    modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable).width(110.dp)
+                                )
+                                ExposedDropdownMenu(expanded = expandStart, onDismissRequest = { expandStart = false }) {
+                                    monthNames.forEachIndexed { i, name ->
+                                        DropdownMenuItem(
+                                            text = { Text(name) },
+                                            onClick = { seasonStart = i + 1; expandStart = false }
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                stringResource(R.string.reminder_season_end),
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.weight(1f)
+                            )
+                            var expandEnd by remember { mutableStateOf(false) }
+                            ExposedDropdownMenuBox(expanded = expandEnd, onExpandedChange = { expandEnd = it }) {
+                                OutlinedTextField(
+                                    value = monthNames[seasonEnd - 1],
+                                    onValueChange = {},
+                                    readOnly = true,
+                                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandEnd) },
+                                    modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable).width(110.dp)
+                                )
+                                ExposedDropdownMenu(expanded = expandEnd, onDismissRequest = { expandEnd = false }) {
+                                    monthNames.forEachIndexed { i, name ->
+                                        DropdownMenuItem(
+                                            text = { Text(name) },
+                                            onClick = { seasonEnd = i + 1; expandEnd = false }
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Button(
+                        onClick = {
+                            vm.saveReminderSettings(
+                                ReminderSettingsUpdate(
+                                    reminderEnabled   = reminderEnabled,
+                                    reminderIntervalDays = reminderInterval,
+                                    reminderSeasonStart  = seasonStart,
+                                    reminderSeasonEnd    = seasonEnd
+                                )
+                            )
+                        },
+                        enabled  = !state.isSavingReminder,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        if (state.isSavingReminder)
+                            CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
+                        else
+                            Text(stringResource(R.string.reminder_save_button))
                     }
 
                     // Admin dashboard

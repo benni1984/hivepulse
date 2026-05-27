@@ -4,7 +4,10 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.hivepulse.app.MainActivity
-import com.hivepulse.app.data.api.*
+import com.hivepulse.app.data.api.ApiService
+import com.hivepulse.app.data.api.PaginatedResponse
+import com.hivepulse.app.data.api.ReminderSettingsOut
+import com.hivepulse.app.data.api.UserOut
 import com.hivepulse.app.data.local.TokenStore
 import com.hivepulse.app.di.NetworkModule
 import dagger.hilt.android.testing.*
@@ -21,10 +24,20 @@ class SettingsScreenTest {
 
     private val user = UserOut("uid-1", "test@example.com", "Test User", "en", "2024-01-01T00:00:00")
 
+    private val reminderSettings = ReminderSettingsOut(
+        reminderEnabled      = true,
+        reminderIntervalDays = 7,
+        reminderSeasonStart  = 4,
+        reminderSeasonEnd    = 8,
+        pushTokenApns        = null,
+        pushTokenFcm         = null
+    )
+
     @BindValue @JvmField
     val apiService: ApiService = mockk<ApiService>(relaxed = true).also {
         coEvery { it.listApiaries(any(), any()) } returns PaginatedResponse(emptyList(), 0, 1, 1)
         coEvery { it.getMe() } returns user
+        coEvery { it.getReminderSettings() } returns reminderSettings
     }
 
     @Inject lateinit var tokenStore: TokenStore
@@ -146,5 +159,23 @@ class SettingsScreenTest {
             composeRule.onAllNodesWithText("Español").fetchSemanticsNodes().isNotEmpty()
         }
         composeRule.onNodeWithText("Español").assertIsDisplayed()
+    }
+
+    @Test
+    fun settings_showsRemindersSection() {
+        navigateToSettings()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Inspection Reminders").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Inspection Reminders").performScrollTo().assertIsDisplayed()
+    }
+
+    @Test
+    fun settings_showsSaveReminderSettingsButton() {
+        navigateToSettings()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Save Reminder Settings").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Save Reminder Settings").performScrollTo().assertIsDisplayed()
     }
 }

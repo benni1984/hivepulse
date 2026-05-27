@@ -43,4 +43,15 @@ class AuthRepository @Inject constructor(
         api.deleteMe()
         tokenStore.clear()
     }
+
+    suspend fun getReminderSettings(): ReminderSettingsOut = api.getReminderSettings()
+
+    suspend fun updateReminderSettings(update: ReminderSettingsUpdate): ReminderSettingsOut =
+        api.updateReminderSettings(update)
+
+    suspend fun registerFcmToken(token: String) {
+        if (!isLoggedIn) return
+        runCatching { api.registerPushToken(PushTokenRegister("android", token)) }
+        // Best-effort: silently ignore failures
+    }
 }
