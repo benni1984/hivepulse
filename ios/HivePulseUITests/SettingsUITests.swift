@@ -63,6 +63,24 @@ final class SettingsUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Delete Account"].waitForExistence(timeout: 5))
     }
 
+    // MARK: - Reminder settings (scroll required)
+
+    func test_settings_showsRemindersSection() {
+        app.swipeUp()
+        XCTAssertTrue(app.staticTexts["Inspection Reminders"].waitForExistence(timeout: 5))
+    }
+
+    func test_settings_showsReminderEnabledToggle() {
+        app.swipeUp()
+        XCTAssertTrue(app.switches["reminderEnabledToggle"].waitForExistence(timeout: 5))
+    }
+
+    func test_settings_showsSaveReminderSettingsButton() {
+        app.swipeUp()
+        app.swipeUp()
+        XCTAssertTrue(app.buttons["saveReminderButton"].waitForExistence(timeout: 5))
+    }
+
     // MARK: - Helper
 
     private func navigateToSettings() {

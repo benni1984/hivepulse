@@ -122,4 +122,61 @@ final class AuthViewModelTests: XCTestCase {
         // Server error must not log the user out
         XCTAssertTrue(vm.isAuthenticated)
     }
+
+    // MARK: - Reminder settings
+
+    func test_loadReminderSettings_populatesReminderSettings() async {
+        let settings = makeReminderSettings(enabled: true, intervalDays: 14, seasonStart: 3, seasonEnd: 9)
+        svc.getReminderResult = .success(settings)
+        await vm.loadReminderSettings()
+        XCTAssertNotNil(vm.reminderSettings)
+        XCTAssertEqual(vm.reminderSettings?.reminderEnabled, true)
+        XCTAssertEqual(vm.reminderSettings?.reminderIntervalDays, 14)
+        XCTAssertEqual(vm.reminderSettings?.reminderSeasonStart, 3)
+        XCTAssertEqual(vm.reminderSettings?.reminderSeasonEnd, 9)
+    }
+
+    func test_loadReminderSettings_failure_doesNotSetErrorMessage() async {
+        svc.getReminderResult = .failure(NSError(domain: "test", code: 500,
+            userInfo: [NSLocalizedDescriptionKey: "Server error"]))
+        await vm.loadReminderSettings()
+        // loadReminderSettings is best-effort — should not surface error to UI
+        XCTAssertNil(vm.reminderSettings)
+        XCTAssertNil(vm.errorMessage)
+    }
+
+    func test_updateReminderSettings_updatesPublishedSettings() async {
+        let updated = makeReminderSettings(enabled: false, intervalDays: 30)
+        svc.updateReminderResult = .success(updated)
+        let body = ReminderSettingsUpdate(reminderEnabled: false, reminderIntervalDays: 30,
+                                          reminderSeasonStart: nil, reminderSeasonEnd: nil)
+        await vm.updateReminderSettings(body)
+        XCTAssertNil(vm.errorMessage)
+        XCTAssertEqual(vm.reminderSettings?.reminderEnabled, false)
+        XCTAssertEqual(vm.reminderSettings?.reminderIntervalDays, 30)
+    }
+
+    func test_updateReminderSettings_failure_setsErrorMessage() async {
+        svc.updateReminderResult = .failure(NSError(domain: "test", code: 500,
+            userInfo: [NSLocalizedDescriptionKey: "Update failed"]))
+        let body = ReminderSettingsUpdate(reminderEnabled: true, reminderIntervalDays: 7,
+                                          reminderSeasonStart: nil, reminderSeasonEnd: nil)
+        await vm.updateReminderSettings(body)
+        XCTAssertEqual(vm.errorMessage, "Update failed")
+    }
+
+    func test_registerAPNsToken_success_doesNotSetError() async {
+        let tokenData = Data([0xAB, 0xCD, 0xEF])
+        await vm.registerAPNsToken(tokenData)
+        XCTAssertNil(vm.errorMessage)
+    }
+
+    func test_registerAPNsToken_failure_isSilent() async {
+        svc.registerPushTokenError = NSError(domain: "test", code: 500,
+            userInfo: [NSLocalizedDescriptionKey: "Token registration failed"])
+        let tokenData = Data([0x01, 0x02])
+        await vm.registerAPNsToken(tokenData)
+        // Should be silent — push token registration is best-effort
+        XCTAssertNil(vm.errorMessage)
+    }
 }

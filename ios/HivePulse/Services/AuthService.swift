@@ -8,6 +8,9 @@ protocol AuthServiceProtocol {
     func updateMe(name: String?, locale: String?) async throws -> UserOut
     func changePassword(currentPassword: String, newPassword: String) async throws -> UserOut
     func deleteMe() async throws
+    func getReminderSettings() async throws -> ReminderSettingsOut
+    func updateReminderSettings(_ body: ReminderSettingsUpdate) async throws -> ReminderSettingsOut
+    func registerPushToken(platform: String, token: String) async throws
 }
 
 struct AuthService: AuthServiceProtocol {
@@ -42,5 +45,18 @@ struct AuthService: AuthServiceProtocol {
 
     func deleteMe() async throws {
         try await client.delete("users/me")
+    }
+
+    func getReminderSettings() async throws -> ReminderSettingsOut {
+        try await client.get("users/me/reminder")
+    }
+
+    func updateReminderSettings(_ body: ReminderSettingsUpdate) async throws -> ReminderSettingsOut {
+        try await client.put("users/me/reminder", body: body)
+    }
+
+    func registerPushToken(platform: String, token: String) async throws {
+        try await client.postVoid("users/me/push-token",
+                                  body: PushTokenRegister(platform: platform, token: token))
     }
 }

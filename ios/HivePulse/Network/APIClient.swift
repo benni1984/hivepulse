@@ -69,6 +69,10 @@ final class APIClient {
         try await perform(method: "POST", path: path, bodyData: try encoder.encode(body), requiresAuth: false)
     }
 
+    func postVoid<B: Encodable>(_ path: String, body: B) async throws {
+        try await performVoid(method: "POST", path: path, bodyData: try encoder.encode(body))
+    }
+
     func postVoidNoAuth<B: Encodable>(_ path: String, body: B) async throws {
         try await performVoid(method: "POST", path: path, bodyData: try encoder.encode(body), requiresAuth: false)
     }

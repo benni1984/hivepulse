@@ -1,14 +1,16 @@
 import SwiftUI
+import UserNotifications
 
 // Setup instructions:
 // 1. In Xcode: File > New > Project > App, name "HivePulse", bundle ID "com.hivepulse.app"
-// 2. Set minimum deployment to iOS 16
+// 2. Set minimum deployment to iOS 17
 // 3. Delete auto-generated ContentView.swift
 // 4. Add all files from this directory to the project (drag into navigator)
-// 5. Enable capabilities: Location When In Use, Camera
+// 5. Enable capabilities: Location When In Use, Camera, Push Notifications
 
 @main
 struct HivePulseApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var authVM = AuthViewModel()
 
     init() {
@@ -41,7 +43,15 @@ struct HivePulseApp: App {
             if authVM.isAuthenticated {
                 MainTabView()
                     .environmentObject(authVM)
-                    .task { await authVM.loadProfile() }
+                    .task {
+                        await authVM.loadProfile()
+                        await requestPushPermission()
+                    }
+                    .onReceive(NotificationCenter.default.publisher(for: .apnsTokenReceived)) { note in
+                        if let tokenData = note.userInfo?["token"] as? Data {
+                            Task { await authVM.registerAPNsToken(tokenData) }
+                        }
+                    }
             } else {
                 // Unauthenticated: HivePulse login + public Hornets tab always visible
                 TabView {
@@ -59,6 +69,18 @@ struct HivePulseApp: App {
                     }
                 }
                 .tint(.orange)
+            }
+        }
+    }
+
+    // MARK: - Push permission
+
+    private func requestPushPermission() async {
+        let center = UNUserNotificationCenter.current()
+        let granted = (try? await center.requestAuthorization(options: [.alert, .sound, .badge])) ?? false
+        if granted {
+            await MainActor.run {
+                UIApplication.shared.registerForRemoteNotifications()
             }
         }
     }
