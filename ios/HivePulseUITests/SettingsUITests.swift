@@ -50,6 +50,7 @@ final class SettingsUITests: XCTestCase {
 
     func test_settings_showsLogoutButton() {
         app.swipeUp()
+        app.swipeUp()
         XCTAssertTrue(app.buttons["Log Out"].waitForExistence(timeout: 5))
     }
 
