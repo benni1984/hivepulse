@@ -39,27 +39,29 @@ extension MockURLProtocol {
 
     // Authenticated screens, all lists empty.
     static let authenticatedHandlers: [(String, Int, String)] = [
-        ("inspections", 200, emptyList),
-        ("hives",       200, emptyList),
-        ("field-definitions", 200, "[]"),
-        ("users/me",    200, userJSON),
-        ("qr-batches",  200, emptyList),
-        ("apiaries",    200, emptyList),
-        ("auth/refresh",200, accessTokenJSON),
+        ("inspections",      200, emptyList),
+        ("hives",            200, emptyList),
+        ("field-definitions",200, "[]"),
+        ("users/me/reminder",200, reminderJSON),   // must come before "users/me"
+        ("users/me",         200, userJSON),
+        ("qr-batches",       200, emptyList),
+        ("apiaries",         200, emptyList),
+        ("auth/refresh",     200, accessTokenJSON),
     ]
 
     // Authenticated screens, one apiary containing one hive (for deep-navigation tests).
     static let apiaryWithHiveHandlers: [(String, Int, String)] = [
-        ("hives/h-1/inspections",       200, emptyList),
-        ("apiaries/a-1/hives",          200, hiveListJSON),
+        ("hives/h-1/inspections",          200, emptyList),
+        ("apiaries/a-1/hives",             200, hiveListJSON),
         ("apiaries/a-1/field-definitions", 200, "[]"),
-        ("hives/h-1",                   200, hiveJSON),
-        ("apiaries/a-1",                200, apiaryJSON),
-        ("field-definitions",           200, "[]"),
-        ("users/me",                    200, userJSON),
-        ("qr-batches",                  200, emptyList),
-        ("apiaries",                    200, apiaryListJSON),
-        ("auth/refresh",                200, accessTokenJSON),
+        ("hives/h-1",                      200, hiveJSON),
+        ("apiaries/a-1",                   200, apiaryJSON),
+        ("field-definitions",              200, "[]"),
+        ("users/me/reminder",              200, reminderJSON),  // before "users/me"
+        ("users/me",                       200, userJSON),
+        ("qr-batches",                     200, emptyList),
+        ("apiaries",                       200, apiaryListJSON),
+        ("auth/refresh",                   200, accessTokenJSON),
     ]
 
     // Unauthenticated tests that need a working mock server (Register / Login success paths).
@@ -74,6 +76,10 @@ extension MockURLProtocol {
 
     static let userJSON = """
     {"id":"u-1","email":"tester@example.com","name":"Test User","locale":"en","created_at":"2024-01-01T00:00:00Z","is_admin":false,"is_supporter":false}
+    """
+
+    static let reminderJSON = """
+    {"reminder_enabled":true,"reminder_interval_days":7,"reminder_season_start":4,"reminder_season_end":8,"push_token_apns":null,"push_token_fcm":null}
     """
 
     private static let accessTokenJSON = """

@@ -50,17 +50,38 @@ final class SettingsUITests: XCTestCase {
 
     func test_settings_showsLogoutButton() {
         app.swipeUp()
+        app.swipeUp()
         XCTAssertTrue(app.buttons["Log Out"].waitForExistence(timeout: 5))
     }
 
     func test_settings_showsDangerZoneSection() {
+        app.swipeUp()
         app.swipeUp()
         XCTAssertTrue(app.staticTexts["Danger Zone"].waitForExistence(timeout: 5))
     }
 
     func test_settings_showsDeleteAccountButton() {
         app.swipeUp()
+        app.swipeUp()
         XCTAssertTrue(app.buttons["Delete Account"].waitForExistence(timeout: 5))
+    }
+
+    // MARK: - Reminder settings (scroll required)
+
+    func test_settings_showsRemindersSection() {
+        app.swipeUp()
+        XCTAssertTrue(app.staticTexts["Inspection Reminders"].waitForExistence(timeout: 5))
+    }
+
+    func test_settings_showsReminderEnabledToggle() {
+        app.swipeUp()
+        XCTAssertTrue(app.switches["reminderEnabledToggle"].waitForExistence(timeout: 5))
+    }
+
+    func test_settings_showsSaveReminderSettingsButton() {
+        app.swipeUp()
+        app.swipeUp()
+        XCTAssertTrue(app.buttons["saveReminderButton"].waitForExistence(timeout: 5))
     }
 
     // MARK: - Helper

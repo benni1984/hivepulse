@@ -260,6 +260,15 @@
 "alert.passwordTooShort" = "Password must be at least 8 characters.";
 "alert.passwordChanged" = "Password changed successfully.";
 
+/* Inspection Reminders */
+"section.reminders" = "Inspection Reminders";
+"reminder.enabled" = "Send inspection reminders";
+"reminder.intervalFormat" = "Remind me every %d days";
+"reminder.seasonStart" = "Season start";
+"reminder.seasonEnd" = "Season end";
+"reminder.saveButton" = "Save Reminder Settings";
+"reminder.saved" = "Reminder settings saved.";
+
 /* Delete account */
 "section.dangerZone" = "Danger Zone";
 "action.deleteAccount" = "Delete Account";

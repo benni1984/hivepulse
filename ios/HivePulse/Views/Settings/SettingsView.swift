@@ -20,6 +20,14 @@ struct SettingsView: View {
     @State private var showDeleteConfirm = false
     @State private var isDeleting = false
 
+    // Reminder settings
+    @State private var reminderEnabled = true
+    @State private var reminderIntervalDays = 7
+    @State private var reminderSeasonStart = 4
+    @State private var reminderSeasonEnd = 8
+    @State private var isSavingReminder = false
+    @State private var reminderSaveSuccess = false
+
     // Export
     @State private var apiaries: [ApiaryOut] = []
     @State private var showExportSheet = false
@@ -91,6 +99,41 @@ struct SettingsView: View {
                 .disabled(isChangingPassword || currentPassword.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty)
             }
 
+            // MARK: - Inspection Reminders
+            Section(NSLocalizedString("section.reminders", comment: "")) {
+                Toggle(NSLocalizedString("reminder.enabled", comment: ""), isOn: $reminderEnabled)
+                    .accessibilityIdentifier("reminderEnabledToggle")
+                if reminderEnabled {
+                    Stepper(
+                        String(format: NSLocalizedString("reminder.intervalFormat", comment: ""), reminderIntervalDays),
+                        value: $reminderIntervalDays, in: 1...365
+                    )
+                    Picker(NSLocalizedString("reminder.seasonStart", comment: ""), selection: $reminderSeasonStart) {
+                        ForEach(1...12, id: \.self) { m in Text(monthName(m)).tag(m) }
+                    }
+                    Picker(NSLocalizedString("reminder.seasonEnd", comment: ""), selection: $reminderSeasonEnd) {
+                        ForEach(1...12, id: \.self) { m in Text(monthName(m)).tag(m) }
+                    }
+                }
+                if reminderSaveSuccess {
+                    Text(NSLocalizedString("reminder.saved", comment: ""))
+                        .foregroundColor(.green).font(.caption)
+                }
+            }
+
+            Section {
+                Button {
+                    Task { await saveReminderSettings() }
+                } label: {
+                    HStack {
+                        if isSavingReminder { ProgressView() }
+                        Text(NSLocalizedString("reminder.saveButton", comment: ""))
+                    }
+                }
+                .disabled(isSavingReminder)
+                .accessibilityIdentifier("saveReminderButton")
+            }
+
             // MARK: - Export
             if !apiaries.isEmpty {
                 Section(NSLocalizedString("section.export", comment: "")) {
@@ -153,6 +196,13 @@ struct SettingsView: View {
             name   = authVM.currentUser?.name ?? ""
             locale = authVM.currentUser?.locale ?? "en"
             apiaries = (try? await apiaryService.list().items) ?? []
+            await authVM.loadReminderSettings()
+            if let r = authVM.reminderSettings {
+                reminderEnabled       = r.reminderEnabled
+                reminderIntervalDays  = r.reminderIntervalDays
+                reminderSeasonStart   = r.reminderSeasonStart
+                reminderSeasonEnd     = r.reminderSeasonEnd
+            }
         }
         .confirmationDialog(
             NSLocalizedString("alert.logoutConfirm", comment: ""),
@@ -230,6 +280,28 @@ struct SettingsView: View {
         isDeleting = true
         await authVM.deleteAccount()
         isDeleting = false
+    }
+
+    private func saveReminderSettings() async {
+        isSavingReminder = true
+        reminderSaveSuccess = false
+        let update = ReminderSettingsUpdate(
+            reminderEnabled:      reminderEnabled,
+            reminderIntervalDays: reminderIntervalDays,
+            reminderSeasonStart:  reminderSeasonStart,
+            reminderSeasonEnd:    reminderSeasonEnd
+        )
+        await authVM.updateReminderSettings(update)
+        isSavingReminder = false
+        if authVM.errorMessage == nil {
+            reminderSaveSuccess = true
+        }
+    }
+
+    private func monthName(_ month: Int) -> String {
+        let fmt = DateFormatter()
+        fmt.locale = Locale.current
+        return fmt.monthSymbols[month - 1]
     }
 
     private func doExport() async {

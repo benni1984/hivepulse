@@ -5,6 +5,7 @@ import SwiftUI
 final class AuthViewModel: ObservableObject {
     @Published var isAuthenticated = false
     @Published var currentUser: UserOut?
+    @Published var reminderSettings: ReminderSettingsOut?
     @Published var isLoading = false
     @Published var errorMessage: String?
 
@@ -87,6 +88,34 @@ final class AuthViewModel: ObservableObject {
             errorMessage = error.localizedDescription
         }
         isLoading = false
+    }
+
+    func loadReminderSettings() async {
+        do {
+            reminderSettings = try await service.getReminderSettings()
+        } catch {
+            // Non-fatal — reminder settings are best-effort
+        }
+    }
+
+    func updateReminderSettings(_ update: ReminderSettingsUpdate) async {
+        isLoading = true
+        errorMessage = nil
+        do {
+            reminderSettings = try await service.updateReminderSettings(update)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        isLoading = false
+    }
+
+    func registerAPNsToken(_ tokenData: Data) async {
+        let tokenString = tokenData.map { String(format: "%02x", $0) }.joined()
+        do {
+            try await service.registerPushToken(platform: "ios", token: tokenString)
+        } catch {
+            // Non-fatal — push token registration is best-effort
+        }
     }
 
     private func store(_ resp: TokenResponse) {

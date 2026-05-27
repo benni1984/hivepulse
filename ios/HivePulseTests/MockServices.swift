@@ -38,6 +38,22 @@ func makePage<T>(_ items: [T], page: Int = 1, pages: Int = 1, perPage: Int = 50)
 
 // MARK: - MockAuthService
 
+func makeReminderSettings(
+    enabled: Bool = true,
+    intervalDays: Int = 7,
+    seasonStart: Int = 4,
+    seasonEnd: Int = 8
+) -> ReminderSettingsOut {
+    ReminderSettingsOut(
+        reminderEnabled: enabled,
+        reminderIntervalDays: intervalDays,
+        reminderSeasonStart: seasonStart,
+        reminderSeasonEnd: seasonEnd,
+        pushTokenApns: nil,
+        pushTokenFcm: nil
+    )
+}
+
 final class MockAuthService: AuthServiceProtocol {
     var loginResult: Result<TokenResponse, Error> = .success(makeTokenResponse())
     var registerResult: Result<TokenResponse, Error> = .success(makeTokenResponse())
@@ -45,6 +61,9 @@ final class MockAuthService: AuthServiceProtocol {
     var updateMeResult: Result<UserOut, Error> = .success(makeUser())
     var changePasswordResult: Result<UserOut, Error> = .success(makeUser())
     var deleteMeError: Error? = nil
+    var getReminderResult: Result<ReminderSettingsOut, Error> = .success(makeReminderSettings())
+    var updateReminderResult: Result<ReminderSettingsOut, Error> = .success(makeReminderSettings())
+    var registerPushTokenError: Error? = nil
 
     func login(email: String, password: String) async throws -> TokenResponse { try loginResult.get() }
     func register(email: String, password: String, name: String, locale: String) async throws -> TokenResponse { try registerResult.get() }
@@ -53,6 +72,9 @@ final class MockAuthService: AuthServiceProtocol {
     func updateMe(name: String?, locale: String?) async throws -> UserOut { try updateMeResult.get() }
     func changePassword(currentPassword: String, newPassword: String) async throws -> UserOut { try changePasswordResult.get() }
     func deleteMe() async throws { if let err = deleteMeError { throw err } }
+    func getReminderSettings() async throws -> ReminderSettingsOut { try getReminderResult.get() }
+    func updateReminderSettings(_ body: ReminderSettingsUpdate) async throws -> ReminderSettingsOut { try updateReminderResult.get() }
+    func registerPushToken(platform: String, token: String) async throws { if let err = registerPushTokenError { throw err } }
 }
 
 // MARK: - MockApiaryService

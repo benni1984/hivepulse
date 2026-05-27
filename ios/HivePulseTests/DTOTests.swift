@@ -144,6 +144,34 @@ final class DTOTests: XCTestCase {
         XCTAssertEqual(summary.zeroInspectionHivesCount, 2)
     }
 
+    // MARK: - ReminderSettingsOut
+
+    func test_reminderSettingsOut_decodesFromJSON() throws {
+        let json = """
+        {"reminder_enabled":true,"reminder_interval_days":7,"reminder_season_start":4,
+         "reminder_season_end":8,"push_token_apns":null,"push_token_fcm":null}
+        """.data(using: .utf8)!
+        let settings = try JSONDecoder().decode(ReminderSettingsOut.self, from: json)
+        XCTAssertTrue(settings.reminderEnabled)
+        XCTAssertEqual(settings.reminderIntervalDays, 7)
+        XCTAssertEqual(settings.reminderSeasonStart, 4)
+        XCTAssertEqual(settings.reminderSeasonEnd, 8)
+        XCTAssertNil(settings.pushTokenApns)
+        XCTAssertNil(settings.pushTokenFcm)
+    }
+
+    func test_reminderSettingsOut_decodesWithPushTokens() throws {
+        let json = """
+        {"reminder_enabled":false,"reminder_interval_days":14,"reminder_season_start":3,
+         "reminder_season_end":10,"push_token_apns":"abc123","push_token_fcm":null}
+        """.data(using: .utf8)!
+        let settings = try JSONDecoder().decode(ReminderSettingsOut.self, from: json)
+        XCTAssertFalse(settings.reminderEnabled)
+        XCTAssertEqual(settings.reminderIntervalDays, 14)
+        XCTAssertEqual(settings.pushTokenApns, "abc123")
+        XCTAssertNil(settings.pushTokenFcm)
+    }
+
     // MARK: - Helpers
 
     private func roundtrip<T: Codable>(_ value: T) throws -> T {

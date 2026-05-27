@@ -125,6 +125,43 @@ struct PasswordChangeRequest: Encodable {
     }
 }
 
+// MARK: - Reminder Settings
+
+struct ReminderSettingsOut: Codable {
+    let reminderEnabled: Bool
+    let reminderIntervalDays: Int
+    let reminderSeasonStart: Int
+    let reminderSeasonEnd: Int
+    let pushTokenApns: String?
+    let pushTokenFcm: String?
+    enum CodingKeys: String, CodingKey {
+        case pushTokenApns       = "push_token_apns"
+        case pushTokenFcm        = "push_token_fcm"
+        case reminderEnabled     = "reminder_enabled"
+        case reminderIntervalDays = "reminder_interval_days"
+        case reminderSeasonStart  = "reminder_season_start"
+        case reminderSeasonEnd    = "reminder_season_end"
+    }
+}
+
+struct ReminderSettingsUpdate: Encodable {
+    var reminderEnabled: Bool?
+    var reminderIntervalDays: Int?
+    var reminderSeasonStart: Int?
+    var reminderSeasonEnd: Int?
+    enum CodingKeys: String, CodingKey {
+        case reminderEnabled      = "reminder_enabled"
+        case reminderIntervalDays = "reminder_interval_days"
+        case reminderSeasonStart  = "reminder_season_start"
+        case reminderSeasonEnd    = "reminder_season_end"
+    }
+}
+
+struct PushTokenRegister: Encodable {
+    let platform: String  // "ios" or "android"
+    let token: String
+}
+
 // MARK: - Field Definitions
 struct FieldDefinitionOut: Codable, Identifiable {
     let id: String
