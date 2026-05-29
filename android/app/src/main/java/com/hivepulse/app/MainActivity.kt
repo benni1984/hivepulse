@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Hive
 import androidx.compose.material.icons.filled.PestControl
 import androidx.compose.material3.*
@@ -35,13 +36,14 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val backStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = backStackEntry?.destination?.route ?: ""
-                val isHornetSection = currentRoute.startsWith("hornet")
+                val isHornetSection  = currentRoute.startsWith("hornet")
+                val isMembersSection = currentRoute == Routes.MEMBERS
 
                 Scaffold(
                     bottomBar = {
                         NavigationBar {
                             NavigationBarItem(
-                                selected = !isHornetSection,
+                                selected = !isHornetSection && !isMembersSection,
                                 onClick = {
                                     val dest = if (tokenStore.isLoggedIn) Routes.APIARY_LIST else Routes.LOGIN
                                     navController.navigate(dest) {
@@ -62,6 +64,17 @@ class MainActivity : ComponentActivity() {
                                 },
                                 icon = { Icon(Icons.Default.PestControl, contentDescription = null) },
                                 label = { Text(stringResource(R.string.tab_hornets)) }
+                            )
+                            NavigationBarItem(
+                                selected = isMembersSection,
+                                onClick = {
+                                    navController.navigate(Routes.MEMBERS) {
+                                        launchSingleTop = true
+                                        popUpTo(navController.graph.startDestinationId) { saveState = true }
+                                    }
+                                },
+                                icon = { Icon(Icons.Default.Groups, contentDescription = null) },
+                                label = { Text(stringResource(R.string.tab_members)) }
                             )
                         }
                     }
