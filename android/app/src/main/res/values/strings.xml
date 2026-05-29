@@ -79,6 +79,14 @@
     <!-- Sections -->
     <string name="section_change_password">Change Password</string>
     <string name="section_danger_zone">Danger Zone</string>
+    <string name="section_reminders">Inspection Reminders</string>
+    <string name="reminder_enabled">Send inspection reminders</string>
+    <string name="reminder_interval_label">Remind me every</string>
+    <string name="reminder_interval_format">%1$d days</string>
+    <string name="reminder_season_start">Season start</string>
+    <string name="reminder_season_end">Season end</string>
+    <string name="reminder_save_button">Save Reminder Settings</string>
+    <string name="reminder_saved">Reminder settings saved.</string>
     <string name="section_date">Date</string>
     <string name="section_queen">Queen</string>
     <string name="section_frames">Frames</string>

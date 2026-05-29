@@ -2,6 +2,7 @@ package com.hivepulse.app.data.repository
 
 import com.hivepulse.app.data.api.*
 import com.hivepulse.app.data.local.TokenStore
+import retrofit2.Response
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -130,5 +131,54 @@ class AuthRepositoryTest {
         verify { tokenStore.clear() }
     }
 
+    @Test
+    fun `getReminderSettings delegates to api`() = runTest {
+        val r = reminder()
+        coEvery { api.getReminderSettings() } returns r
+
+        val result = repo.getReminderSettings()
+
+        assertEquals(r, result)
+    }
+
+    @Test
+    fun `updateReminderSettings delegates to api`() = runTest {
+        val update = ReminderSettingsUpdate(false, 14, 3, 9)
+        val updated = reminder().copy(reminderEnabled = false, reminderIntervalDays = 14)
+        coEvery { api.updateReminderSettings(update) } returns updated
+
+        val result = repo.updateReminderSettings(update)
+
+        assertEquals(updated, result)
+        coVerify { api.updateReminderSettings(update) }
+    }
+
+    @Test
+    fun `registerFcmToken calls api when logged in`() = runTest {
+        every { tokenStore.isLoggedIn } returns true
+        coEvery { api.registerPushToken(PushTokenRegister("android", "tok123")) } returns mapOf("ok" to true)
+
+        repo.registerFcmToken("tok123")
+
+        coVerify { api.registerPushToken(PushTokenRegister("android", "tok123")) }
+    }
+
+    @Test
+    fun `registerFcmToken skips api when not logged in`() = runTest {
+        every { tokenStore.isLoggedIn } returns false
+
+        repo.registerFcmToken("tok123")
+
+        coVerify(exactly = 0) { api.registerPushToken(any()) }
+    }
+
     private fun user() = UserOut("u1", "a@b.com", "Alice", "en", "2024-01-01")
+    private fun reminder() = ReminderSettingsOut(
+        reminderEnabled      = true,
+        reminderIntervalDays = 7,
+        reminderSeasonStart  = 4,
+        reminderSeasonEnd    = 8,
+        pushTokenApns        = null,
+        pushTokenFcm         = null
+    )
 }

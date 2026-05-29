@@ -30,6 +30,24 @@ data class PasswordChangeRequest(
     val password: String,
     @SerializedName("current_password") val currentPassword: String
 )
+data class ReminderSettingsOut(
+    @SerializedName("reminder_enabled")       val reminderEnabled: Boolean,
+    @SerializedName("reminder_interval_days") val reminderIntervalDays: Int,
+    @SerializedName("reminder_season_start")  val reminderSeasonStart: Int,
+    @SerializedName("reminder_season_end")    val reminderSeasonEnd: Int,
+    @SerializedName("push_token_apns")        val pushTokenApns: String?,
+    @SerializedName("push_token_fcm")         val pushTokenFcm: String?
+)
+data class ReminderSettingsUpdate(
+    @SerializedName("reminder_enabled")       val reminderEnabled: Boolean?,
+    @SerializedName("reminder_interval_days") val reminderIntervalDays: Int?,
+    @SerializedName("reminder_season_start")  val reminderSeasonStart: Int?,
+    @SerializedName("reminder_season_end")    val reminderSeasonEnd: Int?
+)
+data class PushTokenRegister(
+    val platform: String,
+    val token: String
+)
 
 // MARK: - Field Definitions
 data class FieldDefinitionOut(

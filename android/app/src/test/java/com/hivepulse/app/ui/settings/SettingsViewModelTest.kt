@@ -1,5 +1,7 @@
 package com.hivepulse.app.ui.settings
 
+import com.hivepulse.app.data.api.ReminderSettingsOut
+import com.hivepulse.app.data.api.ReminderSettingsUpdate
 import com.hivepulse.app.data.api.UserOut
 import com.hivepulse.app.data.repository.ApiaryRepository
 import com.hivepulse.app.data.repository.AuthRepository
@@ -26,6 +28,8 @@ class SettingsViewModelTest {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         coEvery { repo.getMe() } returns user()
         coEvery { apiaryRepo.list() } returns emptyList()
+        coEvery { repo.getReminderSettings() } returns reminder()
+        coEvery { repo.registerFcmToken(any()) } just runs
         vm = SettingsViewModel(repo, apiaryRepo, exportRepo)
     }
 
@@ -154,5 +158,70 @@ class SettingsViewModelTest {
         assertFalse(vm.state.value.isDeleting)
     }
 
+    @Test
+    fun `loadReminderSettings success updates state`() = runTest {
+        val r = reminder()
+        coEvery { repo.getReminderSettings() } returns r
+        vm.loadReminderSettings()
+        assertEquals(r, vm.state.value.reminderSettings)
+    }
+
+    @Test
+    fun `loadReminderSettings failure does not set error`() = runTest {
+        coEvery { repo.getReminderSettings() } throws RuntimeException("network")
+        vm.loadReminderSettings()
+        // best-effort — no error surfaced to the user
+        assertNull(vm.state.value.error)
+    }
+
+    @Test
+    fun `saveReminderSettings success sets reminderSaved flag and updates state`() = runTest {
+        val updated = reminder().copy(reminderIntervalDays = 14)
+        val update = ReminderSettingsUpdate(true, 14, 4, 8)
+        coEvery { repo.updateReminderSettings(update) } returns updated
+
+        vm.saveReminderSettings(update)
+
+        assertTrue(vm.state.value.reminderSaved)
+        assertEquals(14, vm.state.value.reminderSettings?.reminderIntervalDays)
+        assertFalse(vm.state.value.isSavingReminder)
+    }
+
+    @Test
+    fun `saveReminderSettings failure sets error and clears saving flag`() = runTest {
+        coEvery { repo.updateReminderSettings(any()) } throws RuntimeException("save error")
+
+        vm.saveReminderSettings(ReminderSettingsUpdate(true, 7, 4, 8))
+
+        assertEquals("save error", vm.state.value.error)
+        assertFalse(vm.state.value.isSavingReminder)
+        assertFalse(vm.state.value.reminderSaved)
+    }
+
+    @Test
+    fun `clearReminderSaved clears the flag`() = runTest {
+        val updated = reminder()
+        coEvery { repo.updateReminderSettings(any()) } returns updated
+        vm.saveReminderSettings(ReminderSettingsUpdate(true, 7, 4, 8))
+        assertTrue(vm.state.value.reminderSaved)
+
+        vm.clearReminderSaved()
+
+        assertFalse(vm.state.value.reminderSaved)
+    }
+
+    @Test
+    fun `init loads reminder settings on construction`() {
+        assertEquals(reminder(), vm.state.value.reminderSettings)
+    }
+
     private fun user() = UserOut("u1", "a@b.com", "Alice", "en", "2024-01-01")
+    private fun reminder() = ReminderSettingsOut(
+        reminderEnabled      = true,
+        reminderIntervalDays = 7,
+        reminderSeasonStart  = 4,
+        reminderSeasonEnd    = 8,
+        pushTokenApns        = null,
+        pushTokenFcm         = null
+    )
 }

@@ -32,6 +32,15 @@ interface ApiService {
     @DELETE("users/me")
     suspend fun deleteMe(): Response<Unit>
 
+    @GET("users/me/reminder")
+    suspend fun getReminderSettings(): ReminderSettingsOut
+
+    @PUT("users/me/reminder")
+    suspend fun updateReminderSettings(@Body body: ReminderSettingsUpdate): ReminderSettingsOut
+
+    @POST("users/me/push-token")
+    suspend fun registerPushToken(@Body body: PushTokenRegister): Map<String, Boolean>
+
     // Field Definitions
     @GET("field-definitions")
     suspend fun listFieldDefinitions(): List<FieldDefinitionOut>

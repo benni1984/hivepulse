@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 }
 
 configurations.all {
@@ -92,6 +93,10 @@ dependencies {
     // GPS / Location
     implementation("com.google.android.gms:play-services-location:21.3.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
+
+    // Firebase (FCM push notifications — delivery activates when google-services.json has real credentials)
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-messaging-ktx")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
 
