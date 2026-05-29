@@ -269,6 +269,17 @@
 "reminder.saveButton" = "Guardar ajustes de recordatorio";
 "reminder.saved" = "Ajustes de recordatorio guardados.";
 
+/* Miembros */
+"tab.members" = "Miembros";
+"members.title" = "Miembros";
+"members.comingSoon" = "Próximamente más estadísticas de la comunidad.";
+"members.gate.title" = "Función para Supporters";
+"members.gate.desc" = "Hazte supporter para desbloquear las estadísticas de la comunidad y ayudar a mantener HivePulse.";
+"members.stat.avgVarroa" = "Varroa promedio";
+"members.stat.goodMood" = "Buen humor";
+"members.stat.avgBrood" = "Marcos de cría promedio";
+"members.stat.interval" = "Intervalo promedio de inspección";
+
 /* Eliminar cuenta */
 "section.dangerZone" = "Zona de peligro";
 "action.deleteAccount" = "Eliminar cuenta";

@@ -41,6 +41,14 @@ struct MainTabView: View {
             .tabItem {
                 Label(NSLocalizedString("tab.hornets", comment: ""), systemImage: "ant")
             }
+
+            NavigationStack {
+                MembersView()
+                    .environmentObject(authVM)
+            }
+            .tabItem {
+                Label(NSLocalizedString("tab.members", comment: ""), systemImage: "person.3")
+            }
         }
         .tint(.orange)
         .task { await apiaryVM.load() }

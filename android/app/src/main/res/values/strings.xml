@@ -197,6 +197,17 @@
     <string name="action_load_more">Load more</string>
     <string name="action_use_my_location">Use my location</string>
 
+    <!-- Members -->
+    <string name="tab_members">Members</string>
+    <string name="members_title">Members</string>
+    <string name="members_coming_soon">More community stats coming soon.</string>
+    <string name="members_gate_title">Supporter Feature</string>
+    <string name="members_gate_desc">Become a supporter to unlock community stats and help keep HivePulse running.</string>
+    <string name="members_stat_avg_varroa">Avg Varroa Count</string>
+    <string name="members_stat_good_mood">Good Mood</string>
+    <string name="members_stat_avg_brood">Avg Brood Frames</string>
+    <string name="members_stat_avg_interval">Avg Inspection Interval</string>
+
     <!-- Hornets -->
     <string name="tab_hornets">Hornets</string>
     <string name="hornet_title">Hornet Tracker</string>

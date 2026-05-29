@@ -64,6 +64,18 @@ extension MockURLProtocol {
         ("auth/refresh",                   200, accessTokenJSON),
     ]
 
+    // Authenticated supporter — same as authenticatedHandlers but user has is_supporter: true.
+    static let authenticatedSupporterHandlers: [(String, Int, String)] = [
+        ("inspections",      200, emptyList),
+        ("hives",            200, emptyList),
+        ("field-definitions",200, "[]"),
+        ("users/me/reminder",200, reminderJSON),   // must come before "users/me"
+        ("users/me",         200, supporterUserJSON),
+        ("qr-batches",       200, emptyList),
+        ("apiaries",         200, emptyList),
+        ("auth/refresh",     200, accessTokenJSON),
+    ]
+
     // Unauthenticated tests that need a working mock server (Register / Login success paths).
     static let unauthenticatedHandlers: [(String, Int, String)] = [
         ("auth/register", 200, tokenResponseJSON),
@@ -76,6 +88,10 @@ extension MockURLProtocol {
 
     static let userJSON = """
     {"id":"u-1","email":"tester@example.com","name":"Test User","locale":"en","created_at":"2024-01-01T00:00:00Z","is_admin":false,"is_supporter":false}
+    """
+
+    static let supporterUserJSON = """
+    {"id":"u-1","email":"tester@example.com","name":"Test Supporter","locale":"en","created_at":"2024-01-01T00:00:00Z","is_admin":false,"is_supporter":true}
     """
 
     static let reminderJSON = """

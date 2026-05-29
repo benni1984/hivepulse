@@ -12,6 +12,7 @@ import com.hivepulse.app.ui.inspections.*
 import com.hivepulse.app.ui.qr.*
 import com.hivepulse.app.ui.admin.*
 import com.hivepulse.app.ui.hornet.HornetHomeScreen
+import com.hivepulse.app.ui.members.MembersScreen
 import com.hivepulse.app.ui.settings.SettingsScreen
 import com.hivepulse.app.ui.stats.HiveStatsScreen
 import javax.inject.Inject
@@ -37,6 +38,7 @@ object Routes {
     const val ADMIN_MAP          = "admin_map"
     const val ADMIN_HEALTH       = "admin_health"
     const val HORNET_HOME        = "hornet_home"
+    const val MEMBERS            = "members"
 }
 
 @Composable
@@ -181,6 +183,9 @@ fun HivePulseNavGraph(
         }
         composable(Routes.HORNET_HOME) {
             HornetHomeScreen()
+        }
+        composable(Routes.MEMBERS) {
+            MembersScreen()
         }
     }
 }
