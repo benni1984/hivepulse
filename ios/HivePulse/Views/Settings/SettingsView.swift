@@ -44,6 +44,13 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
+            // MARK: - QR Codes
+            Section {
+                NavigationLink(destination: QRBatchListView()) {
+                    Label(NSLocalizedString("screen.qrBatches", comment: ""), systemImage: "printer")
+                }
+            }
+
             // MARK: - Profile
             Section(NSLocalizedString("section.profile", comment: "")) {
                 if let user = authVM.currentUser {

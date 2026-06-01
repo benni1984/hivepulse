@@ -53,9 +53,8 @@ class MembersScreenTest {
         // Click the Members bottom-nav item
         composeRule.onAllNodesWithText("Members").onFirst().performClick()
         composeRule.waitUntil(5_000) {
-            composeRule.onAllNodesWithText("Supporter Feature")
-                .union(composeRule.onAllNodesWithText("More community stats coming soon."))
-                .fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("Supporter Feature").fetchSemanticsNodes().isNotEmpty() ||
+            composeRule.onAllNodesWithText("More community stats coming soon.").fetchSemanticsNodes().isNotEmpty()
         }
     }
 

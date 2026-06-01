@@ -23,10 +23,11 @@ struct MainTabView: View {
             }
 
             NavigationStack {
-                QRBatchListView()
+                MembersView()
+                    .environmentObject(authVM)
             }
             .tabItem {
-                Label(NSLocalizedString("tab.print", comment: ""), systemImage: "printer")
+                Label(NSLocalizedString("tab.members", comment: ""), systemImage: "person.3")
             }
 
             NavigationStack {
@@ -40,14 +41,6 @@ struct MainTabView: View {
             HornetView()
             .tabItem {
                 Label(NSLocalizedString("tab.hornets", comment: ""), systemImage: "ant")
-            }
-
-            NavigationStack {
-                MembersView()
-                    .environmentObject(authVM)
-            }
-            .tabItem {
-                Label(NSLocalizedString("tab.members", comment: ""), systemImage: "person.3")
             }
         }
         .tint(.orange)
