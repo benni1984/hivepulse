@@ -37,6 +37,7 @@ final class SettingsUITests: XCTestCase {
     }
 
     func test_settings_showsCurrentPasswordField() {
+        app.swipeUp()  // QR Batches section at top pushes password fields off screen
         XCTAssertTrue(app.secureTextFields.element(matching: .secureTextField,
             identifier: "currentPasswordField").waitForExistence(timeout: 5))
     }

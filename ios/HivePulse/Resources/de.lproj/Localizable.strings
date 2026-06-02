@@ -269,6 +269,17 @@
 "reminder.saveButton" = "Erinnerungseinstellungen speichern";
 "reminder.saved" = "Erinnerungseinstellungen gespeichert.";
 
+/* Mitglieder */
+"tab.members" = "Mitglieder";
+"members.title" = "Mitglieder";
+"members.comingSoon" = "Weitere Community-Statistiken folgen bald.";
+"members.gate.title" = "Unterstützer-Funktion";
+"members.gate.desc" = "Werde Unterstützer, um Community-Statistiken freizuschalten und HivePulse am Laufen zu halten.";
+"members.stat.avgVarroa" = "Ø Varroa-Zahl";
+"members.stat.goodMood" = "Gute Stimmung";
+"members.stat.avgBrood" = "Ø Bruträhmchen";
+"members.stat.interval" = "Ø Begehungsintervall";
+
 /* Konto löschen */
 "section.dangerZone" = "Gefahrenbereich";
 "action.deleteAccount" = "Konto löschen";

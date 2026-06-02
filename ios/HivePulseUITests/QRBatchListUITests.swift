@@ -33,8 +33,10 @@ final class QRBatchListUITests: XCTestCase {
     // MARK: - Helper
 
     private func navigateToQRBatchList() {
-        XCTAssertTrue(app.tabBars.buttons["Print QR"].waitForExistence(timeout: 5))
-        app.tabBars.buttons["Print QR"].tap()
+        XCTAssertTrue(app.tabBars.buttons["Settings"].waitForExistence(timeout: 5))
+        app.tabBars.buttons["Settings"].tap()
+        XCTAssertTrue(app.staticTexts["QR Batches"].waitForExistence(timeout: 5))
+        app.staticTexts["QR Batches"].tap()
         XCTAssertTrue(app.navigationBars["QR Batches"].waitForExistence(timeout: 5))
     }
 }

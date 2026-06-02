@@ -23,10 +23,11 @@ struct MainTabView: View {
             }
 
             NavigationStack {
-                QRBatchListView()
+                MembersView()
+                    .environmentObject(authVM)
             }
             .tabItem {
-                Label(NSLocalizedString("tab.print", comment: ""), systemImage: "printer")
+                Label(NSLocalizedString("tab.members", comment: ""), systemImage: "person.3")
             }
 
             NavigationStack {
