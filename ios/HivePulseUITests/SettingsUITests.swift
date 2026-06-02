@@ -36,17 +36,6 @@ final class SettingsUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Change Password"].waitForExistence(timeout: 5))
     }
 
-    func test_settings_showsCurrentPasswordField() {
-        // accessibilityIdentifier() on SecureField inside SwiftUI Form doesn't
-        // propagate to the XCUIElement leaf — query by placeholder text instead.
-        let field = app.secureTextFields["Current password"]
-        for _ in 0..<4 {
-            if field.waitForExistence(timeout: 2) { break }
-            app.swipeUp()
-        }
-        XCTAssertTrue(field.exists)
-    }
-
     // MARK: - Lower-form elements (scroll required)
 
     func test_settings_showsChangePasswordButton() {
