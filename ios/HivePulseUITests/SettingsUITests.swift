@@ -37,10 +37,9 @@ final class SettingsUITests: XCTestCase {
     }
 
     func test_settings_showsCurrentPasswordField() {
-        // Scroll-until-found: the field sits near the fold and a fixed swipe
-        // count is unreliable across simulator viewport sizes on CI.
-        let field = app.secureTextFields.element(matching: .secureTextField,
-            identifier: "currentPasswordField")
+        // accessibilityIdentifier() on SecureField inside SwiftUI Form doesn't
+        // propagate to the XCUIElement leaf — query by placeholder text instead.
+        let field = app.secureTextFields["Current password"]
         for _ in 0..<4 {
             if field.waitForExistence(timeout: 2) { break }
             app.swipeUp()
