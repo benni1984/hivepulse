@@ -8,8 +8,10 @@ class Settings(BaseSettings):
     refresh_token_expire_days: int = 30
     admin_email: str = ""
     ci_setup_token: str = ""
-    cron_secret: str = ""          # X-Cron-Secret header for POST /notifications/send-reminders
-    firebase_server_key: str = ""  # FCM server key — push delivery stubbed when empty
+    cron_secret: str = ""           # X-Cron-Secret header for POST /notifications/send-reminders
+    firebase_server_key: str = ""   # FCM server key — push delivery stubbed when empty
+    resend_api_key: str = ""        # Resend API key — reset emails logged to stdout when empty
+    app_base_url: str = "https://hivepulse.app"  # used to build password-reset links
 
     model_config = {"env_file": ".env"}
 

@@ -114,4 +114,12 @@ class LoginScreenTest {
         }
         composeRule.onNodeWithText("My Apiaries").assertIsDisplayed()
     }
+
+    @Test
+    fun loginScreen_showsForgotPasswordButton() {
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Forgot password?").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Forgot password?").assertIsDisplayed()
+    }
 }

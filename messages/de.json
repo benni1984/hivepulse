@@ -323,7 +323,26 @@
       "submit": "Anmelden",
       "noAccount": "Noch kein Konto?",
       "register": "Registrieren",
+      "forgotPassword": "Passwort vergessen?",
       "errorGeneric": "Anmeldung fehlgeschlagen. Bitte erneut versuchen."
+    },
+    "forgotPassword": {
+      "title": "Passwort zurücksetzen",
+      "desc": "Gib deine E-Mail-Adresse ein und wir senden dir einen Reset-Link.",
+      "submit": "Reset-Link senden",
+      "sent": "Falls diese E-Mail registriert ist, erhältst du in Kürze einen Reset-Link.",
+      "backToLogin": "Zurück zur Anmeldung"
+    },
+    "resetPassword": {
+      "title": "Neues Passwort festlegen",
+      "newPassword": "Neues Passwort",
+      "confirmPassword": "Neues Passwort bestätigen",
+      "submit": "Passwort festlegen",
+      "success": "Passwort geändert. Weiterleitung zur Anmeldung…",
+      "mismatch": "Passwörter stimmen nicht überein.",
+      "tooShort": "Das Passwort muss mindestens 8 Zeichen lang sein.",
+      "invalidLink": "Dieser Reset-Link ist ungültig. Bitte fordere einen neuen an.",
+      "errorGeneric": "Zurücksetzen fehlgeschlagen. Der Link ist möglicherweise abgelaufen."
     },
     "register": {
       "title": "Konto erstellen",

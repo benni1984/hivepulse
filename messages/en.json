@@ -323,7 +323,26 @@
       "submit": "Log in",
       "noAccount": "No account?",
       "register": "Register",
+      "forgotPassword": "Forgot password?",
       "errorGeneric": "Login failed. Please try again."
+    },
+    "forgotPassword": {
+      "title": "Reset your password",
+      "desc": "Enter your email address and we'll send you a reset link.",
+      "submit": "Send reset link",
+      "sent": "If that email is registered, you'll receive a reset link shortly. Check your inbox.",
+      "backToLogin": "Back to log in"
+    },
+    "resetPassword": {
+      "title": "Set a new password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password",
+      "submit": "Set new password",
+      "success": "Password changed. Redirecting to log in…",
+      "mismatch": "Passwords do not match.",
+      "tooShort": "Password must be at least 8 characters.",
+      "invalidLink": "This reset link is invalid. Please request a new one.",
+      "errorGeneric": "Reset failed. The link may have expired."
     },
     "register": {
       "title": "Create your account",

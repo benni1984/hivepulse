@@ -50,4 +50,8 @@ final class LoginUITests: XCTestCase {
         app.buttons["Create an account"].tap()
         XCTAssertTrue(app.textFields["Name"].waitForExistence(timeout: 5))
     }
+
+    func test_loginScreen_showsForgotPasswordButton() {
+        XCTAssertTrue(app.buttons["Forgot password?"].waitForExistence(timeout: 5))
+    }
 }

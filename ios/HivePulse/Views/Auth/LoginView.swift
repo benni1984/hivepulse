@@ -1,10 +1,22 @@
 import SwiftUI
+import SafariServices
+
+// MARK: - SFSafariViewController wrapper
+
+struct SafariView: UIViewControllerRepresentable {
+    let url: URL
+    func makeUIViewController(context: Context) -> SFSafariViewController {
+        SFSafariViewController(url: url)
+    }
+    func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) {}
+}
 
 struct LoginView: View {
     @EnvironmentObject var authVM: AuthViewModel
     @State private var email = ""
     @State private var password = ""
     @State private var showRegister = false
+    @State private var showForgotPassword = false
 
     var body: some View {
         NavigationStack {
@@ -55,6 +67,12 @@ struct LoginView: View {
                         }
                         .disabled(authVM.isLoading || email.isEmpty || password.isEmpty)
 
+                        Button(NSLocalizedString("action.forgotPassword", comment: "")) {
+                            showForgotPassword = true
+                        }
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+
                         Button(NSLocalizedString("action.register", comment: "")) {
                             showRegister = true
                         }
@@ -68,6 +86,12 @@ struct LoginView: View {
             }
             .navigationDestination(isPresented: $showRegister) {
                 RegisterView().environmentObject(authVM)
+            }
+            .sheet(isPresented: $showForgotPassword) {
+                if let url = URL(string: "https://hivepulse.app/dashboard/forgot-password") {
+                    SafariView(url: url)
+                        .ignoresSafeArea()
+                }
             }
         }
     }

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { login, register, logout, getMe, updateMe, deleteMe, getApiaries, createApiary, updateApiary, deleteApiary, createHive, updateHive, deleteHive, getHive, clearTokens, createInspection, updateInspection, deleteInspection, getQrBatches, createQrBatch, getQrBatch, downloadQrBatchPdf, getPublicStats, exportHiveInspections, exportApiaryInspections, getReminderSettings, updateReminderSettings, registerPushToken } from '@/lib/api';
+import { login, register, logout, getMe, updateMe, deleteMe, getApiaries, createApiary, updateApiary, deleteApiary, createHive, updateHive, deleteHive, getHive, clearTokens, createInspection, updateInspection, deleteInspection, getQrBatches, createQrBatch, getQrBatch, downloadQrBatchPdf, getPublicStats, exportHiveInspections, exportApiaryInspections, getReminderSettings, updateReminderSettings, registerPushToken, forgotPassword, resetPassword } from '@/lib/api';
 
 const mockUser = { id: '1', email: 'a@b.com', name: 'Test', locale: 'en', created_at: '2024-01-01' };
 const mockTokens = { access_token: 'access-123', refresh_token: 'refresh-456', user: mockUser };
@@ -535,6 +535,46 @@ describe('registerPushToken', () => {
     vi.mocked(fetch).mockResolvedValueOnce(ok({}, 400));
     await expect(registerPushToken({ platform: 'ios', token: 'bad' })).rejects.toThrow(
       'Failed to register push token'
+    );
+  });
+});
+
+describe('forgotPassword', () => {
+  it('POSTs to /auth/forgot-password without auth header', async () => {
+    localStorage.removeItem('access_token');
+    vi.mocked(fetch).mockResolvedValueOnce(new Response(null, { status: 204 }));
+    await forgotPassword('a@b.com');
+    const call = vi.mocked(fetch).mock.calls[0];
+    expect(call[0]).toContain('/auth/forgot-password');
+    expect((call[1] as RequestInit).method).toBe('POST');
+    expect((call[1] as RequestInit).body).toContain('"a@b.com"');
+    expect((call[1] as RequestInit).headers).not.toHaveProperty('Authorization');
+  });
+
+  it('resolves even on server error (no user enumeration)', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(new Response(null, { status: 500 }));
+    await expect(forgotPassword('nobody@example.com')).resolves.toBeUndefined();
+  });
+});
+
+describe('resetPassword', () => {
+  it('POSTs to /auth/reset-password without auth header', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(new Response(null, { status: 204 }));
+    await resetPassword('my-token', 'newpassword1');
+    const call = vi.mocked(fetch).mock.calls[0];
+    expect(call[0]).toContain('/auth/reset-password');
+    expect((call[1] as RequestInit).method).toBe('POST');
+    const body = JSON.parse((call[1] as RequestInit).body as string);
+    expect(body.token).toBe('my-token');
+    expect(body.new_password).toBe('newpassword1');
+  });
+
+  it('throws on 400 with server error message', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(
+      ok({ detail: { code: 'RESET_TOKEN_INVALID', message: 'This password reset link is invalid or has expired.' } }, 400)
+    );
+    await expect(resetPassword('bad-token', 'newpassword1')).rejects.toThrow(
+      'This password reset link is invalid or has expired.'
     );
   });
 });

@@ -93,6 +93,27 @@ export async function logout() {
   clearTokens();
 }
 
+export async function forgotPassword(email: string): Promise<void> {
+  await fetch(`${BASE}/auth/forgot-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+  // Always resolves — backend never reveals whether email exists
+}
+
+export async function resetPassword(token: string, newPassword: string): Promise<void> {
+  const res = await fetch(`${BASE}/auth/reset-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token, new_password: newPassword }),
+  });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data?.detail?.message ?? 'Reset failed. The link may have expired.');
+  }
+}
+
 export async function getMe(): Promise<User> {
   const res = await apiFetch('/users/me');
   if (!res.ok) throw new Error('Failed to get user');

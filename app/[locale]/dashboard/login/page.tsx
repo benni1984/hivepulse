@@ -57,6 +57,9 @@ export default function LoginPage() {
           </button>
         </form>
         <p className="dash-auth-link">
+          <Link href="/dashboard/forgot-password">{t('login.forgotPassword')}</Link>
+        </p>
+        <p className="dash-auth-link">
           {t('login.noAccount')} <Link href="/dashboard/register">{t('login.register')}</Link>
         </p>
       </div>
