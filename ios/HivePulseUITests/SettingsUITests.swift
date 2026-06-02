@@ -37,10 +37,15 @@ final class SettingsUITests: XCTestCase {
     }
 
     func test_settings_showsCurrentPasswordField() {
-        app.swipeUp()  // QR Batches section at top pushes password fields off screen
-        app.swipeUp()  // second swipe for reliable scroll on CI simulators
-        XCTAssertTrue(app.secureTextFields.element(matching: .secureTextField,
-            identifier: "currentPasswordField").waitForExistence(timeout: 5))
+        // Scroll-until-found: the field sits near the fold and a fixed swipe
+        // count is unreliable across simulator viewport sizes on CI.
+        let field = app.secureTextFields.element(matching: .secureTextField,
+            identifier: "currentPasswordField")
+        for _ in 0..<4 {
+            if field.waitForExistence(timeout: 2) { break }
+            app.swipeUp()
+        }
+        XCTAssertTrue(field.exists)
     }
 
     // MARK: - Lower-form elements (scroll required)
