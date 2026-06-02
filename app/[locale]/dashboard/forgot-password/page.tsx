@@ -15,8 +15,9 @@ export default function ForgotPasswordPage() {
     setLoading(true);
     try {
       await forgotPassword(email);
+    } catch {
+      // Intentionally silenced — never reveal whether the email is registered
     } finally {
-      // Always show success — never reveal whether the email is registered
       setSent(true);
       setLoading(false);
     }
