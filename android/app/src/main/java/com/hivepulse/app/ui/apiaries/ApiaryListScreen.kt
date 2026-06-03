@@ -94,11 +94,24 @@ private fun ApiaryListItem(apiary: ApiaryOut, onClick: () -> Unit, onDelete: () 
         modifier = Modifier.clickable(onClick = onClick)
     )
     if (showDeleteConfirm) {
+        val hasHives = apiary.hiveCount > 0
         AlertDialog(
             onDismissRequest = { showDeleteConfirm = false },
             title   = { Text(stringResource(R.string.action_delete)) },
-            text    = { Text(stringResource(R.string.alert_delete_apiary, apiary.name)) },
-            confirmButton = { TextButton(onClick = { onDelete(); showDeleteConfirm = false }) { Text(stringResource(R.string.action_delete), color = MaterialTheme.colorScheme.error) } },
+            text    = {
+                Text(
+                    if (hasHives)
+                        stringResource(R.string.alert_delete_apiary_has_hives, apiary.name, apiary.hiveCount)
+                    else
+                        stringResource(R.string.alert_delete_apiary, apiary.name)
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick  = { onDelete(); showDeleteConfirm = false },
+                    enabled  = !hasHives
+                ) { Text(stringResource(R.string.action_delete), color = if (!hasHives) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)) }
+            },
             dismissButton = { TextButton(onClick = { showDeleteConfirm = false }) { Text(stringResource(R.string.action_cancel)) } }
         )
     }

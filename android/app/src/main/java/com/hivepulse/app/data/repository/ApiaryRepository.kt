@@ -17,7 +17,12 @@ class ApiaryRepository @Inject constructor(private val api: ApiService) {
     suspend fun update(id: String, name: String, description: String?, latitude: Double?, longitude: Double?, address: String?, isPublic: Boolean = false): ApiaryOut =
         api.updateApiary(id, ApiaryCreate(name, description, latitude, longitude, address, isPublic))
 
-    suspend fun delete(id: String) { api.deleteApiary(id) }
+    suspend fun delete(id: String) {
+        val response = api.deleteApiary(id)
+        if (!response.isSuccessful) {
+            throw RuntimeException(if (response.code() == 409) "has_hives" else "delete_failed_${response.code()}")
+        }
+    }
 
     suspend fun fieldDefinitions(apiaryId: String): List<FieldDefinitionOut> =
         api.listApiaryFieldDefinitions(apiaryId)

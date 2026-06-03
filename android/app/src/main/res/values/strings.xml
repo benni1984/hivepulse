@@ -134,6 +134,8 @@
 
     <!-- Alerts -->
     <string name="alert_delete_apiary">Delete apiary "%1$s"? This cannot be undone.</string>
+    <string name="alert_delete_apiary_has_hives">"%1$s" still contains %2$d hive(s). Delete all hives first, then delete the apiary.</string>
+    <string name="error_apiary_has_hives">Please delete all hives in this apiary before deleting it.</string>
     <string name="alert_logout_confirm">Are you sure you want to sign out?</string>
     <string name="alert_password_mismatch">Passwords do not match.</string>
     <string name="alert_password_too_short">Password must be at least 8 characters.</string>
