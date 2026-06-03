@@ -169,6 +169,13 @@ struct SettingsView: View {
                 }
             }
 
+            // MARK: - Help
+            Section {
+                Link(destination: URL(string: "https://apiscan-two.vercel.app/en/help")!) {
+                    Label(NSLocalizedString("action.help", comment: ""), systemImage: "questionmark.circle")
+                }
+            }
+
             // MARK: - Log Out
             Section {
                 Button(role: .destructive) {

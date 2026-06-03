@@ -39,6 +39,7 @@
     "node_modules",
     "backend",
     "android",
-    "ios"
+    "ios",
+    "hivepulse-redesign"
   ]
 }

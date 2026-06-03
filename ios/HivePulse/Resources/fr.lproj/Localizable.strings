@@ -91,6 +91,7 @@
 "action.editInspection" = "Modifier l'inspection";
 "action.saveProfile" = "Enregistrer le profil";
 "action.logout" = "Se déconnecter";
+"action.help" = "Aide &amp; Documentation";
 "action.newBatch" = "Nouveau lot";
 "action.generate" = "Générer";
 "action.downloadPDF" = "Imprimer PDF";

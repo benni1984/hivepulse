@@ -10,6 +10,7 @@ import AosInit from '@/components/AosInit';
 import 'aos/dist/aos.css';
 import '@/web/style.css';
 import '@/web/landing.css';
+import '@/web/help.css';
 
 export const metadata: Metadata = {
   title: 'HivePulse — Protecting Pollinators Together',
