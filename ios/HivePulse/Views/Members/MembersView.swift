@@ -1,14 +1,13 @@
 import SwiftUI
 
+private let supporterInfoURL = URL(string: "https://apiscan-two.vercel.app/contribute")!
+
 struct MembersView: View {
     @EnvironmentObject var authVM: AuthViewModel
+    @State private var publicStats: PublicStats?
+    @State private var isLoadingStats = false
 
-    private let placeholderStats: [(value: String, labelKey: String)] = [
-        ("3.2",  "members.stat.avgVarroa"),
-        ("78%",  "members.stat.goodMood"),
-        ("6.4",  "members.stat.avgBrood"),
-        ("12d",  "members.stat.interval"),
-    ]
+    private let statsService = StatsService()
 
     private var isUnlocked: Bool {
         authVM.currentUser?.isSupporter == true || authVM.currentUser?.isAdmin == true
@@ -22,12 +21,18 @@ struct MembersView: View {
                     columns: [GridItem(.flexible()), GridItem(.flexible())],
                     spacing: 12
                 ) {
-                    ForEach(placeholderStats, id: \.labelKey) { stat in
-                        statCard(stat.value, label: NSLocalizedString(stat.labelKey, comment: ""))
-                    }
+                    statCard(formatVarroa(), label: NSLocalizedString("members.stat.avgVarroa", comment: ""))
+                    statCard(formatMood(),   label: NSLocalizedString("members.stat.goodMood",   comment: ""))
+                    statCard(formatBrood(),  label: NSLocalizedString("members.stat.avgBrood",   comment: ""))
+                    statCard(formatInterval(), label: NSLocalizedString("members.stat.interval", comment: ""))
                 }
                 .blur(radius: isUnlocked ? 0 : 8)
                 .animation(.easeInOut(duration: 0.25), value: isUnlocked)
+                .overlay {
+                    if isLoadingStats {
+                        ProgressView()
+                    }
+                }
 
                 if isUnlocked {
                     supporterContent()
@@ -38,7 +43,39 @@ struct MembersView: View {
             .padding()
         }
         .navigationTitle(NSLocalizedString("members.title", comment: ""))
+        .task {
+            isLoadingStats = true
+            publicStats = try? await statsService.publicStats()
+            isLoadingStats = false
+        }
     }
+
+    // MARK: - Stat formatting
+
+    private func formatVarroa() -> String {
+        guard let v = publicStats?.avgVarroaCount else { return "—" }
+        return String(format: "%.1f", v)
+    }
+
+    private func formatMood() -> String {
+        guard let dist = publicStats?.moodDistribution else { return "—" }
+        let total = dist.values.reduce(0, +)
+        guard total > 0 else { return "—" }
+        let calm = dist["calm"] ?? 0
+        return "\(calm * 100 / total)%"
+    }
+
+    private func formatBrood() -> String {
+        guard let v = publicStats?.avgBroodFrames else { return "—" }
+        return String(format: "%.1f", v)
+    }
+
+    private func formatInterval() -> String {
+        guard let v = publicStats?.avgInspectionIntervalDays else { return "—" }
+        return "\(Int(v))d"
+    }
+
+    // MARK: - Sub-views
 
     @ViewBuilder
     private func statCard(_ value: String, label: String) -> some View {
@@ -86,6 +123,10 @@ struct MembersView: View {
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
+            Link(NSLocalizedString("members.becomeSupporter", comment: ""),
+                 destination: supporterInfoURL)
+                .font(.subheadline.weight(.semibold))
+                .buttonStyle(.borderedProminent)
         }
         .padding()
         .frame(maxWidth: .infinity)

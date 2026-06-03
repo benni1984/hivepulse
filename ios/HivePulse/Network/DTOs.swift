@@ -553,6 +553,25 @@ struct PlatformStats: Codable {
     }
 }
 
+struct PublicStats: Codable {
+    let avgVarroaCount: Double?
+    let moodDistribution: [String: Int]
+    let avgBroodFrames: Double?
+    let avgInspectionIntervalDays: Double?
+    let apiaryCount: Int
+    let hiveCount: Int
+    let inspectionCount: Int
+    enum CodingKeys: String, CodingKey {
+        case avgVarroaCount            = "avg_varroa_count"
+        case moodDistribution          = "mood_distribution"
+        case avgBroodFrames            = "avg_brood_frames"
+        case avgInspectionIntervalDays = "avg_inspection_interval_days"
+        case apiaryCount               = "apiary_count"
+        case hiveCount                 = "hive_count"
+        case inspectionCount           = "inspection_count"
+    }
+}
+
 struct AdminTokenStats: Codable {
     let totalActiveSessions: Int
     let usersWithActiveSessions: Int

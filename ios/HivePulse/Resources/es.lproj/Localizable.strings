@@ -269,6 +269,7 @@
 "reminder.seasonEnd" = "Fin de temporada";
 "reminder.saveButton" = "Guardar ajustes de recordatorio";
 "reminder.saved" = "Ajustes de recordatorio guardados.";
+"reminder.comingSoon" = "Las notificaciones push llegarán pronto. Tus preferencias están guardadas.";
 
 /* Miembros */
 "tab.members" = "Miembros";
@@ -280,6 +281,7 @@
 "members.stat.goodMood" = "Buen humor";
 "members.stat.avgBrood" = "Marcos de cría promedio";
 "members.stat.interval" = "Intervalo promedio de inspección";
+"members.becomeSupporter" = "Más información y hazte supporter";
 
 /* Eliminar cuenta */
 "section.dangerZone" = "Zona de peligro";
