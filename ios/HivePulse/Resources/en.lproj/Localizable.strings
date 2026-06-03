@@ -106,6 +106,7 @@
 
 /* Alerts */
 "alert.error" = "Error";
+"error.apiaryHasHives" = "Please delete all hives in this apiary before deleting it.";
 "alert.logoutConfirm" = "Are you sure you want to log out?";
 "alert.batchCountHint" = "Enter the number of QR codes to generate (1–50).";
 

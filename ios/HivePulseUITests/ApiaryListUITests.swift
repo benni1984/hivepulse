@@ -42,6 +42,18 @@ final class ApiaryListUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Meadow"].waitForExistence(timeout: 5))
     }
 
+    func test_apiaryList_swipeDeleteWithHivesShowsError() {
+        // "-mockApiaryWithHive" returns an apiary with hiveCount = 1
+        launch(with: "-mockApiaryWithHive")
+        XCTAssertTrue(app.staticTexts["Meadow"].waitForExistence(timeout: 5))
+        app.staticTexts["Meadow"].swipeLeft()
+        let deleteButton = app.buttons["Delete"]
+        XCTAssertTrue(deleteButton.waitForExistence(timeout: 3))
+        deleteButton.tap()
+        // Should show error alert instead of deleting
+        XCTAssertTrue(app.alerts["Error"].waitForExistence(timeout: 5))
+    }
+
     // MARK: - Helper
 
     private func launch(with arg: String) {

@@ -33,7 +33,16 @@ struct ApiaryListView: View {
                     .onDelete { indices in
                         Task {
                             for i in indices {
-                                try? await apiaryVM.delete(apiaryVM.apiaries[i].id)
+                                let apiary = apiaryVM.apiaries[i]
+                                guard apiary.hiveCount == 0 else {
+                                    apiaryVM.errorMessage = NSLocalizedString("error.apiaryHasHives", comment: "")
+                                    return
+                                }
+                                do {
+                                    try await apiaryVM.delete(apiary.id)
+                                } catch {
+                                    apiaryVM.errorMessage = error.localizedDescription
+                                }
                             }
                         }
                     }

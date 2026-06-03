@@ -106,6 +106,7 @@
 
 /* Alerts */
 "alert.error" = "Fehler";
+"error.apiaryHasHives" = "Bitte alle Bienenstöcke löschen, bevor der Bienenstand gelöscht wird.";
 "alert.logoutConfirm" = "Möchten Sie sich wirklich abmelden?";
 "alert.batchCountHint" = "Geben Sie die Anzahl der QR-Codes ein (1–50).";
 

@@ -106,6 +106,7 @@
 
 /* Alerts */
 "alert.error" = "Erreur";
+"error.apiaryHasHives" = "Veuillez supprimer toutes les ruches de ce rucher avant de le supprimer.";
 "alert.logoutConfirm" = "Êtes-vous sûr de vouloir vous déconnecter ?";
 "alert.batchCountHint" = "Saisissez le nombre de codes QR à générer (1–50).";
 
