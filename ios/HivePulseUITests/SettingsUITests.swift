@@ -79,6 +79,15 @@ final class SettingsUITests: XCTestCase {
         XCTAssertTrue(app.buttons["saveReminderButton"].waitForExistence(timeout: 5))
     }
 
+    func test_settings_showsReminderComingSoonNotice() {
+        // reminderEnabled defaults to true, so the notice is visible without any toggle interaction
+        app.swipeUp()
+        XCTAssertTrue(
+            app.staticTexts["Push notifications are coming soon. Your preferences are saved."]
+                .waitForExistence(timeout: 5)
+        )
+    }
+
     // MARK: - Helper
 
     private func navigateToSettings() {

@@ -29,4 +29,8 @@ struct StatsService {
         let query = params.isEmpty ? "" : "?" + params.joined(separator: "&")
         return try await client.get("stats/overview\(query)")
     }
+
+    func publicStats() async throws -> PublicStats {
+        try await client.get("public/stats")
+    }
 }

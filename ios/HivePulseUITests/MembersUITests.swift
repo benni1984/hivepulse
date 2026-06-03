@@ -49,4 +49,10 @@ final class MembersUITests: XCTestCase {
         launchAsSupporter()
         XCTAssertTrue(app.staticTexts["More community stats coming soon."].waitForExistence(timeout: 5))
     }
+
+    func test_members_gateCardHasCTAButton() {
+        launchAuthenticated()
+        XCTAssertTrue(app.staticTexts["Supporter Feature"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Learn more & become a supporter"].exists)
+    }
 }

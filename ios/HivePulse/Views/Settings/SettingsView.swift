@@ -110,6 +110,9 @@ struct SettingsView: View {
                 Toggle(NSLocalizedString("reminder.enabled", comment: ""), isOn: $reminderEnabled)
                     .accessibilityIdentifier("reminderEnabledToggle")
                 if reminderEnabled {
+                    Text(NSLocalizedString("reminder.comingSoon", comment: ""))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                     Stepper(
                         String(format: NSLocalizedString("reminder.intervalFormat", comment: ""), reminderIntervalDays),
                         value: $reminderIntervalDays, in: 1...365
