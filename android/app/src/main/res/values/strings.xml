@@ -75,12 +75,13 @@
     <string name="field_feeding_done">Feeding Done</string>
     <string name="field_feeding_type">Feeding Type</string>
     <string name="field_weight_kg">Weight (kg)</string>
-    <string name="field_batch_count">Number of QR Codes (1–100)</string>
+    <string name="field_batch_count">Number of QR Codes (1–50)</string>
 
     <!-- Sections -->
     <string name="section_change_password">Change Password</string>
     <string name="section_danger_zone">Danger Zone</string>
     <string name="section_reminders">Inspection Reminders</string>
+    <string name="reminder_coming_soon">Push notifications are coming soon. Your preferences are saved.</string>
     <string name="reminder_enabled">Send inspection reminders</string>
     <string name="reminder_interval_label">Remind me every</string>
     <string name="reminder_interval_format">%1$d days</string>
@@ -111,7 +112,7 @@
     <string name="label_custom_range">Custom range</string>
     <string name="label_batch_id">Batch %1$s…</string>
     <string name="label_batch_summary">%1$d / %2$d linked · %3$s</string>
-    <string name="label_batch_count_hint">Enter the number of QR codes to print (1–100).</string>
+    <string name="label_batch_count_hint">Enter the number of QR codes to print (1–50).</string>
     <string name="label_created">Created %1$s</string>
     <string name="label_select_apiary">Select apiary</string>
     <string name="label_select_format">File format</string>
@@ -208,6 +209,7 @@
     <string name="members_stat_good_mood">Good Mood</string>
     <string name="members_stat_avg_brood">Avg Brood Frames</string>
     <string name="members_stat_avg_interval">Avg Inspection Interval</string>
+    <string name="members_become_supporter">Learn more &amp; become a supporter</string>
 
     <!-- Hornets -->
     <string name="tab_hornets">Hornets</string>

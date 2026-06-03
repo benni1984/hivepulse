@@ -178,4 +178,16 @@ class SettingsScreenTest {
         }
         composeRule.onNodeWithText("Save Reminder Settings").performScrollTo().assertIsDisplayed()
     }
+
+    @Test
+    fun settings_showsReminderComingSoonNotice() {
+        // reminderEnabled = true in test fixture, so notice should be visible
+        navigateToSettings()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Push notifications are coming soon. Your preferences are saved.").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Push notifications are coming soon. Your preferences are saved.")
+            .performScrollTo()
+            .assertIsDisplayed()
+    }
 }

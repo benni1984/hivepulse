@@ -6,6 +6,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.hivepulse.app.MainActivity
 import com.hivepulse.app.data.api.ApiService
 import com.hivepulse.app.data.api.PaginatedResponse
+import com.hivepulse.app.data.api.PublicStats
 import com.hivepulse.app.data.api.ReminderSettingsOut
 import com.hivepulse.app.data.api.UserOut
 import com.hivepulse.app.data.local.TokenStore
@@ -36,6 +37,7 @@ class MembersScreenTest {
         coEvery { it.listApiaries(any(), any()) } returns PaginatedResponse(emptyList(), 0, 1, 1)
         coEvery { it.getReminderSettings() } returns reminderSettings
         coEvery { it.getMe() } returns regularUser()
+        coEvery { it.getPublicStats() } returns publicStats()
     }
 
     @Inject lateinit var tokenStore: TokenStore
@@ -83,10 +85,30 @@ class MembersScreenTest {
         composeRule.onNodeWithText("More community stats coming soon.").assertIsDisplayed()
     }
 
+    @Test
+    fun members_gateCardShowsBecomeSupporterButton() {
+        coEvery { apiService.getMe() } returns regularUser()
+        navigateToMembers()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Learn more & become a supporter").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Learn more & become a supporter").performScrollTo().assertIsDisplayed()
+    }
+
     // ─── Helpers ─────────────────────────────────────────────────────────────
 
     private fun regularUser()   = UserOut("u1", "a@b.com", "Test User", "en", "2024-01-01",
                                           isAdmin = false, isSupporter = false)
     private fun supporterUser() = UserOut("u2", "a@b.com", "Test User", "en", "2024-01-01",
                                           isAdmin = false, isSupporter = true)
+
+    private fun publicStats() = PublicStats(
+        avgVarroaCount            = 2.8,
+        moodDistribution          = mapOf("calm" to 410, "nervous" to 89, "aggressive" to 23),
+        avgBroodFrames            = 5.2,
+        avgInspectionIntervalDays = 14.3,
+        apiaryCount               = 12,
+        hiveCount                 = 87,
+        inspectionCount           = 634
+    )
 }
