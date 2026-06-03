@@ -65,6 +65,7 @@ MESSAGES = {
         "en": "Cannot delete an apiary that still contains hives.",
         "fr": "Impossible de supprimer un rucher qui contient encore des ruches.",
         "de": "Ein Bienenstand mit Bienenstöcken kann nicht gelöscht werden.",
+        "es": "No se puede eliminar un colmenar que aún contiene colmenas.",
     },
     "EMAIL_ALREADY_REGISTERED": {
         "en": "This email address is already registered.",
