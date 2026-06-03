@@ -20,8 +20,9 @@ All endpoints require `Authorization: Bearer <access_token>` unless marked **pub
 10. [Stats](#stats)
 11. [Public Dashboard](#public-dashboard)
 12. [Hornet Tracker](#hornet-tracker)
-13. [Object Reference](#object-reference)
-14. [Error Codes](#error-codes)
+13. [Admin](#admin)
+14. [Object Reference](#object-reference)
+15. [Error Codes](#error-codes)
 
 ---
 
@@ -55,7 +56,7 @@ List responses wrap items in:
 
 ### Localisation
 
-The API returns error messages in the language indicated by the `Accept-Language` request header (`en`, `fr`, `de`). All other user-facing strings (field names, labels) are managed client-side. The user's preferred locale is stored on the user object.
+The API returns error messages in the language indicated by the `Accept-Language` request header (`en`, `fr`, `de`, `es`). All other user-facing strings (field names, labels) are managed client-side. The user's preferred locale is stored on the user object.
 
 ### Error envelope
 
@@ -189,7 +190,7 @@ Sets a new password. The token is the value from the reset link. On success all 
   "id": "uuid",
   "email": "string",
   "name": "string",
-  "locale": "en | fr | de",
+  "locale": "en | fr | de | es",
   "created_at": "datetime"
 }
 ```
@@ -201,7 +202,7 @@ All fields optional.
 ```json
 {
   "name": "string",
-  "locale": "en | fr | de"
+  "locale": "en | fr | de | es"
 }
 ```
 
@@ -801,7 +802,8 @@ Returns platform-wide aggregate numbers and the coordinates of every apiary that
       "name": "string",
       "latitude": 48.8566,
       "longitude": 2.3522,
-      "hive_count": 7
+      "hive_count": 7,
+      "city_name": "string | null"
     }
   ]
 }
@@ -1105,13 +1107,130 @@ Admin-only override to set the status of a sighting to `confirmed` or `rejected`
 
 ---
 
+## Admin
+
+All endpoints in this section require `Authorization: Bearer <access_token>` for an account with `is_admin = true`. Non-admins receive `403 FORBIDDEN`.
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/admin/ping` | Health-check — confirms admin access |
+| GET | `/admin/users` | Paginated user list with per-user counts |
+| GET | `/admin/users/{user_id}` | Single user detail |
+| PUT | `/admin/users/{user_id}/supporter` | Grant or revoke supporter status |
+| DELETE | `/admin/users/{user_id}` | Permanently delete a user and all their data |
+| GET | `/admin/stats` | Platform-wide aggregate stats (with preset filter) |
+| GET | `/admin/apiaries` | Paginated list of all public apiaries |
+| GET | `/admin/apiaries/flagged` | Apiaries flagged for review |
+| PUT | `/admin/apiaries/{apiary_id}/set-private` | Force an apiary to private |
+| GET | `/admin/health/summary` | System health summary |
+| GET | `/admin/health/inactive-users` | Users with no activity in the last 90 days |
+| GET | `/admin/health/no-varroa-inspections` | Apiaries whose hives have never recorded varroa |
+| GET | `/admin/health/zero-inspection-hives` | Hives that have never been inspected |
+| GET | `/admin/tokens/stats` | Active session counts |
+| GET | `/admin/users/{user_id}/tokens` | Active sessions for one user |
+| DELETE | `/admin/users/{user_id}/tokens` | Revoke all sessions for one user |
+| PUT | `/admin/hornets/sightings/{id}/status` | Override a hornet sighting status |
+
+---
+
+### GET `/admin/users`
+
+**Query params:** `q` (email search), `supporter` (bool filter), `page`, `per_page`
+
+**Response 200** — paginated list of `AdminUserOut`:
+
+```json
+{
+  "items": [
+    {
+      "id": "uuid",
+      "email": "string",
+      "name": "string",
+      "locale": "en | fr | de | es",
+      "is_admin": false,
+      "is_supporter": false,
+      "created_at": "datetime",
+      "days_since_registration": 42,
+      "apiary_count": 3,
+      "hive_count": 12,
+      "inspection_count": 87
+    }
+  ],
+  "total": 1,
+  "page": 1,
+  "per_page": 20,
+  "pages": 1
+}
+```
+
+---
+
+### PUT `/admin/users/{user_id}/supporter`
+
+**Request**
+
+```json
+{ "is_supporter": true }
+```
+
+**Response 200** — `UserOut`
+
+---
+
+### DELETE `/admin/users/{user_id}`
+
+Permanently deletes the user and all their apiaries, hives, and inspections.
+
+**Response 204** No Content
+
+---
+
+### GET `/admin/stats`
+
+**Query params:** `preset` — `30d` (default), `90d`, `365d`, `all`
+
+**Response 200**
+
+```json
+{
+  "preset": "30d",
+  "total_users": 142,
+  "new_users_in_period": 18,
+  "supporter_count": 23,
+  "total_apiaries": 87,
+  "public_apiaries": 34,
+  "total_hives": 412,
+  "total_inspections": 2841,
+  "active_users_30d": 61,
+  "signups_by_day": [
+    { "date": "2026-05-01", "count": 3 }
+  ]
+}
+```
+
+---
+
+### PUT `/admin/hornets/sightings/{id}/status`
+
+**Request**
+
+```json
+{ "status": "confirmed" }
+```
+
+`status` must be `confirmed` or `rejected`.
+
+**Response 204** No Content
+
+---
+
 ## Object Reference
 
 ### Enums
 
 | Enum | Values |
 |------|--------|
-| `locale` | `en`, `fr`, `de` |
+| `locale` | `en`, `fr`, `de`, `es` |
 | `hive_type` | `langstroth`, `dadant`, `top_bar`, `warre`, `other` |
 | `queen_color` | `white`, `yellow`, `red`, `green`, `blue` |
 | `mood` | `calm`, `nervous`, `aggressive` |
