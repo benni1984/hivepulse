@@ -60,11 +60,27 @@ class ApiaryRepositoryTest {
 
     @Test
     fun `delete delegates to api deleteApiary`() = runTest {
-        coEvery { api.deleteApiary("a1") } returns mockk(relaxed = true)
+        val response = mockk<retrofit2.Response<Unit>> {
+            every { isSuccessful } returns true
+        }
+        coEvery { api.deleteApiary("a1") } returns response
 
         repo.delete("a1")
 
         coVerify { api.deleteApiary("a1") }
+    }
+
+    @Test
+    fun `delete throws has_hives on 409`() = runTest {
+        val response = mockk<retrofit2.Response<Unit>> {
+            every { isSuccessful } returns false
+            every { code() } returns 409
+        }
+        coEvery { api.deleteApiary("a1") } returns response
+
+        val ex = runCatching { repo.delete("a1") }.exceptionOrNull()
+
+        assertEquals("has_hives", ex?.message)
     }
 
     @Test

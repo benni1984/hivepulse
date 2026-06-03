@@ -1,10 +1,13 @@
 package com.hivepulse.app.ui.apiaries
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hivepulse.app.R
 import com.hivepulse.app.data.api.ApiaryOut
 import com.hivepulse.app.data.repository.ApiaryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +19,10 @@ data class ApiaryListState(
 )
 
 @HiltViewModel
-class ApiaryViewModel @Inject constructor(private val repo: ApiaryRepository) : ViewModel() {
+class ApiaryViewModel @Inject constructor(
+    private val repo: ApiaryRepository,
+    @ApplicationContext private val context: Context
+) : ViewModel() {
 
     private val _state = MutableStateFlow(ApiaryListState())
     val state = _state.asStateFlow()
@@ -50,7 +56,13 @@ class ApiaryViewModel @Inject constructor(private val repo: ApiaryRepository) : 
     fun delete(id: String) = viewModelScope.launch {
         runCatching { repo.delete(id) }
             .onSuccess { _state.update { it.copy(apiaries = it.apiaries.filter { a -> a.id != id }) } }
-            .onFailure { e -> _state.update { it.copy(error = e.message) } }
+            .onFailure { e ->
+                val msg = if (e.message == "has_hives")
+                    context.getString(R.string.error_apiary_has_hives)
+                else
+                    e.message
+                _state.update { it.copy(error = msg) }
+            }
     }
 
     fun clearError() = _state.update { it.copy(error = null) }

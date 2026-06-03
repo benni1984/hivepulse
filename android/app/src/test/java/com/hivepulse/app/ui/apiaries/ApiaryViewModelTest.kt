@@ -1,5 +1,7 @@
 package com.hivepulse.app.ui.apiaries
 
+import android.content.Context
+import com.hivepulse.app.R
 import com.hivepulse.app.data.api.ApiaryOut
 import com.hivepulse.app.data.repository.ApiaryRepository
 import io.mockk.*
@@ -14,14 +16,17 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class ApiaryViewModelTest {
 
-    private val repo = mockk<ApiaryRepository>()
+    private val repo    = mockk<ApiaryRepository>()
+    private val context = mockk<Context>(relaxed = true)
     private lateinit var vm: ApiaryViewModel
 
     @Before
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         coEvery { repo.list() } returns emptyList()
-        vm = ApiaryViewModel(repo)
+        every { context.getString(R.string.error_apiary_has_hives) } returns
+            "Please delete all hives in this apiary before deleting it."
+        vm = ApiaryViewModel(repo, context)
     }
 
     @After
@@ -34,7 +39,7 @@ class ApiaryViewModelTest {
     fun `init loads apiaries on construction`() = runTest {
         val apiaries = listOf(apiary("a1"), apiary("a2"))
         coEvery { repo.list() } returns apiaries
-        val vm = ApiaryViewModel(repo)
+        val vm = ApiaryViewModel(repo, context)
 
         assertEquals(apiaries, vm.state.value.apiaries)
         assertFalse(vm.state.value.isLoading)
@@ -43,7 +48,7 @@ class ApiaryViewModelTest {
     @Test
     fun `load failure sets error`() = runTest {
         coEvery { repo.list() } throws RuntimeException("Server error")
-        val vm = ApiaryViewModel(repo)
+        val vm = ApiaryViewModel(repo, context)
 
         assertEquals("Server error", vm.state.value.error)
         assertTrue(vm.state.value.apiaries.isEmpty())
@@ -103,6 +108,18 @@ class ApiaryViewModelTest {
         vm.delete("a1")
 
         assertEquals("not found", vm.state.value.error)
+    }
+
+    @Test
+    fun `delete with has_hives error shows friendly message`() = runTest {
+        coEvery { repo.delete(any()) } throws RuntimeException("has_hives")
+
+        vm.delete("a1")
+
+        assertEquals(
+            "Please delete all hives in this apiary before deleting it.",
+            vm.state.value.error
+        )
     }
 
     @Test
