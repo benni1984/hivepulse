@@ -323,7 +323,26 @@
       "submit": "Iniciar sesión",
       "noAccount": "¿Sin cuenta?",
       "register": "Registrarse",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
       "errorGeneric": "Error al iniciar sesión. Inténtalo de nuevo."
+    },
+    "forgotPassword": {
+      "title": "Restablecer tu contraseña",
+      "desc": "Introduce tu dirección de correo electrónico y te enviaremos un enlace de restablecimiento.",
+      "submit": "Enviar enlace",
+      "sent": "Si ese correo está registrado, recibirás un enlace de restablecimiento en breve.",
+      "backToLogin": "Volver al inicio de sesión"
+    },
+    "resetPassword": {
+      "title": "Establecer una nueva contraseña",
+      "newPassword": "Nueva contraseña",
+      "confirmPassword": "Confirmar nueva contraseña",
+      "submit": "Establecer contraseña",
+      "success": "Contraseña cambiada. Redirigiendo al inicio de sesión…",
+      "mismatch": "Las contraseñas no coinciden.",
+      "tooShort": "La contraseña debe tener al menos 8 caracteres.",
+      "invalidLink": "Este enlace de restablecimiento es inválido. Por favor solicita uno nuevo.",
+      "errorGeneric": "Error al restablecer. El enlace puede haber expirado."
     },
     "register": {
       "title": "Crear tu cuenta",

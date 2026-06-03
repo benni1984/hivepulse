@@ -79,7 +79,8 @@
 "label.locationAutoFilled" = "La position sera capturée automatiquement";
 
 /* Actions */
-"action.save" = "Enregistrer";
+"action.forgotPassword" = "Mot de passe oublié ?";
+"action.save" ="Enregistrer";
 "action.cancel" = "Annuler";
 "action.done" = "Terminé";
 "action.scanQR" = "Scanner le code QR";

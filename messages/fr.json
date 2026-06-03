@@ -323,7 +323,26 @@
       "submit": "Se connecter",
       "noAccount": "Pas de compte ?",
       "register": "S'inscrire",
+      "forgotPassword": "Mot de passe oublié ?",
       "errorGeneric": "Connexion échouée. Veuillez réessayer."
+    },
+    "forgotPassword": {
+      "title": "Réinitialiser votre mot de passe",
+      "desc": "Entrez votre adresse e-mail et nous vous enverrons un lien de réinitialisation.",
+      "submit": "Envoyer le lien",
+      "sent": "Si cet e-mail est enregistré, vous recevrez un lien de réinitialisation sous peu.",
+      "backToLogin": "Retour à la connexion"
+    },
+    "resetPassword": {
+      "title": "Définir un nouveau mot de passe",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le nouveau mot de passe",
+      "submit": "Définir le mot de passe",
+      "success": "Mot de passe modifié. Redirection vers la connexion…",
+      "mismatch": "Les mots de passe ne correspondent pas.",
+      "tooShort": "Le mot de passe doit contenir au moins 8 caractères.",
+      "invalidLink": "Ce lien de réinitialisation est invalide. Veuillez en demander un nouveau.",
+      "errorGeneric": "Échec de la réinitialisation. Le lien a peut-être expiré."
     },
     "register": {
       "title": "Créer votre compte",

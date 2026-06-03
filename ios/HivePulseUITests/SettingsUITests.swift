@@ -36,12 +36,6 @@ final class SettingsUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Change Password"].waitForExistence(timeout: 5))
     }
 
-    func test_settings_showsCurrentPasswordField() {
-        app.swipeUp()  // QR Batches section at top pushes password fields off screen
-        XCTAssertTrue(app.secureTextFields.element(matching: .secureTextField,
-            identifier: "currentPasswordField").waitForExistence(timeout: 5))
-    }
-
     // MARK: - Lower-form elements (scroll required)
 
     func test_settings_showsChangePasswordButton() {

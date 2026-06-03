@@ -24,6 +24,7 @@
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
     <string name="action_login">Sign In</string>
+    <string name="action_forgot_password">Forgot password?</string>
     <string name="action_register">Create an account</string>
     <string name="action_create_account">Create Account</string>
     <string name="action_logout">Sign Out</string>

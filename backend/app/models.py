@@ -39,6 +39,19 @@ class User(Base):
     qr_batches = relationship("QrBatch", back_populates="user", cascade="all, delete-orphan")
 
 
+class PasswordResetToken(Base):
+    __tablename__ = "password_reset_tokens"
+
+    id         = Column(String, primary_key=True, default=_uuid)
+    user_id    = Column(String, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    token      = Column(String, unique=True, nullable=False, index=True)
+    expires_at = Column(DateTime, nullable=False)
+    used_at    = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User")
+
+
 class RefreshToken(Base):
     __tablename__ = "refresh_tokens"
 

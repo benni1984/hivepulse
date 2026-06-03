@@ -1,11 +1,14 @@
 package com.hivepulse.app.ui.auth
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
@@ -22,6 +25,7 @@ fun LoginScreen(
     val state by vm.state.collectAsState()
     var email    by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val context  = LocalContext.current
 
     LaunchedEffect(state.success) { if (state.success) onLoginSuccess() }
 
@@ -65,7 +69,17 @@ fun LoginScreen(
             if (state.isLoading) CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp, color = MaterialTheme.colorScheme.onPrimary)
             else Text(stringResource(R.string.action_login))
         }
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(4.dp))
+        TextButton(onClick = {
+            val intent = Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://hivepulse.app/dashboard/forgot-password"))
+            context.startActivity(intent)
+        }) {
+            Text(stringResource(R.string.action_forgot_password),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        Spacer(Modifier.height(4.dp))
         TextButton(onClick = onNavigateRegister) {
             Text(stringResource(R.string.action_register))
         }

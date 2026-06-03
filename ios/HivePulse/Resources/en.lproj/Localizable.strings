@@ -79,6 +79,7 @@
 "label.locationAutoFilled" = "Location will be captured automatically";
 
 /* Actions */
+"action.forgotPassword" = "Forgot password?";
 "action.save" = "Save";
 "action.cancel" = "Cancel";
 "action.done" = "Done";

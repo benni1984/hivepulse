@@ -76,6 +76,11 @@ MESSAGES = {
         "fr": "Le nombre doit être compris entre 1 et 50.",
         "de": "Die Anzahl muss zwischen 1 und 50 liegen.",
     },
+    "RESET_TOKEN_INVALID": {
+        "en": "This password reset link is invalid or has expired.",
+        "fr": "Ce lien de réinitialisation est invalide ou a expiré.",
+        "de": "Dieser Passwort-Reset-Link ist ungültig oder abgelaufen.",
+    },
 }
 
 

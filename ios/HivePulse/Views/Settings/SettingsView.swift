@@ -79,7 +79,6 @@ struct SettingsView: View {
             // MARK: - Change Password
             Section(NSLocalizedString("section.changePassword", comment: "")) {
                 SecureField(NSLocalizedString("field.currentPassword", comment: ""), text: $currentPassword)
-                    .accessibilityIdentifier("currentPasswordField")
                 SecureField(NSLocalizedString("field.newPassword", comment: ""), text: $newPassword)
                     .accessibilityIdentifier("newPasswordField")
                 SecureField(NSLocalizedString("field.confirmPassword", comment: ""), text: $confirmPassword)

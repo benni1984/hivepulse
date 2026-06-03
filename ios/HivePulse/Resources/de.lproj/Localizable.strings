@@ -79,7 +79,8 @@
 "label.locationAutoFilled" = "Position wird automatisch erfasst";
 
 /* Actions */
-"action.save" = "Speichern";
+"action.forgotPassword" = "Passwort vergessen?";
+"action.save" ="Speichern";
 "action.cancel" = "Abbrechen";
 "action.done" = "Fertig";
 "action.scanQR" = "QR-Code scannen";

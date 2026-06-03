@@ -103,3 +103,131 @@ def test_logout(client):
     assert r2.status_code == 204
     r3 = client.post("/api/v1/auth/refresh", json={"refresh_token": refresh_token})
     assert r3.status_code == 401
+
+
+# ---------------------------------------------------------------------------
+# Password reset
+# ---------------------------------------------------------------------------
+
+def _register(client, email="user@example.com", password="password1"):
+    r = client.post("/api/v1/auth/register", json={
+        "email": email, "password": password, "name": "User", "locale": "en"
+    })
+    assert r.status_code == 201
+    return r.json()
+
+
+def test_forgot_password_returns_204_for_known_email(client):
+    _register(client)
+    r = client.post("/api/v1/auth/forgot-password", json={"email": "user@example.com"})
+    assert r.status_code == 204
+
+
+def test_forgot_password_returns_204_for_unknown_email(client):
+    # Must not reveal whether the email exists
+    r = client.post("/api/v1/auth/forgot-password", json={"email": "nobody@example.com"})
+    assert r.status_code == 204
+
+
+def test_reset_password_with_valid_token(client, db_session):
+    from app.models import PasswordResetToken
+    from datetime import datetime, timedelta, timezone
+    _register(client)
+    client.post("/api/v1/auth/forgot-password", json={"email": "user@example.com"})
+    prt = db_session.query(PasswordResetToken).first()
+    assert prt is not None
+
+    r = client.post("/api/v1/auth/reset-password", json={
+        "token": prt.token, "new_password": "newpassword1"
+    })
+    assert r.status_code == 204
+
+    # Can now log in with new password
+    r2 = client.post("/api/v1/auth/login", json={
+        "email": "user@example.com", "password": "newpassword1"
+    })
+    assert r2.status_code == 200
+
+
+def test_reset_password_old_password_no_longer_works(client, db_session):
+    from app.models import PasswordResetToken
+    _register(client)
+    client.post("/api/v1/auth/forgot-password", json={"email": "user@example.com"})
+    prt = db_session.query(PasswordResetToken).first()
+
+    client.post("/api/v1/auth/reset-password", json={
+        "token": prt.token, "new_password": "newpassword1"
+    })
+    r = client.post("/api/v1/auth/login", json={
+        "email": "user@example.com", "password": "password1"
+    })
+    assert r.status_code == 401
+
+
+def test_reset_password_token_can_only_be_used_once(client, db_session):
+    from app.models import PasswordResetToken
+    _register(client)
+    client.post("/api/v1/auth/forgot-password", json={"email": "user@example.com"})
+    prt = db_session.query(PasswordResetToken).first()
+
+    client.post("/api/v1/auth/reset-password", json={
+        "token": prt.token, "new_password": "newpassword1"
+    })
+    r = client.post("/api/v1/auth/reset-password", json={
+        "token": prt.token, "new_password": "anotherpass1"
+    })
+    assert r.status_code == 400
+    assert r.json()["detail"]["code"] == "RESET_TOKEN_INVALID"
+
+
+def test_reset_password_expired_token(client, db_session):
+    from app.models import PasswordResetToken
+    from datetime import datetime, timedelta, timezone
+    _register(client)
+    client.post("/api/v1/auth/forgot-password", json={"email": "user@example.com"})
+    prt = db_session.query(PasswordResetToken).first()
+    prt.expires_at = datetime.now(timezone.utc) - timedelta(seconds=1)
+    db_session.commit()
+
+    r = client.post("/api/v1/auth/reset-password", json={
+        "token": prt.token, "new_password": "newpassword1"
+    })
+    assert r.status_code == 400
+    assert r.json()["detail"]["code"] == "RESET_TOKEN_INVALID"
+
+
+def test_reset_password_invalid_token(client):
+    r = client.post("/api/v1/auth/reset-password", json={
+        "token": "totally-fake-token", "new_password": "newpassword1"
+    })
+    assert r.status_code == 400
+    assert r.json()["detail"]["code"] == "RESET_TOKEN_INVALID"
+
+
+def test_reset_password_too_short(client, db_session):
+    from app.models import PasswordResetToken
+    _register(client)
+    client.post("/api/v1/auth/forgot-password", json={"email": "user@example.com"})
+    prt = db_session.query(PasswordResetToken).first()
+
+    r = client.post("/api/v1/auth/reset-password", json={
+        "token": prt.token, "new_password": "short"
+    })
+    assert r.status_code == 422
+
+
+def test_reset_password_revokes_existing_sessions(client, db_session):
+    from app.models import PasswordResetToken, RefreshToken
+    data = _register(client)
+    old_refresh = data["refresh_token"]
+
+    client.post("/api/v1/auth/forgot-password", json={"email": "user@example.com"})
+    prt = db_session.query(PasswordResetToken).first()
+
+    client.post("/api/v1/auth/reset-password", json={
+        "token": prt.token, "new_password": "newpassword1"
+    })
+
+    # Old refresh token must be revoked
+    r = client.post("/api/v1/auth/refresh", json={"refresh_token": old_refresh})
+    assert r.status_code == 401

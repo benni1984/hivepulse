@@ -80,6 +80,8 @@ All auth endpoints are **public** (no token required).
 | POST | `/auth/login` | Obtain token pair |
 | POST | `/auth/refresh` | Refresh access token |
 | POST | `/auth/logout` | Invalidate refresh token |
+| POST | `/auth/forgot-password` | Request a password-reset email |
+| POST | `/auth/reset-password` | Set a new password using a reset token |
 
 ### POST `/auth/register`
 
@@ -134,6 +136,42 @@ All auth endpoints are **public** (no token required).
 ```
 
 **Response 204** — no body.
+
+---
+
+### POST `/auth/forgot-password`
+
+Sends a password-reset email containing a single-use link. Always returns 204 regardless of whether the email is registered (prevents user enumeration). The reset link is valid for 15 minutes.
+
+**Request**
+```json
+{ "email": "user@example.com" }
+```
+
+**Response 204** — no body.
+
+---
+
+### POST `/auth/reset-password`
+
+Sets a new password. The token is the value from the reset link. On success all existing refresh tokens for the user are revoked.
+
+**Request**
+```json
+{
+  "token": "string",
+  "new_password": "string (min 8 chars)"
+}
+```
+
+**Response 204** — no body.
+
+**Errors**
+
+| Code | HTTP | Meaning |
+|------|------|---------|
+| `RESET_TOKEN_INVALID` | 400 | Token not found, already used, or expired |
+| `VALIDATION_ERROR` | 422 | Password too short |
 
 ---
 

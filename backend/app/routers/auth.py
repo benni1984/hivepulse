@@ -1,3 +1,5 @@
+import logging
+import uuid as _uuid_mod
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
@@ -9,16 +11,18 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.database import get_db
 from app.i18n import error
-from app.models import RefreshToken, User
+from app.models import PasswordResetToken, RefreshToken, User
 from app.schemas import (
     AccessTokenResponse, LoginRequest, LogoutRequest,
     RefreshRequest, RegisterRequest, TokenResponse, UserOut,
-    CISetupRequest,
+    CISetupRequest, ForgotPasswordRequest, ResetPasswordRequest,
 )
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 ALGORITHM = "HS256"
+logger = logging.getLogger(__name__)
+RESET_TOKEN_TTL_MINUTES = 15
 
 
 def _hash(password: str) -> str:
@@ -132,3 +136,71 @@ def logout(
     if rt:
         rt.revoked = True
         db.commit()
+
+
+def _send_reset_email(to_email: str, reset_url: str) -> None:
+    """Send password-reset email via Resend. Logs URL when API key is not configured."""
+    if not settings.resend_api_key:
+        logger.warning("RESEND_API_KEY not configured — password reset URL: %s", reset_url)
+        return
+    import httpx
+    try:
+        httpx.post(
+            "https://api.resend.com/emails",
+            headers={"Authorization": f"Bearer {settings.resend_api_key}"},
+            json={
+                "from": "HivePulse <noreply@hivepulse.app>",
+                "to": [to_email],
+                "subject": "Reset your HivePulse password",
+                "html": (
+                    f"<p>Click the link below to reset your password. "
+                    f"It expires in {RESET_TOKEN_TTL_MINUTES} minutes.</p>"
+                    f"<p><a href='{reset_url}'>{reset_url}</a></p>"
+                    f"<p>If you did not request this, you can safely ignore this email.</p>"
+                ),
+            },
+            timeout=10,
+        )
+    except Exception as exc:
+        logger.error("Failed to send reset email: %s", exc)
+
+
+@router.post("/forgot-password", status_code=204)
+def forgot_password(body: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    """Always returns 204 — never reveals whether the email is registered."""
+    user = db.query(User).filter(User.email == body.email).first()
+    if not user:
+        return  # silent — no user enumeration
+
+    token_str = str(_uuid_mod.uuid4())
+    expires_at = datetime.now(timezone.utc) + timedelta(minutes=RESET_TOKEN_TTL_MINUTES)
+    prt = PasswordResetToken(user_id=user.id, token=token_str, expires_at=expires_at)
+    db.add(prt)
+    db.commit()
+
+    reset_url = f"{settings.app_base_url}/dashboard/reset-password?token={token_str}"
+    _send_reset_email(user.email, reset_url)
+
+
+@router.post("/reset-password", status_code=204)
+def reset_password(
+    body: ResetPasswordRequest,
+    db: Session = Depends(get_db),
+    accept_language: Optional[str] = Header(default=None),
+):
+    prt = db.query(PasswordResetToken).filter(PasswordResetToken.token == body.token).first()
+    now = datetime.now(timezone.utc)
+    if (
+        not prt
+        or prt.used_at is not None
+        or prt.expires_at.replace(tzinfo=timezone.utc) < now
+    ):
+        raise HTTPException(400, detail=error("RESET_TOKEN_INVALID", accept_language))
+
+    user = prt.user
+    user.hashed_password = _hash(body.new_password)
+    prt.used_at = now
+
+    # Revoke all existing refresh tokens so old sessions can't be reused
+    db.query(RefreshToken).filter(RefreshToken.user_id == user.id).update({"revoked": True})
+    db.commit()
