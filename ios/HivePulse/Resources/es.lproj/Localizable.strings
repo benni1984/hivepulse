@@ -106,6 +106,7 @@
 
 /* Alerts */
 "alert.error" = "Error";
+"error.apiaryHasHives" = "Por favor, elimina todas las colmenas de este colmenar antes de eliminarlo.";
 "alert.logoutConfirm" = "¿Seguro que quieres cerrar sesión?";
 "alert.batchCountHint" = "Introduce el número de códigos QR a generar (1–50).";
 
