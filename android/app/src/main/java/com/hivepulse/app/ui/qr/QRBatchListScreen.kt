@@ -95,7 +95,7 @@ private fun QRBatchCreateDialog(isCreating: Boolean, onCreate: (Int) -> Unit, on
                 Text(stringResource(R.string.label_batch_count_hint))
                 OutlinedTextField(
                     value = countText,
-                    onValueChange = { countText = it.filter { c -> c.isDigit() }.take(3) },
+                    onValueChange = { countText = it.filter { c -> c.isDigit() }.take(2) },
                     label = { Text(stringResource(R.string.field_batch_count)) },
                     singleLine = true,
                     keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
@@ -106,8 +106,8 @@ private fun QRBatchCreateDialog(isCreating: Boolean, onCreate: (Int) -> Unit, on
         },
         confirmButton = {
             TextButton(
-                onClick  = { countText.toIntOrNull()?.takeIf { it in 1..100 }?.let(onCreate) },
-                enabled  = !isCreating && countText.toIntOrNull()?.let { it in 1..100 } == true
+                onClick  = { countText.toIntOrNull()?.takeIf { it in 1..50 }?.let(onCreate) },
+                enabled  = !isCreating && countText.toIntOrNull()?.let { it in 1..50 } == true
             ) {
                 if (isCreating) CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
                 else Text(stringResource(R.string.action_generate))

@@ -207,6 +207,10 @@ interface ApiService {
         @Query("per_page") perPage: Int = 20
     ): PaginatedResponse<ZeroInspectionHive>
 
+    // Public (no auth required)
+    @GET("public/stats")
+    suspend fun getPublicStats(): PublicStats
+
     // Hornets (public — no auth required, but auth header is forwarded if present)
     @GET("hornets/stats")
     suspend fun hornetStats(): HornetStats

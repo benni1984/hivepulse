@@ -295,3 +295,14 @@ data class ZeroInspectionHive(
 )
 
 data class SetSupporterRequest(@SerializedName("is_supporter") val isSupporter: Boolean)
+
+// MARK: - Public Stats
+data class PublicStats(
+    @SerializedName("avg_varroa_count")            val avgVarroaCount: Double?,
+    @SerializedName("mood_distribution")           val moodDistribution: Map<String, Int>,
+    @SerializedName("avg_brood_frames")            val avgBroodFrames: Double?,
+    @SerializedName("avg_inspection_interval_days") val avgInspectionIntervalDays: Double?,
+    @SerializedName("apiary_count")                val apiaryCount: Int,
+    @SerializedName("hive_count")                  val hiveCount: Int,
+    @SerializedName("inspection_count")            val inspectionCount: Int
+)

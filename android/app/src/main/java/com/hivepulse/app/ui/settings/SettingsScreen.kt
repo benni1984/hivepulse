@@ -347,6 +347,11 @@ fun SettingsScreen(
                         )
                     }
                     if (reminderEnabled) {
+                        Text(
+                            stringResource(R.string.reminder_coming_soon),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                         Row(
                             Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
