@@ -508,8 +508,6 @@ fun SettingsScreen(
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Icon(androidx.compose.material.icons.Icons.Default.Info, null, Modifier.size(18.dp))
-                    Spacer(Modifier.width(8.dp))
                     Text(stringResource(R.string.action_help))
                 }
 
