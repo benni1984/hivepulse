@@ -1,0 +1,7 @@
+{
+  "enabledPlugins": {
+    "vercel@claude-plugins-official": true,
+    "kotlin-lsp@claude-plugins-official": true,
+    "swift-lsp@claude-plugins-official": true
+  }
+}

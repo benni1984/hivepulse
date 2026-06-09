@@ -1,5 +1,6 @@
-# Claude Code
-.claude/
+# Claude Code — personal-only files, team config is checked in
+.claude/settings.local.json
+.claude/memory/
 CLAUDE.local.md
 
 # Python / Backend
