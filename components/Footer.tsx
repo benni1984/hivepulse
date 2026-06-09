@@ -54,6 +54,7 @@ export default function Footer() {
           <div className="footer-links">
             <h4>{t('legal')}</h4>
             <ul>
+              <li><Link href="/help">Help &amp; Docs</Link></li>
               <li><Link href="/privacy">{t('privacy')}</Link></li>
             </ul>
           </div>

@@ -151,6 +151,7 @@ fun SettingsScreen(
     vm: SettingsViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
+    val context = androidx.compose.ui.platform.LocalContext.current
     LaunchedEffect(state.loggedOut) { if (state.loggedOut) onLogout() }
     LaunchedEffect(state.deleted)   { if (state.deleted) onLogout() }
 
@@ -495,6 +496,20 @@ fun SettingsScreen(
                 }
 
                 Spacer(Modifier.weight(1f))
+
+                // Help
+                val helpUrl = stringResource(R.string.url_help)
+                OutlinedButton(
+                    onClick = {
+                        context.startActivity(
+                            android.content.Intent(android.content.Intent.ACTION_VIEW,
+                                android.net.Uri.parse(helpUrl))
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(stringResource(R.string.action_help))
+                }
 
                 // Danger Zone
                 Text(stringResource(R.string.section_danger_zone), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.error)

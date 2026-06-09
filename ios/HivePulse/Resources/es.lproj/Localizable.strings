@@ -91,6 +91,7 @@
 "action.editInspection" = "Editar inspección";
 "action.saveProfile" = "Guardar perfil";
 "action.logout" = "Cerrar sesión";
+"action.help" = "Ayuda y documentación";
 "action.newBatch" = "Nuevo lote";
 "action.generate" = "Generar";
 "action.downloadPDF" = "Imprimir PDF";

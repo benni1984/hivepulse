@@ -91,6 +91,7 @@
 "action.editInspection" = "Begehung bearbeiten";
 "action.saveProfile" = "Profil speichern";
 "action.logout" = "Abmelden";
+"action.help" = "Hilfe &amp; Dokumentation";
 "action.newBatch" = "Neuer Stapel";
 "action.generate" = "Erstellen";
 "action.downloadPDF" = "PDF drucken";
