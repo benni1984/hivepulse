@@ -6,7 +6,7 @@ test.use({ storageState: '.auth/admin.json' });
 
 test('community dashboard: snapshot stat pills render', async ({ page }) => {
   await page.goto('/dashboard/members');
-  await expect(page.locator('.spinner')).not.toBeVisible({ timeout: 15_000 });
+  await expect(page.locator('.spinner').first()).not.toBeVisible({ timeout: 15_000 });
   await expect(page.locator('h1.dash-page-title')).toContainText('Community', { timeout: 10_000 });
 
   // Two groups of stat pills: snapshot (apiaries/hives/inspections) and health
@@ -19,7 +19,7 @@ test('community dashboard: snapshot stat pills render', async ({ page }) => {
 
 test('community dashboard: chart boxes render', async ({ page }) => {
   await page.goto('/dashboard/members');
-  await expect(page.locator('.spinner')).not.toBeVisible({ timeout: 15_000 });
+  await expect(page.locator('.spinner').first()).not.toBeVisible({ timeout: 15_000 });
 
   // Three chart boxes (mood, city, size) are always rendered in the grid
   const chartBoxes = page.locator('.dash-chart-box');
@@ -30,7 +30,7 @@ test('community dashboard: chart boxes render', async ({ page }) => {
 
 test('community dashboard: public apiaries table or empty state renders', async ({ page }) => {
   await page.goto('/dashboard/members');
-  await expect(page.locator('.spinner')).not.toBeVisible({ timeout: 15_000 });
+  await expect(page.locator('.spinner').first()).not.toBeVisible({ timeout: 15_000 });
 
   // Table or empty state — heading is always present
   await expect(page.locator('h2.dash-section-title').filter({ hasText: /Apiaries|Community/i }).first()).toBeVisible({ timeout: 10_000 });
