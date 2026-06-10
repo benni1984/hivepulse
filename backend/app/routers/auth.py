@@ -201,10 +201,11 @@ def reset_password(
     ):
         raise HTTPException(400, detail=error("RESET_TOKEN_INVALID", accept_language))
 
-    user = prt.user
+    user = db.query(User).filter(User.id == prt.user_id).first()
     user.hashed_password = _hash(body.new_password)
     prt.used_at = now
+    db.add(user)
+    db.flush()
 
-    # Revoke all existing refresh tokens so old sessions can't be reused
     db.query(RefreshToken).filter(RefreshToken.user_id == user.id).update({"revoked": True})
     db.commit()
