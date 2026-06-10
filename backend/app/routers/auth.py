@@ -145,7 +145,7 @@ def _send_reset_email(to_email: str, reset_url: str) -> None:
         return
     import httpx
     try:
-        httpx.post(
+        resp = httpx.post(
             "https://api.resend.com/emails",
             headers={"Authorization": f"Bearer {settings.resend_api_key}"},
             json={
@@ -161,6 +161,10 @@ def _send_reset_email(to_email: str, reset_url: str) -> None:
             },
             timeout=10,
         )
+        if resp.status_code >= 400:
+            logger.error("Resend API error %s: %s", resp.status_code, resp.text)
+        else:
+            logger.info("Password reset email sent to %s (id=%s)", to_email, resp.json().get("id"))
     except Exception as exc:
         logger.error("Failed to send reset email: %s", exc)
 
