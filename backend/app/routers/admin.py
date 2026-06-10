@@ -72,7 +72,7 @@ def list_users(
         base = base.filter(User.is_supporter == supporter)
     base = base.order_by(User.created_at.desc())
 
-    total = base.with_entities(func.count(User.id)).scalar() or 0
+    total = base.with_entities(func.count(User.id)).order_by(None).scalar() or 0
     rows = base.offset((page - 1) * per_page).limit(per_page).all()
 
     return PaginatedResponse(
