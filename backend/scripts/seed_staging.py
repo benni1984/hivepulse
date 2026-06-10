@@ -23,7 +23,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from app.models import (
-    Base, User, Apiary, Hive, Inspection,
+    Base, User, Apiary, Hive, Inspection, QrBatch, QrToken,
     HornetCatch, HornetNest, HornetSighting, HornetTrap, HornetTrapCatch,
 )
 
@@ -55,7 +55,7 @@ def _ago(days: int) -> datetime:
 def _date_ago(days: int) -> date:
     return (datetime.utcnow() - timedelta(days=days)).date()
 
-HIVE_TYPES = ["Dadant", "Zander", "Langstroth"]
+HIVE_TYPES = ["dadant", "langstroth", "other"]
 QUEEN_COLORS = ["white", "yellow", "red", "green", "blue"]
 MOODS = ["calm", "nervous", "aggressive"]
 
@@ -112,11 +112,19 @@ def ensure_apiary(db: Session, user: User, name: str, lat: float, lon: float,
     return apiary
 
 
-def ensure_hive(db: Session, apiary: Apiary, name: str, hive_type: str) -> Hive:
+def ensure_hive(db: Session, apiary: Apiary, user: User, name: str, hive_type: str) -> Hive:
     hive = db.query(Hive).filter_by(apiary_id=apiary.id, name=name).first()
     if hive is None:
+        batch = QrBatch(id=_uuid(), user_id=user.id, count=1)
+        db.add(batch)
+        db.flush()
+        token = secrets.token_hex(8)
+        qr = QrToken(token=token, batch_id=batch.id, user_id=user.id)
+        db.add(qr)
+        db.flush()
         hive = Hive(
-            id=_uuid(), apiary_id=apiary.id, name=name,
+            id=_uuid(), apiary_id=apiary.id, user_id=user.id, name=name,
+            qr_token=token,
             hive_type=hive_type,
             created_at=_ago(random.randint(60, 180)),
         )
@@ -133,7 +141,7 @@ def seed_inspections(db: Session, hive: Hive, count: int = 5):
         days_ago = random.randint(5 + i * 12, 15 + i * 14)
         insp = Inspection(
             id=_uuid(), hive_id=hive.id,
-            inspected_on=_date_ago(days_ago),
+            date=_date_ago(days_ago),
             queen_seen=random.choice([True, False]),
             queen_color=random.choice(QUEEN_COLORS + [None, None]),
             brood_frames=random.randint(2, 8),
@@ -282,7 +290,7 @@ def main():
         ):
             apiary = ensure_apiary(db, demo, apiary_name, lat, lon, city)
             for j in range(random.randint(3, 5)):
-                hive = ensure_hive(db, apiary, f"Volk {j + 1}", random.choice(HIVE_TYPES))
+                hive = ensure_hive(db, apiary, demo, f"Volk {j + 1}", random.choice(HIVE_TYPES))
                 seed_inspections(db, hive, count=random.randint(5, 8))
 
         # --- Admin apiaries ---
@@ -293,7 +301,7 @@ def main():
         ):
             apiary = ensure_apiary(db, admin, apiary_name, lat, lon, city)
             for j in range(3):
-                hive = ensure_hive(db, apiary, f"Prüfvolk {j + 1}", random.choice(HIVE_TYPES))
+                hive = ensure_hive(db, apiary, admin, f"Prüfvolk {j + 1}", random.choice(HIVE_TYPES))
                 seed_inspections(db, hive, count=5)
 
         # --- Hornet tracker ---

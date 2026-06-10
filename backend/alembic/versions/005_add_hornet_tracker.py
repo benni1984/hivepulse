@@ -20,17 +20,6 @@ def upgrade() -> None:
     bind = op.get_bind()
     dialect = bind.dialect.name
 
-    # Create enums for PostgreSQL (SQLite uses VARCHAR)
-    if dialect == "postgresql":
-        op.execute(
-            "CREATE TYPE nest_status_enum AS ENUM "
-            "('found', 'destruction_ordered', 'destroyed')"
-        )
-        op.execute(
-            "CREATE TYPE sighting_status_enum AS ENUM "
-            "('pending', 'confirmed', 'rejected')"
-        )
-
     nest_status_col = (
         sa.Enum("found", "destruction_ordered", "destroyed", name="nest_status_enum")
         if dialect == "postgresql"

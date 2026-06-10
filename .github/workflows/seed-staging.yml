@@ -19,6 +19,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r backend/requirements.txt
 
+      - name: Run migrations
+        working-directory: backend
+        run: alembic upgrade head
+        env:
+          DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+
       - name: Run seed script
         working-directory: backend
         run: python -m scripts.seed_staging
