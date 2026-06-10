@@ -69,3 +69,4 @@ hivepulse-redesign/package.json
 hivepulse-redesign/package-lock.json
 hivepulse-redesign/tsconfig.json
 hivepulse-redesign/.gitignore
+.env*.local
