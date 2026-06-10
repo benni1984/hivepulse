@@ -149,7 +149,7 @@ def _send_reset_email(to_email: str, reset_url: str) -> None:
             "https://api.resend.com/emails",
             headers={"Authorization": f"Bearer {settings.resend_api_key}"},
             json={
-                "from": "HivePulse <onboarding@resend.dev>",
+                "from": "HivePulse <noreply@multihead.de>",
                 "to": [to_email],
                 "subject": "Reset your HivePulse password",
                 "html": (
