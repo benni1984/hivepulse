@@ -1,5 +1,16 @@
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000/api/v1';
 
+function extractDetail(err: Record<string, unknown>, fallback: string): string {
+  const d = err.detail;
+  if (!d) return fallback;
+  if (typeof d === 'string') return d;
+  if (typeof d === 'object' && !Array.isArray(d) && (d as Record<string, unknown>).message) {
+    return String((d as Record<string, unknown>).message);
+  }
+  if (Array.isArray(d)) return d.map((e: { msg?: string }) => e.msg ?? '').filter(Boolean).join('; ') || fallback;
+  return fallback;
+}
+
 function getToken(): string | null {
   if (typeof window === 'undefined') return null;
   return localStorage.getItem('access_token');
@@ -61,7 +72,7 @@ export async function login(email: string, password: string): Promise<User> {
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail ?? 'Login failed');
+    throw new Error(extractDetail(err, 'Login failed'));
   }
   const data = await res.json();
   localStorage.setItem('access_token', data.access_token);
@@ -77,7 +88,7 @@ export async function register(name: string, email: string, password: string): P
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail ?? 'Registration failed');
+    throw new Error(extractDetail(err, 'Registration failed'));
   }
   const data = await res.json();
   localStorage.setItem('access_token', data.access_token);
@@ -130,7 +141,7 @@ export async function updateMe(data: { name?: string; locale?: string; password?
   const res = await apiFetch('/users/me', { method: 'PUT', body: JSON.stringify(data) });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail ?? 'Update failed');
+    throw new Error(extractDetail(err, 'Update failed'));
   }
   return res.json();
 }
@@ -151,7 +162,7 @@ export async function createApiary(data: { name: string; description?: string; a
   const res = await apiFetch('/apiaries', { method: 'POST', body: JSON.stringify(data) });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail ?? 'Create failed');
+    throw new Error(extractDetail(err, 'Create failed'));
   }
   return res.json();
 }
@@ -160,7 +171,7 @@ export async function updateApiary(id: string, data: { name?: string; descriptio
   const res = await apiFetch(`/apiaries/${id}`, { method: 'PUT', body: JSON.stringify(data) });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail ?? 'Update failed');
+    throw new Error(extractDetail(err, 'Update failed'));
   }
   return res.json();
 }
@@ -175,7 +186,7 @@ export async function createHive(apiaryId: string, data: { name: string; hive_ty
   const res = await apiFetch(`/apiaries/${apiaryId}/hives`, { method: 'POST', body: JSON.stringify(data) });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail ?? 'Create failed');
+    throw new Error(extractDetail(err, 'Create failed'));
   }
   return res.json();
 }
@@ -184,7 +195,7 @@ export async function updateHive(id: string, data: { name?: string; hive_type?: 
   const res = await apiFetch(`/hives/${id}`, { method: 'PUT', body: JSON.stringify(data) });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail ?? 'Update failed');
+    throw new Error(extractDetail(err, 'Update failed'));
   }
   return res.json();
 }
@@ -228,7 +239,7 @@ export async function createInspection(hiveId: string, data: InspectionInput): P
   const res = await apiFetch(`/hives/${hiveId}/inspections`, { method: 'POST', body: JSON.stringify(data) });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail ?? 'Create failed');
+    throw new Error(extractDetail(err, 'Create failed'));
   }
   return res.json();
 }
@@ -258,7 +269,7 @@ export async function createQrBatch(count: number): Promise<QrBatchOut> {
   const res = await apiFetch('/qr-batches', { method: 'POST', body: JSON.stringify({ count }) });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail ?? 'Create failed');
+    throw new Error(extractDetail(err, 'Create failed'));
   }
   return res.json();
 }
@@ -285,7 +296,7 @@ export async function createUserFieldDef(data: FieldDefinitionCreate): Promise<F
   const res = await apiFetch('/field-definitions', { method: 'POST', body: JSON.stringify(data) });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail ?? 'Create failed');
+    throw new Error(extractDetail(err, 'Create failed'));
   }
   return res.json();
 }
@@ -294,7 +305,7 @@ export async function updateUserFieldDef(id: string, data: FieldDefinitionUpdate
   const res = await apiFetch(`/field-definitions/${id}`, { method: 'PUT', body: JSON.stringify(data) });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail ?? 'Update failed');
+    throw new Error(extractDetail(err, 'Update failed'));
   }
   return res.json();
 }
@@ -314,7 +325,7 @@ export async function createApiaryFieldDef(apiaryId: string, data: FieldDefiniti
   const res = await apiFetch(`/apiaries/${apiaryId}/field-definitions`, { method: 'POST', body: JSON.stringify(data) });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail ?? 'Create failed');
+    throw new Error(extractDetail(err, 'Create failed'));
   }
   return res.json();
 }
@@ -323,7 +334,7 @@ export async function updateApiaryFieldDef(apiaryId: string, fid: string, data: 
   const res = await apiFetch(`/apiaries/${apiaryId}/field-definitions/${fid}`, { method: 'PUT', body: JSON.stringify(data) });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail ?? 'Update failed');
+    throw new Error(extractDetail(err, 'Update failed'));
   }
   return res.json();
 }
