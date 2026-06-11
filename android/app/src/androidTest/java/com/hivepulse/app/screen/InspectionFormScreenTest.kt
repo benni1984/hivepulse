@@ -67,7 +67,7 @@ class InspectionFormScreenTest {
         }
         composeRule.onNodeWithContentDescription("New Inspection").performClick()
         composeRule.waitUntil(5_000) {
-            composeRule.onAllNodesWithText("Date (yyyy-MM-dd)").fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("Date").fetchSemanticsNodes().isNotEmpty()
         }
     }
 
@@ -90,14 +90,14 @@ class InspectionFormScreenTest {
     @Test
     fun inspectionForm_saveButtonIsEnabledByDefault() {
         navigateToInspectionForm()
-        composeRule.onNodeWithText("Save").assertIsDisplayed()
+        composeRule.onNodeWithText("Save").performScrollTo().assertIsDisplayed()
     }
 
     @Test
     fun inspectionForm_saveSuccessNavigatesBackToHiveDetail() {
         coEvery { apiService.createInspection(any(), any()) } returns savedInspection
         navigateToInspectionForm()
-        composeRule.onNodeWithText("Save").performClick()
+        composeRule.onNodeWithText("Save").performScrollTo().performClick()
         coVerify(timeout = 3_000) { apiService.createInspection(any(), any()) }
         composeRule.waitUntil(5_000) {
             composeRule.onAllNodesWithText("Inspections").fetchSemanticsNodes().isNotEmpty()
@@ -109,11 +109,11 @@ class InspectionFormScreenTest {
     fun inspectionForm_showsErrorBannerOnSaveFailure() {
         coEvery { apiService.createInspection(any(), any()) } throws RuntimeException("Server unavailable")
         navigateToInspectionForm()
-        composeRule.onNodeWithText("Save").performClick()
+        composeRule.onNodeWithText("Save").performScrollTo().performClick()
         coVerify(timeout = 3_000) { apiService.createInspection(any(), any()) }
         composeRule.waitUntil(5_000) {
             composeRule.onAllNodesWithText("Server unavailable").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithText("Server unavailable").assertIsDisplayed()
+        composeRule.onNodeWithText("Server unavailable").performScrollTo().assertIsDisplayed()
     }
 }

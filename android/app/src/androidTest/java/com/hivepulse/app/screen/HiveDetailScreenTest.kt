@@ -91,9 +91,9 @@ class HiveDetailScreenTest {
         navigateToHiveDetail()
         composeRule.onNodeWithContentDescription("New Inspection").performClick()
         composeRule.waitUntil(5_000) {
-            composeRule.onAllNodesWithText("New Inspection").fetchSemanticsNodes().size >= 1
+            composeRule.onAllNodesWithText("Date").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithText("Date (yyyy-MM-dd)").assertIsDisplayed()
+        composeRule.onNodeWithText("Date").assertIsDisplayed()
     }
 
     private fun inspection() = InspectionOut(

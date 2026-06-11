@@ -12,6 +12,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -46,12 +48,14 @@ fun ApiaryListScreen(
             )
         },
         floatingActionButton = {
+            val newApiaryLabel = stringResource(R.string.action_new_apiary)
             ExtendedFloatingActionButton(
-                onClick = { showCreate = true },
-                icon    = { Icon(Icons.Default.Add, contentDescription = null) },
-                text    = { Text(stringResource(R.string.action_new_apiary)) },
+                onClick  = { showCreate = true },
+                icon     = { Icon(Icons.Default.Add, contentDescription = null) },
+                text     = { Text(newApiaryLabel) },
                 containerColor = Amber500,
                 contentColor   = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier.semantics { contentDescription = newApiaryLabel },
             )
         }
     ) { padding ->

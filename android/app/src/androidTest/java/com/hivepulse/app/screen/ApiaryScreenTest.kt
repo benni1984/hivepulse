@@ -84,7 +84,11 @@ class ApiaryScreenTest {
     fun apiaryList_fabOpensCreateApiaryDialog() {
         waitForApiaryList()
         composeRule.onNodeWithContentDescription("New Apiary").performClick()
-        composeRule.onNodeWithText("New Apiary").assertIsDisplayed()
+        // Dialog opens — verify its "Name" field is shown (dialog-specific element)
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithText("Name").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Name").assertIsDisplayed()
     }
 
     @Test
