@@ -115,6 +115,12 @@ _SKIP_CONTENT_DESCS = frozenset({
 })
 
 
+def swipe_tap(x, y, duration_ms=200):
+    """Deliberate touch-down / touch-up at (x, y) — more reliable than 'input tap' for Compose."""
+    shell("input", "swipe", str(x), str(y), str(x), str(y), str(duration_ms))
+    time.sleep(0.6)
+
+
 def tap_first_content_item(min_y=220, max_y_offset=220):
     """
     Tap the first clickable list-item node in the main content area.
@@ -146,7 +152,9 @@ def tap_first_content_item(min_y=220, max_y_offset=220):
         if not b:
             continue
         x1, y1, x2, y2 = b
-        cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
+        # Tap at 1/3 from left to avoid overlapping child buttons on the right
+        cx = x1 + (x2 - x1) // 3
+        cy = (y1 + y2) // 2
         width  = x2 - x1
         height = y2 - y1
         # Keep only card-sized items: wide enough to be a list card (not a square icon button),
@@ -154,7 +162,8 @@ def tap_first_content_item(min_y=220, max_y_offset=220):
         if width < screen_w * 0.45 or height < 80:
             continue
         if min_y < cy < max_y:
-            tap(cx, cy)
+            print(f"  [tap_first_content_item] tapping at ({cx},{cy}) bounds={b}", flush=True)
+            swipe_tap(cx, cy)
             return
     raise RuntimeError("No content-area list item found (all clickables matched exclusions)")
 
@@ -255,8 +264,18 @@ def navigate_to_hive_detail():
 
     # Step 2: tap first apiary and wait for apiary detail OR hive detail
     tap_first_content_item()
+    time.sleep(2)  # brief pause after tap
+    # Debug screenshot to see what's on screen after the tap
+    debug_shot_path = os.path.join(OUT_DIR, "debug-after-apiary-tap.png")
+    proc = subprocess.run(["adb", "exec-out", "screencap", "-p"], capture_output=True, check=False)
+    if proc.returncode == 0:
+        with open(debug_shot_path, "wb") as f:
+            f.write(proc.stdout)
+        print(f"  [DEBUG] post-tap screenshot saved to {debug_shot_path}", flush=True)
+    debug_dump_clickables("after-apiary-tap")
+
     # Wait until we leave the apiaries screen (either ApiaryDetail or HiveDetail)
-    deadline = time.time() + 20
+    deadline = time.time() + 25
     while time.time() < deadline:
         dump = get_ui_dump()
         if "New Hive" in dump or "New Inspection" in dump:

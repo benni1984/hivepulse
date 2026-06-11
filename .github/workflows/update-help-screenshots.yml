@@ -130,6 +130,7 @@ jobs:
           name: android-screenshots
           path: |
             public/docs/screenshots/android-*.png
+            public/docs/screenshots/debug-*.png
             public/docs/screenshots/debug-dump-*.xml
           retention-days: 1
           if-no-files-found: warn
