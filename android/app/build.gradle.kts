@@ -15,6 +15,9 @@ android {
     namespace   = "com.hivepulse.app"
     compileSdk  = 35
 
+    val baseUrl: String = (project.findProperty("BASE_URL") as? String)
+        ?: "http://10.0.2.2:8000/api/v1/"
+
     defaultConfig {
         applicationId = "com.hivepulse.app"
         minSdk        = 26
@@ -22,6 +25,7 @@ android {
         versionCode   = 1
         versionName   = "1.0"
         testInstrumentationRunner = "com.hivepulse.app.HiltTestRunner"
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
     }
 
     buildTypes {
@@ -35,7 +39,10 @@ android {
 
     kotlinOptions { jvmTarget = "17" }
 
-    buildFeatures { compose = true }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
 
     packaging {
         resources {

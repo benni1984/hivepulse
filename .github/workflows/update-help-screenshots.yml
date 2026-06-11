@@ -106,7 +106,9 @@ jobs:
         run: |
           chmod +x android/gradlew
           cd android
-          ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx3g -XX:MaxMetaspaceSize=512m"
+          ./gradlew assembleDebug --no-daemon \
+            -Dorg.gradle.jvmargs="-Xmx3g -XX:MaxMetaspaceSize=512m" \
+            -PBASE_URL="https://apiscan-two.vercel.app/api/v1/"
 
       - name: Run Android screenshot capture in emulator
         uses: reactivecircus/android-emulator-runner@v2
