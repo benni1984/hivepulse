@@ -10,7 +10,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           spot trends you'd miss when reviewing individual records. Stats are available on the hive
           detail screen across all platforms.
         </p>
-        <Screenshot caption="Hive stats page showing the varroa trend chart and mood distribution" />
+        <Screenshot src="/docs/screenshots/hive-stats-overview.png" caption="Hive stats page showing the varroa trend chart and mood distribution" />
       </section>
 
       <section className="help-section">
@@ -83,7 +83,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           </div>
         </div>
 
-        <Screenshot caption="Varroa trend line chart with inspection dates on the x-axis" />
+        <Screenshot src="/docs/screenshots/hive-detail-web.png" caption="Varroa trend line chart with inspection dates on the x-axis" />
       </section>
 
       <section className="help-section">

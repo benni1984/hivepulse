@@ -12,7 +12,7 @@ export default function HornetTrackerContent({ Screenshot }: { Screenshot: typeo
           lets any citizen — no account required — contribute sightings, and lets beekeepers
           monitor nest density in their area.
         </p>
-        <Screenshot caption="Hornet Tracker landing page showing aggregate stats and action links" />
+        <Screenshot src="/docs/screenshots/hornet-tracker-landing.png" caption="Hornet Tracker landing page showing aggregate stats and action links" />
       </section>
 
       <section className="help-section">
@@ -44,7 +44,7 @@ export default function HornetTrackerContent({ Screenshot }: { Screenshot: typeo
             </div>
           </li>
         </ol>
-        <Screenshot caption="Catch report form with count input and optional GPS fields" />
+        <Screenshot src="/docs/screenshots/hornet-report-form.png" caption="Catch report form with count input and optional GPS fields" />
       </section>
 
       <section className="help-section">
@@ -113,7 +113,7 @@ export default function HornetTrackerContent({ Screenshot }: { Screenshot: typeo
             </div>
           </li>
         </ol>
-        <Screenshot caption="Community sightings feed showing photo cards with vote counts" />
+        <Screenshot src="/docs/screenshots/hornet-community-sightings.png" caption="Community sightings feed showing photo cards with vote counts" />
       </section>
 
       <section className="help-section">
