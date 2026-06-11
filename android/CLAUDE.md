@@ -8,7 +8,36 @@
 - Build: `./gradlew assembleDebug` (from `android/`)
 - Unit tests: `./gradlew test`
 - UI tests (emulator/device): `./gradlew connectedAndroidTest`
-- Single UI test class: `./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.apiscan.app.screen.LoginScreenTest`
+- Single UI test class: `./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.hivepulse.app.ui.LoginScreenTest`
+
+## Design System Reference — IMPORTANT
+
+HivePulse uses a consistent visual language across web and mobile. For colour and spacing reference, open **`hivepulse-redesign/bundle.html`** in a browser before implementing any new screen or component.
+
+Key values — already seeded in `ui/theme/Color.kt` and `ui/theme/Theme.kt`:
+
+| Token | Value | Compose name |
+|-------|-------|-------------|
+| Primary/amber | `#f59e0b` | `Amber500` |
+| Pressed/hover | `#d97706` | `Amber600` |
+| Nav background | `#0f2d1c` | `Forest900` |
+| Page background | `#fafaf9` | `Stone50` |
+| Card border | `#e7e5e4` | `Stone200` |
+| Font | DM Sans | `DmSans` (in `Type.kt`) |
+
+- Use `MaterialTheme.colorScheme.*` tokens, not hardcoded hex values
+- Bottom nav: `Forest900` container, `Amber500` selected indicator (see `MainActivity.kt`)
+- Glove-friendly UX: use `NumberStepper` and `ToggleButtonGroup` from `ui/common/Components.kt` instead of text fields and dropdowns for all integer and enum inputs
+
+## Help Page Screenshots — IMPORTANT
+
+After any visible UI change (screen layout, colours, new fields), retake the affected Android screenshots and update the `src` props in `app/[locale]/help/[slug]/content/*.tsx` for all 4 locales.
+
+Capture via emulator (AVD: `Pixel_9_API_35`, logged in as `demo@apiscan.app` / `demo1234`):
+```bash
+adb -s emulator-5554 exec-out screencap -p > public/docs/screenshots/android-<screen>.png
+```
+Screenshots live in `public/docs/screenshots/android-*.png`.
 
 ## Unit Tests — all passing
 

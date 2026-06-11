@@ -1,5 +1,33 @@
 # Web / Next.js App
 
+## Design System — IMPORTANT
+
+Before writing any new UI (components, pages, modals, cards), open **`hivepulse-redesign/bundle.html`** in a browser. It is the single source of truth for colours, spacing, icon boxes, sidebar behaviour, and stat pill layout.
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| Amber | `#f59e0b` (`var(--amber)`) | CTA buttons, active states, "Pulse" wordmark |
+| Amber dark | `#d97706` | Hover states |
+| Forest green | `#0f2d1c` | Dashboard sidebar background |
+| Stone 50 | `#fafaf9` (`var(--surface)`) | Page backgrounds |
+| Border | `#e7e5e4` (`var(--border)`) | Card borders |
+| Font | DM Sans | All UI text |
+
+- CSS namespaces: `.dash-*` dashboard · `.hornets-*` hornet tracker · `.site-*`/`.nav-*` public nav · `auth-*` auth pages
+- Stat pills: two-row layout — `.dash-stat-pill-header` (label + `.dash-stat-icon`) then big number. Never flat.
+- Icon boxes: 52×52px, `var(--amber-light)` bg, `border-radius: 14px`, 24px SVG stroke `var(--amber-dark)`.
+- Do **not** use ad-hoc colours or generic Tailwind defaults — use the palette variables above.
+
+## Help Page Screenshots — IMPORTANT
+
+Whenever a UI screen visible in the help documentation changes (dashboard, hive detail, inspection form, settings, hornet tracker, QR flow, etc.), the corresponding screenshots in `public/docs/screenshots/` **must be retaken** and the `src` props in `app/[locale]/help/[slug]/content/*.tsx` must be updated for all 4 locales (en, de, fr, es).
+
+- Web screenshots: capture via browser at `apiscan-two.vercel.app` or localhost
+- Android screenshots: capture via `adb exec-out screencap -p > file.png` from the emulator (Pixel 9 API 35), logged in as `demo@apiscan.app` / `demo1234`
+- Screenshot components support `src=` (single platform) or `android=` + `web=` (tab switcher)
+
+## Framework
+
 - Framework: Next.js 15, App Router, TypeScript
 - i18n: `next-intl` — 4 locales (en, de, fr, es) in `messages/`
 - Styles: `web/style.css` (dashboard + global), `web/landing.css` (landing page)

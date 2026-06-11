@@ -58,7 +58,11 @@ Design ground truth: **`hivepulse-redesign/bundle.html`** — open in a browser 
 
 **Logo:** Amber hex SVG (inline — no `<use>`). Top nav: icon + "Hive**Pulse**" wordmark. Sidebar: text-only "Hive**Pulse**" + "Hive Inspection Platform" tagline.
 
+**Brand name:** Always **HivePulse** — one word, capital H and capital P. Never "Hive Pulse" (two words).
+
 **Stat pills:** always use two-row layout — `.dash-stat-pill-header` (label + `.dash-stat-icon`) then big number.
+
+**Before any new UI work** — open `hivepulse-redesign/bundle.html` in a browser and verify colours, spacing, and component patterns. Do not use ad-hoc colours; always use the palette tokens above. Component-specific rules are in `@app/CLAUDE.md` (web) and `@android/CLAUDE.md` (Android).
 
 ## API Contract
 
@@ -116,4 +120,4 @@ Work in one component per session. Do not mix backend, iOS, and Android in the s
 
 ## Implementation Status
 
-All components complete. Open issue: **#73** — user profile screen (edit name/language, change password, delete account) — not yet implemented on Android or iOS.
+All components complete. Open issue: **#73** — user profile screen (edit name/language, change password, delete account) — implemented on web (`/dashboard/profile`) and Android (`SettingsScreen`); not yet implemented on iOS.
