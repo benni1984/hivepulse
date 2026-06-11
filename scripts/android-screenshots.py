@@ -140,30 +140,48 @@ def install_and_launch():
 
 # ── Login flow ────────────────────────────────────────────────────────────────
 
+def tap_editable_field(index=0):
+    """Tap the Nth editable (focusable input) node in the current UI dump."""
+    dump = get_ui_dump()
+    root = ET.fromstring(dump)
+    count = 0
+    for node in root.iter("node"):
+        if node.get("focusable") == "true" and node.get("long-clickable") == "true":
+            bounds = node.get("bounds", "")
+            if bounds:
+                parts = bounds.replace("][", ",").strip("[]").split(",")
+                cx = (int(parts[0]) + int(parts[2])) // 2
+                cy = (int(parts[1]) + int(parts[3])) // 2
+                if count == index:
+                    tap(cx, cy)
+                    return
+                count += 1
+    raise RuntimeError(f"Editable field at index {index} not found")
+
+
 def login():
     print("Logging in…", flush=True)
-    wait_for("Sign In")
+    wait_for("Sign In", timeout=30)
+    time.sleep(1)  # let fields finish rendering
 
-    dump = get_ui_dump()
-
-    # Tap email field
-    tap_node(dump, content_desc="Email")
-    time.sleep(0.3)
+    # Tap email field (first editable), type email
+    tap_editable_field(0)
+    time.sleep(0.5)
     type_text(DEMO_EMAIL)
 
-    dump = get_ui_dump()
-    tap_node(dump, content_desc="Password")
-    time.sleep(0.3)
+    # Tap password field (second editable), type password
+    tap_editable_field(1)
+    time.sleep(0.5)
     type_text(DEMO_PASSWORD)
 
-    # Dismiss keyboard
-    adb_shell("input", "keyevent", "KEYCODE_ENTER")
-    time.sleep(0.3)
+    # Dismiss keyboard then tap Sign In
+    adb_shell("input", "keyevent", "KEYCODE_BACK")
+    time.sleep(0.5)
 
     dump = get_ui_dump()
     tap_node(dump, text="Sign In")
     wait_for("My Apiaries", timeout=30)
-    print("  Logged in ✓")
+    print("  Logged in ✓", flush=True)
 
 
 # ── Individual screen captures ────────────────────────────────────────────────
