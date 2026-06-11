@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Adaptive icon foreground — the HivePulse hex centred in a 108×108dp canvas.
+  The safe zone is the inner 72dp circle; 18dp padding each side leaves the hex
+  occupying ~66% of the canvas, which is within the safe zone.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Translate to centre the 44-unit icon with 18dp safe-zone padding.
+         Scale: (108 - 2*18) / 44 = 72/44 ≈ 1.6364. Offset: 18dp. -->
+    <group
+        android:translateX="18"
+        android:translateY="18"
+        android:scaleX="1.6364"
+        android:scaleY="1.6364">
+
+        <!-- Amber hex badge -->
+        <path
+            android:pathData="M22,2 L39.12,12 L39.12,32 L22,42 L4.88,32 L4.88,12 Z"
+            android:fillColor="#F59E0B"/>
+
+        <!-- Inner ring -->
+        <path
+            android:pathData="M22,4.5 L37,13.5 L37,30.5 L22,39.5 L7,30.5 L7,13.5 Z"
+            android:fillColor="#00000000"
+            android:strokeColor="#1EFFFFFF"
+            android:strokeWidth="1"/>
+
+        <!-- Honeycomb cell top-centre -->
+        <path
+            android:pathData="M22,11 L26.76,13.75 L26.76,19.25 L22,22 L17.24,19.25 L17.24,13.75 Z"
+            android:fillColor="#2EFFFFFF"
+            android:strokeColor="#FFFFFFFF"
+            android:strokeWidth="1.4"
+            android:strokeLineJoin="round"/>
+
+        <!-- Honeycomb cell bottom-left -->
+        <path
+            android:pathData="M17.24,19.25 L22,22 L22,27.5 L17.24,30.25 L12.48,27.5 L12.48,22 Z"
+            android:fillColor="#2EFFFFFF"
+            android:strokeColor="#FFFFFFFF"
+            android:strokeWidth="1.4"
+            android:strokeLineJoin="round"/>
+
+        <!-- Honeycomb cell bottom-right -->
+        <path
+            android:pathData="M26.76,19.25 L31.52,22 L31.52,27.5 L26.76,30.25 L22,27.5 L22,22 Z"
+            android:fillColor="#2EFFFFFF"
+            android:strokeColor="#FFFFFFFF"
+            android:strokeWidth="1.4"
+            android:strokeLineJoin="round"/>
+
+        <!-- Stats sparkline -->
+        <path
+            android:pathData="M6,27 C12,27 15,24 20,25 C25,26 27,17 31,15 C34,14 36.5,13.5 36.5,13.5"
+            android:fillColor="#00000000"
+            android:strokeColor="#E6FFFFFF"
+            android:strokeWidth="1.5"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"/>
+
+        <!-- Sparkline start dot -->
+        <path
+            android:pathData="M6,27 m-1.5,0 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0"
+            android:fillColor="#8CFFFFFF"/>
+
+        <!-- Sparkline end dot -->
+        <path
+            android:pathData="M36.5,13.5 m-2.2,0 a2.2,2.2 0 1,0 4.4,0 a2.2,2.2 0 1,0 -4.4,0"
+            android:fillColor="#F2FFFFFF"/>
+
+    </group>
+</vector>

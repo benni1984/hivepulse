@@ -3,9 +3,9 @@ package com.hivepulse.app.ui.auth
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -132,22 +133,12 @@ fun LoginScreen(
     }
 }
 
-/** Amber hexagon with "HP" label — minimal vector logo for screens without SVG support. */
+/** HivePulse hex icon — amber hexagon with honeycomb cells and stats sparkline. */
 @Composable
 fun HivePulseHexIcon(size: Int = 48) {
-    Box(
-        modifier = Modifier
-            .size(size.dp)
-            .background(Amber500, RoundedCornerShape((size * 0.28f).dp)),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            text  = "HP",
-            color = Color(0xFF1C1917),
-            style = MaterialTheme.typography.labelLarge.copy(
-                fontWeight = FontWeight.ExtraBold,
-                fontSize   = (size * 0.34f).sp,
-            ),
-        )
-    }
+    Image(
+        painter            = painterResource(id = R.drawable.ic_hivepulse),
+        contentDescription = "HivePulse",
+        modifier           = Modifier.size(size.dp),
+    )
 }
