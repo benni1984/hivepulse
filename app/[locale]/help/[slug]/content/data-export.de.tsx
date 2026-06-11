@@ -10,7 +10,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
           Ihrem Tierarzt teilen, bei einer nationalen Imkerbehörde einreichen, in einer Tabellenkalkulation für
           benutzerdefinierte Analysen verwenden oder als Langzeitaufzeichnung unabhängig von HivePulse archivieren können.
         </p>
-        <Screenshot src="/docs/screenshots/android-data-export.png" caption="Datenexport-Blatt auf dem Mobilgerät mit Bienenstandauswahl und Formatauswahl" />
+        <Screenshot android="/docs/screenshots/android-data-export.png" web="/docs/screenshots/hive-detail-export-area.png" caption="Datenexport — Bienenstandauswahl und Formatauswahl (JSON / CSV)" />
       </section>
 
       <section className="help-section">

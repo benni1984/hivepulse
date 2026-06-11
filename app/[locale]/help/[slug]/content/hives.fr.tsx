@@ -10,7 +10,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           Tout l'historique d'inspection est attaché à la fiche ruche, vous permettant de visualiser
           la tendance complète de santé de cette colonie au fil du temps.
         </p>
-        <Screenshot src="/docs/screenshots/android-hive-detail.png" caption="Écran de détail de la ruche montrant le type, la date de la dernière inspection et la liste des inspections" />
+        <Screenshot android="/docs/screenshots/android-hive-detail.png" web="/docs/screenshots/hive-detail-web.png" caption="Écran de détail de la ruche montrant le type, la date de la dernière inspection et la liste des inspections" />
       </section>
 
       <section className="help-section">

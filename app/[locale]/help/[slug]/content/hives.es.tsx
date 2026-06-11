@@ -10,7 +10,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           Todo el historial de inspecciones está adjunto al registro de colmena, por lo que puede ver
           la tendencia completa de salud de esa colonia a lo largo del tiempo.
         </p>
-        <Screenshot src="/docs/screenshots/android-hive-detail.png" caption="Pantalla de detalles de la colmena mostrando el tipo, la fecha de la última inspección y la lista de inspecciones" />
+        <Screenshot android="/docs/screenshots/android-hive-detail.png" web="/docs/screenshots/hive-detail-web.png" caption="Pantalla de detalles de la colmena mostrando el tipo, la fecha de la última inspección y la lista de inspecciones" />
       </section>
 
       <section className="help-section">

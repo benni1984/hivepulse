@@ -10,7 +10,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           Trends erkennen können, die Sie beim Überprüfen einzelner Einträge übersehen würden. Statistiken sind auf dem Volk-
           Detailbildschirm auf allen Plattformen verfügbar.
         </p>
-        <Screenshot src="/docs/screenshots/android-hive-stats.png" caption="Volksstatistik-Seite mit dem Varroa-Trenddiagramm und der Stimmungsverteilung" />
+        <Screenshot android="/docs/screenshots/android-hive-stats.png" web="/docs/screenshots/hive-stats-overview.png" caption="Volksstatistik-Seite mit dem Varroa-Trenddiagramm und der Stimmungsverteilung" />
       </section>
 
       <section className="help-section">

@@ -10,7 +10,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
           Una etiqueta de código QR en cada colmena le permite escanear y abrir en menos de dos segundos — la pantalla de detalles
           de la colmena correcta se abre instantáneamente, lista para una nueva inspección.
         </p>
-        <Screenshot src="/docs/screenshots/android-qr-batches.png" caption="Etiqueta de código QR en una colmena, lista para ser escaneada" />
+        <Screenshot android="/docs/screenshots/android-qr-batches.png" web="/docs/screenshots/qr-batch-detail.png" caption="Etiqueta de código QR en una colmena, lista para ser escaneada" />
       </section>
 
       <section className="help-section">
@@ -108,7 +108,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-qr-batches.png" caption="Escaneando un código QR de colmena en el campo — la colmena se abre instantáneamente" />
+        <Screenshot src="/docs/screenshots/android-qr-scan.png" caption="Escaneando un código QR de colmena en el campo — la colmena se abre instantáneamente" />
       </section>
 
       <section className="help-section">

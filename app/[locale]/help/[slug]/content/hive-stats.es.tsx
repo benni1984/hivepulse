@@ -10,7 +10,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           detectar tendencias que pasaría por alto al revisar registros individuales. Las estadísticas están disponibles en la pantalla de
           detalles de la colmena en todas las plataformas.
         </p>
-        <Screenshot src="/docs/screenshots/android-hive-stats.png" caption="Página de estadísticas de la colmena mostrando el gráfico de tendencia de varroa y la distribución del estado de ánimo" />
+        <Screenshot android="/docs/screenshots/android-hive-stats.png" web="/docs/screenshots/hive-stats-overview.png" caption="Página de estadísticas de la colmena mostrando el gráfico de tendencia de varroa y la distribución del estado de ánimo" />
       </section>
 
       <section className="help-section">

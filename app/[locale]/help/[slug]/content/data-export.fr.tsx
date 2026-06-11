@@ -10,7 +10,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
           avec votre vétérinaire, soumettre à une autorité apicole nationale, utiliser dans un tableur pour
           une analyse personnalisée, ou archiver comme enregistrement à long terme indépendant de HivePulse.
         </p>
-        <Screenshot src="/docs/screenshots/android-data-export.png" caption="Feuille d'export de données sur mobile montrant le sélecteur de rucher et le sélecteur de format" />
+        <Screenshot android="/docs/screenshots/android-data-export.png" web="/docs/screenshots/hive-detail-export-area.png" caption="Datenexport — Bienenstandauswahl und Formatauswahl (JSON / CSV)" />
       </section>
 
       <section className="help-section">

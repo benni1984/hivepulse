@@ -10,7 +10,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           la détection de tendances que vous manqueriez en examinant des enregistrements individuels. Les statistiques sont disponibles sur l'écran de
           détail de la ruche sur toutes les plateformes.
         </p>
-        <Screenshot src="/docs/screenshots/android-hive-stats.png" caption="Page de statistiques de la ruche montrant le graphique de tendance varroa et la distribution des humeurs" />
+        <Screenshot android="/docs/screenshots/android-hive-stats.png" web="/docs/screenshots/hive-stats-overview.png" caption="Page de statistiques de la ruche montrant le graphique de tendance varroa et la distribution des humeurs" />
       </section>
 
       <section className="help-section">

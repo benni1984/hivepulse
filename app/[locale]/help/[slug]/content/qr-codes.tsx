@@ -10,7 +10,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
           A QR code label on each hive box lets you scan-and-open in under two seconds — the correct
           hive detail screen opens instantly, ready for a new inspection.
         </p>
-        <Screenshot src="/docs/screenshots/android-qr-batches.png" caption="QR code label on a hive box, ready to be scanned" />
+        <Screenshot android="/docs/screenshots/android-qr-batches.png" web="/docs/screenshots/qr-batch-detail.png" caption="QR batch list and batch detail — generate and download labels" />
       </section>
 
       <section className="help-section">

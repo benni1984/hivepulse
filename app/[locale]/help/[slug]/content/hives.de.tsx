@@ -10,7 +10,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           QR-Code-Etikett. Die gesamte Inspektionshistorie ist dem Volkseintrag zugeordnet, sodass Sie den
           vollständigen Gesundheitstrend dieses Volkes im Laufe der Zeit verfolgen können.
         </p>
-        <Screenshot src="/docs/screenshots/android-hive-detail.png" caption="Volk-Detailbildschirm mit Bienenstock-Typ, letztem Inspektionsdatum und Inspektionsliste" />
+        <Screenshot android="/docs/screenshots/android-hive-detail.png" web="/docs/screenshots/hive-detail-web.png" caption="Volk-Detailbildschirm mit Bienenstock-Typ, letztem Inspektionsdatum und Inspektionsliste" />
       </section>
 
       <section className="help-section">
