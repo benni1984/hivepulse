@@ -128,7 +128,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: android-screenshots
-          path: public/docs/screenshots/android-*.png
+          path: |
+            public/docs/screenshots/android-*.png
+            public/docs/screenshots/debug-dump-*.xml
           retention-days: 1
           if-no-files-found: warn
 

@@ -218,12 +218,40 @@ def login():
 
 # ── Individual captures ───────────────────────────────────────────────────────
 
+def debug_dump_clickables(tag=""):
+    """Print all clickable nodes with their bounds — helps diagnose tapping failures."""
+    dump = get_ui_dump()
+    root = ET.fromstring(dump)
+    screen_h, screen_w = 2400, 1080
+    hier = root.find(".")
+    if hier is not None:
+        b = _bounds(hier)
+        if b:
+            screen_w, screen_h = b[2], b[3]
+    print(f"  [DEBUG {tag}] screen={screen_w}x{screen_h}", flush=True)
+    for node in root.iter("node"):
+        if node.get("clickable") == "true":
+            b = _bounds(node)
+            cd = node.get("content-desc", "")[:30]
+            txt = node.get("text", "")[:30]
+            if b:
+                x1,y1,x2,y2 = b
+                w,h = x2-x1,y2-y1
+                print(f"  [DEBUG] clickable cd={cd!r} txt={txt!r} bounds={b} wh={w}x{h}", flush=True)
+    # Also save dump XML for artifact inspection
+    xml_path = os.path.join(OUT_DIR, f"debug-dump-{tag.replace(' ','_')}.xml")
+    with open(xml_path, "w", encoding="utf-8") as f:
+        f.write(dump)
+    print(f"  [DEBUG] dump saved to {xml_path}", flush=True)
+
+
 def navigate_to_hive_detail():
     """Navigate from wherever we are to a HiveDetailScreen (waits for 'New Inspection' FAB)."""
     # Step 1: make sure we're on the apiaries list
     if "My Apiaries" not in get_ui_dump():
         back_to_apiaries()
     time.sleep(1.5)
+    debug_dump_clickables("apiaries-screen")
 
     # Step 2: tap first apiary and wait for apiary detail OR hive detail
     tap_first_content_item()
