@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -10,7 +10,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           QR-Code-Etikett. Die gesamte Inspektionshistorie ist dem Volkseintrag zugeordnet, sodass Sie den
           vollständigen Gesundheitstrend dieses Volkes im Laufe der Zeit verfolgen können.
         </p>
-        <Screenshot caption="Volk-Detailbildschirm mit Bienenstock-Typ, letztem Inspektionsdatum und Inspektionsliste" />
+        <Screenshot android="/docs/screenshots/android-hive-detail.png" web="/docs/screenshots/hive-detail-web.png" caption="Volk-Detailbildschirm mit Bienenstock-Typ, letztem Inspektionsdatum und Inspektionsliste" />
       </section>
 
       <section className="help-section">
@@ -75,7 +75,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
             </div>
           </li>
         </ol>
-        <Screenshot caption="Neues-Volk-Formular mit Namensfeld und Bienenstock-Typ-Auswahl" />
+        <Screenshot src="/docs/screenshots/hive-create-form.png" caption="Neues-Volk-Formular mit Namensfeld und Bienenstock-Typ-Auswahl" />
       </section>
 
       <section className="help-section">
@@ -90,7 +90,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           <li>Eine Schaltfläche zum Starten einer neuen Inspektion</li>
           <li>Im Web: Tabs für Inspektionen, Statistiken und Benutzerdefinierte Felder</li>
         </ul>
-        <Screenshot caption="Volk-Detailseite im Web mit dem Inspektions-Tab und Volksdaten" />
+        <Screenshot src="/docs/screenshots/hive-detail-web.png" caption="Volk-Detailseite im Web mit dem Inspektions-Tab und Volksdaten" />
       </section>
 
       <section className="help-section">

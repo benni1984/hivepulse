@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function DataExportContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -10,7 +10,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
           con su veterinario, enviar a una autoridad apícola nacional, usar en una hoja de cálculo para
           análisis personalizados, o archivar como registro a largo plazo independiente de HivePulse.
         </p>
-        <Screenshot caption="Hoja de exportación de datos en móvil mostrando el selector de colmenar y el selector de formato" />
+        <Screenshot android="/docs/screenshots/android-data-export.png" web="/docs/screenshots/hive-detail-export-area.png" caption="Datenexport — Bienenstandauswahl und Formatauswahl (JSON / CSV)" />
       </section>
 
       <section className="help-section">
@@ -66,7 +66,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
             </div>
           </li>
         </ol>
-        <Screenshot caption="Diálogo de exportación en la web — colmenar seleccionado, formato CSV elegido" />
+        <Screenshot src="/docs/screenshots/hive-detail-export-area.png" caption="Diálogo de exportación en la web — colmenar seleccionado, formato CSV elegido" />
       </section>
 
       <section className="help-section">

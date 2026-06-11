@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function HornetTrapsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -16,7 +16,7 @@ export default function HornetTrapsContent({ Screenshot }: { Screenshot: typeof 
           múltiples ubicaciones, comparta los códigos de acceso con asociaciones apícolas locales y
           recopile datos de captura de la comunidad.
         </p>
-        <Screenshot caption="Pantalla de detalles de la trampa mostrando el código de acceso, historial de capturas y botón de registro" />
+        <Screenshot src="/docs/screenshots/android-hornet-traps.png" caption="Pantalla de detalles de la trampa mostrando el código de acceso, historial de capturas y botón de registro" />
       </section>
 
       <section className="help-section">
@@ -44,7 +44,7 @@ export default function HornetTrapsContent({ Screenshot }: { Screenshot: typeof 
             </div>
           </li>
         </ol>
-        <Screenshot caption="Formulario de registro de trampa mostrando nombre, GPS y el código de acceso generado" />
+        <Screenshot src="/docs/screenshots/android-hornet-traps.png" caption="Formulario de registro de trampa mostrando nombre, GPS y el código de acceso generado" />
       </section>
 
       <section className="help-section">
@@ -81,7 +81,7 @@ export default function HornetTrapsContent({ Screenshot }: { Screenshot: typeof 
           de su ubicación GPS actual. Esto es útil cuando está en el campo y desea registrar
           una captura para una trampa que gestiona pero no recuerda el código de acceso.
         </p>
-        <Screenshot caption="Lista de trampas cercanas mostrando dos trampas dentro de 50 m con distancias" />
+        <Screenshot src="/docs/screenshots/android-hornet-traps.png" caption="Lista de trampas cercanas mostrando dos trampas dentro de 50 m con distancias" />
       </section>
 
       <section className="help-section">

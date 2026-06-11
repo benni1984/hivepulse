@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function CommunityStatsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -15,7 +15,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           Les quatre cartes de statistiques en direct sont visibles par tous ; la ventilation détaillée est une
           <strong> fonctionnalité Supporter</strong>.
         </p>
-        <Screenshot caption="Écran Membres montrant les quatre cartes de statistiques communautaires" />
+        <Screenshot src="/docs/screenshots/android-community-stats.png" caption="Écran Membres montrant les quatre cartes de statistiques communautaires" />
       </section>
 
       <section className="help-section">
@@ -63,7 +63,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
             <span className="help-stat-card-good">7–14 jours en saison active</span>
           </div>
         </div>
-        <Screenshot caption="Les quatre cartes de statistiques avec des données communautaires en direct" />
+        <Screenshot src="/docs/screenshots/android-community-stats.png" caption="Les quatre cartes de statistiques avec des données communautaires en direct" />
       </section>
 
       <section className="help-section">

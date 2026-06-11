@@ -14,7 +14,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
           Fields are currently managed on the <strong>web dashboard</strong> and appear on the
           inspection form across all platforms.
         </p>
-        <Screenshot caption="Custom Fields settings page showing a list of user-scope fields" />
+        <Screenshot src="/docs/screenshots/custom-fields-list.png" caption="Custom Fields settings page showing a list of user-scope fields" />
       </section>
 
       <section className="help-section">
@@ -99,7 +99,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
             </div>
           </li>
         </ol>
-        <Screenshot caption="Creating a new custom field — name, type, and scope are selected" />
+        <Screenshot src="/docs/screenshots/custom-field-create.png" caption="Creating a new custom field — name, type, and scope are selected" />
       </section>
     </>
   );

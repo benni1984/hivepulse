@@ -33,7 +33,7 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
             </div>
           </li>
         </ol>
-        <Screenshot caption="Section Profil dans les Paramètres montrant le champ nom d'affichage et le sélecteur de langue" />
+        <Screenshot src="/docs/screenshots/android-settings-account.png" caption="Section Profil dans les Paramètres montrant le champ nom d'affichage et le sélecteur de langue" />
       </section>
 
       <section className="help-section">

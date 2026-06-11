@@ -15,7 +15,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           The four live stat cards are visible to everyone; the detailed breakdown is a
           <strong> Supporter feature</strong>.
         </p>
-        <Screenshot caption="Members screen showing the four community stat cards" />
+        <Screenshot src="/docs/screenshots/android-community-stats.png" caption="Members screen showing the four community stat cards" />
       </section>
 
       <section className="help-section">
@@ -63,7 +63,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
             <span className="help-stat-card-good">7–14 days in active season</span>
           </div>
         </div>
-        <Screenshot caption="The four stat cards with live community data" />
+        <Screenshot src="/docs/screenshots/android-community-stats.png" caption="The four stat cards with live community data" />
       </section>
 
       <section className="help-section">

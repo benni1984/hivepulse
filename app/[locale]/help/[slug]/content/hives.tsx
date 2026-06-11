@@ -10,7 +10,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           QR code label. All inspection history is attached to the hive record, so you can view
           the full health trend of that colony over time.
         </p>
-        <Screenshot caption="Hive detail screen showing hive type, last inspection date, and inspection list" />
+        <Screenshot android="/docs/screenshots/android-hive-detail.png" web="/docs/screenshots/hive-detail-web.png" caption="Hive detail screen showing hive type, last inspection date, and inspection list" />
       </section>
 
       <section className="help-section">
@@ -75,7 +75,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
             </div>
           </li>
         </ol>
-        <Screenshot caption="New hive form with name field and hive type picker" />
+        <Screenshot src="/docs/screenshots/hive-create-form.png" caption="New hive form with name field and hive type picker" />
       </section>
 
       <section className="help-section">
@@ -90,7 +90,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           <li>A button to start a new inspection</li>
           <li>On web: tabs for Inspections, Stats, and Custom Fields</li>
         </ul>
-        <Screenshot caption="Hive detail page on the web showing the inspections tab and hive metadata" />
+        <Screenshot src="/docs/screenshots/hive-detail-web.png" caption="Web: hive detail page showing the inspections tab and hive metadata" />
       </section>
 
       <section className="help-section">

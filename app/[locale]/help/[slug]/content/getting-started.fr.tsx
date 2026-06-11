@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function GettingStartedContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -14,7 +14,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           Chaque inspection que vous enregistrez contribue également (anonymement) aux statistiques à l'échelle de la plateforme
           qui aident la communauté apicole à comprendre les tendances de santé des colonies dans les régions.
         </p>
-        <Screenshot caption="Tableau de bord HivePulse affichant une vue d'ensemble du rucher et la liste des ruches" />
+        <Screenshot src="/docs/screenshots/dashboard-apiary-list.png" caption="Tableau de bord HivePulse affichant une vue d'ensemble du rucher et la liste des ruches" />
       </section>
 
       <section className="help-section">
@@ -69,7 +69,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
             </div>
           </li>
         </ol>
-        <Screenshot caption="Formulaire d'inscription sur le tableau de bord web" />
+        <Screenshot src="/docs/screenshots/register-form.png" caption="Formulaire d'inscription sur le tableau de bord web" />
       </section>
 
       <section className="help-section">

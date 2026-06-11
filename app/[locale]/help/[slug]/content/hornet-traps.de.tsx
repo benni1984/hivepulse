@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function HornetTrapsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -16,7 +16,7 @@ export default function HornetTrapsContent({ Screenshot }: { Screenshot: typeof 
           mehreren Standorten, teilen Sie die Zugangscodes mit lokalen Imkervereinen und
           sammeln Sie Fangdaten aus der Community.
         </p>
-        <Screenshot caption="Fallen-Detailbildschirm mit Zugangscode, Fanghistorie und Fang-protokollieren-Schaltfläche" />
+        <Screenshot src="/docs/screenshots/android-hornet-traps.png" caption="Fallen-Detailbildschirm mit Zugangscode, Fanghistorie und Fang-protokollieren-Schaltfläche" />
       </section>
 
       <section className="help-section">
@@ -44,7 +44,7 @@ export default function HornetTrapsContent({ Screenshot }: { Screenshot: typeof 
             </div>
           </li>
         </ol>
-        <Screenshot caption="Fallen-Registrierungsformular mit Name, GPS und generiertem Zugangscode" />
+        <Screenshot src="/docs/screenshots/android-hornet-traps.png" caption="Fallen-Registrierungsformular mit Name, GPS und generiertem Zugangscode" />
       </section>
 
       <section className="help-section">
@@ -81,7 +81,7 @@ export default function HornetTrapsContent({ Screenshot }: { Screenshot: typeof 
           von Ihrem aktuellen GPS-Standort. Dies ist nützlich, wenn Sie sich im Feld befinden und einen Fang für
           eine verwaltete Falle protokollieren möchten, aber den Zugangscode nicht mehr wissen.
         </p>
-        <Screenshot caption="Liste nahegelegener Fallen mit zwei Fallen innerhalb von 50 m und Entfernungsangaben" />
+        <Screenshot src="/docs/screenshots/android-hornet-traps.png" caption="Liste nahegelegener Fallen mit zwei Fallen innerhalb von 50 m und Entfernungsangaben" />
       </section>
 
       <section className="help-section">

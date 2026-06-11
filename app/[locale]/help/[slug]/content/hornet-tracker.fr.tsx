@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function HornetTrackerContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -12,7 +12,7 @@ export default function HornetTrackerContent({ Screenshot }: { Screenshot: typeo
           permet à tout citoyen — sans compte requis — de contribuer des observations, et permet aux apiculteurs
           de surveiller la densité des nids dans leur région.
         </p>
-        <Screenshot caption="Page d'accueil du Suivi des Frelons montrant les statistiques agrégées et les liens d'action" />
+        <Screenshot src="/docs/screenshots/android-hornet-home.png" caption="Page d'accueil du Suivi des Frelons montrant les statistiques agrégées et les liens d'action" />
       </section>
 
       <section className="help-section">
@@ -44,7 +44,7 @@ export default function HornetTrackerContent({ Screenshot }: { Screenshot: typeo
             </div>
           </li>
         </ol>
-        <Screenshot caption="Formulaire de signalement de capture avec saisie du nombre et champs GPS optionnels" />
+        <Screenshot src="/docs/screenshots/android-hornet-report.png" caption="Formulaire de signalement de capture avec saisie du nombre et champs GPS optionnels" />
       </section>
 
       <section className="help-section">
@@ -113,7 +113,7 @@ export default function HornetTrackerContent({ Screenshot }: { Screenshot: typeo
             </div>
           </li>
         </ol>
-        <Screenshot caption="Fil d'observations communautaires montrant des cartes photo avec des comptages de votes" />
+        <Screenshot src="/docs/screenshots/android-hornet-community.png" caption="Fil d'observations communautaires montrant des cartes photo avec des comptages de votes" />
       </section>
 
       <section className="help-section">

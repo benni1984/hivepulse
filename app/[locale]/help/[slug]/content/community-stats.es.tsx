@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function CommunityStatsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -15,7 +15,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           Las cuatro tarjetas de estadísticas en vivo son visibles para todos; el desglose detallado es una
           <strong> función de Supporter</strong>.
         </p>
-        <Screenshot caption="Pantalla de Miembros mostrando las cuatro tarjetas de estadísticas comunitarias" />
+        <Screenshot src="/docs/screenshots/android-community-stats.png" caption="Pantalla de Miembros mostrando las cuatro tarjetas de estadísticas comunitarias" />
       </section>
 
       <section className="help-section">
@@ -63,7 +63,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
             <span className="help-stat-card-good">7–14 días en temporada activa</span>
           </div>
         </div>
-        <Screenshot caption="Las cuatro tarjetas de estadísticas con datos comunitarios en vivo" />
+        <Screenshot src="/docs/screenshots/android-community-stats.png" caption="Las cuatro tarjetas de estadísticas con datos comunitarios en vivo" />
       </section>
 
       <section className="help-section">

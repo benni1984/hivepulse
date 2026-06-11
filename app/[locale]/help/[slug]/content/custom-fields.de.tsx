@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -14,7 +14,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
           Felder werden derzeit im <strong>Web-Dashboard</strong> verwaltet und erscheinen auf dem
           Inspektionsformular auf allen Plattformen.
         </p>
-        <Screenshot caption="Einstellungsseite für benutzerdefinierte Felder mit einer Liste von Feldern im Benutzerbereich" />
+        <Screenshot src="/docs/screenshots/custom-fields-list.png" caption="Einstellungsseite für benutzerdefinierte Felder mit einer Liste von Feldern im Benutzerbereich" />
       </section>
 
       <section className="help-section">
@@ -99,7 +99,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
             </div>
           </li>
         </ol>
-        <Screenshot caption="Erstellen eines neuen benutzerdefinierten Felds — Name, Typ und Bereich sind ausgewählt" />
+        <Screenshot src="/docs/screenshots/custom-field-create.png" caption="Erstellen eines neuen benutzerdefinierten Felds — Name, Typ und Bereich sind ausgewählt" />
       </section>
     </>
   );

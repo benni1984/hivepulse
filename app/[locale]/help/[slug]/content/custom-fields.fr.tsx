@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -14,7 +14,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
           Les champs sont actuellement gérés sur le <strong>tableau de bord web</strong> et apparaissent sur le
           formulaire d'inspection sur toutes les plateformes.
         </p>
-        <Screenshot caption="Page des paramètres des champs personnalisés montrant une liste de champs à portée utilisateur" />
+        <Screenshot src="/docs/screenshots/custom-fields-list.png" caption="Page des paramètres des champs personnalisés montrant une liste de champs à portée utilisateur" />
       </section>
 
       <section className="help-section">
@@ -99,7 +99,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
             </div>
           </li>
         </ol>
-        <Screenshot caption="Création d'un nouveau champ personnalisé — nom, type et portée sont sélectionnés" />
+        <Screenshot src="/docs/screenshots/custom-field-create.png" caption="Création d'un nouveau champ personnalisé — nom, type et portée sont sélectionnés" />
       </section>
     </>
   );

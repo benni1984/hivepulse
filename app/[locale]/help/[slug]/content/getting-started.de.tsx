@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function GettingStartedContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -14,7 +14,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           Jede Inspektion, die Sie aufzeichnen, trägt (anonym) zur plattformweiten Statistik bei,
           die der breiteren Imker-Gemeinschaft hilft, regionale Trends zur Völkergesundheit zu verstehen.
         </p>
-        <Screenshot caption="HivePulse-Dashboard mit Übersicht des Bienenstands und Völkerliste" />
+        <Screenshot src="/docs/screenshots/dashboard-apiary-list.png" caption="HivePulse-Dashboard mit Übersicht des Bienenstands und Völkerliste" />
       </section>
 
       <section className="help-section">
@@ -69,7 +69,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
             </div>
           </li>
         </ol>
-        <Screenshot caption="Registrierungsformular im Web-Dashboard" />
+        <Screenshot src="/docs/screenshots/register-form.png" caption="Registrierungsformular im Web-Dashboard" />
       </section>
 
       <section className="help-section">

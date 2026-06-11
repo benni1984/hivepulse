@@ -14,7 +14,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           Every inspection you record also contributes (anonymously) to platform-wide statistics
           that help the broader beekeeping community understand colony health trends across regions.
         </p>
-        <Screenshot caption="HivePulse dashboard showing apiary overview and hive list" />
+        <Screenshot src="/docs/screenshots/dashboard-apiary-list.png" caption="HivePulse dashboard showing apiary overview and hive list" />
       </section>
 
       <section className="help-section">
@@ -69,7 +69,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
             </div>
           </li>
         </ol>
-        <Screenshot caption="Registration form on the web dashboard" />
+        <Screenshot src="/docs/screenshots/register-form.png" caption="Registration form on the web dashboard" />
       </section>
 
       <section className="help-section">

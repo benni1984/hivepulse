@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -10,7 +10,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           Tout l'historique d'inspection est attaché à la fiche ruche, vous permettant de visualiser
           la tendance complète de santé de cette colonie au fil du temps.
         </p>
-        <Screenshot caption="Écran de détail de la ruche montrant le type, la date de la dernière inspection et la liste des inspections" />
+        <Screenshot android="/docs/screenshots/android-hive-detail.png" web="/docs/screenshots/hive-detail-web.png" caption="Écran de détail de la ruche montrant le type, la date de la dernière inspection et la liste des inspections" />
       </section>
 
       <section className="help-section">
@@ -75,7 +75,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
             </div>
           </li>
         </ol>
-        <Screenshot caption="Formulaire de nouvelle ruche avec le champ nom et le sélecteur de type de ruche" />
+        <Screenshot src="/docs/screenshots/hive-create-form.png" caption="Formulaire de nouvelle ruche avec le champ nom et le sélecteur de type de ruche" />
       </section>
 
       <section className="help-section">
@@ -90,7 +90,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           <li>Un bouton pour démarrer une nouvelle inspection</li>
           <li>Sur le web : onglets pour les Inspections, les Statistiques et les Champs personnalisés</li>
         </ul>
-        <Screenshot caption="Page de détail de la ruche sur le web montrant l'onglet inspections et les métadonnées de la ruche" />
+        <Screenshot src="/docs/screenshots/hive-detail-web.png" caption="Page de détail de la ruche sur le web montrant l'onglet inspections et les métadonnées de la ruche" />
       </section>
 
       <section className="help-section">

@@ -15,7 +15,7 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
           and contributes your anonymised inspection data to the platform-wide statistics that
           all beekeepers can see on the Members screen.
         </p>
-        <Screenshot caption="Apiary list on the web dashboard showing two apiaries with hive counts" />
+        <Screenshot src="/docs/screenshots/dashboard-apiary-list.png" caption="Apiary list on the web dashboard showing two apiaries with hive counts" />
       </section>
 
       <section className="help-section">
@@ -54,7 +54,7 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
             </div>
           </li>
         </ol>
-        <Screenshot caption="Apiary creation form showing name, description, and GPS fields" />
+        <Screenshot src="/docs/screenshots/apiary-create-form.png" caption="Apiary creation form showing name, description, and GPS fields" />
       </section>
 
       <section className="help-section">

@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -10,7 +10,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           Todo el historial de inspecciones está adjunto al registro de colmena, por lo que puede ver
           la tendencia completa de salud de esa colonia a lo largo del tiempo.
         </p>
-        <Screenshot caption="Pantalla de detalles de la colmena mostrando el tipo, la fecha de la última inspección y la lista de inspecciones" />
+        <Screenshot android="/docs/screenshots/android-hive-detail.png" web="/docs/screenshots/hive-detail-web.png" caption="Pantalla de detalles de la colmena mostrando el tipo, la fecha de la última inspección y la lista de inspecciones" />
       </section>
 
       <section className="help-section">
@@ -75,7 +75,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
             </div>
           </li>
         </ol>
-        <Screenshot caption="Formulario de nueva colmena con campo de nombre y selector de tipo de colmena" />
+        <Screenshot src="/docs/screenshots/hive-create-form.png" caption="Formulario de nueva colmena con campo de nombre y selector de tipo de colmena" />
       </section>
 
       <section className="help-section">
@@ -90,7 +90,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           <li>Un botón para iniciar una nueva inspección</li>
           <li>En la web: pestañas para Inspecciones, Estadísticas y Campos personalizados</li>
         </ul>
-        <Screenshot caption="Página de detalles de la colmena en la web mostrando la pestaña de inspecciones y metadatos de la colmena" />
+        <Screenshot src="/docs/screenshots/hive-detail-web.png" caption="Página de detalles de la colmena en la web mostrando la pestaña de inspecciones y metadatos de la colmena" />
       </section>
 
       <section className="help-section">

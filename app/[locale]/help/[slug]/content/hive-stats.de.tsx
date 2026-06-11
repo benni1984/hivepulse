@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -10,7 +10,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           Trends erkennen können, die Sie beim Überprüfen einzelner Einträge übersehen würden. Statistiken sind auf dem Volk-
           Detailbildschirm auf allen Plattformen verfügbar.
         </p>
-        <Screenshot caption="Volksstatistik-Seite mit dem Varroa-Trenddiagramm und der Stimmungsverteilung" />
+        <Screenshot android="/docs/screenshots/android-hive-stats.png" web="/docs/screenshots/hive-stats-overview.png" caption="Volksstatistik-Seite mit dem Varroa-Trenddiagramm und der Stimmungsverteilung" />
       </section>
 
       <section className="help-section">
@@ -83,7 +83,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           </div>
         </div>
 
-        <Screenshot caption="Varroa-Trendliniendiagramm mit Inspektionsdaten auf der x-Achse" />
+        <Screenshot src="/docs/screenshots/hive-stats-overview.png" caption="Varroa-Trendliniendiagramm mit Inspektionsdaten auf der x-Achse" />
       </section>
 
       <section className="help-section">

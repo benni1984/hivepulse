@@ -14,7 +14,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
           <i className="fas fa-info-circle" />
           <p><strong>Push delivery is coming soon.</strong> You can set your preferences now and they will be saved. Notifications will begin arriving once the push infrastructure is activated.</p>
         </div>
-        <Screenshot caption="Inspection Reminders section in Settings showing the toggle and interval stepper" />
+        <Screenshot src="/docs/screenshots/android-settings-reminders.png" caption="Inspection Reminders section in Settings showing the toggle and interval stepper" />
       </section>
 
       <section className="help-section">

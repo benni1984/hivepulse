@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function HornetTrackerContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -12,7 +12,7 @@ export default function HornetTrackerContent({ Screenshot }: { Screenshot: typeo
           permite a cualquier ciudadano — sin necesidad de cuenta — contribuir avistamientos, y permite a los apicultores
           monitorear la densidad de nidos en su área.
         </p>
-        <Screenshot caption="Página de inicio del Rastreador de Avispones mostrando estadísticas agregadas y enlaces de acción" />
+        <Screenshot src="/docs/screenshots/android-hornet-home.png" caption="Página de inicio del Rastreador de Avispones mostrando estadísticas agregadas y enlaces de acción" />
       </section>
 
       <section className="help-section">
@@ -44,7 +44,7 @@ export default function HornetTrackerContent({ Screenshot }: { Screenshot: typeo
             </div>
           </li>
         </ol>
-        <Screenshot caption="Formulario de reporte de captura con entrada de conteo y campos GPS opcionales" />
+        <Screenshot src="/docs/screenshots/android-hornet-report.png" caption="Formulario de reporte de captura con entrada de conteo y campos GPS opcionales" />
       </section>
 
       <section className="help-section">
@@ -113,7 +113,7 @@ export default function HornetTrackerContent({ Screenshot }: { Screenshot: typeo
             </div>
           </li>
         </ol>
-        <Screenshot caption="Feed de avistamientos comunitarios mostrando tarjetas de fotos con recuentos de votos" />
+        <Screenshot src="/docs/screenshots/android-hornet-community.png" caption="Feed de avistamientos comunitarios mostrando tarjetas de fotos con recuentos de votos" />
       </section>
 
       <section className="help-section">

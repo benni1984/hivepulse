@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function InspectionsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -11,7 +11,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           sowie durchgeführte Behandlungen oder Fütterungen. Im Laufe der Zeit zeichnen diese Einträge ein Bild der
           Völkergesundheit, das Diagramme und Trendanalysen sichtbar machen können.
         </p>
-        <Screenshot caption="Geöffnetes Inspektionsformular für ein Volk mit allen Abschnitten" />
+        <Screenshot src="/docs/screenshots/android-inspection-form.png" caption="Geöffnetes Inspektionsformular für ein Volk mit allen Abschnitten" />
       </section>
 
       <section className="help-section">
@@ -46,7 +46,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
             </div>
           </li>
         </ol>
-        <Screenshot caption="Inspektion speichern — Datum- und Varroazähl-Felder sind sichtbar" />
+        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Inspektion speichern — Datum- und Varroazähl-Felder sind sichtbar" />
       </section>
 
       <section className="help-section">

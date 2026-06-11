@@ -11,7 +11,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           and any treatments or feeding you applied. Over time, these records build a picture of
           colony health that charts and trend analysis can reveal.
         </p>
-        <Screenshot caption="Inspection form open on a hive, showing all sections" />
+        <Screenshot src="/docs/screenshots/android-inspection-form.png" caption="Inspection form open on a hive, showing all sections" />
       </section>
 
       <section className="help-section">
@@ -46,7 +46,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
             </div>
           </li>
         </ol>
-        <Screenshot caption="Saving an inspection — the date and varroa count fields are visible" />
+        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Saving an inspection — the date and varroa count fields are visible" />
       </section>
 
       <section className="help-section">

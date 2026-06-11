@@ -16,7 +16,7 @@ export default function HornetTrapsContent({ Screenshot }: { Screenshot: typeof 
           multiple locations, share the access codes with local beekeeping associations, and
           collect catch data from the community.
         </p>
-        <Screenshot caption="Trap detail screen showing the access code, catch history, and log-catch button" />
+        <Screenshot src="/docs/screenshots/android-hornet-traps.png" caption="Trap detail screen showing the access code, catch history, and log-catch button" />
       </section>
 
       <section className="help-section">
@@ -44,7 +44,7 @@ export default function HornetTrapsContent({ Screenshot }: { Screenshot: typeof 
             </div>
           </li>
         </ol>
-        <Screenshot caption="Register trap form showing name, GPS, and the generated access code" />
+        <Screenshot src="/docs/screenshots/android-hornet-traps.png" caption="Register trap form showing name, GPS, and the generated access code" />
       </section>
 
       <section className="help-section">
@@ -81,7 +81,7 @@ export default function HornetTrapsContent({ Screenshot }: { Screenshot: typeof 
           of your current GPS location. This is useful when you're in the field and want to log
           a catch for a trap you manage but don't remember the access code for.
         </p>
-        <Screenshot caption="Nearby traps list showing two traps within 50 m, with distances" />
+        <Screenshot src="/docs/screenshots/android-hornet-traps.png" caption="Nearby traps list showing two traps within 50 m, with distances" />
       </section>
 
       <section className="help-section">
