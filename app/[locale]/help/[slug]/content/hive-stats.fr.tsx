@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -10,7 +10,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           la détection de tendances que vous manqueriez en examinant des enregistrements individuels. Les statistiques sont disponibles sur l'écran de
           détail de la ruche sur toutes les plateformes.
         </p>
-        <Screenshot caption="Page de statistiques de la ruche montrant le graphique de tendance varroa et la distribution des humeurs" />
+        <Screenshot src="/docs/screenshots/android-hive-stats.png" caption="Page de statistiques de la ruche montrant le graphique de tendance varroa et la distribution des humeurs" />
       </section>
 
       <section className="help-section">
@@ -83,7 +83,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           </div>
         </div>
 
-        <Screenshot caption="Graphique en courbes de tendance varroa avec les dates d'inspection sur l'axe x" />
+        <Screenshot src="/docs/screenshots/hive-stats-overview.png" caption="Graphique en courbes de tendance varroa avec les dates d'inspection sur l'axe x" />
       </section>
 
       <section className="help-section">

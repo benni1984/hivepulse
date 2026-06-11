@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function AviariesContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -15,7 +15,7 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
           et contribue vos données d'inspection anonymisées aux statistiques à l'échelle de la plateforme que
           tous les apiculteurs peuvent voir sur l'écran Membres.
         </p>
-        <Screenshot caption="Liste des ruchers sur le tableau de bord web montrant deux ruchers avec le nombre de ruches" />
+        <Screenshot src="/docs/screenshots/dashboard-apiary-list.png" caption="Liste des ruchers sur le tableau de bord web montrant deux ruchers avec le nombre de ruches" />
       </section>
 
       <section className="help-section">
@@ -54,7 +54,7 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
             </div>
           </li>
         </ol>
-        <Screenshot caption="Formulaire de création de rucher montrant les champs nom, description et GPS" />
+        <Screenshot src="/docs/screenshots/apiary-create-form.png" caption="Formulaire de création de rucher montrant les champs nom, description et GPS" />
       </section>
 
       <section className="help-section">

@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function DataExportContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -10,7 +10,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
           avec votre vétérinaire, soumettre à une autorité apicole nationale, utiliser dans un tableur pour
           une analyse personnalisée, ou archiver comme enregistrement à long terme indépendant de HivePulse.
         </p>
-        <Screenshot caption="Feuille d'export de données sur mobile montrant le sélecteur de rucher et le sélecteur de format" />
+        <Screenshot src="/docs/screenshots/android-data-export.png" caption="Feuille d'export de données sur mobile montrant le sélecteur de rucher et le sélecteur de format" />
       </section>
 
       <section className="help-section">
@@ -66,7 +66,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
             </div>
           </li>
         </ol>
-        <Screenshot caption="Dialogue d'export sur le web — rucher sélectionné, format CSV choisi" />
+        <Screenshot src="/docs/screenshots/hive-detail-export-area.png" caption="Dialogue d'export sur le web — rucher sélectionné, format CSV choisi" />
       </section>
 
       <section className="help-section">

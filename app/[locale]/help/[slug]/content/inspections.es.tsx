@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function InspectionsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -11,7 +11,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           y cualquier tratamiento o alimentación que haya aplicado. Con el tiempo, estos registros construyen un cuadro de
           la salud de la colonia que los gráficos y análisis de tendencias pueden revelar.
         </p>
-        <Screenshot caption="Formulario de inspección abierto en una colmena, mostrando todas las secciones" />
+        <Screenshot src="/docs/screenshots/android-inspection-form.png" caption="Formulario de inspección abierto en una colmena, mostrando todas las secciones" />
       </section>
 
       <section className="help-section">
@@ -46,7 +46,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
             </div>
           </li>
         </ol>
-        <Screenshot caption="Guardando una inspección — los campos fecha y conteo de varroa son visibles" />
+        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Guardando una inspección — los campos fecha y conteo de varroa son visibles" />
       </section>
 
       <section className="help-section">

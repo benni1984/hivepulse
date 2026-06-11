@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -10,7 +10,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           detectar tendencias que pasaría por alto al revisar registros individuales. Las estadísticas están disponibles en la pantalla de
           detalles de la colmena en todas las plataformas.
         </p>
-        <Screenshot caption="Página de estadísticas de la colmena mostrando el gráfico de tendencia de varroa y la distribución del estado de ánimo" />
+        <Screenshot src="/docs/screenshots/android-hive-stats.png" caption="Página de estadísticas de la colmena mostrando el gráfico de tendencia de varroa y la distribución del estado de ánimo" />
       </section>
 
       <section className="help-section">
@@ -83,7 +83,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           </div>
         </div>
 
-        <Screenshot caption="Gráfico de líneas de tendencia de varroa con fechas de inspección en el eje x" />
+        <Screenshot src="/docs/screenshots/hive-stats-overview.png" caption="Gráfico de líneas de tendencia de varroa con fechas de inspección en el eje x" />
       </section>
 
       <section className="help-section">

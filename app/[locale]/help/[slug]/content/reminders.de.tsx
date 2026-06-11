@@ -14,7 +14,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
           <i className="fas fa-info-circle" />
           <p><strong>Push-Benachrichtigungen kommen bald.</strong> Sie können Ihre Einstellungen jetzt vornehmen und sie werden gespeichert. Benachrichtigungen beginnen, sobald die Push-Infrastruktur aktiviert wird.</p>
         </div>
-        <Screenshot caption="Inspektionserinnerungs-Abschnitt in den Einstellungen mit Schalter und Intervall-Stepper" />
+        <Screenshot src="/docs/screenshots/android-settings-reminders.png" caption="Inspektionserinnerungs-Abschnitt in den Einstellungen mit Schalter und Intervall-Stepper" />
       </section>
 
       <section className="help-section">

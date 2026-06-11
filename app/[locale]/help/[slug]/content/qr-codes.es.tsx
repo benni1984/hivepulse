@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function QrCodesContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -10,7 +10,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
           Una etiqueta de código QR en cada colmena le permite escanear y abrir en menos de dos segundos — la pantalla de detalles
           de la colmena correcta se abre instantáneamente, lista para una nueva inspección.
         </p>
-        <Screenshot caption="Etiqueta de código QR en una colmena, lista para ser escaneada" />
+        <Screenshot src="/docs/screenshots/android-qr-batches.png" caption="Etiqueta de código QR en una colmena, lista para ser escaneada" />
       </section>
 
       <section className="help-section">
@@ -45,7 +45,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
             </div>
           </li>
         </ol>
-        <Screenshot caption="Página de detalles del lote QR mostrando la lista de tokens y el botón Descargar PDF" />
+        <Screenshot src="/docs/screenshots/qr-batch-detail.png" caption="Página de detalles del lote QR mostrando la lista de tokens y el botón Descargar PDF" />
       </section>
 
       <section className="help-section">
@@ -80,7 +80,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
             </div>
           </li>
         </ol>
-        <Screenshot caption="Superposición del escáner QR mostrando un código siendo escaneado y la hoja de confirmación" />
+        <Screenshot src="/docs/screenshots/android-qr-scan.png" caption="Superposición del escáner QR mostrando un código siendo escaneado y la hoja de confirmación" />
       </section>
 
       <section className="help-section">
@@ -108,7 +108,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
             </div>
           </li>
         </ol>
-        <Screenshot caption="Escaneando un código QR de colmena en el campo — la colmena se abre instantáneamente" />
+        <Screenshot src="/docs/screenshots/android-qr-batches.png" caption="Escaneando un código QR de colmena en el campo — la colmena se abre instantáneamente" />
       </section>
 
       <section className="help-section">

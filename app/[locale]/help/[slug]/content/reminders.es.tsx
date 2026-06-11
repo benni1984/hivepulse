@@ -15,7 +15,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
           <i className="fas fa-info-circle" />
           <p><strong>Las notificaciones push llegarán pronto.</strong> Puedes configurar tus preferencias ahora y se guardarán. Las notificaciones comenzarán a llegar una vez que se active la infraestructura push.</p>
         </div>
-        <Screenshot caption="Sección de recordatorios de inspección en Ajustes con el interruptor y el selector de intervalo" />
+        <Screenshot src="/docs/screenshots/android-settings-reminders.png" caption="Sección de recordatorios de inspección en Ajustes con el interruptor y el selector de intervalo" />
       </section>
 
       <section className="help-section">

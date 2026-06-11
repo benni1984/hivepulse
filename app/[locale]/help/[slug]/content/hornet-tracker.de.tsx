@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function HornetTrackerContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -12,7 +12,7 @@ export default function HornetTrackerContent({ Screenshot }: { Screenshot: typeo
           ermöglicht es jedem Bürger — kein Konto erforderlich — Sichtungen beizutragen, und lässt Imker
           die Nestdichte in ihrer Region überwachen.
         </p>
-        <Screenshot caption="Hornet Tracker-Startseite mit aggregierten Statistiken und Aktionslinks" />
+        <Screenshot src="/docs/screenshots/android-hornet-home.png" caption="Hornet Tracker-Startseite mit aggregierten Statistiken und Aktionslinks" />
       </section>
 
       <section className="help-section">
@@ -44,7 +44,7 @@ export default function HornetTrackerContent({ Screenshot }: { Screenshot: typeo
             </div>
           </li>
         </ol>
-        <Screenshot caption="Fangmeldeformular mit Zähleingabe und optionalen GPS-Feldern" />
+        <Screenshot src="/docs/screenshots/android-hornet-report.png" caption="Fangmeldeformular mit Zähleingabe und optionalen GPS-Feldern" />
       </section>
 
       <section className="help-section">
@@ -113,7 +113,7 @@ export default function HornetTrackerContent({ Screenshot }: { Screenshot: typeo
             </div>
           </li>
         </ol>
-        <Screenshot caption="Community-Sichtungs-Feed mit Foto-Karten und Stimmenzahlen" />
+        <Screenshot src="/docs/screenshots/android-hornet-community.png" caption="Community-Sichtungs-Feed mit Foto-Karten und Stimmenzahlen" />
       </section>
 
       <section className="help-section">

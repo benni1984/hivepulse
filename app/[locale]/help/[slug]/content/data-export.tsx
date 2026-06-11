@@ -10,7 +10,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
           with your veterinarian, submit to a national beekeeping authority, use in a spreadsheet for
           custom analysis, or archive as a long-term record independent of HivePulse.
         </p>
-        <Screenshot src="/docs/screenshots/data-export-buttons.png" caption="Data export sheet on mobile showing the apiary picker and format selector" />
+        <Screenshot src="/docs/screenshots/android-data-export.png" caption="Data export sheet on mobile showing the apiary picker and format selector" />
       </section>
 
       <section className="help-section">

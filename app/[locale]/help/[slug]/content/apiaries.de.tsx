@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function AviariesContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -15,7 +15,7 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
           erscheint und Ihre anonymisierten Inspektionsdaten zur plattformweiten Statistik beitragen, die
           alle Imker auf dem Mitglieder-Bildschirm sehen können.
         </p>
-        <Screenshot caption="Bienenstandliste im Web-Dashboard mit zwei Bienenständen und Völkeranzahl" />
+        <Screenshot src="/docs/screenshots/dashboard-apiary-list.png" caption="Bienenstandliste im Web-Dashboard mit zwei Bienenständen und Völkeranzahl" />
       </section>
 
       <section className="help-section">
@@ -54,7 +54,7 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
             </div>
           </li>
         </ol>
-        <Screenshot caption="Bienenstand-Erstellungsformular mit Name, Beschreibung und GPS-Feldern" />
+        <Screenshot src="/docs/screenshots/apiary-create-form.png" caption="Bienenstand-Erstellungsformular mit Name, Beschreibung und GPS-Feldern" />
       </section>
 
       <section className="help-section">

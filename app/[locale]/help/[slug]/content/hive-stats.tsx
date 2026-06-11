@@ -10,7 +10,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           spot trends you'd miss when reviewing individual records. Stats are available on the hive
           detail screen across all platforms.
         </p>
-        <Screenshot src="/docs/screenshots/hive-stats-overview.png" caption="Hive stats page showing the varroa trend chart and mood distribution" />
+        <Screenshot src="/docs/screenshots/android-hive-stats.png" caption="Hive stats page showing the varroa trend chart and mood distribution" />
       </section>
 
       <section className="help-section">

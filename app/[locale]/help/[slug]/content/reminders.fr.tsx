@@ -14,7 +14,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
           <i className="fas fa-info-circle" />
           <p><strong>La livraison push arrive bientôt.</strong> Vous pouvez définir vos préférences maintenant et elles seront sauvegardées. Les notifications commenceront à arriver une fois l'infrastructure push activée.</p>
         </div>
-        <Screenshot caption="Section Rappels d'inspection dans les Paramètres montrant la bascule et le sélecteur d'intervalle" />
+        <Screenshot src="/docs/screenshots/android-settings-reminders.png" caption="Section Rappels d'inspection dans les Paramètres montrant la bascule et le sélecteur d'intervalle" />
       </section>
 
       <section className="help-section">

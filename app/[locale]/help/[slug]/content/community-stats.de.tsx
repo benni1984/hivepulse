@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function CommunityStatsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -15,7 +15,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           Die vier Live-Statistik-Karten sind für alle sichtbar; die detaillierte Aufschlüsselung ist eine
           <strong> Supporter-Funktion</strong>.
         </p>
-        <Screenshot caption="Mitgliederbildschirm mit den vier Community-Statistik-Karten" />
+        <Screenshot src="/docs/screenshots/android-community-stats.png" caption="Mitgliederbildschirm mit den vier Community-Statistik-Karten" />
       </section>
 
       <section className="help-section">
@@ -61,7 +61,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
             <span className="help-stat-card-good">7–14 Tage in der aktiven Saison</span>
           </div>
         </div>
-        <Screenshot caption="Die vier Statistik-Karten mit Live-Community-Daten" />
+        <Screenshot src="/docs/screenshots/android-community-stats.png" caption="Die vier Statistik-Karten mit Live-Community-Daten" />
       </section>
 
       <section className="help-section">

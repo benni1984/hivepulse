@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function QrCodesContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -10,7 +10,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
           Une étiquette QR code sur chaque ruche vous permet de scanner-et-ouvrir en moins de deux secondes — l'écran de détail
           de la bonne ruche s'ouvre instantanément, prêt pour une nouvelle inspection.
         </p>
-        <Screenshot caption="Étiquette QR code sur une ruche, prête à être scannée" />
+        <Screenshot src="/docs/screenshots/android-qr-batches.png" caption="Étiquette QR code sur une ruche, prête à être scannée" />
       </section>
 
       <section className="help-section">
@@ -45,7 +45,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
             </div>
           </li>
         </ol>
-        <Screenshot caption="Page de détail du lot QR montrant la liste des jetons et le bouton Télécharger PDF" />
+        <Screenshot src="/docs/screenshots/qr-batch-detail.png" caption="Page de détail du lot QR montrant la liste des jetons et le bouton Télécharger PDF" />
       </section>
 
       <section className="help-section">
@@ -80,7 +80,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
             </div>
           </li>
         </ol>
-        <Screenshot caption="Overlay du scanner QR montrant un code en cours de scan et la feuille de confirmation" />
+        <Screenshot src="/docs/screenshots/android-qr-scan.png" caption="Overlay du scanner QR montrant un code en cours de scan et la feuille de confirmation" />
       </section>
 
       <section className="help-section">
@@ -108,7 +108,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
             </div>
           </li>
         </ol>
-        <Screenshot caption="Scan d'un QR code de ruche sur le terrain — la ruche s'ouvre instantanément" />
+        <Screenshot src="/docs/screenshots/android-qr-batches.png" caption="Scan d'un QR code de ruche sur le terrain — la ruche s'ouvre instantanément" />
       </section>
 
       <section className="help-section">

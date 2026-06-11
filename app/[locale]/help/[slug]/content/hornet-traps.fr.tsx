@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function HornetTrapsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -16,7 +16,7 @@ export default function HornetTrapsContent({ Screenshot }: { Screenshot: typeof 
           plusieurs emplacements, partagez les codes d'accès avec les associations apicoles locales, et
           collectez les données de capture auprès de la communauté.
         </p>
-        <Screenshot caption="Écran de détail du piège montrant le code d'accès, l'historique des captures et le bouton d'enregistrement" />
+        <Screenshot src="/docs/screenshots/android-hornet-traps.png" caption="Écran de détail du piège montrant le code d'accès, l'historique des captures et le bouton d'enregistrement" />
       </section>
 
       <section className="help-section">
@@ -44,7 +44,7 @@ export default function HornetTrapsContent({ Screenshot }: { Screenshot: typeof 
             </div>
           </li>
         </ol>
-        <Screenshot caption="Formulaire d'enregistrement du piège montrant le nom, le GPS et le code d'accès généré" />
+        <Screenshot src="/docs/screenshots/android-hornet-traps.png" caption="Formulaire d'enregistrement du piège montrant le nom, le GPS et le code d'accès généré" />
       </section>
 
       <section className="help-section">
@@ -81,7 +81,7 @@ export default function HornetTrapsContent({ Screenshot }: { Screenshot: typeof 
           de votre position GPS actuelle. C'est utile quand vous êtes sur le terrain et souhaitez enregistrer
           une capture pour un piège que vous gérez mais dont vous ne vous rappelez plus le code d'accès.
         </p>
-        <Screenshot caption="Liste des pièges à proximité montrant deux pièges dans un rayon de 50 m avec les distances" />
+        <Screenshot src="/docs/screenshots/android-hornet-traps.png" caption="Liste des pièges à proximité montrant deux pièges dans un rayon de 50 m avec les distances" />
       </section>
 
       <section className="help-section">

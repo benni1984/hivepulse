@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -14,7 +14,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
           Los campos se gestionan actualmente en el <strong>panel de control web</strong> y aparecen en el
           formulario de inspección en todas las plataformas.
         </p>
-        <Screenshot caption="Página de configuración de campos personalizados mostrando una lista de campos de ámbito de usuario" />
+        <Screenshot src="/docs/screenshots/custom-fields-list.png" caption="Página de configuración de campos personalizados mostrando una lista de campos de ámbito de usuario" />
       </section>
 
       <section className="help-section">
@@ -99,7 +99,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
             </div>
           </li>
         </ol>
-        <Screenshot caption="Creando un nuevo campo personalizado — nombre, tipo y ámbito están seleccionados" />
+        <Screenshot src="/docs/screenshots/custom-field-create.png" caption="Creando un nuevo campo personalizado — nombre, tipo y ámbito están seleccionados" />
       </section>
     </>
   );

@@ -10,7 +10,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           QR code label. All inspection history is attached to the hive record, so you can view
           the full health trend of that colony over time.
         </p>
-        <Screenshot src="/docs/screenshots/hive-detail-web.png" caption="Hive detail screen showing hive type, last inspection date, and inspection list" />
+        <Screenshot src="/docs/screenshots/android-hive-detail.png" caption="Hive detail screen showing hive type, last inspection date, and inspection list" />
       </section>
 
       <section className="help-section">

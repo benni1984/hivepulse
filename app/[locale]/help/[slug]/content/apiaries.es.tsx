@@ -1,4 +1,4 @@
-import type HelpScreenshot from '@/components/HelpScreenshot';
+﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function AviariesContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -15,7 +15,7 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
           y contribuye sus datos de inspección anonimizados a las estadísticas de toda la plataforma que
           todos los apicultores pueden ver en la pantalla de Miembros.
         </p>
-        <Screenshot caption="Lista de colmenares en el panel de control web mostrando dos colmenares con recuento de colmenas" />
+        <Screenshot src="/docs/screenshots/dashboard-apiary-list.png" caption="Lista de colmenares en el panel de control web mostrando dos colmenares con recuento de colmenas" />
       </section>
 
       <section className="help-section">
@@ -54,7 +54,7 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
             </div>
           </li>
         </ol>
-        <Screenshot caption="Formulario de creación de colmenar mostrando los campos nombre, descripción y GPS" />
+        <Screenshot src="/docs/screenshots/apiary-create-form.png" caption="Formulario de creación de colmenar mostrando los campos nombre, descripción y GPS" />
       </section>
 
       <section className="help-section">
