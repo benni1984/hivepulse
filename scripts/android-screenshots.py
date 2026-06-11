@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3 -u
 """
 Capture HivePulse Android help-page screenshots via ADB.
 
@@ -76,9 +76,18 @@ def wait_for(text, timeout=20):
     raise TimeoutError(f"Timed out waiting for: {text!r}")
 
 
-def get_ui_dump():
-    adb_shell("uiautomator", "dump", "/sdcard/window_dump.xml")
-    return adb("shell", "cat", "/sdcard/window_dump.xml", capture=True)
+def get_ui_dump(retries=5):
+    """Dump the UI hierarchy, retrying on 'null root node' errors."""
+    for attempt in range(retries):
+        adb_shell("uiautomator", "dump", "/sdcard/window_dump.xml")
+        result = subprocess.run(
+            ["adb", "shell", "cat", "/sdcard/window_dump.xml"],
+            capture_output=True, text=True
+        )
+        if result.returncode == 0 and "<hierarchy" in result.stdout:
+            return result.stdout
+        time.sleep(2)
+    raise RuntimeError("uiautomator dump failed after retries")
 
 
 def find_node(xml_text, *, text=None, content_desc=None, resource_id=None):
@@ -122,17 +131,17 @@ def screenshot(name):
 # ── Setup ─────────────────────────────────────────────────────────────────────
 
 def install_and_launch():
-    print("Installing APK…")
+    print("Installing APK…", flush=True)
     adb("install", "-r", APK_PATH)
-    print("Launching app…")
+    print("Launching app…", flush=True)
     adb_shell("am", "start", "-n", MAIN_ACTIVITY)
-    time.sleep(3)
+    time.sleep(8)
 
 
 # ── Login flow ────────────────────────────────────────────────────────────────
 
 def login():
-    print("Logging in…")
+    print("Logging in…", flush=True)
     wait_for("Sign In")
 
     dump = get_ui_dump()
