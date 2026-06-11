@@ -2,19 +2,31 @@ package com.hivepulse.app.ui.auth
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.*
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hivepulse.app.R
 import com.hivepulse.app.ui.common.ErrorBanner
+import com.hivepulse.app.ui.theme.Amber500
+import com.hivepulse.app.ui.theme.Stone50
+import com.hivepulse.app.ui.theme.Stone500
 
 @Composable
 fun LoginScreen(
@@ -29,59 +41,113 @@ fun LoginScreen(
 
     LaunchedEffect(state.success) { if (state.success) onLoginSuccess() }
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = Modifier.fillMaxSize().background(Stone50),
+        contentAlignment = Alignment.Center,
     ) {
-        Text("🐝", style = MaterialTheme.typography.displayMedium)
-        Spacer(Modifier.height(8.dp))
-        Text("HivePulse", style = MaterialTheme.typography.headlineLarge)
-        Text(stringResource(R.string.login_subtitle),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Spacer(Modifier.height(32.dp))
-
-        OutlinedTextField(
-            value = email, onValueChange = { email = it },
-            label = { Text(stringResource(R.string.field_email)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
-            singleLine = true, modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(Modifier.height(12.dp))
-        OutlinedTextField(
-            value = password, onValueChange = { password = it },
-            label = { Text(stringResource(R.string.field_password)) },
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
-            singleLine = true, modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(Modifier.height(8.dp))
-
-        state.error?.let { ErrorBanner(it) { vm.clearError() } }
-
-        Spacer(Modifier.height(16.dp))
-        Button(
-            onClick = { vm.login(email, password) },
-            enabled = email.isNotBlank() && password.isNotBlank() && !state.isLoading,
-            modifier = Modifier.fillMaxWidth().height(50.dp)
+        Card(
+            modifier  = Modifier.fillMaxWidth().padding(24.dp),
+            shape     = MaterialTheme.shapes.extraLarge,
+            colors    = CardDefaults.cardColors(containerColor = Color.White),
+            border    = BorderStroke(1.dp, Color(0xFFE7E5E4)),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         ) {
-            if (state.isLoading) CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp, color = MaterialTheme.colorScheme.onPrimary)
-            else Text(stringResource(R.string.action_login))
+            Column(
+                modifier = Modifier.padding(32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                // Logo + wordmark
+                HivePulseHexIcon(size = 64)
+                Spacer(Modifier.height(16.dp))
+                Text(
+                    buildAnnotatedString {
+                        withStyle(SpanStyle(color = Color(0xFF1C1917), fontWeight = FontWeight.ExtraBold, fontSize = 28.sp)) { append("Hive") }
+                        withStyle(SpanStyle(color = Amber500, fontWeight = FontWeight.ExtraBold, fontSize = 28.sp))       { append("Pulse") }
+                    }
+                )
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    stringResource(R.string.login_subtitle),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Stone500,
+                )
+                Spacer(Modifier.height(28.dp))
+
+                OutlinedTextField(
+                    value = email, onValueChange = { email = it },
+                    label = { Text(stringResource(R.string.field_email)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
+                    singleLine = true, modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.medium,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Amber500,
+                        focusedLabelColor  = Amber500,
+                    ),
+                )
+                Spacer(Modifier.height(12.dp))
+                OutlinedTextField(
+                    value = password, onValueChange = { password = it },
+                    label = { Text(stringResource(R.string.field_password)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+                    singleLine = true, modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.medium,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Amber500,
+                        focusedLabelColor  = Amber500,
+                    ),
+                )
+
+                state.error?.let {
+                    Spacer(Modifier.height(8.dp))
+                    ErrorBanner(it) { vm.clearError() }
+                }
+
+                Spacer(Modifier.height(20.dp))
+                Button(
+                    onClick  = { vm.login(email, password) },
+                    enabled  = email.isNotBlank() && password.isNotBlank() && !state.isLoading,
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    shape    = MaterialTheme.shapes.medium,
+                ) {
+                    if (state.isLoading)
+                        CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp,
+                            color = MaterialTheme.colorScheme.onPrimary)
+                    else Text(stringResource(R.string.action_login), style = MaterialTheme.typography.titleMedium)
+                }
+
+                Spacer(Modifier.height(8.dp))
+                TextButton(onClick = {
+                    context.startActivity(Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://hivepulse.app/dashboard/forgot-password")))
+                }) {
+                    Text(stringResource(R.string.action_forgot_password),
+                        style = MaterialTheme.typography.bodySmall, color = Stone500)
+                }
+                TextButton(onClick = onNavigateRegister) {
+                    Text(stringResource(R.string.action_register))
+                }
+            }
         }
-        Spacer(Modifier.height(4.dp))
-        TextButton(onClick = {
-            val intent = Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://hivepulse.app/dashboard/forgot-password"))
-            context.startActivity(intent)
-        }) {
-            Text(stringResource(R.string.action_forgot_password),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant)
-        }
-        Spacer(Modifier.height(4.dp))
-        TextButton(onClick = onNavigateRegister) {
-            Text(stringResource(R.string.action_register))
-        }
+    }
+}
+
+/** Amber hexagon with "HP" label — minimal vector logo for screens without SVG support. */
+@Composable
+fun HivePulseHexIcon(size: Int = 48) {
+    Box(
+        modifier = Modifier
+            .size(size.dp)
+            .background(Amber500, RoundedCornerShape((size * 0.28f).dp)),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text  = "HP",
+            color = Color(0xFF1C1917),
+            style = MaterialTheme.typography.labelLarge.copy(
+                fontWeight = FontWeight.ExtraBold,
+                fontSize   = (size * 0.34f).sp,
+            ),
+        )
     }
 }

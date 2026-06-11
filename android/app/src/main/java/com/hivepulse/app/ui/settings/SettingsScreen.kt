@@ -5,8 +5,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -207,7 +207,7 @@ fun SettingsScreen(
                 navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } },
                 actions = {
                     IconButton(onClick = { showLogout = true }) {
-                        Icon(Icons.Default.ExitToApp, contentDescription = stringResource(R.string.action_logout))
+                        Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = stringResource(R.string.action_logout))
                     }
                 }
             )
@@ -499,7 +499,7 @@ fun SettingsScreen(
 
                 // Help
                 val helpLocale = state.user?.locale ?: "en"
-                val helpUrl = "https://apiscan-two.vercel.app/$helpLocale/help"
+                val helpUrl = "https://hivepulse.app/$helpLocale/help"
                 OutlinedButton(
                     onClick = {
                         context.startActivity(
@@ -529,7 +529,7 @@ fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     colors   = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Icon(Icons.Default.ExitToApp, null, Modifier.size(18.dp))
+                    Icon(Icons.AutoMirrored.Filled.ExitToApp, null, Modifier.size(18.dp))
                     Spacer(Modifier.width(8.dp))
                     Text(stringResource(R.string.action_logout))
                 }

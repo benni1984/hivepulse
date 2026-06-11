@@ -8,6 +8,9 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import com.hivepulse.app.ui.theme.HornetDestroyed
+import com.hivepulse.app.ui.theme.HornetFound
+import com.hivepulse.app.ui.theme.HornetOrdered
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -61,9 +64,9 @@ private fun NestLegend() {
         Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        LegendItem(color = Color(0xFFEF4444), label = stringResource(R.string.hornet_map_status_found))
-        LegendItem(color = Color(0xFFF59E0B), label = stringResource(R.string.hornet_map_status_ordered))
-        LegendItem(color = Color(0xFF22C55E), label = stringResource(R.string.hornet_map_status_destroyed))
+        LegendItem(color = HornetFound,     label = stringResource(R.string.hornet_map_status_found))
+        LegendItem(color = HornetOrdered,   label = stringResource(R.string.hornet_map_status_ordered))
+        LegendItem(color = HornetDestroyed, label = stringResource(R.string.hornet_map_status_destroyed))
     }
 }
 
@@ -78,9 +81,9 @@ private fun LegendItem(color: Color, label: String) {
 @Composable
 private fun NestCard(properties: HornetNestProperties) {
     val statusColor = when (properties.status) {
-        "destruction_ordered" -> Color(0xFFF59E0B)
-        "destroyed"           -> Color(0xFF22C55E)
-        else                  -> Color(0xFFEF4444)
+        "destruction_ordered" -> HornetOrdered
+        "destroyed"           -> HornetDestroyed
+        else                  -> HornetFound
     }
     val statusLabel = when (properties.status) {
         "destruction_ordered" -> stringResource(R.string.hornet_map_status_ordered)
