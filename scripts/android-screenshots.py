@@ -149,8 +149,9 @@ def tap_first_content_item(min_y=220, max_y_offset=220):
         cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
         width  = x2 - x1
         height = y2 - y1
-        # Skip tiny icon buttons and full-width nav bars
-        if height < 60 or width > screen_w * 0.95:
+        # Keep only card-sized items: wide enough to be a list card, tall enough to be a row,
+        # narrow enough not to be the full-width nav bar.
+        if width < screen_w * 0.5 or height < 80 or width > screen_w * 0.95:
             continue
         if min_y < cy < max_y:
             tap(cx, cy)
