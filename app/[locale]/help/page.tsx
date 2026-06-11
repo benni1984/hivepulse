@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 import { HELP_TOPICS, HELP_GROUPS } from '@/lib/helpTopics';
 
 export const metadata: Metadata = {
@@ -16,23 +17,21 @@ export default async function HelpIndexPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'helpIndex' });
 
   return (
     <div style={{ margin: '0 -48px' }}>
       {/* Hero */}
       <section className="help-hero">
         <div className="container">
-          <h1>Help &amp; Documentation</h1>
-          <p>
-            Step-by-step guides for every HivePulse feature — what each one does,
-            how to use it, and what the data means for your bees.
-          </p>
+          <h1>{t('heroTitle')}</h1>
+          <p>{t('heroDesc')}</p>
           <div className="help-search-wrap">
             <i className="fas fa-search" />
             <input
               type="search"
-              placeholder="Search topics… (e.g. varroa, QR, export)"
-              aria-label="Search help topics"
+              placeholder={t('searchPlaceholder')}
+              aria-label={t('searchPlaceholder')}
             />
           </div>
         </div>
@@ -42,11 +41,11 @@ export default async function HelpIndexPage({
       <section className="help-topics">
         <div className="container">
           {HELP_GROUPS.map(group => {
-            const topics = HELP_TOPICS.filter(t => t.group === group);
+            const topics = HELP_TOPICS.filter(tp => tp.group === group);
             if (!topics.length) return null;
             return (
               <div className="help-topics-group" key={group}>
-                <div className="help-topics-group-title">{group}</div>
+                <div className="help-topics-group-title">{t(`groups.${group}`)}</div>
                 <div className="help-cards">
                   {topics.map(topic => (
                     <Link
@@ -57,8 +56,8 @@ export default async function HelpIndexPage({
                       <div className="help-card-icon">
                         <i className={`fas ${topic.icon}`} />
                       </div>
-                      <div className="help-card-title">{topic.title}</div>
-                      <div className="help-card-desc">{topic.description}</div>
+                      <div className="help-card-title">{t(`topics.${topic.slug}.title`)}</div>
+                      <div className="help-card-desc">{t(`topics.${topic.slug}.desc`)}</div>
                       <div className="help-card-platforms">
                         {topic.platforms.includes('web') && (
                           <span className="help-card-platform web">Web</span>

@@ -735,6 +735,73 @@
       "btn": "Abrir panel"
     }
   },
+  "helpIndex": {
+    "heroTitle": "Ayuda & Documentación",
+    "heroDesc": "Guías paso a paso para cada función de HivePulse — qué hace cada una, cómo usarla y qué significan los datos para sus abejas.",
+    "searchPlaceholder": "Buscar temas… (ej. varroa, QR, exportar)",
+    "groups": {
+      "Getting started": "Primeros pasos",
+      "Managing your apiary": "Gestionar su colmenar",
+      "Inspections & data": "Inspecciones & datos",
+      "Statistics": "Estadísticas",
+      "Community & hornets": "Comunidad & avispones",
+      "Account & settings": "Cuenta & ajustes"
+    },
+    "topics": {
+      "getting-started": {
+        "title": "Primeros pasos con HivePulse",
+        "desc": "Una introducción a HivePulse — qué hace, para quién es y cómo la aplicación web, iOS y Android trabajan juntas."
+      },
+      "apiaries": {
+        "title": "Colmenares",
+        "desc": "Crear y gestionar colmenares — ubicaciones con nombre que agrupan sus colmenas. Establezca coordenadas GPS para aparecer en el mapa comunitario."
+      },
+      "hives": {
+        "title": "Colmenas",
+        "desc": "Añadir colmenas a un colmenar, elegir un tipo de colmena (Langstroth, Dadant, Top Bar, Warré) y vincular un código QR para acceso rápido en campo."
+      },
+      "qr-codes": {
+        "title": "Códigos QR",
+        "desc": "Generar lotes de códigos QR imprimibles, pegarlos en las colmenas y escanearlos para abrir la colmena correcta al instante."
+      },
+      "custom-fields": {
+        "title": "Campos de inspección personalizados",
+        "desc": "Ampliar el formulario de inspección integrado con sus propios campos — texto, números, casillas, desplegables — para toda su cuenta o un colmenar específico."
+      },
+      "inspections": {
+        "title": "Registrar una inspección",
+        "desc": "Registre cada visita a una colmena: recuento de varroa, humor de la colonia, avistamiento de la reina, cuadros de cría, cuadros de miel, peso, tratamientos y más."
+      },
+      "data-export": {
+        "title": "Exportar sus datos",
+        "desc": "Descargue todos los registros de inspección de un colmenar en JSON o CSV para compartirlos con su veterinario, investigador o autoridad apícola nacional."
+      },
+      "hive-stats": {
+        "title": "Estadísticas de la colmena",
+        "desc": "Entienda la salud de su colmena a lo largo del tiempo con gráficos de tendencia de varroa, distribución del humor, tasa de avistamiento de la reina y frecuencia de inspección."
+      },
+      "community-stats": {
+        "title": "Estadísticas comunitarias (Miembros)",
+        "desc": "Compare su colmenar con la comunidad HivePulse — recuentos medios de varroa, tasas de buen humor, cuadros de cría e intervalos de inspección de todos los colmenares públicos."
+      },
+      "hornet-tracker": {
+        "title": "Rastreador de avispones",
+        "desc": "Reportar capturas de avispones asiáticos y avistamientos de nidos, votar en envíos fotográficos de la comunidad y ver el mapa de nidos en directo."
+      },
+      "hornet-traps": {
+        "title": "Trampas para avispones",
+        "desc": "Registrar una trampa física con nombre, registrar capturas diarias usando su código de acceso de 8 caracteres y buscar trampas cerca de su ubicación."
+      },
+      "reminders": {
+        "title": "Recordatorios de inspección",
+        "desc": "Establezca un intervalo de recordatorio y una ventana de temporada para que HivePulse le avise cuando una colmena tiene una inspección pendiente."
+      },
+      "account": {
+        "title": "Cuenta & perfil",
+        "desc": "Actualice su nombre y idioma, cambie su contraseña y elimine permanentemente su cuenta y todos los datos asociados."
+      }
+    }
+  },
   "hornets": {
     "tag": "Ciencia ciudadana",
     "title": "Rastreador de avispa asiática",

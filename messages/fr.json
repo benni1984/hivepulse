@@ -735,6 +735,73 @@
       "btn": "Ouvrir le tableau de bord"
     }
   },
+  "helpIndex": {
+    "heroTitle": "Aide & Documentation",
+    "heroDesc": "Guides pas à pas pour toutes les fonctionnalités de HivePulse — ce qu'elles font, comment les utiliser et ce que les données signifient pour vos abeilles.",
+    "searchPlaceholder": "Rechercher un sujet… (ex. varroa, QR, export)",
+    "groups": {
+      "Getting started": "Premiers pas",
+      "Managing your apiary": "Gérer votre rucher",
+      "Inspections & data": "Inspections & données",
+      "Statistics": "Statistiques",
+      "Community & hornets": "Communauté & frelons",
+      "Account & settings": "Compte & paramètres"
+    },
+    "topics": {
+      "getting-started": {
+        "title": "Premiers pas avec HivePulse",
+        "desc": "Un aperçu de HivePulse — ce qu'il fait, pour qui il est conçu et comment l'application web, iOS et Android fonctionnent ensemble."
+      },
+      "apiaries": {
+        "title": "Ruchers",
+        "desc": "Créer et gérer des ruchers — des emplacements nommés qui regroupent vos ruches. Définissez des coordonnées GPS pour apparaître sur la carte communautaire."
+      },
+      "hives": {
+        "title": "Ruches",
+        "desc": "Ajouter des ruches à un rucher, choisir un type de ruche (Langstroth, Dadant, Top Bar, Warré) et associer un QR code pour un accès rapide sur le terrain."
+      },
+      "qr-codes": {
+        "title": "Codes QR",
+        "desc": "Générer des lots de codes QR imprimables, les fixer sur les ruches et les scanner pour ouvrir instantanément la bonne ruche."
+      },
+      "custom-fields": {
+        "title": "Champs d'inspection personnalisés",
+        "desc": "Étendre le formulaire d'inspection avec vos propres champs — texte, nombres, cases à cocher, listes déroulantes — pour votre compte ou un rucher spécifique."
+      },
+      "inspections": {
+        "title": "Enregistrer une inspection",
+        "desc": "Consigner chaque visite d'une ruche : compte varroa, humeur de la colonie, observation de la reine, cadres de couvain, cadres de miel, poids, traitements et plus encore."
+      },
+      "data-export": {
+        "title": "Exporter vos données",
+        "desc": "Télécharger tous les relevés d'inspection d'un rucher en JSON ou CSV pour les partager avec votre vétérinaire, chercheur ou autorité apicole nationale."
+      },
+      "hive-stats": {
+        "title": "Statistiques de la ruche",
+        "desc": "Comprendre la santé de votre ruche dans le temps grâce aux graphiques de tendance varroa, à la distribution de l'humeur, au taux d'observation de la reine et aux intervalles d'inspection."
+      },
+      "community-stats": {
+        "title": "Statistiques communautaires (Membres)",
+        "desc": "Comparer votre rucher à la communauté HivePulse — comptes varroa moyens, taux de bonne humeur, cadres de couvain et intervalles d'inspection de tous les ruchers publics."
+      },
+      "hornet-tracker": {
+        "title": "Suivi des frelons",
+        "desc": "Signaler des captures de frelons asiatiques et des nids, voter sur les photos soumises par la communauté et consulter la carte des nids en direct."
+      },
+      "hornet-traps": {
+        "title": "Pièges à frelons",
+        "desc": "Enregistrer un piège physique nommé, saisir les captures journalières avec son code d'accès à 8 caractères et rechercher les pièges à proximité."
+      },
+      "reminders": {
+        "title": "Rappels d'inspection",
+        "desc": "Définir un intervalle de rappel et une fenêtre saisonnière pour que HivePulse vous notifie quand une ruche est en retard pour une inspection."
+      },
+      "account": {
+        "title": "Compte & profil",
+        "desc": "Mettre à jour votre nom d'affichage et votre langue, changer votre mot de passe et supprimer définitivement votre compte et toutes les données associées."
+      }
+    }
+  },
   "hornets": {
     "tag": "Science citoyenne",
     "title": "Suivi du frelon asiatique",
