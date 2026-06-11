@@ -3,13 +3,10 @@
 Capture HivePulse Android help-page screenshots via ADB.
 
 Usage:
-  Runs inside the android-emulator-runner GitHub Actions step (ADB is already
-  set up and the emulator is booted). Also works locally:
+  Runs inside the android-emulator-runner GitHub Actions step.
+  Also works locally after: adb install android/app/build/outputs/apk/debug/app-debug.apk
 
-    adb install android/app/build/outputs/apk/debug/app-debug.apk
-    python3 scripts/android-screenshots.py
-
-Output files are written to public/docs/screenshots/ (created if absent).
+Output: public/docs/screenshots/android-*.png
 """
 
 import subprocess
@@ -20,113 +17,156 @@ import xml.etree.ElementTree as ET
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
-PACKAGE = "com.hivepulse.app"
+PACKAGE       = "com.hivepulse.app"
 MAIN_ACTIVITY = "com.hivepulse.app/.MainActivity"
-APK_PATH = "android/app/build/outputs/apk/debug/app-debug.apk"
-OUT_DIR = "public/docs/screenshots"
-DEMO_EMAIL = os.environ.get("DEMO_EMAIL", "demo@apiscan.app")
+APK_PATH      = "android/app/build/outputs/apk/debug/app-debug.apk"
+OUT_DIR       = "public/docs/screenshots"
+DEMO_EMAIL    = os.environ.get("DEMO_EMAIL",    "demo@apiscan.app")
 DEMO_PASSWORD = os.environ.get("DEMO_PASSWORD", "demo1234")
 
-# Staging base URL (used by the app via BuildConfig — no change needed here)
-
-# ── ADB helpers ───────────────────────────────────────────────────────────────
+# ── Low-level ADB helpers ─────────────────────────────────────────────────────
 
 def adb(*args, check=True, capture=False):
     cmd = ["adb"] + list(args)
     if capture:
-        result = subprocess.run(cmd, capture_output=True, text=True, check=check)
-        return result.stdout
+        r = subprocess.run(cmd, capture_output=True, text=True, check=check)
+        return r.stdout
     subprocess.run(cmd, check=check)
 
 
-def adb_shell(*args, capture=False):
-    return adb("shell", *args, capture=capture, check=False)
+def shell(*args):
+    """Run adb shell command, ignoring non-zero exit (UI interactions are fire-and-forget)."""
+    subprocess.run(["adb", "shell"] + list(args), capture_output=True)
 
 
 def tap(x, y):
-    adb_shell("input", "tap", str(x), str(y))
-    time.sleep(0.4)
+    shell("input", "tap", str(x), str(y))
+    time.sleep(0.5)
 
 
-def swipe(x1, y1, x2, y2, duration_ms=300):
-    adb_shell("input", "swipe", str(x1), str(y1), str(x2), str(y2), str(duration_ms))
+def swipe(x1, y1, x2, y2, ms=400):
+    shell("input", "swipe", str(x1), str(y1), str(x2), str(y2), str(ms))
+    time.sleep(0.5)
+
+
+def keyevent(code):
+    shell("input", "keyevent", code)
     time.sleep(0.4)
 
 
 def type_text(text):
-    # Escape shell-special chars; ADB input text doesn't accept spaces directly
-    escaped = text.replace(" ", "%s").replace("'", "\\'").replace("&", "\\&")
-    adb_shell("input", "text", escaped)
-    time.sleep(0.3)
+    # ADB input text: spaces → %s, special chars escaped
+    escaped = text.replace("\\", "\\\\").replace(" ", "%s").replace("'", "\\'").replace("&", "\\&")
+    shell("input", "text", escaped)
+    time.sleep(0.4)
 
+# ── UI-dump helpers ───────────────────────────────────────────────────────────
 
-def press_back():
-    adb_shell("input", "keyevent", "KEYCODE_BACK")
-    time.sleep(0.5)
-
-
-def wait_for(text, timeout=20):
-    """Poll the UI hierarchy until a node with the given text or content-desc appears."""
-    deadline = time.time() + timeout
-    while time.time() < deadline:
-        dump = get_ui_dump()
-        if text in dump:
-            return True
-        time.sleep(0.8)
-    raise TimeoutError(f"Timed out waiting for: {text!r}")
-
-
-def get_ui_dump(retries=5):
+def get_ui_dump(retries=6):
     """Dump the UI hierarchy, retrying on 'null root node' errors."""
-    for attempt in range(retries):
-        adb_shell("uiautomator", "dump", "/sdcard/window_dump.xml")
-        result = subprocess.run(
-            ["adb", "shell", "cat", "/sdcard/window_dump.xml"],
-            capture_output=True, text=True
-        )
-        if result.returncode == 0 and "<hierarchy" in result.stdout:
-            return result.stdout
+    for _ in range(retries):
+        shell("uiautomator", "dump", "/sdcard/window_dump.xml")
+        r = subprocess.run(["adb", "shell", "cat", "/sdcard/window_dump.xml"],
+                           capture_output=True, text=True)
+        if r.returncode == 0 and "<hierarchy" in r.stdout:
+            return r.stdout
         time.sleep(2)
     raise RuntimeError("uiautomator dump failed after retries")
 
 
-def find_node(xml_text, *, text=None, content_desc=None, resource_id=None):
-    """Return the bounds dict of the first matching node, or None."""
-    root = ET.fromstring(xml_text)
+def wait_for(text, timeout=25):
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        if text in get_ui_dump():
+            return
+        time.sleep(1)
+    raise TimeoutError(f"Timed out waiting for: {text!r}")
+
+
+def _bounds(node):
+    b = node.get("bounds", "")
+    if not b:
+        return None
+    parts = b.replace("][", ",").strip("[]").split(",")
+    x1, y1, x2, y2 = int(parts[0]), int(parts[1]), int(parts[2]), int(parts[3])
+    return x1, y1, x2, y2
+
+
+def tap_node(dump, *, text=None, content_desc=None):
+    root = ET.fromstring(dump)
     for node in root.iter("node"):
-        if text and node.get("text") != text:
+        if text is not None and node.get("text") != text:
             continue
-        if content_desc and node.get("content-desc") != content_desc:
+        if content_desc is not None and node.get("content-desc") != content_desc:
             continue
-        if resource_id and not node.get("resource-id", "").endswith(resource_id):
-            continue
-        bounds = node.get("bounds", "")  # e.g. "[16,1234][368,1290]"
-        if bounds:
-            parts = bounds.replace("][", ",").strip("[]").split(",")
-            x1, y1, x2, y2 = int(parts[0]), int(parts[1]), int(parts[2]), int(parts[3])
-            return {"x": (x1 + x2) // 2, "y": (y1 + y2) // 2,
-                    "x1": x1, "y1": y1, "x2": x2, "y2": y2}
-    return None
+        b = _bounds(node)
+        if b:
+            tap((b[0] + b[2]) // 2, (b[1] + b[3]) // 2)
+            return
+    label = text or content_desc
+    raise RuntimeError(f"Node not found: {label!r}")
 
 
-def tap_node(xml_text, *, text=None, content_desc=None, resource_id=None):
-    node = find_node(xml_text, text=text, content_desc=content_desc, resource_id=resource_id)
-    if node is None:
-        label = text or content_desc or resource_id
-        raise RuntimeError(f"Node not found: {label!r}")
-    tap(node["x"], node["y"])
+def tap_first_content_item(min_y=220, max_y_offset=220):
+    """
+    Tap the first clickable node whose centre is in the main content area
+    (below the top bar, above the bottom nav).
 
+    In Compose, LazyColumn Card items are clickable but may carry no text
+    directly on their container node — the text is in child nodes. We find
+    them by position rather than by text content.
+    """
+    dump = get_ui_dump()
+    root = ET.fromstring(dump)
+
+    # Detect screen height from the root hierarchy bounds
+    screen_h = 2400
+    hier = root.find(".")
+    if hier is not None:
+        b = _bounds(hier)
+        if b:
+            screen_h = b[3]
+
+    max_y = screen_h - max_y_offset
+
+    for node in root.iter("node"):
+        if node.get("clickable") != "true":
+            continue
+        b = _bounds(node)
+        if not b:
+            continue
+        x1, y1, x2, y2 = b
+        cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
+        if min_y < cy < max_y:
+            tap(cx, cy)
+            return
+    raise RuntimeError("No content-area clickable item found")
+
+# ── Screenshot helper ─────────────────────────────────────────────────────────
 
 def screenshot(name):
-    """Capture screen and save to OUT_DIR/<name>.png using raw pipe (no UTF-16 BOM)."""
     path = os.path.join(OUT_DIR, f"{name}.png")
-    # Write raw bytes via subprocess — avoids UTF-16 encoding from shell redirect
     proc = subprocess.run(["adb", "exec-out", "screencap", "-p"],
                           capture_output=True, check=True)
     with open(path, "wb") as f:
         f.write(proc.stdout)
-    print(f"  → {path}")
+    print(f"  saved: {path}", flush=True)
 
+# ── Editable-field helper (for login form) ────────────────────────────────────
+
+def tap_editable_field(index=0):
+    dump = get_ui_dump()
+    root = ET.fromstring(dump)
+    count = 0
+    for node in root.iter("node"):
+        if node.get("focusable") == "true" and node.get("long-clickable") == "true":
+            b = _bounds(node)
+            if b:
+                if count == index:
+                    tap((b[0] + b[2]) // 2, (b[1] + b[3]) // 2)
+                    return
+                count += 1
+    raise RuntimeError(f"Editable field {index} not found")
 
 # ── Setup ─────────────────────────────────────────────────────────────────────
 
@@ -134,48 +174,25 @@ def install_and_launch():
     print("Installing APK…", flush=True)
     adb("install", "-r", APK_PATH)
     print("Launching app…", flush=True)
-    adb_shell("am", "start", "-n", MAIN_ACTIVITY)
+    shell("am", "start", "-n", MAIN_ACTIVITY)
     time.sleep(8)
 
-
-# ── Login flow ────────────────────────────────────────────────────────────────
-
-def tap_editable_field(index=0):
-    """Tap the Nth editable (focusable input) node in the current UI dump."""
-    dump = get_ui_dump()
-    root = ET.fromstring(dump)
-    count = 0
-    for node in root.iter("node"):
-        if node.get("focusable") == "true" and node.get("long-clickable") == "true":
-            bounds = node.get("bounds", "")
-            if bounds:
-                parts = bounds.replace("][", ",").strip("[]").split(",")
-                cx = (int(parts[0]) + int(parts[2])) // 2
-                cy = (int(parts[1]) + int(parts[3])) // 2
-                if count == index:
-                    tap(cx, cy)
-                    return
-                count += 1
-    raise RuntimeError(f"Editable field at index {index} not found")
-
+# ── Login ─────────────────────────────────────────────────────────────────────
 
 def login():
     print("Logging in…", flush=True)
     wait_for("Sign In", timeout=30)
-    time.sleep(1)  # let fields finish rendering
+    time.sleep(1.5)  # let fields finish rendering
 
-    # Tap email field (first editable), type email
     tap_editable_field(0)
     time.sleep(0.5)
     type_text(DEMO_EMAIL)
 
-    # Tap password field (second editable), type password
     tap_editable_field(1)
     time.sleep(0.5)
     type_text(DEMO_PASSWORD)
 
-    # Dismiss keyboard then tap Sign In
-    adb_shell("input", "keyevent", "KEYCODE_BACK")
+    keyevent("KEYCODE_BACK")  # dismiss keyboard
     time.sleep(0.5)
 
     dump = get_ui_dump()
@@ -183,149 +200,90 @@ def login():
     wait_for("My Apiaries", timeout=30)
     print("  Logged in ✓", flush=True)
 
-
-# ── Individual screen captures ────────────────────────────────────────────────
+# ── Individual captures ───────────────────────────────────────────────────────
 
 def capture_hive_detail():
-    """Tap the first apiary → first hive → screenshot the Hive Detail screen."""
-    print("Capturing: android-hive-detail")
+    print("Capturing: android-hive-detail", flush=True)
     wait_for("My Apiaries")
+    time.sleep(1.5)  # wait for list to load from API
 
+    tap_first_content_item()
+    time.sleep(1.5)
+
+    # May have landed on ApiaryDetail (has "New Hive") rather than HiveDetail
     dump = get_ui_dump()
-    # The apiary list items have a text node for the apiary name. Tap the first one.
-    root = ET.fromstring(dump)
-    apiary_node = None
-    for node in root.iter("node"):
-        # Apiary list items are clickable rows; skip toolbar/nav labels
-        if (node.get("clickable") == "true"
-                and node.get("text", "")
-                and node.get("text") not in ("My Apiaries", "Settings", "Hornets", "Members")):
-            bounds = node.get("bounds", "")
-            if bounds:
-                parts = bounds.replace("][", ",").strip("[]").split(",")
-                x1, y1 = int(parts[0]), int(parts[1])
-                if y1 > 150:  # skip the top-bar rows
-                    apiary_node = node
-                    break
-
-    if apiary_node is None:
-        raise RuntimeError("No apiary found in the list")
-
-    bounds = apiary_node.get("bounds")
-    parts = bounds.replace("][", ",").strip("[]").split(",")
-    cx = (int(parts[0]) + int(parts[2])) // 2
-    cy = (int(parts[1]) + int(parts[3])) // 2
-    tap(cx, cy)
-    time.sleep(1)
-
-    # Now on ApiaryDetail — tap first hive
-    wait_for("New Inspection", timeout=10)  # hive detail has this FAB; apiary detail has "New Hive"
-    # If we're on apiary detail we need to tap a hive first
-    dump = get_ui_dump()
-    if "New Hive" in dump:
-        # We're on apiary detail — tap the first hive card
-        root = ET.fromstring(dump)
-        for node in root.iter("node"):
-            if (node.get("clickable") == "true"
-                    and node.get("text", "")
-                    and node.get("text") not in ("New Hive", "Back", "")):
-                bounds = node.get("bounds", "")
-                if bounds:
-                    parts = bounds.replace("][", ",").strip("[]").split(",")
-                    x1, y1 = int(parts[0]), int(parts[1])
-                    if y1 > 200:
-                        cx = (x1 + int(parts[2])) // 2
-                        cy = (y1 + int(parts[3])) // 2
-                        tap(cx, cy)
-                        break
-        wait_for("New Inspection", timeout=10)
+    if "New Hive" in dump and "New Inspection" not in dump:
+        print("  on apiary detail, tapping first hive…", flush=True)
+        tap_first_content_item()
+        wait_for("New Inspection", timeout=15)
 
     time.sleep(0.5)
     screenshot("android-hive-detail")
 
 
 def capture_hive_stats():
-    """From Hive Detail, tap the Statistics icon in the top bar."""
-    print("Capturing: android-hive-stats")
+    print("Capturing: android-hive-stats", flush=True)
     wait_for("New Inspection")
-
     dump = get_ui_dump()
     tap_node(dump, content_desc="Statistics")
-    wait_for("Hive Statistics", timeout=10)
+    wait_for("Hive Statistics", timeout=15)
     time.sleep(0.5)
     screenshot("android-hive-stats")
-
-    press_back()
-    wait_for("New Inspection", timeout=10)
+    keyevent("KEYCODE_BACK")
+    wait_for("New Inspection", timeout=15)
 
 
 def capture_qr_batches():
-    """From Hive Detail top bar, tap 'Print QR codes' → QR Batches screen."""
-    print("Capturing: android-qr-batches")
+    print("Capturing: android-qr-batches", flush=True)
     wait_for("New Inspection")
-
     dump = get_ui_dump()
     tap_node(dump, content_desc="Print QR codes")
-    wait_for("QR Batches", timeout=10)
+    wait_for("QR Batches", timeout=15)
     time.sleep(0.5)
     screenshot("android-qr-batches")
+    keyevent("KEYCODE_BACK")
+    wait_for("New Inspection", timeout=15)
 
-    press_back()
-    wait_for("New Inspection", timeout=10)
+
+def back_to_apiaries():
+    for _ in range(4):
+        dump = get_ui_dump()
+        if "My Apiaries" in dump:
+            return
+        keyevent("KEYCODE_BACK")
+    wait_for("My Apiaries", timeout=15)
 
 
 def capture_data_export():
-    """Navigate to Settings (from apiaries) → scroll to Data Export section → screenshot."""
-    print("Capturing: android-data-export")
-
-    # Navigate back to the apiaries screen via bottom nav
-    # Press back until "My Apiaries" is visible (max 3 presses)
-    for _ in range(3):
-        dump = get_ui_dump()
-        if "My Apiaries" in dump:
-            break
-        press_back()
-    else:
-        wait_for("My Apiaries", timeout=10)
-
+    print("Capturing: android-data-export", flush=True)
+    back_to_apiaries()
     dump = get_ui_dump()
     tap_node(dump, content_desc="Settings")
-    wait_for("Settings", timeout=10)
+    wait_for("Settings", timeout=15)
     time.sleep(0.5)
-
-    # Scroll down to the Data Export section
-    dump = get_ui_dump()
-    if "Data Export" not in dump:
-        # Swipe up to reveal it
+    # Scroll down if Data Export is not visible
+    if "Data Export" not in get_ui_dump():
         swipe(540, 1400, 540, 700, 500)
         time.sleep(0.5)
-        wait_for("Data Export", timeout=5)
-
+        wait_for("Data Export", timeout=10)
     screenshot("android-data-export")
-    press_back()
+    keyevent("KEYCODE_BACK")
 
 
 def capture_inspection_form():
-    """From Hive Detail, tap 'New Inspection' FAB → screenshot the inspection form."""
-    print("Capturing: android-inspection-form")
-
-    # Ensure we're back on Hive Detail
+    print("Capturing: android-inspection-form", flush=True)
     for _ in range(3):
-        dump = get_ui_dump()
-        if "New Inspection" in dump:
+        if "New Inspection" in get_ui_dump():
             break
-        press_back()
+        keyevent("KEYCODE_BACK")
     else:
-        wait_for("New Inspection", timeout=10)
-
+        wait_for("New Inspection", timeout=15)
     dump = get_ui_dump()
     tap_node(dump, content_desc="New Inspection")
-    wait_for("Date", timeout=10)
+    wait_for("Date", timeout=15)
     time.sleep(0.5)
     screenshot("android-inspection-form")
-
-    press_back()
-
+    keyevent("KEYCODE_BACK")
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
@@ -335,30 +293,29 @@ def main():
     install_and_launch()
     login()
 
-    # Capture in order that minimises back-navigation
     capture_hive_detail()
     capture_hive_stats()
     capture_qr_batches()
     capture_data_export()
 
-    # Navigate back to hive detail for inspection form
-    # (Data export left us in Settings → back → apiaries → need to navigate to hive)
-    for _ in range(3):
-        dump = get_ui_dump()
-        if "My Apiaries" in dump:
-            break
-        press_back()
+    # Re-navigate to hive detail for inspection form capture
+    back_to_apiaries()
+    time.sleep(1)
+    tap_first_content_item()       # apiary
+    time.sleep(1.5)
+    dump = get_ui_dump()
+    if "New Hive" in dump and "New Inspection" not in dump:
+        tap_first_content_item()   # hive
+        wait_for("New Inspection", timeout=15)
 
-    # Re-enter hive detail
-    capture_hive_detail()
     capture_inspection_form()
 
-    print("\nAll Android screenshots captured.")
+    print("\nAll Android screenshots captured.", flush=True)
 
 
 if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        print(f"ERROR: {e}", file=sys.stderr)
+        print(f"\nERROR: {e}", file=sys.stderr, flush=True)
         sys.exit(1)
