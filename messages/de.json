@@ -735,6 +735,73 @@
       "btn": "Dashboard öffnen"
     }
   },
+  "helpIndex": {
+    "heroTitle": "Hilfe & Dokumentation",
+    "heroDesc": "Schritt-für-Schritt-Anleitungen für alle HivePulse-Funktionen — was sie tun, wie man sie nutzt und was die Daten für Ihre Bienen bedeuten.",
+    "searchPlaceholder": "Themen suchen… (z. B. Varroa, QR, Export)",
+    "groups": {
+      "Getting started": "Erste Schritte",
+      "Managing your apiary": "Ihren Bienenstand verwalten",
+      "Inspections & data": "Inspektionen & Daten",
+      "Statistics": "Statistiken",
+      "Community & hornets": "Gemeinschaft & Hornissen",
+      "Account & settings": "Konto & Einstellungen"
+    },
+    "topics": {
+      "getting-started": {
+        "title": "Einstieg in HivePulse",
+        "desc": "Ein Überblick über HivePulse — was es macht, für wen es ist und wie Web-App, iOS-App und Android-App zusammenarbeiten."
+      },
+      "apiaries": {
+        "title": "Bienenstände",
+        "desc": "Bienenstände erstellen und verwalten — benannte Standorte, die Ihre Völker gruppieren. GPS-Koordinaten eingeben, um auf der Gemeinschaftskarte zu erscheinen."
+      },
+      "hives": {
+        "title": "Bienenvölker",
+        "desc": "Völker zu einem Bienenstand hinzufügen, einen Beuten­typ wählen (Langstroth, Dadant, Top Bar, Warré) und einen QR-Code für schnellen Feldzugang verknüpfen."
+      },
+      "qr-codes": {
+        "title": "QR-Codes",
+        "desc": "Druckbare QR-Code-Chargen erstellen, an Beutenboxen befestigen und scannen, um sofort das richtige Volk zu öffnen."
+      },
+      "custom-fields": {
+        "title": "Benutzerdefinierte Inspektionsfelder",
+        "desc": "Das integrierte Inspektionsformular mit eigenen Feldern erweitern — Text, Zahlen, Checkboxen, Dropdown-Listen — für das gesamte Konto oder einen bestimmten Bienenstand."
+      },
+      "inspections": {
+        "title": "Eine Inspektion erfassen",
+        "desc": "Jeden Besuch an einem Volk festhalten: Varroa-Zahl, Volksstimmung, Königinnennachweis, Brutwaben, Honigwaben, Gewicht, Behandlungen und mehr."
+      },
+      "data-export": {
+        "title": "Daten exportieren",
+        "desc": "Alle Inspektionsdaten eines Bienenstands als JSON oder CSV herunterladen — für Tierarzt, Forschungseinrichtung oder Imkerverband."
+      },
+      "hive-stats": {
+        "title": "Volksstatistiken",
+        "desc": "Die Volksgesundheit im Zeitverlauf verstehen: Varroa-Trenddiagramme, Stimmungsverteilung, Königinnen-Sichtungsrate, Brutwabenzahl und Inspektionsintervalle."
+      },
+      "community-stats": {
+        "title": "Gemeinschaftsstatistiken (Mitglieder)",
+        "desc": "Ihren Bienenstand mit der HivePulse-Gemeinschaft vergleichen — durchschnittliche Varroa-Zahlen, gute-Stimmung-Raten, Brutwabenzahlen und Inspektionsintervalle aller öffentlichen Bienenstände."
+      },
+      "hornet-tracker": {
+        "title": "Hornissentracker",
+        "desc": "Asiatische Hornissenfänge und Nistplatzmeldungen einreichen, Gemeinschaftsfotos bewerten und die Live-Nestkarte anzeigen."
+      },
+      "hornet-traps": {
+        "title": "Hornissenfallen",
+        "desc": "Eine benannte physische Falle registrieren, tägliche Fangzahlen mit dem 8-stelligen Zugangscode erfassen und nach Fallen in der Nähe suchen."
+      },
+      "reminders": {
+        "title": "Inspektionserinnerungen",
+        "desc": "Ein Erinnerungsintervall und ein Saisonfenster festlegen, damit HivePulse Sie benachrichtigt, wenn ein Volk überfällig für eine Inspektion ist."
+      },
+      "account": {
+        "title": "Konto & Profil",
+        "desc": "Anzeigename und Sprache aktualisieren, Passwort ändern und das Konto mit allen zugehörigen Daten dauerhaft löschen."
+      }
+    }
+  },
   "hornets": {
     "tag": "Bürgerwissenschaft",
     "title": "Hornissentracker",

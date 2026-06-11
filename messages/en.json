@@ -735,6 +735,73 @@
       "btn": "Open Dashboard"
     }
   },
+  "helpIndex": {
+    "heroTitle": "Help & Documentation",
+    "heroDesc": "Step-by-step guides for every HivePulse feature — what each one does, how to use it, and what the data means for your bees.",
+    "searchPlaceholder": "Search topics… (e.g. varroa, QR, export)",
+    "groups": {
+      "Getting started": "Getting started",
+      "Managing your apiary": "Managing your apiary",
+      "Inspections & data": "Inspections & data",
+      "Statistics": "Statistics",
+      "Community & hornets": "Community & hornets",
+      "Account & settings": "Account & settings"
+    },
+    "topics": {
+      "getting-started": {
+        "title": "Getting started with HivePulse",
+        "desc": "An overview of HivePulse — what it does, who it is for, and how the web app, iOS app, and Android app work together."
+      },
+      "apiaries": {
+        "title": "Apiaries",
+        "desc": "Create and manage apiaries — named locations that group your hives. Set a GPS location to appear on the community map."
+      },
+      "hives": {
+        "title": "Hives",
+        "desc": "Add hives to an apiary, choose a hive type (Langstroth, Dadant, Top Bar, Warré), and link a QR code for fast field access."
+      },
+      "qr-codes": {
+        "title": "QR Codes",
+        "desc": "Generate printable QR code batches, attach them to hive boxes, and scan them to open the correct hive instantly."
+      },
+      "custom-fields": {
+        "title": "Custom inspection fields",
+        "desc": "Extend the built-in inspection form with your own fields — text, numbers, checkboxes, dropdowns — scoped to your account or a specific apiary."
+      },
+      "inspections": {
+        "title": "Logging an inspection",
+        "desc": "Record every visit to a hive: varroa count, colony mood, queen sighting, brood frames, honey frames, weight, treatments, and more."
+      },
+      "data-export": {
+        "title": "Exporting your data",
+        "desc": "Download all inspection records for an apiary as JSON or CSV to share with your veterinarian, researcher, or national beekeeping authority."
+      },
+      "hive-stats": {
+        "title": "Hive statistics",
+        "desc": "Understand your hive health over time with varroa trend charts, mood distribution, queen-seen rate, brood frame counts, and inspection intervals."
+      },
+      "community-stats": {
+        "title": "Community stats (Members)",
+        "desc": "Compare your apiary against the HivePulse community — average varroa counts, good-mood rates, brood frame counts, and inspection intervals across all public apiaries."
+      },
+      "hornet-tracker": {
+        "title": "Hornet Tracker",
+        "desc": "Report Asian hornet catches and nest sightings, vote on community photo submissions, and view the live nest map."
+      },
+      "hornet-traps": {
+        "title": "Hornet Traps",
+        "desc": "Register a named physical trap, log daily catch counts using its 8-character access code, and search for traps near your location."
+      },
+      "reminders": {
+        "title": "Inspection reminders",
+        "desc": "Set a reminder interval and season window so HivePulse can notify you when a hive is overdue for an inspection."
+      },
+      "account": {
+        "title": "Account & profile",
+        "desc": "Update your display name and language, change your password, and permanently delete your account and all associated data."
+      }
+    }
+  },
   "hornets": {
     "tag": "Citizen Science",
     "title": "Asian Hornet Tracker",
