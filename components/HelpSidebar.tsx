@@ -2,10 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { HELP_TOPICS, HELP_GROUPS } from '@/lib/helpTopics';
 
 export default function HelpSidebar({ locale }: { locale: string }) {
   const pathname = usePathname();
+  const t = useTranslations('helpIndex');
 
   return (
     <nav className="help-sidebar" aria-label="Help navigation">
@@ -15,14 +17,14 @@ export default function HelpSidebar({ locale }: { locale: string }) {
         style={{ fontWeight: 700, marginBottom: 16 }}
       >
         <i className="fas fa-book icon" />
-        All topics
+        {t('allTopics')}
       </Link>
       {HELP_GROUPS.map(group => {
-        const topics = HELP_TOPICS.filter(t => t.group === group);
+        const topics = HELP_TOPICS.filter(tp => tp.group === group);
         if (!topics.length) return null;
         return (
           <div className="help-sidebar-group" key={group}>
-            <div className="help-sidebar-title">{group}</div>
+            <div className="help-sidebar-title">{t(`groups.${group}`)}</div>
             {topics.map(topic => {
               const href = `/${locale}/help/${topic.slug}`;
               const active = pathname === href;
@@ -33,7 +35,7 @@ export default function HelpSidebar({ locale }: { locale: string }) {
                   className={`help-sidebar-link${active ? ' active' : ''}`}
                 >
                   <i className={`fas ${topic.icon} icon`} />
-                  {topic.title}
+                  {t(`topics.${topic.slug}.title`)}
                 </Link>
               );
             })}

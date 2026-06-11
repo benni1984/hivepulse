@@ -37,7 +37,7 @@ export const HELP_TOPICS: HelpTopic[] = [
     slug: 'hives',
     title: 'Hives',
     description: 'Add hives to an apiary, choose a hive type (Langstroth, Dadant, Top Bar, Warré), and link a QR code for fast field access.',
-    icon: 'fa-hexagon',
+    icon: 'fa-th-large',
     platforms: ['web', 'ios', 'android'],
     group: 'Managing your apiary',
   },

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 import { getTopicBySlug, HELP_TOPICS } from '@/lib/helpTopics';
 import HelpScreenshot from '@/components/HelpScreenshot';
 
@@ -129,20 +130,27 @@ export default async function HelpTopicPage({
   const Content = localeMap[slug] ?? CONTENT.en[slug];
   if (!Content) notFound();
 
+  const t = await getTranslations({ locale, namespace: 'helpIndex' });
+  const title = t(`topics.${slug}.title`);
+  const description = t(`topics.${slug}.desc`);
+
   return (
     <>
       {/* Breadcrumb */}
       <nav className="help-breadcrumb" aria-label="Breadcrumb">
-        <Link href={`/${locale}/help`}>Help</Link>
+        <Link href={`/${locale}/help`}>{t('allTopics')}</Link>
         <i className="fas fa-chevron-right" style={{ fontSize: '.6rem' }} />
-        <span>{topic.group}</span>
+        <span>{t(`groups.${topic.group}`)}</span>
         <i className="fas fa-chevron-right" style={{ fontSize: '.6rem' }} />
-        <span>{topic.title}</span>
+        <span>{title}</span>
       </nav>
 
       {/* Title */}
-      <h1 className="help-page-title">{topic.title}</h1>
-      <p className="help-page-lead">{topic.description}</p>
+      <h1 className="help-page-title">
+        <i className={`fas ${topic.icon}`} style={{ marginRight: '0.5rem', color: '#f59e0b' }} />
+        {title}
+      </h1>
+      <p className="help-page-lead">{description}</p>
 
       {/* Platform badges */}
       <div className="help-platforms">
