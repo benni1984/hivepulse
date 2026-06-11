@@ -141,7 +141,7 @@ export default function Nav({ locale }: { locale: string }) {
         </ul>
 
         <div className="nav-right">
-          <Link href="/help" className="nav-help-btn" aria-label={t('help')} title={t('help')}>
+          <Link href={`/${locale}/help`} className="nav-help-btn" aria-label={t('help')} title={t('help')}>
             <i className="fas fa-question-circle" />
           </Link>
           <div className="lang-switcher" ref={ddRef}>
