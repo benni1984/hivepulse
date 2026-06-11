@@ -107,40 +107,55 @@ def tap_node(dump, *, text=None, content_desc=None):
     raise RuntimeError(f"Node not found: {label!r}")
 
 
+# Content descriptions of FABs and nav items that should never be treated as list items
+_SKIP_CONTENT_DESCS = frozenset({
+    "New Apiary", "New Hive", "New Inspection",
+    "Statistics", "Print QR codes", "Scan QR code", "Settings",
+    "My Apiaries", "Hornets", "Members",
+})
+
+
 def tap_first_content_item(min_y=220, max_y_offset=220):
     """
-    Tap the first clickable node whose centre is in the main content area
-    (below the top bar, above the bottom nav).
+    Tap the first clickable list-item node in the main content area.
 
-    In Compose, LazyColumn Card items are clickable but may carry no text
-    directly on their container node — the text is in child nodes. We find
-    them by position rather than by text content.
+    Excludes FABs and navigation elements by content-desc, and skips nodes
+    whose height is very small (icon buttons) or whose width spans the full
+    screen (likely a nav bar).
     """
     dump = get_ui_dump()
     root = ET.fromstring(dump)
 
-    # Detect screen height from the root hierarchy bounds
     screen_h = 2400
+    screen_w = 1080
     hier = root.find(".")
     if hier is not None:
         b = _bounds(hier)
         if b:
-            screen_h = b[3]
+            screen_w, screen_h = b[2], b[3]
 
     max_y = screen_h - max_y_offset
 
     for node in root.iter("node"):
         if node.get("clickable") != "true":
             continue
+        cd = node.get("content-desc", "")
+        if cd in _SKIP_CONTENT_DESCS:
+            continue
         b = _bounds(node)
         if not b:
             continue
         x1, y1, x2, y2 = b
         cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
+        width  = x2 - x1
+        height = y2 - y1
+        # Skip tiny icon buttons and full-width nav bars
+        if height < 60 or width > screen_w * 0.95:
+            continue
         if min_y < cy < max_y:
             tap(cx, cy)
             return
-    raise RuntimeError("No content-area clickable item found")
+    raise RuntimeError("No content-area list item found (all clickables matched exclusions)")
 
 # ── Screenshot helper ─────────────────────────────────────────────────────────
 
@@ -223,14 +238,14 @@ def capture_hive_detail():
 
 def capture_hive_stats():
     print("Capturing: android-hive-stats", flush=True)
-    wait_for("New Inspection")
+    wait_for("New Inspection", timeout=20)
     dump = get_ui_dump()
     tap_node(dump, content_desc="Statistics")
-    wait_for("Hive Statistics", timeout=15)
+    wait_for("Hive Statistics", timeout=20)
     time.sleep(0.5)
     screenshot("android-hive-stats")
     keyevent("KEYCODE_BACK")
-    wait_for("New Inspection", timeout=15)
+    wait_for("New Inspection", timeout=20)
 
 
 def capture_qr_batches():
