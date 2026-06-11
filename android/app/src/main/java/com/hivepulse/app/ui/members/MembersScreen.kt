@@ -31,7 +31,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val SUPPORTER_INFO_URL = "https://apiscan-two.vercel.app/contribute"
+private const val SUPPORTER_INFO_URL = "https://hivepulse.app/contribute"
 
 // ─── State ───────────────────────────────────────────────────────────────────
 
