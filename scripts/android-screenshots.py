@@ -217,22 +217,38 @@ def login():
 
 # ── Individual captures ───────────────────────────────────────────────────────
 
-def capture_hive_detail():
-    print("Capturing: android-hive-detail", flush=True)
-    wait_for("My Apiaries")
-    time.sleep(1.5)  # wait for list to load from API
-
-    tap_first_content_item()
+def navigate_to_hive_detail():
+    """Navigate from wherever we are to a HiveDetailScreen (waits for 'New Inspection' FAB)."""
+    # Step 1: make sure we're on the apiaries list
+    if "My Apiaries" not in get_ui_dump():
+        back_to_apiaries()
     time.sleep(1.5)
 
-    # May have landed on ApiaryDetail (has "New Hive") rather than HiveDetail
+    # Step 2: tap first apiary and wait for apiary detail OR hive detail
+    tap_first_content_item()
+    # Wait until we leave the apiaries screen (either ApiaryDetail or HiveDetail)
+    deadline = time.time() + 20
+    while time.time() < deadline:
+        dump = get_ui_dump()
+        if "New Hive" in dump or "New Inspection" in dump:
+            break
+        time.sleep(1)
+    else:
+        raise TimeoutError("Never left apiary list after tapping")
+
+    # Step 3: if on ApiaryDetail, tap first hive
     dump = get_ui_dump()
     if "New Hive" in dump and "New Inspection" not in dump:
         print("  on apiary detail, tapping first hive…", flush=True)
         tap_first_content_item()
-        wait_for("New Inspection", timeout=15)
+        wait_for("New Inspection", timeout=20)
 
     time.sleep(0.5)
+
+
+def capture_hive_detail():
+    print("Capturing: android-hive-detail", flush=True)
+    navigate_to_hive_detail()
     screenshot("android-hive-detail")
 
 
@@ -314,15 +330,7 @@ def main():
     capture_data_export()
 
     # Re-navigate to hive detail for inspection form capture
-    back_to_apiaries()
-    time.sleep(1)
-    tap_first_content_item()       # apiary
-    time.sleep(1.5)
-    dump = get_ui_dump()
-    if "New Hive" in dump and "New Inspection" not in dump:
-        tap_first_content_item()   # hive
-        wait_for("New Inspection", timeout=15)
-
+    navigate_to_hive_detail()
     capture_inspection_form()
 
     print("\nAll Android screenshots captured.", flush=True)
