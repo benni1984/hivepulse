@@ -171,7 +171,7 @@ struct SettingsView: View {
 
             // MARK: - Help
             Section {
-                Link(destination: URL(string: "https://apiscan-two.vercel.app/en/help")!) {
+                Link(destination: URL(string: "https://apiscan-two.vercel.app/\(locale)/help")!) {
                     Label(NSLocalizedString("action.help", comment: ""), systemImage: "questionmark.circle")
                 }
             }

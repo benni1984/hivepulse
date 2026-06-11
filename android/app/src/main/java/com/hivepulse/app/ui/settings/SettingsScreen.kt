@@ -498,7 +498,8 @@ fun SettingsScreen(
                 Spacer(Modifier.weight(1f))
 
                 // Help
-                val helpUrl = stringResource(R.string.url_help)
+                val helpLocale = state.user?.locale ?: "en"
+                val helpUrl = "https://apiscan-two.vercel.app/$helpLocale/help"
                 OutlinedButton(
                     onClick = {
                         context.startActivity(

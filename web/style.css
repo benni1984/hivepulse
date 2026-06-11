@@ -312,6 +312,24 @@ body {
   flex-shrink: 0;
 }
 
+.nav-help-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: var(--amber);
+  font-size: 1.15rem;
+  text-decoration: none;
+  transition: background .2s, color .2s;
+  flex-shrink: 0;
+}
+.nav-help-btn:hover {
+  background: rgba(245,158,11,.15);
+  color: var(--amber-dark);
+}
+
 .nav-login {
   display: inline-block;
   color: var(--amber);
@@ -448,6 +466,7 @@ body {
 @media (max-width: 840px) {
   .nav-toggle { display: flex; }
   .nav-right .nav-cta { display: none; }
+  .nav-right .nav-help-btn { display: none; }
   .nav-right .nav-login { display: none; }
   .nav-right .nav-user { display: none; }
   .nav-mobile-account { display: list-item; }
