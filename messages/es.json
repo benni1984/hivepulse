@@ -736,6 +736,7 @@
     }
   },
   "helpIndex": {
+    "allTopics": "Todos los temas",
     "heroTitle": "Ayuda & Documentación",
     "heroDesc": "Guías paso a paso para cada función de HivePulse — qué hace cada una, cómo usarla y qué significan los datos para sus abejas.",
     "searchPlaceholder": "Buscar temas… (ej. varroa, QR, exportar)",

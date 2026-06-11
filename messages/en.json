@@ -736,6 +736,7 @@
     }
   },
   "helpIndex": {
+    "allTopics": "All topics",
     "heroTitle": "Help & Documentation",
     "heroDesc": "Step-by-step guides for every HivePulse feature — what each one does, how to use it, and what the data means for your bees.",
     "searchPlaceholder": "Search topics… (e.g. varroa, QR, export)",
