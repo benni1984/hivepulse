@@ -25,6 +25,9 @@ concurrency:
   group: screenshots
   cancel-in-progress: true
 
+permissions:
+  contents: write
+
 # ── Helpers ────────────────────────────────────────────────────────────────────
 env:
   STAGING_URL: https://apiscan-two.vercel.app
@@ -80,6 +83,7 @@ jobs:
   android:
     name: Android screenshots
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     if: |
       github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' ||
       github.event_name == 'workflow_dispatch' && (inputs.platform == 'all' || inputs.platform == 'android')
@@ -101,21 +105,26 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
       - name: Build debug APK
-        run: cd android && ./gradlew assembleDebug
+        run: |
+          chmod +x android/gradlew
+          cd android
+          ./gradlew assembleDebug --no-daemon \
+            -Dorg.gradle.jvmargs="-Xmx3g -XX:MaxMetaspaceSize=512m" \
+            -PBASE_URL="https://apiscan-two.vercel.app/api/v1/"
 
       - name: Run Android screenshot capture in emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 35
+          api-level: 34
           target: google_apis
           arch: x86_64
-          profile: pixel_9
+          profile: pixel_6
           heap-size: 512M
           disk-size: 4096M
-          ram-size: 4096M
+          ram-size: 2048M
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           disable-animations: true
-          script: python3 scripts/android-screenshots.py
+          script: python3 -u scripts/android-screenshots.py
 
       - name: Upload Android screenshots artifact
         uses: actions/upload-artifact@v4
