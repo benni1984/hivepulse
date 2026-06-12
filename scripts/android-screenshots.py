@@ -162,8 +162,7 @@ def tap_first_content_item(min_y=220, max_y_offset=220):
         if width < screen_w * 0.45 or height < 80:
             continue
         if min_y < cy < max_y:
-            print(f"  [tap_first_content_item] tapping at ({cx},{cy}) bounds={b}", flush=True)
-            swipe_tap(cx, cy)
+                    swipe_tap(cx, cy)
             return
     raise RuntimeError("No content-area list item found (all clickables matched exclusions)")
 
