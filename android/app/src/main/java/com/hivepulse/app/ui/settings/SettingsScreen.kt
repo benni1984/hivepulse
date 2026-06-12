@@ -19,6 +19,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.messaging.FirebaseMessaging
 import com.hivepulse.app.R
+import com.hivepulse.app.ui.common.NumberStepper
+import com.hivepulse.app.ui.common.ToggleButtonGroup
 import com.hivepulse.app.data.api.ApiaryOut
 import com.hivepulse.app.data.api.ReminderSettingsOut
 import com.hivepulse.app.data.api.ReminderSettingsUpdate
@@ -260,15 +262,12 @@ fun SettingsScreen(
 
                     // Locale
                     Text(stringResource(R.string.section_language), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
-                    SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-                        locales.forEachIndexed { idx, locale ->
-                            SegmentedButton(
-                                selected = user.locale == locale,
-                                onClick  = { vm.updateLocale(locale) },
-                                shape    = SegmentedButtonDefaults.itemShape(idx, locales.size)
-                            ) { Text(localeLabels[idx]) }
-                        }
-                    }
+                    ToggleButtonGroup(
+                        label    = "",
+                        options  = localeLabels,
+                        selected = locales.indexOf(user.locale).takeIf { it >= 0 },
+                        onSelect = { idx -> idx?.let { vm.updateLocale(locales[it]) } },
+                    )
 
                     // Change Password
                     Text(stringResource(R.string.section_change_password), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
@@ -353,31 +352,13 @@ fun SettingsScreen(
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        Row(
-                            Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                stringResource(R.string.reminder_interval_label),
-                                style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                IconButton(
-                                    onClick = { if (reminderInterval > 1) reminderInterval-- },
-                                    enabled = reminderInterval > 1
-                                ) { Text("−") }
-                                Text(
-                                    stringResource(R.string.reminder_interval_format, reminderInterval),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                IconButton(
-                                    onClick = { if (reminderInterval < 365) reminderInterval++ },
-                                    enabled = reminderInterval < 365
-                                ) { Text("+") }
-                            }
-                        }
+                        NumberStepper(
+                            label         = stringResource(R.string.reminder_interval_label),
+                            value         = reminderInterval,
+                            onValueChange = { reminderInterval = it },
+                            min           = 1,
+                            max           = 365,
+                        )
 
                         val monthNames = listOf(
                             "Jan","Feb","Mar","Apr","May","Jun",
