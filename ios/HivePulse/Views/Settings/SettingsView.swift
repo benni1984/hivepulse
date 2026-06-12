@@ -171,7 +171,7 @@ struct SettingsView: View {
 
             // MARK: - Help
             Section {
-                Link(destination: URL(string: "https://apiscan-two.vercel.app/\(locale)/help")!) {
+                Link(destination: URL(string: "https://hivepulse.multihead.de/\(locale)/help")!) {
                     Label(NSLocalizedString("action.help", comment: ""), systemImage: "questionmark.circle")
                 }
             }

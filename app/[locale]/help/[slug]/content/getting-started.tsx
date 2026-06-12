@@ -23,7 +23,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-globe" style={{ marginRight: 6 }} />Web dashboard</div>
             <div className="help-stat-card-desc">
-              Full-featured dashboard at <strong>apiscan-two.vercel.app</strong>. Best for managing apiaries,
+              Full-featured dashboard at <strong>hivepulse.multihead.de</strong>. Best for managing apiaries,
               viewing detailed charts, generating QR batches, and exporting data. Works on any browser.
             </div>
           </div>

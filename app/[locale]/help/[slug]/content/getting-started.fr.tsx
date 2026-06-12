@@ -23,7 +23,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-globe" style={{ marginRight: 6 }} />Tableau de bord web</div>
             <div className="help-stat-card-desc">
-              Tableau de bord complet sur <strong>apiscan-two.vercel.app</strong>. Idéal pour gérer les ruchers,
+              Tableau de bord complet sur <strong>hivepulse.multihead.de</strong>. Idéal pour gérer les ruchers,
               consulter des graphiques détaillés, générer des lots de QR codes et exporter des données. Fonctionne sur n'importe quel navigateur.
             </div>
           </div>

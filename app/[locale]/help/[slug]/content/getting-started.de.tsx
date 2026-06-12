@@ -23,7 +23,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-globe" style={{ marginRight: 6 }} />Web-Dashboard</div>
             <div className="help-stat-card-desc">
-              Vollständiges Dashboard unter <strong>apiscan-two.vercel.app</strong>. Am besten für die Verwaltung von Bienenständen,
+              Vollständiges Dashboard unter <strong>hivepulse.multihead.de</strong>. Am besten für die Verwaltung von Bienenständen,
               detaillierte Diagramme, QR-Chargen und Datenexport. Funktioniert in jedem Browser.
             </div>
           </div>

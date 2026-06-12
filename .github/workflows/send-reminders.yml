@@ -13,4 +13,4 @@ jobs:
         run: |
           curl -sf -X POST \
             -H "X-Cron-Secret: ${{ secrets.CRON_SECRET }}" \
-            https://apiscan-two.vercel.app/api/v1/notifications/send-reminders
+            https://hivepulse.multihead.de/api/v1/notifications/send-reminders

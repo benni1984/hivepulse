@@ -81,6 +81,7 @@ Source of truth for all endpoints, shapes, and enums: `docs/api-contract.md`. Up
 ## Staging
 
 - URL: `apiscan-two.vercel.app`
+- Production: `hivepulse.multihead.de` (CNAME → Vercel)
 - Demo: `demo@apiscan.app` / `demo1234` (supporter)
 - Admin: `admin@apiscan.app` / `admin1234` (admin + supporter)
 - Seed: GitHub → Actions → "Seed Staging" → Run workflow
