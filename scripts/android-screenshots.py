@@ -255,42 +255,30 @@ def debug_dump_clickables(tag=""):
 
 
 def navigate_to_hive_detail():
-    """Navigate from wherever we are to a HiveDetailScreen (waits for 'New Inspection' FAB)."""
+    """Navigate ApiaryList → ApiaryDetail → HiveDetail."""
     # Step 1: make sure we're on the apiaries list
     if "My Apiaries" not in get_ui_dump():
         back_to_apiaries()
     time.sleep(1.5)
-    debug_dump_clickables("apiaries-screen")
 
-    # Step 2: tap first apiary and wait for apiary detail OR hive detail
+    # Step 2: tap first apiary; wait until "My Apiaries" disappears (= left ApiaryListScreen)
     tap_first_content_item()
-    time.sleep(2)  # brief pause after tap
-    # Debug screenshot to see what's on screen after the tap
-    debug_shot_path = os.path.join(OUT_DIR, "debug-after-apiary-tap.png")
-    proc = subprocess.run(["adb", "exec-out", "screencap", "-p"], capture_output=True, check=False)
-    if proc.returncode == 0:
-        with open(debug_shot_path, "wb") as f:
-            f.write(proc.stdout)
-        print(f"  [DEBUG] post-tap screenshot saved to {debug_shot_path}", flush=True)
-    debug_dump_clickables("after-apiary-tap")
-
-    # Wait until we leave the apiaries screen (either ApiaryDetail or HiveDetail)
     deadline = time.time() + 25
     while time.time() < deadline:
         dump = get_ui_dump()
-        if "New Hive" in dump or "New Inspection" in dump:
+        if "My Apiaries" not in dump:
             break
         time.sleep(1)
     else:
         raise TimeoutError("Never left apiary list after tapping")
 
-    # Step 3: if on ApiaryDetail, tap first hive
-    dump = get_ui_dump()
-    if "New Hive" in dump and "New Inspection" not in dump:
-        print("  on apiary detail, tapping first hive…", flush=True)
-        tap_first_content_item()
-        wait_for("New Inspection", timeout=20)
+    time.sleep(1)  # let ApiaryDetailScreen settle
 
+    # Step 3: now on ApiaryDetailScreen — tap first hive card
+    print("  on apiary detail, tapping first hive…", flush=True)
+    tap_first_content_item()
+    # HiveDetailScreen has a static "Inspections" section header — reliable signal
+    wait_for("Inspections", timeout=20)
     time.sleep(0.5)
 
 
@@ -302,26 +290,26 @@ def capture_hive_detail():
 
 def capture_hive_stats():
     print("Capturing: android-hive-stats", flush=True)
-    wait_for("New Inspection", timeout=20)
+    wait_for("Inspections", timeout=20)
     dump = get_ui_dump()
     tap_node(dump, content_desc="Statistics")
     wait_for("Hive Statistics", timeout=20)
     time.sleep(0.5)
     screenshot("android-hive-stats")
     keyevent("KEYCODE_BACK")
-    wait_for("New Inspection", timeout=20)
+    wait_for("Inspections", timeout=20)
 
 
 def capture_qr_batches():
     print("Capturing: android-qr-batches", flush=True)
-    wait_for("New Inspection")
+    wait_for("Inspections")
     dump = get_ui_dump()
     tap_node(dump, content_desc="Print QR codes")
     wait_for("QR Batches", timeout=15)
     time.sleep(0.5)
     screenshot("android-qr-batches")
     keyevent("KEYCODE_BACK")
-    wait_for("New Inspection", timeout=15)
+    wait_for("Inspections", timeout=15)
 
 
 def back_to_apiaries():
@@ -352,11 +340,11 @@ def capture_data_export():
 def capture_inspection_form():
     print("Capturing: android-inspection-form", flush=True)
     for _ in range(3):
-        if "New Inspection" in get_ui_dump():
+        if "Inspections" in get_ui_dump():
             break
         keyevent("KEYCODE_BACK")
     else:
-        wait_for("New Inspection", timeout=15)
+        wait_for("Inspections", timeout=15)
     dump = get_ui_dump()
     tap_node(dump, content_desc="New Inspection")
     wait_for("Date", timeout=15)
