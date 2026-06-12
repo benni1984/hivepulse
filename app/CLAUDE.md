@@ -22,7 +22,7 @@ Before writing any new UI (components, pages, modals, cards), open **`hivepulse-
 
 Whenever a UI screen visible in the help documentation changes (dashboard, hive detail, inspection form, settings, hornet tracker, QR flow, etc.), the corresponding screenshots in `public/docs/screenshots/` **must be retaken** and the `src` props in `app/[locale]/help/[slug]/content/*.tsx` must be updated for all 4 locales (en, de, fr, es).
 
-- Web screenshots: capture via browser at `apiscan-two.vercel.app` or localhost
+- Web screenshots: capture via browser at `hivepulse.multihead.de` or localhost
 - Android screenshots: capture via `adb exec-out screencap -p > file.png` from the emulator (Pixel 9 API 35), logged in as `demo@apiscan.app` / `demo1234`
 - Screenshot components support `src=` (single platform) or `android=` + `web=` (tab switcher)
 

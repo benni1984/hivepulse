@@ -1,6 +1,6 @@
 import SwiftUI
 
-private let supporterInfoURL = URL(string: "https://apiscan-two.vercel.app/contribute")!
+private let supporterInfoURL = URL(string: "https://hivepulse.multihead.de/contribute")!
 
 struct MembersView: View {
     @EnvironmentObject var authVM: AuthViewModel

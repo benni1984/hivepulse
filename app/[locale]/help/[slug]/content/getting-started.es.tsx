@@ -23,7 +23,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-globe" style={{ marginRight: 6 }} />Panel de control web</div>
             <div className="help-stat-card-desc">
-              Panel de control completo en <strong>apiscan-two.vercel.app</strong>. Ideal para gestionar colmenares,
+              Panel de control completo en <strong>hivepulse.multihead.de</strong>. Ideal para gestionar colmenares,
               ver gráficos detallados, generar lotes de códigos QR y exportar datos. Funciona en cualquier navegador.
             </div>
           </div>
