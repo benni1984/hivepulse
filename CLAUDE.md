@@ -120,4 +120,4 @@ Work in one component per session. Do not mix backend, iOS, and Android in the s
 
 ## Implementation Status
 
-All components complete. Open issue: **#73** — user profile screen (edit name/language, change password, delete account) — implemented on web (`/dashboard/profile`) and Android (`SettingsScreen`); not yet implemented on iOS.
+All components complete across web, Android, and iOS. No open feature gaps.
