@@ -325,15 +325,21 @@ def back_to_apiaries():
 def capture_data_export():
     print("Capturing: android-data-export", flush=True)
     back_to_apiaries()
+    wait_for("My Apiaries", timeout=15)
     dump = get_ui_dump()
     tap_node(dump, content_desc="Settings")
     wait_for("Settings", timeout=15)
+    time.sleep(1)
+    # Scroll down until "Export Data" button (or "Data Export" section header) is visible
+    for _ in range(3):
+        d = get_ui_dump()
+        if "Export Data" in d or "Data Export" in d:
+            break
+        swipe(540, 1800, 540, 400, 600)
+        time.sleep(0.8)
+    else:
+        raise TimeoutError("Could not find Export Data section after scrolling")
     time.sleep(0.5)
-    # Scroll down if Data Export is not visible
-    if "Data Export" not in get_ui_dump():
-        swipe(540, 1400, 540, 700, 500)
-        time.sleep(0.5)
-        wait_for("Data Export", timeout=10)
     screenshot("android-data-export")
     keyevent("KEYCODE_BACK")
 
