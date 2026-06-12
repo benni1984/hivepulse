@@ -302,14 +302,15 @@ def capture_hive_stats():
 
 def capture_qr_batches():
     print("Capturing: android-qr-batches", flush=True)
-    wait_for("Inspections")
+    # "Print QR codes" icon lives on ApiaryListScreen top bar
+    back_to_apiaries()
+    wait_for("My Apiaries", timeout=15)
     dump = get_ui_dump()
     tap_node(dump, content_desc="Print QR codes")
     wait_for("QR Batches", timeout=15)
     time.sleep(0.5)
     screenshot("android-qr-batches")
     keyevent("KEYCODE_BACK")
-    wait_for("Inspections", timeout=15)
 
 
 def back_to_apiaries():
