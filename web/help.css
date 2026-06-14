@@ -227,6 +227,33 @@
   height: auto;
   display: block;
 }
+
+/* Thumbnail mode — smaller default, click to enlarge */
+.help-screenshot--thumb {
+  max-width: 380px;
+  cursor: zoom-in;
+  position: relative;
+}
+.help-screenshot--thumb img {
+  max-height: 260px;
+  object-fit: cover;
+  object-position: top;
+}
+.help-screenshot-zoom {
+  position: absolute;
+  bottom: 40px;
+  right: 10px;
+  background: rgba(0,0,0,.45);
+  color: #fff;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: .75rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .15s;
+}
+.help-screenshot--thumb:hover .help-screenshot-zoom { opacity: 1; }
+
 .help-screenshot-caption {
   padding: 10px 16px;
   font-size: .8rem;
@@ -234,6 +261,46 @@
   border-top: 1px solid var(--border);
   background: #fff;
 }
+
+/* Lightbox */
+.help-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  cursor: zoom-out;
+}
+.help-lightbox img {
+  max-width: min(90vw, 960px);
+  max-height: 80vh;
+  border-radius: 10px;
+  object-fit: contain;
+  box-shadow: 0 8px 40px rgba(0,0,0,.6);
+  cursor: default;
+}
+.help-lightbox-caption {
+  margin-top: 14px;
+  color: rgba(255,255,255,.8);
+  font-size: .85rem;
+}
+.help-lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  opacity: .7;
+  transition: opacity .15s;
+}
+.help-lightbox-close:hover { opacity: 1; }
 
 /* ── Stat cards ──────────────────────────────────────────────── */
 .help-stat-grid {
