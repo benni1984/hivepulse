@@ -1,7 +1,6 @@
 android/
 ios/
-docs/
-!public/docs/
+/docs/
 backend/tests/
 backend/*.db
 **/__pycache__/

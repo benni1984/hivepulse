@@ -218,11 +218,14 @@ jobs:
           path: public/docs/screenshots
         continue-on-error: true
 
-      - name: Commit and push updated screenshots
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Commit and open PR for updated screenshots
+        uses: peter-evans/create-pull-request@v6
         with:
-          commit_message: 'chore(screenshots): auto-update help page screenshots [skip ci]'
-          file_pattern: 'public/docs/screenshots/*.png'
-          commit_user_name: 'github-actions[bot]'
-          commit_user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_author: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore(screenshots): auto-update help page screenshots [skip ci]'
+          branch: chore/auto-screenshots
+          delete-branch: true
+          title: 'chore(screenshots): auto-update help page screenshots'
+          body: 'Automated screenshot update triggered by CI.'
+          committer: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
+          author: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
