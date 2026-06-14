@@ -88,7 +88,7 @@ Source of truth for all endpoints, shapes, and enums: `docs/api-contract.md`. Up
 
 ## Git & PR Workflow
 
-Push branch → open PR immediately → merge once all CI checks are green (no confirmation needed).
+Push branch → open PR immediately → merge once all CI checks are green (no confirmation needed). **Never push directly to main** — branch protection is enforced; bypassing it skips required CI checks.
 
 ## CI/CD Pipeline
 
