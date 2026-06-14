@@ -28,7 +28,7 @@ Whenever a UI screen visible in the help documentation changes (dashboard, hive 
 
 ## Framework
 
-- Framework: Next.js 15, App Router, TypeScript
+- Framework: Next.js **16.2.6**, App Router, TypeScript
 - i18n: `next-intl` — 4 locales (en, de, fr, es) in `messages/`
 - Styles: `web/style.css` (dashboard + global), `web/landing.css` (landing page)
 - API client: `lib/api.ts` — all fetch calls go through typed functions here
@@ -37,6 +37,18 @@ Whenever a UI screen visible in the help documentation changes (dashboard, hive 
 - Run dev: `npm run dev` (from repo root)
 - Run unit tests: `npm test`
 - Run e2e (staging): `npm run test:e2e:staging`
+
+## Middleware — IMPORTANT
+
+Next.js 16 renamed `middleware.ts` → **`proxy.ts`**. Do NOT create a `middleware.ts` file — it will cause a build error.
+
+The i18n proxy lives in `proxy.ts` (repo root). Its matcher must use `.*\\..*` (dot anywhere in path) to exclude static assets from next-intl routing:
+
+```ts
+matcher: ['/((?!api/|_next|_vercel|.*\\..*).*)', '/'],
+```
+
+This ensures `public/docs/screenshots/*.png` and other static files are served directly without being intercepted by the locale middleware.
 
 ## Public Routes
 
