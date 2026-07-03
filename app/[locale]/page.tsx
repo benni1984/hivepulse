@@ -13,26 +13,35 @@ export default function HomePage() {
     <>
       {/* Hero */}
       <section className="hero">
-        <div className="hero-content">
-          <div className="hero-badge" data-aos="fade-down">{t('hero.badge')}</div>
-          <h1 data-aos="fade-up" data-aos-delay="80">
-            <span>{t('hero.title1')}</span><br />
-            <span className="hero-highlight">{t('hero.title2')}</span>
-          </h1>
-          <p className="hero-sub" data-aos="fade-up" data-aos-delay="160">{t('hero.subtitle')}</p>
-          <div className="hero-actions" data-aos="fade-up" data-aos-delay="240">
-            <a href="#download" className="btn-store btn-apple" data-umami-event="hero_store_ios">
-              <i className="fab fa-apple" />
-              <span><small>{t('hero.apple.pre')}</small><span>{t('hero.apple.store')}</span></span>
-            </a>
-            <a href="#download" className="btn-store btn-android" data-umami-event="hero_store_android">
-              <i className="fab fa-google-play" />
-              <span><small>{t('hero.google.pre')}</small><span>{t('hero.google.play')}</span></span>
-            </a>
+        <div className="hero-grid">
+          <div className="hero-content">
+            <div className="hero-badge" data-aos="fade-down">{t('hero.badge')}</div>
+            <h1 data-aos="fade-up" data-aos-delay="80">
+              <span>{t('hero.title1')}</span><br />
+              <span className="hero-highlight">{t('hero.title2')}</span>
+            </h1>
+            <p className="hero-sub" data-aos="fade-up" data-aos-delay="160">{t('hero.subtitle')}</p>
+            <div className="hero-actions" data-aos="fade-up" data-aos-delay="240">
+              <a href="#download" className="btn-store btn-apple" data-umami-event="hero_store_ios">
+                <i className="fab fa-apple" />
+                <span><small>{t('hero.apple.pre')}</small><span>{t('hero.apple.store')}</span></span>
+              </a>
+              <a href="#download" className="btn-store btn-android" data-umami-event="hero_store_android">
+                <i className="fab fa-google-play" />
+                <span><small>{t('hero.google.pre')}</small><span>{t('hero.google.play')}</span></span>
+              </a>
+            </div>
+            <div className="hero-scroll-hint" data-aos="fade-up" data-aos-delay="400">
+              <span>{t('hero.scroll')}</span>
+              <i className="fas fa-chevron-down bounce" />
+            </div>
           </div>
-          <div className="hero-scroll-hint" data-aos="fade-up" data-aos-delay="400">
-            <span>{t('hero.scroll')}</span>
-            <i className="fas fa-chevron-down bounce" />
+          <div className="hero-phone-wrap" data-aos="fade-left" data-aos-delay="120">
+            <div className="hero-phone">
+              <div className="hero-phone-screen">
+                <span>{t('hero.phoneLabel')}</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -40,10 +49,6 @@ export default function HomePage() {
       {/* Live Stats */}
       <section className="stats-section">
         <div className="container">
-          <div className="stats-intro" data-aos="fade-up">
-            <h2>{t('stats.title')}</h2>
-            <p>{t('stats.sub')}</p>
-          </div>
           <LiveStats labels={{ apiaries: t('stats.apiaries'), hives: t('stats.hives'), inspections: t('stats.inspections'), countries: t('stats.countries') }} />
         </div>
       </section>
@@ -135,10 +140,10 @@ export default function HomePage() {
             <p>{t('comm.sub')}</p>
           </div>
           <div className="community-grid" data-aos="fade-up" data-aos-delay="80">
-            <div className="community-card accent-green"><i className="fas fa-map-marked-alt" /><h3>{t('comm.disease.title')}</h3><p>{t('comm.disease.desc')}</p></div>
-            <div className="community-card accent-amber"><i className="fas fa-chart-line" /><h3>{t('comm.seasonal.title')}</h3><p>{t('comm.seasonal.desc')}</p></div>
-            <div className="community-card accent-green"><i className="fas fa-university" /><h3>{t('comm.research.title')}</h3><p>{t('comm.research.desc')}</p></div>
-            <div className="community-card accent-amber"><i className="fas fa-seedling" /><h3>{t('comm.policy.title')}</h3><p>{t('comm.policy.desc')}</p></div>
+            <div className="community-card accent-green"><div className="community-icon-box"><i className="fas fa-map-marked-alt" /></div><h3>{t('comm.disease.title')}</h3><p>{t('comm.disease.desc')}</p></div>
+            <div className="community-card accent-amber"><div className="community-icon-box"><i className="fas fa-chart-line" /></div><h3>{t('comm.seasonal.title')}</h3><p>{t('comm.seasonal.desc')}</p></div>
+            <div className="community-card accent-green"><div className="community-icon-box"><i className="fas fa-university" /></div><h3>{t('comm.research.title')}</h3><p>{t('comm.research.desc')}</p></div>
+            <div className="community-card accent-amber"><div className="community-icon-box"><i className="fas fa-seedling" /></div><h3>{t('comm.policy.title')}</h3><p>{t('comm.policy.desc')}</p></div>
           </div>
         </div>
       </section>

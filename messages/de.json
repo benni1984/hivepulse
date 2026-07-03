@@ -38,7 +38,8 @@
       "pre": "Jetzt bei",
       "play": "Google Play"
     },
-    "scroll": "Runterscrollen für mehr"
+    "scroll": "Runterscrollen für mehr",
+    "phoneLabel": "Dashboard-Screenshot"
   },
   "stats": {
     "title": "Unsere Gemeinschaft, gerade jetzt",
@@ -192,6 +193,11 @@
     "sub": "Für iOS und Android verfügbar. Scan dein erstes Volk in unter zwei Minuten."
   },
   "map": {
+    "hero": {
+      "tag": "Gemeinschaftskarte",
+      "title": "Jeder Bienenstand, den wir schützen",
+      "subtitle": "Entdecke weltweit registrierte Bienenstände – in Echtzeit aktualisiert."
+    },
     "preview": {
       "title": "Unsere Gemeinschaft auf der Karte",
       "sub": "Entdecke weltweit registrierte Bienenstände – in Echtzeit aktualisiert.",
@@ -212,6 +218,20 @@
       "low": "Niedrig (< 2)",
       "medium": "Mittel (2–5)",
       "high": "Hoch (> 5)"
+    },
+    "features": {
+      "cluster": {
+        "title": "Cluster-Marker",
+        "desc": "Nahe beieinanderliegende Bienenstände werden zu Clustern gruppiert, die sich beim Hineinzoomen aufteilen – so bleibt die Karte übersichtlich."
+      },
+      "heatmap": {
+        "title": "Heatmap umschalten",
+        "desc": "Aktiviere die Varroa-Heatmap, um den regionalen Befallsdruck auf einen Blick zu sehen – farblich codiert von niedrig bis hoch."
+      },
+      "fuzzed": {
+        "title": "Verschleierte Standorte",
+        "desc": "Genaue Standortdaten werden nie öffentlich angezeigt – Markierungen werden zufällig versetzt, um die Privatsphäre der Imker zu schützen."
+      }
     }
   },
   "news": {

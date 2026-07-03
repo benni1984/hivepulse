@@ -38,7 +38,8 @@
       "pre": "Disponible en",
       "play": "Google Play"
     },
-    "scroll": "Desplázate para saber más"
+    "scroll": "Desplázate para saber más",
+    "phoneLabel": "Captura del panel"
   },
   "stats": {
     "title": "Nuestra comunidad, ahora mismo",
@@ -192,6 +193,11 @@
     "sub": "Disponible en iOS y Android. Escanea tu primera colmena en menos de dos minutos."
   },
   "map": {
+    "hero": {
+      "tag": "Mapa comunitario",
+      "title": "Cada colmena que protegemos",
+      "subtitle": "Explora colmenares registrados por apicultores de todo el mundo — actualizados en tiempo real."
+    },
     "preview": {
       "title": "Ver nuestra comunidad en el mapa",
       "sub": "Explora colmenares registrados por apicultores de todo el mundo — actualizados en tiempo real.",
@@ -212,6 +218,20 @@
       "low": "Bajo (< 2)",
       "medium": "Medio (2–5)",
       "high": "Alto (> 5)"
+    },
+    "features": {
+      "cluster": {
+        "title": "Marcadores agrupados",
+        "desc": "Los colmenares cercanos se agrupan en clústeres que se despliegan al acercar el zoom, manteniendo el mapa legible a cualquier escala."
+      },
+      "heatmap": {
+        "title": "Mapa de calor",
+        "desc": "Activa el mapa de calor de varroa para ver la presión regional de ácaros de un vistazo, codificada por color de baja a alta."
+      },
+      "fuzzed": {
+        "title": "Ubicaciones difuminadas",
+        "desc": "Las coordenadas exactas de las colmenas nunca se muestran públicamente — los marcadores se desplazan aleatoriamente para proteger la privacidad de los apicultores."
+      }
     }
   },
   "news": {

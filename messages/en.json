@@ -38,7 +38,8 @@
       "pre": "Get it on",
       "play": "Google Play"
     },
-    "scroll": "Scroll to learn more"
+    "scroll": "Scroll to learn more",
+    "phoneLabel": "Dashboard Screenshot"
   },
   "stats": {
     "title": "Our Community, Right Now",
@@ -192,6 +193,11 @@
     "sub": "Available on iOS and Android. Scan your first hive in under two minutes."
   },
   "map": {
+    "hero": {
+      "tag": "Community Map",
+      "title": "See every hive we're protecting",
+      "subtitle": "Explore apiaries registered by beekeepers around the world — updated in real time."
+    },
     "preview": {
       "title": "See our community on the map",
       "sub": "Explore apiaries registered by beekeepers around the world — updated in real time.",
@@ -212,6 +218,20 @@
       "low": "Low (< 2)",
       "medium": "Medium (2–5)",
       "high": "High (> 5)"
+    },
+    "features": {
+      "cluster": {
+        "title": "Cluster Markers",
+        "desc": "Nearby apiaries group into clusters that expand as you zoom in, keeping the map readable at any scale."
+      },
+      "heatmap": {
+        "title": "Heatmap Toggle",
+        "desc": "Switch on the varroa heatmap to see regional mite pressure at a glance, colour-coded from low to high."
+      },
+      "fuzzed": {
+        "title": "Fuzzed Locations",
+        "desc": "Exact hive coordinates are never shown publicly — pins are randomly offset to protect beekeepers' privacy."
+      }
     }
   },
   "news": {

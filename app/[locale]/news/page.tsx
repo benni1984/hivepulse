@@ -4,7 +4,7 @@ export default function NewsPage() {
   const t = useTranslations('news');
   return (
     <>
-      <section className="page-hero">
+      <section className="page-hero news-page-hero">
         <div className="container">
           <div className="section-tag light" data-aos="fade-down">{t('tag')}</div>
           <h1 data-aos="fade-up" data-aos-delay="80">{t('title')}</h1>
