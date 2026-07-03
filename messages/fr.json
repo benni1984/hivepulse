@@ -38,7 +38,8 @@
       "pre": "Disponible sur",
       "play": "Google Play"
     },
-    "scroll": "Défiler pour en savoir plus"
+    "scroll": "Défiler pour en savoir plus",
+    "phoneLabel": "Capture d'écran du tableau de bord"
   },
   "stats": {
     "title": "Notre communauté, en ce moment",
@@ -192,6 +193,11 @@
     "sub": "Disponible sur iOS et Android. Scannez votre première ruche en moins de deux minutes."
   },
   "map": {
+    "hero": {
+      "tag": "Carte communautaire",
+      "title": "Chaque ruche que nous protégeons",
+      "subtitle": "Explorez les ruchers enregistrés par des apiculteurs du monde entier — mis à jour en temps réel."
+    },
     "preview": {
       "title": "Voir notre communauté sur la carte",
       "sub": "Explorez les ruchers enregistrés par des apiculteurs du monde entier — mis à jour en temps réel.",
@@ -212,6 +218,20 @@
       "low": "Faible (< 2)",
       "medium": "Moyen (2–5)",
       "high": "Élevé (> 5)"
+    },
+    "features": {
+      "cluster": {
+        "title": "Marqueurs groupés",
+        "desc": "Les ruchers proches se regroupent en clusters qui se déploient au zoom, pour garder la carte lisible à toute échelle."
+      },
+      "heatmap": {
+        "title": "Carte de chaleur",
+        "desc": "Activez la carte de chaleur varroa pour visualiser la pression régionale des acariens, codée par couleur du faible au élevé."
+      },
+      "fuzzed": {
+        "title": "Positions floutées",
+        "desc": "Les coordonnées exactes des ruches ne sont jamais affichées publiquement — les repères sont décalés aléatoirement pour protéger la vie privée des apiculteurs."
+      }
     }
   },
   "news": {
