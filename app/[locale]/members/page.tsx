@@ -45,7 +45,7 @@ export default function MembersPage() {
 
           <div style={{marginTop:'64px',background:'linear-gradient(135deg,var(--green) 0%,var(--green-mid) 100%)',borderRadius:'20px',padding:'48px',textAlign:'center',color:'#fff'}} data-aos="fade-up">
             <div className="section-tag light" style={{marginBottom:'16px'}}>{t('coming.tag')}</div>
-            <h2 style={{fontSize:'1.7rem',fontWeight:800,marginBottom:'12px'}}>{t('coming.title')}</h2>
+            <h2 style={{fontSize:'1.7rem',fontWeight:900,marginBottom:'12px',textTransform:'uppercase',letterSpacing:'-.03em'}}>{t('coming.title')}</h2>
             <p style={{color:'rgba(255,255,255,.8)',maxWidth:'520px',margin:'0 auto 28px',fontSize:'1rem',lineHeight:1.65}}>{t('coming.desc')}</p>
             <a href="/dashboard/members" className="btn-primary" style={{display:'inline-block'}}>
               {t('coming.btn')}
