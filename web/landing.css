@@ -865,13 +865,14 @@
 
 .contribute-card {
   background: var(--card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 16px;
   padding: 28px;
-  box-shadow: var(--shadow);
-  transition: transform .2s, box-shadow .2s;
+  box-shadow: none;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
 }
-.contribute-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.contribute-card:nth-of-type(odd):hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--green); border-color: var(--green); }
+.contribute-card:nth-of-type(even):hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--amber); border-color: var(--amber); }
 
 .contribute-card i {
   font-size: 1.8rem;
@@ -882,7 +883,7 @@
 
 .contribute-card h3 {
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 10px;
 }
 
@@ -922,14 +923,17 @@
   gap: 10px;
   background: #fff;
   color: #1c1917;
-  font-weight: 700;
+  font-weight: 800;
   font-size: .95rem;
+  text-transform: uppercase;
+  letter-spacing: .02em;
   padding: 12px 28px;
-  border-radius: 8px;
+  border-radius: 12px;
   text-decoration: none;
-  transition: background .2s, transform .15s;
+  box-shadow: 4px 4px 0 var(--amber);
+  transition: transform .15s, box-shadow .15s;
 }
-.btn-github:hover { background: #f3f4f6; transform: translateY(-1px); }
+.btn-github:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--amber); }
 
 @media (max-width: 640px) {
   .contribute-grid { grid-template-columns: 1fr; }

@@ -129,17 +129,23 @@ export default function HornetReportPage() {
 
   return (
     <main className="hornets-report-page">
-      <h1>{t('report.title')}</h1>
+      <section className="hornets-hero hornets-hero-compact">
+        <div className="hornets-hero-inner">
+          <span className="hornets-tag">{t('tag')}</span>
+          <h1>{t('report.title')}</h1>
+        </div>
+      </section>
 
-      <div className="dash-admin-tabs">
+      <div className="hornets-report-body">
+      <div className="hornets-tabs">
         <button
-          className={`dash-admin-tab${tab === 'catch' ? ' active' : ''}`}
+          className={`hornets-tab${tab === 'catch' ? ' active' : ''}`}
           onClick={() => { setTab('catch'); reset(); }}
         >
           {t('report.catchTab')}
         </button>
         <button
-          className={`dash-admin-tab${tab === 'nest' ? ' active' : ''}`}
+          className={`hornets-tab${tab === 'nest' ? ' active' : ''}`}
           onClick={() => { setTab('nest'); reset(); }}
         >
           {t('report.nestTab')}
@@ -192,7 +198,7 @@ export default function HornetReportPage() {
               {t('report.longitude')}
               <input type="number" step="any" value={catchLon} onChange={e => setCatchLon(e.target.value)} placeholder="2.3522" />
             </label>
-            <button type="button" className="btn-outline btn-sm" onClick={fillGps}>📍 GPS</button>
+            <button type="button" className="hornets-loc-btn" onClick={fillGps}>📍 GPS</button>
           </div>
 
           <label>
@@ -200,7 +206,7 @@ export default function HornetReportPage() {
             <input type="text" maxLength={100} value={catchName} onChange={e => setCatchName(e.target.value)} placeholder={t('report.namePlaceholder')} />
           </label>
 
-          <button type="submit" className="btn-primary" disabled={loading}>
+          <button type="submit" className="hornets-submit-btn" disabled={loading}>
             {loading ? '…' : t('report.submit')}
           </button>
         </form>
@@ -217,7 +223,7 @@ export default function HornetReportPage() {
               {t('report.longitude')} *
               <input type="number" step="any" value={nestLon} onChange={e => setNestLon(e.target.value)} placeholder="2.3522" required />
             </label>
-            <button type="button" className="btn-outline btn-sm" onClick={fillGps}>📍 GPS</button>
+            <button type="button" className="hornets-loc-btn" onClick={fillGps}>📍 GPS</button>
           </div>
 
           <label>
@@ -242,11 +248,12 @@ export default function HornetReportPage() {
             <input type="text" maxLength={100} value={nestName} onChange={e => setNestName(e.target.value)} placeholder={t('report.namePlaceholder')} />
           </label>
 
-          <button type="submit" className="btn-primary" disabled={loading || uploadingPhoto}>
+          <button type="submit" className="hornets-submit-btn" disabled={loading || uploadingPhoto}>
             {loading ? '…' : t('report.submit')}
           </button>
         </form>
       )}
+      </div>
     </main>
   );
 }

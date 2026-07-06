@@ -37,24 +37,32 @@ export default function HornetMapPage() {
 
   return (
     <main className="hornets-map-page">
-      <div className="hornets-map-header">
-        <h1>{t('map.title')}</h1>
-        <p>{t('map.subtitle')}</p>
-        <div className="hornets-map-legend-inline">
-          <span className="legend-dot" style={{ background: '#ef4444' }} />{t('map.status.found')}
-          <span className="legend-dot" style={{ background: '#f59e0b', marginLeft: '1rem' }} />{t('map.status.ordered')}
-          <span className="legend-dot" style={{ background: '#22c55e', marginLeft: '1rem' }} />{t('map.status.destroyed')}
-          <span className="legend-dot" style={{ background: '#3b82f6', marginLeft: '1rem' }} />{t('traps.title')}
+      <section className="hornets-hero hornets-hero-compact">
+        <div className="hornets-hero-inner">
+          <span className="hornets-tag">{t('tag')}</span>
+          <h1>{t('map.title')}</h1>
         </div>
-      </div>
+      </section>
 
-      {loading ? (
-        <div className="spinner" />
-      ) : !hasData ? (
-        <p className="dash-empty">{t('map.noNests')}</p>
-      ) : (
-        <HornetMapClient geojson={geojson} trapsGeojson={trapsGeojson as never} labels={labels} />
-      )}
+      <div className="hornets-map-body">
+        <div className="hornets-map-header">
+          <p>{t('map.subtitle')}</p>
+          <div className="hornets-map-legend-inline">
+            <span className="legend-dot" style={{ background: '#ef4444' }} />{t('map.status.found')}
+            <span className="legend-dot" style={{ background: '#f59e0b', marginLeft: '1rem' }} />{t('map.status.ordered')}
+            <span className="legend-dot" style={{ background: '#22c55e', marginLeft: '1rem' }} />{t('map.status.destroyed')}
+            <span className="legend-dot" style={{ background: '#3b82f6', marginLeft: '1rem' }} />{t('traps.title')}
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="spinner" />
+        ) : !hasData ? (
+          <p className="dash-empty">{t('map.noNests')}</p>
+        ) : (
+          <HornetMapClient geojson={geojson} trapsGeojson={trapsGeojson as never} labels={labels} />
+        )}
+      </div>
     </main>
   );
 }

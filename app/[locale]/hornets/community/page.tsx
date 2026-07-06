@@ -87,10 +87,17 @@ export default function HornetCommunityPage() {
 
   return (
     <main className="hornets-community-page">
+      <section className="hornets-hero hornets-hero-compact">
+        <div className="hornets-hero-inner">
+          <span className="hornets-tag">{t('tag')}</span>
+          <h1>{t('community.title')}</h1>
+        </div>
+      </section>
+
+      <div className="hornets-community-body">
       <div className="hornets-community-header">
-        <h1>{t('community.title')}</h1>
         <p>{t('community.subtitle')}</p>
-        <button className="btn-primary" onClick={() => { setShowForm(s => !s); setSubmitSuccess(false); }}>
+        <button className="hornets-submit-btn" onClick={() => { setShowForm(s => !s); setSubmitSuccess(false); }}>
           {showForm ? '✕' : `+ ${t('community.addPhoto')}`}
         </button>
       </div>
@@ -119,7 +126,7 @@ export default function HornetCommunityPage() {
             <input type="text" maxLength={100} value={reporterName} onChange={e => setReporterName(e.target.value)} placeholder={t('report.namePlaceholder')} />
           </label>
           {submitError && <div className="error-banner">{submitError}</div>}
-          <button type="submit" className="btn-primary" disabled={submitting || uploadingPhoto}>
+          <button type="submit" className="hornets-submit-btn" disabled={submitting || uploadingPhoto}>
             {submitting ? '…' : t('community.submitPhoto')}
           </button>
         </form>
@@ -173,6 +180,7 @@ export default function HornetCommunityPage() {
           )}
         </>
       )}
+      </div>
     </main>
   );
 }

@@ -155,18 +155,18 @@ export default function HornetTrapsPage() {
   }
 
   return (
-    <main className="hornets-page" style={{ paddingTop: '88px', minHeight: '100vh' }}>
+    <main className="hornets-page" style={{ minHeight: '100vh' }}>
 
       {/* ── Header ─────────────────────────────────────────── */}
-      <div className="hornets-hero" style={{ padding: '48px 0 32px' }}>
-        <div className="container">
-          <div className="hornets-badge">{t('tag')}</div>
-          <h1 className="hornets-title">{t('traps.title')}</h1>
+      <section className="hornets-hero hornets-hero-compact">
+        <div className="hornets-hero-inner">
+          <span className="hornets-tag">{t('tag')}</span>
+          <h1>{t('traps.title')}</h1>
           <p className="hornets-subtitle">{t('traps.subtitle')}</p>
         </div>
-      </div>
+      </section>
 
-      <div className="container" style={{ paddingBottom: '64px' }}>
+      <div className="container" style={{ paddingTop: '40px', paddingBottom: '64px' }}>
 
         {error && (
           <div className="hornets-error" style={{ marginBottom: '16px', color: '#dc2626', background: '#fff5f5', padding: '12px 16px', borderRadius: '8px', border: '1px solid #fecaca' }}>
