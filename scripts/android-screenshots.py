@@ -249,11 +249,30 @@ def login():
     else:
         raise RuntimeError("Sign In button never became enabled — email/password fields never registered")
 
-    tap_node(dump, text="Sign In")
-    # Login + initial apiary-list fetch round-trips to the real staging backend
-    # (measured ~5s cold, but leave headroom for CI variance).
-    wait_for("My Apiaries", timeout=45)
-    print("  Logged in ✓", flush=True)
+    # Tap Sign In, retrying on a transient backend error. Confirmed via a
+    # captured UI dump that a prior failure here was a real "HTTP 500 " error
+    # banner from the staging backend (measured directly: login usually
+    # succeeds in <1s once warm, ~5-6s on a cold Neon/Vercel start — a 500
+    # here looks like an occasional cold-start race, not a client bug).
+    # AuthViewModel.login() resets error=null at the start of every attempt,
+    # so simply re-tapping Sign In is a clean retry — no need to dismiss the
+    # banner first.
+    for login_attempt in range(1, 4):
+        tap_node(dump, text="Sign In")
+        try:
+            wait_for("My Apiaries", timeout=30)
+            print("  Logged in ✓", flush=True)
+            return
+        except TimeoutError:
+            d = get_ui_dump()
+            if "HTTP " in d or "Network" in d:
+                print(f"  [login] backend error on attempt {login_attempt} — retrying…", flush=True)
+                dump_failure_diagnostics(f"login-backend-error-{login_attempt}")
+                time.sleep(3)
+                dump = d
+                continue
+            raise
+    raise RuntimeError("Login failed after repeated backend errors")
 
 # ── Individual captures ───────────────────────────────────────────────────────
 
