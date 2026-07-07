@@ -221,7 +221,11 @@ def login():
 
     dump = get_ui_dump()
     tap_node(dump, text="Sign In")
-    wait_for("My Apiaries", timeout=30)
+    # Login + initial apiary-list fetch round-trips to the real staging backend,
+    # which can have cold-start latency, and this follows right after emulator
+    # boot (itself sometimes slow in CI) — give it more headroom than the
+    # purely-local UI waits elsewhere in this script.
+    wait_for("My Apiaries", timeout=90)
     print("  Logged in ✓", flush=True)
 
 # ── Individual captures ───────────────────────────────────────────────────────
