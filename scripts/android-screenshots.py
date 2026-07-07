@@ -391,20 +391,48 @@ def capture_inspection_form():
 
 # ── Failure diagnostics ───────────────────────────────────────────────────────
 
+def summarize_ui_dump(dump, max_nodes=60):
+    """Compact, information-dense summary of a uiautomator dump: one line per
+    node that actually carries content (text or content-desc) or is
+    interactive, with its enabled/clickable/focused state. A raw dump is
+    mostly ~10 layers of empty FrameLayout/ComposeView wrapper nodes before
+    reaching anything meaningful, so a naive dump[:4000] truncation can burn
+    its whole budget on structure and never reach the interesting nodes
+    (exactly what happened investigating this)."""
+    root = ET.fromstring(dump)
+    lines = []
+    for node in root.iter("node"):
+        text = node.get("text", "")
+        cd = node.get("content-desc", "")
+        clickable = node.get("clickable") == "true"
+        if not text and not cd and not clickable:
+            continue
+        cls = node.get("class", "").rsplit(".", 1)[-1]
+        lines.append(
+            f"    {cls} text={text!r} content-desc={cd!r} "
+            f"enabled={node.get('enabled')} clickable={clickable} "
+            f"focused={node.get('focused')} bounds={node.get('bounds')}"
+        )
+        if len(lines) >= max_nodes:
+            lines.append("    …(truncated)")
+            break
+    return "\n".join(lines) if lines else "    (no nodes with text/content-desc/clickable found)"
+
+
 def dump_failure_diagnostics(tag):
-    """Best-effort screenshot + UI dump on failure — without this, a CI failure
-    gives no visibility into what was actually on screen (login error toast?
-    unexpected dialog? blank/crashed screen?). The screenshot is named
-    android-DEBUG-* so it matches the existing android-*.png upload-artifact
-    glob and shows up in the run's artifacts; the UI dump goes to stdout so
-    it's visible directly in the CI log without downloading anything."""
+    """Best-effort screenshot + UI summary on failure — without this, a CI
+    failure gives no visibility into what was actually on screen (login
+    error toast? unexpected dialog? blank/crashed screen?). The screenshot
+    is named android-DEBUG-* so it matches the existing android-*.png
+    upload-artifact glob and shows up in the run's artifacts; the UI
+    summary goes to stdout so it's visible directly in the CI log."""
     try:
         screenshot(f"android-DEBUG-{tag}")
     except Exception as e:
         print(f"  [diagnostics] screenshot failed: {e}", flush=True)
     try:
         dump = get_ui_dump(retries=1)
-        print(f"  [diagnostics] UI dump at failure ({tag}):\n{dump[:4000]}", flush=True)
+        print(f"  [diagnostics] UI summary at failure ({tag}):\n{summarize_ui_dump(dump)}", flush=True)
     except Exception as e:
         print(f"  [diagnostics] UI dump failed: {e}", flush=True)
 
