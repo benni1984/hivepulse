@@ -54,7 +54,9 @@ test('create, edit, and delete an inspection', async ({ page }) => {
 
     await form.locator('button.dash-submit-btn').click();
     await expect(page.locator('.dash-success-banner')).toBeVisible({ timeout: 10_000 });
-    await expect(page.locator('table.dash-inspection-table td', { hasText: '7' })).toBeVisible();
+    // Exact match — a plain substring match on '7' also matches the date cell
+    // whenever the day/month is 7, 17, or 27 (e.g. "7/7/2026").
+    await expect(page.locator('table.dash-inspection-table td', { hasText: /^7$/ })).toBeVisible();
   });
 
   await test.step('delete inspection', async () => {
