@@ -107,6 +107,18 @@ def tap_node(dump, *, text=None, content_desc=None):
     raise RuntimeError(f"Node not found: {label!r}")
 
 
+def node_enabled(dump, text):
+    """Whether the node with this text is currently enabled (Compose sets
+    enabled=false on the Sign In button until both fields are non-blank —
+    tapping it while disabled is a silent no-op, so callers must confirm
+    this before tapping rather than assuming the tap will do something)."""
+    root = ET.fromstring(dump)
+    for node in root.iter("node"):
+        if node.get("text") == text:
+            return node.get("enabled") == "true"
+    return False
+
+
 # Content descriptions of FABs and nav items that should never be treated as list items
 _SKIP_CONTENT_DESCS = frozenset({
     "New Apiary", "New Hive", "New Inspection",
@@ -208,24 +220,39 @@ def login():
     wait_for("Sign In", timeout=30)
     time.sleep(1.5)  # let fields finish rendering
 
-    tap_editable_field(0)
-    time.sleep(0.5)
-    type_text(DEMO_EMAIL)
+    # The Sign In button is only enabled once both fields are non-blank
+    # (Compose: enabled = email.isNotBlank() && password.isNotBlank()).
+    # Tapping it while disabled is a silent no-op — no request is ever sent,
+    # so a downstream wait_for("My Apiaries") would time out no matter how
+    # long, regardless of backend speed. Confirm the button is actually
+    # enabled before tapping, retrying field entry if `adb input text`
+    # raced the field gaining focus and didn't register.
+    dump = None
+    for attempt in range(1, 4):
+        tap_editable_field(0)
+        time.sleep(0.5)
+        type_text(DEMO_EMAIL)
 
-    tap_editable_field(1)
-    time.sleep(0.5)
-    type_text(DEMO_PASSWORD)
+        tap_editable_field(1)
+        time.sleep(0.5)
+        type_text(DEMO_PASSWORD)
 
-    keyevent("KEYCODE_BACK")  # dismiss keyboard
-    time.sleep(0.5)
+        keyevent("KEYCODE_BACK")  # dismiss keyboard
+        time.sleep(0.5)
 
-    dump = get_ui_dump()
+        dump = get_ui_dump()
+        if node_enabled(dump, "Sign In"):
+            break
+        print(f"  [login] Sign In still disabled after attempt {attempt} "
+              f"(email/password may not have registered) — retrying…", flush=True)
+        dump_failure_diagnostics(f"login-retry-{attempt}")
+    else:
+        raise RuntimeError("Sign In button never became enabled — email/password fields never registered")
+
     tap_node(dump, text="Sign In")
-    # Login + initial apiary-list fetch round-trips to the real staging backend,
-    # which can have cold-start latency, and this follows right after emulator
-    # boot (itself sometimes slow in CI) — give it more headroom than the
-    # purely-local UI waits elsewhere in this script.
-    wait_for("My Apiaries", timeout=90)
+    # Login + initial apiary-list fetch round-trips to the real staging backend
+    # (measured ~5s cold, but leave headroom for CI variance).
+    wait_for("My Apiaries", timeout=45)
     print("  Logged in ✓", flush=True)
 
 # ── Individual captures ───────────────────────────────────────────────────────
@@ -362,6 +389,25 @@ def capture_inspection_form():
     screenshot("android-inspection-form")
     keyevent("KEYCODE_BACK")
 
+# ── Failure diagnostics ───────────────────────────────────────────────────────
+
+def dump_failure_diagnostics(tag):
+    """Best-effort screenshot + UI dump on failure — without this, a CI failure
+    gives no visibility into what was actually on screen (login error toast?
+    unexpected dialog? blank/crashed screen?). The screenshot is named
+    android-DEBUG-* so it matches the existing android-*.png upload-artifact
+    glob and shows up in the run's artifacts; the UI dump goes to stdout so
+    it's visible directly in the CI log without downloading anything."""
+    try:
+        screenshot(f"android-DEBUG-{tag}")
+    except Exception as e:
+        print(f"  [diagnostics] screenshot failed: {e}", flush=True)
+    try:
+        dump = get_ui_dump(retries=1)
+        print(f"  [diagnostics] UI dump at failure ({tag}):\n{dump[:4000]}", flush=True)
+    except Exception as e:
+        print(f"  [diagnostics] UI dump failed: {e}", flush=True)
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
@@ -387,4 +433,5 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         print(f"\nERROR: {e}", file=sys.stderr, flush=True)
+        dump_failure_diagnostics("failure")
         sys.exit(1)
