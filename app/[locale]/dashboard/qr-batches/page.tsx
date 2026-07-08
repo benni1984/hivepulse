@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
+import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getQrBatches, createQrBatch, type QrBatchSummary } from '@/lib/api';
 
 export default function QrBatchesPage() {
   const t = useTranslations('dash');
+  const ready = useDashboardReady();
   const [batches, setBatches] = useState<QrBatchSummary[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,11 +18,12 @@ export default function QrBatchesPage() {
   const [message, setMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
 
   useEffect(() => {
+    if (!ready) return;
     getQrBatches()
       .then(data => setBatches(data.items))
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, []);
+  }, [ready]);
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();

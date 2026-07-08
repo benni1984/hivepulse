@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
+import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import {
   getApiary, getHives, getApiaryStats, updateApiary, deleteApiary, createHive,
   getApiaryFieldDefs, createApiaryFieldDef, updateApiaryFieldDef, deleteApiaryFieldDef,
@@ -28,6 +29,7 @@ export default function ApiaryPage() {
   const { id } = useParams<{ id: string }>();
   const t = useTranslations('dash');
   const router = useRouter();
+  const ready = useDashboardReady();
 
   const [apiary, setApiary] = useState<Apiary | null>(null);
   const [hives, setHives] = useState<Hive[]>([]);
@@ -61,6 +63,7 @@ export default function ApiaryPage() {
   const [deletingField, setDeletingField] = useState(false);
 
   useEffect(() => {
+    if (!ready) return;
     Promise.all([getApiary(id), getHives(id), getApiaryStats(id), getApiaryFieldDefs(id)])
       .then(([a, h, s, fds]) => {
         setApiary(a);
@@ -71,7 +74,7 @@ export default function ApiaryPage() {
       })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [ready, id]);
 
   function openEdit() {
     if (apiary) {

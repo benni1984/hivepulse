@@ -108,6 +108,28 @@ describe('getMe', () => {
     expect(localStorage.getItem('access_token')).toBeNull();
     expect(localStorage.getItem('refresh_token')).toBeNull();
   });
+
+  it('de-dupes concurrent 401s into a single /auth/refresh call', async () => {
+    localStorage.setItem('access_token', 'expired');
+    localStorage.setItem('refresh_token', 'ref');
+    vi.mocked(fetch).mockImplementation(async (url) => {
+      const u = String(url);
+      if (u.includes('/auth/refresh')) return ok({ access_token: 'new' });
+      if (u.includes('/apiaries')) return ok({ items: [], total: 0, page: 1, per_page: 20, pages: 0 });
+      return ok(mockUser); // /users/me
+    });
+    // First call to each endpoint 401s (no auth header check here — we just
+    // want two concurrent 401 responses racing to refresh).
+    vi.mocked(fetch).mockResolvedValueOnce(ok({}, 401)); // /users/me → 401
+    vi.mocked(fetch).mockResolvedValueOnce(ok({}, 401)); // /apiaries → 401
+
+    const [user, apiaries] = await Promise.all([getMe(), getApiaries()]);
+
+    expect(user).toEqual(mockUser);
+    expect(apiaries.total).toBe(0);
+    const refreshCalls = vi.mocked(fetch).mock.calls.filter(([u]) => String(u).includes('/auth/refresh'));
+    expect(refreshCalls).toHaveLength(1);
+  });
 });
 
 describe('updateMe', () => {

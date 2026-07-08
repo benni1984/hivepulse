@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
+import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getApiaries, createApiary, type Apiary } from '@/lib/api';
 
 export default function DashboardPage() {
   const t = useTranslations('dash');
+  const ready = useDashboardReady();
   const [apiaries, setApiaries] = useState<Apiary[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,11 +18,12 @@ export default function DashboardPage() {
   const [createMessage, setCreateMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
 
   useEffect(() => {
+    if (!ready) return;
     getApiaries()
       .then(data => setApiaries(data.items))
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, []);
+  }, [ready]);
 
   function openCreate() {
     setCreateForm({ name: '', description: '', address: '', isPublic: false });

@@ -22,6 +22,10 @@ vi.mock('@/components/DashboardShell', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
+vi.mock('@/hooks/useDashboardAuth', () => ({
+  useDashboardReady: () => true,
+}));
+
 vi.mock('@/lib/api', () => ({
   getUserFieldDefs: mockGetUserFieldDefs,
   createUserFieldDef: mockCreateUserFieldDef,

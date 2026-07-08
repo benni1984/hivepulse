@@ -24,7 +24,20 @@ export function clearTokens() {
   localStorage.removeItem('refresh_token');
 }
 
+// Concurrent 401s (e.g. several API calls firing at once with an expired
+// access token) must share a single in-flight refresh instead of each
+// independently calling /auth/refresh — otherwise a future backend change to
+// rotate/invalidate refresh tokens on use would cause spurious logouts for
+// whichever concurrent request "loses" the race.
+let refreshPromise: Promise<boolean> | null = null;
+
 async function tryRefresh(): Promise<boolean> {
+  if (refreshPromise) return refreshPromise;
+  refreshPromise = doRefresh().finally(() => { refreshPromise = null; });
+  return refreshPromise;
+}
+
+async function doRefresh(): Promise<boolean> {
   const rt = getRefreshToken();
   if (!rt) return false;
   try {
