@@ -25,7 +25,16 @@ enum APIError: LocalizedError {
 final class APIClient {
     static var shared = APIClient()
 
-    var baseURL = URL(string: "http://localhost:8000/api/v1")!
+    /// Injected per build configuration via `API_BASE_URL` in project.yml → Info.plist
+    /// (Debug: localhost, Release: production). Falls back to localhost if the
+    /// Info.plist key is missing or malformed, matching the previous hardcoded default.
+    var baseURL: URL = {
+        if let raw = Bundle.main.object(forInfoDictionaryKey: "APIBaseURL") as? String,
+           let url = URL(string: raw), !raw.isEmpty, !raw.hasPrefix("$(") {
+            return url
+        }
+        return URL(string: "http://localhost:8000/api/v1")!
+    }()
 
     private let session: URLSession
     private let decoder: JSONDecoder
