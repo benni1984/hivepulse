@@ -22,7 +22,7 @@ class PaginatedResponse(BaseModel):
 class RegisterRequest(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8)
-    name: str = Field(min_length=1)
+    name: str = Field(min_length=1, max_length=200)
     locale: str = Field(default="en", pattern="^(en|fr|de|es)$")
 
 
@@ -83,7 +83,7 @@ class AccessTokenResponse(BaseModel):
 
 
 class UserUpdate(BaseModel):
-    name: Optional[str] = None
+    name: Optional[str] = Field(default=None, max_length=200)
     locale: Optional[str] = Field(default=None, pattern="^(en|fr|de|es)$")
     password: Optional[str] = Field(default=None, min_length=8)
     current_password: Optional[str] = None
@@ -228,17 +228,17 @@ class AdminPlatformStats(BaseModel):
 
 class FieldDefinitionCreate(BaseModel):
     target: str = Field(pattern="^(hive|inspection)$")
-    name: str = Field(min_length=1)
+    name: str = Field(min_length=1, max_length=200)
     type: str = Field(pattern="^(text|number|boolean|date|select)$")
-    options: List[str] = Field(default_factory=list)
+    options: List[str] = Field(default_factory=list, max_length=100)
     required: bool = False
     default_value: Optional[Any] = None
     sort_order: int = 0
 
 
 class FieldDefinitionUpdate(BaseModel):
-    name: Optional[str] = None
-    options: Optional[List[str]] = None
+    name: Optional[str] = Field(default=None, max_length=200)
+    options: Optional[List[str]] = Field(default=None, max_length=100)
     required: Optional[bool] = None
     default_value: Optional[Any] = None
     sort_order: Optional[int] = None
@@ -264,20 +264,20 @@ class FieldDefinitionOut(BaseModel):
 # ---------------------------------------------------------------------------
 
 class ApiaryCreate(BaseModel):
-    name: str = Field(min_length=1)
-    description: Optional[str] = None
+    name: str = Field(min_length=1, max_length=200)
+    description: Optional[str] = Field(default=None, max_length=2000)
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    address: Optional[str] = None
+    address: Optional[str] = Field(default=None, max_length=500)
     is_public: bool = False
 
 
 class ApiaryUpdate(BaseModel):
-    name: Optional[str] = None
-    description: Optional[str] = None
+    name: Optional[str] = Field(default=None, max_length=200)
+    description: Optional[str] = Field(default=None, max_length=2000)
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    address: Optional[str] = None
+    address: Optional[str] = Field(default=None, max_length=500)
     is_public: Optional[bool] = None
 
 
@@ -333,32 +333,32 @@ class QrBatchSummary(BaseModel):
 # ---------------------------------------------------------------------------
 
 class HiveCreate(BaseModel):
-    name: str = Field(min_length=1)
+    name: str = Field(min_length=1, max_length=200)
     hive_type: str = Field(default="langstroth", pattern="^(langstroth|dadant|top_bar|warre|other)$")
     acquisition_date: Optional[date] = None
-    notes: Optional[str] = None
+    notes: Optional[str] = Field(default=None, max_length=2000)
 
 
 class HiveInitialize(BaseModel):
     qr_token: str
     apiary_id: str
-    name: str = Field(min_length=1)
+    name: str = Field(min_length=1, max_length=200)
     hive_type: str = Field(default="langstroth", pattern="^(langstroth|dadant|top_bar|warre|other)$")
     latitude: Optional[float] = None
     longitude: Optional[float] = None
     acquisition_date: Optional[date] = None
-    notes: Optional[str] = None
+    notes: Optional[str] = Field(default=None, max_length=2000)
     custom_fields: Dict[str, Any] = Field(default_factory=dict)
 
 
 class HiveUpdate(BaseModel):
     apiary_id: Optional[str] = None
-    name: Optional[str] = None
+    name: Optional[str] = Field(default=None, max_length=200)
     hive_type: Optional[str] = Field(default=None, pattern="^(langstroth|dadant|top_bar|warre|other)$")
     latitude: Optional[float] = None
     longitude: Optional[float] = None
     acquisition_date: Optional[date] = None
-    notes: Optional[str] = None
+    notes: Optional[str] = Field(default=None, max_length=2000)
     custom_fields: Optional[Dict[str, Any]] = None
 
 
@@ -405,11 +405,11 @@ class InspectionCreate(BaseModel):
     population_strength: Optional[int] = Field(default=None, ge=1, le=5)
     varroa_count: Optional[int] = Field(default=None, ge=0)
     swarm_cells_seen: Optional[bool] = None
-    treatment_applied: Optional[str] = None
+    treatment_applied: Optional[str] = Field(default=None, max_length=500)
     feeding_done: Optional[bool] = None
-    feeding_type: Optional[str] = None
+    feeding_type: Optional[str] = Field(default=None, max_length=200)
     weight_kg: Optional[float] = None
-    notes: Optional[str] = None
+    notes: Optional[str] = Field(default=None, max_length=2000)
     custom_fields: Dict[str, Any] = Field(default_factory=dict)
 
 
@@ -423,11 +423,11 @@ class InspectionUpdate(BaseModel):
     population_strength: Optional[int] = Field(default=None, ge=1, le=5)
     varroa_count: Optional[int] = Field(default=None, ge=0)
     swarm_cells_seen: Optional[bool] = None
-    treatment_applied: Optional[str] = None
+    treatment_applied: Optional[str] = Field(default=None, max_length=500)
     feeding_done: Optional[bool] = None
-    feeding_type: Optional[str] = None
+    feeding_type: Optional[str] = Field(default=None, max_length=200)
     weight_kg: Optional[float] = None
-    notes: Optional[str] = None
+    notes: Optional[str] = Field(default=None, max_length=2000)
     custom_fields: Optional[Dict[str, Any]] = None
 
 

@@ -70,3 +70,10 @@ def test_batch_isolation_between_users(client):
     client.post("/api/v1/qr-batches", json={"count": 1}, headers=h1)
     r = client.get("/api/v1/qr-batches", headers=h2)
     assert r.json()["total"] == 0
+
+
+def test_batch_detail_and_pdf_isolated_across_users(auth_client, auth_client2):
+    batch_id = auth_client.post("/api/v1/qr-batches", json={"count": 1}).json()["id"]
+
+    assert auth_client2.get(f"/api/v1/qr-batches/{batch_id}").status_code == 404
+    assert auth_client2.get(f"/api/v1/qr-batches/{batch_id}/pdf").status_code == 404

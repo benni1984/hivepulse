@@ -129,3 +129,22 @@ def test_get_hive_qr_returns_png(auth_client, apiary, qr_token):
 def test_get_hive_qr_not_found(auth_client):
     r = auth_client.get("/api/v1/hives/does-not-exist/qr")
     assert r.status_code == 404
+
+
+# ---------------------------------------------------------------------------
+# Cross-user ownership isolation (#202)
+# ---------------------------------------------------------------------------
+
+
+def test_hive_isolated_across_users(auth_client, auth_client2, apiary, qr_token):
+    hid = auth_client.post("/api/v1/hives/initialize", json={
+        "qr_token": qr_token, "apiary_id": apiary["id"], "name": "H1", "hive_type": "langstroth"
+    }).json()["id"]
+
+    assert auth_client2.get(f"/api/v1/hives/{hid}").status_code == 404
+    assert auth_client2.put(f"/api/v1/hives/{hid}", json={"name": "Hijacked"}).status_code == 404
+    assert auth_client2.delete(f"/api/v1/hives/{hid}").status_code == 404
+    assert auth_client2.get(f"/api/v1/hives/{hid}/qr").status_code == 404
+
+    # Owner is unaffected.
+    assert auth_client.get(f"/api/v1/hives/{hid}").json()["name"] == "H1"

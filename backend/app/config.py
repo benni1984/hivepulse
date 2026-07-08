@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     database_url: str = "sqlite:///./HivePulse.db"
+    environment: str = "development"  # set to "production" to enable prod-only safety checks/gates
     secret_key: str = "dev-secret-change-me"
     access_token_expire_minutes: int = 30
     refresh_token_expire_days: int = 30
