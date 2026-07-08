@@ -2,10 +2,12 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import DashboardShell from '@/components/DashboardShell';
+import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { adminGetUsers, adminSetSupporter, adminDeleteUser, adminRevokeTokens, type AdminUser, type Paginated } from '@/lib/api';
 
 export default function AdminUsersPage() {
   const t = useTranslations('dash');
+  const ready = useDashboardReady();
   const [data, setData] = useState<Paginated<AdminUser> | null>(null);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState('');
@@ -13,6 +15,7 @@ export default function AdminUsersPage() {
   const [page, setPage] = useState(1);
 
   const load = useCallback(() => {
+    if (!ready) return;
     setLoading(true);
     adminGetUsers({
       q: query || undefined,
@@ -23,7 +26,7 @@ export default function AdminUsersPage() {
       .then(setData)
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [query, supporterFilter, page]);
+  }, [ready, query, supporterFilter, page]);
 
   useEffect(() => { load(); }, [load]);
 

@@ -9,6 +9,7 @@ vi.mock('@/lib/api', () => ({
 
 vi.mock('@/hooks/useDashboardAuth', () => ({
   useDashboardAuth: () => ({ user: { name: 'Test', email: 't@t.com', is_admin: false }, loading: false }),
+  useDashboardReady: () => true,
 }));
 
 vi.mock('@/components/DashboardShell', () => ({

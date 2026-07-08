@@ -9,7 +9,10 @@ const mockAdminGetNoVarroaApiaries = vi.hoisted(() => vi.fn());
 const mockAdminGetZeroInspectionHives = vi.hoisted(() => vi.fn());
 const mockUseDashboardAuth = vi.hoisted(() => vi.fn());
 
-vi.mock('@/hooks/useDashboardAuth', () => ({ useDashboardAuth: mockUseDashboardAuth }));
+vi.mock('@/hooks/useDashboardAuth', () => ({
+  useDashboardAuth: mockUseDashboardAuth,
+  useDashboardReady: () => { const s = mockUseDashboardAuth(); return !s.loading && s.user !== null; },
+}));
 vi.mock('next-intl', () => ({ useTranslations: () => (key: string) => key }));
 vi.mock('@/i18n/navigation', () => ({
   useRouter: () => ({ replace: vi.fn() }),
