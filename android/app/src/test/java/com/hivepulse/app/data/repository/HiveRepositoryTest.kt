@@ -80,6 +80,16 @@ class HiveRepositoryTest {
         coVerify { api.deleteHive("h1") }
     }
 
+    @Test
+    fun `getQrPng returns raw bytes from api getHiveQr`() = runTest {
+        val pngBytes = byteArrayOf(1, 2, 3, 4)
+        coEvery { api.getHiveQr("h1") } returns pngBytes.toResponseBody("image/png".toMediaType())
+
+        val result = repo.getQrPng("h1")
+
+        assertArrayEquals(pngBytes, result)
+    }
+
     private fun hive(id: String) = HiveOut(
         id = id, qrToken = "tok", apiaryId = "a1", name = "Hive $id",
         hiveType = "langstroth", latitude = null, longitude = null,
