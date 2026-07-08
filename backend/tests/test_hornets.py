@@ -130,6 +130,28 @@ def test_report_nest_success(client):
     assert "updated_at" in data
 
 
+def test_report_nest_photo_url_rejects_non_http_scheme(client):
+    # Regression for the stored-XSS chain: a non-http(s) scheme (or a
+    # quote-breakout payload masquerading as one) must never reach storage —
+    # the frontend interpolates photo_url into an unescaped-quote-safe but
+    # otherwise raw HTML attribute, so this is defense in depth.
+    r = client.post("/api/v1/hornets/nests", json={
+        "latitude": 48.0,
+        "longitude": 2.0,
+        "photo_url": 'x" onerror="alert(1)',
+    })
+    assert r.status_code == 422
+
+
+def test_report_nest_photo_url_rejects_javascript_scheme(client):
+    r = client.post("/api/v1/hornets/nests", json={
+        "latitude": 48.0,
+        "longitude": 2.0,
+        "photo_url": "javascript:alert(1)",
+    })
+    assert r.status_code == 422
+
+
 def test_report_nest_missing_latitude(client):
     r = client.post("/api/v1/hornets/nests", json={"longitude": 2.35})
     assert r.status_code == 422
@@ -236,6 +258,11 @@ def test_submit_sighting_success(client):
 
 def test_submit_sighting_missing_photo_url(client):
     r = client.post("/api/v1/hornets/sightings", json={"description": "No photo"})
+    assert r.status_code == 422
+
+
+def test_submit_sighting_photo_url_rejects_non_http_scheme(client):
+    r = client.post("/api/v1/hornets/sightings", json={"photo_url": 'x" onerror="alert(1)'})
     assert r.status_code == 422
 
 

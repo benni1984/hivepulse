@@ -24,6 +24,7 @@ object Routes {
     const val APIARY_DETAIL      = "apiary_detail/{apiaryId}"
     const val APIARY_FORM        = "apiary_form?apiaryId={apiaryId}"
     const val HIVE_DETAIL        = "hive_detail/{hiveId}"
+    const val HIVE_QR            = "hive_qr/{hiveId}"
     const val HIVE_INITIALIZE    = "hive_initialize/{qrToken}"
     const val INSPECTION_FORM    = "inspection_form/{hiveId}?inspectionId={inspectionId}"
     const val INSPECTION_DETAIL  = "inspection_detail/{inspectionId}/{hiveId}"
@@ -89,7 +90,15 @@ fun HivePulseNavGraph(
                 onInspectionClick = { inspId, hiveId -> navController.navigate("inspection_detail/$inspId/$hiveId") },
                 onAddInspection   = { hiveId -> navController.navigate("inspection_form/$hiveId?inspectionId=") },
                 onStatsClick      = { hiveId -> navController.navigate("hive_stats/$hiveId") },
+                onQrClick         = { hiveId -> navController.navigate("hive_qr/$hiveId") },
                 onBack            = { navController.popBackStack() }
+            )
+        }
+        composable(Routes.HIVE_QR,
+            arguments = listOf(navArgument("hiveId") { type = NavType.StringType })) { back ->
+            HiveQRViewScreen(
+                hiveId = back.arguments!!.getString("hiveId")!!,
+                onBack = { navController.popBackStack() }
             )
         }
         composable(Routes.HIVE_INITIALIZE,

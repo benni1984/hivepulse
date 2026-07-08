@@ -82,6 +82,7 @@ fun HiveDetailScreen(
     onInspectionClick: (String, String) -> Unit,
     onAddInspection: (String) -> Unit,
     onStatsClick: (String) -> Unit,
+    onQrClick: (String) -> Unit,
     onBack: () -> Unit,
     vm: HiveDetailViewModel = hiltViewModel()
 ) {
@@ -93,6 +94,9 @@ fun HiveDetailScreen(
                 title = { Text(state.hive?.name ?: "", style = MaterialTheme.typography.titleLarge) },
                 navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } },
                 actions = {
+                    IconButton(onClick = { onQrClick(hiveId) }) {
+                        Icon(Icons.Default.QrCode, contentDescription = stringResource(R.string.action_view_qr))
+                    }
                     IconButton(onClick = { onStatsClick(hiveId) }) {
                         Icon(Icons.Default.BarChart, contentDescription = stringResource(R.string.action_stats))
                     }

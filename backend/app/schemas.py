@@ -1,6 +1,19 @@
 from datetime import date, datetime
 from typing import Any, Dict, List, Literal, Optional
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
+
+
+def _validate_photo_url(v: Optional[str]) -> Optional[str]:
+    """Reject anything that isn't a plain http(s) URL — these values are
+    interpolated into HTML img/href attributes client-side, so a scheme
+    like javascript:/data: or an unescaped quote-breakout payload must
+    never reach storage in the first place (defense in depth alongside
+    the frontend's own attribute escaping)."""
+    if v is None:
+        return v
+    if not (v.startswith("http://") or v.startswith("https://")):
+        raise ValueError("photo_url must be an http:// or https:// URL")
+    return v
 
 
 # ---------------------------------------------------------------------------
@@ -559,7 +572,12 @@ class HornetNestCreate(BaseModel):
     longitude: float = Field(ge=-180, le=180)
     reporter_name: Optional[str] = Field(default=None, max_length=100)
     notes: Optional[str] = Field(default=None, max_length=2000)
-    photo_url: Optional[str] = None
+    photo_url: Optional[str] = Field(default=None, max_length=2000)
+
+    @field_validator("photo_url")
+    @classmethod
+    def _check_photo_url(cls, v: Optional[str]) -> Optional[str]:
+        return _validate_photo_url(v)
 
 
 class HornetNestOut(BaseModel):
@@ -577,11 +595,16 @@ class HornetNestOut(BaseModel):
 
 
 class HornetSightingCreate(BaseModel):
-    photo_url: str
+    photo_url: str = Field(max_length=2000)
     description: Optional[str] = Field(default=None, max_length=2000)
     reporter_name: Optional[str] = Field(default=None, max_length=100)
     latitude: Optional[float] = None
     longitude: Optional[float] = None
+
+    @field_validator("photo_url")
+    @classmethod
+    def _check_photo_url(cls, v: str) -> str:
+        return _validate_photo_url(v)  # type: ignore[return-value]
 
 
 class HornetSightingOut(BaseModel):
