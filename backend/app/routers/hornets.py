@@ -1,10 +1,11 @@
 import math
 from datetime import datetime, date
 
-from fastapi import APIRouter, HTTPException, Query, status
+from fastapi import APIRouter, HTTPException, Query, Request, status
 
 from app.deps import DB, CurrentUser, OptionalUser
 from app.models import HornetCatch, HornetNest, HornetSighting, HornetTrap, HornetTrapCatch
+from app.rate_limit import enforce_rate_limit
 from app.schemas import (
     HornetCatchCreate,
     HornetCatchOut,
@@ -23,6 +24,16 @@ from app.schemas import (
 )
 
 router = APIRouter(prefix="/hornets", tags=["hornet-tracker"])
+
+# Precision for GPS coordinates returned on *public, unauthenticated* listing
+# endpoints — ~111m at the equator. Coarse enough that a nest/sighting report
+# doesn't pinpoint a reporter's exact home, fine enough that a visitor can
+# still walk to the right spot to find/destroy a nest.
+_PUBLIC_COORD_DECIMALS = 3
+
+
+def _fuzz(v: float | None) -> float | None:
+    return round(v, _PUBLIC_COORD_DECIMALS) if v is not None else None
 
 # ---------------------------------------------------------------------------
 # Stats
@@ -67,7 +78,8 @@ def get_stats(db: DB) -> HornetStatsOut:
 
 
 @router.post("/catches", status_code=status.HTTP_201_CREATED)
-def report_catch(body: HornetCatchCreate, db: DB) -> HornetCatchOut:
+def report_catch(body: HornetCatchCreate, request: Request, db: DB) -> HornetCatchOut:
+    enforce_rate_limit(db, request, "hornet_report", limit=20, window_minutes=10)
     catch = HornetCatch(
         latitude=body.latitude,
         longitude=body.longitude,
@@ -87,19 +99,23 @@ def report_catch(body: HornetCatchCreate, db: DB) -> HornetCatchOut:
 
 @router.get("/nests")
 def list_nests(db: DB) -> dict:
-    """Return all nests as a GeoJSON FeatureCollection."""
+    """Return all nests as a GeoJSON FeatureCollection.
+
+    Public/unauthenticated — coordinates are fuzzed and reporter_name is
+    omitted (the map UI never displays it) so a citizen reporting a nest in
+    their own yard doesn't have their exact home + name published.
+    """
     nests = db.query(HornetNest).order_by(HornetNest.created_at.desc()).all()
     features = [
         {
             "type": "Feature",
             "geometry": {
                 "type": "Point",
-                "coordinates": [n.longitude, n.latitude],
+                "coordinates": [_fuzz(n.longitude), _fuzz(n.latitude)],
             },
             "properties": {
                 "id": n.id,
                 "status": n.status,
-                "reporter_name": n.reporter_name,
                 "notes": n.notes,
                 "photo_url": n.photo_url,
                 "created_at": n.created_at.isoformat() if n.created_at else None,
@@ -111,7 +127,8 @@ def list_nests(db: DB) -> dict:
 
 
 @router.post("/nests", status_code=status.HTTP_201_CREATED)
-def report_nest(body: HornetNestCreate, db: DB) -> HornetNestOut:
+def report_nest(body: HornetNestCreate, request: Request, db: DB) -> HornetNestOut:
+    enforce_rate_limit(db, request, "hornet_report", limit=20, window_minutes=10)
     nest = HornetNest(
         latitude=body.latitude,
         longitude=body.longitude,
@@ -136,11 +153,21 @@ def list_sightings(
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
 ) -> PaginatedResponse:
+    """Public/unauthenticated. reporter_name is kept — it's an intentional,
+    user-opted-in attribution shown on the community page — but coordinates
+    are fuzzed since they're never actually displayed, only ever fetched.
+    """
     base = db.query(HornetSighting).order_by(HornetSighting.created_at.desc())
     total = base.count()
     items = base.offset((page - 1) * per_page).limit(per_page).all()
+    out_items = [
+        HornetSightingOut.model_validate(s).model_copy(
+            update={"latitude": _fuzz(s.latitude), "longitude": _fuzz(s.longitude)}
+        )
+        for s in items
+    ]
     return PaginatedResponse(
-        items=[HornetSightingOut.model_validate(s) for s in items],
+        items=out_items,
         total=total,
         page=page,
         per_page=per_page,
@@ -149,7 +176,8 @@ def list_sightings(
 
 
 @router.post("/sightings", status_code=status.HTTP_201_CREATED)
-def submit_sighting(body: HornetSightingCreate, db: DB) -> HornetSightingOut:
+def submit_sighting(body: HornetSightingCreate, request: Request, db: DB) -> HornetSightingOut:
+    enforce_rate_limit(db, request, "hornet_report", limit=20, window_minutes=10)
     sighting = HornetSighting(
         photo_url=body.photo_url,
         description=body.description,
@@ -224,7 +252,8 @@ def list_my_traps(current_user: CurrentUser, db: DB) -> list[HornetTrapOut]:
 
 
 @router.post("/traps", status_code=status.HTTP_201_CREATED)
-def create_trap(body: HornetTrapCreate, db: DB, current_user: OptionalUser) -> HornetTrapOut:
+def create_trap(body: HornetTrapCreate, request: Request, db: DB, current_user: OptionalUser) -> HornetTrapOut:
+    enforce_rate_limit(db, request, "hornet_report", limit=20, window_minutes=10)
     trap = HornetTrap(
         name=body.name,
         latitude=body.latitude,
@@ -270,12 +299,13 @@ def get_nearby_traps(
 
 @router.get("/traps/geojson")
 def get_traps_geojson(db: DB) -> dict:
-    """Return all traps as a GeoJSON FeatureCollection."""
+    """Return all traps as a GeoJSON FeatureCollection. Public/unauthenticated
+    — coordinates are fuzzed, same rationale as list_nests above."""
     traps = db.query(HornetTrap).order_by(HornetTrap.created_at.desc()).all()
     features = [
         {
             "type": "Feature",
-            "geometry": {"type": "Point", "coordinates": [t.longitude, t.latitude]},
+            "geometry": {"type": "Point", "coordinates": [_fuzz(t.longitude), _fuzz(t.latitude)]},
             "properties": {
                 "access_code": t.access_code,
                 "name": t.name,
@@ -300,7 +330,8 @@ def get_trap(access_code: str, db: DB) -> HornetTrapOut:
 
 
 @router.post("/traps/{access_code}/catches", status_code=status.HTTP_201_CREATED)
-def add_trap_catch(access_code: str, body: HornetTrapCatchCreate, db: DB) -> HornetTrapCatchOut:
+def add_trap_catch(access_code: str, body: HornetTrapCatchCreate, request: Request, db: DB) -> HornetTrapCatchOut:
+    enforce_rate_limit(db, request, "hornet_report", limit=20, window_minutes=10)
     trap = db.query(HornetTrap).filter(HornetTrap.access_code == access_code.upper()).first()
     if trap is None:
         raise HTTPException(

@@ -633,7 +633,6 @@ export interface HornetNestFeature {
   properties: {
     id: string;
     status: 'found' | 'destruction_ordered' | 'destroyed';
-    reporter_name: string | null;
     notes: string | null;
     photo_url: string | null;
     created_at: string;
