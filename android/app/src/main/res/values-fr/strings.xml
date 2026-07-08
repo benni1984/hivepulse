@@ -11,6 +11,7 @@
     <string name="screen_scan_qr">Scanner le QR code</string>
     <string name="screen_batch_detail">Détail du lot</string>
     <string name="screen_qr_batches">Lots QR</string>
+    <string name="screen_hive_qr">Code QR</string>
 
     <!-- Tabs / Navigation -->
     <string name="tab_print">Imprimer les QR codes</string>
@@ -30,6 +31,7 @@
     <string name="action_new_inspection">Nouvelle visite</string>
     <string name="action_edit_inspection">Modifier la visite</string>
     <string name="action_stats">Statistiques</string>
+    <string name="action_view_qr">Voir le code QR</string>
     <string name="action_apply">Appliquer</string>
     <string name="action_new_batch">Nouveau lot QR</string>
     <string name="action_generate">Générer</string>

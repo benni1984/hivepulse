@@ -115,6 +115,9 @@ interface ApiService {
     @DELETE("hives/{id}")
     suspend fun deleteHive(@Path("id") id: String): Response<Unit>
 
+    @GET("hives/{id}/qr")
+    suspend fun getHiveQr(@Path("id") id: String): ResponseBody
+
     // Inspections
     @GET("hives/{hiveId}/inspections")
     suspend fun listInspections(

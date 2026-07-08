@@ -18,12 +18,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.hivepulse.app.BuildConfig
 import com.hivepulse.app.R
 import com.hivepulse.app.data.api.QrTokenOut
 import com.hivepulse.app.ui.common.ErrorBanner
 import com.hivepulse.app.ui.common.LoadingScreen
-
-private const val BASE_URL = "http://10.0.2.2:8000/api/v1"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +37,8 @@ fun QRBatchDetailScreen(
     val downloadPdf = {
         vm.accessToken?.let { token ->
             val dm = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-            val req = DownloadManager.Request(Uri.parse("$BASE_URL/qr-batches/$batchId/pdf"))
+            val baseUrl = BuildConfig.BASE_URL.trimEnd('/')
+            val req = DownloadManager.Request(Uri.parse("$baseUrl/qr-batches/$batchId/pdf"))
                 .addRequestHeader("Authorization", "Bearer $token")
                 .setMimeType("application/pdf")
                 .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "qr-batch-${batchId.take(8)}.pdf")
