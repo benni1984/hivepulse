@@ -21,6 +21,8 @@ class HiveRepository @Inject constructor(private val api: ApiService) {
 
     suspend fun delete(id: String) { api.deleteHive(id) }
 
+    suspend fun getQrPng(id: String): ByteArray = api.getHiveQr(id).bytes()
+
     suspend fun resolveQR(token: String): QRScanResult {
         val body = api.resolveQR(token).string()
         val json = JsonParser.parseString(body).asJsonObject
