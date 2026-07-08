@@ -11,6 +11,7 @@
     <string name="screen_scan_qr">QR-Code scannen</string>
     <string name="screen_batch_detail">Batch-Detail</string>
     <string name="screen_qr_batches">QR-Batches</string>
+    <string name="screen_hive_qr">QR-Code</string>
 
     <!-- Tabs / Navigation -->
     <string name="tab_print">QR-Codes drucken</string>
@@ -30,6 +31,7 @@
     <string name="action_new_inspection">Neue Kontrolle</string>
     <string name="action_edit_inspection">Kontrolle bearbeiten</string>
     <string name="action_stats">Statistik</string>
+    <string name="action_view_qr">QR-Code anzeigen</string>
     <string name="action_apply">Anwenden</string>
     <string name="action_new_batch">Neuer QR-Batch</string>
     <string name="action_generate">Generieren</string>

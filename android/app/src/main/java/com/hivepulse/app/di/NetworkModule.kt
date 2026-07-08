@@ -50,7 +50,11 @@ object NetworkModule {
                     return response.request.newBuilder().header("Authorization", "Bearer $newToken").build()
                 }
             })
-            .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                // BODY logging includes the Authorization: Bearer header — never ship
+                // that to Logcat in a release build.
+                level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+            })
             .build()
 
     @Provides @Singleton
