@@ -93,3 +93,17 @@ def test_field_definitions_isolated_between_users(client):
     }, headers=h1)
     r = client.get("/api/v1/field-definitions", headers=h2)
     assert len(r.json()) == 0
+
+
+def test_field_definition_update_delete_isolated_across_users(auth_client, auth_client2):
+    fd_id = auth_client.post("/api/v1/field-definitions", json={
+        "target": "inspection", "name": "Secret", "type": "text",
+        "options": [], "required": False, "sort_order": 0,
+    }).json()["id"]
+
+    r = auth_client2.put(f"/api/v1/field-definitions/{fd_id}", json={"name": "Hijacked"})
+    assert r.status_code == 404
+    r = auth_client2.delete(f"/api/v1/field-definitions/{fd_id}")
+    assert r.status_code == 404
+
+    assert auth_client.get("/api/v1/field-definitions").json()[0]["name"] == "Secret"

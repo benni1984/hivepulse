@@ -64,6 +64,21 @@ class RefreshToken(Base):
     user = relationship("User", back_populates="refresh_tokens")
 
 
+class RateLimitHit(Base):
+    """One row per request against a rate-limited bucket (e.g. 'login:1.2.3.4').
+
+    Backed by the database rather than in-process memory because the backend
+    runs as stateless Vercel serverless functions — an in-memory counter would
+    reset (or simply not be shared) between invocations and provide no real
+    protection.
+    """
+    __tablename__ = "rate_limit_hits"
+
+    id = Column(String, primary_key=True, default=_uuid)
+    bucket_key = Column(String, nullable=False, index=True)
+    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+
+
 class Apiary(Base):
     __tablename__ = "apiaries"
 

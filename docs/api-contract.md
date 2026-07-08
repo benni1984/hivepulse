@@ -628,6 +628,7 @@ Stats can be filtered by a preset window or an explicit date range. Both query p
 | GET | `/hives/{id}/stats` | Stats for one hive |
 | GET | `/apiaries/{id}/stats` | Aggregated stats for all hives in apiary |
 | GET | `/stats/overview` | Overview across all apiaries |
+| GET | `/stats/community-heatmap` | Multi-metric heatmap across all public apiaries (supporter/admin only) |
 
 ### HiveStats object
 
@@ -701,6 +702,34 @@ Stats can be filtered by a preset window or an explicit date range. Both query p
   "per_apiary": [ /* array of ApiaryStats summary */ ]
 }
 ```
+
+### GET `/stats/community-heatmap`
+
+Requires `Authorization: Bearer <access_token>` for a **supporter or admin** account (`403 SUPPORTER_REQUIRED` otherwise) — this backs the members-only dashboard page. Aggregates inspection data from **public apiaries only** into a coarse grid (0.5° cells, ~50km) and returns it as a GeoJSON `Polygon` FeatureCollection for the members-dashboard heatmap — the same grid-aggregation pattern used by `GET /public/heatmap` (Public Dashboard section above), which is why individual apiary locations are never exposed at this resolution.
+
+**Response 200**
+
+```json
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Polygon", "coordinates": [[ /* 5-point cell boundary */ ]] },
+      "properties": {
+        "avg_varroa": 2.4,
+        "mood_score": 78,
+        "avg_brood": 5.1,
+        "swarm_pct": 12,
+        "apiary_count": 6,
+        "inspection_count": 34
+      }
+    }
+  ]
+}
+```
+
+`mood_score` and `swarm_pct` are percentages (0–100). `avg_varroa`/`mood_score`/`avg_brood` are `null` for a cell if no inspections in that cell reported the underlying field.
 
 ---
 
@@ -868,6 +897,12 @@ They allow any citizen (no account needed) to report Asian hornet (*Vespa veluti
 | POST | `/hornets/sightings` | Public | Submit a photo sighting |
 | POST | `/hornets/sightings/{id}/vote` | Public | Vote yes/no on a sighting |
 | PUT | `/admin/hornets/sightings/{id}/status` | Admin | Override sighting status |
+| GET | `/hornets/traps` | Auth | List traps owned by the current user |
+| POST | `/hornets/traps` | Public (optional auth) | Create a named trap |
+| GET | `/hornets/traps/nearby` | Public | Traps within `radius_m` of a GPS point |
+| GET | `/hornets/traps/geojson` | Public | All traps as a GeoJSON FeatureCollection |
+| GET | `/hornets/traps/{access_code}` | Public | Trap detail + catch history |
+| POST | `/hornets/traps/{access_code}/catches` | Public | Log/update a daily catch count |
 
 ---
 
@@ -929,6 +964,8 @@ Report one or more caught Asian hornets. Location is optional (allows anonymous 
 
 Returns all reported nests as a GeoJSON FeatureCollection, suitable for map rendering. Each feature is colour-coded by `status`.
 
+Public/unauthenticated. Coordinates are rounded to 3 decimal places (~111m) and `reporter_name` is omitted — this endpoint is world-readable, so exact home coordinates + a reporter's name are never published.
+
 **Response 200**
 
 ```json
@@ -939,12 +976,11 @@ Returns all reported nests as a GeoJSON FeatureCollection, suitable for map rend
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [2.3522, 48.8566]
+        "coordinates": [2.352, 48.857]
       },
       "properties": {
         "id": "uuid",
         "status": "found",
-        "reporter_name": "string | null",
         "notes": "string | null",
         "photo_url": "string | null",
         "created_at": "datetime"
@@ -980,7 +1016,7 @@ Report a new nest. GPS coordinates are required; a photo may be attached (upload
 | `longitude` | Yes | -180 to 180 |
 | `reporter_name` | No | max 100 chars |
 | `notes` | No | max 2000 chars |
-| `photo_url` | No | Vercel Blob URL |
+| `photo_url` | No | `http://`/`https://` URL only, max 2000 chars |
 
 **Response 201** — HornetNest object (see below).
 
@@ -991,6 +1027,8 @@ Report a new nest. GPS coordinates are required; a photo may be attached (upload
 Returns paginated community photo sightings for identification, newest first.
 
 Accepts standard pagination params (`page`, `per_page`).
+
+Public/unauthenticated. `reporter_name` is returned as-is (an intentional, user-opted-in attribution shown on the community page), but `latitude`/`longitude` are rounded to 3 decimal places (~111m) — the UI never displays sighting coordinates, so there's no reason to expose exact GPS via the raw API.
 
 **Response 200** — wrapped in the standard pagination envelope:
 
@@ -1024,7 +1062,7 @@ Submit a photo for community identification. The photo must be uploaded first vi
 
 | Field | Required | Constraints |
 |-------|----------|-------------|
-| `photo_url` | Yes | Vercel Blob URL |
+| `photo_url` | Yes | `http://`/`https://` URL only, max 2000 chars |
 | `description` | No | max 2000 chars |
 | `reporter_name` | No | max 100 chars |
 | `latitude` | No | -90 to 90 |
@@ -1101,6 +1139,163 @@ Admin-only override to set the status of a sighting to `confirmed` or `rejected`
   "status": "pending | confirmed | rejected",
   "yes_votes": 4,
   "no_votes": 1,
+  "created_at": "datetime"
+}
+```
+
+---
+
+### Hornet Traps
+
+A trap is a named, physical device with a fixed GPS location and a randomly generated 8-character `access_code` (e.g. `A7B2K9XZ`). Anyone who finds a trap in person can look it up by code and log a daily catch — catch logging is intentionally anonymous/unauthenticated (crowd-sourced), while trap *ownership* (for the "my traps" list) is optional and only tracked when the creator is logged in.
+
+#### GET `/hornets/traps`
+
+Requires `Authorization: Bearer <access_token>`. Returns all traps owned by the current user (`user_id` set at creation time), each with its full catch history.
+
+**Response 200** — array of `HornetTrap` objects (see below).
+
+---
+
+#### POST `/hornets/traps`
+
+Create a new trap. Auth is optional — if a valid Bearer token is supplied the trap is linked to that user (appears in their `GET /hornets/traps` list); otherwise it's created anonymously.
+
+**Request**
+
+```json
+{
+  "name": "string",
+  "latitude": 48.8566,
+  "longitude": 2.3522,
+  "notes": "string | null",
+  "owner_name": "string | null"
+}
+```
+
+| Field | Required | Constraints |
+|-------|----------|-------------|
+| `name` | Yes | 1–200 chars |
+| `latitude` | Yes | -90 to 90 |
+| `longitude` | Yes | -180 to 180 |
+| `notes` | No | max 2000 chars |
+| `owner_name` | No | max 100 chars |
+
+**Response 201** — `HornetTrap` object, including the generated `access_code`. This is the only response that returns the code — write it down / print it on the physical trap.
+
+---
+
+#### GET `/hornets/traps/nearby`
+
+Find traps within a radius of a GPS point (e.g. "what trap am I standing next to?"). Public — no auth.
+
+| Query param | Required | Constraints |
+|-------------|----------|-------------|
+| `lat` | Yes | -90 to 90 |
+| `lon` | Yes | -180 to 180 |
+| `radius_m` | No (default 50) | 1–500 |
+
+**Response 200** — array of up to 20 results, sorted by distance ascending:
+
+```json
+[
+  {
+    "access_code": "A7B2K9XZ",
+    "name": "string",
+    "latitude": 48.8566,
+    "longitude": 2.3522,
+    "distance_m": 12,
+    "total_caught": 34
+  }
+]
+```
+
+Coordinates here are exact (not fuzzed) — the caller must already be within `radius_m` (max 500m) for a trap to appear, so this only ever confirms a location the caller is already standing at.
+
+---
+
+#### GET `/hornets/traps/geojson`
+
+Returns all traps as a GeoJSON FeatureCollection for map rendering. Public/unauthenticated — coordinates are rounded to 3 decimal places (~111m), same rationale as `GET /hornets/nests` above. `access_code` and `owner_name` are not included.
+
+**Response 200**
+
+```json
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [2.352, 48.857] },
+      "properties": {
+        "access_code": "string",
+        "name": "string",
+        "total_caught": 34,
+        "created_at": "datetime"
+      }
+    }
+  ]
+}
+```
+
+---
+
+#### GET `/hornets/traps/{access_code}`
+
+Look up a trap by its access code (case-insensitive). Public — this is how someone standing at the physical trap finds it to log a catch.
+
+**Response 200** — `HornetTrap` object.
+
+**Response 404** — `TRAP_NOT_FOUND`
+
+---
+
+#### POST `/hornets/traps/{access_code}/catches`
+
+Log the catch count for one day. Upsert — a second call for the same `caught_on` date overwrites the count rather than adding a new row.
+
+**Request**
+
+```json
+{ "count": 3, "caught_on": "2026-07-08" }
+```
+
+| Field | Required | Constraints |
+|-------|----------|-------------|
+| `count` | No (default 1) | 1–500 |
+| `caught_on` | Yes | date |
+
+**Response 201** — `HornetTrapCatch` object.
+
+**Response 404** — `TRAP_NOT_FOUND`
+
+---
+
+### HornetTrap object
+
+```json
+{
+  "id": "uuid",
+  "access_code": "string",
+  "name": "string",
+  "latitude": 48.8566,
+  "longitude": 2.3522,
+  "notes": "string | null",
+  "owner_name": "string | null",
+  "created_at": "datetime",
+  "total_caught": 34,
+  "catches": [ /* array of HornetTrapCatch objects */ ]
+}
+```
+
+### HornetTrapCatch object
+
+```json
+{
+  "id": "uuid",
+  "trap_id": "uuid",
+  "count": 3,
+  "caught_on": "date",
   "created_at": "datetime"
 }
 ```

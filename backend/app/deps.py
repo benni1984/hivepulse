@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Annotated, Optional
 
 from fastapi import Depends, Header, HTTPException, status
-from jose import JWTError, jwt
+from jose import ExpiredSignatureError, JWTError, jwt
 from sqlalchemy.orm import Session
 
 from app.config import settings
@@ -29,12 +29,12 @@ def get_current_user(
         token_type: str = payload.get("type")
         if user_id is None or token_type != "access":
             raise credentials_exception
-    except JWTError as exc:
-        if "expired" in str(exc):
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail={"code": "TOKEN_EXPIRED", "message": "Access token has expired."},
-            )
+    except ExpiredSignatureError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail={"code": "TOKEN_EXPIRED", "message": "Access token has expired."},
+        )
+    except JWTError:
         raise credentials_exception
     user = db.get(User, user_id)
     if user is None:
@@ -50,6 +50,17 @@ def get_current_admin(current_user: Annotated[User, Depends(get_current_user)]) 
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail={"code": "FORBIDDEN", "message": "Admin access required."},
+        )
+    return current_user
+
+
+def get_current_supporter(current_user: Annotated[User, Depends(get_current_user)]) -> User:
+    """Admins get supporter-tier access too, matching the frontend's
+    `user.is_supporter || user.is_admin` gating (DashboardShell, MembersTeaser)."""
+    if not current_user.is_supporter and not current_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={"code": "SUPPORTER_REQUIRED", "message": "Supporter access required."},
         )
     return current_user
 
@@ -75,5 +86,6 @@ def get_optional_user(
 
 CurrentUser = Annotated[User, Depends(get_current_user)]
 CurrentAdmin = Annotated[User, Depends(get_current_admin)]
+CurrentSupporter = Annotated[User, Depends(get_current_supporter)]
 OptionalUser = Annotated[Optional[User], Depends(get_optional_user)]
 DB = Annotated[Session, Depends(get_db)]

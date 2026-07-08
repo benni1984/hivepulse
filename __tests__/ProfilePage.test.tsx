@@ -22,6 +22,7 @@ vi.mock('@/lib/api', () => ({
 
 vi.mock('@/hooks/useDashboardAuth', () => ({
   useDashboardAuth: mockUseDashboardAuth,
+  useDashboardReady: () => { const s = mockUseDashboardAuth(); return !s.loading && s.user !== null; },
 }));
 
 vi.mock('@/i18n/navigation', () => ({

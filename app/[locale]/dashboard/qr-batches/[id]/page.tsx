@@ -4,22 +4,25 @@ import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
+import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getQrBatch, downloadQrBatchPdf, type QrBatchOut } from '@/lib/api';
 
 export default function QrBatchDetailPage() {
   const { id } = useParams<{ id: string }>();
   const t = useTranslations('dash');
+  const ready = useDashboardReady();
   const [batch, setBatch] = useState<QrBatchOut | null>(null);
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState(false);
   const [dlError, setDlError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!ready) return;
     getQrBatch(id)
       .then(setBatch)
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [ready, id]);
 
   async function handleDownload() {
     setDownloading(true);

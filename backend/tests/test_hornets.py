@@ -194,16 +194,42 @@ def test_get_nests_geojson_structure(client):
     feature = data["features"][0]
     assert feature["type"] == "Feature"
     assert feature["geometry"]["type"] == "Point"
-    # GeoJSON order: [longitude, latitude]
-    assert feature["geometry"]["coordinates"] == [2.3522, 48.8566]
+    # GeoJSON order: [longitude, latitude] — fuzzed to 3 decimals (~111m), see below
+    assert feature["geometry"]["coordinates"] == [2.352, 48.857]
     props = feature["properties"]
     assert props["status"] == "found"
     assert "id" in props
     assert "created_at" in props
 
 
+def test_get_nests_geojson_fuzzes_coordinates(client):
+    client.post("/api/v1/hornets/nests", json={"latitude": 48.856612345, "longitude": 2.352212345})
+    data = client.get("/api/v1/hornets/nests").json()
+    lon, lat = data["features"][0]["geometry"]["coordinates"]
+    assert lon == round(2.352212345, 3)
+    assert lat == round(48.856612345, 3)
+
+
+def test_get_nests_geojson_omits_reporter_name(client):
+    # reporter_name is never rendered by the map UI — public GeoJSON shouldn't
+    # publish a reporter's name alongside their (fuzzed) home coordinates.
+    client.post("/api/v1/hornets/nests", json={
+        "latitude": 48.0, "longitude": 2.0, "reporter_name": "Bob",
+    })
+    data = client.get("/api/v1/hornets/nests").json()
+    assert "reporter_name" not in data["features"][0]["properties"]
+
+
 def test_get_nests_no_auth_required(client):
     assert client.get("/api/v1/hornets/nests").status_code == 200
+
+
+def test_report_nest_rate_limited_after_threshold(client):
+    for i in range(20):
+        r = client.post("/api/v1/hornets/nests", json={"latitude": 48.0, "longitude": 2.0})
+        assert r.status_code == 201
+    r = client.post("/api/v1/hornets/nests", json={"latitude": 48.0, "longitude": 2.0})
+    assert r.status_code == 429
 
 
 # ---------------------------------------------------------------------------
@@ -267,6 +293,28 @@ def test_list_sightings_pagination(client):
 
 def test_list_sightings_no_auth_required(client):
     assert client.get("/api/v1/hornets/sightings").status_code == 200
+
+
+def test_list_sightings_fuzzes_coordinates(client):
+    client.post("/api/v1/hornets/sightings", json={
+        "photo_url": "https://blob.example.com/x.jpg",
+        "latitude": 48.856612345,
+        "longitude": 2.352212345,
+    })
+    item = client.get("/api/v1/hornets/sightings").json()["items"][0]
+    assert item["latitude"] == round(48.856612345, 3)
+    assert item["longitude"] == round(2.352212345, 3)
+
+
+def test_list_sightings_keeps_reporter_name(client):
+    # Unlike nests, reporter_name on a sighting is an intentional, user-opted-in
+    # attribution the community page displays — it must not be fuzzed away.
+    client.post("/api/v1/hornets/sightings", json={
+        "photo_url": "https://blob.example.com/x.jpg",
+        "reporter_name": "Carol",
+    })
+    item = client.get("/api/v1/hornets/sightings").json()["items"][0]
+    assert item["reporter_name"] == "Carol"
 
 
 # ---------------------------------------------------------------------------
@@ -517,6 +565,22 @@ def test_traps_geojson(client):
     assert feat["geometry"]["type"] == "Point"
     assert "access_code" in feat["properties"]
     assert "total_caught" in feat["properties"]
+
+
+def test_traps_geojson_fuzzes_coordinates(client):
+    _create_trap(client, {**_TRAP_PAYLOAD, "latitude": 48.200612345, "longitude": 16.300212345})
+    feat = client.get("/api/v1/hornets/traps/geojson").json()["features"][0]
+    lon, lat = feat["geometry"]["coordinates"]
+    assert lon == round(16.300212345, 3)
+    assert lat == round(48.200612345, 3)
+
+
+def test_create_trap_rate_limited_after_threshold(client):
+    for i in range(20):
+        r = client.post("/api/v1/hornets/traps", json={**_TRAP_PAYLOAD, "name": f"Trap {i}"})
+        assert r.status_code == 201
+    r = client.post("/api/v1/hornets/traps", json=_TRAP_PAYLOAD)
+    assert r.status_code == 429
 
 
 def test_stats_includes_total_traps(client):

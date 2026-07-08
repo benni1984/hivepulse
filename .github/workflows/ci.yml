@@ -204,8 +204,9 @@ jobs:
           UDID=$(xcrun simctl list devices available \
             | grep -E 'iPhone (16|17) \(' | head -1 | awk -F'[()]' '{print $2}')
           if [ -z "$UDID" ]; then
+            echo "iPhone 16 simulator not available on this runner image — falling back to the newest available plain iPhone simulator."
             UDID=$(xcrun simctl list devices available \
-              | grep -E 'iPhone .* \(' | head -1 | awk -F'[()]' '{print $2}')
+              | grep -E 'iPhone [0-9]+ \(' | head -1 | awk -F'[()]' '{print $2}')
           fi
           if [ -z "$UDID" ]; then
             echo "No iPhone simulator found:"
@@ -295,8 +296,9 @@ jobs:
           UDID=$(xcrun simctl list devices available \
             | grep -E 'iPhone (16|17) \(' | head -1 | awk -F'[()]' '{print $2}')
           if [ -z "$UDID" ]; then
+            echo "iPhone 16 simulator not available on this runner image — falling back to the newest available plain iPhone simulator."
             UDID=$(xcrun simctl list devices available \
-              | grep -E 'iPhone .* \(' | head -1 | awk -F'[()]' '{print $2}')
+              | grep -E 'iPhone [0-9]+ \(' | head -1 | awk -F'[()]' '{print $2}')
           fi
           if [ -z "$UDID" ]; then
             echo "No iPhone simulator found:"

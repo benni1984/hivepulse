@@ -94,6 +94,74 @@ def test_ci_setup_no_token_configured(client):
     assert r.status_code == 403
 
 
+def test_ci_setup_disabled_in_production(client, monkeypatch):
+    # Even with a correct token, ci-setup must be a no-op in production —
+    # it exists only to let CI provision a demo/admin account on staging.
+    monkeypatch.setattr("app.routers.auth.settings.environment", "production")
+    monkeypatch.setattr("app.routers.auth.settings.ci_setup_token", "correcttoken")
+    r = client.post("/api/v1/auth/ci-setup", json={
+        "email": "ci@example.com", "password": "password123", "token": "correcttoken",
+    })
+    assert r.status_code == 404
+
+
+def test_login_unknown_email_returns_generic_error(client):
+    # Must behave identically to a known-email/wrong-password attempt —
+    # no user enumeration via a different status code or message.
+    r = client.post("/api/v1/auth/login", json={
+        "email": "nobody@example.com", "password": "whatever123",
+    })
+    assert r.status_code == 401
+    assert r.json()["detail"]["code"] == "INVALID_CREDENTIALS"
+
+
+def test_login_rate_limited_after_threshold(client):
+    for _ in range(10):
+        r = client.post("/api/v1/auth/login", json={
+            "email": "nobody@example.com", "password": "wrong",
+        })
+        assert r.status_code == 401
+    r = client.post("/api/v1/auth/login", json={
+        "email": "nobody@example.com", "password": "wrong",
+    })
+    assert r.status_code == 429
+
+
+def test_register_rate_limited_after_threshold(client):
+    payload = {"email": "a@b.com", "password": "password1", "name": "Alice", "locale": "en"}
+    r = client.post("/api/v1/auth/register", json=payload)
+    assert r.status_code == 201
+    for _ in range(9):
+        r = client.post("/api/v1/auth/register", json=payload)
+        assert r.status_code == 409  # duplicate email — but still consumes the rate-limit budget
+    r = client.post("/api/v1/auth/register", json=payload)
+    assert r.status_code == 429
+
+
+def test_forgot_password_rate_limited_after_threshold(client):
+    for _ in range(5):
+        r = client.post("/api/v1/auth/forgot-password", json={"email": "nobody@example.com"})
+        assert r.status_code == 204
+    r = client.post("/api/v1/auth/forgot-password", json={"email": "nobody@example.com"})
+    assert r.status_code == 429
+
+
+def test_expired_access_token_returns_token_expired_code(client):
+    from datetime import datetime, timedelta, timezone
+    from jose import jwt
+
+    data = _register(client)
+    user_id = data["user"]["id"]
+    expired_token = jwt.encode(
+        {"sub": user_id, "type": "access", "exp": datetime.now(timezone.utc) - timedelta(minutes=1)},
+        "dev-secret-change-me",
+        algorithm="HS256",
+    )
+    r = client.get("/api/v1/users/me", headers={"Authorization": f"Bearer {expired_token}"})
+    assert r.status_code == 401
+    assert r.json()["detail"]["code"] == "TOKEN_EXPIRED"
+
+
 def test_logout(client):
     r = client.post("/api/v1/auth/register", json={
         "email": "a@b.com", "password": "password1", "name": "Alice", "locale": "en"

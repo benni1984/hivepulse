@@ -51,3 +51,22 @@ def test_delete_inspection(auth_client, hive):
     iid = r.json()["id"]
     r2 = auth_client.delete(f"/api/v1/inspections/{iid}")
     assert r2.status_code == 204
+
+
+# ---------------------------------------------------------------------------
+# Cross-user ownership isolation (#202)
+# ---------------------------------------------------------------------------
+
+
+def test_inspection_isolated_across_users(auth_client, auth_client2, hive):
+    iid = auth_client.post(f"/api/v1/hives/{hive['id']}/inspections", json={
+        "date": "2026-04-01", "varroa_count": 3,
+    }).json()["id"]
+
+    assert auth_client2.get(f"/api/v1/inspections/{iid}").status_code == 404
+    assert auth_client2.put(f"/api/v1/inspections/{iid}", json={"varroa_count": 99}).status_code == 404
+    assert auth_client2.delete(f"/api/v1/inspections/{iid}").status_code == 404
+    # Another user also can't list inspections on a hive they don't own.
+    assert auth_client2.get(f"/api/v1/hives/{hive['id']}/inspections").status_code == 404
+
+    assert auth_client.get(f"/api/v1/inspections/{iid}").json()["varroa_count"] == 3
