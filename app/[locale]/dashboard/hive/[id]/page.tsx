@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import dynamic from 'next/dynamic';
 import DashboardShell from '@/components/DashboardShell';
+import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getHive, getHiveStats, getInspections, updateHive, deleteHive, createInspection, updateInspection, deleteInspection, getUserFieldDefs, getApiaryFieldDefs, exportHiveInspections, type Hive, type HiveStats, type Inspection, type InspectionInput, type FieldDefinition } from '@/lib/api';
 
 function moodPct(dist: { calm: number; nervous: number; aggressive: number }) {
@@ -26,6 +27,7 @@ export default function HivePage() {
   const { id } = useParams<{ id: string }>();
   const t = useTranslations('dash');
   const router = useRouter();
+  const ready = useDashboardReady();
 
   const [hive, setHive] = useState<Hive | null>(null);
   const [stats, setStats] = useState<HiveStats | null>(null);
@@ -58,6 +60,7 @@ export default function HivePage() {
   const [deletingInspectionId, setDeletingInspectionId] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!ready) return;
     Promise.all([getHive(id), getHiveStats(id), getInspections(id, 1)])
       .then(([h, s, i]) => {
         setHive(h);
@@ -81,7 +84,7 @@ export default function HivePage() {
       })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [ready, id]);
 
   function openEdit() {
     if (hive) {

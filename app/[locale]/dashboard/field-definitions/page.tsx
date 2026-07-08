@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import DashboardShell from '@/components/DashboardShell';
+import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import {
   getUserFieldDefs, createUserFieldDef, updateUserFieldDef, deleteUserFieldDef,
   type FieldDefinition, type FieldType, type FieldTarget,
@@ -12,6 +13,7 @@ type EditForm = { name: string; options: string; required: boolean };
 
 export default function FieldDefinitionsPage() {
   const t = useTranslations('dash');
+  const ready = useDashboardReady();
   const [fields, setFields] = useState<FieldDefinition[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,11 +43,12 @@ export default function FieldDefinitionsPage() {
   };
 
   useEffect(() => {
+    if (!ready) return;
     getUserFieldDefs()
       .then(setFields)
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, []);
+  }, [ready]);
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();

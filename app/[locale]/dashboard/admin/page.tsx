@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
+import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { adminGetStats, adminGetTokenStats, type PlatformStats, type TokenStats } from '@/lib/api';
 
 const PRESETS = ['30d', '90d', '365d', 'all'] as const;
@@ -10,18 +11,20 @@ type Preset = typeof PRESETS[number];
 
 export default function AdminStatsPage() {
   const t = useTranslations('dash');
+  const ready = useDashboardReady();
   const [preset, setPreset] = useState<Preset>('30d');
   const [stats, setStats] = useState<PlatformStats | null>(null);
   const [tokens, setTokens] = useState<TokenStats | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!ready) return;
     setLoading(true);
     Promise.all([adminGetStats(preset), adminGetTokenStats()])
       .then(([s, t]) => { setStats(s); setTokens(t); })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [preset]);
+  }, [ready, preset]);
 
   return (
     <DashboardShell adminOnly>

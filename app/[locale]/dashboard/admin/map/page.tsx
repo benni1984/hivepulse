@@ -2,12 +2,14 @@
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import DashboardShell from '@/components/DashboardShell';
+import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { adminGetApiaries, adminGetFlaggedApiaries, adminSetPrivate, type AdminApiary, type Paginated } from '@/lib/api';
 
 type Tab = 'all' | 'flagged';
 
 export default function AdminMapPage() {
   const t = useTranslations('dash');
+  const ready = useDashboardReady();
   const [tab, setTab] = useState<Tab>('all');
   const [data, setData] = useState<Paginated<AdminApiary> | null>(null);
   const [flagged, setFlagged] = useState<AdminApiary[]>([]);
@@ -15,6 +17,7 @@ export default function AdminMapPage() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
+    if (!ready) return;
     setLoading(true);
     if (tab === 'all') {
       adminGetApiaries({ page, per_page: 20 })
@@ -27,7 +30,7 @@ export default function AdminMapPage() {
         .catch(() => {})
         .finally(() => setLoading(false));
     }
-  }, [tab, page]);
+  }, [ready, tab, page]);
 
   async function setPrivate(apiary: AdminApiary) {
     await adminSetPrivate(apiary.id);

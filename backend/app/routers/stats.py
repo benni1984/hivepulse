@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, Header, HTTPException, Query
 
-from app.deps import CurrentUser, DB
+from app.deps import CurrentSupporter, CurrentUser, DB
 from app.i18n import error
 from app.models import Apiary, FieldDefinition, Hive, Inspection
 from app.schemas import (
@@ -236,8 +236,11 @@ def overview_stats(
 
 
 @router.get("/stats/community-heatmap")
-def community_heatmap(current_user: CurrentUser, db: DB) -> Dict[str, Any]:
-    """GeoJSON FeatureCollection with multi-metric heatmap data for the members dashboard."""
+def community_heatmap(current_user: CurrentSupporter, db: DB) -> Dict[str, Any]:
+    """GeoJSON FeatureCollection with multi-metric heatmap data for the members-only
+    dashboard. Requires supporter (or admin) status — this backs the memberOnly-gated
+    /dashboard/members page, and must be enforced server-side, not just by the
+    frontend route guard."""
     rows = (
         db.query(
             Apiary.id,
