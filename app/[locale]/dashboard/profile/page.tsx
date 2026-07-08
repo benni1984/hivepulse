@@ -42,8 +42,9 @@ export default function ProfilePage() {
     setLocale(user.locale);
   }
 
-  // Load reminder settings on mount
+  // Load reminder settings once auth resolves
   useEffect(() => {
+    if (loading || !user) return;
     getReminderSettings()
       .then((s: ReminderSettings) => {
         setReminderEnabled(s.reminder_enabled);
@@ -53,7 +54,7 @@ export default function ProfilePage() {
         setReminderLoaded(true);
       })
       .catch(() => setReminderLoaded(true));
-  }, []);
+  }, [loading, user]);
 
   async function handleProfileSave(e: React.FormEvent) {
     e.preventDefault();

@@ -56,6 +56,7 @@ This ensures `public/docs/screenshots/*.png` and other static files are served d
 |-------|-------------|
 | `/` | Landing — hero, features, mission |
 | `/map` | Public apiary map (Leaflet) |
+| `/apiary` | Public detail for one apiary (reached from a `/map` pin) |
 | `/hornets` | Hornet tracker landing |
 | `/hornets/report` | Report catch or nest |
 | `/hornets/map` | Nest + trap map (Leaflet, blue pins for traps) |
@@ -65,6 +66,8 @@ This ensures `public/docs/screenshots/*.png` and other static files are served d
 | `/news` | News feed |
 | `/contribute` | Contribute page |
 | `/privacy` | Privacy policy |
+| `/help` | Help & documentation index |
+| `/help/[slug]` | Individual help article |
 
 ## Dashboard Routes (authenticated)
 

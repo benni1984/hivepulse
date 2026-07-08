@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import DashboardShell from '@/components/DashboardShell';
+import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getPublicStats, getCommunityHeatmap, getMyTraps, type PublicStats, type CommunityHeatmap, type HornetTrap } from '@/lib/api';
 
 const MoodChart = dynamic(() => import('@/components/MoodChart'), { ssr: false });
@@ -71,6 +72,7 @@ function SizeChart({ data }: { data: { label: string; count: number }[] }) {
 
 export default function MembersDashboardPage() {
   const t = useTranslations('dash');
+  const ready = useDashboardReady();
   const [stats, setStats] = useState<PublicStats | null>(null);
   const [heatmap, setHeatmap] = useState<CommunityHeatmap | null>(null);
   const [loading, setLoading] = useState(true);
@@ -78,6 +80,7 @@ export default function MembersDashboardPage() {
   const [trapsLoading, setTrapsLoading] = useState(true);
 
   useEffect(() => {
+    if (!ready) return;
     Promise.all([
       getPublicStats().catch(() => null),
       getCommunityHeatmap().catch(() => null),
@@ -90,7 +93,7 @@ export default function MembersDashboardPage() {
       .then(setMyTraps)
       .catch(() => setMyTraps([]))
       .finally(() => setTrapsLoading(false));
-  }, []);
+  }, [ready]);
 
   const calmPct = stats
     ? (() => {

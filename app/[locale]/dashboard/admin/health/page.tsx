@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import DashboardShell from '@/components/DashboardShell';
+import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import {
   adminGetHealthSummary, adminGetInactiveUsers, adminGetNoVarroaApiaries, adminGetZeroInspectionHives,
   type HealthSummary, type InactiveUser, type NoVarroaApiary, type ZeroInspectionHive, type Paginated,
@@ -11,6 +12,7 @@ type Section = 'inactive' | 'zeroHives' | 'noVarroa';
 
 export default function AdminHealthPage() {
   const t = useTranslations('dash');
+  const ready = useDashboardReady();
   const [summary, setSummary] = useState<HealthSummary | null>(null);
   const [section, setSection] = useState<Section | null>(null);
   const [inactiveData, setInactiveData] = useState<Paginated<InactiveUser> | null>(null);
@@ -21,14 +23,15 @@ export default function AdminHealthPage() {
   const [drillLoading, setDrillLoading] = useState(false);
 
   useEffect(() => {
+    if (!ready) return;
     adminGetHealthSummary()
       .then(setSummary)
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, []);
+  }, [ready]);
 
   useEffect(() => {
-    if (!section) return;
+    if (!ready || !section) return;
     setDrillLoading(true);
     if (section === 'inactive') {
       adminGetInactiveUsers({ page: inactivePage, per_page: 20 })
@@ -46,7 +49,7 @@ export default function AdminHealthPage() {
         .catch(() => {})
         .finally(() => setDrillLoading(false));
     }
-  }, [section, inactivePage]);
+  }, [ready, section, inactivePage]);
 
   return (
     <DashboardShell adminOnly>

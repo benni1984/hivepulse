@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
+import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getOverviewStats, type OverviewStats } from '@/lib/api';
 
 const PRESETS = ['30d', '90d', '365d', 'all'] as const;
@@ -10,17 +11,19 @@ type Preset = typeof PRESETS[number];
 
 export default function StatsPage() {
   const t = useTranslations('dash');
+  const ready = useDashboardReady();
   const [stats, setStats] = useState<OverviewStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [preset, setPreset] = useState<Preset>('365d');
 
   useEffect(() => {
+    if (!ready) return;
     setLoading(true);
     getOverviewStats(preset)
       .then(setStats)
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [preset]);
+  }, [ready, preset]);
 
   const presetLabel: Record<Preset, string> = {
     '30d': t('overview.preset30d'),
