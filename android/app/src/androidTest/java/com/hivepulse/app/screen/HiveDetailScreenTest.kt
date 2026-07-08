@@ -9,6 +9,8 @@ import com.hivepulse.app.data.local.TokenStore
 import com.hivepulse.app.di.NetworkModule
 import dagger.hilt.android.testing.*
 import io.mockk.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.*
 import org.junit.rules.ExternalResource
 import org.junit.runner.RunWith
@@ -35,6 +37,7 @@ class HiveDetailScreenTest {
         coEvery { it.listHives(any(), any(), any()) } returns PaginatedResponse(listOf(hive), 1, 1, 1)
         coEvery { it.getHive(any()) } returns hive
         coEvery { it.listInspections(any(), any(), any()) } returns PaginatedResponse(emptyList(), 0, 1, 1)
+        coEvery { it.getHiveQr(any()) } returns byteArrayOf(1, 2, 3).toResponseBody("image/png".toMediaType())
     }
 
     @Inject lateinit var tokenStore: TokenStore
@@ -84,6 +87,19 @@ class HiveDetailScreenTest {
         )
         navigateToHiveDetail()
         composeRule.onNodeWithText("2024-03-15").assertIsDisplayed()
+    }
+
+    @Test
+    fun hiveDetail_qrButtonNavigatesToQrScreen() {
+        navigateToHiveDetail()
+        composeRule.onNodeWithContentDescription("View QR Code").performClick()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("QR Code").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Hive Alpha").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Hive Alpha").assertIsDisplayed()
     }
 
     @Test

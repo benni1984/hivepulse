@@ -88,6 +88,21 @@ def admin_client(client):
 
 
 @pytest.fixture
+def auth_client_supporter(auth_client):
+    """auth_client's user (test@example.com), promoted to is_supporter=True
+    directly in the test DB — for endpoints gated by CurrentSupporter."""
+    from app.models import User
+    db = TestingSession()
+    try:
+        user = db.query(User).filter(User.email == "test@example.com").first()
+        user.is_supporter = True
+        db.commit()
+    finally:
+        db.close()
+    return auth_client
+
+
+@pytest.fixture
 def db_session():
     """Direct access to the test DB — use to set up data that the API cannot (e.g. backdating timestamps)."""
     db = TestingSession()

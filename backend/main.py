@@ -16,6 +16,17 @@ async def lifespan(app: FastAPI):
     yield
 
 
+def check_secret_key_safety(environment: str, secret_key: str) -> None:
+    if environment == "production" and secret_key == "dev-secret-change-me":
+        raise RuntimeError(
+            "SECRET_KEY is unset (using the public dev default) while ENVIRONMENT=production. "
+            "Refusing to start — this would let anyone forge JWTs for any user. "
+            "Set a real SECRET_KEY in the production environment's env vars."
+        )
+
+
+check_secret_key_safety(settings.environment, settings.secret_key)
+
 app = FastAPI(title="HivePulse", version="1.0.0", lifespan=lifespan)
 
 # Promote ADMIN_EMAIL to admin at module import time so it runs on every cold
@@ -35,7 +46,14 @@ if settings.admin_email:
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    # Explicit known frontend origins, plus any Vercel-hosted deployment (preview
+    # URLs are dynamically generated per-branch/PR so can't be listed exactly).
+    # Narrows this from "any origin on the internet" to "our domains + Vercel".
+    allow_origins=[
+        "https://hivepulse.multihead.de",
+        "http://localhost:3000",
+    ],
+    allow_origin_regex=r"^https://([a-z0-9-]+\.)*vercel\.app$",
     allow_methods=["*"],
     allow_headers=["*"],
 )

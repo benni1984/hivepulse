@@ -78,8 +78,8 @@ def heatmap_seed(auth_client):
     return apiary, hive
 
 
-def test_community_heatmap_returns_geojson(auth_client, heatmap_seed):
-    r = auth_client.get("/api/v1/stats/community-heatmap")
+def test_community_heatmap_returns_geojson(auth_client_supporter, heatmap_seed):
+    r = auth_client_supporter.get("/api/v1/stats/community-heatmap")
     assert r.status_code == 200
     data = r.json()
     assert data["type"] == "FeatureCollection"
@@ -89,8 +89,8 @@ def test_community_heatmap_returns_geojson(auth_client, heatmap_seed):
     assert feat["geometry"]["type"] == "Polygon"
 
 
-def test_community_heatmap_properties(auth_client, heatmap_seed):
-    data = auth_client.get("/api/v1/stats/community-heatmap").json()
+def test_community_heatmap_properties(auth_client_supporter, heatmap_seed):
+    data = auth_client_supporter.get("/api/v1/stats/community-heatmap").json()
     props = data["features"][0]["properties"]
     assert props["avg_varroa"] == 2.0          # (3 + 1) / 2
     assert props["mood_score"] == 100          # both calm
@@ -100,20 +100,20 @@ def test_community_heatmap_properties(auth_client, heatmap_seed):
     assert props["inspection_count"] == 2
 
 
-def test_community_heatmap_excludes_private(auth_client):
+def test_community_heatmap_excludes_private(auth_client_supporter):
     # Private apiary — should not appear even with GPS
-    apiary = auth_client.post("/api/v1/apiaries", json={
+    apiary = auth_client_supporter.post("/api/v1/apiaries", json={
         "name": "Secret", "latitude": 48.5, "longitude": 11.5
     }).json()
-    batch = auth_client.post("/api/v1/qr-batches", json={"count": 1}).json()
+    batch = auth_client_supporter.post("/api/v1/qr-batches", json={"count": 1}).json()
     token = batch["tokens"][0]["token"]
-    hive = auth_client.post("/api/v1/hives/initialize", json={
+    hive = auth_client_supporter.post("/api/v1/hives/initialize", json={
         "qr_token": token, "apiary_id": apiary["id"], "name": "H1", "hive_type": "langstroth"
     }).json()
-    auth_client.post(f"/api/v1/hives/{hive['id']}/inspections", json={
+    auth_client_supporter.post(f"/api/v1/hives/{hive['id']}/inspections", json={
         "date": "2026-04-01", "varroa_count": 5
     })
-    data = auth_client.get("/api/v1/stats/community-heatmap").json()
+    data = auth_client_supporter.get("/api/v1/stats/community-heatmap").json()
     assert len(data["features"]) == 0
 
 
@@ -122,18 +122,38 @@ def test_community_heatmap_requires_auth(client):
     assert r.status_code == 401
 
 
-def test_community_heatmap_null_metrics(auth_client):
+def test_community_heatmap_requires_supporter(auth_client, heatmap_seed):
+    # A regular (non-supporter, non-admin) authenticated user must be denied —
+    # this endpoint backs the memberOnly-gated /dashboard/members page and must
+    # not be reachable by directly calling the API.
+    r = auth_client.get("/api/v1/stats/community-heatmap")
+    assert r.status_code == 403
+    assert r.json()["detail"]["code"] == "SUPPORTER_REQUIRED"
+
+
+def test_community_heatmap_allows_admin(admin_client):
+    # Admins get supporter-tier access too (matches the frontend's
+    # user.is_supporter || user.is_admin gating). Uses admin_client alone
+    # (not heatmap_seed, which depends on auth_client) — both admin_client and
+    # auth_client mutate the same underlying shared TestClient's auth header,
+    # so combining them in one test is a fixture footgun, not a real 403.
+    r = admin_client.get("/api/v1/stats/community-heatmap")
+    assert r.status_code == 200
+    assert r.json()["type"] == "FeatureCollection"
+
+
+def test_community_heatmap_null_metrics(auth_client_supporter):
     """Inspections with no varroa/brood/mood still create a cell with nulls."""
-    apiary = auth_client.post("/api/v1/apiaries", json={
+    apiary = auth_client_supporter.post("/api/v1/apiaries", json={
         "name": "Minimal", "latitude": 48.5, "longitude": 11.5, "is_public": True
     }).json()
-    batch = auth_client.post("/api/v1/qr-batches", json={"count": 1}).json()
+    batch = auth_client_supporter.post("/api/v1/qr-batches", json={"count": 1}).json()
     token = batch["tokens"][0]["token"]
-    hive = auth_client.post("/api/v1/hives/initialize", json={
+    hive = auth_client_supporter.post("/api/v1/hives/initialize", json={
         "qr_token": token, "apiary_id": apiary["id"], "name": "H1", "hive_type": "langstroth"
     }).json()
-    auth_client.post(f"/api/v1/hives/{hive['id']}/inspections", json={"date": "2026-04-01"})
-    data = auth_client.get("/api/v1/stats/community-heatmap").json()
+    auth_client_supporter.post(f"/api/v1/hives/{hive['id']}/inspections", json={"date": "2026-04-01"})
+    data = auth_client_supporter.get("/api/v1/stats/community-heatmap").json()
     assert len(data["features"]) == 1
     props = data["features"][0]["properties"]
     assert props["avg_varroa"] is None

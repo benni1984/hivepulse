@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { useDashboardAuth } from '@/hooks/useDashboardAuth';
+import { useDashboardAuth, useDashboardReady } from '@/hooks/useDashboardAuth';
 
 // Stable object — same reference across re-renders so [router] dependency doesn't retrigger the effect
 const mockRouter = vi.hoisted(() => ({ replace: vi.fn() }));
@@ -47,5 +47,58 @@ describe('useDashboardAuth', () => {
     renderHook(() => useDashboardAuth());
     await waitFor(() => expect(mockRouter.replace).toHaveBeenCalledWith('/dashboard/login'));
     expect(mockClearTokens).toHaveBeenCalled();
+  });
+
+  it('dedupes concurrent hook instances into a single getMe call', async () => {
+    localStorage.setItem('access_token', 'tok');
+    let resolveGetMe: (u: typeof mockUser) => void;
+    mockGetMe.mockReturnValueOnce(new Promise(res => { resolveGetMe = res; }));
+
+    // Simulates DashboardShell + a page both calling the hook on the same mount.
+    const first = renderHook(() => useDashboardAuth());
+    const second = renderHook(() => useDashboardAuth());
+
+    resolveGetMe!(mockUser);
+    await waitFor(() => expect(first.result.current.loading).toBe(false));
+    await waitFor(() => expect(second.result.current.loading).toBe(false));
+
+    expect(mockGetMe).toHaveBeenCalledTimes(1);
+    expect(first.result.current.user).toEqual(mockUser);
+    expect(second.result.current.user).toEqual(mockUser);
+  });
+});
+
+describe('useDashboardReady', () => {
+  beforeEach(() => {
+    mockRouter.replace.mockClear();
+    mockGetMe.mockClear();
+    mockClearTokens.mockClear();
+    localStorage.clear();
+  });
+
+  it('is false while auth is loading', async () => {
+    localStorage.setItem('access_token', 'tok');
+    // A controllable (not permanently-hanging) promise — a promise that never
+    // settles would leave the hook's module-level in-flight cache stuck for
+    // every later test in this file, since it's shared across hook instances.
+    let resolveGetMe: (u: typeof mockUser) => void;
+    mockGetMe.mockReturnValueOnce(new Promise(res => { resolveGetMe = res; }));
+    const { result } = renderHook(() => useDashboardReady());
+    expect(result.current).toBe(false);
+    resolveGetMe!(mockUser);
+    await waitFor(() => expect(result.current).toBe(true));
+  });
+
+  it('is false when there is no token (redirects, never authenticates)', () => {
+    const { result } = renderHook(() => useDashboardReady());
+    expect(result.current).toBe(false);
+    expect(mockGetMe).not.toHaveBeenCalled();
+  });
+
+  it('becomes true once auth resolves with a user', async () => {
+    localStorage.setItem('access_token', 'tok');
+    mockGetMe.mockResolvedValueOnce(mockUser);
+    const { result } = renderHook(() => useDashboardReady());
+    await waitFor(() => expect(result.current).toBe(true));
   });
 });
