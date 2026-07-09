@@ -5,7 +5,7 @@
 - Run tests: `pytest` (from `backend/`)
 - Database: SQLite for dev, PostgreSQL (Neon) for staging/production
 - ORM: SQLAlchemy + Alembic migrations in `backend/alembic/versions/`
-- Latest migration: `006_add_hornet_traps.py`
+- Latest migration: `009_add_rate_limit_hits.py`
 
 ## Endpoints & Tests
 

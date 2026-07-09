@@ -1318,7 +1318,7 @@ All endpoints in this section require `Authorization: Bearer <access_token>` for
 | GET | `/admin/apiaries/flagged` | Apiaries flagged for review |
 | PUT | `/admin/apiaries/{apiary_id}/set-private` | Force an apiary to private |
 | GET | `/admin/health/summary` | System health summary |
-| GET | `/admin/health/inactive-users` | Users with no activity in the last 90 days |
+| GET | `/admin/health/inactive-users` | Users with no activity in the last 30 days |
 | GET | `/admin/health/no-varroa-inspections` | Apiaries whose hives have never recorded varroa |
 | GET | `/admin/health/zero-inspection-hives` | Hives that have never been inspected |
 | GET | `/admin/tokens/stats` | Active session counts |
@@ -1345,7 +1345,6 @@ All endpoints in this section require `Authorization: Bearer <access_token>` for
       "is_admin": false,
       "is_supporter": false,
       "created_at": "datetime",
-      "days_since_registration": 42,
       "apiary_count": 3,
       "hive_count": 12,
       "inspection_count": 87
