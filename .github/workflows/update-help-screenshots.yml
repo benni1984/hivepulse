@@ -202,8 +202,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # Use a PAT or the default GITHUB_TOKEN (needs write permission)
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # A PAT (not the default GITHUB_TOKEN) so the PR this job opens
+          # triggers downstream pull_request-triggered workflows (CI) —
+          # GitHub's anti-recursion rule blocks GITHUB_TOKEN-authored pushes
+          # from firing other workflows' pull_request events.
+          token: ${{ secrets.SCREENSHOT_PAT }}
 
       - name: Download web screenshots
         uses: actions/download-artifact@v4
@@ -222,7 +225,7 @@ jobs:
       - name: Commit and open PR for updated screenshots
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.SCREENSHOT_PAT }}
           commit-message: 'chore(screenshots): auto-update help page screenshots [skip ci]'
           branch: chore/auto-screenshots
           delete-branch: true

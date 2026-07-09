@@ -1019,7 +1019,10 @@ tr:last-child td { border-bottom: none; }
   pointer-events: none;
 }
 .dash-auth-center {
-  position: relative;
+  /* Always combined on the same element as .dash-overlay (position: fixed) —
+     don't set position here, it would override the fixed positioning since
+     both are single-class selectors of equal specificity and this rule
+     comes later in the cascade. */
   display: flex;
   align-items: center;
   justify-content: center;
