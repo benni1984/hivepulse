@@ -74,7 +74,7 @@ describe('DashboardPage', () => {
     await waitFor(() => screen.getByText('apiaries.new'));
     fireEvent.click(screen.getByText('apiaries.new'));
     expect(screen.getByText('apiaries.createTitle')).toBeInTheDocument();
-    expect(screen.getByLabelText ? true : screen.getByText('apiaries.name')).toBeTruthy();
+    expect(screen.getByText('apiaries.name')).toBeTruthy();
   });
 
   it('cancel button hides the create form', async () => {

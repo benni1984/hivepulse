@@ -79,7 +79,7 @@ describe('HivePage', () => {
   function setupMocks({
     hive = { id: 'hive-1', name: 'Hive Alpha', hive_type: 'langstroth', apiary_id: 'apiary-1' },
     stats = { inspection_count: 0, varroa_trend: [] as { date: string; value: number }[], mood_distribution: { calm: 0, nervous: 0, aggressive: 0 } },
-    inspections = [] as { id: string; date: string; varroa_count?: number; mood?: string; queen_seen?: boolean; brood_frames?: number }[],
+    inspections = [] as { id: string; date: string; varroa_count?: number; mood?: string; queen_seen?: boolean; brood_frames?: number; custom_fields?: Record<string, unknown> }[],
   } = {}) {
     mockGetHive.mockResolvedValueOnce(hive);
     mockGetHiveStats.mockResolvedValueOnce(stats);

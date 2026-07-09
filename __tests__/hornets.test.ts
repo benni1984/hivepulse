@@ -396,8 +396,9 @@ describe('getHornetTrapsGeoJSON', () => {
     const result = await getHornetTrapsGeoJSON();
     expect(result.type).toBe('FeatureCollection');
     expect(result.features).toHaveLength(1);
-    expect(result.features[0].properties.access_code).toBe('ABCD1234');
-    expect(result.features[0].properties.total_caught).toBe(7);
+    const feature = result.features[0] as { properties: { access_code: string; total_caught: number } };
+    expect(feature.properties.access_code).toBe('ABCD1234');
+    expect(feature.properties.total_caught).toBe(7);
   });
 
   it('calls /hornets/traps/geojson without auth', async () => {
