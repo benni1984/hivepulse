@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Legacy (API 23-30) backup config — android:dataExtractionRules only applies
+  on API 31+, so this covers the gap down to minSdk 26. Same exclusion as
+  data_extraction_rules.xml.
+-->
+<full-backup-content>
+    <exclude domain="sharedpref" path="HivePulse_tokens.xml" />
+</full-backup-content>

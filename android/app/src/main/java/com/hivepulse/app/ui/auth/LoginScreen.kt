@@ -120,7 +120,7 @@ fun LoginScreen(
                 Spacer(Modifier.height(8.dp))
                 TextButton(onClick = {
                     context.startActivity(Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://hivepulse.app/dashboard/forgot-password")))
+                        Uri.parse("https://hivepulse.multihead.de/dashboard/forgot-password")))
                 }) {
                     Text(stringResource(R.string.action_forgot_password),
                         style = MaterialTheme.typography.bodySmall, color = Stone500)

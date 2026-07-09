@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android 12+ (API 31+) backup/transfer config. Excludes the encrypted token
+  store from both cloud backup and device-to-device transfer — the blob is
+  already useless without the on-device Keystore key, but excluding it
+  outright avoids ever shipping even an encrypted copy off-device.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="sharedpref" path="HivePulse_tokens.xml" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="sharedpref" path="HivePulse_tokens.xml" />
+    </device-transfer>
+</data-extraction-rules>

@@ -88,7 +88,7 @@ struct LoginView: View {
                 RegisterView().environmentObject(authVM)
             }
             .sheet(isPresented: $showForgotPassword) {
-                if let url = URL(string: "https://hivepulse.app/dashboard/forgot-password") {
+                if let url = URL(string: "https://hivepulse.multihead.de/dashboard/forgot-password") {
                     SafariView(url: url)
                         .ignoresSafeArea()
                 }
