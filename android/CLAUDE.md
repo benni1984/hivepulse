@@ -4,7 +4,7 @@
 - UI: Jetpack Compose + Material Design 3
 - QR scanning: ML Kit Barcode Scanning
 - Networking: Retrofit + OkHttp
-- Local persistence: Room
+- Local persistence: none — data is fetched live from the backend on each screen; only auth tokens are persisted, in `TokenStore` (`data/local/TokenStore.kt`, Keystore-backed encrypted storage)
 - Build: `./gradlew assembleDebug` (from `android/`)
 - Unit tests: `./gradlew test`
 - UI tests (emulator/device): `./gradlew connectedAndroidTest`
