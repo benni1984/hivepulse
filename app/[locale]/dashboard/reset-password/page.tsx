@@ -101,7 +101,7 @@ export default function ResetPasswordPage() {
             <polygon points="17.24,19.25 22,22 22,27.5 17.24,30.25 12.48,27.5 12.48,22" fill="rgba(255,255,255,0.2)" stroke="white" strokeWidth="1.2" strokeLinejoin="round"/>
             <polygon points="26.76,19.25 31.52,22 31.52,27.5 26.76,30.25 22,27.5 22,22" fill="rgba(255,255,255,0.2)" stroke="white" strokeWidth="1.2" strokeLinejoin="round"/>
           </svg>
-          Hive<strong>Pulse</strong>
+          <span>Hive<strong>Pulse</strong></span>
         </div>
         <Suspense fallback={<div className="spinner" />}>
           <ResetPasswordForm />
