@@ -31,7 +31,7 @@ hivepulse/
   backend/              Python (FastAPI) REST API — @backend/CLAUDE.md
   ios/                  Swift / SwiftUI iPhone app — @ios/CLAUDE.md
   android/              Kotlin / Jetpack Compose Android app — @android/CLAUDE.md
-  app/                  Next.js 15 App Router — @app/CLAUDE.md
+  app/                  Next.js 16 App Router — @app/CLAUDE.md
   web/                  style.css, landing.css — global styles for the Next.js app
   components/           Shared React components (Nav, Footer, DashboardShell, …)
   lib/                  API client (lib/api.ts), hooks, utilities

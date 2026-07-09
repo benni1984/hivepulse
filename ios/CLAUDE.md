@@ -4,22 +4,22 @@
 - UI: SwiftUI
 - QR scanning: `AVFoundation` / `DataScannerViewController`
 - Networking: `URLSession` async/await
-- Local persistence: SwiftData
-- Build: open `ios/ApiScan.xcodeproj` in Xcode (requires macOS)
+- Local persistence: none — data is fetched live from the backend on each screen; only auth tokens are persisted, via `KeychainService` (`Services/KeychainService.swift`)
+- Build: open `ios/HivePulse.xcodeproj` in Xcode (requires macOS)
 - Run tests: Cmd+U in Xcode, or push to CI (see below)
 
 ## CI
 
 - Job: `ios` in `.github/workflows/ci.yml` — path-filtered, runs on `macos-latest`
 - XcodeGen regenerates `.xcodeproj` from `ios/project.yml` on the runner
-- `xcodebuild test` runs `ApiScanTests` + `ApiScanUITests` on iPhone 16 simulator
+- `xcodebuild test` runs `HivePulseTests` + `HivePulseUITests` on an iPhone 16 simulator, falling back to the newest available plain iPhone simulator if iPhone 16 isn't on the runner image
 - Results: `ios-test-results.xcresult` artifact
 
 You can write test files on any OS and let CI run them — no local macOS needed.
 
 ## Mock Infrastructure for UI Tests
 
-`ios/ApiScan/Testing/MockURLProtocol.swift` (`#if DEBUG` only):
+`ios/HivePulse/Testing/MockURLProtocol.swift` (`#if DEBUG` only):
 - Intercepts all `URLSession` requests via `URLSessionConfiguration.protocolClasses`
 - Handler sets: `authenticatedHandlers`, `apiaryWithHiveHandlers`, `unauthenticatedHandlers`
 
@@ -42,12 +42,12 @@ Most-specific URL patterns must come first:
 ("apiaries",              ...)  // catch-all
 ```
 
-## Unit Tests (ApiScanTests/)
+## Unit Tests (HivePulseTests/)
 
-AuthViewModelTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, DTOTests — all passing in CI.
+AuthViewModelTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, DTOTests, APIClientTests — all passing in CI.
 
-## UI Tests (ApiScanUITests/)
+## UI Tests (HivePulseUITests/)
 
-LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests — all passing in CI.
+LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests, HornetUITests, MembersUITests — all passing in CI.
 
 Screens: Login, Register, ApiaryList, ApiaryDetail, ApiaryForm, HiveDetail, HiveInitialize, HiveQR, InspectionForm, InspectionDetail, QRScanner, QRBatchList, HiveStats, Settings.
