@@ -7,7 +7,7 @@ protocol HiveServiceProtocol {
     func update(_ id: String, request: HiveUpdateRequest) async throws -> HiveOut
     func delete(_ id: String) async throws
     func resolveQR(token: String) async throws -> QRScanResult
-    func qrImageURL(hiveId: String) -> URL
+    func qrImageData(hiveId: String) async throws -> Data
 }
 
 extension HiveServiceProtocol {
@@ -52,7 +52,7 @@ struct HiveService: HiveServiceProtocol {
         return .linked(hive)
     }
 
-    func qrImageURL(hiveId: String) -> URL {
-        APIClient.shared.baseURL.appendingPathComponent("hives/\(hiveId)/qr")
+    func qrImageData(hiveId: String) async throws -> Data {
+        try await client.getRawData("hives/\(hiveId)/qr")
     }
 }

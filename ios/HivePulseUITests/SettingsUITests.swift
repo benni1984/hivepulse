@@ -32,11 +32,11 @@ final class SettingsUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Save Profile"].waitForExistence(timeout: 5))
     }
 
-    func test_settings_showsChangePasswordSection() {
-        XCTAssertTrue(app.staticTexts["Change Password"].waitForExistence(timeout: 5))
-    }
-
     // MARK: - Lower-form elements (scroll required)
+
+    func test_settings_showsChangePasswordSection() {
+        XCTAssertTrue(scrollDownUntilVisible(app.staticTexts["Change Password"]))
+    }
 
     func test_settings_showsChangePasswordButton() {
         app.swipeUp()
@@ -94,5 +94,17 @@ final class SettingsUITests: XCTestCase {
         XCTAssertTrue(app.tabBars.buttons["Settings"].waitForExistence(timeout: 5))
         app.tabBars.buttons["Settings"].tap()
         XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 5))
+    }
+
+    /// A full-velocity `swipeUp()` can scroll past a target that only needs a small nudge into
+    /// view — how far varies by simulator screen size. `.slow` velocity produces a shorter,
+    /// gentler scroll per call (less inertial coasting); repeat with an existence check between
+    /// each so the target is never skipped over.
+    private func scrollDownUntilVisible(_ element: XCUIElement, maxSteps: Int = 5) -> Bool {
+        for _ in 0..<maxSteps {
+            if element.exists { return true }
+            app.swipeUp(velocity: .slow)
+        }
+        return element.waitForExistence(timeout: 5)
     }
 }

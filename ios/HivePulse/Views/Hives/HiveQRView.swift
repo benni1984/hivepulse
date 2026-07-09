@@ -1,23 +1,31 @@
 import SwiftUI
+import UIKit
 
 struct HiveQRView: View {
     let hive: HiveOut
+    private let service: any HiveServiceProtocol
     @Environment(\.dismiss) var dismiss
+
+    @State private var qrImage: UIImage?
+    @State private var loadFailed = false
+
+    init(hive: HiveOut, service: any HiveServiceProtocol = HiveService()) {
+        self.hive = hive
+        self.service = service
+    }
 
     var body: some View {
         VStack(spacing: 24) {
             Text(hive.name).font(.title2.bold())
 
-            AsyncImage(url: HiveService().qrImageURL(hiveId: hive.id)) { phase in
-                switch phase {
-                case .success(let image):
-                    image.resizable().scaledToFit().frame(width: 250, height: 250)
-                case .failure:
+            Group {
+                if let qrImage {
+                    Image(uiImage: qrImage).resizable().scaledToFit().frame(width: 250, height: 250)
+                } else if loadFailed {
                     Image(systemName: "qrcode").font(.system(size: 100)).foregroundColor(.secondary)
-                case .empty:
+                        .frame(width: 250, height: 250)
+                } else {
                     ProgressView().frame(width: 250, height: 250)
-                @unknown default:
-                    EmptyView()
                 }
             }
             .padding()
@@ -39,6 +47,17 @@ struct HiveQRView: View {
             ToolbarItem(placement: .cancellationAction) {
                 Button(NSLocalizedString("action.done", comment: "")) { dismiss() }
             }
+        }
+        .task { await loadQR() }
+    }
+
+    private func loadQR() async {
+        do {
+            let data = try await service.qrImageData(hiveId: hive.id)
+            qrImage = UIImage(data: data)
+            loadFailed = (qrImage == nil)
+        } catch {
+            loadFailed = true
         }
     }
 }

@@ -106,6 +106,7 @@ final class MockHiveService: HiveServiceProtocol {
     var listResult: Result<PaginatedResponse<HiveOut>, Error> = .success(makePage([]))
     var resolveResult: QRScanResult = .unlinked(token: "test-token")
     var deleteError: Error? = nil
+    var qrImageResult: Result<Data, Error> = .success(MockHiveService.onePixelPNG)
 
     func listForApiary(_ apiaryId: String, page: Int) async throws -> PaginatedResponse<HiveOut> { try listResult.get() }
     func get(_ id: String) async throws -> HiveOut { makeHive(id: id) }
@@ -113,7 +114,16 @@ final class MockHiveService: HiveServiceProtocol {
     func update(_ id: String, request: HiveUpdateRequest) async throws -> HiveOut { makeHive(id: id, name: request.name ?? "Updated") }
     func delete(_ id: String) async throws { if let err = deleteError { throw err } }
     func resolveQR(token: String) async throws -> QRScanResult { resolveResult }
-    func qrImageURL(hiveId: String) -> URL { URL(string: "https://example.com/hives/\(hiveId)/qr")! }
+    func qrImageData(hiveId: String) async throws -> Data { try qrImageResult.get() }
+
+    // Minimal valid 1x1 transparent PNG, usable as a realistic fixture in tests.
+    static let onePixelPNG = Data([
+        0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52,
+        0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x08, 0x06, 0x00, 0x00, 0x00, 0x1F, 0x15, 0xC4,
+        0x89, 0x00, 0x00, 0x00, 0x0D, 0x49, 0x44, 0x41, 0x54, 0x78, 0xDA, 0x63, 0x64, 0xF8, 0x0F, 0x00,
+        0x01, 0x05, 0x01, 0x01, 0x27, 0x18, 0xE3, 0x66, 0x00, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4E, 0x44,
+        0xAE, 0x42, 0x60, 0x82
+    ])
 }
 
 // MARK: - Admin helpers
