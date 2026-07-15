@@ -20,7 +20,7 @@ export default function Footer() {
                 <path d="M6,27 C12,27 15,24 20,25 C25,26 27,17 31,15 C34,14 36.5,13.5 36.5,13.5" fill="none" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" opacity={0.9}/>
                 <circle cx="36.5" cy="13.5" r="2" fill="white" opacity={0.95}/>
               </svg>
-              Hive<span>Pulse</span>
+              <span>Hive<span>Pulse</span></span>
             </Link>
             <p>{t('tagline')}</p>
             <div className="footer-social">
