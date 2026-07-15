@@ -432,18 +432,20 @@
       "reminderSeasonEnd": "Fin de saison (mois)",
       "reminderSave": "Enregistrer les paramètres de rappel",
       "reminderSaved": "Paramètres de rappel enregistrés.",
-      "month.1": "Janvier",
-      "month.2": "Février",
-      "month.3": "Mars",
-      "month.4": "Avril",
-      "month.5": "Mai",
-      "month.6": "Juin",
-      "month.7": "Juillet",
-      "month.8": "Août",
-      "month.9": "Septembre",
-      "month.10": "Octobre",
-      "month.11": "Novembre",
-      "month.12": "Décembre"
+      "month": {
+        "1": "Janvier",
+        "2": "Février",
+        "3": "Mars",
+        "4": "Avril",
+        "5": "Mai",
+        "6": "Juin",
+        "7": "Juillet",
+        "8": "Août",
+        "9": "Septembre",
+        "10": "Octobre",
+        "11": "Novembre",
+        "12": "Décembre"
+      }
     },
     "admin": {
       "nav": {
