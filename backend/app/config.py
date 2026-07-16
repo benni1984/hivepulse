@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     cron_secret: str = ""           # X-Cron-Secret header for POST /notifications/send-reminders
     firebase_server_key: str = ""   # FCM server key — push delivery stubbed when empty
     resend_api_key: str = ""        # Resend API key — reset emails logged to stdout when empty
-    app_base_url: str = "https://hivepulse.app"  # used to build password-reset links
+    app_base_url: str = "https://hivepulse.multihead.de"  # used to build password-reset links
 
     model_config = {"env_file": ".env"}
 
