@@ -25,10 +25,23 @@ interface HeatmapData {
   }[];
 }
 
-function varroaColor(avg: number): string {
-  if (avg < 2) return '#22c55e';
-  if (avg < 5) return '#f59e0b';
-  return '#ef4444';
+// Highest varroa_count the app's inspection form accepts -- used to normalize
+// heat-layer intensity so the green->amber->red gradient lines up with the
+// same Low(<2)/Medium(2-5)/High(>5) thresholds shown in the legend.
+const VARROA_SCALE_MAX = 12;
+
+function polygonCentroid(coords: number[][]): [number, number] {
+  // GeoJSON rings repeat the first point as the last to close the loop --
+  // compare by value (not reference) to drop that duplicate, otherwise it's
+  // overweighted in the average. Grid cells are simple rectangles, so a
+  // plain average of the (unique) ring points is a good enough sample point
+  // for the heat layer -- no need for a true area-weighted centroid.
+  const [firstLng, firstLat] = coords[0];
+  const last = coords[coords.length - 1];
+  const ring = last[0] === firstLng && last[1] === firstLat ? coords.slice(0, -1) : coords;
+  const lng = ring.reduce((sum, [x]) => sum + x, 0) / ring.length;
+  const lat = ring.reduce((sum, [, y]) => sum + y, 0) / ring.length;
+  return [lat, lng];
 }
 
 function esc(s: string) {
@@ -57,7 +70,7 @@ export default function MapClient({ labels }: { labels: Labels }) {
     if (!mapRef.current) return;
 
     let destroyed = false;
-    import('leaflet').then(L => {
+    Promise.all([import('leaflet'), import('leaflet.heat')]).then(([L]) => {
       if (destroyed || !mapRef.current) return;
 
       const map = L.default.map(mapRef.current).setView([48, 10], 4);
@@ -101,21 +114,36 @@ export default function MapClient({ labels }: { labels: Labels }) {
         }
 
         if (heatmap.features?.length) {
-          const heatmapLayer = L.default.geoJSON(heatmap as any, {
-            style: feature => ({
-              fillColor: varroaColor(feature?.properties.avg_varroa ?? 0),
-              fillOpacity: 0.5,
-              color: '#fff',
-              weight: 1,
-            }),
-            onEachFeature: (feature, layer) => {
-              const p = feature.properties;
-              layer.bindPopup(
-                `<div class="map-popup"><h3>🪲 Varroa: ${p.avg_varroa}</h3><p>${p.apiary_count} apiar${p.apiary_count !== 1 ? 'ies' : 'y'} · ${p.inspection_count} inspection${p.inspection_count !== 1 ? 's' : ''}</p></div>`,
-                { maxWidth: 200 }
-              );
-            },
+          const centroids = heatmap.features.map(f => polygonCentroid(f.geometry.coordinates[0]));
+
+          // A soft, continuous gradient (screen-pixel radius, not tied to the
+          // cells' geographic size) reads far more like a natural heatmap
+          // than the old flat-colored grid squares -- and stays visible at
+          // any zoom level instead of shrinking to a few pixels when zoomed
+          // out.
+          const heatPoints: [number, number, number][] = heatmap.features.map((f, i) => [
+            centroids[i][0], centroids[i][1], f.properties.avg_varroa,
+          ]);
+          const heatLayer = L.default.heatLayer(heatPoints, {
+            radius: 60,
+            blur: 45,
+            max: VARROA_SCALE_MAX,
+            minOpacity: 0.35,
+            gradient: { 0.0: '#22c55e', 0.5: '#f59e0b', 1.0: '#ef4444' },
           });
+
+          // The heat layer is a canvas overlay with no per-point
+          // interactivity, so pair it with small, fully transparent circle
+          // markers purely as click targets -- keeps the same popup info the
+          // old grid-square layer had.
+          const popupMarkers = heatmap.features.map((f, i) => {
+            const p = f.properties;
+            return L.default.circleMarker(centroids[i], { radius: 24, opacity: 0, fillOpacity: 0 }).bindPopup(
+              `<div class="map-popup"><h3>🪲 Varroa: ${p.avg_varroa}</h3><p>${p.apiary_count} apiar${p.apiary_count !== 1 ? 'ies' : 'y'} · ${p.inspection_count} inspection${p.inspection_count !== 1 ? 's' : ''}</p></div>`,
+              { maxWidth: 200 }
+            );
+          });
+          const heatmapLayer = L.default.layerGroup([heatLayer, ...popupMarkers]);
 
           L.default.control.layers(
             {},
