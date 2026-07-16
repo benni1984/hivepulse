@@ -80,7 +80,7 @@ Source of truth for all endpoints, shapes, and enums: `docs/api-contract.md`. Up
 
 ## Staging
 
-- Staging URL: `apiscan-two.vercel.app`
+- Staging URL: `apiscan-staging.vercel.app` (not `apiscan-two.vercel.app` — that domain is a stale alias still pointing at the *production* Vercel project, see #242)
 - Production: `hivepulse.multihead.de` (CNAME → Vercel)
 - Demo: `demo@apiscan.app` / `demo1234` (supporter)
 - Admin: `admin@apiscan.app` / `admin1234` (admin + supporter)
