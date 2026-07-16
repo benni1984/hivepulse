@@ -16,6 +16,14 @@ export default function NewsPage() {
         <div className="container">
           <div className="news-list">
             <article className="news-card" data-aos="fade-up">
+              <div className="news-date"><div className="day">16</div><div className="month">Jul 2026</div></div>
+              <div className="news-body">
+                <span className="news-tag">Fix</span>
+                <h3>Public Map Pins Fixed for Address-Only Apiaries</h3>
+                <p>Public apiaries created through the web dashboard only ever collected a free-text address, never GPS coordinates — so they were counted in the community totals but never rendered as a pin on the live map. The backend now automatically resolves a saved address into coordinates, so every public apiary with an address shows up on the map going forward.</p>
+              </div>
+            </article>
+            <article className="news-card" data-aos="fade-up">
               <div className="news-date"><div className="day">02</div><div className="month">May 2025</div></div>
               <div className="news-body">
                 <span className="news-tag">Release</span>

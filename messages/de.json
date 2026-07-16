@@ -122,6 +122,10 @@
     "tag": "Was kommt als Nächstes",
     "title": "Auf der Roadmap",
     "sub": "Wir sind ehrlich darüber, was bereits fertig ist und was noch geplant wird.",
+    "launch": {
+      "title": "Launch im App Store & bei Google Play",
+      "desc": "Veröffentlichung der iOS- und Android-App im App Store und bei Google Play, damit HivePulse ohne eigenes Kompilieren installiert werden kann."
+    },
     "remind": {
       "title": "Kontrollierungserinnerungen",
       "desc": "Push-Benachrichtigungen, wenn ein Volk zu lange nicht kontrolliert wurde."
@@ -261,16 +265,6 @@
       "title": "Dokumentation verbessern",
       "desc": "Hilf dabei, die In-App-Hilfetexte, den API-Vertrag, Architekturnotizen oder diese Website zu verbessern.",
       "link": "Docs-Ordner ansehen →"
-    },
-    "trans": {
-      "title": "App übersetzen",
-      "desc": "Zweisprachig? Hilf dabei, eine Übersetzung hinzuzufügen oder zu verbessern. Kein Programmieren erforderlich.",
-      "link": "Zur Übersetzungsdiskussion →"
-    },
-    "test": {
-      "title": "Neue Funktionen testen",
-      "desc": "Tritt dem Beta-Programm bei und gib Feedback, bevor Funktionen veröffentlicht werden.",
-      "link": "Zur Beta-Diskussion →"
     },
     "spread": {
       "title": "Weiterempfehlen",

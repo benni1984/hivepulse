@@ -122,6 +122,10 @@
     "tag": "Próximos pasos",
     "title": "En la hoja de ruta",
     "sub": "Somos honestos sobre lo que está listo y lo que está planificado.",
+    "launch": {
+      "title": "Lanzamiento en App Store y Google Play",
+      "desc": "Publicación de las apps iOS y Android en la App Store y Google Play, para instalar HivePulse sin compilar el código fuente."
+    },
     "remind": {
       "title": "Recordatorios de inspección",
       "desc": "Notificaciones push cuando una colmena lleva demasiado tiempo sin inspección."
@@ -261,16 +265,6 @@
       "title": "Mejorar la documentación",
       "desc": "Ayuda a mejorar los textos de ayuda, el contrato API, las notas de arquitectura o este sitio web.",
       "link": "Ver la carpeta docs →"
-    },
-    "trans": {
-      "title": "Traducir la app",
-      "desc": "¿Eres bilingüe? Ayuda a añadir o mejorar una traducción.",
-      "link": "Unirse a la discusión →"
-    },
-    "test": {
-      "title": "Probar nuevas funciones",
-      "desc": "Únete al programa beta y da tu opinión antes del lanzamiento.",
-      "link": "Unirse a la beta →"
     },
     "spread": {
       "title": "Difundir la palabra",

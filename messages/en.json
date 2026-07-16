@@ -122,6 +122,10 @@
     "tag": "What's Next",
     "title": "On the Roadmap",
     "sub": "We're honest about what's shipped and what's planned. Here's where we're heading.",
+    "launch": {
+      "title": "App Store & Google Play Launch",
+      "desc": "Publishing the iOS and Android apps to the App Store and Google Play, so anyone can install HivePulse without building from source."
+    },
     "remind": {
       "title": "Inspection Reminders",
       "desc": "Push notifications when a hive is overdue for inspection."
@@ -261,16 +265,6 @@
       "title": "Improve Documentation",
       "desc": "Help improve the in-app help text, the API contract, architecture notes, or this website.",
       "link": "Browse the docs folder →"
-    },
-    "trans": {
-      "title": "Translate the App",
-      "desc": "Bilingual? Help add or improve a translation. iOS uses .strings files, Android uses XML resources — no programming required.",
-      "link": "Join the translation discussion →"
-    },
-    "test": {
-      "title": "Test New Features",
-      "desc": "Join the beta program and give feedback before features ship. Your real-world perspective beats any automated test.",
-      "link": "Join the beta discussion →"
     },
     "spread": {
       "title": "Spread the Word",
