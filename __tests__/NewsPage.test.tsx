@@ -15,13 +15,14 @@ describe('NewsPage', () => {
     expect(screen.getByText('title')).toBeTruthy();
   });
 
-  it('renders all five news articles', () => {
+  it('renders all six news articles', () => {
     const { container } = render(<NewsPage />);
-    expect(container.querySelectorAll('.news-card').length).toBe(5);
+    expect(container.querySelectorAll('.news-card').length).toBe(6);
   });
 
   it('renders each article headline', () => {
     render(<NewsPage />);
+    expect(screen.getByText('Public Map Pins Fixed for Address-Only Apiaries')).toBeTruthy();
     expect(screen.getByText('HivePulse v1.0 — Now Live on iOS and Android')).toBeTruthy();
     expect(screen.getByText('Partnership with Pollinator Health Research Network')).toBeTruthy();
     expect(screen.getByText('Custom Inspection Fields — Log What Matters to You')).toBeTruthy();
