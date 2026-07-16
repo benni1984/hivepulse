@@ -365,6 +365,8 @@ An apiary is a named location. Hives belong to exactly one apiary.
 
 `is_public` controls whether this apiary appears on the public map. Defaults to `false` (opt-in). Apiaries with `is_public = false` are invisible to the public endpoints even if they have GPS coordinates.
 
+If a public apiary has an `address` but no `latitude`/`longitude`, the server forward-geocodes the address on create/update and stores the result in `latitude`/`longitude` — this is what lets address-only apiaries (the common case for web-created ones) still appear as pins in `GET /public/stats`. If geocoding fails (unmatched address, upstream outage), the apiary keeps `latitude`/`longitude = null` and is simply omitted from the pin list until its address is corrected and saved again.
+
 ### POST / PUT `/apiaries` — Request body
 
 ```json
@@ -838,7 +840,7 @@ Returns platform-wide aggregate numbers and the coordinates of every apiary that
 }
 ```
 
-All counts (`apiary_count`, `hive_count`, `inspection_count`) and the `apiaries` pin list include **only** apiaries where `is_public = true AND latitude != null AND longitude != null`.
+The `apiaries` pin list includes **only** apiaries where `is_public = true` and coordinates could be resolved (either direct `latitude`/`longitude`, or forward-geocoded from the free-text `address` — see `POST /apiaries`). All other fields (`apiary_count`, `hive_count`, `inspection_count`, and the aggregates below) are computed over **all public apiaries**, regardless of whether coordinates could be resolved.
 
 Aggregate fields (computed over **all public apiaries**, not just those with GPS):
 - `avg_varroa_count` — mean `varroa_count` across public inspections that recorded it; `null` if none
