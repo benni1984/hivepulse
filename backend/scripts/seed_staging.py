@@ -103,7 +103,17 @@ def ensure_apiary(db: Session, user: User, name: str, lat: float, lon: float,
     if apiary is None:
         apiary = Apiary(
             id=_uuid(), user_id=user.id, name=name,
-            latitude=lat, longitude=lon, city_name=city,
+            latitude=lat, longitude=lon,
+            # city_latitude/city_longitude are normally derived by
+            # _maybe_geocode() (backend/app/routers/apiaries.py) when an
+            # apiary is created/updated through the API. This script writes
+            # straight to the DB, bypassing that router entirely, so those
+            # columns must be set here too -- otherwise the apiary counts
+            # toward /public/stats totals but never renders as a map pin
+            # (public.py only pins apiaries with city_latitude/longitude
+            # set). LOCATIONS entries are already city-level coordinates,
+            # so no separate geocoding call is needed for seed data.
+            city_name=city, city_latitude=lat, city_longitude=lon,
             is_public=is_public,
             created_at=_ago(random.randint(120, 365)),
         )
@@ -292,7 +302,7 @@ def main():
         print("\nDemo apiaries:")
         for apiary_name, (lat, lon, city) in zip(
             ["Stadtimkerei München", "Alpenhof Salzburg"],
-            LOCATIONS[:2],
+            [LOCATIONS[0], LOCATIONS[6]],  # Munich, Salzburg -- names must match locations
         ):
             apiary = ensure_apiary(db, demo, apiary_name, lat, lon, city)
             for j in range(random.randint(3, 5)):
