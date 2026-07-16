@@ -10,7 +10,9 @@ const mockMap = {
 };
 const mockMarker = { addTo: vi.fn().mockReturnThis(), bindPopup: vi.fn().mockReturnThis() };
 const mockTileLayer = { addTo: vi.fn().mockReturnThis() };
-const mockGeoJSON = { addTo: vi.fn().mockReturnThis() };
+const mockHeatLayer = { addTo: vi.fn().mockReturnThis() };
+const mockCircleMarker = { bindPopup: vi.fn().mockReturnThis() };
+const mockLayerGroup = { addTo: vi.fn().mockReturnThis() };
 const mockLayersControl = { addTo: vi.fn().mockReturnThis() };
 
 vi.mock('leaflet', () => ({
@@ -19,7 +21,9 @@ vi.mock('leaflet', () => ({
     tileLayer: vi.fn(() => mockTileLayer),
     divIcon: vi.fn(() => ({})),
     marker: vi.fn(() => mockMarker),
-    geoJSON: vi.fn(() => mockGeoJSON),
+    heatLayer: vi.fn(() => mockHeatLayer),
+    circleMarker: vi.fn(() => mockCircleMarker),
+    layerGroup: vi.fn(() => mockLayerGroup),
     control: { layers: vi.fn(() => mockLayersControl) },
     Control: class MockControl {
       options: object;
@@ -32,6 +36,7 @@ vi.mock('leaflet', () => ({
 }));
 
 vi.mock('leaflet/dist/leaflet.css', () => ({}));
+vi.mock('leaflet.heat', () => ({}));
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 const labels = {
@@ -92,7 +97,7 @@ describe('MapClient', () => {
     expect(document.querySelector('#map')).toBeTruthy();
   });
 
-  it('adds a layers control when heatmap features are present', async () => {
+  it('adds a heat layer + layers control when heatmap features are present', async () => {
     vi.stubGlobal('fetch', vi.fn()
       .mockResolvedValueOnce(ok(STATS))
       .mockResolvedValueOnce(ok(HEATMAP_WITH_DATA)),
@@ -101,6 +106,14 @@ describe('MapClient', () => {
     const { default: MapClient } = await import('@/components/MapClient');
     render(<MapClient labels={labels} />);
     await waitFor(() => expect(L.control.layers).toHaveBeenCalled());
+    // Heat layer point = polygon centroid + avg_varroa as the intensity value.
+    expect(L.heatLayer).toHaveBeenCalledWith(
+      [[48, 10, 3.2]],
+      expect.objectContaining({ gradient: { 0.0: '#22c55e', 0.5: '#f59e0b', 1.0: '#ef4444' } }),
+    );
+    // A transparent click-target marker backs the same popup info per cell.
+    expect(L.circleMarker).toHaveBeenCalledWith([48, 10], expect.objectContaining({ opacity: 0, fillOpacity: 0 }));
+    expect(L.layerGroup).toHaveBeenCalled();
   });
 
   it('does not add a layers control when heatmap has no features', async () => {
