@@ -162,10 +162,16 @@ def seed_inspections(db: Session, hive: Hive, count: int = 5):
 # Hornet tracker seed (always recreated for clean state)
 # ---------------------------------------------------------------------------
 
+# NOTE: these are hotlinked Wikimedia Commons thumbnails, verified reachable
+# as of this edit. Wikimedia occasionally renames/deletes files or changes
+# its thumbnail-serving rules (this exact list broke once already — the
+# previous three files were deleted from Commons, which made every seeded
+# sighting photo return HTTP 400), so if sighting photos go blank again in
+# the future, re-verify these three URLs first before assuming a code bug.
 SIGHTING_PHOTOS = [
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Vespa_velutina_nigrithorax_02.jpg/640px-Vespa_velutina_nigrithorax_02.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Vespa_velutina_2.jpg/640px-Vespa_velutina_2.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Vespa_velutina_nigrithorax.jpg/320px-Vespa_velutina_nigrithorax.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Vespa_velutina_nigrithorax_MHNT_dos.jpg/960px-Vespa_velutina_nigrithorax_MHNT_dos.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Asian_hornet_%28Vespa_velutina%29.jpg/960px-Asian_hornet_%28Vespa_velutina%29.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Asian_hornet_%2833283876513%29_%282%29.jpg/960px-Asian_hornet_%2833283876513%29_%282%29.jpg",
 ]
 
 def seed_hornet_tracker(db: Session):
