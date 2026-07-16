@@ -10,10 +10,24 @@ const mockMap = {
 };
 const mockMarker = { addTo: vi.fn().mockReturnThis(), bindPopup: vi.fn().mockReturnThis() };
 const mockTileLayer = { addTo: vi.fn().mockReturnThis() };
-const mockHeatLayer = { addTo: vi.fn().mockReturnThis() };
 const mockCircleMarker = { bindPopup: vi.fn().mockReturnThis() };
 const mockLayerGroup = { addTo: vi.fn().mockReturnThis() };
 const mockLayersControl = { addTo: vi.fn().mockReturnThis() };
+
+// The heat layer is a hand-rolled L.Layer subclass (see MapClient.tsx for
+// why: leaflet.heat has no module system and silently fails to attach to
+// the right Leaflet instance under Turbopack). Mock L.Layer.extend() the
+// same way Leaflet itself does -- return a constructible subclass with the
+// given prototype methods -- so createHeatCanvasLayer() produces a
+// duck-typeable instance (onAdd/onRemove/_redraw) without ever touching a
+// real canvas.
+class MockLayer {
+  static extend(proto: Record<string, unknown>) {
+    class Extended extends MockLayer {}
+    Object.assign(Extended.prototype, proto);
+    return Extended;
+  }
+}
 
 vi.mock('leaflet', () => ({
   default: {
@@ -21,9 +35,9 @@ vi.mock('leaflet', () => ({
     tileLayer: vi.fn(() => mockTileLayer),
     divIcon: vi.fn(() => ({})),
     marker: vi.fn(() => mockMarker),
-    heatLayer: vi.fn(() => mockHeatLayer),
     circleMarker: vi.fn(() => mockCircleMarker),
     layerGroup: vi.fn(() => mockLayerGroup),
+    Layer: MockLayer,
     control: { layers: vi.fn(() => mockLayersControl) },
     Control: class MockControl {
       options: object;
@@ -36,7 +50,6 @@ vi.mock('leaflet', () => ({
 }));
 
 vi.mock('leaflet/dist/leaflet.css', () => ({}));
-vi.mock('leaflet.heat', () => ({}));
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 const labels = {
@@ -103,17 +116,26 @@ describe('MapClient', () => {
       .mockResolvedValueOnce(ok(HEATMAP_WITH_DATA)),
     );
     const L = (await import('leaflet')).default;
+    vi.mocked(L.layerGroup).mockClear();
+    vi.mocked(L.circleMarker).mockClear();
     const { default: MapClient } = await import('@/components/MapClient');
     render(<MapClient labels={labels} />);
     await waitFor(() => expect(L.control.layers).toHaveBeenCalled());
-    // Heat layer point = polygon centroid + avg_varroa as the intensity value.
-    expect(L.heatLayer).toHaveBeenCalledWith(
-      [[48, 10, 3.2]],
-      expect.objectContaining({ gradient: { 0.0: '#22c55e', 0.5: '#f59e0b', 1.0: '#ef4444' } }),
-    );
-    // A transparent click-target marker backs the same popup info per cell.
+
+    // A transparent click-target marker backs the same popup info per cell,
+    // centered on the polygon centroid.
     expect(L.circleMarker).toHaveBeenCalledWith([48, 10], expect.objectContaining({ opacity: 0, fillOpacity: 0 }));
-    expect(L.layerGroup).toHaveBeenCalled();
+
+    // The heat layer + one popup marker per feature go into a layerGroup,
+    // which is what gets registered as the toggleable overlay.
+    expect(L.layerGroup).toHaveBeenCalledTimes(1);
+    const groupMembers = vi.mocked(L.layerGroup).mock.calls[0][0] as unknown[];
+    expect(groupMembers).toHaveLength(2); // heat layer + 1 popup marker
+    const heatLayerInstance = groupMembers[0] as { onAdd?: unknown; onRemove?: unknown; _redraw?: unknown };
+    expect(typeof heatLayerInstance.onAdd).toBe('function');
+    expect(typeof heatLayerInstance.onRemove).toBe('function');
+    expect(typeof heatLayerInstance._redraw).toBe('function');
+    expect(groupMembers[1]).toBe(mockCircleMarker);
   });
 
   it('does not add a layers control when heatmap has no features', async () => {
@@ -139,5 +161,35 @@ describe('MapClient', () => {
     const { default: MapClient } = await import('@/components/MapClient');
     render(<MapClient labels={labels} />);
     await waitFor(() => expect(L.marker).toHaveBeenCalledWith([48.5, 9.5], expect.anything()));
+  });
+});
+
+describe('gradientColor', () => {
+  it('returns green at the low end (intensity 0)', async () => {
+    const { gradientColor } = await import('@/components/MapClient');
+    expect(gradientColor(0)).toEqual([0x22, 0xc5, 0x5e]);
+  });
+
+  it('returns amber at the midpoint (intensity 0.5)', async () => {
+    const { gradientColor } = await import('@/components/MapClient');
+    expect(gradientColor(0.5)).toEqual([0xf5, 0x9e, 0x0b]);
+  });
+
+  it('returns red at the high end (intensity 1)', async () => {
+    const { gradientColor } = await import('@/components/MapClient');
+    expect(gradientColor(1)).toEqual([0xef, 0x44, 0x44]);
+  });
+
+  it('interpolates between stops rather than snapping', async () => {
+    const { gradientColor } = await import('@/components/MapClient');
+    const quarter = gradientColor(0.25); // halfway between green and amber
+    expect(quarter).not.toEqual([0x22, 0xc5, 0x5e]);
+    expect(quarter).not.toEqual([0xf5, 0x9e, 0x0b]);
+  });
+
+  it('clamps out-of-range values', async () => {
+    const { gradientColor } = await import('@/components/MapClient');
+    expect(gradientColor(-1)).toEqual(gradientColor(0));
+    expect(gradientColor(5)).toEqual(gradientColor(1));
   });
 });
