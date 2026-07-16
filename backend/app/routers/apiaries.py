@@ -8,13 +8,25 @@ from app.deps import CurrentUser, DB
 from app.i18n import error
 from app.models import Apiary
 from app.schemas import ApiaryCreate, ApiaryOut, ApiaryUpdate, PaginatedResponse
-from app.utils.geocoding import reverse_geocode_city
+from app.utils.geocoding import forward_geocode, reverse_geocode_city
 
 router = APIRouter(prefix="/apiaries", tags=["apiaries"])
 
 
 def _maybe_geocode(apiary: Apiary, db: Session) -> None:
-    """Populate city_* columns when apiary is public and has GPS coordinates."""
+    """Populate city_* columns when apiary is public and has GPS coordinates.
+
+    The web dashboard never collects lat/lng directly, only a free-text
+    address, so an apiary with an address but no coordinates yet is forward-
+    geocoded first — without this, every web-created public apiary would be
+    counted in /public/stats totals but never appear as a map pin.
+    """
+    if apiary.is_public and apiary.latitude is None and apiary.longitude is None and apiary.address:
+        coords = forward_geocode(apiary.address)
+        if coords:
+            apiary.latitude = coords.latitude
+            apiary.longitude = coords.longitude
+
     if apiary.is_public and apiary.latitude is not None and apiary.longitude is not None:
         result = reverse_geocode_city(apiary.latitude, apiary.longitude)
         if result:

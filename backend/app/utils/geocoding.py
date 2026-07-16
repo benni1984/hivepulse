@@ -11,6 +11,30 @@ class CityLocation:
     longitude: float
 
 
+def forward_geocode(address: str) -> Optional[CityLocation]:
+    """Resolve a free-text address to coordinates via Nominatim.
+    Returns None on any network/parse failure or when no match is found."""
+    try:
+        resp = httpx.get(
+            "https://nominatim.openstreetmap.org/search",
+            params={"q": address, "format": "json", "limit": 1},
+            headers={"User-Agent": "HivePulse/1.0 (beekeeping-inspection-app)"},
+            timeout=5.0,
+        )
+        resp.raise_for_status()
+        results = resp.json()
+        if not results:
+            return None
+        result = results[0]
+        return CityLocation(
+            name=result.get("display_name", "").split(",")[0],
+            latitude=float(result["lat"]),
+            longitude=float(result["lon"]),
+        )
+    except Exception:
+        return None
+
+
 def reverse_geocode_city(latitude: float, longitude: float) -> Optional[CityLocation]:
     """Return nearest city/town/village centroid via Nominatim at zoom=10.
     Returns None on any network or parse failure."""

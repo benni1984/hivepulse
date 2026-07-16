@@ -32,7 +32,8 @@ def setup_db():
 
 @pytest.fixture(autouse=True)
 def mock_geocoder():
-    with patch("app.routers.apiaries.reverse_geocode_city", return_value=_CITY):
+    with patch("app.routers.apiaries.reverse_geocode_city", return_value=_CITY), \
+         patch("app.routers.apiaries.forward_geocode", return_value=None):
         yield
 
 

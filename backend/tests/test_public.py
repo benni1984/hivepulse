@@ -47,6 +47,35 @@ def test_global_stats_map_pins_only_gps_apiaries(client, seeded):
     assert pin["city_name"] == "TestCity"
 
 
+def test_global_stats_map_pin_via_forward_geocoded_address(client, auth_client):
+    from app.utils.geocoding import CityLocation
+
+    resolved = CityLocation(name="Musterstadt", latitude=48.1, longitude=11.6)
+    with patch("app.routers.apiaries.forward_geocode", return_value=resolved) as mock_forward:
+        apiary = auth_client.post("/api/v1/apiaries", json={
+            "name": "Address Only", "address": "Hauptstr. 1, Musterstadt", "is_public": True,
+        }).json()
+    mock_forward.assert_called_once_with("Hauptstr. 1, Musterstadt")
+    assert apiary["latitude"] == 48.1
+    assert apiary["longitude"] == 11.6
+
+    data = client.get("/api/v1/public/stats").json()
+    assert len(data["apiaries"]) == 1
+    assert data["apiaries"][0]["name"] == "Address Only"
+    assert data["apiaries"][0]["city_name"] == "TestCity"  # from the autouse reverse_geocode_city mock
+
+
+def test_global_stats_address_geocode_failure_no_pin(client, auth_client):
+    # forward_geocode defaults to returning None (autouse mock_geocoder fixture) —
+    # an address that fails to resolve must not produce a pin, and must not crash.
+    auth_client.post("/api/v1/apiaries", json={
+        "name": "Bad Address", "address": "??? not a real place ???", "is_public": True,
+    })
+    data = client.get("/api/v1/public/stats").json()
+    assert data["apiary_count"] == 1
+    assert data["apiaries"] == []
+
+
 def test_global_stats_no_auth_required(client):
     r = client.get("/api/v1/public/stats")
     assert r.status_code == 200
