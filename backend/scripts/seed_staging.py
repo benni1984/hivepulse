@@ -143,7 +143,7 @@ def ensure_hive(db: Session, apiary: Apiary, user: User, name: str, hive_type: s
     return hive
 
 
-def seed_inspections(db: Session, hive: Hive, count: int = 5):
+def seed_inspections(db: Session, hive: Hive, count: int = 5, varroa_range: tuple = (0, 12)):
     existing = db.query(Inspection).filter_by(hive_id=hive.id).count()
     if existing >= count:
         return
@@ -156,7 +156,7 @@ def seed_inspections(db: Session, hive: Hive, count: int = 5):
             queen_color=random.choice(QUEEN_COLORS + [None, None]),
             brood_frames=random.randint(2, 8),
             honey_frames=random.randint(0, 6),
-            varroa_count=random.randint(0, 12),
+            varroa_count=random.randint(*varroa_range),
             mood=random.choice(MOODS),
             notes=random.choice([
                 "Volk in guter Verfassung", "Weisel vorhanden",
@@ -298,27 +298,32 @@ def main():
         admin = upsert_user(db, "admin@apiscan.app", "Admin User", "admin1234",
                             is_admin=True, is_supporter=True)
 
-        # --- Demo apiaries ---
-        print("\nDemo apiaries:")
-        for apiary_name, (lat, lon, city) in zip(
-            ["Stadtimkerei München", "Alpenhof Salzburg"],
-            [LOCATIONS[0], LOCATIONS[6]],  # Munich, Salzburg -- names must match locations
-        ):
-            apiary = ensure_apiary(db, demo, apiary_name, lat, lon, city)
-            for j in range(random.randint(3, 5)):
-                hive = ensure_hive(db, apiary, demo, f"Volk {j + 1}", random.choice(HIVE_TYPES))
-                seed_inspections(db, hive, count=random.randint(5, 8))
-
-        # --- Admin apiaries ---
-        print("\nAdmin apiaries:")
-        for apiary_name, (lat, lon, city) in zip(
-            ["Versuchsbienenstand Köln"],
-            [LOCATIONS[3]],
-        ):
-            apiary = ensure_apiary(db, admin, apiary_name, lat, lon, city)
-            for j in range(3):
-                hive = ensure_hive(db, apiary, admin, f"Prüfvolk {j + 1}", random.choice(HIVE_TYPES))
-                seed_inspections(db, hive, count=5)
+        # --- Public apiaries (spread across all LOCATIONS for map/heatmap coverage) ---
+        # (name, LOCATIONS index, owner, varroa_range) -- varroa ranges are
+        # deliberately spread across low(<2)/medium(2-5)/high(>5) so the
+        # public heatmap actually shows all three legend colors instead of
+        # clustering around one tier, and locations cover most of LOCATIONS
+        # instead of just 3 cities, so the heatmap has enough spatial spread
+        # to look like a real heatmap rather than a couple of isolated dots.
+        print("\nPublic apiaries (map + heatmap coverage):")
+        apiary_defs = [
+            ("Stadtimkerei München", 0, demo, (0, 1)),
+            ("Zürcher Hofimkerei", 1, demo, (6, 10)),
+            ("Wiener Dachimkerei", 2, demo, (2, 4)),
+            ("Versuchsbienenstand Köln", 3, admin, (7, 11)),
+            ("Hafenimkerei Hamburg", 4, admin, (0, 1)),
+            ("Schwabenimkerei Stuttgart", 5, admin, (3, 5)),
+            ("Alpenhof Salzburg", 6, demo, (1, 2)),
+            ("Messeimkerei Leipzig", 7, admin, (8, 12)),
+            ("Bergimkerei Bayrischzell", 8, demo, (3, 4)),
+            ("Almimkerei Graz", 9, admin, (0, 2)),
+        ]
+        for apiary_name, loc_idx, owner, varroa_range in apiary_defs:
+            lat, lon, city = LOCATIONS[loc_idx]
+            apiary = ensure_apiary(db, owner, apiary_name, lat, lon, city)
+            for j in range(random.randint(2, 4)):
+                hive = ensure_hive(db, apiary, owner, f"Volk {j + 1}", random.choice(HIVE_TYPES))
+                seed_inspections(db, hive, count=random.randint(5, 8), varroa_range=varroa_range)
 
         # --- Hornet tracker ---
         print("\nHornet tracker:")
