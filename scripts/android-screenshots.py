@@ -249,30 +249,31 @@ def login():
     else:
         raise RuntimeError("Sign In button never became enabled — email/password fields never registered")
 
-    # Tap Sign In, retrying on a transient backend error. Confirmed via a
-    # captured UI dump that a prior failure here was a real "HTTP 500 " error
-    # banner from the staging backend (measured directly: login usually
-    # succeeds in <1s once warm, ~5-6s on a cold Neon/Vercel start — a 500
-    # here looks like an occasional cold-start race, not a client bug).
+    # Tap Sign In, retrying on any failure to reach 'My Apiaries'. Confirmed
+    # via a captured UI dump that one failure mode here is a real "HTTP 500 "
+    # error banner from the staging backend (measured directly: login usually
+    # succeeds in <1s once warm, ~5-6s on a cold Neon/Vercel start). But this
+    # workflow runs immediately after a successful deploy-production (see
+    # workflow_run trigger), so a second, silent failure mode has also been
+    # observed: the request just hangs past the 30s wait with no error banner
+    # yet rendered (cold start taking longer than usual right after a fresh
+    # deploy) — retrying only on a visible "HTTP "/"Network" banner missed
+    # that case entirely, so we now retry on any timeout here.
     # AuthViewModel.login() resets error=null at the start of every attempt,
     # so simply re-tapping Sign In is a clean retry — no need to dismiss the
     # banner first.
-    for login_attempt in range(1, 4):
+    for login_attempt in range(1, 6):
         tap_node(dump, text="Sign In")
         try:
             wait_for("My Apiaries", timeout=30)
             print("  Logged in ✓", flush=True)
             return
         except TimeoutError:
-            d = get_ui_dump()
-            if "HTTP " in d or "Network" in d:
-                print(f"  [login] backend error on attempt {login_attempt} — retrying…", flush=True)
-                dump_failure_diagnostics(f"login-backend-error-{login_attempt}")
-                time.sleep(3)
-                dump = d
-                continue
-            raise
-    raise RuntimeError("Login failed after repeated backend errors")
+            print(f"  [login] did not reach 'My Apiaries' on attempt {login_attempt} — retrying…", flush=True)
+            dump_failure_diagnostics(f"login-retry-{login_attempt}")
+            time.sleep(min(3 * login_attempt, 12))
+            dump = get_ui_dump()
+    raise RuntimeError("Login failed after repeated attempts")
 
 # ── Individual captures ───────────────────────────────────────────────────────
 
