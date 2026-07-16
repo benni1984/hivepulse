@@ -40,18 +40,6 @@ export default function ContributePage() {
               <a href="https://github.com/benni1984/hivepulse/tree/main/docs" className="card-link" target="_blank" rel="noopener">{t('docs.link')}</a>
             </div>
             <div className="contribute-card">
-              <i className="fas fa-language" />
-              <h3>{t('trans.title')}</h3>
-              <p>{t('trans.desc')}</p>
-              <a href="https://github.com/benni1984/hivepulse/discussions" className="card-link" target="_blank" rel="noopener">{t('trans.link')}</a>
-            </div>
-            <div className="contribute-card">
-              <i className="fas fa-flask" />
-              <h3>{t('test.title')}</h3>
-              <p>{t('test.desc')}</p>
-              <a href="https://github.com/benni1984/hivepulse/discussions" className="card-link" target="_blank" rel="noopener">{t('test.link')}</a>
-            </div>
-            <div className="contribute-card">
               <i className="fas fa-share-alt" />
               <h3>{t('spread.title')}</h3>
               <p>{t('spread.desc')}</p>

@@ -18,14 +18,18 @@ describe('ContributePage', () => {
     expect(container.querySelector('.page-hero h1')?.textContent).toBe('title');
   });
 
-  it('renders all six contribute-ways cards with their external links', () => {
+  it('renders the four contribute-ways cards with their external links', () => {
     render(<ContributePage />);
     expect(screen.getByText('bug.link')).toHaveAttribute('href', 'https://github.com/benni1984/hivepulse/issues/new');
     expect(screen.getByText('code.link')).toHaveAttribute('href', 'https://github.com/benni1984/hivepulse');
     expect(screen.getByText('docs.link')).toHaveAttribute('href', 'https://github.com/benni1984/hivepulse/tree/main/docs');
-    expect(screen.getByText('trans.link')).toHaveAttribute('href', 'https://github.com/benni1984/hivepulse/discussions');
-    expect(screen.getByText('test.link')).toHaveAttribute('href', 'https://github.com/benni1984/hivepulse/discussions');
     expect(screen.getByText('spread.link')).toHaveAttribute('href', '/#download');
+  });
+
+  it('does not render the removed translate/beta-test cards (GitHub Discussions is not set up — 404)', () => {
+    render(<ContributePage />);
+    expect(screen.queryByText('trans.link')).toBeNull();
+    expect(screen.queryByText('test.link')).toBeNull();
   });
 
   it('renders the GitHub CTA link', () => {

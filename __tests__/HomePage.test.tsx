@@ -64,9 +64,9 @@ describe('HomePage (landing)', () => {
     expect(container.querySelectorAll('.community-card')).toHaveLength(4);
   });
 
-  it('renders all four roadmap cards', () => {
+  it('renders all five roadmap cards', () => {
     const { container } = render(<HomePage />);
-    expect(container.querySelectorAll('.roadmap-card')).toHaveLength(4);
+    expect(container.querySelectorAll('.roadmap-card')).toHaveLength(5);
   });
 
   it('renders the three pricing tiers with correct prices', () => {
