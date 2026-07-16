@@ -30,6 +30,91 @@ interface HeatmapData {
 // same Low(<2)/Medium(2-5)/High(>5) thresholds shown in the legend.
 const VARROA_SCALE_MAX = 12;
 
+const GRADIENT_STOPS: [number, [number, number, number]][] = [
+  [0, [0x22, 0xc5, 0x5e]],   // #22c55e green
+  [0.5, [0xf5, 0x9e, 0x0b]], // #f59e0b amber
+  [1, [0xef, 0x44, 0x44]],   // #ef4444 red
+];
+
+// Linear interpolation across GRADIENT_STOPS for a 0-1 intensity value.
+export function gradientColor(t: number): [number, number, number] {
+  const clamped = Math.max(0, Math.min(t, 1));
+  for (let i = 0; i < GRADIENT_STOPS.length - 1; i++) {
+    const [t0, c0] = GRADIENT_STOPS[i];
+    const [t1, c1] = GRADIENT_STOPS[i + 1];
+    if (clamped <= t1) {
+      const localT = (clamped - t0) / (t1 - t0);
+      return [
+        Math.round(c0[0] + (c1[0] - c0[0]) * localT),
+        Math.round(c0[1] + (c1[1] - c0[1]) * localT),
+        Math.round(c0[2] + (c1[2] - c0[2]) * localT),
+      ];
+    }
+  }
+  return GRADIENT_STOPS[GRADIENT_STOPS.length - 1][1];
+}
+
+// leaflet.heat (the obvious off-the-shelf choice) turned out to be
+// unusable here: it's a 2014-era plugin with no module system at all --
+// it just assumes a global `L` is already sitting in scope by the time it
+// runs. Under Turbopack's ESM dynamic imports that global either doesn't
+// exist or isn't the same Leaflet instance this component holds, so the
+// layer silently never renders (no thrown error -- it just never becomes a
+// real Leaflet layer the map recognizes). Confirmed live: the control
+// checkbox toggled fine, but zero <canvas> element ever appeared.
+// A hand-rolled L.Layer avoids the whole problem, since it's built from
+// the exact same `L` this component already imported -- and the radial
+// gradient per point gives a genuinely soft, blurred blob rather than
+// leaflet.heat's density-summed canvas anyway, which is closer to what
+// "natural-looking gradient, not a flat square" actually asked for.
+function createHeatCanvasLayer(
+  L: typeof import('leaflet'),
+  points: [number, number, number][],
+  options: { radius: number; max: number; minOpacity: number }
+) {
+  const HeatCanvasLayer = L.Layer.extend({
+    onAdd(this: any, map: L.Map) {
+      this._map = map;
+      this._canvas = L.DomUtil.create('canvas', 'map-heatmap-canvas leaflet-zoom-hide');
+      const size = map.getSize();
+      this._canvas.width = size.x;
+      this._canvas.height = size.y;
+      map.getPanes().overlayPane.appendChild(this._canvas);
+      map.on('moveend zoomend resize', this._redraw, this);
+      this._redraw();
+    },
+    onRemove(this: any, map: L.Map) {
+      map.getPanes().overlayPane.removeChild(this._canvas);
+      map.off('moveend zoomend resize', this._redraw, this);
+    },
+    _redraw(this: any) {
+      const map = this._map;
+      const topLeft = map.containerPointToLayerPoint([0, 0]);
+      L.DomUtil.setPosition(this._canvas, topLeft);
+      const size = map.getSize();
+      if (this._canvas.width !== size.x) this._canvas.width = size.x;
+      if (this._canvas.height !== size.y) this._canvas.height = size.y;
+      const ctx = this._canvas.getContext('2d');
+      if (!ctx) return;
+      ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
+      points.forEach(([lat, lng, value]) => {
+        const p = map.latLngToContainerPoint([lat, lng]);
+        const intensity = Math.max(0, Math.min(value / options.max, 1));
+        const [r, g, b] = gradientColor(intensity);
+        const opacity = Math.max(options.minOpacity, intensity);
+        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, options.radius);
+        grad.addColorStop(0, `rgba(${r},${g},${b},${opacity})`);
+        grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, options.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    },
+  });
+  return new HeatCanvasLayer();
+}
+
 function polygonCentroid(coords: number[][]): [number, number] {
   // GeoJSON rings repeat the first point as the last to close the loop --
   // compare by value (not reference) to drop that duplicate, otherwise it's
@@ -70,7 +155,7 @@ export default function MapClient({ labels }: { labels: Labels }) {
     if (!mapRef.current) return;
 
     let destroyed = false;
-    Promise.all([import('leaflet'), import('leaflet.heat')]).then(([L]) => {
+    import('leaflet').then(L => {
       if (destroyed || !mapRef.current) return;
 
       const map = L.default.map(mapRef.current).setView([48, 10], 4);
@@ -124,12 +209,10 @@ export default function MapClient({ labels }: { labels: Labels }) {
           const heatPoints: [number, number, number][] = heatmap.features.map((f, i) => [
             centroids[i][0], centroids[i][1], f.properties.avg_varroa,
           ]);
-          const heatLayer = L.default.heatLayer(heatPoints, {
+          const heatLayer = createHeatCanvasLayer(L.default, heatPoints, {
             radius: 60,
-            blur: 45,
             max: VARROA_SCALE_MAX,
             minOpacity: 0.35,
-            gradient: { 0.0: '#22c55e', 0.5: '#f59e0b', 1.0: '#ef4444' },
           });
 
           // The heat layer is a canvas overlay with no per-point
