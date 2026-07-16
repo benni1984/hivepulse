@@ -174,7 +174,13 @@ test('hive inspection list: load-more appends rows when multiple pages exist', a
   if (await loadMoreBtn.isVisible()) {
     const rowsBefore = await page.locator('table.dash-inspection-table tbody tr').count();
     await loadMoreBtn.click();
-    await expect(page.locator('button.dash-admin-btn', { hasText: /Load more|Loading/ })).not.toHaveText('Loading…', { timeout: 15_000 });
+    // The "Loading…" button either reverts to "Load more" text (more pages
+    // remain) or disappears entirely (that was the last page) once loading
+    // finishes -- a plain `.not.toHaveText('Loading…')` never resolves in the
+    // second case, since Playwright keeps waiting for the (now nonexistent)
+    // element to change text rather than treating "gone from the DOM" as a
+    // pass. Asserting the "Loading…" match has zero count covers both cases.
+    await expect(page.locator('button.dash-admin-btn', { hasText: 'Loading' })).toHaveCount(0, { timeout: 15_000 });
     const rowsAfter = await page.locator('table.dash-inspection-table tbody tr').count();
     expect(rowsAfter).toBeGreaterThan(rowsBefore);
   } else {
