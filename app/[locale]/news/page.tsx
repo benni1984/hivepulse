@@ -23,44 +23,44 @@ export default function NewsPage() {
                 <p>Public apiaries created through the web dashboard only ever collected a free-text address, never GPS coordinates — so they were counted in the community totals but never rendered as a pin on the live map. The backend now automatically resolves a saved address into coordinates, so every public apiary with an address shows up on the map going forward.</p>
               </div>
             </article>
-            <article className="news-card" data-aos="fade-up">
-              <div className="news-date"><div className="day">02</div><div className="month">May 2025</div></div>
-              <div className="news-body">
-                <span className="news-tag">Release</span>
-                <h3>HivePulse v1.0 — Now Live on iOS and Android</h3>
-                <p>After months of development and beta testing with a group of dedicated beekeepers, HivePulse v1.0 is officially available on the App Store and Google Play. The launch includes QR-based hive management, varroa tracking, apiary statistics, and a live public map showing our growing community.</p>
-              </div>
-            </article>
             <article className="news-card" data-aos="fade-up" data-aos-delay="60">
-              <div className="news-date"><div className="day">18</div><div className="month">Apr 2025</div></div>
+              <div className="news-date"><div className="day">03</div><div className="month">Jun 2026</div></div>
               <div className="news-body">
-                <span className="news-tag">Research</span>
-                <h3>Partnership with Pollinator Health Research Network</h3>
-                <p>We&apos;re excited to announce an anonymized data-sharing agreement with researchers studying the relationship between varroa mite levels and colony winter survival. Starting this spring, aggregated inspection data from HivePulse will contribute to longitudinal studies spanning multiple European and North American regions.</p>
+                <span className="news-tag">Feature</span>
+                <h3>Forgot Your Password? We&apos;ve Got You Covered</h3>
+                <p>A full forgot-password / reset-password flow is now live across the web dashboard, iOS, and Android — request a reset link by email, set a new password, and all of your existing sessions are automatically signed out for safety.</p>
               </div>
             </article>
             <article className="news-card" data-aos="fade-up" data-aos-delay="120">
-              <div className="news-date"><div className="day">05</div><div className="month">Apr 2025</div></div>
+              <div className="news-date"><div className="day">17</div><div className="month">May 2026</div></div>
               <div className="news-body">
                 <span className="news-tag">Feature</span>
                 <h3>Custom Inspection Fields — Log What Matters to You</h3>
-                <p>Every beekeeper tracks different things. v0.9.5 introduced custom field definitions — add your own inspection data points at the apiary or per-hive level. The backend now supports arbitrary text, number, boolean, date, and select-type fields.</p>
+                <p>Every beekeeper tracks different things. Custom field definitions let you add your own inspection data points at the apiary or per-hive level, with support for text, number, boolean, date, and select-type fields — now available in the web dashboard, iOS, and Android.</p>
               </div>
             </article>
             <article className="news-card" data-aos="fade-up" data-aos-delay="180">
-              <div className="news-date"><div className="day">12</div><div className="month">Mar 2025</div></div>
+              <div className="news-date"><div className="day">14</div><div className="month">May 2026</div></div>
               <div className="news-body">
-                <span className="news-tag">Community</span>
-                <h3>500 Apiaries Registered — A Milestone Worth Celebrating</h3>
-                <p>The HivePulse community has crossed 500 registered apiaries spanning four continents. What started as a personal project for a small group of local beekeepers has grown into a genuine global network.</p>
+                <span className="news-tag">Release</span>
+                <h3>Web Dashboard Launches — Manage Your Hives from Any Browser</h3>
+                <p>You no longer need the mobile app to check in on your bees. The new browser dashboard covers login, your apiary list, hive detail with varroa charts, QR batch management, and personal statistics — all from a desktop or laptop.</p>
               </div>
             </article>
             <article className="news-card" data-aos="fade-up" data-aos-delay="240">
-              <div className="news-date"><div className="day">20</div><div className="month">Feb 2025</div></div>
+              <div className="news-date"><div className="day">13</div><div className="month">May 2026</div></div>
               <div className="news-body">
-                <span className="news-tag">Open Source</span>
-                <h3>HivePulse Goes Open Source</h3>
-                <p>The full HivePulse codebase — backend API, iOS app, and Android app — is now publicly available on GitHub under the MIT License. Pull requests, issues, and feature discussions are open to everyone.</p>
+                <span className="news-tag">Feature</span>
+                <h3>Regional Varroa Heatmaps on the Public Map</h3>
+                <p>The public live map now overlays a varroa-density heatmap — mite pressure aggregated across public apiaries in ~50 km grid cells, colour-coded green to red, so beekeepers can spot regional risk trends at a glance.</p>
+              </div>
+            </article>
+            <article className="news-card" data-aos="fade-up" data-aos-delay="300">
+              <div className="news-date"><div className="day">12</div><div className="month">May 2026</div></div>
+              <div className="news-body">
+                <span className="news-tag">Privacy</span>
+                <h3>Apiary Locations Now Shown at City Level, Not Exact GPS</h3>
+                <p>To protect beekeepers from potential hive theft, the public map and community pages now show the nearest city or village centroid instead of an apiary&apos;s exact coordinates. You still see your own exact location when logged in — only the public-facing view is fuzzed.</p>
               </div>
             </article>
           </div>
