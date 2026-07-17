@@ -378,7 +378,9 @@
       "customFields": "Eigene Felder",
       "profile": "Profil",
       "logout": "Abmelden",
-      "members": "Community"
+      "members": "Community",
+      "openMenu": "Dashboard-Menü öffnen",
+      "closeMenu": "Dashboard-Menü schließen"
     },
     "overview": {
       "title": "Meine Statistiken",

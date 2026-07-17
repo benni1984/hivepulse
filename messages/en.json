@@ -378,7 +378,9 @@
       "customFields": "Custom Fields",
       "profile": "Profile",
       "logout": "Log out",
-      "members": "Community"
+      "members": "Community",
+      "openMenu": "Open dashboard menu",
+      "closeMenu": "Close dashboard menu"
     },
     "overview": {
       "title": "My Statistics",

@@ -22,8 +22,8 @@ vi.mock('next-intl', () => ({
 
 vi.mock('@/i18n/navigation', () => ({
   useRouter: () => ({ replace: mockReplace }),
-  Link: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) =>
-    <a href={href} className={className}>{children}</a>,
+  Link: ({ href, children, className, onClick }: { href: string; children: React.ReactNode; className?: string; onClick?: () => void }) =>
+    <a href={href} className={className} onClick={onClick}>{children}</a>,
 }));
 
 vi.mock('@/lib/api', () => ({
@@ -180,6 +180,50 @@ describe('DashboardShell', () => {
       render(<DashboardShell>content</DashboardShell>);
       expect(screen.getByText('admin.nav.health').closest('a')).toHaveClass('active');
       expect(screen.getByText('admin.nav.stats').closest('a')).not.toHaveClass('active');
+    });
+  });
+
+  // Regression: on mobile, .dash-nav/.dash-user/.dash-logout are `display:none`
+  // by CSS unless the sidebar carries a `mobile-open` class -- there was
+  // previously no way to add that class at all, so mobile users had no
+  // navigation. The toggle button must add/remove it on click.
+  describe('mobile nav toggle', () => {
+    beforeEach(() => {
+      mockUseDashboardAuth.mockReturnValue({ user: mockUser, loading: false });
+    });
+
+    it('sidebar does not have mobile-open class by default', () => {
+      const { container } = render(<DashboardShell>content</DashboardShell>);
+      expect(container.querySelector('.dash-sidebar')).not.toHaveClass('mobile-open');
+    });
+
+    it('adds mobile-open class to the sidebar when the toggle is clicked', () => {
+      const { container } = render(<DashboardShell>content</DashboardShell>);
+      fireEvent.click(screen.getByLabelText('nav.openMenu'));
+      expect(container.querySelector('.dash-sidebar')).toHaveClass('mobile-open');
+    });
+
+    it('removes mobile-open class when the toggle is clicked again', () => {
+      const { container } = render(<DashboardShell>content</DashboardShell>);
+      fireEvent.click(screen.getByLabelText('nav.openMenu'));
+      fireEvent.click(screen.getByLabelText('nav.closeMenu'));
+      expect(container.querySelector('.dash-sidebar')).not.toHaveClass('mobile-open');
+    });
+
+    it('closes the mobile nav when a nav link is clicked', () => {
+      const { container } = render(<DashboardShell>content</DashboardShell>);
+      fireEvent.click(screen.getByLabelText('nav.openMenu'));
+      expect(container.querySelector('.dash-sidebar')).toHaveClass('mobile-open');
+      fireEvent.click(screen.getByText('nav.stats'));
+      expect(container.querySelector('.dash-sidebar')).not.toHaveClass('mobile-open');
+    });
+
+    it('closes the mobile nav on logout', async () => {
+      mockLogout.mockResolvedValueOnce(undefined);
+      const { container } = render(<DashboardShell>content</DashboardShell>);
+      fireEvent.click(screen.getByLabelText('nav.openMenu'));
+      fireEvent.click(screen.getByText('nav.logout'));
+      await waitFor(() => expect(container.querySelector('.dash-sidebar')).not.toHaveClass('mobile-open'));
     });
   });
 });

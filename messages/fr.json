@@ -378,7 +378,9 @@
       "customFields": "Champs perso.",
       "profile": "Profil",
       "logout": "Se déconnecter",
-      "members": "Communauté"
+      "members": "Communauté",
+      "openMenu": "Ouvrir le menu du tableau de bord",
+      "closeMenu": "Fermer le menu du tableau de bord"
     },
     "overview": {
       "title": "Mes statistiques",
