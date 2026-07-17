@@ -6,9 +6,14 @@ import DashboardShell from '@/components/DashboardShell';
 const mockReplace = vi.hoisted(() => vi.fn());
 const mockLogout = vi.hoisted(() => vi.fn());
 const mockUseDashboardAuth = vi.hoisted(() => vi.fn());
+const mockPathname = vi.hoisted(() => ({ value: '/de/dashboard' }));
 
 vi.mock('@/hooks/useDashboardAuth', () => ({
   useDashboardAuth: mockUseDashboardAuth,
+}));
+
+vi.mock('next/navigation', () => ({
+  usePathname: () => mockPathname.value,
 }));
 
 vi.mock('next-intl', () => ({
@@ -32,6 +37,7 @@ describe('DashboardShell', () => {
   beforeEach(() => {
     mockReplace.mockClear();
     mockLogout.mockClear();
+    mockPathname.value = '/de/dashboard';
   });
 
   it('shows spinner while loading', () => {
@@ -135,5 +141,45 @@ describe('DashboardShell', () => {
     render(<DashboardShell adminOnly>admin content</DashboardShell>);
     expect(screen.getByText('admin content')).toBeInTheDocument();
     expect(mockReplace).not.toHaveBeenCalled();
+  });
+
+  // Regression: '/dashboard/admin' is a substring of '/dashboard/admin/users'
+  // (and .../map, .../health) -- a plain `pathname.includes(href)` check lit
+  // up "Plattform-Statistiken" (admin.nav.stats) alongside whichever admin
+  // sub-page was actually active. Only one nav link should ever be active.
+  describe('admin nav active-state (only one link active at a time)', () => {
+    beforeEach(() => {
+      mockUseDashboardAuth.mockReturnValue({ user: mockAdmin, loading: false });
+    });
+
+    it('marks only "admin.nav.stats" active on the admin stats index page', () => {
+      mockPathname.value = '/de/dashboard/admin';
+      render(<DashboardShell>content</DashboardShell>);
+      expect(screen.getByText('admin.nav.stats').closest('a')).toHaveClass('active');
+      expect(screen.getByText('admin.nav.users').closest('a')).not.toHaveClass('active');
+      expect(screen.getByText('admin.nav.map').closest('a')).not.toHaveClass('active');
+      expect(screen.getByText('admin.nav.health').closest('a')).not.toHaveClass('active');
+    });
+
+    it('marks only "admin.nav.users" active on the admin users page (not stats)', () => {
+      mockPathname.value = '/de/dashboard/admin/users';
+      render(<DashboardShell>content</DashboardShell>);
+      expect(screen.getByText('admin.nav.users').closest('a')).toHaveClass('active');
+      expect(screen.getByText('admin.nav.stats').closest('a')).not.toHaveClass('active');
+    });
+
+    it('marks only "admin.nav.map" active on the admin map page (not stats)', () => {
+      mockPathname.value = '/de/dashboard/admin/map';
+      render(<DashboardShell>content</DashboardShell>);
+      expect(screen.getByText('admin.nav.map').closest('a')).toHaveClass('active');
+      expect(screen.getByText('admin.nav.stats').closest('a')).not.toHaveClass('active');
+    });
+
+    it('marks only "admin.nav.health" active on the admin health page (not stats)', () => {
+      mockPathname.value = '/de/dashboard/admin/health';
+      render(<DashboardShell>content</DashboardShell>);
+      expect(screen.getByText('admin.nav.health').closest('a')).toHaveClass('active');
+      expect(screen.getByText('admin.nav.stats').closest('a')).not.toHaveClass('active');
+    });
   });
 });

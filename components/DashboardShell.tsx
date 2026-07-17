@@ -29,7 +29,18 @@ export default function DashboardShell({ children, adminOnly = false, memberOnly
 
   const isActive = (href: string) => {
     if (!pathname) return false;
-    return href === '/dashboard' ? /\/dashboard$/.test(pathname) : pathname.includes(href);
+    // '/dashboard' and '/dashboard/admin' are both index pages whose path is
+    // itself a prefix of several sibling nav items (e.g. '/dashboard/admin'
+    // is a substring of '/dashboard/admin/users', '/admin/map', ...) -- a
+    // plain substring check would light up more than one nav link at once.
+    // Require an exact (suffix) match for these; every other href here is a
+    // leaf page with no sibling that prefixes it, so substring matching is
+    // still correct (and desired) for those, e.g. keeping "QR Batches"
+    // highlighted while on a QR batch detail sub-page.
+    if (href === '/dashboard' || href === '/dashboard/admin') {
+      return new RegExp(`${href}$`).test(pathname);
+    }
+    return pathname.includes(href);
   };
 
   async function handleLogout() {
