@@ -135,6 +135,7 @@ class ReminderSettingsOut(BaseModel):
     reminder_interval_days: int
     reminder_season_start: int
     reminder_season_end: int
+    reminder_email_enabled: bool
     push_token_apns: Optional[str]
     push_token_fcm: Optional[str]
 
@@ -146,6 +147,7 @@ class ReminderSettingsUpdate(BaseModel):
     reminder_interval_days: Optional[int] = Field(default=None, ge=1, le=365)
     reminder_season_start: Optional[int] = Field(default=None, ge=1, le=12)
     reminder_season_end: Optional[int] = Field(default=None, ge=1, le=12)
+    reminder_email_enabled: Optional[bool] = None
 
 
 class PushTokenRegister(BaseModel):
@@ -157,7 +159,7 @@ class ReminderSendResult(BaseModel):
     sent: int
     skipped_off_season: int
     skipped_disabled: int
-    skipped_no_token: int
+    skipped_no_channel: int
 
 
 # ---------------------------------------------------------------------------

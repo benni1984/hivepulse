@@ -96,6 +96,7 @@ def test_get_reminder_settings_default_values(auth_client):
     assert data["reminder_interval_days"] == 7
     assert data["reminder_season_start"] == 4
     assert data["reminder_season_end"] == 8
+    assert data["reminder_email_enabled"] is False
     assert data["push_token_apns"] is None
     assert data["push_token_fcm"] is None
 
@@ -112,6 +113,15 @@ def test_update_reminder_enabled_false(auth_client):
     # Verify persistence
     r2 = auth_client.get("/api/v1/users/me/reminder")
     assert r2.json()["reminder_enabled"] is False
+
+
+def test_update_reminder_email_enabled(auth_client):
+    r = auth_client.put("/api/v1/users/me/reminder", json={"reminder_email_enabled": True})
+    assert r.status_code == 200
+    assert r.json()["reminder_email_enabled"] is True
+    # Verify persistence
+    r2 = auth_client.get("/api/v1/users/me/reminder")
+    assert r2.json()["reminder_email_enabled"] is True
 
 
 def test_update_reminder_interval_days(auth_client):

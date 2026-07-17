@@ -63,6 +63,8 @@ vi.mock('next-intl', () => ({
       'reminderIntervalUnit': 'days',
       'reminderSeasonStart': 'Season start (month)',
       'reminderSeasonEnd': 'Season end (month)',
+      'reminderEmailEnabled': 'Also notify me by email',
+      'reminderEmailHint': 'Push notifications require the app. Email works on web too.',
       'reminderSave': 'Save Reminder Settings',
       'reminderSaved': 'Reminder settings saved.',
       'month.1': 'January', 'month.2': 'February', 'month.3': 'March',
@@ -95,6 +97,7 @@ const DEFAULT_REMINDERS = {
   reminder_interval_days: 7,
   reminder_season_start: 4,
   reminder_season_end: 8,
+  reminder_email_enabled: false,
   push_token_apns: null,
   push_token_fcm: null,
 };
@@ -116,8 +119,29 @@ describe('ProfilePage — reminder settings', () => {
   it('shows enabled checkbox checked by default', async () => {
     render(<ProfilePage />);
     await waitFor(() => expect(screen.getByText('Inspection Reminders')).toBeTruthy());
-    const checkbox = screen.getByRole('checkbox') as HTMLInputElement;
-    expect(checkbox.checked).toBe(true);
+    const [enabledCheckbox] = screen.getAllByRole('checkbox') as HTMLInputElement[];
+    expect(enabledCheckbox.checked).toBe(true);
+  });
+
+  it('shows email checkbox unchecked by default', async () => {
+    render(<ProfilePage />);
+    await waitFor(() => expect(screen.getByText('Inspection Reminders')).toBeTruthy());
+    const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
+    expect(checkboxes).toHaveLength(2);
+    expect(checkboxes[1].checked).toBe(false);
+  });
+
+  it('includes reminder_email_enabled when save is clicked after toggling the email checkbox', async () => {
+    render(<ProfilePage />);
+    await waitFor(() => expect(screen.getByText('Inspection Reminders')).toBeTruthy());
+    const [, emailCheckbox] = screen.getAllByRole('checkbox') as HTMLInputElement[];
+    fireEvent.click(emailCheckbox);
+    fireEvent.click(screen.getByText('Save Reminder Settings'));
+    await waitFor(() =>
+      expect(mockUpdateReminderSettings).toHaveBeenCalledWith(
+        expect.objectContaining({ reminder_email_enabled: true })
+      )
+    );
   });
 
   it('shows interval input with value 7', async () => {
