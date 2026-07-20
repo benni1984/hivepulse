@@ -424,6 +424,8 @@
       "reminderIntervalUnit": "jours",
       "reminderSeasonStart": "Début de saison (mois)",
       "reminderSeasonEnd": "Fin de saison (mois)",
+      "reminderEmailEnabled": "Me notifier aussi par e-mail",
+      "reminderEmailHint": "Les notifications push nécessitent l'application iOS ou Android. Les rappels par e-mail fonctionnent même si vous n'utilisez que le site web — les deux canaux partagent le même compte, ces réglages s'appliquent donc partout.",
       "reminderSave": "Enregistrer les paramètres de rappel",
       "reminderSaved": "Paramètres de rappel enregistrés.",
       "month": {

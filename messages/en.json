@@ -424,6 +424,8 @@
       "reminderIntervalUnit": "days",
       "reminderSeasonStart": "Season start (month)",
       "reminderSeasonEnd": "Season end (month)",
+      "reminderEmailEnabled": "Also notify me by email",
+      "reminderEmailHint": "Push notifications require the iOS or Android app. Email reminders work even if you only use the website — and both channels share the same account, so settings here apply everywhere.",
       "reminderSave": "Save Reminder Settings",
       "reminderSaved": "Reminder settings saved.",
       "month": {

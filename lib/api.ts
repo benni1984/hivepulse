@@ -818,6 +818,7 @@ export interface ReminderSettings {
   reminder_interval_days: number;
   reminder_season_start: number;
   reminder_season_end: number;
+  reminder_email_enabled: boolean;
   push_token_apns: string | null;
   push_token_fcm: string | null;
 }
@@ -827,6 +828,7 @@ export interface ReminderSettingsUpdate {
   reminder_interval_days?: number;
   reminder_season_start?: number;
   reminder_season_end?: number;
+  reminder_email_enabled?: boolean;
 }
 
 export interface PushTokenRegister {

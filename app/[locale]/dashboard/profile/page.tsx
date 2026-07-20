@@ -32,6 +32,7 @@ export default function ProfilePage() {
   const [reminderInterval, setReminderInterval] = useState(7);
   const [reminderSeasonStart, setReminderSeasonStart] = useState(4);
   const [reminderSeasonEnd, setReminderSeasonEnd] = useState(8);
+  const [reminderEmailEnabled, setReminderEmailEnabled] = useState(false);
   const [reminderLoaded, setReminderLoaded] = useState(false);
   const [reminderMsg, setReminderMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
   const [reminderSaving, setReminderSaving] = useState(false);
@@ -51,6 +52,7 @@ export default function ProfilePage() {
         setReminderInterval(s.reminder_interval_days);
         setReminderSeasonStart(s.reminder_season_start);
         setReminderSeasonEnd(s.reminder_season_end);
+        setReminderEmailEnabled(s.reminder_email_enabled);
         setReminderLoaded(true);
       })
       .catch(() => setReminderLoaded(true));
@@ -101,6 +103,7 @@ export default function ProfilePage() {
         reminder_interval_days: reminderInterval,
         reminder_season_start: reminderSeasonStart,
         reminder_season_end: reminderSeasonEnd,
+        reminder_email_enabled: reminderEmailEnabled,
       });
       setReminderMsg({ type: 'ok', text: t('reminderSaved') });
     } catch (err) {
@@ -296,6 +299,22 @@ export default function ProfilePage() {
                     ))}
                   </select>
                 </div>
+              </div>
+
+              <div className="dash-form-group" style={{ marginTop: 12 }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    checked={reminderEmailEnabled}
+                    onChange={e => setReminderEmailEnabled(e.target.checked)}
+                    style={{ width: 16, height: 16 }}
+                    disabled={!reminderEnabled}
+                  />
+                  {t('reminderEmailEnabled')}
+                </label>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.8125rem', marginTop: 4 }}>
+                  {t('reminderEmailHint')}
+                </p>
               </div>
             </div>
 

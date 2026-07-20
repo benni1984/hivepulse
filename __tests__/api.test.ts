@@ -485,6 +485,7 @@ const mockReminderSettings = {
   reminder_interval_days: 7,
   reminder_season_start: 4,
   reminder_season_end: 8,
+  reminder_email_enabled: false,
   push_token_apns: null,
   push_token_fcm: null,
 };
@@ -497,6 +498,7 @@ describe('getReminderSettings', () => {
     expect(result.reminder_interval_days).toBe(7);
     expect(result.reminder_season_start).toBe(4);
     expect(result.reminder_season_end).toBe(8);
+    expect(result.reminder_email_enabled).toBe(false);
     const call = vi.mocked(fetch).mock.calls[0];
     expect(call[0]).toContain('/users/me/reminder');
     expect((call[1] as RequestInit).headers as Record<string, string>).toMatchObject({

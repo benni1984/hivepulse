@@ -79,14 +79,45 @@ def test_send_reminders_skips_off_season_user(auth_client, db_session, monkeypat
     assert data["sent"] == 0
 
 
-def test_send_reminders_skips_user_with_no_token(auth_client):
-    """User with no push tokens must be counted in skipped_no_token."""
+def test_send_reminders_skips_user_with_no_channel(auth_client):
+    """User with no push token and email reminders off must be counted in skipped_no_channel."""
     r = auth_client.post(ENDPOINT, headers=_cron_headers())
     assert r.status_code == 200
     data = r.json()
-    # Default user has no tokens
-    assert data["skipped_no_token"] >= 1
+    # Default user has no push token and reminder_email_enabled defaults to False
+    assert data["skipped_no_channel"] >= 1
     assert data["sent"] == 0
+
+
+def test_send_reminders_email_only_channel_not_skipped(auth_client, db_session):
+    """User with reminder_email_enabled=True and no push token must still be sent to."""
+    from app.models import User, Apiary, Hive, QrBatch, QrToken
+    import uuid
+
+    user = db_session.query(User).filter(User.email == "test@example.com").first()
+    user.reminder_email_enabled = True
+    user.reminder_interval_days = 7
+    user.reminder_season_start = 1
+    user.reminder_season_end = 12
+
+    apiary = Apiary(id=str(uuid.uuid4()), user_id=user.id, name="Test Apiary")
+    batch = QrBatch(id=str(uuid.uuid4()), user_id=user.id, count=1)
+    qr = QrToken(token=str(uuid.uuid4()), batch_id=batch.id, user_id=user.id)
+    hive = Hive(
+        id=str(uuid.uuid4()),
+        qr_token=qr.token,
+        apiary_id=apiary.id,
+        user_id=user.id,
+        name="Test Hive",
+    )
+    db_session.add_all([apiary, batch, qr, hive])
+    db_session.commit()
+
+    r = auth_client.post(ENDPOINT, headers=_cron_headers())
+    assert r.status_code == 200
+    data = r.json()
+    assert data["sent"] == 1
+    assert data["skipped_no_channel"] == 0
 
 
 # ---------------------------------------------------------------------------
@@ -174,6 +205,6 @@ def test_send_reminders_returns_counts(auth_client):
     r = auth_client.post(ENDPOINT, headers=_cron_headers())
     assert r.status_code == 200
     data = r.json()
-    for key in ("sent", "skipped_off_season", "skipped_disabled", "skipped_no_token"):
+    for key in ("sent", "skipped_off_season", "skipped_disabled", "skipped_no_channel"):
         assert key in data
         assert isinstance(data[key], int)

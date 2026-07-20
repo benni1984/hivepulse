@@ -30,6 +30,7 @@ class User(Base):
     reminder_interval_days = Column(Integer, default=7, nullable=False)
     reminder_season_start = Column(Integer, default=4, nullable=False)  # April
     reminder_season_end = Column(Integer, default=8, nullable=False)    # August
+    reminder_email_enabled = Column(Boolean, default=False, nullable=False)
     push_token_apns = Column(String, nullable=True)
     push_token_fcm = Column(String, nullable=True)
 

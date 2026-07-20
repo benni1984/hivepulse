@@ -217,6 +217,7 @@ Returns the current user's inspection reminder preferences.
   "reminder_interval_days": 7,
   "reminder_season_start": 4,
   "reminder_season_end": 8,
+  "reminder_email_enabled": false,
   "push_token_apns": null,
   "push_token_fcm": null
 }
@@ -232,11 +233,14 @@ Updates reminder preferences. All fields optional.
   "reminder_enabled": false,
   "reminder_interval_days": 14,
   "reminder_season_start": 3,
-  "reminder_season_end": 9
+  "reminder_season_end": 9,
+  "reminder_email_enabled": true
 }
 ```
 
 **Response 200** — same shape as GET.
+
+`reminder_email_enabled` (default `false`) is an independent delivery channel, additive to push: if `true`, `POST /notifications/send-reminders` emails the user (via Resend, to their account email — no separate address to manage) whenever they have overdue hives, regardless of whether a push token is registered. A user can have both channels on at once and receives both. This is the only reminder channel available to web-only users, since push tokens are only ever registered by the iOS/Android apps (`POST /users/me/push-token`) — there is no browser-push mechanism. Account settings (including reminder prefs) are already shared across web/iOS/Android: it's the same user record regardless of which client reads or writes it.
 
 ### POST `/users/me/push-token`
 
@@ -268,6 +272,8 @@ Registers or replaces a device push token.
 Protected by `X-Cron-Secret` header. Called daily by GitHub Actions at 06:00 UTC.
 Returns 401 if the header is missing or incorrect.
 
+For each eligible user (enabled, in season, has overdue hives) with a registered push token, sends a push notification (currently stubbed — see `_send_push` — until Firebase/APNs credentials are configured). Independently, for each eligible user with `reminder_email_enabled = true`, sends a real email via Resend regardless of push-token state. A user with both a push token and `reminder_email_enabled = true` receives both.
+
 **Request headers**
 ```
 X-Cron-Secret: <secret>
@@ -279,9 +285,11 @@ X-Cron-Secret: <secret>
   "sent": 3,
   "skipped_off_season": 12,
   "skipped_disabled": 1,
-  "skipped_no_token": 5
+  "skipped_no_channel": 5
 }
 ```
+
+`skipped_no_channel` (renamed from `skipped_no_token`): counts users who are enabled and in-season but have neither a push token nor `reminder_email_enabled`, so there is no channel to notify them through.
 
 ---
 
