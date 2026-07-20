@@ -21,7 +21,7 @@ export default defineConfig({
         storageState: '.auth/user.json',
       },
       dependencies: ['setup'],
-      testIgnore: /\/(admin|members)\.spec\.ts/,
+      testIgnore: /\/(admin|members|dashboard-mobile-nav)\.spec\.ts/,
     },
     {
       name: 'admin',
@@ -31,6 +31,18 @@ export default defineConfig({
       },
       dependencies: ['admin-setup'],
       testMatch: /\/(admin|members)\.spec\.ts/,
+    },
+    {
+      // Chromium-based mobile device -- CI only installs the `chromium`
+      // browser (`npx playwright install --with-deps chromium`), so a
+      // WebKit-based device profile (e.g. 'iPhone 13') would fail to launch.
+      name: 'mobile',
+      use: {
+        ...devices['Pixel 7'],
+        storageState: '.auth/user.json',
+      },
+      dependencies: ['setup'],
+      testMatch: /\/dashboard-mobile-nav\.spec\.ts/,
     },
   ],
 });

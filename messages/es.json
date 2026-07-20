@@ -378,7 +378,9 @@
       "customFields": "Campos perso.",
       "profile": "Perfil",
       "logout": "Cerrar sesión",
-      "members": "Comunidad"
+      "members": "Comunidad",
+      "openMenu": "Abrir menú del panel",
+      "closeMenu": "Cerrar menú del panel"
     },
     "overview": {
       "title": "Mis estadísticas",

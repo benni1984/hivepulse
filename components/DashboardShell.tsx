@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import { usePathname } from 'next/navigation';
@@ -26,6 +27,7 @@ export default function DashboardShell({ children, adminOnly = false, memberOnly
   const router = useRouter();
   const pathname = usePathname();
   const t = useTranslations('dash');
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const isActive = (href: string) => {
     if (!pathname) return false;
@@ -48,6 +50,8 @@ export default function DashboardShell({ children, adminOnly = false, memberOnly
     router.replace('/dashboard/login');
   }
 
+  const closeMobileNav = () => setMobileNavOpen(false);
+
   if (loading || !user) {
     return (
       <div className="dash-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -60,7 +64,7 @@ export default function DashboardShell({ children, adminOnly = false, memberOnly
   if (memberOnly && !user.is_supporter && !user.is_admin) { router.replace('/dashboard'); return null; }
 
   const nav = (href: string, icon: React.ReactNode, label: string) => (
-    <Link key={href} href={href} className={`dash-nav-link${isActive(href) ? ' active' : ''}`}>
+    <Link key={href} href={href} className={`dash-nav-link${isActive(href) ? ' active' : ''}`} onClick={closeMobileNav}>
       {icon}{label}
     </Link>
   );
@@ -68,12 +72,25 @@ export default function DashboardShell({ children, adminOnly = false, memberOnly
   return (
     <div className="dash-overlay">
       <div className="dash-shell">
-        <aside className="dash-sidebar">
+        <aside className={`dash-sidebar${mobileNavOpen ? ' mobile-open' : ''}`}>
 
           <Link href="/" className="dash-logo">
             <div className="dash-logo-name">Hive<strong>Pulse</strong></div>
             <div className="dash-logo-tagline">Hive Inspection Platform</div>
           </Link>
+
+          <button
+            className="dash-mobile-toggle"
+            aria-label={mobileNavOpen ? t('nav.closeMenu') : t('nav.openMenu')}
+            aria-expanded={mobileNavOpen}
+            onClick={() => setMobileNavOpen(o => !o)}
+          >
+            {mobileNavOpen ? (
+              <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            ) : (
+              <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            )}
+          </button>
 
           <div className="dash-user">
             <div className="dash-user-avatar">{initials(user.name)}</div>
@@ -103,7 +120,7 @@ export default function DashboardShell({ children, adminOnly = false, memberOnly
             )}
           </nav>
 
-          <button className="dash-logout" onClick={handleLogout}>{t('nav.logout')}</button>
+          <button className="dash-logout" onClick={() => { closeMobileNav(); handleLogout(); }}>{t('nav.logout')}</button>
         </aside>
         <main className="dash-main"><div className="dash-main-inner">{children}</div></main>
       </div>
