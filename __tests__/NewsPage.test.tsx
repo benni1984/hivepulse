@@ -15,13 +15,15 @@ describe('NewsPage', () => {
     expect(screen.getByText('title')).toBeTruthy();
   });
 
-  it('renders all six news articles', () => {
+  it('renders all eight news articles', () => {
     const { container } = render(<NewsPage />);
-    expect(container.querySelectorAll('.news-card').length).toBe(6);
+    expect(container.querySelectorAll('.news-card').length).toBe(8);
   });
 
   it('renders each article headline', () => {
     render(<NewsPage />);
+    expect(screen.getByText('Dashboard Navigation Now Works on Mobile')).toBeTruthy();
+    expect(screen.getByText('Inspection Reminders Now Also Available by Email')).toBeTruthy();
     expect(screen.getByText('Public Map Pins Fixed for Address-Only Apiaries')).toBeTruthy();
     expect(screen.getByText("Forgot Your Password? We've Got You Covered")).toBeTruthy();
     expect(screen.getByText('Custom Inspection Fields — Log What Matters to You')).toBeTruthy();

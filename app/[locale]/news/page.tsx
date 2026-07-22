@@ -16,6 +16,22 @@ export default function NewsPage() {
         <div className="container">
           <div className="news-list">
             <article className="news-card" data-aos="fade-up">
+              <div className="news-date"><div className="day">20</div><div className="month">Jul 2026</div></div>
+              <div className="news-body">
+                <span className="news-tag">Fix</span>
+                <h3>Dashboard Navigation Now Works on Mobile</h3>
+                <p>The dashboard sidebar was hiding its entire navigation on small screens with nothing to replace it, leaving mobile visitors with no way to reach anything but a logout button. A new menu toggle now reveals your apiaries, stats, profile, and every other page from your phone.</p>
+              </div>
+            </article>
+            <article className="news-card" data-aos="fade-up" data-aos-delay="60">
+              <div className="news-date"><div className="day">20</div><div className="month">Jul 2026</div></div>
+              <div className="news-body">
+                <span className="news-tag">Feature</span>
+                <h3>Inspection Reminders Now Also Available by Email</h3>
+                <p>Push notifications only ever reached the iOS and Android apps, leaving web-only beekeepers with no way to be reminded of an overdue inspection. You can now opt in to email reminders from your profile page — independently of push, so you can enable either, both, or neither.</p>
+              </div>
+            </article>
+            <article className="news-card" data-aos="fade-up" data-aos-delay="120">
               <div className="news-date"><div className="day">16</div><div className="month">Jul 2026</div></div>
               <div className="news-body">
                 <span className="news-tag">Fix</span>
@@ -23,7 +39,7 @@ export default function NewsPage() {
                 <p>Public apiaries created through the web dashboard only ever collected a free-text address, never GPS coordinates — so they were counted in the community totals but never rendered as a pin on the live map. The backend now automatically resolves a saved address into coordinates, so every public apiary with an address shows up on the map going forward.</p>
               </div>
             </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="60">
+            <article className="news-card" data-aos="fade-up" data-aos-delay="180">
               <div className="news-date"><div className="day">03</div><div className="month">Jun 2026</div></div>
               <div className="news-body">
                 <span className="news-tag">Feature</span>
@@ -31,7 +47,7 @@ export default function NewsPage() {
                 <p>A full forgot-password / reset-password flow is now live across the web dashboard, iOS, and Android — request a reset link by email, set a new password, and all of your existing sessions are automatically signed out for safety.</p>
               </div>
             </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="120">
+            <article className="news-card" data-aos="fade-up" data-aos-delay="240">
               <div className="news-date"><div className="day">17</div><div className="month">May 2026</div></div>
               <div className="news-body">
                 <span className="news-tag">Feature</span>
@@ -39,7 +55,7 @@ export default function NewsPage() {
                 <p>Every beekeeper tracks different things. Custom field definitions let you add your own inspection data points at the apiary or per-hive level, with support for text, number, boolean, date, and select-type fields — now available in the web dashboard, iOS, and Android.</p>
               </div>
             </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="180">
+            <article className="news-card" data-aos="fade-up" data-aos-delay="300">
               <div className="news-date"><div className="day">14</div><div className="month">May 2026</div></div>
               <div className="news-body">
                 <span className="news-tag">Release</span>
@@ -47,7 +63,7 @@ export default function NewsPage() {
                 <p>You no longer need the mobile app to check in on your bees. The new browser dashboard covers login, your apiary list, hive detail with varroa charts, QR batch management, and personal statistics — all from a desktop or laptop.</p>
               </div>
             </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="240">
+            <article className="news-card" data-aos="fade-up" data-aos-delay="360">
               <div className="news-date"><div className="day">13</div><div className="month">May 2026</div></div>
               <div className="news-body">
                 <span className="news-tag">Feature</span>
@@ -55,7 +71,7 @@ export default function NewsPage() {
                 <p>The public live map now overlays a varroa-density heatmap — mite pressure aggregated across public apiaries in ~50 km grid cells, colour-coded green to red, so beekeepers can spot regional risk trends at a glance.</p>
               </div>
             </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="300">
+            <article className="news-card" data-aos="fade-up" data-aos-delay="420">
               <div className="news-date"><div className="day">12</div><div className="month">May 2026</div></div>
               <div className="news-body">
                 <span className="news-tag">Privacy</span>
