@@ -180,14 +180,30 @@ class SettingsScreenTest {
     }
 
     @Test
-    fun settings_showsReminderComingSoonNotice() {
-        // reminderEnabled = true in test fixture, so notice should be visible
+    fun settings_showsEmailReminderToggle() {
+        // reminderEnabled = true in test fixture, so the email channel toggle should be visible
         navigateToSettings()
         composeRule.waitUntil(5_000) {
-            composeRule.onAllNodesWithText("Push notifications are coming soon. Your preferences are saved.").fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("Also notify me by email").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithText("Push notifications are coming soon. Your preferences are saved.")
+        composeRule.onNodeWithText("Also notify me by email")
             .performScrollTo()
             .assertIsDisplayed()
+            .assertIsOff()
+    }
+
+    @Test
+    fun settings_enablingEmailReminderIsSentOnSave() {
+        coEvery { apiService.updateReminderSettings(any()) } returns reminderSettings.copy(reminderEmailEnabled = true)
+        navigateToSettings()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Also notify me by email").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Also notify me by email").performScrollTo().performClick()
+        composeRule.onNodeWithText("Save Reminder Settings").performScrollTo().performClick()
+
+        coVerify(timeout = 3_000) {
+            apiService.updateReminderSettings(match { it.reminderEmailEnabled == true })
+        }
     }
 }

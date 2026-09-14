@@ -167,4 +167,16 @@
     <string name="hornet_traps_no_catches">Aucune capture enregistrée</string>
     <string name="hornet_traps_history">Historique des captures</string>
     <string name="hornet_traps_back">Retour</string>
+
+    <!-- Inspection reminders -->
+    <string name="section_reminders">Rappels d\'inspection</string>
+    <string name="reminder_enabled">Envoyer des rappels d\'inspection</string>
+    <string name="reminder_email_enabled">Me notifier aussi par e-mail</string>
+    <string name="reminder_email_hint">Les notifications push arrivent dans cette application. Les rappels par e-mail vous parviennent même si vous n\'utilisez que le site web — les deux canaux partagent le même compte, ces réglages s\'appliquent donc partout.</string>
+    <string name="reminder_interval_label">Me rappeler tous les</string>
+    <string name="reminder_interval_format">%1$d jours</string>
+    <string name="reminder_season_start">Début de saison</string>
+    <string name="reminder_season_end">Fin de saison</string>
+    <string name="reminder_save_button">Enregistrer les rappels</string>
+    <string name="reminder_saved">Réglages des rappels enregistrés.</string>
 </resources>

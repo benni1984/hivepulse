@@ -85,7 +85,8 @@
     <string name="section_change_password">Change Password</string>
     <string name="section_danger_zone">Danger Zone</string>
     <string name="section_reminders">Inspection Reminders</string>
-    <string name="reminder_coming_soon">Push notifications are coming soon. Your preferences are saved.</string>
+    <string name="reminder_email_enabled">Also notify me by email</string>
+    <string name="reminder_email_hint">Push notifications arrive in this app. Email reminders also reach you when you only use the website — both channels share the same account, so settings here apply everywhere.</string>
     <string name="reminder_enabled">Send inspection reminders</string>
     <string name="reminder_interval_label">Remind me every</string>
     <string name="reminder_interval_format">%1$d days</string>
