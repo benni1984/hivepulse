@@ -18,6 +18,34 @@
     <string name="tab_scan">Scanner un QR code</string>
     <string name="tab_settings">Paramètres</string>
 
+    <!-- Custom field definitions -->
+    <string name="fielddefs_title">Champs personnalisés</string>
+    <string name="fielddefs_subtitle">Ajoutez des champs personnalisés à vos formulaires de ruches et de visites.</string>
+    <string name="fielddefs_apiary_title">Champs du rucher</string>
+    <string name="fielddefs_apiary_subtitle">Ces champs s\'appliquent uniquement aux ruches et visites de ce rucher.</string>
+    <string name="fielddefs_manage">Gérer les champs personnalisés</string>
+    <string name="fielddefs_empty">Aucun champ personnalisé pour l\'instant.</string>
+    <string name="fielddefs_new">Nouveau champ</string>
+    <string name="fielddefs_create_title">Nouveau champ personnalisé</string>
+    <string name="fielddefs_edit_title">Modifier le champ</string>
+    <string name="fielddefs_name">Nom du champ</string>
+    <string name="fielddefs_target">S\'applique à</string>
+    <string name="fielddefs_target_hive">Ruche</string>
+    <string name="fielddefs_target_inspection">Visite</string>
+    <string name="fielddefs_type">Type de champ</string>
+    <string name="fielddefs_type_text">Texte</string>
+    <string name="fielddefs_type_number">Nombre</string>
+    <string name="fielddefs_type_boolean">Oui / Non</string>
+    <string name="fielddefs_type_date">Date</string>
+    <string name="fielddefs_type_select">Sélection</string>
+    <string name="fielddefs_options">Options (une par ligne)</string>
+    <string name="fielddefs_required">Obligatoire</string>
+    <string name="fielddefs_create_btn">Créer le champ</string>
+    <string name="fielddefs_save_btn">Enregistrer</string>
+    <string name="fielddefs_create_success">Champ créé.</string>
+    <string name="fielddefs_save_success">Champ enregistré.</string>
+    <string name="fielddefs_delete_confirm">Supprimer ce champ ? Les données existantes seront perdues.</string>
+
     <!-- Actions -->
     <string name="action_save">Enregistrer</string>
     <string name="action_cancel">Annuler</string>

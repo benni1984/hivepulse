@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -150,6 +151,7 @@ fun SettingsScreen(
     onLogout: () -> Unit,
     onBack: () -> Unit,
     onAdminClick: () -> Unit = {},
+    onCustomFieldsClick: () -> Unit = {},
     vm: SettingsViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
@@ -454,6 +456,17 @@ fun SettingsScreen(
                             Spacer(Modifier.width(8.dp))
                             Text(stringResource(R.string.action_admin_dashboard))
                         }
+                    }
+
+                    // Custom fields
+                    Text(stringResource(R.string.fielddefs_title), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
+                    OutlinedButton(
+                        onClick  = onCustomFieldsClick,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(Icons.Default.Tune, null, Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text(stringResource(R.string.fielddefs_manage))
                     }
 
                     // Data Export

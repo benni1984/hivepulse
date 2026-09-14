@@ -12,6 +12,7 @@ import com.hivepulse.app.ui.inspections.*
 import com.hivepulse.app.ui.qr.*
 import com.hivepulse.app.ui.admin.*
 import com.hivepulse.app.ui.hornet.HornetHomeScreen
+import com.hivepulse.app.ui.fields.FieldDefinitionsScreen
 import com.hivepulse.app.ui.members.MembersScreen
 import com.hivepulse.app.ui.settings.SettingsScreen
 import com.hivepulse.app.ui.stats.HiveStatsScreen
@@ -40,6 +41,7 @@ object Routes {
     const val ADMIN_HEALTH       = "admin_health"
     const val HORNET_HOME        = "hornet_home"
     const val MEMBERS            = "members"
+    const val FIELD_DEFINITIONS  = "field_definitions?apiaryId={apiaryId}"
 }
 
 @Composable
@@ -80,7 +82,8 @@ fun HivePulseNavGraph(
             ApiaryDetailScreen(
                 apiaryId = back.arguments!!.getString("apiaryId")!!,
                 onHiveClick = { id -> navController.navigate("hive_detail/$id") },
-                onBack      = { navController.popBackStack() }
+                onBack      = { navController.popBackStack() },
+                onFieldsClick = { navController.navigate("field_definitions?apiaryId=${back.arguments!!.getString("apiaryId")}") }
             )
         }
         composable(Routes.HIVE_DETAIL,
@@ -166,7 +169,8 @@ fun HivePulseNavGraph(
             SettingsScreen(
                 onLogout     = { navController.navigate(Routes.LOGIN) { popUpTo(0) { inclusive = true } } },
                 onBack       = { navController.popBackStack() },
-                onAdminClick = { navController.navigate(Routes.ADMIN) }
+                onAdminClick = { navController.navigate(Routes.ADMIN) },
+                onCustomFieldsClick = { navController.navigate("field_definitions?apiaryId=") }
             )
         }
         composable(Routes.ADMIN) {
@@ -195,6 +199,10 @@ fun HivePulseNavGraph(
         }
         composable(Routes.MEMBERS) {
             MembersScreen()
+        }
+        composable(Routes.FIELD_DEFINITIONS,
+            arguments = listOf(navArgument("apiaryId") { type = NavType.StringType; defaultValue = "" })) {
+            FieldDefinitionsScreen(onBack = { navController.popBackStack() })
         }
     }
 }

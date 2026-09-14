@@ -60,6 +60,22 @@ interface ApiService {
         @Body body: FieldDefinitionCreate
     ): FieldDefinitionOut
 
+    @PUT("field-definitions/{id}")
+    suspend fun updateFieldDefinition(@Path("id") id: String, @Body body: FieldDefinitionUpdate): FieldDefinitionOut
+
+    @PUT("apiaries/{apiaryId}/field-definitions/{id}")
+    suspend fun updateApiaryFieldDefinition(
+        @Path("apiaryId") apiaryId: String,
+        @Path("id") id: String,
+        @Body body: FieldDefinitionUpdate
+    ): FieldDefinitionOut
+
+    @DELETE("apiaries/{apiaryId}/field-definitions/{id}")
+    suspend fun deleteApiaryFieldDefinition(
+        @Path("apiaryId") apiaryId: String,
+        @Path("id") id: String
+    ): Response<Unit>
+
     // Apiaries
     @GET("apiaries")
     suspend fun listApiaries(
