@@ -7,6 +7,7 @@ data class RegisterRequest(val email: String, val password: String, val name: St
 data class LoginRequest(val email: String, val password: String)
 data class RefreshRequest(@SerializedName("refresh_token") val refreshToken: String)
 data class LogoutRequest(@SerializedName("refresh_token") val refreshToken: String)
+data class ForgotPasswordRequest(val email: String)
 
 data class TokenResponse(
     @SerializedName("access_token")  val accessToken: String,

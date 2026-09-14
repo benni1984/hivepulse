@@ -21,6 +21,7 @@ import javax.inject.Inject
 object Routes {
     const val LOGIN              = "login"
     const val REGISTER           = "register"
+    const val FORGOT_PASSWORD    = "forgot_password?email={email}"
     const val APIARY_LIST        = "apiary_list"
     const val APIARY_DETAIL      = "apiary_detail/{apiaryId}"
     const val APIARY_FORM        = "apiary_form?apiaryId={apiaryId}"
@@ -60,8 +61,13 @@ fun HivePulseNavGraph(
         composable(Routes.LOGIN) {
             LoginScreen(
                 onLoginSuccess  = { navController.navigate(Routes.APIARY_LIST) { popUpTo(Routes.LOGIN) { inclusive = true } } },
-                onNavigateRegister = { navController.navigate(Routes.REGISTER) }
+                onNavigateRegister = { navController.navigate(Routes.REGISTER) },
+                onForgotPassword   = { email -> navController.navigate("forgot_password?email=${android.net.Uri.encode(email)}") }
             )
+        }
+        composable(Routes.FORGOT_PASSWORD,
+            arguments = listOf(navArgument("email") { type = NavType.StringType; defaultValue = "" })) {
+            ForgotPasswordScreen(onBack = { navController.popBackStack() })
         }
         composable(Routes.REGISTER) {
             RegisterScreen(
