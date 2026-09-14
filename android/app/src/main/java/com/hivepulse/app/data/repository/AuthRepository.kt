@@ -39,6 +39,14 @@ class AuthRepository @Inject constructor(
     suspend fun changePassword(currentPassword: String, newPassword: String): UserOut =
         api.changePassword(PasswordChangeRequest(newPassword, currentPassword))
 
+    /**
+     * Returns normally for every server answer (the API answers 204 either way), so callers can't
+     * tell whether the address is registered. Only network failures throw.
+     */
+    suspend fun forgotPassword(email: String) {
+        api.forgotPassword(ForgotPasswordRequest(email))
+    }
+
     suspend fun deleteAccount() {
         api.deleteMe()
         tokenStore.clear()

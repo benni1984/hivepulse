@@ -23,6 +23,13 @@
     <string name="action_cancel">Annuler</string>
     <string name="action_delete">Supprimer</string>
     <string name="action_login">Se connecter</string>
+    <string name="action_forgot_password">Mot de passe oublié ?</string>
+    <string name="forgot_title">Réinitialiser votre mot de passe</string>
+    <string name="forgot_desc">Entrez votre adresse e-mail et nous vous enverrons un lien de réinitialisation.</string>
+    <string name="forgot_submit">Envoyer le lien</string>
+    <string name="forgot_sent">Si cet e-mail est enregistré, vous recevrez un lien de réinitialisation sous peu. Vérifiez votre boîte de réception.</string>
+    <string name="forgot_back_to_login">Retour à la connexion</string>
+    <string name="forgot_offline">Pas de connexion. Vérifiez votre réseau et réessayez.</string>
     <string name="action_register">Créer un compte</string>
     <string name="action_create_account">Créer un compte</string>
     <string name="action_logout">Se déconnecter</string>

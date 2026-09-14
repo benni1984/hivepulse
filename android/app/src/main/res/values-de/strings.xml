@@ -23,6 +23,13 @@
     <string name="action_cancel">Abbrechen</string>
     <string name="action_delete">Löschen</string>
     <string name="action_login">Anmelden</string>
+    <string name="action_forgot_password">Passwort vergessen?</string>
+    <string name="forgot_title">Passwort zurücksetzen</string>
+    <string name="forgot_desc">Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen.</string>
+    <string name="forgot_submit">Link senden</string>
+    <string name="forgot_sent">Falls diese E-Mail registriert ist, erhältst du in Kürze einen Link zum Zurücksetzen. Schau in dein Postfach.</string>
+    <string name="forgot_back_to_login">Zurück zur Anmeldung</string>
+    <string name="forgot_offline">Keine Verbindung. Prüfe dein Netzwerk und versuche es erneut.</string>
     <string name="action_register">Konto erstellen</string>
     <string name="action_create_account">Konto erstellen</string>
     <string name="action_logout">Abmelden</string>

@@ -1,7 +1,5 @@
 package com.hivepulse.app.ui.auth
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -33,12 +30,12 @@ import com.hivepulse.app.ui.theme.Stone500
 fun LoginScreen(
     onLoginSuccess: () -> Unit,
     onNavigateRegister: () -> Unit,
+    onForgotPassword: (email: String) -> Unit = {},
     vm: AuthViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
     var email    by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val context  = LocalContext.current
 
     LaunchedEffect(state.success) { if (state.success) onLoginSuccess() }
 
@@ -118,10 +115,7 @@ fun LoginScreen(
                 }
 
                 Spacer(Modifier.height(8.dp))
-                TextButton(onClick = {
-                    context.startActivity(Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://hivepulse.multihead.de/dashboard/forgot-password")))
-                }) {
+                TextButton(onClick = { onForgotPassword(email.trim()) }) {
                     Text(stringResource(R.string.action_forgot_password),
                         style = MaterialTheme.typography.bodySmall, color = Stone500)
                 }
