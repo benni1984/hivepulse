@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -22,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hivepulse.app.R
+import com.hivepulse.app.data.api.CommunityHeatmap
 import com.hivepulse.app.data.api.PublicStats
 import com.hivepulse.app.data.api.UserOut
 import com.hivepulse.app.data.repository.AuthRepository
@@ -38,6 +38,8 @@ private const val SUPPORTER_INFO_URL = "https://hivepulse.multihead.de/contribut
 data class MembersState(
     val user: UserOut? = null,
     val publicStats: PublicStats? = null,
+    val heatmap: CommunityHeatmap? = null,
+    val overlay: HeatmapOverlay = HeatmapOverlay.VARROA,
     val isLoading: Boolean = false,
     val error: String? = null
 )
@@ -62,8 +64,16 @@ class MembersViewModel @Inject constructor(
             .onFailure { e  -> _state.update { it.copy(error = e.message) } }
         runCatching { statsRepo.getPublicStats() }
             .onSuccess { stats -> _state.update { it.copy(publicStats = stats) } }
+        // Supporter/admin only — the endpoint answers 403 for everyone else, so don't ask
+        val user = _state.value.user
+        if (user?.isSupporter == true || user?.isAdmin == true) {
+            runCatching { statsRepo.communityHeatmap() }
+                .onSuccess { h -> _state.update { it.copy(heatmap = h) } }
+        }
         _state.update { it.copy(isLoading = false) }
     }
+
+    fun selectOverlay(overlay: HeatmapOverlay) = _state.update { it.copy(overlay = overlay) }
 }
 
 // ─── Screen ──────────────────────────────────────────────────────────────────
@@ -123,9 +133,13 @@ fun MembersScreen(
                     }
                 }
 
-                // ── Gate / Coming-soon card ────────────────────────────────────
+                // ── Regional health map / supporter gate ──────────────────────
                 if (isUnlocked) {
-                    SupporterContentCard()
+                    CommunityHeatmapSection(
+                        heatmap         = state.heatmap,
+                        overlay         = state.overlay,
+                        onOverlayChange = viewModel::selectOverlay
+                    )
                 } else {
                     SupporterGateCard()
                 }
@@ -173,34 +187,6 @@ private fun StatCard(value: String, labelRes: Int) {
             Text(
                 text = stringResource(labelRes),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}
-
-@Composable
-private fun SupporterContentCard() {
-    Surface(
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.surfaceVariant,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.CheckCircle,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(40.dp)
-            )
-            Text(
-                text = stringResource(R.string.members_coming_soon),
-                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
             )

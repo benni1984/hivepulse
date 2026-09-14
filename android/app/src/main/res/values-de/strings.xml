@@ -13,6 +13,42 @@
     <string name="screen_qr_batches">QR-Batches</string>
     <string name="screen_hive_qr">QR-Code</string>
 
+    <!-- Members / community heatmap -->
+    <string name="members_title">Mitglieder</string>
+    <string name="members_gate_title">Unterstützer-Funktion</string>
+    <string name="members_gate_desc">Werde Unterstützer, um Community-Statistiken freizuschalten und HivePulse am Laufen zu halten.</string>
+    <string name="members_stat_avg_varroa">Ø Varroa</string>
+    <string name="members_stat_good_mood">Gute Stimmung</string>
+    <string name="members_stat_avg_brood">Ø Brutwaben</string>
+    <string name="members_stat_avg_interval">Ø Kontrollintervall</string>
+    <string name="members_become_supporter">Mehr erfahren &amp; Unterstützer werden</string>
+    <string name="heatmap_section_title">Regionale Gesundheitskarte</string>
+    <string name="heatmap_empty">Keine Community-Daten verfügbar.</string>
+    <string name="heatmap_hint">Tippe auf eine Zelle für Details.</string>
+    <string name="heatmap_osm_attribution">© OpenStreetMap-Mitwirkende</string>
+    <string name="heatmap_overlay_varroa">Varroa-Risiko</string>
+    <string name="heatmap_overlay_mood">Volksstimmung</string>
+    <string name="heatmap_overlay_swarm">Schwarmdruck</string>
+    <string name="heatmap_overlay_brood">Brutgesundheit</string>
+    <string name="heatmap_varroa_low">Niedrig (&lt; 2)</string>
+    <string name="heatmap_varroa_medium">Mittel (2–5)</string>
+    <string name="heatmap_varroa_high">Hoch (&gt; 5)</string>
+    <string name="heatmap_mood_good" formatted="false">Gut (≥ 70 % ruhig)</string>
+    <string name="heatmap_mood_fair" formatted="false">Mittel (40–70 %)</string>
+    <string name="heatmap_mood_low" formatted="false">Niedrig (&lt; 40 %)</string>
+    <string name="heatmap_swarm_low" formatted="false">Niedrig (&lt; 10 %)</string>
+    <string name="heatmap_swarm_medium" formatted="false">Mittel (10–30 %)</string>
+    <string name="heatmap_swarm_high" formatted="false">Hoch (&gt; 30 %)</string>
+    <string name="heatmap_brood_strong">Stark (≥ 5 Waben)</string>
+    <string name="heatmap_brood_fair">Mittel (3–5)</string>
+    <string name="heatmap_brood_low">Schwach (&lt; 3)</string>
+    <string name="heatmap_level_no_data">Keine Daten</string>
+    <string name="heatmap_cell_summary">%1$d Standorte · %2$d Kontrollen</string>
+    <string name="heatmap_cell_varroa">Ø Varroa</string>
+    <string name="heatmap_cell_mood">Ruhige Stimmung</string>
+    <string name="heatmap_cell_brood">Ø Brutwaben</string>
+    <string name="heatmap_cell_swarm">Schwarmzellen</string>
+
     <!-- Tabs / Navigation -->
     <string name="tab_print">QR-Codes drucken</string>
     <string name="tab_scan">QR-Code scannen</string>
@@ -51,6 +87,13 @@
     <string name="action_cancel">Abbrechen</string>
     <string name="action_delete">Löschen</string>
     <string name="action_login">Anmelden</string>
+    <string name="action_forgot_password">Passwort vergessen?</string>
+    <string name="forgot_title">Passwort zurücksetzen</string>
+    <string name="forgot_desc">Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen.</string>
+    <string name="forgot_submit">Link senden</string>
+    <string name="forgot_sent">Falls diese E-Mail registriert ist, erhältst du in Kürze einen Link zum Zurücksetzen. Schau in dein Postfach.</string>
+    <string name="forgot_back_to_login">Zurück zur Anmeldung</string>
+    <string name="forgot_offline">Keine Verbindung. Prüfe dein Netzwerk und versuche es erneut.</string>
     <string name="action_register">Konto erstellen</string>
     <string name="action_create_account">Konto erstellen</string>
     <string name="action_logout">Abmelden</string>
@@ -137,6 +180,13 @@
     <string name="stat_brood_trend">Bruträhmchen-Verlauf</string>
     <string name="stat_honey_trend">Honigrähmchen-Verlauf</string>
     <string name="stat_weight_trend">Gewichtsverlauf</string>
+    <string name="screen_stats_overview">Meine Statistiken</string>
+    <string name="stat_overview_apiaries">Standorte</string>
+    <string name="stat_overview_hives">Beuten</string>
+    <string name="stat_overview_inspections">Kontrollen</string>
+    <string name="stat_overview_per_apiary">Nach Standort</string>
+    <string name="stat_overview_no_data">Keine Kontrollen in diesem Zeitraum.</string>
+    <string name="stat_overview_row_format">%1$d Beuten · %2$d Kontrollen</string>
 
     <!-- Alerts -->
     <string name="alert_delete_apiary">Standort „%1$s" löschen? Dies kann nicht rückgängig gemacht werden.</string>
@@ -195,4 +245,16 @@
     <string name="hornet_traps_no_catches">Noch keine Fänge erfasst</string>
     <string name="hornet_traps_history">Fangverlauf</string>
     <string name="hornet_traps_back">Zurück</string>
+
+    <!-- Inspection reminders -->
+    <string name="section_reminders">Inspektions-Erinnerungen</string>
+    <string name="reminder_enabled">Inspektions-Erinnerungen senden</string>
+    <string name="reminder_email_enabled">Zusätzlich per E-Mail benachrichtigen</string>
+    <string name="reminder_email_hint">Push-Benachrichtigungen kommen in dieser App an. E-Mail-Erinnerungen erreichen dich auch, wenn du nur die Website nutzt — beide Kanäle gehören zum selben Konto, Einstellungen hier gelten also überall.</string>
+    <string name="reminder_interval_label">Erinnern alle</string>
+    <string name="reminder_interval_format">%1$d Tage</string>
+    <string name="reminder_season_start">Saisonbeginn</string>
+    <string name="reminder_season_end">Saisonende</string>
+    <string name="reminder_save_button">Erinnerungen speichern</string>
+    <string name="reminder_saved">Erinnerungseinstellungen gespeichert.</string>
 </resources>

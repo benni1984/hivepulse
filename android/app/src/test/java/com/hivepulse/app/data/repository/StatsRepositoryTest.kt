@@ -17,6 +17,14 @@ class StatsRepositoryTest {
     @After  fun tearDown() = clearAllMocks()
 
     @Test
+    fun `communityHeatmap delegates to api`() = runTest {
+        val heatmap = CommunityHeatmap("FeatureCollection", emptyList())
+        coEvery { api.communityHeatmap() } returns heatmap
+
+        assertEquals(heatmap, repo.communityHeatmap())
+    }
+
+    @Test
     fun `hiveStats delegates with all parameters`() = runTest {
         val stats = hiveStats()
         coEvery { api.hiveStats("h1", "30d", "2024-01-01", "2024-01-31") } returns stats
@@ -52,6 +60,19 @@ class StatsRepositoryTest {
         coEvery { api.apiaryStats("a1", null, null, null) } returns stats
 
         val result = repo.apiaryStats("a1")
+
+        assertEquals(stats, result)
+    }
+
+    @Test
+    fun `overviewStats delegates preset`() = runTest {
+        val stats = OverviewStats(
+            period = period(), apiaryCount = 1, hiveCount = 3, inspectionsTotal = 9,
+            perApiary = listOf(ApiaryStatsSummary("a1", "Home Yard", 3, 9))
+        )
+        coEvery { api.overviewStats("90d") } returns stats
+
+        val result = repo.overviewStats("90d")
 
         assertEquals(stats, result)
     }

@@ -3,6 +3,7 @@ package com.hivepulse.app.data.repository
 import com.hivepulse.app.data.api.*
 import com.hivepulse.app.data.local.TokenStore
 import retrofit2.Response
+import okhttp3.ResponseBody.Companion.toResponseBody
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -170,6 +171,22 @@ class AuthRepositoryTest {
         repo.registerFcmToken("tok123")
 
         coVerify(exactly = 0) { api.registerPushToken(any()) }
+    }
+
+    @Test
+    fun `forgotPassword posts the email`() = runTest {
+        coEvery { api.forgotPassword(any()) } returns Response.success(Unit)
+
+        repo.forgotPassword("a@b.com")
+
+        coVerify { api.forgotPassword(ForgotPasswordRequest("a@b.com")) }
+    }
+
+    @Test
+    fun `forgotPassword does not throw for an error response`() = runTest {
+        coEvery { api.forgotPassword(any()) } returns Response.error(429, "{}".toResponseBody(null))
+
+        repo.forgotPassword("a@b.com")   // must not throw — never reveal anything about the address
     }
 
     private fun user() = UserOut("u1", "a@b.com", "Alice", "en", "2024-01-01")

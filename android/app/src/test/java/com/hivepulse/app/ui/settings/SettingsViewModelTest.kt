@@ -199,6 +199,17 @@ class SettingsViewModelTest {
     }
 
     @Test
+    fun `saveReminderSettings forwards email channel and stores returned flag`() = runTest {
+        val update = ReminderSettingsUpdate(true, 7, 4, 8, reminderEmailEnabled = true)
+        coEvery { repo.updateReminderSettings(update) } returns reminder().copy(reminderEmailEnabled = true)
+
+        vm.saveReminderSettings(update)
+
+        coVerify { repo.updateReminderSettings(match { it.reminderEmailEnabled == true }) }
+        assertTrue(vm.state.value.reminderSettings!!.reminderEmailEnabled)
+    }
+
+    @Test
     fun `clearReminderSaved clears the flag`() = runTest {
         val updated = reminder()
         coEvery { repo.updateReminderSettings(any()) } returns updated

@@ -7,6 +7,10 @@ import com.hivepulse.app.MainActivity
 import com.hivepulse.app.data.api.ApiService
 import com.hivepulse.app.data.api.PaginatedResponse
 import com.hivepulse.app.data.api.PublicStats
+import com.hivepulse.app.data.api.CommunityHeatmap
+import com.hivepulse.app.data.api.CommunityHeatmapFeature
+import com.hivepulse.app.data.api.CommunityHeatmapProperties
+import com.hivepulse.app.data.api.PolygonGeometry
 import com.hivepulse.app.data.api.ReminderSettingsOut
 import com.hivepulse.app.data.api.UserOut
 import com.hivepulse.app.data.local.TokenStore
@@ -38,6 +42,7 @@ class MembersScreenTest {
         coEvery { it.getReminderSettings() } returns reminderSettings
         coEvery { it.getMe() } returns regularUser()
         coEvery { it.getPublicStats() } returns publicStats()
+        coEvery { it.communityHeatmap() } returns heatmap()
     }
 
     @Inject lateinit var tokenStore: TokenStore
@@ -56,7 +61,7 @@ class MembersScreenTest {
         composeRule.onAllNodesWithText("Members").onFirst().performClick()
         composeRule.waitUntil(5_000) {
             composeRule.onAllNodesWithText("Supporter Feature").fetchSemanticsNodes().isNotEmpty() ||
-            composeRule.onAllNodesWithText("More community stats coming soon.").fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("Regional Health Map").fetchSemanticsNodes().isNotEmpty()
         }
     }
 
@@ -76,13 +81,46 @@ class MembersScreenTest {
     }
 
     @Test
-    fun members_supporterSeesComingSoon() {
+    fun members_supporterSeesRegionalHealthMap() {
         coEvery { apiService.getMe() } returns supporterUser()
         navigateToMembers()
         composeRule.waitUntil(5_000) {
-            composeRule.onAllNodesWithText("More community stats coming soon.").fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("Varroa Risk").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithText("More community stats coming soon.").assertIsDisplayed()
+        composeRule.onNodeWithText("Regional Health Map").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("Low (< 2)").performScrollTo().assertIsDisplayed()
+    }
+
+    @Test
+    fun members_switchingOverlayUpdatesLegend() {
+        coEvery { apiService.getMe() } returns supporterUser()
+        navigateToMembers()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Colony Mood").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Colony Mood").performScrollTo().performClick()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Good (≥ 70% calm)").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Good (≥ 70% calm)").performScrollTo().assertIsDisplayed()
+    }
+
+    @Test
+    fun members_supporterWithoutHeatmapDataSeesEmptyState() {
+        coEvery { apiService.getMe() } returns supporterUser()
+        coEvery { apiService.communityHeatmap() } returns CommunityHeatmap("FeatureCollection", emptyList())
+        navigateToMembers()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("No community data available.").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("No community data available.").performScrollTo().assertIsDisplayed()
+    }
+
+    @Test
+    fun members_regularUserDoesNotRequestHeatmap() {
+        coEvery { apiService.getMe() } returns regularUser()
+        navigateToMembers()
+        coVerify(exactly = 0) { apiService.communityHeatmap() }
     }
 
     @Test
@@ -110,5 +148,24 @@ class MembersScreenTest {
         apiaryCount               = 12,
         hiveCount                 = 87,
         inspectionCount           = 634
+    )
+
+    private fun heatmap() = CommunityHeatmap(
+        type = "FeatureCollection",
+        features = listOf(
+            CommunityHeatmapFeature(
+                geometry = PolygonGeometry(
+                    "Polygon",
+                    listOf(listOf(
+                        listOf(9.75, 47.75), listOf(10.25, 47.75), listOf(10.25, 48.25),
+                        listOf(9.75, 48.25), listOf(9.75, 47.75)
+                    ))
+                ),
+                properties = CommunityHeatmapProperties(
+                    avgVarroa = 2.4, moodScore = 78, avgBrood = 5.1,
+                    swarmPct = 12, apiaryCount = 6, inspectionCount = 34
+                )
+            )
+        )
     )
 }

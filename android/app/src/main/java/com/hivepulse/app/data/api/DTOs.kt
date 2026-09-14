@@ -7,6 +7,7 @@ data class RegisterRequest(val email: String, val password: String, val name: St
 data class LoginRequest(val email: String, val password: String)
 data class RefreshRequest(@SerializedName("refresh_token") val refreshToken: String)
 data class LogoutRequest(@SerializedName("refresh_token") val refreshToken: String)
+data class ForgotPasswordRequest(val email: String)
 
 data class TokenResponse(
     @SerializedName("access_token")  val accessToken: String,
@@ -36,13 +37,15 @@ data class ReminderSettingsOut(
     @SerializedName("reminder_season_start")  val reminderSeasonStart: Int,
     @SerializedName("reminder_season_end")    val reminderSeasonEnd: Int,
     @SerializedName("push_token_apns")        val pushTokenApns: String?,
-    @SerializedName("push_token_fcm")         val pushTokenFcm: String?
+    @SerializedName("push_token_fcm")         val pushTokenFcm: String?,
+    @SerializedName("reminder_email_enabled") val reminderEmailEnabled: Boolean = false
 )
 data class ReminderSettingsUpdate(
     @SerializedName("reminder_enabled")       val reminderEnabled: Boolean?,
     @SerializedName("reminder_interval_days") val reminderIntervalDays: Int?,
     @SerializedName("reminder_season_start")  val reminderSeasonStart: Int?,
-    @SerializedName("reminder_season_end")    val reminderSeasonEnd: Int?
+    @SerializedName("reminder_season_end")    val reminderSeasonEnd: Int?,
+    @SerializedName("reminder_email_enabled") val reminderEmailEnabled: Boolean? = null
 )
 data class PushTokenRegister(
     val platform: String,
@@ -224,6 +227,19 @@ data class ApiaryStats(
     @SerializedName("mood_distribution")        val moodDistribution: Map<String, Int>,
     @SerializedName("swarm_alerts")             val swarmAlerts: Int
 )
+data class ApiaryStatsSummary(
+    @SerializedName("apiary_id")         val apiaryId: String,
+    @SerializedName("apiary_name")       val apiaryName: String,
+    @SerializedName("hive_count")        val hiveCount: Int,
+    @SerializedName("inspections_total") val inspectionsTotal: Int
+)
+data class OverviewStats(
+    val period: StatsPeriod,
+    @SerializedName("apiary_count")      val apiaryCount: Int,
+    @SerializedName("hive_count")        val hiveCount: Int,
+    @SerializedName("inspections_total") val inspectionsTotal: Int,
+    @SerializedName("per_apiary")        val perApiary: List<ApiaryStatsSummary>
+)
 
 // MARK: - Pagination
 data class PaginatedResponse<T>(val items: List<T>, val total: Int, val page: Int, val pages: Int)
@@ -311,4 +327,26 @@ data class PublicStats(
     @SerializedName("apiary_count")                val apiaryCount: Int,
     @SerializedName("hive_count")                  val hiveCount: Int,
     @SerializedName("inspection_count")            val inspectionCount: Int
+)
+
+// MARK: - Community Heatmap (supporter/admin only)
+data class CommunityHeatmap(
+    val type: String,
+    val features: List<CommunityHeatmapFeature>
+)
+data class CommunityHeatmapFeature(
+    val geometry: PolygonGeometry,
+    val properties: CommunityHeatmapProperties
+)
+data class PolygonGeometry(
+    val type: String,
+    val coordinates: List<List<List<Double>>>   // rings of [longitude, latitude]
+)
+data class CommunityHeatmapProperties(
+    @SerializedName("avg_varroa")       val avgVarroa: Double?,
+    @SerializedName("mood_score")       val moodScore: Int?,
+    @SerializedName("avg_brood")        val avgBrood: Double?,
+    @SerializedName("swarm_pct")        val swarmPct: Int,
+    @SerializedName("apiary_count")     val apiaryCount: Int,
+    @SerializedName("inspection_count") val inspectionCount: Int
 )

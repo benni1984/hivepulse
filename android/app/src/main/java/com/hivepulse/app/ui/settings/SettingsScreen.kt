@@ -2,6 +2,7 @@ package com.hivepulse.app.ui.settings
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -13,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -331,6 +333,9 @@ fun SettingsScreen(
                     var seasonEnd by remember(state.reminderSettings) {
                         mutableStateOf(state.reminderSettings?.reminderSeasonEnd ?: 8)
                     }
+                    var emailEnabled by remember(state.reminderSettings) {
+                        mutableStateOf(state.reminderSettings?.reminderEmailEnabled ?: false)
+                    }
 
                     Text(
                         stringResource(R.string.section_reminders),
@@ -349,8 +354,26 @@ fun SettingsScreen(
                         )
                     }
                     if (reminderEnabled) {
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .toggleable(
+                                    value = emailEnabled,
+                                    role = Role.Switch,
+                                    onValueChange = { emailEnabled = it }
+                                ),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                stringResource(R.string.reminder_email_enabled),
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.weight(1f)
+                            )
+                            Switch(checked = emailEnabled, onCheckedChange = null)
+                        }
                         Text(
-                            stringResource(R.string.reminder_coming_soon),
+                            stringResource(R.string.reminder_email_hint),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -432,7 +455,8 @@ fun SettingsScreen(
                                     reminderEnabled   = reminderEnabled,
                                     reminderIntervalDays = reminderInterval,
                                     reminderSeasonStart  = seasonStart,
-                                    reminderSeasonEnd    = seasonEnd
+                                    reminderSeasonEnd    = seasonEnd,
+                                    reminderEmailEnabled = emailEnabled
                                 )
                             )
                         },

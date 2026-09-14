@@ -19,6 +19,9 @@ interface ApiService {
     @POST("auth/logout")
     suspend fun logout(@Body body: LogoutRequest): Response<Unit>
 
+    @POST("auth/forgot-password")
+    suspend fun forgotPassword(@Body body: ForgotPasswordRequest): Response<Unit>
+
     // Users
     @GET("users/me")
     suspend fun getMe(): UserOut
@@ -230,6 +233,10 @@ interface ApiService {
     @GET("public/stats")
     suspend fun getPublicStats(): PublicStats
 
+    // Community heatmap (supporter/admin only — 403 otherwise)
+    @GET("stats/community-heatmap")
+    suspend fun communityHeatmap(): CommunityHeatmap
+
     // Hornets (public — no auth required, but auth header is forwarded if present)
     @GET("hornets/stats")
     suspend fun hornetStats(): HornetStats
@@ -297,4 +304,7 @@ interface ApiService {
         @Query("from") from: String? = null,
         @Query("to") to: String? = null
     ): ApiaryStats
+
+    @GET("stats/overview")
+    suspend fun overviewStats(@Query("preset") preset: String? = null): OverviewStats
 }
