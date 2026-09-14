@@ -2,7 +2,14 @@
   "version": 2,
   "ignoreCommand": "exit 1",
   "builds": [
-    { "src": "api/index.py", "use": "@vercel/python", "config": { "includeFiles": ["backend/**"] } },
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python",
+      "config": {
+        "includeFiles": ["backend/**"],
+        "excludeFiles": "{android/**,ios/**,docs/**,backend/tests/**}"
+      }
+    },
     { "src": "package.json", "use": "@vercel/next" }
   ],
   "routes": [
