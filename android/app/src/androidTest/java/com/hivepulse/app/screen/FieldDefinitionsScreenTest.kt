@@ -71,7 +71,10 @@ class FieldDefinitionsScreenTest {
         )
         navigateToCustomFields()
 
-        composeRule.onNodeWithText("New Field").performClick()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithContentDescription("New Field").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithContentDescription("New Field").performClick()
         composeRule.waitUntil(5_000) {
             composeRule.onAllNodesWithText("New Custom Field").fetchSemanticsNodes().isNotEmpty()
         }

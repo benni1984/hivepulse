@@ -19,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -169,12 +171,16 @@ fun FieldDefinitionsScreen(
             )
         },
         floatingActionButton = {
+            // Stable content description: the FAB label animates in, so its text node isn't reliably
+            // addressable (same approach as the New Apiary FAB)
+            val newFieldLabel = stringResource(R.string.fielddefs_new)
             ExtendedFloatingActionButton(
                 onClick        = { showCreate = true },
                 icon           = { Icon(Icons.Default.Add, contentDescription = null) },
-                text           = { Text(stringResource(R.string.fielddefs_new)) },
+                text           = { Text(newFieldLabel) },
                 containerColor = Amber500,
                 contentColor   = MaterialTheme.colorScheme.onPrimary,
+                modifier       = Modifier.semantics { contentDescription = newFieldLabel },
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
