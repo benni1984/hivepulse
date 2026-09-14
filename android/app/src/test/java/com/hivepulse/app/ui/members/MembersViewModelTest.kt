@@ -1,6 +1,7 @@
 package com.hivepulse.app.ui.members
 
 import com.hivepulse.app.data.api.PublicStats
+import com.hivepulse.app.data.api.CommunityHeatmap
 import com.hivepulse.app.data.api.UserOut
 import com.hivepulse.app.data.repository.AuthRepository
 import com.hivepulse.app.data.repository.StatsRepository
@@ -23,6 +24,7 @@ class MembersViewModelTest {
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         coEvery { statsRepo.getPublicStats() } returns somePublicStats()
+        coEvery { statsRepo.communityHeatmap() } returns someHeatmap()
     }
 
     @After
@@ -104,6 +106,48 @@ class MembersViewModelTest {
         assertTrue(user?.isSupporter == true || user?.isAdmin == true)
     }
 
+    @Test
+    fun `supporter loads community heatmap`() {
+        coEvery { repo.getMe() } returns supporterUser()
+
+        val vm = MembersViewModel(repo, statsRepo)
+
+        assertEquals(someHeatmap(), vm.state.value.heatmap)
+    }
+
+    @Test
+    fun `regular user never requests community heatmap`() {
+        coEvery { repo.getMe() } returns regularUser()
+
+        val vm = MembersViewModel(repo, statsRepo)
+
+        assertNull(vm.state.value.heatmap)
+        coVerify(exactly = 0) { statsRepo.communityHeatmap() }
+    }
+
+    @Test
+    fun `heatmap failure is silent`() {
+        coEvery { repo.getMe() } returns adminUser()
+        coEvery { statsRepo.communityHeatmap() } throws RuntimeException("403")
+
+        val vm = MembersViewModel(repo, statsRepo)
+
+        assertNull(vm.state.value.heatmap)
+        assertNull(vm.state.value.error)
+        assertFalse(vm.state.value.isLoading)
+    }
+
+    @Test
+    fun `selectOverlay switches the heatmap overlay`() {
+        coEvery { repo.getMe() } returns supporterUser()
+        val vm = MembersViewModel(repo, statsRepo)
+        assertEquals(HeatmapOverlay.VARROA, vm.state.value.overlay)
+
+        vm.selectOverlay(HeatmapOverlay.SWARM)
+
+        assertEquals(HeatmapOverlay.SWARM, vm.state.value.overlay)
+    }
+
     // ─── Helpers ─────────────────────────────────────────────────────────────
 
     private fun regularUser()   = UserOut("u1", "a@b.com", "Alice", "en", "2024-01-01",
@@ -122,4 +166,6 @@ class MembersViewModelTest {
         hiveCount                 = 87,
         inspectionCount           = 634
     )
+
+    private fun someHeatmap() = CommunityHeatmap("FeatureCollection", emptyList())
 }

@@ -306,3 +306,25 @@ data class PublicStats(
     @SerializedName("hive_count")                  val hiveCount: Int,
     @SerializedName("inspection_count")            val inspectionCount: Int
 )
+
+// MARK: - Community Heatmap (supporter/admin only)
+data class CommunityHeatmap(
+    val type: String,
+    val features: List<CommunityHeatmapFeature>
+)
+data class CommunityHeatmapFeature(
+    val geometry: PolygonGeometry,
+    val properties: CommunityHeatmapProperties
+)
+data class PolygonGeometry(
+    val type: String,
+    val coordinates: List<List<List<Double>>>   // rings of [longitude, latitude]
+)
+data class CommunityHeatmapProperties(
+    @SerializedName("avg_varroa")       val avgVarroa: Double?,
+    @SerializedName("mood_score")       val moodScore: Int?,
+    @SerializedName("avg_brood")        val avgBrood: Double?,
+    @SerializedName("swarm_pct")        val swarmPct: Int,
+    @SerializedName("apiary_count")     val apiaryCount: Int,
+    @SerializedName("inspection_count") val inspectionCount: Int
+)

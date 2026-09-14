@@ -208,7 +208,6 @@
     <!-- Members -->
     <string name="tab_members">Members</string>
     <string name="members_title">Members</string>
-    <string name="members_coming_soon">More community stats coming soon.</string>
     <string name="members_gate_title">Supporter Feature</string>
     <string name="members_gate_desc">Become a supporter to unlock community stats and help keep HivePulse running.</string>
     <string name="members_stat_avg_varroa">Avg Varroa Count</string>
@@ -216,6 +215,32 @@
     <string name="members_stat_avg_brood">Avg Brood Frames</string>
     <string name="members_stat_avg_interval">Avg Inspection Interval</string>
     <string name="members_become_supporter">Learn more &amp; become a supporter</string>
+    <string name="heatmap_section_title">Regional Health Map</string>
+    <string name="heatmap_empty">No community data available.</string>
+    <string name="heatmap_hint">Tap a cell for details.</string>
+    <string name="heatmap_osm_attribution">© OpenStreetMap contributors</string>
+    <string name="heatmap_overlay_varroa">Varroa Risk</string>
+    <string name="heatmap_overlay_mood">Colony Mood</string>
+    <string name="heatmap_overlay_swarm">Swarm Pressure</string>
+    <string name="heatmap_overlay_brood">Brood Health</string>
+    <string name="heatmap_varroa_low">Low (&lt; 2)</string>
+    <string name="heatmap_varroa_medium">Medium (2–5)</string>
+    <string name="heatmap_varroa_high">High (&gt; 5)</string>
+    <string name="heatmap_mood_good" formatted="false">Good (≥ 70% calm)</string>
+    <string name="heatmap_mood_fair" formatted="false">Fair (40–70%)</string>
+    <string name="heatmap_mood_low" formatted="false">Low (&lt; 40%)</string>
+    <string name="heatmap_swarm_low" formatted="false">Low (&lt; 10%)</string>
+    <string name="heatmap_swarm_medium" formatted="false">Medium (10–30%)</string>
+    <string name="heatmap_swarm_high" formatted="false">High (&gt; 30%)</string>
+    <string name="heatmap_brood_strong">Strong (≥ 5 frames)</string>
+    <string name="heatmap_brood_fair">Fair (3–5)</string>
+    <string name="heatmap_brood_low">Low (&lt; 3)</string>
+    <string name="heatmap_level_no_data">No data</string>
+    <string name="heatmap_cell_summary">%1$d apiaries · %2$d inspections</string>
+    <string name="heatmap_cell_varroa">Varroa avg</string>
+    <string name="heatmap_cell_mood">Calm mood</string>
+    <string name="heatmap_cell_brood">Brood avg</string>
+    <string name="heatmap_cell_swarm">Swarm cells</string>
 
     <!-- Hornets -->
     <string name="tab_hornets">Hornets</string>

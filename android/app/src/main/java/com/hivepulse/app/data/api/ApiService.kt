@@ -214,6 +214,10 @@ interface ApiService {
     @GET("public/stats")
     suspend fun getPublicStats(): PublicStats
 
+    // Community heatmap (supporter/admin only — 403 otherwise)
+    @GET("stats/community-heatmap")
+    suspend fun communityHeatmap(): CommunityHeatmap
+
     // Hornets (public — no auth required, but auth header is forwarded if present)
     @GET("hornets/stats")
     suspend fun hornetStats(): HornetStats

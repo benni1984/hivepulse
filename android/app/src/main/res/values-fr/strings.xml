@@ -13,6 +13,42 @@
     <string name="screen_qr_batches">Lots QR</string>
     <string name="screen_hive_qr">Code QR</string>
 
+    <!-- Members / community heatmap -->
+    <string name="members_title">Membres</string>
+    <string name="members_gate_title">Fonction réservée aux soutiens</string>
+    <string name="members_gate_desc">Devenez soutien pour débloquer les statistiques communautaires et aider HivePulse à continuer.</string>
+    <string name="members_stat_avg_varroa">Varroa moy.</string>
+    <string name="members_stat_good_mood">Bonne humeur</string>
+    <string name="members_stat_avg_brood">Cadres de couvain moy.</string>
+    <string name="members_stat_avg_interval">Intervalle de visite moy.</string>
+    <string name="members_become_supporter">En savoir plus &amp; devenir soutien</string>
+    <string name="heatmap_section_title">Carte de santé régionale</string>
+    <string name="heatmap_empty">Aucune donnée communautaire disponible.</string>
+    <string name="heatmap_hint">Touchez une cellule pour les détails.</string>
+    <string name="heatmap_osm_attribution">© contributeurs OpenStreetMap</string>
+    <string name="heatmap_overlay_varroa">Risque Varroa</string>
+    <string name="heatmap_overlay_mood">Humeur des colonies</string>
+    <string name="heatmap_overlay_swarm">Pression d\'essaimage</string>
+    <string name="heatmap_overlay_brood">Santé du couvain</string>
+    <string name="heatmap_varroa_low">Faible (&lt; 2)</string>
+    <string name="heatmap_varroa_medium">Moyen (2–5)</string>
+    <string name="heatmap_varroa_high">Élevé (&gt; 5)</string>
+    <string name="heatmap_mood_good" formatted="false">Bonne (≥ 70 % calme)</string>
+    <string name="heatmap_mood_fair" formatted="false">Moyenne (40–70 %)</string>
+    <string name="heatmap_mood_low" formatted="false">Faible (&lt; 40 %)</string>
+    <string name="heatmap_swarm_low" formatted="false">Faible (&lt; 10 %)</string>
+    <string name="heatmap_swarm_medium" formatted="false">Moyen (10–30 %)</string>
+    <string name="heatmap_swarm_high" formatted="false">Élevé (&gt; 30 %)</string>
+    <string name="heatmap_brood_strong">Fort (≥ 5 cadres)</string>
+    <string name="heatmap_brood_fair">Moyen (3–5)</string>
+    <string name="heatmap_brood_low">Faible (&lt; 3)</string>
+    <string name="heatmap_level_no_data">Pas de données</string>
+    <string name="heatmap_cell_summary">%1$d ruchers · %2$d visites</string>
+    <string name="heatmap_cell_varroa">Varroa moy.</string>
+    <string name="heatmap_cell_mood">Humeur calme</string>
+    <string name="heatmap_cell_brood">Couvain moy.</string>
+    <string name="heatmap_cell_swarm">Cellules d\'essaimage</string>
+
     <!-- Tabs / Navigation -->
     <string name="tab_print">Imprimer les QR codes</string>
     <string name="tab_scan">Scanner un QR code</string>
