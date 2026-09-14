@@ -7,7 +7,7 @@
       "use": "@vercel/python",
       "config": {
         "includeFiles": ["backend/**"],
-        "excludeFiles": "{android/**,ios/**,docs/**,backend/tests/**}"
+        "excludeFiles": "{android/**,ios/**,docs/**}"
       }
     },
     { "src": "package.json", "use": "@vercel/next" }
