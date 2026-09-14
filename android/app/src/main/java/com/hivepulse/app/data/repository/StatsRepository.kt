@@ -16,4 +16,6 @@ class StatsRepository @Inject constructor(private val api: ApiService) {
     suspend fun overviewStats(preset: String? = null): OverviewStats = api.overviewStats(preset)
 
     suspend fun getPublicStats(): PublicStats = api.getPublicStats()
+
+    suspend fun communityHeatmap(): CommunityHeatmap = api.communityHeatmap()
 }

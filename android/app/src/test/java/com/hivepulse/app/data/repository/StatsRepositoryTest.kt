@@ -17,6 +17,14 @@ class StatsRepositoryTest {
     @After  fun tearDown() = clearAllMocks()
 
     @Test
+    fun `communityHeatmap delegates to api`() = runTest {
+        val heatmap = CommunityHeatmap("FeatureCollection", emptyList())
+        coEvery { api.communityHeatmap() } returns heatmap
+
+        assertEquals(heatmap, repo.communityHeatmap())
+    }
+
+    @Test
     fun `hiveStats delegates with all parameters`() = runTest {
         val stats = hiveStats()
         coEvery { api.hiveStats("h1", "30d", "2024-01-01", "2024-01-31") } returns stats
