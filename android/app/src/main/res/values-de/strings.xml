@@ -54,6 +54,34 @@
     <string name="tab_scan">QR-Code scannen</string>
     <string name="tab_settings">Einstellungen</string>
 
+    <!-- Custom field definitions -->
+    <string name="fielddefs_title">Eigene Felder</string>
+    <string name="fielddefs_subtitle">Erweitere deine Beuten- und Kontrollformulare mit eigenen Feldern.</string>
+    <string name="fielddefs_apiary_title">Standort-Felder</string>
+    <string name="fielddefs_apiary_subtitle">Diese Felder gelten nur für Beuten und Kontrollen an diesem Standort.</string>
+    <string name="fielddefs_manage">Eigene Felder verwalten</string>
+    <string name="fielddefs_empty">Noch keine eigenen Felder.</string>
+    <string name="fielddefs_new">Neues Feld</string>
+    <string name="fielddefs_create_title">Neues eigenes Feld</string>
+    <string name="fielddefs_edit_title">Feld bearbeiten</string>
+    <string name="fielddefs_name">Feldname</string>
+    <string name="fielddefs_target">Gilt für</string>
+    <string name="fielddefs_target_hive">Beute</string>
+    <string name="fielddefs_target_inspection">Kontrolle</string>
+    <string name="fielddefs_type">Feldtyp</string>
+    <string name="fielddefs_type_text">Text</string>
+    <string name="fielddefs_type_number">Zahl</string>
+    <string name="fielddefs_type_boolean">Ja / Nein</string>
+    <string name="fielddefs_type_date">Datum</string>
+    <string name="fielddefs_type_select">Auswahl</string>
+    <string name="fielddefs_options">Optionen (eine pro Zeile)</string>
+    <string name="fielddefs_required">Pflichtfeld</string>
+    <string name="fielddefs_create_btn">Feld erstellen</string>
+    <string name="fielddefs_save_btn">Änderungen speichern</string>
+    <string name="fielddefs_create_success">Feld erstellt.</string>
+    <string name="fielddefs_save_success">Feld gespeichert.</string>
+    <string name="fielddefs_delete_confirm">Dieses Feld löschen? Vorhandene Daten gehen verloren.</string>
+
     <!-- Actions -->
     <string name="action_save">Speichern</string>
     <string name="action_cancel">Abbrechen</string>

@@ -71,6 +71,7 @@ fun ApiaryDetailScreen(
     apiaryId: String,
     onHiveClick: (String) -> Unit,
     onBack: () -> Unit,
+    onFieldsClick: () -> Unit = {},
     vm: ApiaryDetailViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
@@ -78,7 +79,12 @@ fun ApiaryDetailScreen(
     Scaffold(topBar = {
         TopAppBar(
             title = { Text(state.apiaryName) },
-            navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } }
+            navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } },
+            actions = {
+                IconButton(onClick = onFieldsClick) {
+                    Icon(Icons.Default.Tune, contentDescription = stringResource(R.string.fielddefs_apiary_title))
+                }
+            }
         )
     }) { padding ->
         when {

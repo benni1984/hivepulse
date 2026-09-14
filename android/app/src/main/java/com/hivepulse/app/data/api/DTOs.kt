@@ -69,6 +69,12 @@ data class FieldDefinitionCreate(
     val options: List<String>, val required: Boolean,
     @SerializedName("sort_order") val sortOrder: Int
 )
+/** PUT body — null fields are omitted by Gson, so the backend leaves them unchanged (exclude_unset). */
+data class FieldDefinitionUpdate(
+    val name: String? = null,
+    val options: List<String>? = null,
+    val required: Boolean? = null
+)
 
 // MARK: - Apiaries
 data class ApiaryOut(
