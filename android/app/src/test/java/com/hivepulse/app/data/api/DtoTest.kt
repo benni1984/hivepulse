@@ -1,9 +1,30 @@
 package com.hivepulse.app.data.api
 
+import com.google.gson.Gson
 import org.junit.Assert.*
 import org.junit.Test
 
 class DtoTest {
+
+    @Test
+    fun `ReminderSettingsOut parses reminder_email_enabled`() {
+        val json = """{"reminder_enabled":true,"reminder_interval_days":7,"reminder_season_start":4,
+            "reminder_season_end":8,"reminder_email_enabled":true,"push_token_apns":null,"push_token_fcm":null}"""
+        assertTrue(Gson().fromJson(json, ReminderSettingsOut::class.java).reminderEmailEnabled)
+    }
+
+    @Test
+    fun `ReminderSettingsOut defaults email channel to false when field is absent`() {
+        val json = """{"reminder_enabled":true,"reminder_interval_days":7,"reminder_season_start":4,
+            "reminder_season_end":8,"push_token_apns":null,"push_token_fcm":null}"""
+        assertFalse(Gson().fromJson(json, ReminderSettingsOut::class.java).reminderEmailEnabled)
+    }
+
+    @Test
+    fun `ReminderSettingsUpdate serializes reminder_email_enabled`() {
+        val json = Gson().toJson(ReminderSettingsUpdate(true, 7, 4, 8, reminderEmailEnabled = true))
+        assertTrue(json.contains("\"reminder_email_enabled\":true"))
+    }
 
     @Test
     fun `QrTokenOut isLinked is true when linkedHiveId is not null`() {

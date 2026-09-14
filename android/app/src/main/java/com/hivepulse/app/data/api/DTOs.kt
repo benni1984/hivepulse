@@ -36,13 +36,15 @@ data class ReminderSettingsOut(
     @SerializedName("reminder_season_start")  val reminderSeasonStart: Int,
     @SerializedName("reminder_season_end")    val reminderSeasonEnd: Int,
     @SerializedName("push_token_apns")        val pushTokenApns: String?,
-    @SerializedName("push_token_fcm")         val pushTokenFcm: String?
+    @SerializedName("push_token_fcm")         val pushTokenFcm: String?,
+    @SerializedName("reminder_email_enabled") val reminderEmailEnabled: Boolean = false
 )
 data class ReminderSettingsUpdate(
     @SerializedName("reminder_enabled")       val reminderEnabled: Boolean?,
     @SerializedName("reminder_interval_days") val reminderIntervalDays: Int?,
     @SerializedName("reminder_season_start")  val reminderSeasonStart: Int?,
-    @SerializedName("reminder_season_end")    val reminderSeasonEnd: Int?
+    @SerializedName("reminder_season_end")    val reminderSeasonEnd: Int?,
+    @SerializedName("reminder_email_enabled") val reminderEmailEnabled: Boolean? = null
 )
 data class PushTokenRegister(
     val platform: String,

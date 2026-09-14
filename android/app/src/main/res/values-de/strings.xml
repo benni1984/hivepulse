@@ -167,4 +167,16 @@
     <string name="hornet_traps_no_catches">Noch keine Fänge erfasst</string>
     <string name="hornet_traps_history">Fangverlauf</string>
     <string name="hornet_traps_back">Zurück</string>
+
+    <!-- Inspection reminders -->
+    <string name="section_reminders">Inspektions-Erinnerungen</string>
+    <string name="reminder_enabled">Inspektions-Erinnerungen senden</string>
+    <string name="reminder_email_enabled">Zusätzlich per E-Mail benachrichtigen</string>
+    <string name="reminder_email_hint">Push-Benachrichtigungen kommen in dieser App an. E-Mail-Erinnerungen erreichen dich auch, wenn du nur die Website nutzt — beide Kanäle gehören zum selben Konto, Einstellungen hier gelten also überall.</string>
+    <string name="reminder_interval_label">Erinnern alle</string>
+    <string name="reminder_interval_format">%1$d Tage</string>
+    <string name="reminder_season_start">Saisonbeginn</string>
+    <string name="reminder_season_end">Saisonende</string>
+    <string name="reminder_save_button">Erinnerungen speichern</string>
+    <string name="reminder_saved">Erinnerungseinstellungen gespeichert.</string>
 </resources>
