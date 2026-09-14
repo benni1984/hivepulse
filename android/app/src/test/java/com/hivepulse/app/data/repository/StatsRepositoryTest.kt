@@ -56,6 +56,19 @@ class StatsRepositoryTest {
         assertEquals(stats, result)
     }
 
+    @Test
+    fun `overviewStats delegates preset`() = runTest {
+        val stats = OverviewStats(
+            period = period(), apiaryCount = 1, hiveCount = 3, inspectionsTotal = 9,
+            perApiary = listOf(ApiaryStatsSummary("a1", "Home Yard", 3, 9))
+        )
+        coEvery { api.overviewStats("90d") } returns stats
+
+        val result = repo.overviewStats("90d")
+
+        assertEquals(stats, result)
+    }
+
     private fun period() = StatsPeriod("2024-01-01", "2024-01-31", "30d")
 
     private fun hiveStats() = HiveStats(

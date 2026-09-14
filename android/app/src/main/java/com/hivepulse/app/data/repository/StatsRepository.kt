@@ -13,5 +13,7 @@ class StatsRepository @Inject constructor(private val api: ApiService) {
     suspend fun apiaryStats(apiaryId: String, preset: String? = null, from: String? = null, to: String? = null): ApiaryStats =
         api.apiaryStats(apiaryId, preset, from, to)
 
+    suspend fun overviewStats(preset: String? = null): OverviewStats = api.overviewStats(preset)
+
     suspend fun getPublicStats(): PublicStats = api.getPublicStats()
 }

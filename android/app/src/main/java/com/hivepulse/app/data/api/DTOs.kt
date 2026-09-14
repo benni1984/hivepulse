@@ -218,6 +218,19 @@ data class ApiaryStats(
     @SerializedName("mood_distribution")        val moodDistribution: Map<String, Int>,
     @SerializedName("swarm_alerts")             val swarmAlerts: Int
 )
+data class ApiaryStatsSummary(
+    @SerializedName("apiary_id")         val apiaryId: String,
+    @SerializedName("apiary_name")       val apiaryName: String,
+    @SerializedName("hive_count")        val hiveCount: Int,
+    @SerializedName("inspections_total") val inspectionsTotal: Int
+)
+data class OverviewStats(
+    val period: StatsPeriod,
+    @SerializedName("apiary_count")      val apiaryCount: Int,
+    @SerializedName("hive_count")        val hiveCount: Int,
+    @SerializedName("inspections_total") val inspectionsTotal: Int,
+    @SerializedName("per_apiary")        val perApiary: List<ApiaryStatsSummary>
+)
 
 // MARK: - Pagination
 data class PaginatedResponse<T>(val items: List<T>, val total: Int, val page: Int, val pages: Int)

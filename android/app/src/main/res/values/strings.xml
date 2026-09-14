@@ -135,6 +135,13 @@
     <string name="stat_brood_trend">Brood Frames Trend</string>
     <string name="stat_honey_trend">Honey Frames Trend</string>
     <string name="stat_weight_trend">Weight Trend</string>
+    <string name="screen_stats_overview">My Statistics</string>
+    <string name="stat_overview_apiaries">Apiaries</string>
+    <string name="stat_overview_hives">Hives</string>
+    <string name="stat_overview_inspections">Inspections</string>
+    <string name="stat_overview_per_apiary">By Apiary</string>
+    <string name="stat_overview_no_data">No inspections in this period.</string>
+    <string name="stat_overview_row_format">%1$d hives · %2$d inspections</string>
 
     <!-- Alerts -->
     <string name="alert_delete_apiary">Delete apiary "%1$s"? This cannot be undone.</string>

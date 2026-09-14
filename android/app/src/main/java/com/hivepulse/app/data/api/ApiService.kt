@@ -281,4 +281,7 @@ interface ApiService {
         @Query("from") from: String? = null,
         @Query("to") to: String? = null
     ): ApiaryStats
+
+    @GET("stats/overview")
+    suspend fun overviewStats(@Query("preset") preset: String? = null): OverviewStats
 }
