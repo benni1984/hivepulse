@@ -15,6 +15,7 @@ import com.hivepulse.app.ui.hornet.HornetHomeScreen
 import com.hivepulse.app.ui.members.MembersScreen
 import com.hivepulse.app.ui.settings.SettingsScreen
 import com.hivepulse.app.ui.stats.HiveStatsScreen
+import com.hivepulse.app.ui.stats.OverviewStatsScreen
 import javax.inject.Inject
 
 object Routes {
@@ -29,6 +30,7 @@ object Routes {
     const val INSPECTION_FORM    = "inspection_form/{hiveId}?inspectionId={inspectionId}"
     const val INSPECTION_DETAIL  = "inspection_detail/{inspectionId}/{hiveId}"
     const val HIVE_STATS         = "hive_stats/{hiveId}"
+    const val STATS_OVERVIEW     = "stats_overview"
     const val QR_SCAN            = "qr_scan"
     const val QR_BATCH_LIST      = "qr_batch_list"
     const val QR_BATCH_DETAIL    = "qr_batch_detail/{batchId}"
@@ -72,7 +74,14 @@ fun HivePulseNavGraph(
                 onApiaryClick = { id -> navController.navigate("apiary_detail/$id") },
                 onScanClick   = { navController.navigate(Routes.QR_SCAN) },
                 onBatchClick  = { navController.navigate(Routes.QR_BATCH_LIST) },
-                onSettingsClick = { navController.navigate(Routes.SETTINGS) }
+                onSettingsClick = { navController.navigate(Routes.SETTINGS) },
+                onStatsClick    = { navController.navigate(Routes.STATS_OVERVIEW) }
+            )
+        }
+        composable(Routes.STATS_OVERVIEW) {
+            OverviewStatsScreen(
+                onApiaryClick = { id -> navController.navigate("apiary_detail/$id") },
+                onBack        = { navController.popBackStack() }
             )
         }
         composable(Routes.APIARY_DETAIL,

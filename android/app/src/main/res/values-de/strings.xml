@@ -109,6 +109,13 @@
     <string name="stat_brood_trend">Bruträhmchen-Verlauf</string>
     <string name="stat_honey_trend">Honigrähmchen-Verlauf</string>
     <string name="stat_weight_trend">Gewichtsverlauf</string>
+    <string name="screen_stats_overview">Meine Statistiken</string>
+    <string name="stat_overview_apiaries">Standorte</string>
+    <string name="stat_overview_hives">Beuten</string>
+    <string name="stat_overview_inspections">Kontrollen</string>
+    <string name="stat_overview_per_apiary">Nach Standort</string>
+    <string name="stat_overview_no_data">Keine Kontrollen in diesem Zeitraum.</string>
+    <string name="stat_overview_row_format">%1$d Beuten · %2$d Kontrollen</string>
 
     <!-- Alerts -->
     <string name="alert_delete_apiary">Standort „%1$s" löschen? Dies kann nicht rückgängig gemacht werden.</string>

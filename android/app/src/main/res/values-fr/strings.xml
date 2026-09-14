@@ -109,6 +109,13 @@
     <string name="stat_brood_trend">Évolution des cadres de couvain</string>
     <string name="stat_honey_trend">Évolution des cadres de miel</string>
     <string name="stat_weight_trend">Évolution du poids</string>
+    <string name="screen_stats_overview">Mes statistiques</string>
+    <string name="stat_overview_apiaries">Ruchers</string>
+    <string name="stat_overview_hives">Ruches</string>
+    <string name="stat_overview_inspections">Visites</string>
+    <string name="stat_overview_per_apiary">Par rucher</string>
+    <string name="stat_overview_no_data">Aucune visite sur cette période.</string>
+    <string name="stat_overview_row_format">%1$d ruches · %2$d visites</string>
 
     <!-- Alerts -->
     <string name="alert_delete_apiary">Supprimer le rucher « %1$s » ? Cette action est irréversible.</string>
