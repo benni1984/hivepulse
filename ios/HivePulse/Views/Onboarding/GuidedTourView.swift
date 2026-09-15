@@ -65,6 +65,8 @@ struct GuidedTourView: View {
                 Text(NSLocalizedString(isLastPage ? "tour.getStarted" : "tour.next", comment: ""))
             }
             .buttonStyle(HPPrimaryButtonStyle())
+            .accessibilityIdentifier("tourPrimaryButton")
+            .accessibilityValue("\(page + 1)/\(pages.count)")
             .padding(.horizontal, 24)
             .padding(.bottom, 16)
         }

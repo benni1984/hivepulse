@@ -21,7 +21,6 @@ final class GuidedTourUITests: XCTestCase {
         logIn()
 
         XCTAssertTrue(app.staticTexts["Welcome to HivePulse"].waitForExistence(timeout: 5))
-        dismissSystemAlertIfPresent()
         app.buttons["Skip"].tap()
 
         XCTAssertTrue(app.navigationBars["Apiaries"].waitForExistence(timeout: 5))
@@ -31,16 +30,18 @@ final class GuidedTourUITests: XCTestCase {
         launch(["-resetKeychain", "-mockServer", "-guidedTourSeen", "NO"])
         logIn()
         XCTAssertTrue(app.staticTexts[pageTitles[0]].waitForExistence(timeout: 5))
-        dismissSystemAlertIfPresent()
 
-        for title in pageTitles.dropFirst() {
-            app.buttons["Next"].tap()
-            // The page-style TabView keeps neighbouring pages in the hierarchy, so "exists" is already true
-            // before the swipe finishes — wait until the title is on screen before tapping Next again.
-            XCTAssertTrue(waitUntilOnScreen(app.staticTexts[title]), "page \"\(title)\" never came on screen")
+        let primary = app.buttons["tourPrimaryButton"]
+        XCTAssertTrue(waitForValue(primary, "1/\(pageTitles.count)"))
+        for (index, title) in pageTitles.enumerated().dropFirst() {
+            primary.tap()
+            // The page-style TabView keeps neighbouring pages in the hierarchy, so a title "exists" before its
+            // page is selected — the button's value tracks the selected page.
+            XCTAssertTrue(waitForValue(primary, "\(index + 1)/\(pageTitles.count)"), "never reached page \"\(title)\"")
+            XCTAssertTrue(app.staticTexts[title].exists)
         }
-        XCTAssertTrue(app.buttons["Get started"].waitForExistence(timeout: 5))
-        app.buttons["Get started"].tap()
+        XCTAssertEqual(primary.label, "Get started")
+        primary.tap()
 
         XCTAssertTrue(app.navigationBars["Apiaries"].waitForExistence(timeout: 5))
     }
@@ -55,7 +56,6 @@ final class GuidedTourUITests: XCTestCase {
 
     func test_settings_showGuidedTourAgain_opensTourAndReturns() {
         launch(["-resetKeychain", "-mockAuthenticated", "-guidedTourSeen", "YES"])
-        dismissSystemAlertIfPresent()
         XCTAssertTrue(app.tabBars.buttons["Settings"].waitForExistence(timeout: 5))
         app.tabBars.buttons["Settings"].tap()
 
@@ -70,11 +70,6 @@ final class GuidedTourUITests: XCTestCase {
     }
 
     // MARK: - Helpers
-
-    private func waitUntilOnScreen(_ element: XCUIElement, timeout: TimeInterval = 5) -> Bool {
-        let onScreen = NSPredicate(format: "exists == true AND hittable == true")
-        return XCTWaiter.wait(for: [expectation(for: onScreen, evaluatedWith: element)], timeout: timeout) == .completed
-    }
 
     private func launch(_ arguments: [String]) {
         continueAfterFailure = false
@@ -94,15 +89,8 @@ final class GuidedTourUITests: XCTestCase {
         app.buttons["Log In"].tap()
     }
 
-    /// Signing in asks for notification permission; the springboard alert would swallow taps meant for the tour.
-    private func dismissSystemAlertIfPresent() {
-        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        for label in ["Allow", "Don\u{2019}t Allow", "Don't Allow"] {
-            let button = springboard.buttons[label]
-            if button.waitForExistence(timeout: 2) {
-                button.tap()
-                return
-            }
-        }
+    private func waitForValue(_ element: XCUIElement, _ value: String, timeout: TimeInterval = 5) -> Bool {
+        let predicate = NSPredicate(format: "value == %@", value)
+        return XCTWaiter.wait(for: [expectation(for: predicate, evaluatedWith: element)], timeout: timeout) == .completed
     }
 }

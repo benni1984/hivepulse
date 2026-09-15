@@ -96,6 +96,13 @@ struct HivePulseApp: App {
     // MARK: - Push permission
 
     private func requestPushPermission() async {
+        #if DEBUG
+        // UI tests launch with mock arguments; the system permission alert would appear at a random moment
+        // and swallow taps meant for the app.
+        if ProcessInfo.processInfo.arguments.contains(where: { $0 == "-resetKeychain" || $0.hasPrefix("-mock") }) {
+            return
+        }
+        #endif
         let center = UNUserNotificationCenter.current()
         let granted = (try? await center.requestAuthorization(options: [.alert, .sound, .badge])) ?? false
         if granted {
