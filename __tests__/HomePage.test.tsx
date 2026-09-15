@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import React from 'react';
 
 vi.mock('next-intl', () => ({
@@ -79,5 +79,38 @@ describe('HomePage (landing)', () => {
   it('links the map preview CTA to /map', () => {
     render(<HomePage />);
     expect(screen.getByText('map.preview.btn')).toHaveAttribute('href', '/map');
+  });
+
+  describe('store badges', () => {
+    afterEach(() => {
+      vi.unstubAllEnvs();
+    });
+
+    it('shows non-clickable "coming soon" badges while no store URLs are configured', () => {
+      vi.stubEnv('NEXT_PUBLIC_APP_STORE_URL', '');
+      vi.stubEnv('NEXT_PUBLIC_PLAY_STORE_URL', '');
+      const { container } = render(<HomePage />);
+
+      const badges = container.querySelectorAll('.download-badges .store-badge');
+      expect(badges).toHaveLength(2);
+      badges.forEach((badge) => {
+        expect(badge.tagName).toBe('SPAN');
+        expect(badge.classList.contains('is-soon')).toBe(true);
+      });
+      expect(screen.getAllByText('dl.soon')).toHaveLength(2);
+      expect(screen.getByText('dl.subSoon')).toBeTruthy();
+      expect(container.querySelector('.download-badges a[href="#"]')).toBeNull();
+    });
+
+    it('links to the store listings once their URLs are set', () => {
+      vi.stubEnv('NEXT_PUBLIC_APP_STORE_URL', 'https://apps.apple.com/app/id123');
+      vi.stubEnv('NEXT_PUBLIC_PLAY_STORE_URL', 'https://play.google.com/store/apps/details?id=com.hivepulse.app');
+      const { container } = render(<HomePage />);
+
+      expect(container.querySelector('.apple-badge')).toHaveAttribute('href', 'https://apps.apple.com/app/id123');
+      expect(container.querySelector('.google-badge')).toHaveAttribute('href', 'https://play.google.com/store/apps/details?id=com.hivepulse.app');
+      expect(screen.queryByText('dl.soon')).toBeNull();
+      expect(screen.getByText('dl.sub')).toBeTruthy();
+    });
   });
 });

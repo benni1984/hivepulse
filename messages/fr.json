@@ -194,7 +194,9 @@
   "dl": {
     "tag": "Commencer aujourd'hui",
     "title": "Téléchargez HivePulse — c'est gratuit",
-    "sub": "Disponible sur iOS et Android. Scannez votre première ruche en moins de deux minutes."
+    "sub": "Disponible sur iOS et Android. Scannez votre première ruche en moins de deux minutes.",
+    "subSoon": "Bientôt sur l’App Store et Google Play — en attendant, HivePulse fonctionne directement dans votre navigateur.",
+    "soon": "Bientôt disponible"
   },
   "map": {
     "hero": {

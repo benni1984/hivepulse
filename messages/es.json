@@ -194,7 +194,9 @@
   "dl": {
     "tag": "Empieza hoy",
     "title": "Descarga HivePulse — es gratis",
-    "sub": "Disponible en iOS y Android. Escanea tu primera colmena en menos de dos minutos."
+    "sub": "Disponible en iOS y Android. Escanea tu primera colmena en menos de dos minutos.",
+    "subSoon": "Pronto en App Store y Google Play: mientras tanto, HivePulse funciona directamente en tu navegador.",
+    "soon": "Próximamente"
   },
   "map": {
     "hero": {
