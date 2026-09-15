@@ -35,7 +35,12 @@ final class GuidedTourUITests: XCTestCase {
         XCTAssertTrue(waitForValue(primary, "1/\(pageTitles.count)"))
         // The tour dismisses the sign-in keyboard itself; it must not cover the Next button.
         XCTAssertTrue(waitForKeyboardToDisappear(), "sign-in keyboard still covers the tour")
-        XCTAssertTrue(primary.isHittable)
+        // After a password form disappears iOS may offer to save the password in a sheet over the bottom half.
+        dismissSavePasswordPromptIfPresent()
+        if !primary.isHittable {
+            captureDiagnostics("guided-tour-next-not-hittable")
+        }
+        XCTAssertTrue(primary.isHittable, "tour Next button is covered")
         for (index, title) in pageTitles.enumerated().dropFirst() {
             primary.tap()
             // The page-style TabView keeps neighbouring pages in the hierarchy, so a title "exists" before its
@@ -90,6 +95,33 @@ final class GuidedTourUITests: XCTestCase {
         password.tap()
         password.typeText("password123")
         app.buttons["Log In"].tap()
+    }
+
+    private func dismissSavePasswordPromptIfPresent() {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        for owner in [app!, springboard] {
+            let notNow = owner.buttons["Not Now"]
+            if notNow.waitForExistence(timeout: 2) {
+                notNow.tap()
+                return
+            }
+        }
+    }
+
+    /// Attaches a screenshot and the element tree, and writes the PNG to `SCREENSHOT_DIR` so it lands in the
+    /// `ios-screenshots` CI artifact.
+    private func captureDiagnostics(_ name: String) {
+        let screenshot = XCUIScreen.main.screenshot()
+        let attachment = XCTAttachment(screenshot: screenshot)
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+        print("=== \(name) element tree ===\n\(app.debugDescription)")
+        if let dir = ProcessInfo.processInfo.environment["SCREENSHOT_DIR"], !dir.isEmpty {
+            let url = URL(fileURLWithPath: dir).appendingPathComponent("zz-\(name).png")
+            try? FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try? screenshot.pngRepresentation.write(to: url)
+        }
     }
 
     private func waitForKeyboardToDisappear(timeout: TimeInterval = 5) -> Bool {
