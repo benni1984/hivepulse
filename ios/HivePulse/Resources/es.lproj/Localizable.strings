@@ -292,3 +292,13 @@
 "alert.deleteAccountConfirm" = "¿Eliminar tu cuenta?";
 "alert.deleteAccountMessage" = "Todos tus datos — colmenares, colmenas e inspecciones — serán eliminados permanentemente. Esto no se puede deshacer.";
 "alert.deleteAccountAction" = "Eliminar permanentemente";
+
+/* Statistics overview */
+"screen.statsOverview" = "Mis estadísticas";
+"overview.period" = "Periodo";
+"overview.apiaries" = "Colmenares";
+"overview.hives" = "Colmenas";
+"overview.inspections" = "Inspecciones";
+"overview.perApiary" = "Por colmenar";
+"overview.noData" = "No hay inspecciones en este periodo.";
+"overview.rowFormat" = "%1$d colmenas · %2$d inspecciones";
