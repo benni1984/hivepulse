@@ -92,8 +92,14 @@ struct QRBatchDetailView: View {
 
     var body: some View {
         Group {
-            if vm.isLoading && vm.batch == nil {
-                ProgressView()
+            // Never leave the Group empty before the first load: an empty Group has no view to attach `.task` to,
+            // so the load would never start.
+            if vm.batch == nil {
+                if vm.errorMessage == nil {
+                    ProgressView()
+                } else {
+                    Color.clear
+                }
             } else if let batch = vm.batch {
                 List {
                     Section {
