@@ -44,7 +44,11 @@ struct MainTabView: View {
 
             HornetView()
             .tabItem {
-                Label(NSLocalizedString("tab.hornets", comment: ""), systemImage: "ant")
+                Label {
+                    Text(NSLocalizedString("tab.hornets", comment: ""))
+                } icon: {
+                    Image(uiImage: HornetIcon.tabImage)
+                }
             }
         }
         // Amber selection on the forest-green tab bar (see HivePulseAppearance); DM Sans for all content

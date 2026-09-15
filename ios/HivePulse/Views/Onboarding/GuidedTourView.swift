@@ -8,6 +8,9 @@ struct GuidedTourView: View {
     @State private var page = 0
 
     private struct Page {
+        /// Marker for the custom hornet glyph (no fitting SF Symbol exists).
+        static let hornet = "hivepulse.hornet"
+
         let symbol: String?   // nil shows the HivePulse logo
         let titleKey: String
         let bodyKey: String
@@ -19,7 +22,7 @@ struct GuidedTourView: View {
         Page(symbol: "checklist",         titleKey: "tour.inspections.title", bodyKey: "tour.inspections.body"),
         Page(symbol: "chart.bar.xaxis",   titleKey: "tour.stats.title",       bodyKey: "tour.stats.body"),
         Page(symbol: "bell.badge",        titleKey: "tour.reminders.title",   bodyKey: "tour.reminders.body"),
-        Page(symbol: "ant",               titleKey: "tour.hornets.title",     bodyKey: "tour.hornets.body"),
+        Page(symbol: Page.hornet,         titleKey: "tour.hornets.title",     bodyKey: "tour.hornets.body"),
     ]
 
     private var isLastPage: Bool { page == pages.count - 1 }
@@ -81,7 +84,13 @@ struct GuidedTourView: View {
     private func pageView(_ p: Page) -> some View {
         VStack(spacing: 0) {
             if let symbol = p.symbol {
-                Image(systemName: symbol)
+                Group {
+                    if symbol == Page.hornet {
+                        Image(uiImage: HornetIcon.image(pointSize: 60))
+                    } else {
+                        Image(systemName: symbol)
+                    }
+                }
                     .font(.system(size: 52, weight: .semibold))
                     .foregroundColor(.hpAmberDark)
                     .frame(width: 120, height: 120)

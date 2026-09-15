@@ -80,7 +80,11 @@ struct HivePulseApp: App {
 
                         HornetView()
                         .tabItem {
-                            Label(NSLocalizedString("tab.hornets", comment: ""), systemImage: "ant")
+                            Label {
+                                Text(NSLocalizedString("tab.hornets", comment: ""))
+                            } icon: {
+                                Image(uiImage: HornetIcon.tabImage)
+                            }
                         }
                     }
                     .tint(.hpAmber)

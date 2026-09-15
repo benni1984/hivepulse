@@ -1,6 +1,7 @@
 package com.hivepulse.app.ui.onboarding
 
 import androidx.activity.compose.BackHandler
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,7 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material.icons.filled.NotificationsActive
-import androidx.compose.material.icons.filled.PestControl
+import androidx.compose.ui.res.painterResource
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -47,8 +48,13 @@ class GuidedTourViewModel @Inject constructor(
     }
 }
 
-/** One page of the tour; `icon == null` shows the HivePulse logo instead. */
-private data class TourPage(val icon: ImageVector?, @StringRes val title: Int, @StringRes val body: Int)
+/** One page of the tour; with neither `icon` nor `iconRes` it shows the HivePulse logo instead. */
+private data class TourPage(
+    val icon: ImageVector?,
+    @StringRes val title: Int,
+    @StringRes val body: Int,
+    @DrawableRes val iconRes: Int? = null,
+)
 
 private val TOUR_PAGES = listOf(
     TourPage(null, R.string.tour_welcome_title, R.string.tour_welcome_body),
@@ -56,7 +62,7 @@ private val TOUR_PAGES = listOf(
     TourPage(Icons.Default.Checklist, R.string.tour_inspections_title, R.string.tour_inspections_body),
     TourPage(Icons.Default.BarChart, R.string.tour_stats_title, R.string.tour_stats_body),
     TourPage(Icons.Default.NotificationsActive, R.string.tour_reminders_title, R.string.tour_reminders_body),
-    TourPage(Icons.Default.PestControl, R.string.tour_hornets_title, R.string.tour_hornets_body),
+    TourPage(null, R.string.tour_hornets_title, R.string.tour_hornets_body, iconRes = R.drawable.ic_hornet),
 )
 
 /** Swipeable introduction shown once after the first sign-in on a device (and on demand from Settings). */
@@ -130,14 +136,19 @@ private fun TourPageContent(page: TourPage) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        if (page.icon == null) {
+        if (page.icon == null && page.iconRes == null) {
             HivePulseHexIcon(size = 112)
         } else {
             Box(
                 Modifier.size(120.dp).background(Amber500.copy(alpha = 0.15f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(page.icon, contentDescription = null, modifier = Modifier.size(56.dp), tint = Amber600)
+                val iconModifier = Modifier.size(56.dp)
+                if (page.iconRes != null) {
+                    Icon(painterResource(page.iconRes), contentDescription = null, modifier = iconModifier, tint = Amber600)
+                } else if (page.icon != null) {
+                    Icon(page.icon, contentDescription = null, modifier = iconModifier, tint = Amber600)
+                }
             }
         }
         Spacer(Modifier.height(32.dp))
