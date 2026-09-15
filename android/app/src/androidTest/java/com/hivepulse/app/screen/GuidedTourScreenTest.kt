@@ -48,7 +48,12 @@ class GuidedTourScreenTest {
     )
 
     private fun waitForText(text: String) {
-        composeRule.waitUntil(5_000) { composeRule.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty() }
+        try {
+            composeRule.waitUntil(5_000) { composeRule.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty() }
+        } catch (e: androidx.compose.ui.test.ComposeTimeoutException) {
+            val tree = runCatching { composeRule.onAllNodes(isRoot()).get(0).printToString(maxDepth = 30) }.getOrElse { it.toString() }
+            throw AssertionError("\"$text\" not shown. Semantics tree:\n$tree", e)
+        }
     }
 
     private fun signIn() {

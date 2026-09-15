@@ -65,12 +65,17 @@ fun HivePulseNavGraph(
             TokenStoreEntryPoint::class.java
         ).onboardingStore()
 ) {
-    val start = if (tokenStore.isLoggedIn) Routes.APIARY_LIST else Routes.LOGIN
+    // Both are remembered so a recomposition (e.g. the bottom bar hiding for the guided tour changes the
+    // padding) cannot hand NavHost a new start destination or builder — that rebuilds the graph and resets
+    // the back stack to the start destination, which is how the tour vanished right after sign-in.
+    val start = remember { if (tokenStore.isLoggedIn) Routes.APIARY_LIST else Routes.LOGIN }
 
     // The first successful sign-in on this device shows the guided tour before the apiary list
-    val afterAuth: () -> Unit = {
-        val destination = if (onboardingStore.hasSeenGuidedTour) Routes.APIARY_LIST else "guided_tour?fromSettings=false"
-        navController.navigate(destination) { popUpTo(Routes.LOGIN) { inclusive = true } }
+    val afterAuth: () -> Unit = remember(navController, onboardingStore) {
+        {
+            val destination = if (onboardingStore.hasSeenGuidedTour) Routes.APIARY_LIST else "guided_tour?fromSettings=false"
+            navController.navigate(destination) { popUpTo(Routes.LOGIN) { inclusive = true } }
+        }
     }
 
     NavHost(navController, startDestination = start, modifier = modifier) {
