@@ -134,6 +134,8 @@ struct ReminderSettingsOut: Codable {
     let reminderSeasonEnd: Int
     let pushTokenApns: String?
     let pushTokenFcm: String?
+    /// Email as an extra reminder channel, additive to push (optional so older responses still decode).
+    var reminderEmailEnabled: Bool? = nil
     enum CodingKeys: String, CodingKey {
         case pushTokenApns       = "push_token_apns"
         case pushTokenFcm        = "push_token_fcm"
@@ -141,6 +143,7 @@ struct ReminderSettingsOut: Codable {
         case reminderIntervalDays = "reminder_interval_days"
         case reminderSeasonStart  = "reminder_season_start"
         case reminderSeasonEnd    = "reminder_season_end"
+        case reminderEmailEnabled = "reminder_email_enabled"
     }
 }
 
@@ -149,11 +152,13 @@ struct ReminderSettingsUpdate: Encodable {
     var reminderIntervalDays: Int?
     var reminderSeasonStart: Int?
     var reminderSeasonEnd: Int?
+    var reminderEmailEnabled: Bool?
     enum CodingKeys: String, CodingKey {
         case reminderEnabled      = "reminder_enabled"
         case reminderIntervalDays = "reminder_interval_days"
         case reminderSeasonStart  = "reminder_season_start"
         case reminderSeasonEnd    = "reminder_season_end"
+        case reminderEmailEnabled = "reminder_email_enabled"
     }
 }
 

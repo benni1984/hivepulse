@@ -124,7 +124,7 @@ extension MockURLProtocol {
     """
 
     static let reminderJSON = """
-    {"reminder_enabled":true,"reminder_interval_days":7,"reminder_season_start":4,"reminder_season_end":8,"push_token_apns":null,"push_token_fcm":null}
+    {"reminder_enabled":true,"reminder_interval_days":7,"reminder_season_start":4,"reminder_season_end":8,"push_token_apns":null,"push_token_fcm":null,"reminder_email_enabled":false}
     """
 
     private static let accessTokenJSON = """
