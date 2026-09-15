@@ -20,7 +20,11 @@ Same tokens as web/Android (`hivepulse-redesign/bundle.html`), defined in `HiveP
 
 ## TestFlight
 
-`.github/workflows/testflight.yml` archives the Release build **unsigned**, then `xcodebuild -exportArchive` (`destination: upload`) signs it for App Store distribution via Xcode **cloud signing** (App Store Connect API key — no local Mac, certificates or profiles) and uploads it. Signing during `archive` does not work on CI: automatic signing there requests an *iOS App Development* profile, which Apple refuses while no device is registered to the team. It runs on manual dispatch and on pushes to `main` that touch `ios/HivePulse/**` or `ios/project.yml`.
+`.github/workflows/testflight.yml` archives the Release build with automatic **cloud signing**, then `xcodebuild -exportArchive` (`destination: upload`) re-signs it for App Store distribution and uploads it (App Store Connect API key — no local Mac, certificates or profiles).
+
+- The team needs **at least one registered device** (developer.apple.com → Certificates, Identifiers & Profiles → Devices): automatic signing during `archive` requests an *iOS App Development* profile, which Apple refuses otherwise ("Your team has no devices from which to generate a provisioning profile")
+- Do not archive unsigned (`CODE_SIGNING_ALLOWED=NO`) — the upload is then rejected as "Invalid Signature"
+- App Store validation requires `UISupportedInterfaceOrientations` in `Info.plist` (checked by `AppBundleTests`) It runs on manual dispatch and on pushes to `main` that touch `ios/HivePulse/**` or `ios/project.yml`.
 
 - Secrets: `APPLE_TEAM_ID`, `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`, `APP_STORE_CONNECT_API_KEY_P8` (full `.p8` contents; key role Admin). Without them the job logs a notice and succeeds without building
 - Build number = `github.run_number` via `CURRENT_PROJECT_VERSION` (Info.plist `CFBundleVersion` is `$(CURRENT_PROJECT_VERSION)`); bump `CFBundleShortVersionString` for a new marketing version

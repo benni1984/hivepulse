@@ -34,6 +34,13 @@ final class AppBundleTests: XCTestCase {
         XCTAssertGreaterThan(Int(build) ?? 0, 0)
     }
 
+    func test_supportedInterfaceOrientations_areDeclared() {
+        // App Store Connect rejects uploads without this key ("No orientations were specified").
+        let orientations = info["UISupportedInterfaceOrientations"] as? [String] ?? []
+        XCTAssertTrue(orientations.contains("UIInterfaceOrientationPortrait"))
+        XCTAssertEqual(Set(orientations).count, 4)
+    }
+
     func test_displayName_isHivePulse() {
         XCTAssertEqual(info["CFBundleDisplayName"] as? String, "HivePulse")
     }
