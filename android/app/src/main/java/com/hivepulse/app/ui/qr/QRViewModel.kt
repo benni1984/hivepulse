@@ -6,7 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.hivepulse.app.data.api.QrBatchOut
 import com.hivepulse.app.data.api.QrBatchSummary
 import com.hivepulse.app.data.api.QRScanResult
-import com.hivepulse.app.data.local.TokenStore
+import com.hivepulse.app.data.repository.ExportRepository
+import com.hivepulse.app.data.repository.SavedDownload
 import com.hivepulse.app.data.repository.HiveRepository
 import com.hivepulse.app.data.repository.QrBatchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -84,18 +85,19 @@ class QRBatchListViewModel @Inject constructor(private val repo: QrBatchReposito
 data class QRBatchDetailState(
     val batch: QrBatchOut? = null,
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val isDownloading: Boolean = false,
+    val downloaded: SavedDownload? = null
 )
 
 @HiltViewModel
 class QRBatchDetailViewModel @Inject constructor(
     savedState: SavedStateHandle,
     private val repo: QrBatchRepository,
-    private val tokenStore: TokenStore
+    private val exportRepo: ExportRepository
 ) : ViewModel() {
 
     val batchId = savedState.get<String>("batchId")!!
-    val accessToken: String? get() = tokenStore.accessToken
     private val _state = MutableStateFlow(QRBatchDetailState())
     val state = _state.asStateFlow()
 
@@ -107,6 +109,15 @@ class QRBatchDetailViewModel @Inject constructor(
             .onSuccess { b -> _state.update { it.copy(isLoading = false, batch = b) } }
             .onFailure { e -> _state.update { it.copy(isLoading = false, error = e.message) } }
     }
+
+    fun downloadPdf() = viewModelScope.launch {
+        _state.update { it.copy(isDownloading = true, error = null, downloaded = null) }
+        runCatching { exportRepo.downloadQrBatchPdf(batchId) }
+            .onSuccess { f -> _state.update { it.copy(isDownloading = false, downloaded = f) } }
+            .onFailure { e -> _state.update { it.copy(isDownloading = false, error = e.message ?: e.cause?.message) } }
+    }
+
+    fun clearDownloaded() = _state.update { it.copy(downloaded = null) }
 
     fun clearError() = _state.update { it.copy(error = null) }
 }

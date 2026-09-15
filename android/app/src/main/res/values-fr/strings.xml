@@ -107,6 +107,9 @@
     <string name="action_new_batch">Nouveau lot QR</string>
     <string name="action_generate">Générer</string>
     <string name="action_download_pdf">Télécharger le PDF</string>
+    <string name="qr_pdf_saved">Enregistré dans Téléchargements : %1$s</string>
+    <string name="qr_pdf_open">Ouvrir</string>
+    <string name="qr_pdf_no_viewer">Aucune application installée pour ouvrir les PDF.</string>
     <string name="action_grant_permission">Autoriser</string>
 
     <!-- Fields -->
