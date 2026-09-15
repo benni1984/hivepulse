@@ -7,6 +7,7 @@ import com.hivepulse.app.data.repository.SavedDownload
 import com.hivepulse.app.data.repository.HiveRepository
 import com.hivepulse.app.data.repository.QrBatchRepository
 import io.mockk.*
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
@@ -179,6 +180,25 @@ class QRViewModelTest {
         assertEquals("HTTP 500", vm.state.value.error)
         assertNull(vm.state.value.downloaded)
         assertFalse(vm.state.value.isDownloading)
+    }
+
+    @Test
+    fun `downloadPdf ignores repeated taps while a download is running`() = runTest {
+        coEvery { batchRepo.get("b1") } returns batchOut("b1")
+        val gate = CompletableDeferred<Unit>()
+        coEvery { exportRepo.downloadQrBatchPdf("b1") } coAnswers { gate.await(); SavedDownload("f.pdf", null) }
+        val vm = QRBatchDetailViewModel(SavedStateHandle(mapOf("batchId" to "b1")), batchRepo, exportRepo)
+
+        vm.downloadPdf()
+        vm.downloadPdf()
+        vm.downloadPdf()
+        assertTrue(vm.state.value.isDownloading)
+
+        gate.complete(Unit)
+
+        coVerify(exactly = 1) { exportRepo.downloadQrBatchPdf("b1") }
+        assertFalse(vm.state.value.isDownloading)
+        assertNotNull(vm.state.value.downloaded)
     }
 
     @Test
