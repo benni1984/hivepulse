@@ -271,7 +271,8 @@
 "reminder.seasonEnd" = "Fin de temporada";
 "reminder.saveButton" = "Guardar ajustes de recordatorio";
 "reminder.saved" = "Ajustes de recordatorio guardados.";
-"reminder.comingSoon" = "Las notificaciones push llegarán pronto. Tus preferencias están guardadas.";
+"reminder.emailEnabled" = "Avisarme también por correo electrónico";
+"reminder.emailHint" = "Las notificaciones push llegan a esta app. Los recordatorios por correo también te llegan si solo usas la web: ambos canales comparten la misma cuenta, así que estos ajustes se aplican en todas partes.";
 
 /* Miembros */
 "tab.members" = "Miembros";

@@ -42,7 +42,8 @@ func makeReminderSettings(
     enabled: Bool = true,
     intervalDays: Int = 7,
     seasonStart: Int = 4,
-    seasonEnd: Int = 8
+    seasonEnd: Int = 8,
+    emailEnabled: Bool = false
 ) -> ReminderSettingsOut {
     ReminderSettingsOut(
         reminderEnabled: enabled,
@@ -50,7 +51,8 @@ func makeReminderSettings(
         reminderSeasonStart: seasonStart,
         reminderSeasonEnd: seasonEnd,
         pushTokenApns: nil,
-        pushTokenFcm: nil
+        pushTokenFcm: nil,
+        reminderEmailEnabled: emailEnabled
     )
 }
 
@@ -64,6 +66,7 @@ final class MockAuthService: AuthServiceProtocol {
     var getReminderResult: Result<ReminderSettingsOut, Error> = .success(makeReminderSettings())
     var updateReminderResult: Result<ReminderSettingsOut, Error> = .success(makeReminderSettings())
     var registerPushTokenError: Error? = nil
+    private(set) var lastReminderUpdate: ReminderSettingsUpdate?
 
     func login(email: String, password: String) async throws -> TokenResponse { try loginResult.get() }
     func register(email: String, password: String, name: String, locale: String) async throws -> TokenResponse { try registerResult.get() }
@@ -73,7 +76,10 @@ final class MockAuthService: AuthServiceProtocol {
     func changePassword(currentPassword: String, newPassword: String) async throws -> UserOut { try changePasswordResult.get() }
     func deleteMe() async throws { if let err = deleteMeError { throw err } }
     func getReminderSettings() async throws -> ReminderSettingsOut { try getReminderResult.get() }
-    func updateReminderSettings(_ body: ReminderSettingsUpdate) async throws -> ReminderSettingsOut { try updateReminderResult.get() }
+    func updateReminderSettings(_ body: ReminderSettingsUpdate) async throws -> ReminderSettingsOut {
+        lastReminderUpdate = body
+        return try updateReminderResult.get()
+    }
     func registerPushToken(platform: String, token: String) async throws { if let err = registerPushTokenError { throw err } }
 }
 

@@ -271,7 +271,8 @@
 "reminder.seasonEnd" = "Fin de saison";
 "reminder.saveButton" = "Enregistrer les paramètres";
 "reminder.saved" = "Paramètres de rappel enregistrés.";
-"reminder.comingSoon" = "Les notifications push arrivent bientôt. Vos préférences sont enregistrées.";
+"reminder.emailEnabled" = "Me notifier aussi par e-mail";
+"reminder.emailHint" = "Les notifications push arrivent dans cette application. Les rappels par e-mail vous parviennent même si vous n’utilisez que le site web — les deux canaux partagent le même compte, ces réglages s’appliquent donc partout.";
 
 /* Membres */
 "tab.members" = "Membres";

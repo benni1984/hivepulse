@@ -271,7 +271,8 @@
 "reminder.seasonEnd" = "Season end";
 "reminder.saveButton" = "Save Reminder Settings";
 "reminder.saved" = "Reminder settings saved.";
-"reminder.comingSoon" = "Push notifications are coming soon. Your preferences are saved.";
+"reminder.emailEnabled" = "Also notify me by email";
+"reminder.emailHint" = "Push notifications arrive in this app. Email reminders also reach you when you only use the website — both channels share the same account, so settings here apply everywhere.";
 
 /* Members */
 "tab.members" = "Members";

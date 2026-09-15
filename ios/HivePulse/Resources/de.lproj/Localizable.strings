@@ -271,7 +271,8 @@
 "reminder.seasonEnd" = "Saisonende";
 "reminder.saveButton" = "Erinnerungseinstellungen speichern";
 "reminder.saved" = "Erinnerungseinstellungen gespeichert.";
-"reminder.comingSoon" = "Push-Benachrichtigungen kommen bald. Deine Einstellungen wurden gespeichert.";
+"reminder.emailEnabled" = "Zusätzlich per E-Mail benachrichtigen";
+"reminder.emailHint" = "Push-Benachrichtigungen kommen in dieser App an. E-Mail-Erinnerungen erreichen dich auch, wenn du nur die Website nutzt — beide Kanäle gehören zum selben Konto, Einstellungen hier gelten also überall.";
 
 /* Mitglieder */
 "tab.members" = "Mitglieder";
