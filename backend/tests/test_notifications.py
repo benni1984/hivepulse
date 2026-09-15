@@ -79,8 +79,16 @@ def test_send_reminders_skips_off_season_user(auth_client, db_session, monkeypat
     assert data["sent"] == 0
 
 
-def test_send_reminders_skips_user_with_no_channel(auth_client):
+def test_send_reminders_skips_user_with_no_channel(auth_client, db_session):
     """User with no push token and email reminders off must be counted in skipped_no_channel."""
+    from app.models import User
+    user = db_session.query(User).filter(User.email == "test@example.com").first()
+    # Year-round season: with the default Apr–Aug window this test was counted as
+    # skipped_off_season (and failed) whenever the suite ran from September to March.
+    user.reminder_season_start = 1
+    user.reminder_season_end = 12
+    db_session.commit()
+
     r = auth_client.post(ENDPOINT, headers=_cron_headers())
     assert r.status_code == 200
     data = r.json()
