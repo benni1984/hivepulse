@@ -80,6 +80,12 @@
 
 /* Actions */
 "action.forgotPassword" = "Forgot password?";
+"forgot.title" = "Reset your password";
+"forgot.desc" = "Enter your email address and we'll send you a reset link.";
+"forgot.submit" = "Send reset link";
+"forgot.sent" = "If that email is registered, you'll receive a reset link shortly. Check your inbox.";
+"forgot.back" = "Back to log in";
+"forgot.offline" = "No connection. Check your network and try again.";
 "action.save" = "Save";
 "action.cancel" = "Cancel";
 "action.done" = "Done";

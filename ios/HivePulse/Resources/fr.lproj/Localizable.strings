@@ -80,6 +80,12 @@
 
 /* Actions */
 "action.forgotPassword" = "Mot de passe oublié ?";
+"forgot.title" = "Réinitialiser votre mot de passe";
+"forgot.desc" = "Entrez votre adresse e-mail et nous vous enverrons un lien de réinitialisation.";
+"forgot.submit" = "Envoyer le lien";
+"forgot.sent" = "Si cet e-mail est enregistré, vous recevrez un lien de réinitialisation sous peu. Vérifiez votre boîte de réception.";
+"forgot.back" = "Retour à la connexion";
+"forgot.offline" = "Pas de connexion. Vérifiez votre réseau et réessayez.";
 "action.save" ="Enregistrer";
 "action.cancel" = "Annuler";
 "action.done" = "Terminé";

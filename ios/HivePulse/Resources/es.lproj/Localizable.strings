@@ -80,6 +80,12 @@
 
 /* Actions */
 "action.forgotPassword" = "¿Olvidaste tu contraseña?";
+"forgot.title" = "Restablecer tu contraseña";
+"forgot.desc" = "Introduce tu correo electrónico y te enviaremos un enlace para restablecerla.";
+"forgot.submit" = "Enviar enlace";
+"forgot.sent" = "Si ese correo está registrado, recibirás en breve un enlace para restablecerla. Revisa tu bandeja de entrada.";
+"forgot.back" = "Volver a iniciar sesión";
+"forgot.offline" = "Sin conexión. Revisa tu red e inténtalo de nuevo.";
 "action.save" ="Guardar";
 "action.cancel" = "Cancelar";
 "action.done" = "Hecho";
