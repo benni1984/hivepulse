@@ -20,12 +20,13 @@ Same tokens as web/Android (`hivepulse-redesign/bundle.html`), defined in `HiveP
 
 ## TestFlight
 
-`.github/workflows/testflight.yml` archives the Release build with automatic cloud signing (development), then `xcodebuild -exportArchive` (`destination: upload`, **manual** style) re-signs it with our own **Apple Distribution certificate** imported from secrets into a temporary keychain, using an App Store profile fetched by `fastlane sigh`, and uploads it.
+`.github/workflows/testflight.yml` imports our own **Apple Distribution certificate** from secrets into a temporary keychain, fetches the App Store profile with `fastlane sigh`, archives the Release build with **manual** distribution signing and uploads it via `xcodebuild -exportArchive` (`destination: upload`, manual style).
+
+- Do not switch the archive back to automatic signing: every fresh runner would create another "Created via API" development certificate (Apple caps the number per team) and it requires a registered device
 
 - Why not cloud-managed distribution signing: the cloud signer writes the account holder name ("Benjamin Müller") into the designated requirement in a different Unicode form than the certificate, so the signature fails its own requirement and App Store Connect rejects it with **ITMS-90035**. The workflow now runs `codesign --verify --strict` on an exported IPA before uploading and fails early if the requirement is not satisfied
 - Extra secrets: `IOS_DIST_CERT_P12_BASE64`, `IOS_DIST_CERT_P12_PASSWORD` (certificate valid for one year — renew by creating a new CSR/certificate and replacing both secrets)
 
-- The team needs **at least one registered device** (developer.apple.com → Certificates, Identifiers & Profiles → Devices): automatic signing during `archive` requests an *iOS App Development* profile, which Apple refuses otherwise ("Your team has no devices from which to generate a provisioning profile")
 - Do not archive unsigned (`CODE_SIGNING_ALLOWED=NO`) — the upload is then rejected as "Invalid Signature"
 - App Store validation requires `UISupportedInterfaceOrientations` in `Info.plist` (checked by `AppBundleTests`) It runs on manual dispatch and on pushes to `main` that touch `ios/HivePulse/**` or `ios/project.yml`.
 
