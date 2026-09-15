@@ -20,7 +20,7 @@ export default function NewsPage() {
               <div className="news-body">
                 <span className="news-tag">Fix</span>
                 <h3>QR Code PDF Download Fixed in the Android App</h3>
-                <p>Tapping Download PDF on a QR batch in the Android app did nothing — the download was handed off outside the app and failed silently once your session had been open for a while. The app now downloads the printable PDF itself, saves it to your Downloads folder, and lets you open it straight from the confirmation.</p>
+                <p>Tapping Download PDF on a QR batch in the Android app did nothing — the download was handed off outside the app and failed silently once your session had been open for a while. The app now downloads the printable PDF itself, saves it to your Downloads folder and opens it right away — and tapping again no longer piles up duplicate copies.</p>
               </div>
             </article>
             <article className="news-card" data-aos="fade-up" data-aos-delay="60">
