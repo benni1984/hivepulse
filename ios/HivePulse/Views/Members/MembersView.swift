@@ -15,16 +15,20 @@ struct MembersView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 24) {
+            VStack(spacing: 20) {
                 // Stats grid — blurred for non-supporters
                 LazyVGrid(
-                    columns: [GridItem(.flexible()), GridItem(.flexible())],
+                    columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)],
                     spacing: 12
                 ) {
-                    statCard(formatVarroa(), label: NSLocalizedString("members.stat.avgVarroa", comment: ""))
-                    statCard(formatMood(),   label: NSLocalizedString("members.stat.goodMood",   comment: ""))
-                    statCard(formatBrood(),  label: NSLocalizedString("members.stat.avgBrood",   comment: ""))
-                    statCard(formatInterval(), label: NSLocalizedString("members.stat.interval", comment: ""))
+                    HPStatPill(label: NSLocalizedString("members.stat.avgVarroa", comment: ""),
+                               value: formatVarroa(), systemImage: "ant", iconColor: .hpRed)
+                    HPStatPill(label: NSLocalizedString("members.stat.goodMood", comment: ""),
+                               value: formatMood(), systemImage: "face.smiling", iconColor: .hpGreen)
+                    HPStatPill(label: NSLocalizedString("members.stat.avgBrood", comment: ""),
+                               value: formatBrood(), systemImage: "square.grid.3x3", iconColor: .hpGreen)
+                    HPStatPill(label: NSLocalizedString("members.stat.interval", comment: ""),
+                               value: formatInterval(), systemImage: "clock")
                 }
                 .blur(radius: isUnlocked ? 0 : 8)
                 .animation(.easeInOut(duration: 0.25), value: isUnlocked)
@@ -42,6 +46,7 @@ struct MembersView: View {
             }
             .padding()
         }
+        .hpScreenBackground()
         .navigationTitle(NSLocalizedString("members.title", comment: ""))
         .task {
             isLoadingStats = true
@@ -78,37 +83,17 @@ struct MembersView: View {
     // MARK: - Sub-views
 
     @ViewBuilder
-    private func statCard(_ value: String, label: String) -> some View {
-        VStack(spacing: 6) {
-            Text(value)
-                .font(.title2).fontWeight(.bold)
-            Text(label)
-                .font(.caption)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
-        }
-        .padding()
-        .frame(maxWidth: .infinity, minHeight: 80)
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
-    }
-
-    @ViewBuilder
     private func supporterContent() -> some View {
         VStack(spacing: 8) {
-            Label("", systemImage: "checkmark.seal.fill")
-                .labelStyle(.iconOnly)
+            Image(systemName: "checkmark.seal.fill")
                 .font(.system(size: 32))
-                .foregroundColor(.orange)
+                .foregroundColor(.hpAmber)
             Text(NSLocalizedString("members.comingSoon", comment: ""))
-                .font(.subheadline)
-                .foregroundColor(.secondary)
+                .font(.dmSans(15, relativeTo: .subheadline))
+                .foregroundColor(.hpStone500)
                 .multilineTextAlignment(.center)
         }
-        .padding()
-        .frame(maxWidth: .infinity)
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
+        .hpCard(padding: 20, alignment: .center)
     }
 
     @ViewBuilder
@@ -116,21 +101,19 @@ struct MembersView: View {
         VStack(spacing: 12) {
             Image(systemName: "star.circle.fill")
                 .font(.system(size: 36))
-                .foregroundColor(.orange)
+                .foregroundColor(.hpAmber)
             Text(NSLocalizedString("members.gate.title", comment: ""))
-                .font(.headline)
+                .font(.dmSans(18, weight: .bold, relativeTo: .headline))
+                .foregroundColor(.hpStone900)
             Text(NSLocalizedString("members.gate.desc", comment: ""))
-                .font(.subheadline)
-                .foregroundColor(.secondary)
+                .font(.dmSans(15, relativeTo: .subheadline))
+                .foregroundColor(.hpStone500)
                 .multilineTextAlignment(.center)
             Link(NSLocalizedString("members.becomeSupporter", comment: ""),
                  destination: supporterInfoURL)
-                .font(.subheadline.weight(.semibold))
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(HPPrimaryButtonStyle())
+                .padding(.top, 4)
         }
-        .padding()
-        .frame(maxWidth: .infinity)
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
+        .hpCard(padding: 20, alignment: .center)
     }
 }

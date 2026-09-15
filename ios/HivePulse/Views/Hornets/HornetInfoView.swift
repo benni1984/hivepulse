@@ -15,7 +15,7 @@ struct HornetInfoView: View {
                 // Info cards
                 InfoCard(
                     systemImage: "exclamationmark.triangle.fill",
-                    color: .orange,
+                    color: .hpAmber,
                     title: NSLocalizedString("hornets.info.problem", comment: ""),
                     content: NSLocalizedString("hornets.info.problemText", comment: "")
                 )
@@ -54,7 +54,7 @@ private struct HornetStatsGrid: View {
                 StatTile(
                     value: "\(stats.totalCaught)",
                     label: NSLocalizedString("hornets.stats.caught", comment: ""),
-                    color: .orange
+                    color: .hpAmber
                 )
                 StatTile(
                     value: "\(stats.totalNests)",

@@ -42,6 +42,7 @@ struct QRBatchListView: View {
             }
         }
         .navigationTitle(NSLocalizedString("screen.qrBatches", comment: ""))
+        .hpScreenBackground()
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 Button { showCreate = true } label: { Image(systemName: "plus") }
@@ -110,6 +111,7 @@ struct QRBatchDetailView: View {
             }
         }
         .navigationTitle(NSLocalizedString("screen.batchDetail", comment: ""))
+        .hpScreenBackground()
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 Link(destination: service.pdfURL(batchId: batchId)) {

@@ -5,12 +5,12 @@ struct ErrorBanner: View {
     var onDismiss: (() -> Void)?
 
     var body: some View {
-        HStack {
+        HStack(spacing: 10) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .foregroundColor(.white)
             Text(message)
+                .font(.dmSans(14, weight: .medium, relativeTo: .subheadline))
                 .foregroundColor(.white)
-                .font(.subheadline)
             Spacer()
             if let dismiss = onDismiss {
                 Button { dismiss() } label: {
@@ -19,9 +19,9 @@ struct ErrorBanner: View {
                 }
             }
         }
-        .padding()
-        .background(Color.red.opacity(0.85))
-        .cornerRadius(10)
+        .padding(14)
+        .background(Color.hpRed)
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .padding(.horizontal)
     }
 }

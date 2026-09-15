@@ -51,7 +51,7 @@ struct QRScanEntryView: View {
 
             Image(systemName: "qrcode.viewfinder")
                 .font(.system(size: 96))
-                .foregroundColor(.orange)
+                .foregroundColor(.hpAmberDark)
 
             Text(NSLocalizedString("scan.instruction", comment: ""))
                 .font(.title3)
@@ -72,7 +72,7 @@ struct QRScanEntryView: View {
                 Label(NSLocalizedString("action.scanQR", comment: ""), systemImage: "qrcode.viewfinder")
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.orange)
+                    .background(Color.hpAmber)
                     .foregroundColor(.white)
                     .cornerRadius(14)
                     .padding(.horizontal)

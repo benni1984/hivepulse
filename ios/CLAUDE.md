@@ -8,6 +8,20 @@
 - Build: open `ios/HivePulse.xcodeproj` in Xcode (requires macOS)
 - Run tests: Cmd+U in Xcode, or push to CI (see below)
 
+## Design System
+
+Same tokens as web/Android (`hivepulse-redesign/bundle.html`), defined in `HivePulse/Theme/`:
+
+- `Theme.swift` — `Color.hpAmber` / `hpAmberDark` / `hpForest` / `hpStone50…900` / `hpGreen` / `hpRed`; `Font.dmSans(size, weight:, relativeTo:)`; `HivePulseAppearance.apply()` styles the navigation bar (stone-50, DM Sans titles) and tab bar (forest green, amber selection)
+- `Components.swift` — `HivePulseLogo`, `HivePulseWordmark`, `HPPrimaryButtonStyle`, `HPStatPill`, `.hpCard()`, `.hpInputField()`, `.hpScreenBackground()`
+- DM Sans lives in `Resources/Fonts` and is registered via `UIAppFonts` in `Info.plist` (`ThemeTests` checks this)
+- Use the tokens instead of `.orange` / system greys; keep semantic status colours (mood, hornet status, linked) as they are
+- Amber text/icons on light backgrounds use `hpAmberDark` for contrast; `hpAmber` is for fills and the wordmark
+
+## Design screenshots from CI
+
+`HivePulseUITests/ScreenshotUITests` navigates the main screens with mock data and writes PNGs to `$SCREENSHOT_DIR`. The `ios` CI job sets it and uploads them as the **`ios-screenshots`** artifact — download with `gh run download <run-id> -n ios-screenshots` to review the UI without a Mac.
+
 ## CI
 
 - Job: `ios` in `.github/workflows/ci.yml` — path-filtered, runs on `macos-latest`

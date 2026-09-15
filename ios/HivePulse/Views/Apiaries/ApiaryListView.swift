@@ -50,6 +50,7 @@ struct ApiaryListView: View {
             }
         }
         .navigationTitle(NSLocalizedString("screen.apiaries", comment: ""))
+        .hpScreenBackground()
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 if apiaryVM.isLoading { ProgressView() }
@@ -77,18 +78,29 @@ struct ApiaryListView: View {
 private struct ApiaryRow: View {
     let apiary: ApiaryOut
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(apiary.name).font(.headline)
-            HStack {
-                Image(systemName: "hexagon").foregroundColor(.orange)
-                Text("\(apiary.hiveCount) \(NSLocalizedString("label.hives", comment: ""))")
-                    .font(.subheadline).foregroundColor(.secondary)
-                if let addr = apiary.address {
-                    Text("·").foregroundColor(.secondary)
-                    Text(addr).font(.subheadline).foregroundColor(.secondary)
+        HStack(spacing: 14) {
+            Image(systemName: "hexagon.fill")
+                .font(.system(size: 22))
+                .foregroundColor(.hpAmber)
+                .frame(width: 44, height: 44)
+                .background(Color.hpAmber.opacity(0.12))
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(apiary.name)
+                    .font(.dmSans(17, weight: .bold, relativeTo: .headline))
+                    .foregroundColor(.hpStone900)
+                HStack(spacing: 6) {
+                    Text("\(apiary.hiveCount) \(NSLocalizedString("label.hives", comment: ""))")
+                    if let addr = apiary.address {
+                        Text("·")
+                        Text(addr).lineLimit(1)
+                    }
                 }
+                .font(.dmSans(14, relativeTo: .subheadline))
+                .foregroundColor(.hpStone500)
             }
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 6)
     }
 }

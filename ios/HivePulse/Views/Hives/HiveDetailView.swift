@@ -53,6 +53,7 @@ struct HiveDetailView: View {
             }
         }
         .navigationTitle(hive.name)
+        .hpScreenBackground()
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 Button { showQR = true } label: { Image(systemName: "qrcode") }
@@ -90,7 +91,7 @@ private struct HiveInfoRow: View {
                 Text(value).multilineTextAlignment(.trailing)
             }
         } icon: {
-            Image(systemName: icon).foregroundColor(.orange)
+            Image(systemName: icon).foregroundColor(.hpAmberDark)
         }
     }
 }
@@ -99,7 +100,7 @@ private struct InspectionRow: View {
     let inspection: InspectionOut
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(inspection.date).font(.headline)
+            Text(inspection.date).font(.dmSans(16, weight: .bold, relativeTo: .headline))
             HStack(spacing: 12) {
                 if let mood = inspection.mood {
                     Label(mood.capitalized, systemImage: moodIcon(mood))
@@ -110,7 +111,7 @@ private struct InspectionRow: View {
                 }
                 if inspection.queenSeen == true {
                     Label(NSLocalizedString("label.queenSeen", comment: ""), systemImage: "crown")
-                        .font(.caption).foregroundColor(.yellow)
+                        .font(.caption).foregroundColor(.hpAmberDark)
                 }
             }
         }
@@ -128,9 +129,9 @@ private struct InspectionRow: View {
 
     private func moodColor(_ mood: String) -> Color {
         switch mood {
-        case "calm": return .green
-        case "nervous": return .orange
-        case "aggressive": return .red
+        case "calm": return .hpGreen
+        case "nervous": return .hpAmberDark
+        case "aggressive": return .hpRed
         default: return .secondary
         }
     }

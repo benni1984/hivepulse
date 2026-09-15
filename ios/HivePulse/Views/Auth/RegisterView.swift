@@ -11,6 +11,10 @@ struct RegisterView: View {
     private let locales = ["en", "fr", "de"]
     private let localeLabels = ["English", "Français", "Deutsch"]
 
+    private var canSubmit: Bool {
+        !authVM.isLoading && !name.isEmpty && !email.isEmpty && password.count >= 8
+    }
+
     var body: some View {
         Form {
             Section(NSLocalizedString("section.profile", comment: "")) {
@@ -43,14 +47,18 @@ struct RegisterView: View {
                 } label: {
                     HStack {
                         Spacer()
-                        if authVM.isLoading { ProgressView().tint(.white) }
+                        if authVM.isLoading { ProgressView().tint(Color.hpStone900) }
                         Text(NSLocalizedString("action.createAccount", comment: ""))
+                            .font(.dmSans(16, weight: .bold, relativeTo: .headline))
+                            .foregroundColor(.hpStone900)
                         Spacer()
                     }
                 }
-                .disabled(authVM.isLoading || name.isEmpty || email.isEmpty || password.count < 8)
+                .disabled(!canSubmit)
+                .listRowBackground(canSubmit ? Color.hpAmber : Color.hpAmber.opacity(0.35))
             }
         }
         .navigationTitle(NSLocalizedString("screen.register", comment: ""))
+        .hpScreenBackground()
     }
 }

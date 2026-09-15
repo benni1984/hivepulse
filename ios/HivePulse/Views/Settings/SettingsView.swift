@@ -208,6 +208,7 @@ struct SettingsView: View {
             }
         }
         .navigationTitle(NSLocalizedString("tab.settings", comment: ""))
+        .hpScreenBackground()
         .task {
             name   = authVM.currentUser?.name ?? ""
             locale = authVM.currentUser?.locale ?? "en"

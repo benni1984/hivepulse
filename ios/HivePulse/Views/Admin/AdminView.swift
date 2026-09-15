@@ -186,7 +186,7 @@ struct AdminUsersView: View {
             } label: {
                 Label(NSLocalizedString("admin.users.revokeTokens", comment: ""), systemImage: "arrow.counterclockwise")
             }
-            .tint(.orange)
+            .tint(.hpAmber)
         }
     }
 }
@@ -261,7 +261,7 @@ struct AdminMapView: View {
             } label: {
                 Label(NSLocalizedString("admin.map.setPrivate", comment: ""), systemImage: "lock")
             }
-            .tint(.orange)
+            .tint(.hpAmber)
         }
     }
 }

@@ -14,6 +14,7 @@ struct HivePulseApp: App {
     @StateObject private var authVM = AuthViewModel()
 
     init() {
+        HivePulseAppearance.apply()
         #if DEBUG
         let args = ProcessInfo.processInfo.arguments
         if args.contains("-resetKeychain") {
@@ -74,7 +75,8 @@ struct HivePulseApp: App {
                         Label(NSLocalizedString("tab.hornets", comment: ""), systemImage: "ant")
                     }
                 }
-                .tint(.orange)
+                .tint(.hpAmber)
+                .font(.dmSans(17))
             }
         }
     }

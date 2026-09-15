@@ -219,7 +219,9 @@ jobs:
       - name: Build & test
         if: needs.changes.outputs.ios == 'true'
         run: |
-          xcodebuild test \
+          # ScreenshotUITests writes design-review PNGs here (TEST_RUNNER_ vars are forwarded to the test runner)
+          mkdir -p "$GITHUB_WORKSPACE/ios-screenshots"
+          TEST_RUNNER_SCREENSHOT_DIR="$GITHUB_WORKSPACE/ios-screenshots" xcodebuild test \
             -project ios/HivePulse.xcodeproj \
             -scheme HivePulse \
             -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
@@ -231,6 +233,15 @@ jobs:
         with:
           name: ios-test-results
           path: TestResults.xcresult
+
+      - name: Upload design screenshots
+        if: always() && needs.changes.outputs.ios == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-screenshots
+          path: ios-screenshots/*.png
+          if-no-files-found: warn
+          retention-days: 14
 
   # ── Android Hornet Tracker (standalone app) ──────────────────────────────────
   android-hornets:

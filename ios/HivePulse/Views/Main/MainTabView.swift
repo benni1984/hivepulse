@@ -10,14 +10,16 @@ struct MainTabView: View {
                 ApiaryListView()
                     .environmentObject(apiaryVM)
             }
+            .tint(.hpAmberDark)
             .tabItem {
-                Label(NSLocalizedString("tab.apiaries", comment: ""), systemImage: "map")
+                Label(NSLocalizedString("tab.apiaries", comment: ""), systemImage: "hexagon")
             }
 
             NavigationStack {
                 QRScanEntryView()
                     .environmentObject(apiaryVM)
             }
+            .tint(.hpAmberDark)
             .tabItem {
                 Label(NSLocalizedString("tab.scan", comment: ""), systemImage: "qrcode.viewfinder")
             }
@@ -26,6 +28,7 @@ struct MainTabView: View {
                 MembersView()
                     .environmentObject(authVM)
             }
+            .tint(.hpAmberDark)
             .tabItem {
                 Label(NSLocalizedString("tab.members", comment: ""), systemImage: "person.3")
             }
@@ -34,6 +37,7 @@ struct MainTabView: View {
                 SettingsView()
                     .environmentObject(authVM)
             }
+            .tint(.hpAmberDark)
             .tabItem {
                 Label(NSLocalizedString("tab.settings", comment: ""), systemImage: "gear")
             }
@@ -43,7 +47,9 @@ struct MainTabView: View {
                 Label(NSLocalizedString("tab.hornets", comment: ""), systemImage: "ant")
             }
         }
-        .tint(.orange)
+        // Amber selection on the forest-green tab bar (see HivePulseAppearance); DM Sans for all content
+        .tint(.hpAmber)
+        .font(.dmSans(17))
         .task { await apiaryVM.load() }
     }
 }
