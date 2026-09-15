@@ -308,7 +308,7 @@ private struct OptionalStepper: View {
                 }
             } else {
                 Button(NSLocalizedString("label.add", comment: "")) { value = range.lowerBound }
-                    .foregroundColor(.orange)
+                    .foregroundColor(.hpAmberDark)
             }
         }
     }

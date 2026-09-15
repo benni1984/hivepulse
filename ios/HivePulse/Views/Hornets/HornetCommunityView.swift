@@ -113,7 +113,7 @@ private struct SightingCard: View {
                     VoteButton(
                         label: NSLocalizedString("hornets.community.vote.yes", comment: ""),
                         count: sighting.yesVotes,
-                        color: .orange
+                        color: .hpAmber
                     ) {
                         Task { await vm.vote(sightingId: sighting.id, vote: "yes") }
                     }

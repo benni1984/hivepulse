@@ -45,7 +45,7 @@ struct HiveStatsView: View {
 
                     // Brood frames
                     if !s.broodFramesTrend.isEmpty {
-                        TrendChartCard(title: NSLocalizedString("stat.broodFrames", comment: ""), points: s.broodFramesTrend, color: .orange)
+                        TrendChartCard(title: NSLocalizedString("stat.broodFrames", comment: ""), points: s.broodFramesTrend, color: .hpAmber)
                     }
 
                     // Honey frames
@@ -89,7 +89,7 @@ struct HiveStatsView: View {
 
     private func summaryCards(_ s: HiveStats) -> some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-            StatCard(title: NSLocalizedString("stat.inspections", comment: ""), value: "\(s.inspectionCount)", icon: "list.clipboard", color: .orange)
+            StatCard(title: NSLocalizedString("stat.inspections", comment: ""), value: "\(s.inspectionCount)", icon: "list.clipboard", color: .hpAmber)
             if let days = s.daysSinceLastInspection {
                 StatCard(title: NSLocalizedString("stat.daysSinceLast", comment: ""), value: "\(days)", icon: "calendar", color: .blue)
             }

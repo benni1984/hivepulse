@@ -84,7 +84,7 @@ private struct TrapHomeView: View {
 
                     TrapActionCard(
                         icon: "key.fill",
-                        color: .orange,
+                        color: .hpAmber,
                         title: NSLocalizedString("hornets.traps.search", comment: ""),
                         subtitle: NSLocalizedString("hornets.traps.searchCode", comment: "")
                     ) {
@@ -201,7 +201,7 @@ private struct NearbyTrapRow: View {
                 .foregroundColor(.secondary)
             Button(NSLocalizedString("hornets.traps.logCatch", comment: "") + " →", action: onTap)
                 .font(.subheadline.bold())
-                .foregroundColor(.orange)
+                .foregroundColor(.hpAmberDark)
                 .padding(.top, 4)
         }
         .padding(.vertical, 4)

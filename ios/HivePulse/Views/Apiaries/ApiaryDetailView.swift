@@ -52,6 +52,7 @@ struct ApiaryDetailView: View {
             }
         }
         .navigationTitle(apiary.name)
+        .hpScreenBackground()
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 Button { showEdit = true } label: {
@@ -73,13 +74,15 @@ struct HiveRow: View {
     let hive: HiveOut
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(hive.name).font(.headline)
+            Text(hive.name)
+                .font(.dmSans(17, weight: .bold, relativeTo: .headline))
+                .foregroundColor(.hpStone900)
             HStack(spacing: 8) {
                 Text(hive.hiveType.capitalized)
                     .font(.caption)
                     .padding(.horizontal, 8).padding(.vertical, 2)
-                    .background(Color.orange.opacity(0.15))
-                    .foregroundColor(.orange)
+                    .background(Color.hpAmber.opacity(0.15))
+                    .foregroundColor(.hpAmberDark)
                     .cornerRadius(6)
                 if let last = hive.lastInspectionAt {
                     Text(last, style: .relative)
