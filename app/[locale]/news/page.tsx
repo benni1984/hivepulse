@@ -18,6 +18,14 @@ export default function NewsPage() {
             <article className="news-card" data-aos="fade-up">
               <div className="news-date"><div className="day">15</div><div className="month">Sep 2026</div></div>
               <div className="news-body">
+                <span className="news-tag">Fix</span>
+                <h3>Members Page Loads Instantly Again</h3>
+                <p>The community box on the Members page waited for the global statistics before showing anything — and those statistics were being calculated with a separate database query for every apiary and hive, which took several seconds as the community grew. The server now gathers them in just a few queries, and the log-in or supporter prompt appears immediately while the numbers fill in.</p>
+              </div>
+            </article>
+            <article className="news-card" data-aos="fade-up">
+              <div className="news-date"><div className="day">15</div><div className="month">Sep 2026</div></div>
+              <div className="news-body">
                 <span className="news-tag">Feature</span>
                 <h3>A Guided Tour for New Users in Both Apps</h3>
                 <p>The first time you sign in to the iOS or Android app, a short swipeable tour now introduces what HivePulse can do for you — QR codes on every hive, quick inspections, statistics, reminders and the hornet tracker. Skip it any time, and bring it back later from Settings with &quot;Show guided tour again&quot;.</p>
