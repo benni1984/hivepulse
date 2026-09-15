@@ -18,6 +18,14 @@ Same tokens as web/Android (`hivepulse-redesign/bundle.html`), defined in `HiveP
 - Use the tokens instead of `.orange` / system greys; keep semantic status colours (mood, hornet status, linked) as they are
 - Amber text/icons on light backgrounds use `hpAmberDark` for contrast; `hpAmber` is for fills and the wordmark
 
+## TestFlight
+
+`.github/workflows/testflight.yml` archives the Release build, signs it via Xcode **cloud signing** (App Store Connect API key — no local Mac, certificates or profiles) and uploads it with `xcodebuild -exportArchive` (`destination: upload`). It runs on manual dispatch and on pushes to `main` that touch `ios/HivePulse/**` or `ios/project.yml`.
+
+- Secrets: `APPLE_TEAM_ID`, `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`, `APP_STORE_CONNECT_API_KEY_P8` (full `.p8` contents; key role Admin). Without them the job logs a notice and succeeds without building
+- Build number = `github.run_number` via `CURRENT_PROJECT_VERSION` (Info.plist `CFBundleVersion` is `$(CURRENT_PROJECT_VERSION)`); bump `CFBundleShortVersionString` for a new marketing version
+- The App Store Connect app record (bundle ID `com.hivepulse.app`) must exist before the first upload
+
 ## App icon & App Store metadata
 
 - `Resources/Assets.xcassets/AppIcon.appiconset` holds a single opaque 1024×1024 PNG (HivePulse hex on stone-50, same as the Android launcher icon); `project.yml` sets `ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon`. The PNG must not have an alpha channel or App Store Connect rejects the upload
