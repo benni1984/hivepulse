@@ -260,4 +260,22 @@
     <string name="reminder_season_end">Fin de saison</string>
     <string name="reminder_save_button">Enregistrer les rappels</string>
     <string name="reminder_saved">Réglages des rappels enregistrés.</string>
+
+    <!-- Guided tour -->
+    <string name="tour_skip">Passer</string>
+    <string name="tour_next">Suivant</string>
+    <string name="tour_get_started">C\'est parti</string>
+    <string name="action_show_tour">Revoir la visite guidée</string>
+    <string name="tour_welcome_title">Bienvenue sur HivePulse</string>
+    <string name="tour_welcome_body">Votre carnet de ruches dans la poche. Voici un aperçu rapide de ce que HivePulse fait pour vous.</string>
+    <string name="tour_qr_title">Chaque ruche en un scan</string>
+    <string name="tour_qr_body">Créez vos ruchers, collez un QR code imprimé sur chaque ruche et scannez-le pour l\'ouvrir aussitôt — sans chercher dans des listes au rucher.</string>
+    <string name="tour_inspections_title">Des visites en quelques secondes</string>
+    <string name="tour_inspections_body">Notez reine, couvain, varroa, humeur et plus encore avec de grands boutons utilisables avec des gants. Ajoutez vos propres champs pour tout le reste.</string>
+    <string name="tour_stats_title">Repérez les problèmes tôt</string>
+    <string name="tour_stats_body">Les évolutions du varroa, du couvain et du poids par ruche et une vue d\'ensemble de tous vos ruchers montrent d\'un coup d\'œil quelles colonies ont besoin d\'attention.</string>
+    <string name="tour_reminders_title">Ne manquez plus aucune visite</string>
+    <string name="tour_reminders_body">Définissez l\'intervalle et la saison — HivePulse vous rappelle par notification push ou e-mail quand des ruches sont à visiter.</string>
+    <string name="tour_hornets_title">Protégez votre région</string>
+    <string name="tour_hornets_body">Signalez les observations et les nids de frelons asiatiques, gérez vos pièges et consultez les données de santé de la communauté pour votre région.</string>
 </resources>

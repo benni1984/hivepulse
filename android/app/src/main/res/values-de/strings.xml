@@ -260,4 +260,22 @@
     <string name="reminder_season_end">Saisonende</string>
     <string name="reminder_save_button">Erinnerungen speichern</string>
     <string name="reminder_saved">Erinnerungseinstellungen gespeichert.</string>
+
+    <!-- Guided tour -->
+    <string name="tour_skip">Überspringen</string>
+    <string name="tour_next">Weiter</string>
+    <string name="tour_get_started">Los geht\'s</string>
+    <string name="action_show_tour">Tour erneut ansehen</string>
+    <string name="tour_welcome_title">Willkommen bei HivePulse</string>
+    <string name="tour_welcome_body">Dein Stockbuch für die Hosentasche. Hier ein kurzer Überblick, was HivePulse für dich erledigt.</string>
+    <string name="tour_qr_title">Jede Beute per Scan</string>
+    <string name="tour_qr_body">Lege Standorte an, klebe einen gedruckten QR-Code auf jede Beute und scanne ihn, um sie sofort zu öffnen — ohne am Stand durch Listen zu suchen.</string>
+    <string name="tour_inspections_title">Kontrollen in Sekunden</string>
+    <string name="tour_inspections_body">Erfasse Königin, Brut, Varroa, Stimmung und mehr mit großen, handschuhtauglichen Knöpfen. Eigene Felder ergänzen alles, was du sonst noch festhältst.</string>
+    <string name="tour_stats_title">Probleme früh erkennen</string>
+    <string name="tour_stats_body">Varroa-, Brut- und Gewichtsverläufe je Beute und eine Übersicht über alle Standorte zeigen auf einen Blick, welche Völker Aufmerksamkeit brauchen.</string>
+    <string name="tour_reminders_title">Keine Kontrolle mehr vergessen</string>
+    <string name="tour_reminders_body">Lege Intervall und Saison fest — HivePulse erinnert dich per Push oder E-Mail, wenn Kontrollen fällig sind.</string>
+    <string name="tour_hornets_title">Schütze deine Region</string>
+    <string name="tour_hornets_body">Melde Sichtungen und Nester der Asiatischen Hornisse, verwalte deine Fallen und sieh Gesundheitsdaten der Community für deine Region.</string>
 </resources>

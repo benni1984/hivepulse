@@ -215,6 +215,19 @@ def install_and_launch():
 
 # ── Login ─────────────────────────────────────────────────────────────────────
 
+def skip_guided_tour_if_shown(timeout=15):
+    """The first sign-in on a fresh install shows the guided tour -- skip it so screenshots start on My Apiaries."""
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        dump = get_ui_dump()
+        if "My Apiaries" in dump:
+            return
+        if 'text="Skip"' in dump:
+            tap_node(dump, text="Skip")
+            return
+        time.sleep(1)
+
+
 def login():
     print("Logging in…", flush=True)
     wait_for("Sign In", timeout=30)
@@ -265,6 +278,7 @@ def login():
     for login_attempt in range(1, 6):
         tap_node(dump, text="Sign In")
         try:
+            skip_guided_tour_if_shown()
             wait_for("My Apiaries", timeout=30)
             print("  Logged in ✓", flush=True)
             return
