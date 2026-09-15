@@ -326,3 +326,30 @@
 "tour.reminders.body" = "Définissez l’intervalle et la saison — HivePulse vous rappelle par notification push ou e-mail quand des ruches sont à inspecter.";
 "tour.hornets.title" = "Protégez votre région";
 "tour.hornets.body" = "Signalez les observations et les nids de frelons asiatiques, gérez vos pièges et consultez les données de santé de la communauté pour votre région.";
+
+/* Community heatmap (members) */
+"heatmap.title" = "Carte de santé régionale";
+"heatmap.empty" = "Aucune donnée communautaire disponible.";
+"heatmap.hint" = "Touchez une cellule pour les détails.";
+"heatmap.overlay.varroa" = "Risque Varroa";
+"heatmap.overlay.mood" = "Humeur des colonies";
+"heatmap.overlay.swarm" = "Pression d’essaimage";
+"heatmap.overlay.brood" = "Santé du couvain";
+"heatmap.varroa.low" = "Faible (< 2)";
+"heatmap.varroa.medium" = "Moyen (2–5)";
+"heatmap.varroa.high" = "Élevé (> 5)";
+"heatmap.mood.good" = "Bonne (≥ 70 % calme)";
+"heatmap.mood.fair" = "Moyenne (40–70 %)";
+"heatmap.mood.low" = "Faible (< 40 %)";
+"heatmap.swarm.low" = "Faible (< 10 %)";
+"heatmap.swarm.medium" = "Moyen (10–30 %)";
+"heatmap.swarm.high" = "Élevé (> 30 %)";
+"heatmap.brood.strong" = "Fort (≥ 5 cadres)";
+"heatmap.brood.fair" = "Moyen (3–5)";
+"heatmap.brood.low" = "Faible (< 3)";
+"heatmap.noData" = "Pas de données";
+"heatmap.cellSummary" = "%d ruchers · %d visites";
+"heatmap.cell.varroa" = "Varroa moy.";
+"heatmap.cell.mood" = "Humeur calme";
+"heatmap.cell.brood" = "Couvain moy.";
+"heatmap.cell.swarm" = "Cellules d’essaimage";

@@ -326,3 +326,30 @@
 "tour.reminders.body" = "Lege Intervall und Saison fest — HivePulse erinnert dich per Push oder E-Mail, wenn Begehungen fällig sind.";
 "tour.hornets.title" = "Schütze deine Region";
 "tour.hornets.body" = "Melde Sichtungen und Nester der Asiatischen Hornisse, verwalte deine Fallen und sieh Gesundheitsdaten der Community für deine Region.";
+
+/* Community heatmap (members) */
+"heatmap.title" = "Regionale Gesundheitskarte";
+"heatmap.empty" = "Keine Community-Daten verfügbar.";
+"heatmap.hint" = "Tippe auf eine Zelle für Details.";
+"heatmap.overlay.varroa" = "Varroa-Risiko";
+"heatmap.overlay.mood" = "Volksstimmung";
+"heatmap.overlay.swarm" = "Schwarmdruck";
+"heatmap.overlay.brood" = "Brutgesundheit";
+"heatmap.varroa.low" = "Niedrig (< 2)";
+"heatmap.varroa.medium" = "Mittel (2–5)";
+"heatmap.varroa.high" = "Hoch (> 5)";
+"heatmap.mood.good" = "Gut (≥ 70 % ruhig)";
+"heatmap.mood.fair" = "Mittel (40–70 %)";
+"heatmap.mood.low" = "Niedrig (< 40 %)";
+"heatmap.swarm.low" = "Niedrig (< 10 %)";
+"heatmap.swarm.medium" = "Mittel (10–30 %)";
+"heatmap.swarm.high" = "Hoch (> 30 %)";
+"heatmap.brood.strong" = "Stark (≥ 5 Waben)";
+"heatmap.brood.fair" = "Mittel (3–5)";
+"heatmap.brood.low" = "Schwach (< 3)";
+"heatmap.noData" = "Keine Daten";
+"heatmap.cellSummary" = "%d Standorte · %d Kontrollen";
+"heatmap.cell.varroa" = "Ø Varroa";
+"heatmap.cell.mood" = "Ruhige Stimmung";
+"heatmap.cell.brood" = "Ø Brutwaben";
+"heatmap.cell.swarm" = "Schwarmzellen";

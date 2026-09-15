@@ -68,6 +68,7 @@ extension MockURLProtocol {
 
     // Authenticated supporter — same as authenticatedHandlers but user has is_supporter: true.
     static let authenticatedSupporterHandlers: [(String, Int, String)] = [
+        ("stats/community-heatmap", 200, communityHeatmapJSON),
         ("inspections",      200, emptyList),
         ("hives",            200, emptyList),
         ("field-definitions",200, "[]"),
@@ -119,6 +120,11 @@ extension MockURLProtocol {
 
     static let userJSON = """
     {"id":"u-1","email":"tester@example.com","name":"Test User","locale":"en","created_at":"2024-01-01T00:00:00Z","is_admin":false,"is_supporter":false}
+    """
+
+    // Two neighbouring 0.5° cells in central Germany: a healthy one (west) and a struggling one (east).
+    static let communityHeatmapJSON = """
+    {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[9.5,51.0],[10.0,51.0],[10.0,51.5],[9.5,51.5],[9.5,51.0]]]},"properties":{"avg_varroa":1.2,"mood_score":82,"avg_brood":6.1,"swarm_pct":5,"apiary_count":4,"inspection_count":21}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[10.0,51.0],[10.5,51.0],[10.5,51.5],[10.0,51.5],[10.0,51.0]]]},"properties":{"avg_varroa":5.8,"mood_score":35,"avg_brood":null,"swarm_pct":40,"apiary_count":2,"inspection_count":9}}]}
     """
 
     static let supporterUserJSON = """

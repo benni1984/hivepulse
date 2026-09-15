@@ -593,6 +593,40 @@ struct PublicStats: Codable {
     }
 }
 
+// MARK: - Community Heatmap (supporter/admin only)
+
+struct CommunityHeatmap: Codable {
+    let type: String
+    let features: [CommunityHeatmapFeature]
+}
+
+struct CommunityHeatmapFeature: Codable {
+    let geometry: PolygonGeometry
+    let properties: CommunityHeatmapProperties
+}
+
+struct PolygonGeometry: Codable {
+    let type: String
+    let coordinates: [[[Double]]]   // rings of [longitude, latitude]
+}
+
+struct CommunityHeatmapProperties: Codable, Equatable {
+    let avgVarroa: Double?
+    let moodScore: Double?          // percentage 0–100
+    let avgBrood: Double?
+    let swarmPct: Double            // percentage 0–100, never null
+    let apiaryCount: Int
+    let inspectionCount: Int
+    enum CodingKeys: String, CodingKey {
+        case avgVarroa       = "avg_varroa"
+        case moodScore       = "mood_score"
+        case avgBrood        = "avg_brood"
+        case swarmPct        = "swarm_pct"
+        case apiaryCount     = "apiary_count"
+        case inspectionCount = "inspection_count"
+    }
+}
+
 struct AdminTokenStats: Codable {
     let totalActiveSessions: Int
     let usersWithActiveSessions: Int

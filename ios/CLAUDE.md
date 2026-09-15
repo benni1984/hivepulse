@@ -42,6 +42,7 @@ You can write test files on any OS and let CI run them — no local macOS needed
 | `-resetKeychain` | Clears tokens — app starts at Login |
 | `-mockAuthenticated` | Clears keychain, sets fake token, empty-list mocks — starts at Apiaries |
 | `-mockApiaryWithHive` | Same + returns one apiary with one hive |
+| `-mockAuthenticatedSupporter` | Authenticated supporter; Members shows the community heatmap with two mock cells |
 | `-mockQrBatch` | Authenticated + one QR batch (`b-1`) whose PDF can be downloaded |
 | `-guidedTourSeen YES` / `NO` | Overrides the "guided tour already shown" flag for this launch (UserDefaults argument domain) |
 | `-mockServer` | Mock only, no token — starts at Login, auth calls return real-looking responses |
@@ -64,10 +65,10 @@ Most-specific URL patterns must come first:
 
 ## Unit Tests (HivePulseTests/)
 
-AuthViewModelTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, QRBatchDetailViewModelTests, OverviewStatsViewModelTests, ForgotPasswordViewModelTests, GuidedTourTests, ThemeTests, DTOTests, APIClientTests — all passing in CI.
+AuthViewModelTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, QRBatchDetailViewModelTests, OverviewStatsViewModelTests, ForgotPasswordViewModelTests, GuidedTourTests, CommunityHeatmapTests, ThemeTests, DTOTests, APIClientTests — all passing in CI.
 
 ## UI Tests (HivePulseUITests/)
 
 LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests, QRBatchDetailUITests, OverviewStatsUITests, ForgotPasswordUITests, GuidedTourUITests, HornetUITests, MembersUITests, ScreenshotUITests — all passing in CI.
 
-Screens: Login, Register, ApiaryList, ApiaryDetail, ApiaryForm, HiveDetail, HiveInitialize, HiveQR, InspectionForm, InspectionDetail, QRScanner, QRBatchList, QRBatchDetail, HiveStats, OverviewStats, ForgotPassword, GuidedTour, Settings.
+Screens: Login, Register, ApiaryList, ApiaryDetail, ApiaryForm, HiveDetail, HiveInitialize, HiveQR, InspectionForm, InspectionDetail, QRScanner, QRBatchList, QRBatchDetail, HiveStats, OverviewStats, ForgotPassword, GuidedTour, Members (community heatmap), Settings.

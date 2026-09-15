@@ -326,3 +326,30 @@
 "tour.reminders.body" = "Set your interval and season — HivePulse reminds you by push notification or email when hives are due.";
 "tour.hornets.title" = "Protect your region";
 "tour.hornets.body" = "Report Asian hornet sightings and nests, manage your traps and see community health data for your region.";
+
+/* Community heatmap (members) */
+"heatmap.title" = "Regional Health Map";
+"heatmap.empty" = "No community data available.";
+"heatmap.hint" = "Tap a cell for details.";
+"heatmap.overlay.varroa" = "Varroa Risk";
+"heatmap.overlay.mood" = "Colony Mood";
+"heatmap.overlay.swarm" = "Swarm Pressure";
+"heatmap.overlay.brood" = "Brood Health";
+"heatmap.varroa.low" = "Low (< 2)";
+"heatmap.varroa.medium" = "Medium (2–5)";
+"heatmap.varroa.high" = "High (> 5)";
+"heatmap.mood.good" = "Good (≥ 70% calm)";
+"heatmap.mood.fair" = "Fair (40–70%)";
+"heatmap.mood.low" = "Low (< 40%)";
+"heatmap.swarm.low" = "Low (< 10%)";
+"heatmap.swarm.medium" = "Medium (10–30%)";
+"heatmap.swarm.high" = "High (> 30%)";
+"heatmap.brood.strong" = "Strong (≥ 5 frames)";
+"heatmap.brood.fair" = "Fair (3–5)";
+"heatmap.brood.low" = "Low (< 3)";
+"heatmap.noData" = "No data";
+"heatmap.cellSummary" = "%d apiaries · %d inspections";
+"heatmap.cell.varroa" = "Varroa avg";
+"heatmap.cell.mood" = "Calm mood";
+"heatmap.cell.brood" = "Brood avg";
+"heatmap.cell.swarm" = "Swarm cells";

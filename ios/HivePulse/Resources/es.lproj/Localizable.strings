@@ -326,3 +326,30 @@
 "tour.reminders.body" = "Define el intervalo y la temporada: HivePulse te avisa por notificación push o correo cuando toca inspeccionar.";
 "tour.hornets.title" = "Protege tu región";
 "tour.hornets.body" = "Informa de avistamientos y nidos de avispón asiático, gestiona tus trampas y consulta datos de salud de la comunidad para tu región.";
+
+/* Community heatmap (members) */
+"heatmap.title" = "Mapa de salud regional";
+"heatmap.empty" = "No hay datos de comunidad disponibles.";
+"heatmap.hint" = "Toca una celda para ver detalles.";
+"heatmap.overlay.varroa" = "Riesgo de varroa";
+"heatmap.overlay.mood" = "Ánimo de las colonias";
+"heatmap.overlay.swarm" = "Presión de enjambrazón";
+"heatmap.overlay.brood" = "Salud de la cría";
+"heatmap.varroa.low" = "Bajo (< 2)";
+"heatmap.varroa.medium" = "Medio (2–5)";
+"heatmap.varroa.high" = "Alto (> 5)";
+"heatmap.mood.good" = "Bueno (≥ 70 % tranquilas)";
+"heatmap.mood.fair" = "Regular (40–70 %)";
+"heatmap.mood.low" = "Bajo (< 40 %)";
+"heatmap.swarm.low" = "Bajo (< 10 %)";
+"heatmap.swarm.medium" = "Medio (10–30 %)";
+"heatmap.swarm.high" = "Alto (> 30 %)";
+"heatmap.brood.strong" = "Fuerte (≥ 5 marcos)";
+"heatmap.brood.fair" = "Regular (3–5)";
+"heatmap.brood.low" = "Bajo (< 3)";
+"heatmap.noData" = "Sin datos";
+"heatmap.cellSummary" = "%d colmenares · %d inspecciones";
+"heatmap.cell.varroa" = "Varroa prom.";
+"heatmap.cell.mood" = "Ánimo tranquilo";
+"heatmap.cell.brood" = "Cría prom.";
+"heatmap.cell.swarm" = "Celdas de enjambre";
