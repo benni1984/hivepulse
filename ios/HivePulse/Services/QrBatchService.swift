@@ -1,6 +1,17 @@
 import Foundation
 
-struct QrBatchService {
+protocol QrBatchServiceProtocol {
+    func list(page: Int) async throws -> PaginatedResponse<QrBatchSummary>
+    func get(_ id: String) async throws -> QrBatchOut
+    func create(count: Int) async throws -> QrBatchOut
+    func pdfData(batchId: String) async throws -> Data
+}
+
+extension QrBatchServiceProtocol {
+    func list() async throws -> PaginatedResponse<QrBatchSummary> { try await list(page: 1) }
+}
+
+struct QrBatchService: QrBatchServiceProtocol {
     private let client = APIClient.shared
 
     func list(page: Int = 1) async throws -> PaginatedResponse<QrBatchSummary> {
@@ -15,7 +26,8 @@ struct QrBatchService {
         try await client.post("qr-batches", body: QrBatchCreate(count: count))
     }
 
-    func pdfURL(batchId: String) -> URL {
-        APIClient.shared.baseURL.appendingPathComponent("qr-batches/\(batchId)/pdf")
+    /// Printable A4 PDF, fetched with the Authorization header (the endpoint rejects anonymous requests).
+    func pdfData(batchId: String) async throws -> Data {
+        try await client.getRawData("qr-batches/\(batchId)/pdf")
     }
 }

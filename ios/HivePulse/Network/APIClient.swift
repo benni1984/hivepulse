@@ -91,8 +91,14 @@ final class APIClient {
     }
 
     func getRawData(_ path: String) async throws -> Data {
-        let req = try buildRequest(method: "GET", path: path, bodyData: nil, requiresAuth: true)
-        let (data, resp) = try await execute(req)
+        var req = try buildRequest(method: "GET", path: path, bodyData: nil, requiresAuth: true)
+        var (data, resp) = try await execute(req)
+        if resp.statusCode == 401 {
+            // Same refresh-and-retry as perform(): exports, QR images and PDFs outlive a 30-minute access token
+            try await ensureTokenRefreshed()
+            req = try buildRequest(method: "GET", path: path, bodyData: nil, requiresAuth: true)
+            (data, resp) = try await execute(req)
+        }
         if (200..<300).contains(resp.statusCode) { return data }
         let msg = (try? decoder.decode(APIErrorEnvelope.self, from: data))?.error.message ?? "Request failed"
         throw APIError.server(msg)

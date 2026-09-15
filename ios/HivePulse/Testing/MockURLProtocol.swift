@@ -84,7 +84,36 @@ extension MockURLProtocol {
         ("apiaries",      200, emptyList),
     ]
 
+    // Authenticated with one QR batch ("b-1") whose PDF can be downloaded.
+    static let qrBatchHandlers: [(String, Int, String)] = [
+        ("qr-batches/b-1/pdf", 200, minimalPDF),        // before "qr-batches/b-1"
+        ("qr-batches/b-1",     200, qrBatchJSON),       // before "qr-batches"
+        ("qr-batches",         200, qrBatchListJSON),
+        ("field-definitions",  200, "[]"),
+        ("users/me/reminder",  200, reminderJSON),      // before "users/me"
+        ("users/me",           200, userJSON),
+        ("apiaries",           200, emptyList),
+        ("auth/refresh",       200, accessTokenJSON),
+    ]
+
     // MARK: - Canned JSON
+
+    static let qrBatchJSON = """
+    {"id":"b-1","count":2,"created_at":"2026-09-01T10:00:00Z","tokens":[{"token":"tok-aaaa","linked_hive_id":null},{"token":"tok-bbbb","linked_hive_id":"h-1"}]}
+    """
+
+    static let qrBatchListJSON = """
+    {"items":[{"id":"b-1","count":2,"created_at":"2026-09-01T10:00:00Z","linked_count":1}],"total":1,"page":1,"per_page":20,"pages":1}
+    """
+
+    static let minimalPDF = """
+    %PDF-1.4
+    1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+    2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj
+    3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 595 842]>>endobj
+    trailer<</Root 1 0 R>>
+    %%EOF
+    """
 
     static let userJSON = """
     {"id":"u-1","email":"tester@example.com","name":"Test User","locale":"en","created_at":"2024-01-01T00:00:00Z","is_admin":false,"is_supporter":false}

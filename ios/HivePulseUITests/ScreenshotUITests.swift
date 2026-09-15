@@ -60,6 +60,23 @@ final class ScreenshotUITests: XCTestCase {
         snap("10-members-supporter", app)
     }
 
+    func test_capture_qr_batch_pdf() {
+        let app = launch(["-resetKeychain", "-mockQrBatch"])
+        XCTAssertTrue(app.tabBars.buttons["Settings"].waitForExistence(timeout: 10))
+        app.tabBars.buttons["Settings"].tap()
+        XCTAssertTrue(app.staticTexts["QR Batches"].waitForExistence(timeout: 10))
+        app.staticTexts["QR Batches"].tap()
+        let row = app.collectionViews.cells.firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 10))
+        row.tap()
+        XCTAssertTrue(app.buttons["downloadPdfButton"].waitForExistence(timeout: 10))
+        snap("11-qr-batch-detail", app)
+
+        app.buttons["downloadPdfButton"].tap()
+        sleep(3)
+        snap("12-qr-batch-pdf-preview", app)
+    }
+
     // MARK: - Helpers
 
     private func launch(_ arguments: [String]) -> XCUIApplication {

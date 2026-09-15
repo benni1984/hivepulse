@@ -32,6 +32,12 @@ struct HivePulseApp: App {
             KeychainService.shared.refreshToken = "ui-test-refresh"
             MockURLProtocol.configure(MockURLProtocol.authenticatedSupporterHandlers)
             APIClient.shared = .forUITesting()
+        } else if args.contains("-mockQrBatch") {
+            KeychainService.shared.clearAll()
+            KeychainService.shared.accessToken = "ui-test-token"
+            KeychainService.shared.refreshToken = "ui-test-refresh"
+            MockURLProtocol.configure(MockURLProtocol.qrBatchHandlers)
+            APIClient.shared = .forUITesting()
         } else if args.contains("-mockAuthenticated") {
             KeychainService.shared.clearAll()
             KeychainService.shared.accessToken = "ui-test-token"

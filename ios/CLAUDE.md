@@ -42,9 +42,10 @@ You can write test files on any OS and let CI run them — no local macOS needed
 | `-resetKeychain` | Clears tokens — app starts at Login |
 | `-mockAuthenticated` | Clears keychain, sets fake token, empty-list mocks — starts at Apiaries |
 | `-mockApiaryWithHive` | Same + returns one apiary with one hive |
+| `-mockQrBatch` | Authenticated + one QR batch (`b-1`) whose PDF can be downloaded |
 | `-mockServer` | Mock only, no token — starts at Login, auth calls return real-looking responses |
 
-Do NOT mix `-mockAuthenticated`/`-mockApiaryWithHive` with `-resetKeychain`.
+`-resetKeychain` can be combined with the mock arguments — the keychain is cleared first, then the mock token is set (most UI tests do this).
 
 ## Pattern: Handler Order
 
@@ -58,10 +59,10 @@ Most-specific URL patterns must come first:
 
 ## Unit Tests (HivePulseTests/)
 
-AuthViewModelTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, DTOTests, APIClientTests — all passing in CI.
+AuthViewModelTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, QRBatchDetailViewModelTests, ThemeTests, DTOTests, APIClientTests — all passing in CI.
 
 ## UI Tests (HivePulseUITests/)
 
-LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests, HornetUITests, MembersUITests — all passing in CI.
+LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests, QRBatchDetailUITests, HornetUITests, MembersUITests, ScreenshotUITests — all passing in CI.
 
 Screens: Login, Register, ApiaryList, ApiaryDetail, ApiaryForm, HiveDetail, HiveInitialize, HiveQR, InspectionForm, InspectionDetail, QRScanner, QRBatchList, HiveStats, Settings.
