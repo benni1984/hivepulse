@@ -33,6 +33,9 @@ final class GuidedTourUITests: XCTestCase {
 
         let primary = app.buttons["tourPrimaryButton"]
         XCTAssertTrue(waitForValue(primary, "1/\(pageTitles.count)"))
+        // The tour dismisses the sign-in keyboard itself; it must not cover the Next button.
+        XCTAssertTrue(waitForKeyboardToDisappear(), "sign-in keyboard still covers the tour")
+        XCTAssertTrue(primary.isHittable)
         for (index, title) in pageTitles.enumerated().dropFirst() {
             primary.tap()
             // The page-style TabView keeps neighbouring pages in the hierarchy, so a title "exists" before its
@@ -87,6 +90,11 @@ final class GuidedTourUITests: XCTestCase {
         password.tap()
         password.typeText("password123")
         app.buttons["Log In"].tap()
+    }
+
+    private func waitForKeyboardToDisappear(timeout: TimeInterval = 5) -> Bool {
+        let gone = NSPredicate(format: "count == 0")
+        return XCTWaiter.wait(for: [expectation(for: gone, evaluatedWith: app.keyboards)], timeout: timeout) == .completed
     }
 
     private func waitForValue(_ element: XCUIElement, _ value: String, timeout: TimeInterval = 5) -> Bool {

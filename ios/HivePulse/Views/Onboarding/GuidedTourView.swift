@@ -71,6 +71,10 @@ struct GuidedTourView: View {
             .padding(.bottom, 16)
         }
         .background(Color.hpStone50.ignoresSafeArea())
+        // Shown right after signing in: the password keyboard can still be up and would cover the Next button.
+        .onAppear {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
     }
 
     @ViewBuilder
