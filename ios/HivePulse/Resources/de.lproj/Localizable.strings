@@ -308,3 +308,21 @@
 "overview.perApiary" = "Nach Bienenstand";
 "overview.noData" = "Keine Begehungen in diesem Zeitraum.";
 "overview.rowFormat" = "%1$d Bienenstöcke · %2$d Begehungen";
+
+/* Guided tour */
+"tour.skip" = "Überspringen";
+"tour.next" = "Weiter";
+"tour.getStarted" = "Los geht’s";
+"tour.showAgain" = "Tour erneut ansehen";
+"tour.welcome.title" = "Willkommen bei HivePulse";
+"tour.welcome.body" = "Dein Stockbuch für die Hosentasche. Hier ein kurzer Überblick, was HivePulse für dich erledigt.";
+"tour.qr.title" = "Jeder Bienenstock per Scan";
+"tour.qr.body" = "Lege Bienenstände an, klebe einen gedruckten QR-Code auf jeden Bienenstock und scanne ihn, um ihn sofort zu öffnen — ohne am Stand durch Listen zu suchen.";
+"tour.inspections.title" = "Begehungen in Sekunden";
+"tour.inspections.body" = "Erfasse Königin, Brut, Varroa, Stimmung und mehr mit wenigen Tipps. Eigene Felder ergänzen alles, was du sonst noch festhalten willst.";
+"tour.stats.title" = "Probleme früh erkennen";
+"tour.stats.body" = "Varroa-, Brut- und Gewichtsverläufe je Bienenstock und eine Übersicht über alle Bienenstände zeigen auf einen Blick, welche Völker Aufmerksamkeit brauchen.";
+"tour.reminders.title" = "Keine Begehung mehr vergessen";
+"tour.reminders.body" = "Lege Intervall und Saison fest — HivePulse erinnert dich per Push oder E-Mail, wenn Begehungen fällig sind.";
+"tour.hornets.title" = "Schütze deine Region";
+"tour.hornets.body" = "Melde Sichtungen und Nester der Asiatischen Hornisse, verwalte deine Fallen und sieh Gesundheitsdaten der Community für deine Region.";

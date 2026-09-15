@@ -43,9 +43,14 @@ You can write test files on any OS and let CI run them — no local macOS needed
 | `-mockAuthenticated` | Clears keychain, sets fake token, empty-list mocks — starts at Apiaries |
 | `-mockApiaryWithHive` | Same + returns one apiary with one hive |
 | `-mockQrBatch` | Authenticated + one QR batch (`b-1`) whose PDF can be downloaded |
+| `-guidedTourSeen YES` / `NO` | Overrides the "guided tour already shown" flag for this launch (UserDefaults argument domain) |
 | `-mockServer` | Mock only, no token — starts at Login, auth calls return real-looking responses |
 
 `-resetKeychain` can be combined with the mock arguments — the keychain is cleared first, then the mock token is set (most UI tests do this).
+
+## Guided Tour
+
+After the first successful sign-in or registration on a device, `AuthViewModel.showGuidedTour` presents `GuidedTourView` as a full-screen cover over the tabs; `OnboardingStore` (UserDefaults) remembers it, and Settings has "Show guided tour again". **UI tests that sign in or register and expect the apiary list must pass `-guidedTourSeen YES`** (see `RegisterUITests`); `GuidedTourUITests` covers the tour.
 
 ## Pattern: Handler Order
 
@@ -59,10 +64,10 @@ Most-specific URL patterns must come first:
 
 ## Unit Tests (HivePulseTests/)
 
-AuthViewModelTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, QRBatchDetailViewModelTests, ThemeTests, DTOTests, APIClientTests — all passing in CI.
+AuthViewModelTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, QRBatchDetailViewModelTests, OverviewStatsViewModelTests, ForgotPasswordViewModelTests, GuidedTourTests, ThemeTests, DTOTests, APIClientTests — all passing in CI.
 
 ## UI Tests (HivePulseUITests/)
 
-LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests, QRBatchDetailUITests, HornetUITests, MembersUITests, ScreenshotUITests — all passing in CI.
+LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests, QRBatchDetailUITests, OverviewStatsUITests, ForgotPasswordUITests, GuidedTourUITests, HornetUITests, MembersUITests, ScreenshotUITests — all passing in CI.
 
-Screens: Login, Register, ApiaryList, ApiaryDetail, ApiaryForm, HiveDetail, HiveInitialize, HiveQR, InspectionForm, InspectionDetail, QRScanner, QRBatchList, HiveStats, Settings.
+Screens: Login, Register, ApiaryList, ApiaryDetail, ApiaryForm, HiveDetail, HiveInitialize, HiveQR, InspectionForm, InspectionDetail, QRScanner, QRBatchList, QRBatchDetail, HiveStats, OverviewStats, ForgotPassword, GuidedTour, Settings.

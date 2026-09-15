@@ -308,3 +308,21 @@
 "overview.perApiary" = "By Apiary";
 "overview.noData" = "No inspections in this period.";
 "overview.rowFormat" = "%1$d hives · %2$d inspections";
+
+/* Guided tour */
+"tour.skip" = "Skip";
+"tour.next" = "Next";
+"tour.getStarted" = "Get started";
+"tour.showAgain" = "Show guided tour again";
+"tour.welcome.title" = "Welcome to HivePulse";
+"tour.welcome.body" = "Your hive log in your pocket. Here is a quick look at what HivePulse does for you.";
+"tour.qr.title" = "Every hive at a scan";
+"tour.qr.body" = "Create apiaries, stick a printed QR code on each hive and scan it to open that hive instantly — no searching through lists at the apiary.";
+"tour.inspections.title" = "Inspections in seconds";
+"tour.inspections.body" = "Record queen, brood, varroa, mood and more in a few taps. Custom fields cover anything else you want to track.";
+"tour.stats.title" = "Spot problems early";
+"tour.stats.body" = "Varroa, brood and weight trends per hive and an overview of all your apiaries show at a glance which colonies need attention.";
+"tour.reminders.title" = "Never miss an inspection";
+"tour.reminders.body" = "Set your interval and season — HivePulse reminds you by push notification or email when hives are due.";
+"tour.hornets.title" = "Protect your region";
+"tour.hornets.body" = "Report Asian hornet sightings and nests, manage your traps and see community health data for your region.";

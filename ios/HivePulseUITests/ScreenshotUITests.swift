@@ -77,6 +77,24 @@ final class ScreenshotUITests: XCTestCase {
         snap("12-qr-batch-pdf-preview", app)
     }
 
+    func test_capture_guided_tour() {
+        let app = launch(["-resetKeychain", "-mockAuthenticated", "-guidedTourSeen", "YES"])
+        XCTAssertTrue(app.tabBars.buttons["Settings"].waitForExistence(timeout: 10))
+        app.tabBars.buttons["Settings"].tap()
+        let showAgain = app.buttons["showGuidedTourButton"]
+        for _ in 0..<8 where !showAgain.exists { app.swipeUp(velocity: .slow) }
+        XCTAssertTrue(showAgain.waitForExistence(timeout: 10))
+        showAgain.tap()
+
+        XCTAssertTrue(app.staticTexts["Welcome to HivePulse"].waitForExistence(timeout: 10))
+        snap("13-guided-tour-welcome", app)
+
+        app.buttons["Next"].tap()
+        XCTAssertTrue(app.staticTexts["Every hive at a scan"].waitForExistence(timeout: 10))
+        sleep(1)
+        snap("14-guided-tour-qr", app)
+    }
+
     // MARK: - Helpers
 
     private func launch(_ arguments: [String]) -> XCUIApplication {

@@ -49,7 +49,7 @@ final class RegisterUITests: XCTestCase {
 
     func test_registerScreen_successNavigatesToApiaryList() {
         app.terminate()
-        app.launchArguments = ["-resetKeychain", "-mockServer"]
+        app.launchArguments = ["-resetKeychain", "-mockServer", "-guidedTourSeen", "YES"]
         app.launch()
         navigateToRegister()
         fillForm(name: "Alice", email: "alice@example.com", password: "Password123")

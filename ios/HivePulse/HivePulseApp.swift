@@ -53,36 +53,42 @@ struct HivePulseApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if authVM.isAuthenticated {
-                MainTabView()
-                    .environmentObject(authVM)
-                    .task {
-                        await authVM.loadProfile()
-                        await requestPushPermission()
-                    }
-                    .onReceive(NotificationCenter.default.publisher(for: .apnsTokenReceived)) { note in
-                        if let tokenData = note.userInfo?["token"] as? Data {
-                            Task { await authVM.registerAPNsToken(tokenData) }
+            // Stable container so the tour cover survives the login -> tabs switch that happens in the same update.
+            ZStack {
+                if authVM.isAuthenticated {
+                    MainTabView()
+                        .environmentObject(authVM)
+                        .task {
+                            await authVM.loadProfile()
+                            await requestPushPermission()
+                        }
+                        .onReceive(NotificationCenter.default.publisher(for: .apnsTokenReceived)) { note in
+                            if let tokenData = note.userInfo?["token"] as? Data {
+                                Task { await authVM.registerAPNsToken(tokenData) }
+                            }
+                        }
+                } else {
+                    // Unauthenticated: HivePulse login + public Hornets tab always visible
+                    TabView {
+                        NavigationStack {
+                            LoginView()
+                                .environmentObject(authVM)
+                        }
+                        .tabItem {
+                            Label("HivePulse", systemImage: "hexagon.fill")
+                        }
+
+                        HornetView()
+                        .tabItem {
+                            Label(NSLocalizedString("tab.hornets", comment: ""), systemImage: "ant")
                         }
                     }
-            } else {
-                // Unauthenticated: HivePulse login + public Hornets tab always visible
-                TabView {
-                    NavigationStack {
-                        LoginView()
-                            .environmentObject(authVM)
-                    }
-                    .tabItem {
-                        Label("HivePulse", systemImage: "hexagon.fill")
-                    }
-
-                    HornetView()
-                    .tabItem {
-                        Label(NSLocalizedString("tab.hornets", comment: ""), systemImage: "ant")
-                    }
+                    .tint(.hpAmber)
+                    .font(.dmSans(17))
                 }
-                .tint(.hpAmber)
-                .font(.dmSans(17))
+            }
+            .fullScreenCover(isPresented: $authVM.showGuidedTour) {
+                GuidedTourView { authVM.finishGuidedTour() }
             }
         }
     }

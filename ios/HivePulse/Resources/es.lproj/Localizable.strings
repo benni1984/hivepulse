@@ -308,3 +308,21 @@
 "overview.perApiary" = "Por colmenar";
 "overview.noData" = "No hay inspecciones en este periodo.";
 "overview.rowFormat" = "%1$d colmenas · %2$d inspecciones";
+
+/* Guided tour */
+"tour.skip" = "Omitir";
+"tour.next" = "Siguiente";
+"tour.getStarted" = "Empezar";
+"tour.showAgain" = "Ver de nuevo la guía";
+"tour.welcome.title" = "Bienvenido a HivePulse";
+"tour.welcome.body" = "Tu cuaderno de colmenas en el bolsillo. Aquí tienes un vistazo rápido a lo que HivePulse hace por ti.";
+"tour.qr.title" = "Cada colmena con un escaneo";
+"tour.qr.body" = "Crea colmenares, pega un código QR impreso en cada colmena y escanéalo para abrirla al instante, sin buscar en listas en el colmenar.";
+"tour.inspections.title" = "Inspecciones en segundos";
+"tour.inspections.body" = "Registra reina, cría, varroa, comportamiento y más con pocos toques. Los campos personalizados cubren todo lo demás.";
+"tour.stats.title" = "Detecta problemas a tiempo";
+"tour.stats.body" = "Las tendencias de varroa, cría y peso por colmena y un resumen de todos tus colmenares muestran de un vistazo qué colonias necesitan atención.";
+"tour.reminders.title" = "No te pierdas ninguna inspección";
+"tour.reminders.body" = "Define el intervalo y la temporada: HivePulse te avisa por notificación push o correo cuando toca inspeccionar.";
+"tour.hornets.title" = "Protege tu región";
+"tour.hornets.body" = "Informa de avistamientos y nidos de avispón asiático, gestiona tus trampas y consulta datos de salud de la comunidad para tu región.";

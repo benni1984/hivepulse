@@ -177,6 +177,12 @@ struct SettingsView: View {
                 Link(destination: URL(string: "https://hivepulse.multihead.de/\(locale)/help")!) {
                     Label(NSLocalizedString("action.help", comment: ""), systemImage: "questionmark.circle")
                 }
+                Button {
+                    authVM.replayGuidedTour()
+                } label: {
+                    Label(NSLocalizedString("tour.showAgain", comment: ""), systemImage: "sparkles")
+                }
+                .accessibilityIdentifier("showGuidedTourButton")
             }
 
             // MARK: - Log Out

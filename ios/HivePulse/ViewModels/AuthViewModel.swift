@@ -8,11 +8,15 @@ final class AuthViewModel: ObservableObject {
     @Published var reminderSettings: ReminderSettingsOut?
     @Published var isLoading = false
     @Published var errorMessage: String?
+    /// Shown once after the first successful sign-in or registration on this device (and on demand from Settings).
+    @Published var showGuidedTour = false
 
     private let service: any AuthServiceProtocol
+    private let onboarding: OnboardingStore
 
-    init(service: any AuthServiceProtocol = AuthService()) {
+    init(service: any AuthServiceProtocol = AuthService(), onboarding: OnboardingStore = OnboardingStore()) {
         self.service = service
+        self.onboarding = onboarding
         isAuthenticated = KeychainService.shared.accessToken != nil
     }
 
@@ -47,6 +51,7 @@ final class AuthViewModel: ObservableObject {
         KeychainService.shared.clearAll()
         currentUser = nil
         isAuthenticated = false
+        showGuidedTour = false
     }
 
     func loadProfile() async {
@@ -118,11 +123,21 @@ final class AuthViewModel: ObservableObject {
         }
     }
 
+    func finishGuidedTour() {
+        onboarding.hasSeenGuidedTour = true
+        showGuidedTour = false
+    }
+
+    func replayGuidedTour() {
+        showGuidedTour = true
+    }
+
     private func store(_ resp: TokenResponse) {
         KeychainService.shared.accessToken  = resp.accessToken
         KeychainService.shared.refreshToken = resp.refreshToken
         currentUser = resp.user
         isAuthenticated = true
+        showGuidedTour = !onboarding.hasSeenGuidedTour
         UserDefaults.standard.set(resp.user.locale, forKey: "appLocale")
     }
 }

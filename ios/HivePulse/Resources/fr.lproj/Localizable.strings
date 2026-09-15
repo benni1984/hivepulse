@@ -308,3 +308,21 @@
 "overview.perApiary" = "Par rucher";
 "overview.noData" = "Aucune inspection sur cette période.";
 "overview.rowFormat" = "%1$d ruches · %2$d inspections";
+
+/* Guided tour */
+"tour.skip" = "Passer";
+"tour.next" = "Suivant";
+"tour.getStarted" = "C’est parti";
+"tour.showAgain" = "Revoir la visite guidée";
+"tour.welcome.title" = "Bienvenue sur HivePulse";
+"tour.welcome.body" = "Votre carnet de ruches dans la poche. Voici un aperçu rapide de ce que HivePulse fait pour vous.";
+"tour.qr.title" = "Chaque ruche en un scan";
+"tour.qr.body" = "Créez vos ruchers, collez un QR code imprimé sur chaque ruche et scannez-le pour l’ouvrir aussitôt — sans chercher dans des listes au rucher.";
+"tour.inspections.title" = "Des inspections en quelques secondes";
+"tour.inspections.body" = "Notez reine, couvain, varroa, humeur et plus encore en quelques gestes. Les champs personnalisés couvrent tout le reste.";
+"tour.stats.title" = "Repérez les problèmes tôt";
+"tour.stats.body" = "Les évolutions du varroa, du couvain et du poids par ruche et une vue d’ensemble de tous vos ruchers montrent d’un coup d’œil quelles colonies ont besoin d’attention.";
+"tour.reminders.title" = "Ne manquez plus aucune inspection";
+"tour.reminders.body" = "Définissez l’intervalle et la saison — HivePulse vous rappelle par notification push ou e-mail quand des ruches sont à inspecter.";
+"tour.hornets.title" = "Protégez votre région";
+"tour.hornets.body" = "Signalez les observations et les nids de frelons asiatiques, gérez vos pièges et consultez les données de santé de la communauté pour votre région.";
