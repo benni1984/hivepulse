@@ -80,6 +80,12 @@
 
 /* Actions */
 "action.forgotPassword" = "Passwort vergessen?";
+"forgot.title" = "Passwort zurücksetzen";
+"forgot.desc" = "Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen.";
+"forgot.submit" = "Link senden";
+"forgot.sent" = "Falls diese E-Mail registriert ist, erhältst du in Kürze einen Link zum Zurücksetzen. Schau in dein Postfach.";
+"forgot.back" = "Zurück zur Anmeldung";
+"forgot.offline" = "Keine Verbindung. Prüfe dein Netzwerk und versuche es erneut.";
 "action.save" ="Speichern";
 "action.cancel" = "Abbrechen";
 "action.done" = "Fertig";
