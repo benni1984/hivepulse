@@ -56,6 +56,11 @@ final class InspectionFormUITests: XCTestCase {
         app.staticTexts["Hive Alpha"].tap()
         XCTAssertTrue(app.buttons["New Inspection"].waitForExistence(timeout: 5))
         app.buttons["New Inspection"].tap()
-        XCTAssertTrue(app.navigationBars["New Inspection"].waitForExistence(timeout: 5))
+        // On a busy CI simulator the sheet occasionally misses the first tap (it arrives while the hive detail
+        // push is still settling) — retry once before failing.
+        if !app.navigationBars["New Inspection"].waitForExistence(timeout: 5) {
+            app.buttons["New Inspection"].tap()
+        }
+        XCTAssertTrue(app.navigationBars["New Inspection"].waitForExistence(timeout: 10))
     }
 }

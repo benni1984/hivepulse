@@ -37,10 +37,14 @@ final class GuidedTourUITests: XCTestCase {
         XCTAssertTrue(waitForKeyboardToDisappear(), "sign-in keyboard still covers the tour")
         // After a password form disappears iOS may offer to save the password in a sheet over the bottom half.
         dismissSavePasswordPromptIfPresent()
-        if !primary.isHittable {
+        // Right after the cover is presented the button is briefly not hittable while the transition finishes.
+        let hittable = XCTWaiter.wait(
+            for: [expectation(for: NSPredicate(format: "hittable == true"), evaluatedWith: primary)], timeout: 5
+        ) == .completed
+        if !hittable {
             captureDiagnostics("guided-tour-next-not-hittable")
         }
-        XCTAssertTrue(primary.isHittable, "tour Next button is covered")
+        XCTAssertTrue(hittable, "tour Next button is covered")
         for (index, title) in pageTitles.enumerated().dropFirst() {
             primary.tap()
             // The page-style TabView keeps neighbouring pages in the hierarchy, so a title "exists" before its
