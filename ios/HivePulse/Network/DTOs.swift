@@ -491,16 +491,32 @@ struct ApiaryStats: Codable {
     }
 }
 
+struct ApiaryStatsSummary: Codable, Identifiable {
+    let apiaryId: String
+    let apiaryName: String
+    let hiveCount: Int
+    let inspectionsTotal: Int
+    var id: String { apiaryId }
+    enum CodingKeys: String, CodingKey {
+        case apiaryId         = "apiary_id"
+        case apiaryName       = "apiary_name"
+        case hiveCount        = "hive_count"
+        case inspectionsTotal = "inspections_total"
+    }
+}
+
 struct OverviewStats: Codable {
     let period: StatsPeriod
     let apiaryCount: Int
     let hiveCount: Int
     let inspectionsTotal: Int
+    let perApiary: [ApiaryStatsSummary]
     enum CodingKeys: String, CodingKey {
         case period
         case apiaryCount      = "apiary_count"
         case hiveCount        = "hive_count"
         case inspectionsTotal = "inspections_total"
+        case perApiary        = "per_apiary"
     }
 }
 

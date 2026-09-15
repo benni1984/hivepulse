@@ -291,3 +291,13 @@
 "alert.deleteAccountConfirm" = "Konto löschen?";
 "alert.deleteAccountMessage" = "Alle Ihre Daten – Bienenstände, Bienenstöcke und Begehungen – werden dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.";
 "alert.deleteAccountAction" = "Dauerhaft löschen";
+
+/* Statistics overview */
+"screen.statsOverview" = "Meine Statistiken";
+"overview.period" = "Zeitraum";
+"overview.apiaries" = "Bienenstände";
+"overview.hives" = "Bienenstöcke";
+"overview.inspections" = "Begehungen";
+"overview.perApiary" = "Nach Bienenstand";
+"overview.noData" = "Keine Begehungen in diesem Zeitraum.";
+"overview.rowFormat" = "%1$d Bienenstöcke · %2$d Begehungen";

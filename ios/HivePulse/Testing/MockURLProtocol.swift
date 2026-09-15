@@ -39,6 +39,7 @@ extension MockURLProtocol {
 
     // Authenticated screens, all lists empty.
     static let authenticatedHandlers: [(String, Int, String)] = [
+        ("stats/overview",   200, overviewJSON),
         ("inspections",      200, emptyList),
         ("hives",            200, emptyList),
         ("field-definitions",200, "[]"),
@@ -51,6 +52,7 @@ extension MockURLProtocol {
 
     // Authenticated screens, one apiary containing one hive (for deep-navigation tests).
     static let apiaryWithHiveHandlers: [(String, Int, String)] = [
+        ("stats/overview",                 200, overviewJSON),
         ("hives/h-1/inspections",          200, emptyList),
         ("apiaries/a-1/hives",             200, hiveListJSON),
         ("apiaries/a-1/field-definitions", 200, "[]"),
@@ -108,6 +110,10 @@ extension MockURLProtocol {
 
     private static let emptyList = """
     {"items":[],"total":0,"page":1,"per_page":50,"pages":1}
+    """
+
+    static let overviewJSON = """
+    {"period":{"from":"2025-09-15","to":"2026-09-15","preset":"365d"},"apiary_count":1,"hive_count":1,"inspections_total":12,"per_apiary":[{"apiary_id":"a-1","apiary_name":"Meadow","hive_count":1,"inspections_total":12}]}
     """
 
     private static let apiaryJSON = """

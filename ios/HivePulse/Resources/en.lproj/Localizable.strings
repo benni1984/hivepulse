@@ -291,3 +291,13 @@
 "alert.deleteAccountConfirm" = "Delete your account?";
 "alert.deleteAccountMessage" = "All your data — apiaries, hives, and inspections — will be permanently deleted. This cannot be undone.";
 "alert.deleteAccountAction" = "Delete Permanently";
+
+/* Statistics overview */
+"screen.statsOverview" = "My Statistics";
+"overview.period" = "Period";
+"overview.apiaries" = "Apiaries";
+"overview.hives" = "Hives";
+"overview.inspections" = "Inspections";
+"overview.perApiary" = "By Apiary";
+"overview.noData" = "No inspections in this period.";
+"overview.rowFormat" = "%1$d hives · %2$d inspections";

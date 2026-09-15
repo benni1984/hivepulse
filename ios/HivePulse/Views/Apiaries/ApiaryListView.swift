@@ -54,6 +54,13 @@ struct ApiaryListView: View {
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 if apiaryVM.isLoading { ProgressView() }
+                NavigationLink {
+                    OverviewStatsView()
+                        .environmentObject(apiaryVM)
+                } label: {
+                    Image(systemName: "chart.bar")
+                }
+                .accessibilityLabel(NSLocalizedString("screen.statsOverview", comment: ""))
                 Button { showCreate = true } label: { Image(systemName: "plus") }
             }
         }

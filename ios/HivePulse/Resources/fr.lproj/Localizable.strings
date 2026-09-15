@@ -291,3 +291,13 @@
 "alert.deleteAccountConfirm" = "Supprimer votre compte ?";
 "alert.deleteAccountMessage" = "Toutes vos données — ruchers, ruches et inspections — seront définitivement supprimées. Cette action est irréversible.";
 "alert.deleteAccountAction" = "Supprimer définitivement";
+
+/* Statistics overview */
+"screen.statsOverview" = "Mes statistiques";
+"overview.period" = "Période";
+"overview.apiaries" = "Ruchers";
+"overview.hives" = "Ruches";
+"overview.inspections" = "Inspections";
+"overview.perApiary" = "Par rucher";
+"overview.noData" = "Aucune inspection sur cette période.";
+"overview.rowFormat" = "%1$d ruches · %2$d inspections";
