@@ -95,6 +95,14 @@ final class ScreenshotUITests: XCTestCase {
         snap("14-guided-tour-qr", app)
     }
 
+    func test_capture_home_screen_icon() {
+        let app = launch(["-resetKeychain"])
+        XCTAssertTrue(app.buttons["Log In"].waitForExistence(timeout: 10))
+        XCUIDevice.shared.press(.home)
+        sleep(2)
+        snap("15-home-screen-icon", app)
+    }
+
     // MARK: - Helpers
 
     private func launch(_ arguments: [String]) -> XCUIApplication {

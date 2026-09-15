@@ -18,6 +18,12 @@ Same tokens as web/Android (`hivepulse-redesign/bundle.html`), defined in `HiveP
 - Use the tokens instead of `.orange` / system greys; keep semantic status colours (mood, hornet status, linked) as they are
 - Amber text/icons on light backgrounds use `hpAmberDark` for contrast; `hpAmber` is for fills and the wordmark
 
+## App icon & App Store metadata
+
+- `Resources/Assets.xcassets/AppIcon.appiconset` holds a single opaque 1024×1024 PNG (HivePulse hex on stone-50, same as the Android launcher icon); `project.yml` sets `ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon`. The PNG must not have an alpha channel or App Store Connect rejects the upload
+- `Info.plist` declares `ITSAppUsesNonExemptEncryption = false` (HTTPS only) plus the camera/location usage texts — `AppBundleTests` guards all of these
+- Custom glyphs without a fitting SF Symbol are drawn in code as template images (e.g. `Theme/HornetIcon.swift`, mirrored by Android's `ic_hornet.xml`)
+
 ## Design screenshots from CI
 
 `HivePulseUITests/ScreenshotUITests` navigates the main screens with mock data and writes PNGs to `$SCREENSHOT_DIR`. The `ios` CI job sets it and uploads them as the **`ios-screenshots`** artifact — download with `gh run download <run-id> -n ios-screenshots` to review the UI without a Mac.
@@ -65,7 +71,7 @@ Most-specific URL patterns must come first:
 
 ## Unit Tests (HivePulseTests/)
 
-AuthViewModelTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, QRBatchDetailViewModelTests, OverviewStatsViewModelTests, ForgotPasswordViewModelTests, GuidedTourTests, CommunityHeatmapTests, FieldDefinitionsViewModelTests, ThemeTests, DTOTests, APIClientTests — all passing in CI.
+AuthViewModelTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, QRBatchDetailViewModelTests, OverviewStatsViewModelTests, ForgotPasswordViewModelTests, GuidedTourTests, CommunityHeatmapTests, FieldDefinitionsViewModelTests, HornetIconTests, AppBundleTests, ThemeTests, DTOTests, APIClientTests — all passing in CI.
 
 ## UI Tests (HivePulseUITests/)
 
