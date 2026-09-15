@@ -30,10 +30,10 @@ final class HornetIconTests: XCTestCase {
                                 bytesPerRow: side * 4, space: CGColorSpaceCreateDeviceRGB(),
                                 bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
         context.draw(image.cgImage!, in: CGRect(x: 0, y: 0, width: side, height: side))
-        // CGContext's origin is bottom-left; convert the top-left grid coordinate.
+        // Drawing an image into a bitmap context keeps it upright in memory: buffer row 0 is the image's top row,
+        // so the top-left grid coordinate maps straight to (row, column).
         let px = min(side - 1, Int(x * CGFloat(side) / 24))
-        let py = min(side - 1, Int(y * CGFloat(side) / 24))
-        let row = side - 1 - py
+        let row = min(side - 1, Int(y * CGFloat(side) / 24))
         return CGFloat(pixels[(row * side + px) * 4 + 3]) / 255
     }
 }
