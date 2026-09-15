@@ -35,7 +35,9 @@ final class GuidedTourUITests: XCTestCase {
 
         for title in pageTitles.dropFirst() {
             app.buttons["Next"].tap()
-            XCTAssertTrue(app.staticTexts[title].waitForExistence(timeout: 5))
+            // The page-style TabView keeps neighbouring pages in the hierarchy, so "exists" is already true
+            // before the swipe finishes — wait until the title is on screen before tapping Next again.
+            XCTAssertTrue(waitUntilOnScreen(app.staticTexts[title]), "page \"\(title)\" never came on screen")
         }
         XCTAssertTrue(app.buttons["Get started"].waitForExistence(timeout: 5))
         app.buttons["Get started"].tap()
@@ -68,6 +70,11 @@ final class GuidedTourUITests: XCTestCase {
     }
 
     // MARK: - Helpers
+
+    private func waitUntilOnScreen(_ element: XCUIElement, timeout: TimeInterval = 5) -> Bool {
+        let onScreen = NSPredicate(format: "exists == true AND hittable == true")
+        return XCTWaiter.wait(for: [expectation(for: onScreen, evaluatedWith: element)], timeout: timeout) == .completed
+    }
 
     private func launch(_ arguments: [String]) {
         continueAfterFailure = false

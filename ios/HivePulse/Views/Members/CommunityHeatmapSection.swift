@@ -83,6 +83,9 @@ struct CommunityHeatmapSection: View {
         .frame(height: 320)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .accessibilityIdentifier("communityHeatmapMap")
+        .task(id: heatmap.features.count) {
+            if let region = heatmap.boundingRegion { camera = .region(region) }
+        }
     }
 
     private var legend: some View {

@@ -1,5 +1,6 @@
 import Foundation
 import CoreLocation
+import MapKit
 
 enum HeatmapOverlay: String, CaseIterable, Identifiable {
     case varroa, mood, swarm, brood
@@ -58,6 +59,20 @@ extension CommunityHeatmapFeature {
             j = i
         }
         return inside
+    }
+}
+
+extension CommunityHeatmap {
+    /// Region that fits every cell with a margin, so the map opens on the data instead of all of Europe.
+    var boundingRegion: MKCoordinateRegion? {
+        let points = features.flatMap(\.ring)
+        guard let minLat = points.map(\.latitude).min(), let maxLat = points.map(\.latitude).max(),
+              let minLon = points.map(\.longitude).min(), let maxLon = points.map(\.longitude).max() else { return nil }
+        return MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: (minLat + maxLat) / 2, longitude: (minLon + maxLon) / 2),
+            span: MKCoordinateSpan(latitudeDelta: max((maxLat - minLat) * 1.4, 2),
+                                   longitudeDelta: max((maxLon - minLon) * 1.4, 2))
+        )
     }
 }
 

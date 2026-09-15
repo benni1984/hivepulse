@@ -1,5 +1,6 @@
 import XCTest
 import CoreLocation
+import MapKit
 @testable import HivePulse
 
 private final class MockCommunityHeatmapService: CommunityHeatmapProviding {
@@ -101,6 +102,22 @@ final class CommunityHeatmapTests: XCTestCase {
         XCTAssertTrue(feature.contains(CLLocationCoordinate2D(latitude: 51.25, longitude: 9.75)))
         XCTAssertFalse(feature.contains(CLLocationCoordinate2D(latitude: 51.25, longitude: 10.25)))
         XCTAssertFalse(feature.contains(CLLocationCoordinate2D(latitude: 50.9, longitude: 9.75)))
+    }
+
+    func test_boundingRegion_fitsAllCells_withMinimumSpan() {
+        let heatmap = CommunityHeatmap(type: "FeatureCollection", features: [
+            cell(lat: 48.0, lon: 8.0, props()), cell(lat: 53.5, lon: 13.5, props()),
+        ])
+
+        let region = heatmap.boundingRegion
+
+        XCTAssertEqual(region?.center.latitude ?? 0, 51.0, accuracy: 0.001)
+        XCTAssertEqual(region?.center.longitude ?? 0, 11.0, accuracy: 0.001)
+        XCTAssertEqual(region?.span.latitudeDelta ?? 0, 6 * 1.4, accuracy: 0.001)
+
+        let single = CommunityHeatmap(type: "FeatureCollection", features: [cell(lat: 51, lon: 9.5, props())])
+        XCTAssertEqual(single.boundingRegion?.span.latitudeDelta ?? 0, 2, accuracy: 0.001)
+        XCTAssertNil(CommunityHeatmap(type: "FeatureCollection", features: []).boundingRegion)
     }
 
     // MARK: - ViewModel
