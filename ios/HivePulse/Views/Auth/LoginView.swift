@@ -20,16 +20,11 @@ struct LoginView: View {
 
     var body: some View {
         NavigationStack {
-            GeometryReader { geo in
-                ScrollView {
-                    VStack {
-                        Spacer(minLength: 24)
-                        loginCard
-                            .padding(.horizontal, 20)
-                        Spacer(minLength: 24)
-                    }
-                    .frame(minHeight: geo.size.height)
-                }
+            ScrollView {
+                loginCard
+                    .padding(.horizontal, 20)
+                    .padding(.top, 16)
+                    .padding(.bottom, 32)
             }
             .background(Color.hpStone50.ignoresSafeArea())
             .navigationDestination(isPresented: $showRegister) {
@@ -47,16 +42,16 @@ struct LoginView: View {
     /// White card on stone-50 — same composition as the web and Android sign-in screens.
     private var loginCard: some View {
         VStack(spacing: 0) {
-            HivePulseLogo(size: 64)
+            HivePulseLogo(size: 56)
 
-            HivePulseWordmark(size: 30)
-                .padding(.top, 16)
+            HivePulseWordmark(size: 28)
+                .padding(.top, 12)
 
             Text(NSLocalizedString("login.subtitle", comment: ""))
                 .font(.dmSans(15, relativeTo: .subheadline))
                 .foregroundColor(.hpStone500)
                 .multilineTextAlignment(.center)
-                .padding(.top, 6)
+                .padding(.top, 4)
 
             VStack(spacing: 12) {
                 TextField(NSLocalizedString("field.email", comment: ""), text: $email)
@@ -68,7 +63,7 @@ struct LoginView: View {
                 SecureField(NSLocalizedString("field.password", comment: ""), text: $password)
                     .hpInputField()
             }
-            .padding(.top, 28)
+            .padding(.top, 22)
 
             if let error = authVM.errorMessage {
                 ErrorBanner(message: error) { authVM.errorMessage = nil }
@@ -85,23 +80,23 @@ struct LoginView: View {
             }
             .buttonStyle(HPPrimaryButtonStyle())
             .disabled(authVM.isLoading || email.isEmpty || password.isEmpty)
-            .padding(.top, 20)
+            .padding(.top, 16)
 
             Button(NSLocalizedString("action.forgotPassword", comment: "")) {
                 showForgotPassword = true
             }
             .font(.dmSans(14, relativeTo: .subheadline))
             .foregroundColor(.hpStone500)
-            .padding(.top, 14)
+            .padding(.top, 12)
 
             Button(NSLocalizedString("action.register", comment: "")) {
                 showRegister = true
             }
             .font(.dmSans(15, weight: .bold, relativeTo: .subheadline))
             .foregroundColor(.hpAmberDark)
-            .padding(.top, 10)
+            .padding(.top, 6)
         }
-        .padding(28)
+        .padding(24)
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).stroke(Color.hpStone200, lineWidth: 1))

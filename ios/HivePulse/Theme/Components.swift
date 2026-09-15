@@ -118,7 +118,6 @@ extension View {
     func hpScreenBackground() -> some View {
         self
             .scrollContentBackground(.hidden)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.hpStone50.ignoresSafeArea())
     }
 }
@@ -139,6 +138,7 @@ struct HPStatPill: View {
                     .font(.dmSans(12, weight: .medium, relativeTo: .caption))
                     .foregroundColor(.hpStone500)
                     .lineLimit(2)
+                    .minimumScaleFactor(0.8)
                 Spacer(minLength: 4)
                 Image(systemName: systemImage)
                     .font(.system(size: 12, weight: .semibold))

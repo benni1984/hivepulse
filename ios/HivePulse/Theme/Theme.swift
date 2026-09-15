@@ -61,9 +61,7 @@ extension Font {
 enum HivePulseAppearance {
     static func apply() {
         let nav = UINavigationBarAppearance()
-        nav.configureWithOpaqueBackground()
-        nav.backgroundColor = UIColor(Color.hpStone50)
-        nav.shadowColor = UIColor(Color.hpStone200)
+        nav.configureWithDefaultBackground()
         nav.largeTitleTextAttributes = [
             .font: uiFont(.extraBold, 32),
             .foregroundColor: UIColor(Color.hpStone900),
