@@ -41,6 +41,12 @@ final class AppBundleTests: XCTestCase {
         XCTAssertEqual(Set(orientations).count, 4)
     }
 
+    func test_userInterfaceStyle_isForcedLight() {
+        // The HivePulse palette (white cards and inputs) is light-only; in Dark Mode system label colours
+        // turned typed text white on white.
+        XCTAssertEqual(info["UIUserInterfaceStyle"] as? String, "Light")
+    }
+
     func test_displayName_isHivePulse() {
         XCTAssertEqual(info["CFBundleDisplayName"] as? String, "HivePulse")
     }

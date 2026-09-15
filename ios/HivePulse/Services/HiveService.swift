@@ -44,7 +44,7 @@ struct HiveService: HiveServiceProtocol {
         let data: Data = try await client.get(url)
 
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
+        decoder.dateDecodingStrategy = .hivePulseBackend
         if let unlinked = try? decoder.decode(QRUnlinkedResponse.self, from: data), unlinked.status == "unlinked" {
             return .unlinked(token: unlinked.token)
         }

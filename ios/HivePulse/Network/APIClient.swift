@@ -44,7 +44,7 @@ final class APIClient {
     private init(session: URLSession = .shared) {
         self.session = session
         decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
+        decoder.dateDecodingStrategy = .hivePulseBackend   // backend sends naive UTC with microseconds
         encoder = JSONEncoder()
     }
 

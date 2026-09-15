@@ -26,6 +26,8 @@
 	<string>HivePulse uses your location to record where a hive is placed when you set it up.</string>
 	<key>UILaunchScreen</key>
 	<dict/>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

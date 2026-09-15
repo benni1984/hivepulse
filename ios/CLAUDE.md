@@ -34,6 +34,11 @@ Same tokens as web/Android (`hivepulse-redesign/bundle.html`), defined in `HiveP
 - Build number = `github.run_number` via `CURRENT_PROJECT_VERSION` (Info.plist `CFBundleVersion` is `$(CURRENT_PROJECT_VERSION)`); bump `CFBundleShortVersionString` for a new marketing version
 - The App Store Connect app record (bundle ID `com.hivepulse.app`) must exist before the first upload
 
+## Backend dates & appearance — IMPORTANT
+
+- The backend sends naive UTC timestamps with microseconds (`"2026-09-13T13:18:13.734534"`, no `Z`). Always decode with `.hivePulseBackend` (`Network/BackendDateDecoding.swift`), never `.iso8601` — that broke login and all lists against production while mock-based tests passed. Mock JSON in `MockURLProtocol` uses the real backend shape; keep it that way (`BackendDateTests`)
+- The app is light-only (`UIUserInterfaceStyle = Light`): the palette uses white cards/inputs, so Dark Mode system label colours made typed text invisible
+
 ## App icon & App Store metadata
 
 - `Resources/Assets.xcassets/AppIcon.appiconset` holds a single opaque 1024×1024 PNG (HivePulse hex on stone-50, same as the Android launcher icon); `project.yml` sets `ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon`. The PNG must not have an alpha channel or App Store Connect rejects the upload
