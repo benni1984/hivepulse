@@ -1,9 +1,8 @@
 package com.hivepulse.app.ui.qr
 
-import android.app.DownloadManager
-import android.content.Context
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.net.Uri
-import android.os.Environment
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,7 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hivepulse.app.BuildConfig
 import com.hivepulse.app.R
 import com.hivepulse.app.data.api.QrTokenOut
 import com.hivepulse.app.ui.common.ErrorBanner
@@ -33,19 +31,27 @@ fun QRBatchDetailScreen(
 ) {
     val state   = vm.state.collectAsState().value
     val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    val downloadPdf = {
-        vm.accessToken?.let { token ->
-            val dm = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-            val baseUrl = BuildConfig.BASE_URL.trimEnd('/')
-            val req = DownloadManager.Request(Uri.parse("$baseUrl/qr-batches/$batchId/pdf"))
-                .addRequestHeader("Authorization", "Bearer $token")
-                .setMimeType("application/pdf")
-                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "qr-batch-${batchId.take(8)}.pdf")
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                .setTitle("QR Batch ${batchId.take(8)}")
-            dm.enqueue(req)
+    // Confirm the saved file and offer to open it in a PDF viewer
+    LaunchedEffect(state.downloaded) {
+        val file = state.downloaded ?: return@LaunchedEffect
+        val result = snackbarHostState.showSnackbar(
+            message     = context.getString(R.string.qr_pdf_saved, file.name),
+            actionLabel = if (file.uri != null) context.getString(R.string.qr_pdf_open) else null,
+            duration    = SnackbarDuration.Long
+        )
+        if (result == SnackbarResult.ActionPerformed && file.uri != null) {
+            val intent = Intent(Intent.ACTION_VIEW)
+                .setDataAndType(Uri.parse(file.uri), "application/pdf")
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+            try {
+                context.startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                snackbarHostState.showSnackbar(context.getString(R.string.qr_pdf_no_viewer))
+            }
         }
+        vm.clearDownloaded()
     }
 
     Scaffold(
@@ -55,15 +61,19 @@ fun QRBatchDetailScreen(
                 navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } },
                 actions = {
                     state.batch?.let {
-                        IconButton(onClick = { downloadPdf() }) {
+                        IconButton(onClick = { vm.downloadPdf() }, enabled = !state.isDownloading) {
                             Icon(Icons.Default.Download, contentDescription = stringResource(R.string.action_download_pdf))
                         }
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
         when {
+            state.batch == null && state.error != null -> Column(Modifier.padding(padding).padding(top = 8.dp)) {
+                ErrorBanner(state.error)
+            }
             state.isLoading || state.batch == null -> LoadingScreen()
             else -> {
                 val batch = state.batch
@@ -88,8 +98,12 @@ fun QRBatchDetailScreen(
                         ) {
                             Text(stringResource(R.string.label_qr_tokens), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
                             Spacer(Modifier.weight(1f))
-                            OutlinedButton(onClick = { downloadPdf() }) {
-                                Icon(Icons.Default.Download, null, Modifier.size(16.dp))
+                            OutlinedButton(onClick = { vm.downloadPdf() }, enabled = !state.isDownloading) {
+                                if (state.isDownloading) {
+                                    CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
+                                } else {
+                                    Icon(Icons.Default.Download, null, Modifier.size(16.dp))
+                                }
                                 Spacer(Modifier.width(4.dp))
                                 Text(stringResource(R.string.action_download_pdf))
                             }

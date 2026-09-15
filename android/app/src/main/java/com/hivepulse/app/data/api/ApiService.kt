@@ -111,6 +111,10 @@ interface ApiService {
     @POST("qr-batches")
     suspend fun createQrBatch(@Body body: QrBatchCreate): QrBatchOut
 
+    @Streaming
+    @GET("qr-batches/{id}/pdf")
+    suspend fun downloadQrBatchPdf(@Path("id") id: String): ResponseBody
+
     // Hives
     @GET("hives/by-qr/{token}")
     suspend fun resolveQR(@Path("token") token: String): ResponseBody

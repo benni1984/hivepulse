@@ -107,6 +107,9 @@
     <string name="action_new_batch">Neuer QR-Batch</string>
     <string name="action_generate">Generieren</string>
     <string name="action_download_pdf">PDF herunterladen</string>
+    <string name="qr_pdf_saved">In Downloads gespeichert: %1$s</string>
+    <string name="qr_pdf_open">Öffnen</string>
+    <string name="qr_pdf_no_viewer">Keine App zum Öffnen von PDFs installiert.</string>
     <string name="action_grant_permission">Berechtigung erteilen</string>
 
     <!-- Fields -->

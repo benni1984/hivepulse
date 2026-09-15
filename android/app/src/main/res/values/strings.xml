@@ -47,6 +47,9 @@
     <string name="action_new_batch">New QR Batch</string>
     <string name="action_generate">Generate</string>
     <string name="action_download_pdf">Download PDF</string>
+    <string name="qr_pdf_saved">Saved to Downloads: %1$s</string>
+    <string name="qr_pdf_open">Open</string>
+    <string name="qr_pdf_no_viewer">No app installed that can open PDFs.</string>
     <string name="action_grant_permission">Grant Permission</string>
     <string name="action_export_data">Export Data</string>
     <string name="action_download">Download</string>

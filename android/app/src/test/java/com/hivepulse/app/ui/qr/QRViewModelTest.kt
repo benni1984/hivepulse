@@ -2,7 +2,8 @@ package com.hivepulse.app.ui.qr
 
 import androidx.lifecycle.SavedStateHandle
 import com.hivepulse.app.data.api.*
-import com.hivepulse.app.data.local.TokenStore
+import com.hivepulse.app.data.repository.ExportRepository
+import com.hivepulse.app.data.repository.SavedDownload
 import com.hivepulse.app.data.repository.HiveRepository
 import com.hivepulse.app.data.repository.QrBatchRepository
 import io.mockk.*
@@ -19,7 +20,7 @@ class QRViewModelTest {
 
     private val hiveRepo   = mockk<HiveRepository>()
     private val batchRepo  = mockk<QrBatchRepository>()
-    private val tokenStore = mockk<TokenStore>(relaxed = true)
+    private val exportRepo = mockk<ExportRepository>()
 
     @Before fun setUp()    { Dispatchers.setMain(UnconfinedTestDispatcher()) }
     @After  fun tearDown() { Dispatchers.resetMain(); clearAllMocks() }
@@ -138,7 +139,7 @@ class QRViewModelTest {
     fun `QRBatchDetailViewModel init loads batch by id`() = runTest {
         val batch = batchOut("b1")
         coEvery { batchRepo.get("b1") } returns batch
-        val vm = QRBatchDetailViewModel(SavedStateHandle(mapOf("batchId" to "b1")), batchRepo, tokenStore)
+        val vm = QRBatchDetailViewModel(SavedStateHandle(mapOf("batchId" to "b1")), batchRepo, exportRepo)
 
         assertEquals(batch, vm.state.value.batch)
         assertFalse(vm.state.value.isLoading)
@@ -147,25 +148,55 @@ class QRViewModelTest {
     @Test
     fun `QRBatchDetailViewModel load failure sets error`() = runTest {
         coEvery { batchRepo.get("b1") } throws RuntimeException("not found")
-        val vm = QRBatchDetailViewModel(SavedStateHandle(mapOf("batchId" to "b1")), batchRepo, tokenStore)
+        val vm = QRBatchDetailViewModel(SavedStateHandle(mapOf("batchId" to "b1")), batchRepo, exportRepo)
 
         assertEquals("not found", vm.state.value.error)
         assertNull(vm.state.value.batch)
     }
 
     @Test
-    fun `accessToken reads from token store`() = runTest {
-        coEvery { batchRepo.get(any()) } returns batchOut("b1")
-        every { tokenStore.accessToken } returns "my-access-token"
-        val vm = QRBatchDetailViewModel(SavedStateHandle(mapOf("batchId" to "b1")), batchRepo, tokenStore)
+    fun `downloadPdf saves the file and exposes it for the confirmation`() = runTest {
+        coEvery { batchRepo.get("b1") } returns batchOut("b1")
+        val saved = SavedDownload("HivePulse_QR_batch_b1.pdf", "content://media/external/downloads/1")
+        coEvery { exportRepo.downloadQrBatchPdf("b1") } returns saved
+        val vm = QRBatchDetailViewModel(SavedStateHandle(mapOf("batchId" to "b1")), batchRepo, exportRepo)
 
-        assertEquals("my-access-token", vm.accessToken)
+        vm.downloadPdf()
+
+        assertEquals(saved, vm.state.value.downloaded)
+        assertFalse(vm.state.value.isDownloading)
+        assertNull(vm.state.value.error)
+    }
+
+    @Test
+    fun `downloadPdf failure sets error instead of failing silently`() = runTest {
+        coEvery { batchRepo.get("b1") } returns batchOut("b1")
+        coEvery { exportRepo.downloadQrBatchPdf("b1") } throws RuntimeException("HTTP 500")
+        val vm = QRBatchDetailViewModel(SavedStateHandle(mapOf("batchId" to "b1")), batchRepo, exportRepo)
+
+        vm.downloadPdf()
+
+        assertEquals("HTTP 500", vm.state.value.error)
+        assertNull(vm.state.value.downloaded)
+        assertFalse(vm.state.value.isDownloading)
+    }
+
+    @Test
+    fun `clearDownloaded resets the saved file`() = runTest {
+        coEvery { batchRepo.get("b1") } returns batchOut("b1")
+        coEvery { exportRepo.downloadQrBatchPdf("b1") } returns SavedDownload("f.pdf", null)
+        val vm = QRBatchDetailViewModel(SavedStateHandle(mapOf("batchId" to "b1")), batchRepo, exportRepo)
+        vm.downloadPdf()
+
+        vm.clearDownloaded()
+
+        assertNull(vm.state.value.downloaded)
     }
 
     @Test
     fun `QRBatchDetailViewModel clearError removes error from state`() = runTest {
         coEvery { batchRepo.get("b1") } throws RuntimeException("err")
-        val vm = QRBatchDetailViewModel(SavedStateHandle(mapOf("batchId" to "b1")), batchRepo, tokenStore)
+        val vm = QRBatchDetailViewModel(SavedStateHandle(mapOf("batchId" to "b1")), batchRepo, exportRepo)
 
         vm.clearError()
 
