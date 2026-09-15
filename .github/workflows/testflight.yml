@@ -91,6 +91,46 @@ jobs:
             CODE_SIGN_STYLE=Automatic \
             CURRENT_PROJECT_VERSION="$BUILD_NUMBER"
 
+      # Diagnostics: export the same archive to an IPA first and print its code signature, so a rejected
+      # upload shows which certificate cloud signing actually applied (Apple Distribution vs. development/ad hoc).
+      - name: Inspect distribution signature
+        if: steps.secrets.outputs.ready == 'true'
+        run: |
+          cat > "$RUNNER_TEMP/ExportToFile.plist" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>export</string>
+            <key>teamID</key><string>${APPLE_TEAM_ID}</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+          </dict>
+          </plist>
+          PLIST
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/HivePulse.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportToFile.plist" \
+            -exportPath "$RUNNER_TEMP/ipa" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+          mkdir -p "$RUNNER_TEMP/diag" && cd "$RUNNER_TEMP/diag"
+          unzip -q -o "$RUNNER_TEMP/ipa/HivePulse.ipa"
+          APP="Payload/HivePulse.app"
+          echo "=== archived app signature ==="
+          codesign -dvvv "$RUNNER_TEMP/HivePulse.xcarchive/Products/Applications/HivePulse.app" 2>&1 | grep -E "Authority|TeamIdentifier|Signature|Identifier=" || true
+          echo "=== exported app signature ==="
+          codesign -dvvv "$APP" 2>&1 | grep -E "Authority|TeamIdentifier|Signature|Identifier=|Format" || true
+          echo "=== exported entitlements ==="
+          codesign -d --entitlements - "$APP" 2>&1 | head -30 || true
+          echo "=== embedded profile ==="
+          security cms -D -i "$APP/embedded.mobileprovision" 2>/dev/null | plutil -extract Name raw - 2>/dev/null || echo "no embedded.mobileprovision"
+          echo "=== strict verify ==="
+          codesign --verify --deep --strict --verbose=2 "$APP" 2>&1 || true
+
       - name: Export & upload to App Store Connect
         if: steps.secrets.outputs.ready == 'true'
         run: |
@@ -125,6 +165,23 @@ jobs:
             echo "### Uploaded HivePulse $VERSION ($BUILD_NUMBER) to App Store Connect"
             echo "Processing takes about 5–15 minutes; the build then appears in TestFlight for internal testers."
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Collect Xcode distribution logs
+        if: failure() && steps.secrets.outputs.ready == 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/distlogs"
+          find "${TMPDIR:-/tmp}" /var/folders -name "*.xcdistributionlogs" -maxdepth 6 -type d 2>/dev/null \
+            -exec cp -R {} "$RUNNER_TEMP/distlogs/" \; || true
+          ls -la "$RUNNER_TEMP/distlogs"
+
+      - name: Upload distribution logs
+        if: failure() && steps.secrets.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: testflight-distribution-logs
+          path: ${{ runner.temp }}/distlogs
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Remove API key
         if: always() && steps.secrets.outputs.ready == 'true'
