@@ -1,5 +1,6 @@
 package com.hivepulse.app.data.repository
 
+import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
 import android.os.Build
@@ -48,12 +49,24 @@ class ExportRepository @Inject constructor(
 
     private fun saveToDownloads(data: ByteArray, filename: String, mime: String): SavedDownload {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val resolver = context.contentResolver
+            // Downloading the same file again overwrites our earlier copy instead of creating "name (1).pdf", …
+            val existing = resolver.query(
+                MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                arrayOf(MediaStore.Downloads._ID),
+                "${MediaStore.Downloads.DISPLAY_NAME} = ?",
+                arrayOf(filename),
+                null
+            )?.use { c -> if (c.moveToFirst()) ContentUris.withAppendedId(MediaStore.Downloads.EXTERNAL_CONTENT_URI, c.getLong(0)) else null }
+            if (existing != null) {
+                resolver.openOutputStream(existing, "wt")!!.use { it.write(data) }
+                return SavedDownload(filename, existing.toString())
+            }
             val values = ContentValues().apply {
                 put(MediaStore.Downloads.DISPLAY_NAME, filename)
                 put(MediaStore.Downloads.MIME_TYPE, mime)
                 put(MediaStore.Downloads.IS_PENDING, 1)
             }
-            val resolver = context.contentResolver
             val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
                 ?: error("MediaStore insert failed")
             resolver.openOutputStream(uri)!!.use { it.write(data) }

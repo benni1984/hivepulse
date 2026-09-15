@@ -110,11 +110,15 @@ class QRBatchDetailViewModel @Inject constructor(
             .onFailure { e -> _state.update { it.copy(isLoading = false, error = e.message) } }
     }
 
-    fun downloadPdf() = viewModelScope.launch {
+    /** Repeated taps while a download is running are ignored — the flag is set before the coroutine starts. */
+    fun downloadPdf() {
+        if (_state.value.isDownloading) return
         _state.update { it.copy(isDownloading = true, error = null, downloaded = null) }
-        runCatching { exportRepo.downloadQrBatchPdf(batchId) }
-            .onSuccess { f -> _state.update { it.copy(isDownloading = false, downloaded = f) } }
-            .onFailure { e -> _state.update { it.copy(isDownloading = false, error = e.message ?: e.cause?.message) } }
+        viewModelScope.launch {
+            runCatching { exportRepo.downloadQrBatchPdf(batchId) }
+                .onSuccess { f -> _state.update { it.copy(isDownloading = false, downloaded = f) } }
+                .onFailure { e -> _state.update { it.copy(isDownloading = false, error = e.message ?: e.cause?.message) } }
+        }
     }
 
     fun clearDownloaded() = _state.update { it.copy(downloaded = null) }
