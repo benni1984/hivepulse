@@ -353,3 +353,30 @@
 "heatmap.cell.mood" = "Ánimo tranquilo";
 "heatmap.cell.brood" = "Cría prom.";
 "heatmap.cell.swarm" = "Celdas de enjambre";
+
+/* Custom field definitions */
+"fielddefs.title" = "Campos personalizados";
+"fielddefs.subtitle" = "Amplía tus formularios de colmenas e inspecciones con campos personalizados.";
+"fielddefs.apiaryTitle" = "Campos del apiario";
+"fielddefs.apiarySubtitle" = "Estos campos sólo se aplican a colmenas e inspecciones de este apiario.";
+"fielddefs.empty" = "No hay campos personalizados todavía.";
+"fielddefs.new" = "Nuevo campo";
+"fielddefs.createTitle" = "Nuevo campo personalizado";
+"fielddefs.editTitle" = "Editar campo";
+"fielddefs.name" = "Nombre del campo";
+"fielddefs.target" = "Se aplica a";
+"fielddefs.target.hive" = "Colmena";
+"fielddefs.target.inspection" = "Inspección";
+"fielddefs.type" = "Tipo de campo";
+"fielddefs.type.text" = "Texto";
+"fielddefs.type.number" = "Número";
+"fielddefs.type.boolean" = "Sí / No";
+"fielddefs.type.date" = "Fecha";
+"fielddefs.type.select" = "Selección";
+"fielddefs.options" = "Opciones (una por línea)";
+"fielddefs.required" = "Obligatorio";
+"fielddefs.createBtn" = "Crear campo";
+"fielddefs.saveBtn" = "Guardar cambios";
+"fielddefs.createSuccess" = "Campo creado.";
+"fielddefs.saveSuccess" = "Campo guardado.";
+"fielddefs.deleteConfirm" = "¿Eliminar este campo? Los datos existentes se perderán.";

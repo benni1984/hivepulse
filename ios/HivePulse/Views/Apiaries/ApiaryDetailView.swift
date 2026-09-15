@@ -55,6 +55,11 @@ struct ApiaryDetailView: View {
         .hpScreenBackground()
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
+                NavigationLink(destination: FieldDefinitionsView(apiaryId: apiary.id)) {
+                    Image(systemName: "slider.horizontal.3")
+                }
+                .accessibilityLabel(NSLocalizedString("fielddefs.apiaryTitle", comment: ""))
+                .accessibilityIdentifier("apiaryFieldsButton")
                 Button { showEdit = true } label: {
                     Image(systemName: "pencil")
                 }

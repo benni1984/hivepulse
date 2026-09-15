@@ -50,6 +50,9 @@ struct SettingsView: View {
                 NavigationLink(destination: QRBatchListView()) {
                     Label(NSLocalizedString("screen.qrBatches", comment: ""), systemImage: "printer")
                 }
+                NavigationLink(destination: FieldDefinitionsView()) {
+                    Label(NSLocalizedString("fielddefs.title", comment: ""), systemImage: "slider.horizontal.3")
+                }
             }
 
             // MARK: - Profile

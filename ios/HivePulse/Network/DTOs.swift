@@ -200,6 +200,13 @@ struct FieldDefinitionCreate: Encodable {
     }
 }
 
+/// Target and type are fixed after creation; nil fields are left out of the request and stay unchanged.
+struct FieldDefinitionUpdate: Encodable {
+    let name: String?
+    let options: [String]?
+    let required: Bool?
+}
+
 // MARK: - Apiaries
 struct ApiaryOut: Codable, Identifiable {
     let id: String

@@ -353,3 +353,30 @@
 "heatmap.cell.mood" = "Calm mood";
 "heatmap.cell.brood" = "Brood avg";
 "heatmap.cell.swarm" = "Swarm cells";
+
+/* Custom field definitions */
+"fielddefs.title" = "Custom Fields";
+"fielddefs.subtitle" = "Extend your hive and inspection forms with custom fields.";
+"fielddefs.apiaryTitle" = "Apiary-Scoped Fields";
+"fielddefs.apiarySubtitle" = "These fields only apply to hives and inspections in this apiary.";
+"fielddefs.empty" = "No custom fields yet.";
+"fielddefs.new" = "New Field";
+"fielddefs.createTitle" = "New Custom Field";
+"fielddefs.editTitle" = "Edit Field";
+"fielddefs.name" = "Field name";
+"fielddefs.target" = "Applies to";
+"fielddefs.target.hive" = "Hive";
+"fielddefs.target.inspection" = "Inspection";
+"fielddefs.type" = "Field type";
+"fielddefs.type.text" = "Text";
+"fielddefs.type.number" = "Number";
+"fielddefs.type.boolean" = "Yes / No";
+"fielddefs.type.date" = "Date";
+"fielddefs.type.select" = "Select";
+"fielddefs.options" = "Options (one per line)";
+"fielddefs.required" = "Required";
+"fielddefs.createBtn" = "Create Field";
+"fielddefs.saveBtn" = "Save Changes";
+"fielddefs.createSuccess" = "Field created.";
+"fielddefs.saveSuccess" = "Field saved.";
+"fielddefs.deleteConfirm" = "Delete this field? Data using this field will be lost.";

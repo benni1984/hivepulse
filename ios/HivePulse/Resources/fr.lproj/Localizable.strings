@@ -353,3 +353,30 @@
 "heatmap.cell.mood" = "Humeur calme";
 "heatmap.cell.brood" = "Couvain moy.";
 "heatmap.cell.swarm" = "Cellules d’essaimage";
+
+/* Custom field definitions */
+"fielddefs.title" = "Champs personnalisés";
+"fielddefs.subtitle" = "Ajoutez des champs personnalisés à vos formulaires de ruches et de visites.";
+"fielddefs.apiaryTitle" = "Champs du rucher";
+"fielddefs.apiarySubtitle" = "Ces champs s’appliquent uniquement aux ruches et visites de ce rucher.";
+"fielddefs.empty" = "Aucun champ personnalisé pour l’instant.";
+"fielddefs.new" = "Nouveau champ";
+"fielddefs.createTitle" = "Nouveau champ personnalisé";
+"fielddefs.editTitle" = "Modifier le champ";
+"fielddefs.name" = "Nom du champ";
+"fielddefs.target" = "S’applique à";
+"fielddefs.target.hive" = "Ruche";
+"fielddefs.target.inspection" = "Visite";
+"fielddefs.type" = "Type de champ";
+"fielddefs.type.text" = "Texte";
+"fielddefs.type.number" = "Nombre";
+"fielddefs.type.boolean" = "Oui / Non";
+"fielddefs.type.date" = "Date";
+"fielddefs.type.select" = "Sélection";
+"fielddefs.options" = "Options (une par ligne)";
+"fielddefs.required" = "Obligatoire";
+"fielddefs.createBtn" = "Créer le champ";
+"fielddefs.saveBtn" = "Enregistrer";
+"fielddefs.createSuccess" = "Champ créé.";
+"fielddefs.saveSuccess" = "Champ enregistré.";
+"fielddefs.deleteConfirm" = "Supprimer ce champ ? Les données existantes seront perdues.";

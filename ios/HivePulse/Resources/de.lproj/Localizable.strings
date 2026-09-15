@@ -353,3 +353,30 @@
 "heatmap.cell.mood" = "Ruhige Stimmung";
 "heatmap.cell.brood" = "Ø Brutwaben";
 "heatmap.cell.swarm" = "Schwarmzellen";
+
+/* Custom field definitions */
+"fielddefs.title" = "Eigene Felder";
+"fielddefs.subtitle" = "Erweitere deine Beuten- und Kontrollformulare mit eigenen Feldern.";
+"fielddefs.apiaryTitle" = "Standort-Felder";
+"fielddefs.apiarySubtitle" = "Diese Felder gelten nur für Beuten und Kontrollen an diesem Standort.";
+"fielddefs.empty" = "Noch keine eigenen Felder.";
+"fielddefs.new" = "Neues Feld";
+"fielddefs.createTitle" = "Neues eigenes Feld";
+"fielddefs.editTitle" = "Feld bearbeiten";
+"fielddefs.name" = "Feldname";
+"fielddefs.target" = "Gilt für";
+"fielddefs.target.hive" = "Beute";
+"fielddefs.target.inspection" = "Kontrolle";
+"fielddefs.type" = "Feldtyp";
+"fielddefs.type.text" = "Text";
+"fielddefs.type.number" = "Zahl";
+"fielddefs.type.boolean" = "Ja / Nein";
+"fielddefs.type.date" = "Datum";
+"fielddefs.type.select" = "Auswahl";
+"fielddefs.options" = "Optionen (eine pro Zeile)";
+"fielddefs.required" = "Pflichtfeld";
+"fielddefs.createBtn" = "Feld erstellen";
+"fielddefs.saveBtn" = "Änderungen speichern";
+"fielddefs.createSuccess" = "Feld erstellt.";
+"fielddefs.saveSuccess" = "Feld gespeichert.";
+"fielddefs.deleteConfirm" = "Dieses Feld löschen? Vorhandene Daten gehen verloren.";
