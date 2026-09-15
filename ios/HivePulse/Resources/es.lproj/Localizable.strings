@@ -80,6 +80,12 @@
 
 /* Actions */
 "action.forgotPassword" = "¿Olvidaste tu contraseña?";
+"forgot.title" = "Restablecer tu contraseña";
+"forgot.desc" = "Introduce tu correo electrónico y te enviaremos un enlace para restablecerla.";
+"forgot.submit" = "Enviar enlace";
+"forgot.sent" = "Si ese correo está registrado, recibirás en breve un enlace para restablecerla. Revisa tu bandeja de entrada.";
+"forgot.back" = "Volver a iniciar sesión";
+"forgot.offline" = "Sin conexión. Revisa tu red e inténtalo de nuevo.";
 "action.save" ="Guardar";
 "action.cancel" = "Cancelar";
 "action.done" = "Hecho";
@@ -271,7 +277,8 @@
 "reminder.seasonEnd" = "Fin de temporada";
 "reminder.saveButton" = "Guardar ajustes de recordatorio";
 "reminder.saved" = "Ajustes de recordatorio guardados.";
-"reminder.comingSoon" = "Las notificaciones push llegarán pronto. Tus preferencias están guardadas.";
+"reminder.emailEnabled" = "Avisarme también por correo electrónico";
+"reminder.emailHint" = "Las notificaciones push llegan a esta app. Los recordatorios por correo también te llegan si solo usas la web: ambos canales comparten la misma cuenta, así que estos ajustes se aplican en todas partes.";
 
 /* Miembros */
 "tab.members" = "Miembros";
@@ -291,3 +298,85 @@
 "alert.deleteAccountConfirm" = "¿Eliminar tu cuenta?";
 "alert.deleteAccountMessage" = "Todos tus datos — colmenares, colmenas e inspecciones — serán eliminados permanentemente. Esto no se puede deshacer.";
 "alert.deleteAccountAction" = "Eliminar permanentemente";
+
+/* Statistics overview */
+"screen.statsOverview" = "Mis estadísticas";
+"overview.period" = "Periodo";
+"overview.apiaries" = "Colmenares";
+"overview.hives" = "Colmenas";
+"overview.inspections" = "Inspecciones";
+"overview.perApiary" = "Por colmenar";
+"overview.noData" = "No hay inspecciones en este periodo.";
+"overview.rowFormat" = "%1$d colmenas · %2$d inspecciones";
+
+/* Guided tour */
+"tour.skip" = "Omitir";
+"tour.next" = "Siguiente";
+"tour.getStarted" = "Empezar";
+"tour.showAgain" = "Ver de nuevo la guía";
+"tour.welcome.title" = "Bienvenido a HivePulse";
+"tour.welcome.body" = "Tu cuaderno de colmenas en el bolsillo. Aquí tienes un vistazo rápido a lo que HivePulse hace por ti.";
+"tour.qr.title" = "Cada colmena con un escaneo";
+"tour.qr.body" = "Crea colmenares, pega un código QR impreso en cada colmena y escanéalo para abrirla al instante, sin buscar en listas en el colmenar.";
+"tour.inspections.title" = "Inspecciones en segundos";
+"tour.inspections.body" = "Registra reina, cría, varroa, comportamiento y más con pocos toques. Los campos personalizados cubren todo lo demás.";
+"tour.stats.title" = "Detecta problemas a tiempo";
+"tour.stats.body" = "Las tendencias de varroa, cría y peso por colmena y un resumen de todos tus colmenares muestran de un vistazo qué colonias necesitan atención.";
+"tour.reminders.title" = "No te pierdas ninguna inspección";
+"tour.reminders.body" = "Define el intervalo y la temporada: HivePulse te avisa por notificación push o correo cuando toca inspeccionar.";
+"tour.hornets.title" = "Protege tu región";
+"tour.hornets.body" = "Informa de avistamientos y nidos de avispón asiático, gestiona tus trampas y consulta datos de salud de la comunidad para tu región.";
+
+/* Community heatmap (members) */
+"heatmap.title" = "Mapa de salud regional";
+"heatmap.empty" = "No hay datos de comunidad disponibles.";
+"heatmap.hint" = "Toca una celda para ver detalles.";
+"heatmap.overlay.varroa" = "Riesgo de varroa";
+"heatmap.overlay.mood" = "Ánimo de las colonias";
+"heatmap.overlay.swarm" = "Presión de enjambrazón";
+"heatmap.overlay.brood" = "Salud de la cría";
+"heatmap.varroa.low" = "Bajo (< 2)";
+"heatmap.varroa.medium" = "Medio (2–5)";
+"heatmap.varroa.high" = "Alto (> 5)";
+"heatmap.mood.good" = "Bueno (≥ 70 % tranquilas)";
+"heatmap.mood.fair" = "Regular (40–70 %)";
+"heatmap.mood.low" = "Bajo (< 40 %)";
+"heatmap.swarm.low" = "Bajo (< 10 %)";
+"heatmap.swarm.medium" = "Medio (10–30 %)";
+"heatmap.swarm.high" = "Alto (> 30 %)";
+"heatmap.brood.strong" = "Fuerte (≥ 5 marcos)";
+"heatmap.brood.fair" = "Regular (3–5)";
+"heatmap.brood.low" = "Bajo (< 3)";
+"heatmap.noData" = "Sin datos";
+"heatmap.cellSummary" = "%d colmenares · %d inspecciones";
+"heatmap.cell.varroa" = "Varroa prom.";
+"heatmap.cell.mood" = "Ánimo tranquilo";
+"heatmap.cell.brood" = "Cría prom.";
+"heatmap.cell.swarm" = "Celdas de enjambre";
+
+/* Custom field definitions */
+"fielddefs.title" = "Campos personalizados";
+"fielddefs.subtitle" = "Amplía tus formularios de colmenas e inspecciones con campos personalizados.";
+"fielddefs.apiaryTitle" = "Campos del apiario";
+"fielddefs.apiarySubtitle" = "Estos campos sólo se aplican a colmenas e inspecciones de este apiario.";
+"fielddefs.empty" = "No hay campos personalizados todavía.";
+"fielddefs.new" = "Nuevo campo";
+"fielddefs.createTitle" = "Nuevo campo personalizado";
+"fielddefs.editTitle" = "Editar campo";
+"fielddefs.name" = "Nombre del campo";
+"fielddefs.target" = "Se aplica a";
+"fielddefs.target.hive" = "Colmena";
+"fielddefs.target.inspection" = "Inspección";
+"fielddefs.type" = "Tipo de campo";
+"fielddefs.type.text" = "Texto";
+"fielddefs.type.number" = "Número";
+"fielddefs.type.boolean" = "Sí / No";
+"fielddefs.type.date" = "Fecha";
+"fielddefs.type.select" = "Selección";
+"fielddefs.options" = "Opciones (una por línea)";
+"fielddefs.required" = "Obligatorio";
+"fielddefs.createBtn" = "Crear campo";
+"fielddefs.saveBtn" = "Guardar cambios";
+"fielddefs.createSuccess" = "Campo creado.";
+"fielddefs.saveSuccess" = "Campo guardado.";
+"fielddefs.deleteConfirm" = "¿Eliminar este campo? Los datos existentes se perderán.";

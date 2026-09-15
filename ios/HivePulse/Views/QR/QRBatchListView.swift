@@ -1,4 +1,5 @@
 import SwiftUI
+import QuickLook
 
 struct QRBatchListView: View {
     @State private var batches: [QrBatchSummary] = []
@@ -83,28 +84,58 @@ struct QRBatchListView: View {
 }
 
 struct QRBatchDetailView: View {
-    let batchId: String
-    @State private var batch: QrBatchOut?
-    @State private var isLoading = true
+    @StateObject private var vm: QRBatchDetailViewModel
 
-    private let service = QrBatchService()
+    init(batchId: String) {
+        _vm = StateObject(wrappedValue: QRBatchDetailViewModel(batchId: batchId))
+    }
 
     var body: some View {
         Group {
-            if isLoading {
-                ProgressView()
-            } else if let batch {
-                List(batch.tokens) { token in
-                    HStack {
-                        Image(systemName: token.isLinked ? "link.circle.fill" : "link.circle")
-                            .foregroundColor(token.isLinked ? .green : .secondary)
-                        Text(token.token)
-                            .font(.caption)
-                            .lineLimit(1)
-                        Spacer()
-                        if token.isLinked {
-                            Text(NSLocalizedString("label.linked", comment: ""))
-                                .font(.caption2).foregroundColor(.green)
+            // Never leave the Group empty before the first load: an empty Group has no view to attach `.task` to,
+            // so the load would never start.
+            if vm.batch == nil {
+                if vm.errorMessage == nil {
+                    ProgressView()
+                } else {
+                    Color.clear
+                }
+            } else if let batch = vm.batch {
+                List {
+                    Section {
+                        Button {
+                            Task { await vm.downloadPdf() }
+                        } label: {
+                            HStack(spacing: 8) {
+                                if vm.isDownloading {
+                                    ProgressView().tint(Color.hpStone900)
+                                } else {
+                                    Image(systemName: "arrow.down.doc")
+                                }
+                                Text(NSLocalizedString("action.downloadPDF", comment: ""))
+                            }
+                        }
+                        .buttonStyle(HPPrimaryButtonStyle())
+                        .disabled(vm.isDownloading)
+                        .accessibilityIdentifier("downloadPdfButton")
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets())
+                    }
+
+                    Section {
+                        ForEach(batch.tokens) { token in
+                            HStack {
+                                Image(systemName: token.isLinked ? "link.circle.fill" : "link.circle")
+                                    .foregroundColor(token.isLinked ? .green : .secondary)
+                                Text(token.token)
+                                    .font(.caption)
+                                    .lineLimit(1)
+                                Spacer()
+                                if token.isLinked {
+                                    Text(NSLocalizedString("label.linked", comment: ""))
+                                        .font(.caption2).foregroundColor(.green)
+                                }
+                            }
                         }
                     }
                 }
@@ -112,16 +143,16 @@ struct QRBatchDetailView: View {
         }
         .navigationTitle(NSLocalizedString("screen.batchDetail", comment: ""))
         .hpScreenBackground()
-        .toolbar {
-            ToolbarItemGroup(placement: .primaryAction) {
-                Link(destination: service.pdfURL(batchId: batchId)) {
-                    Label(NSLocalizedString("action.downloadPDF", comment: ""), systemImage: "arrow.down.doc")
-                }
-            }
-        }
-        .task {
-            batch = try? await service.get(batchId)
-            isLoading = false
+        .task { await vm.load() }
+        // Opens the downloaded PDF right away; Quick Look offers print and share
+        .quickLookPreview($vm.pdfURL)
+        .alert(NSLocalizedString("alert.error", comment: ""), isPresented: Binding(
+            get: { vm.errorMessage != nil },
+            set: { if !$0 { vm.errorMessage = nil } }
+        )) {
+            Button("OK", role: .cancel) { vm.errorMessage = nil }
+        } message: {
+            Text(vm.errorMessage ?? "")
         }
     }
 }

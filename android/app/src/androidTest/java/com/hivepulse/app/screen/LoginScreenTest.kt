@@ -14,6 +14,7 @@ import com.hivepulse.app.data.api.PaginatedResponse
 import com.hivepulse.app.data.api.TokenResponse
 import com.hivepulse.app.data.api.UserOut
 import com.hivepulse.app.data.local.TokenStore
+import com.hivepulse.app.data.local.OnboardingStore
 import com.hivepulse.app.di.NetworkModule
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -40,6 +41,9 @@ class LoginScreenTest {
     @Inject
     lateinit var tokenStore: TokenStore
 
+    @Inject
+    lateinit var onboardingStore: OnboardingStore
+
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
 
@@ -49,6 +53,7 @@ class LoginScreenTest {
         override fun before() {
             hiltRule.inject()
             tokenStore.clear()
+            onboardingStore.hasSeenGuidedTour = true  // the tour has its own test (GuidedTourScreenTest)
         }
     }
 

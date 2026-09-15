@@ -45,9 +45,19 @@ final class MembersUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Supporter Feature"].waitForExistence(timeout: 5))
     }
 
-    func test_members_supporterSeesComingSoon() {
+    func test_members_supporterSeesRegionalHealthMap() {
         launchAsSupporter()
-        XCTAssertTrue(app.staticTexts["More community stats coming soon."].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Regional Health Map"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Varroa Risk"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Low (< 2)"].exists)
+    }
+
+    func test_members_switchingOverlay_updatesLegend() {
+        launchAsSupporter()
+        let mood = app.buttons["Colony Mood"]
+        XCTAssertTrue(mood.waitForExistence(timeout: 5))
+        mood.tap()
+        XCTAssertTrue(app.staticTexts["Good (\u{2265} 70% calm)"].waitForExistence(timeout: 5))
     }
 
     func test_members_gateCardHasCTAButton() {

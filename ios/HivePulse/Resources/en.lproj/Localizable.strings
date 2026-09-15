@@ -80,6 +80,12 @@
 
 /* Actions */
 "action.forgotPassword" = "Forgot password?";
+"forgot.title" = "Reset your password";
+"forgot.desc" = "Enter your email address and we'll send you a reset link.";
+"forgot.submit" = "Send reset link";
+"forgot.sent" = "If that email is registered, you'll receive a reset link shortly. Check your inbox.";
+"forgot.back" = "Back to log in";
+"forgot.offline" = "No connection. Check your network and try again.";
 "action.save" = "Save";
 "action.cancel" = "Cancel";
 "action.done" = "Done";
@@ -271,7 +277,8 @@
 "reminder.seasonEnd" = "Season end";
 "reminder.saveButton" = "Save Reminder Settings";
 "reminder.saved" = "Reminder settings saved.";
-"reminder.comingSoon" = "Push notifications are coming soon. Your preferences are saved.";
+"reminder.emailEnabled" = "Also notify me by email";
+"reminder.emailHint" = "Push notifications arrive in this app. Email reminders also reach you when you only use the website — both channels share the same account, so settings here apply everywhere.";
 
 /* Members */
 "tab.members" = "Members";
@@ -291,3 +298,85 @@
 "alert.deleteAccountConfirm" = "Delete your account?";
 "alert.deleteAccountMessage" = "All your data — apiaries, hives, and inspections — will be permanently deleted. This cannot be undone.";
 "alert.deleteAccountAction" = "Delete Permanently";
+
+/* Statistics overview */
+"screen.statsOverview" = "My Statistics";
+"overview.period" = "Period";
+"overview.apiaries" = "Apiaries";
+"overview.hives" = "Hives";
+"overview.inspections" = "Inspections";
+"overview.perApiary" = "By Apiary";
+"overview.noData" = "No inspections in this period.";
+"overview.rowFormat" = "%1$d hives · %2$d inspections";
+
+/* Guided tour */
+"tour.skip" = "Skip";
+"tour.next" = "Next";
+"tour.getStarted" = "Get started";
+"tour.showAgain" = "Show guided tour again";
+"tour.welcome.title" = "Welcome to HivePulse";
+"tour.welcome.body" = "Your hive log in your pocket. Here is a quick look at what HivePulse does for you.";
+"tour.qr.title" = "Every hive at a scan";
+"tour.qr.body" = "Create apiaries, stick a printed QR code on each hive and scan it to open that hive instantly — no searching through lists at the apiary.";
+"tour.inspections.title" = "Inspections in seconds";
+"tour.inspections.body" = "Record queen, brood, varroa, mood and more in a few taps. Custom fields cover anything else you want to track.";
+"tour.stats.title" = "Spot problems early";
+"tour.stats.body" = "Varroa, brood and weight trends per hive and an overview of all your apiaries show at a glance which colonies need attention.";
+"tour.reminders.title" = "Never miss an inspection";
+"tour.reminders.body" = "Set your interval and season — HivePulse reminds you by push notification or email when hives are due.";
+"tour.hornets.title" = "Protect your region";
+"tour.hornets.body" = "Report Asian hornet sightings and nests, manage your traps and see community health data for your region.";
+
+/* Community heatmap (members) */
+"heatmap.title" = "Regional Health Map";
+"heatmap.empty" = "No community data available.";
+"heatmap.hint" = "Tap a cell for details.";
+"heatmap.overlay.varroa" = "Varroa Risk";
+"heatmap.overlay.mood" = "Colony Mood";
+"heatmap.overlay.swarm" = "Swarm Pressure";
+"heatmap.overlay.brood" = "Brood Health";
+"heatmap.varroa.low" = "Low (< 2)";
+"heatmap.varroa.medium" = "Medium (2–5)";
+"heatmap.varroa.high" = "High (> 5)";
+"heatmap.mood.good" = "Good (≥ 70% calm)";
+"heatmap.mood.fair" = "Fair (40–70%)";
+"heatmap.mood.low" = "Low (< 40%)";
+"heatmap.swarm.low" = "Low (< 10%)";
+"heatmap.swarm.medium" = "Medium (10–30%)";
+"heatmap.swarm.high" = "High (> 30%)";
+"heatmap.brood.strong" = "Strong (≥ 5 frames)";
+"heatmap.brood.fair" = "Fair (3–5)";
+"heatmap.brood.low" = "Low (< 3)";
+"heatmap.noData" = "No data";
+"heatmap.cellSummary" = "%d apiaries · %d inspections";
+"heatmap.cell.varroa" = "Varroa avg";
+"heatmap.cell.mood" = "Calm mood";
+"heatmap.cell.brood" = "Brood avg";
+"heatmap.cell.swarm" = "Swarm cells";
+
+/* Custom field definitions */
+"fielddefs.title" = "Custom Fields";
+"fielddefs.subtitle" = "Extend your hive and inspection forms with custom fields.";
+"fielddefs.apiaryTitle" = "Apiary-Scoped Fields";
+"fielddefs.apiarySubtitle" = "These fields only apply to hives and inspections in this apiary.";
+"fielddefs.empty" = "No custom fields yet.";
+"fielddefs.new" = "New Field";
+"fielddefs.createTitle" = "New Custom Field";
+"fielddefs.editTitle" = "Edit Field";
+"fielddefs.name" = "Field name";
+"fielddefs.target" = "Applies to";
+"fielddefs.target.hive" = "Hive";
+"fielddefs.target.inspection" = "Inspection";
+"fielddefs.type" = "Field type";
+"fielddefs.type.text" = "Text";
+"fielddefs.type.number" = "Number";
+"fielddefs.type.boolean" = "Yes / No";
+"fielddefs.type.date" = "Date";
+"fielddefs.type.select" = "Select";
+"fielddefs.options" = "Options (one per line)";
+"fielddefs.required" = "Required";
+"fielddefs.createBtn" = "Create Field";
+"fielddefs.saveBtn" = "Save Changes";
+"fielddefs.createSuccess" = "Field created.";
+"fielddefs.saveSuccess" = "Field saved.";
+"fielddefs.deleteConfirm" = "Delete this field? Data using this field will be lost.";

@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Hive
-import androidx.compose.material.icons.filled.PestControl
+import androidx.compose.ui.res.painterResource
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -41,10 +41,11 @@ class MainActivity : ComponentActivity() {
                 val currentRoute = backStackEntry?.destination?.route ?: ""
                 val isHornetSection  = currentRoute.startsWith("hornet")
                 val isMembersSection = currentRoute == Routes.MEMBERS
+                val isGuidedTour     = currentRoute.startsWith("guided_tour")
 
                 Scaffold(
                     bottomBar = {
-                        NavigationBar(
+                        if (!isGuidedTour) NavigationBar(
                             containerColor = Forest900,
                             contentColor   = Color.White,
                         ) {
@@ -76,7 +77,7 @@ class MainActivity : ComponentActivity() {
                                         popUpTo(navController.graph.startDestinationId) { saveState = true }
                                     }
                                 },
-                                icon   = { Icon(Icons.Default.PestControl, contentDescription = null) },
+                                icon   = { Icon(painterResource(R.drawable.ic_hornet), contentDescription = null) },
                                 label  = { Text(stringResource(R.string.tab_hornets)) },
                                 colors = itemColors,
                             )

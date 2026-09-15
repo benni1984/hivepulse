@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Hornet glyph (24dp, single colour, tinted by the caller) — replaces the generic Material "PestControl" bug.
+  Same geometry as HornetIcon.swift on iOS: angled translucent wings, antennae, head, thorax, narrow waist,
+  striped abdomen (stripes cut out) and stinger.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Front wings -->
+    <group android:rotation="-25" android:pivotX="6.2" android:pivotY="8.2">
+        <path
+            android:fillColor="@android:color/white"
+            android:fillAlpha="0.6"
+            android:pathData="M1,8.2 a5.2,2.1 0 1,0 10.4,0 a5.2,2.1 0 1,0 -10.4,0"/>
+    </group>
+    <group android:rotation="25" android:pivotX="17.8" android:pivotY="8.2">
+        <path
+            android:fillColor="@android:color/white"
+            android:fillAlpha="0.6"
+            android:pathData="M12.6,8.2 a5.2,2.1 0 1,0 10.4,0 a5.2,2.1 0 1,0 -10.4,0"/>
+    </group>
+
+    <!-- Rear wings -->
+    <group android:rotation="-10" android:pivotX="7" android:pivotY="11.4">
+        <path
+            android:fillColor="@android:color/white"
+            android:fillAlpha="0.6"
+            android:pathData="M3.3,11.4 a3.7,1.4 0 1,0 7.4,0 a3.7,1.4 0 1,0 -7.4,0"/>
+    </group>
+    <group android:rotation="10" android:pivotX="17" android:pivotY="11.4">
+        <path
+            android:fillColor="@android:color/white"
+            android:fillAlpha="0.6"
+            android:pathData="M13.3,11.4 a3.7,1.4 0 1,0 7.4,0 a3.7,1.4 0 1,0 -7.4,0"/>
+    </group>
+
+    <!-- Antennae -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@android:color/white"
+        android:strokeWidth="1.4"
+        android:strokeLineCap="round"
+        android:pathData="M10.7,3.3 Q9.5,1.8 8,1 M13.3,3.3 Q14.5,1.8 16,1"/>
+
+    <!-- Head, thorax, waist -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M9.8,4.9 a2.2,2.2 0 1,0 4.4,0 a2.2,2.2 0 1,0 -4.4,0"/>
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M8.9,9.3 a3.1,2.7 0 1,0 6.2,0 a3.1,2.7 0 1,0 -6.2,0"/>
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M10.75,12.6 a1.25,1 0 1,0 2.5,0 a1.25,1 0 1,0 -2.5,0"/>
+
+    <!-- Abdomen with two stripes cut out -->
+    <path
+        android:fillColor="@android:color/white"
+        android:fillType="evenOdd"
+        android:pathData="M12,13.1 C14.8,13.1 16.1,15.6 16.1,17.6 C16.1,20 14.4,21.6 12,21.6 C9.6,21.6 7.9,20 7.9,17.6 C7.9,15.6 9.2,13.1 12,13.1 Z M8.7,15.4 H15.3 V16.8 H8.7 Z M8.6,18.2 H15.4 V19.5 H8.6 Z"/>
+
+    <!-- Stinger -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M10.9,21.3 H13.1 L12,23.5 Z"/>
+</vector>

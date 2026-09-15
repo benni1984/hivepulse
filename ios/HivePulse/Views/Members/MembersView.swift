@@ -6,6 +6,7 @@ struct MembersView: View {
     @EnvironmentObject var authVM: AuthViewModel
     @State private var publicStats: PublicStats?
     @State private var isLoadingStats = false
+    @StateObject private var heatmapVM = CommunityHeatmapViewModel()
 
     private let statsService = StatsService()
 
@@ -53,6 +54,12 @@ struct MembersView: View {
             publicStats = try? await statsService.publicStats()
             isLoadingStats = false
         }
+        // The profile (and with it the supporter flag) loads after the tab appears.
+        .task(id: isUnlocked) {
+            if isUnlocked && heatmapVM.heatmap == nil {
+                await heatmapVM.load()
+            }
+        }
     }
 
     // MARK: - Stat formatting
@@ -84,16 +91,7 @@ struct MembersView: View {
 
     @ViewBuilder
     private func supporterContent() -> some View {
-        VStack(spacing: 8) {
-            Image(systemName: "checkmark.seal.fill")
-                .font(.system(size: 32))
-                .foregroundColor(.hpAmber)
-            Text(NSLocalizedString("members.comingSoon", comment: ""))
-                .font(.dmSans(15, relativeTo: .subheadline))
-                .foregroundColor(.hpStone500)
-                .multilineTextAlignment(.center)
-        }
-        .hpCard(padding: 20, alignment: .center)
+        CommunityHeatmapSection(vm: heatmapVM)
     }
 
     @ViewBuilder

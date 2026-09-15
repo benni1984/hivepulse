@@ -172,6 +172,37 @@ final class DTOTests: XCTestCase {
         XCTAssertNil(settings.pushTokenFcm)
     }
 
+    func test_reminderSettingsOut_decodesEmailChannel() throws {
+        let json = """
+        {"reminder_enabled":true,"reminder_interval_days":7,"reminder_season_start":4,
+         "reminder_season_end":8,"push_token_apns":null,"push_token_fcm":null,"reminder_email_enabled":true}
+        """.data(using: .utf8)!
+        let settings = try JSONDecoder().decode(ReminderSettingsOut.self, from: json)
+        XCTAssertEqual(settings.reminderEmailEnabled, true)
+    }
+
+    func test_reminderSettingsOut_emailChannelMissingDecodesAsNil() throws {
+        let json = """
+        {"reminder_enabled":true,"reminder_interval_days":7,"reminder_season_start":4,
+         "reminder_season_end":8,"push_token_apns":null,"push_token_fcm":null}
+        """.data(using: .utf8)!
+        let settings = try JSONDecoder().decode(ReminderSettingsOut.self, from: json)
+        XCTAssertNil(settings.reminderEmailEnabled)
+    }
+
+    func test_reminderSettingsUpdate_encodesEmailChannelOnlyWhenSet() throws {
+        let withFlag = try JSONEncoder().encode(ReminderSettingsUpdate(
+            reminderEnabled: nil, reminderIntervalDays: nil, reminderSeasonStart: nil,
+            reminderSeasonEnd: nil, reminderEmailEnabled: true))
+        let decodedWith = try XCTUnwrap(JSONSerialization.jsonObject(with: withFlag) as? [String: Any])
+        XCTAssertEqual(decodedWith["reminder_email_enabled"] as? Bool, true)
+
+        let withoutFlag = try JSONEncoder().encode(ReminderSettingsUpdate(
+            reminderEnabled: true, reminderIntervalDays: nil, reminderSeasonStart: nil, reminderSeasonEnd: nil))
+        let decodedWithout = try XCTUnwrap(JSONSerialization.jsonObject(with: withoutFlag) as? [String: Any])
+        XCTAssertNil(decodedWithout["reminder_email_enabled"])
+    }
+
     // MARK: - Helpers
 
     private func roundtrip<T: Codable>(_ value: T) throws -> T {

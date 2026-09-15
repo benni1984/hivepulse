@@ -60,3 +60,21 @@ struct AuthService: AuthServiceProtocol {
                                   body: PushTokenRegister(platform: platform, token: token))
     }
 }
+
+// MARK: - Password reset
+
+/// Narrow seam for the forgot-password screen so its view model can be tested without the network.
+protocol PasswordResetRequesting {
+    func requestPasswordReset(email: String) async throws
+}
+
+private struct ForgotPasswordRequest: Encodable {
+    let email: String
+}
+
+extension AuthService: PasswordResetRequesting {
+    /// POST /auth/forgot-password answers 204 whether or not the address is registered.
+    func requestPasswordReset(email: String) async throws {
+        try await client.postVoidNoAuth("auth/forgot-password", body: ForgotPasswordRequest(email: email))
+    }
+}

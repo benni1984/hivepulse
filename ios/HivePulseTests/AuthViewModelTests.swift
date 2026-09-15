@@ -165,6 +165,17 @@ final class AuthViewModelTests: XCTestCase {
         XCTAssertEqual(vm.errorMessage, "Update failed")
     }
 
+    func test_updateReminderSettings_sendsEmailChannelFlag() async {
+        svc.updateReminderResult = .success(makeReminderSettings(emailEnabled: true))
+        let body = ReminderSettingsUpdate(reminderEnabled: true, reminderIntervalDays: 7,
+                                          reminderSeasonStart: 4, reminderSeasonEnd: 8,
+                                          reminderEmailEnabled: true)
+        await vm.updateReminderSettings(body)
+        XCTAssertEqual(svc.lastReminderUpdate?.reminderEmailEnabled, true)
+        XCTAssertEqual(vm.reminderSettings?.reminderEmailEnabled, true)
+        XCTAssertNil(vm.errorMessage)
+    }
+
     func test_registerAPNsToken_success_doesNotSetError() async {
         let tokenData = Data([0xAB, 0xCD, 0xEF])
         await vm.registerAPNsToken(tokenData)

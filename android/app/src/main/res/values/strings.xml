@@ -354,4 +354,22 @@
     <string name="hornet_traps_no_catches">No catches logged yet</string>
     <string name="hornet_traps_history">Catch history</string>
     <string name="hornet_traps_back">Back</string>
+
+    <!-- Guided tour -->
+    <string name="tour_skip">Skip</string>
+    <string name="tour_next">Next</string>
+    <string name="tour_get_started">Get started</string>
+    <string name="action_show_tour">Show guided tour again</string>
+    <string name="tour_welcome_title">Welcome to HivePulse</string>
+    <string name="tour_welcome_body">Your hive log in your pocket. Here is a quick look at what HivePulse does for you.</string>
+    <string name="tour_qr_title">Every hive at a scan</string>
+    <string name="tour_qr_body">Create apiaries, stick a printed QR code on each hive and scan it to open that hive instantly — no searching through lists at the apiary.</string>
+    <string name="tour_inspections_title">Inspections in seconds</string>
+    <string name="tour_inspections_body">Record queen, brood, varroa, mood and more with big buttons made for gloves. Add your own custom fields for anything else you track.</string>
+    <string name="tour_stats_title">Spot problems early</string>
+    <string name="tour_stats_body">Varroa, brood and weight trends per hive and an overview of all your apiaries show at a glance which colonies need attention.</string>
+    <string name="tour_reminders_title">Never miss an inspection</string>
+    <string name="tour_reminders_body">Set your interval and season — HivePulse reminds you by push notification or email when hives are due.</string>
+    <string name="tour_hornets_title">Protect your region</string>
+    <string name="tour_hornets_body">Report Asian hornet sightings and nests, manage your traps and see community health data for your region.</string>
 </resources>

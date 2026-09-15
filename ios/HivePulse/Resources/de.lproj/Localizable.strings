@@ -80,6 +80,12 @@
 
 /* Actions */
 "action.forgotPassword" = "Passwort vergessen?";
+"forgot.title" = "Passwort zurücksetzen";
+"forgot.desc" = "Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen.";
+"forgot.submit" = "Link senden";
+"forgot.sent" = "Falls diese E-Mail registriert ist, erhältst du in Kürze einen Link zum Zurücksetzen. Schau in dein Postfach.";
+"forgot.back" = "Zurück zur Anmeldung";
+"forgot.offline" = "Keine Verbindung. Prüfe dein Netzwerk und versuche es erneut.";
 "action.save" ="Speichern";
 "action.cancel" = "Abbrechen";
 "action.done" = "Fertig";
@@ -271,7 +277,8 @@
 "reminder.seasonEnd" = "Saisonende";
 "reminder.saveButton" = "Erinnerungseinstellungen speichern";
 "reminder.saved" = "Erinnerungseinstellungen gespeichert.";
-"reminder.comingSoon" = "Push-Benachrichtigungen kommen bald. Deine Einstellungen wurden gespeichert.";
+"reminder.emailEnabled" = "Zusätzlich per E-Mail benachrichtigen";
+"reminder.emailHint" = "Push-Benachrichtigungen kommen in dieser App an. E-Mail-Erinnerungen erreichen dich auch, wenn du nur die Website nutzt — beide Kanäle gehören zum selben Konto, Einstellungen hier gelten also überall.";
 
 /* Mitglieder */
 "tab.members" = "Mitglieder";
@@ -291,3 +298,85 @@
 "alert.deleteAccountConfirm" = "Konto löschen?";
 "alert.deleteAccountMessage" = "Alle Ihre Daten – Bienenstände, Bienenstöcke und Begehungen – werden dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.";
 "alert.deleteAccountAction" = "Dauerhaft löschen";
+
+/* Statistics overview */
+"screen.statsOverview" = "Meine Statistiken";
+"overview.period" = "Zeitraum";
+"overview.apiaries" = "Bienenstände";
+"overview.hives" = "Bienenstöcke";
+"overview.inspections" = "Begehungen";
+"overview.perApiary" = "Nach Bienenstand";
+"overview.noData" = "Keine Begehungen in diesem Zeitraum.";
+"overview.rowFormat" = "%1$d Bienenstöcke · %2$d Begehungen";
+
+/* Guided tour */
+"tour.skip" = "Überspringen";
+"tour.next" = "Weiter";
+"tour.getStarted" = "Los geht’s";
+"tour.showAgain" = "Tour erneut ansehen";
+"tour.welcome.title" = "Willkommen bei HivePulse";
+"tour.welcome.body" = "Dein Stockbuch für die Hosentasche. Hier ein kurzer Überblick, was HivePulse für dich erledigt.";
+"tour.qr.title" = "Jeder Bienenstock per Scan";
+"tour.qr.body" = "Lege Bienenstände an, klebe einen gedruckten QR-Code auf jeden Bienenstock und scanne ihn, um ihn sofort zu öffnen — ohne am Stand durch Listen zu suchen.";
+"tour.inspections.title" = "Begehungen in Sekunden";
+"tour.inspections.body" = "Erfasse Königin, Brut, Varroa, Stimmung und mehr mit wenigen Tipps. Eigene Felder ergänzen alles, was du sonst noch festhalten willst.";
+"tour.stats.title" = "Probleme früh erkennen";
+"tour.stats.body" = "Varroa-, Brut- und Gewichtsverläufe je Bienenstock und eine Übersicht über alle Bienenstände zeigen auf einen Blick, welche Völker Aufmerksamkeit brauchen.";
+"tour.reminders.title" = "Keine Begehung mehr vergessen";
+"tour.reminders.body" = "Lege Intervall und Saison fest — HivePulse erinnert dich per Push oder E-Mail, wenn Begehungen fällig sind.";
+"tour.hornets.title" = "Schütze deine Region";
+"tour.hornets.body" = "Melde Sichtungen und Nester der Asiatischen Hornisse, verwalte deine Fallen und sieh Gesundheitsdaten der Community für deine Region.";
+
+/* Community heatmap (members) */
+"heatmap.title" = "Regionale Gesundheitskarte";
+"heatmap.empty" = "Keine Community-Daten verfügbar.";
+"heatmap.hint" = "Tippe auf eine Zelle für Details.";
+"heatmap.overlay.varroa" = "Varroa-Risiko";
+"heatmap.overlay.mood" = "Volksstimmung";
+"heatmap.overlay.swarm" = "Schwarmdruck";
+"heatmap.overlay.brood" = "Brutgesundheit";
+"heatmap.varroa.low" = "Niedrig (< 2)";
+"heatmap.varroa.medium" = "Mittel (2–5)";
+"heatmap.varroa.high" = "Hoch (> 5)";
+"heatmap.mood.good" = "Gut (≥ 70 % ruhig)";
+"heatmap.mood.fair" = "Mittel (40–70 %)";
+"heatmap.mood.low" = "Niedrig (< 40 %)";
+"heatmap.swarm.low" = "Niedrig (< 10 %)";
+"heatmap.swarm.medium" = "Mittel (10–30 %)";
+"heatmap.swarm.high" = "Hoch (> 30 %)";
+"heatmap.brood.strong" = "Stark (≥ 5 Waben)";
+"heatmap.brood.fair" = "Mittel (3–5)";
+"heatmap.brood.low" = "Schwach (< 3)";
+"heatmap.noData" = "Keine Daten";
+"heatmap.cellSummary" = "%d Standorte · %d Kontrollen";
+"heatmap.cell.varroa" = "Ø Varroa";
+"heatmap.cell.mood" = "Ruhige Stimmung";
+"heatmap.cell.brood" = "Ø Brutwaben";
+"heatmap.cell.swarm" = "Schwarmzellen";
+
+/* Custom field definitions */
+"fielddefs.title" = "Eigene Felder";
+"fielddefs.subtitle" = "Erweitere deine Beuten- und Kontrollformulare mit eigenen Feldern.";
+"fielddefs.apiaryTitle" = "Standort-Felder";
+"fielddefs.apiarySubtitle" = "Diese Felder gelten nur für Beuten und Kontrollen an diesem Standort.";
+"fielddefs.empty" = "Noch keine eigenen Felder.";
+"fielddefs.new" = "Neues Feld";
+"fielddefs.createTitle" = "Neues eigenes Feld";
+"fielddefs.editTitle" = "Feld bearbeiten";
+"fielddefs.name" = "Feldname";
+"fielddefs.target" = "Gilt für";
+"fielddefs.target.hive" = "Beute";
+"fielddefs.target.inspection" = "Kontrolle";
+"fielddefs.type" = "Feldtyp";
+"fielddefs.type.text" = "Text";
+"fielddefs.type.number" = "Zahl";
+"fielddefs.type.boolean" = "Ja / Nein";
+"fielddefs.type.date" = "Datum";
+"fielddefs.type.select" = "Auswahl";
+"fielddefs.options" = "Optionen (eine pro Zeile)";
+"fielddefs.required" = "Pflichtfeld";
+"fielddefs.createBtn" = "Feld erstellen";
+"fielddefs.saveBtn" = "Änderungen speichern";
+"fielddefs.createSuccess" = "Feld erstellt.";
+"fielddefs.saveSuccess" = "Feld gespeichert.";
+"fielddefs.deleteConfirm" = "Dieses Feld löschen? Vorhandene Daten gehen verloren.";

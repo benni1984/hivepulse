@@ -39,6 +39,7 @@ extension MockURLProtocol {
 
     // Authenticated screens, all lists empty.
     static let authenticatedHandlers: [(String, Int, String)] = [
+        ("stats/overview",   200, overviewJSON),
         ("inspections",      200, emptyList),
         ("hives",            200, emptyList),
         ("field-definitions",200, "[]"),
@@ -51,6 +52,7 @@ extension MockURLProtocol {
 
     // Authenticated screens, one apiary containing one hive (for deep-navigation tests).
     static let apiaryWithHiveHandlers: [(String, Int, String)] = [
+        ("stats/overview",                 200, overviewJSON),
         ("hives/h-1/inspections",          200, emptyList),
         ("apiaries/a-1/hives",             200, hiveListJSON),
         ("apiaries/a-1/field-definitions", 200, "[]"),
@@ -66,6 +68,7 @@ extension MockURLProtocol {
 
     // Authenticated supporter — same as authenticatedHandlers but user has is_supporter: true.
     static let authenticatedSupporterHandlers: [(String, Int, String)] = [
+        ("stats/community-heatmap", 200, communityHeatmapJSON),
         ("inspections",      200, emptyList),
         ("hives",            200, emptyList),
         ("field-definitions",200, "[]"),
@@ -84,10 +87,44 @@ extension MockURLProtocol {
         ("apiaries",      200, emptyList),
     ]
 
+    // Authenticated with one QR batch ("b-1") whose PDF can be downloaded.
+    static let qrBatchHandlers: [(String, Int, String)] = [
+        ("qr-batches/b-1/pdf", 200, minimalPDF),        // before "qr-batches/b-1"
+        ("qr-batches/b-1",     200, qrBatchJSON),       // before "qr-batches"
+        ("qr-batches",         200, qrBatchListJSON),
+        ("field-definitions",  200, "[]"),
+        ("users/me/reminder",  200, reminderJSON),      // before "users/me"
+        ("users/me",           200, userJSON),
+        ("apiaries",           200, emptyList),
+        ("auth/refresh",       200, accessTokenJSON),
+    ]
+
     // MARK: - Canned JSON
+
+    static let qrBatchJSON = """
+    {"id":"b-1","count":2,"created_at":"2026-09-01T10:00:00Z","tokens":[{"token":"tok-aaaa","linked_hive_id":null},{"token":"tok-bbbb","linked_hive_id":"h-1"}]}
+    """
+
+    static let qrBatchListJSON = """
+    {"items":[{"id":"b-1","count":2,"created_at":"2026-09-01T10:00:00Z","linked_count":1}],"total":1,"page":1,"per_page":20,"pages":1}
+    """
+
+    static let minimalPDF = """
+    %PDF-1.4
+    1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+    2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj
+    3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 595 842]>>endobj
+    trailer<</Root 1 0 R>>
+    %%EOF
+    """
 
     static let userJSON = """
     {"id":"u-1","email":"tester@example.com","name":"Test User","locale":"en","created_at":"2024-01-01T00:00:00Z","is_admin":false,"is_supporter":false}
+    """
+
+    // Two neighbouring 0.5° cells in central Germany: a healthy one (west) and a struggling one (east).
+    static let communityHeatmapJSON = """
+    {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[9.5,51.0],[10.0,51.0],[10.0,51.5],[9.5,51.5],[9.5,51.0]]]},"properties":{"avg_varroa":1.2,"mood_score":82,"avg_brood":6.1,"swarm_pct":5,"apiary_count":4,"inspection_count":21}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[10.0,51.0],[10.5,51.0],[10.5,51.5],[10.0,51.5],[10.0,51.0]]]},"properties":{"avg_varroa":5.8,"mood_score":35,"avg_brood":null,"swarm_pct":40,"apiary_count":2,"inspection_count":9}}]}
     """
 
     static let supporterUserJSON = """
@@ -95,7 +132,7 @@ extension MockURLProtocol {
     """
 
     static let reminderJSON = """
-    {"reminder_enabled":true,"reminder_interval_days":7,"reminder_season_start":4,"reminder_season_end":8,"push_token_apns":null,"push_token_fcm":null}
+    {"reminder_enabled":true,"reminder_interval_days":7,"reminder_season_start":4,"reminder_season_end":8,"push_token_apns":null,"push_token_fcm":null,"reminder_email_enabled":false}
     """
 
     private static let accessTokenJSON = """
@@ -108,6 +145,10 @@ extension MockURLProtocol {
 
     private static let emptyList = """
     {"items":[],"total":0,"page":1,"per_page":50,"pages":1}
+    """
+
+    static let overviewJSON = """
+    {"period":{"from":"2025-09-15","to":"2026-09-15","preset":"365d"},"apiary_count":1,"hive_count":1,"inspections_total":12,"per_apiary":[{"apiary_id":"a-1","apiary_name":"Meadow","hive_count":1,"inspections_total":12}]}
     """
 
     private static let apiaryJSON = """

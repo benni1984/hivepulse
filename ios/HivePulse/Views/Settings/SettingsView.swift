@@ -25,6 +25,7 @@ struct SettingsView: View {
     @State private var reminderIntervalDays = 7
     @State private var reminderSeasonStart = 4
     @State private var reminderSeasonEnd = 8
+    @State private var reminderEmailEnabled = false
     @State private var isSavingReminder = false
     @State private var reminderSaveSuccess = false
 
@@ -48,6 +49,9 @@ struct SettingsView: View {
             Section {
                 NavigationLink(destination: QRBatchListView()) {
                     Label(NSLocalizedString("screen.qrBatches", comment: ""), systemImage: "printer")
+                }
+                NavigationLink(destination: FieldDefinitionsView()) {
+                    Label(NSLocalizedString("fielddefs.title", comment: ""), systemImage: "slider.horizontal.3")
                 }
             }
 
@@ -110,7 +114,9 @@ struct SettingsView: View {
                 Toggle(NSLocalizedString("reminder.enabled", comment: ""), isOn: $reminderEnabled)
                     .accessibilityIdentifier("reminderEnabledToggle")
                 if reminderEnabled {
-                    Text(NSLocalizedString("reminder.comingSoon", comment: ""))
+                    Toggle(NSLocalizedString("reminder.emailEnabled", comment: ""), isOn: $reminderEmailEnabled)
+                        .accessibilityIdentifier("reminderEmailToggle")
+                    Text(NSLocalizedString("reminder.emailHint", comment: ""))
                         .font(.caption)
                         .foregroundColor(.secondary)
                     Stepper(
@@ -174,6 +180,12 @@ struct SettingsView: View {
                 Link(destination: URL(string: "https://hivepulse.multihead.de/\(locale)/help")!) {
                     Label(NSLocalizedString("action.help", comment: ""), systemImage: "questionmark.circle")
                 }
+                Button {
+                    authVM.replayGuidedTour()
+                } label: {
+                    Label(NSLocalizedString("tour.showAgain", comment: ""), systemImage: "sparkles")
+                }
+                .accessibilityIdentifier("showGuidedTourButton")
             }
 
             // MARK: - Log Out
@@ -219,6 +231,7 @@ struct SettingsView: View {
                 reminderIntervalDays  = r.reminderIntervalDays
                 reminderSeasonStart   = r.reminderSeasonStart
                 reminderSeasonEnd     = r.reminderSeasonEnd
+                reminderEmailEnabled  = r.reminderEmailEnabled ?? false
             }
         }
         .confirmationDialog(
@@ -306,7 +319,8 @@ struct SettingsView: View {
             reminderEnabled:      reminderEnabled,
             reminderIntervalDays: reminderIntervalDays,
             reminderSeasonStart:  reminderSeasonStart,
-            reminderSeasonEnd:    reminderSeasonEnd
+            reminderSeasonEnd:    reminderSeasonEnd,
+            reminderEmailEnabled: reminderEmailEnabled
         )
         await authVM.updateReminderSettings(update)
         isSavingReminder = false

@@ -134,6 +134,8 @@ struct ReminderSettingsOut: Codable {
     let reminderSeasonEnd: Int
     let pushTokenApns: String?
     let pushTokenFcm: String?
+    /// Email as an extra reminder channel, additive to push (optional so older responses still decode).
+    var reminderEmailEnabled: Bool? = nil
     enum CodingKeys: String, CodingKey {
         case pushTokenApns       = "push_token_apns"
         case pushTokenFcm        = "push_token_fcm"
@@ -141,6 +143,7 @@ struct ReminderSettingsOut: Codable {
         case reminderIntervalDays = "reminder_interval_days"
         case reminderSeasonStart  = "reminder_season_start"
         case reminderSeasonEnd    = "reminder_season_end"
+        case reminderEmailEnabled = "reminder_email_enabled"
     }
 }
 
@@ -149,11 +152,13 @@ struct ReminderSettingsUpdate: Encodable {
     var reminderIntervalDays: Int?
     var reminderSeasonStart: Int?
     var reminderSeasonEnd: Int?
+    var reminderEmailEnabled: Bool?
     enum CodingKeys: String, CodingKey {
         case reminderEnabled      = "reminder_enabled"
         case reminderIntervalDays = "reminder_interval_days"
         case reminderSeasonStart  = "reminder_season_start"
         case reminderSeasonEnd    = "reminder_season_end"
+        case reminderEmailEnabled = "reminder_email_enabled"
     }
 }
 
@@ -193,6 +198,13 @@ struct FieldDefinitionCreate: Encodable {
         case type      = "type"
         case sortOrder = "sort_order"
     }
+}
+
+/// Target and type are fixed after creation; nil fields are left out of the request and stay unchanged.
+struct FieldDefinitionUpdate: Encodable {
+    let name: String?
+    let options: [String]?
+    let required: Bool?
 }
 
 // MARK: - Apiaries
@@ -491,16 +503,32 @@ struct ApiaryStats: Codable {
     }
 }
 
+struct ApiaryStatsSummary: Codable, Identifiable {
+    let apiaryId: String
+    let apiaryName: String
+    let hiveCount: Int
+    let inspectionsTotal: Int
+    var id: String { apiaryId }
+    enum CodingKeys: String, CodingKey {
+        case apiaryId         = "apiary_id"
+        case apiaryName       = "apiary_name"
+        case hiveCount        = "hive_count"
+        case inspectionsTotal = "inspections_total"
+    }
+}
+
 struct OverviewStats: Codable {
     let period: StatsPeriod
     let apiaryCount: Int
     let hiveCount: Int
     let inspectionsTotal: Int
+    let perApiary: [ApiaryStatsSummary]
     enum CodingKeys: String, CodingKey {
         case period
         case apiaryCount      = "apiary_count"
         case hiveCount        = "hive_count"
         case inspectionsTotal = "inspections_total"
+        case perApiary        = "per_apiary"
     }
 }
 
@@ -569,6 +597,40 @@ struct PublicStats: Codable {
         case apiaryCount               = "apiary_count"
         case hiveCount                 = "hive_count"
         case inspectionCount           = "inspection_count"
+    }
+}
+
+// MARK: - Community Heatmap (supporter/admin only)
+
+struct CommunityHeatmap: Codable {
+    let type: String
+    let features: [CommunityHeatmapFeature]
+}
+
+struct CommunityHeatmapFeature: Codable {
+    let geometry: PolygonGeometry
+    let properties: CommunityHeatmapProperties
+}
+
+struct PolygonGeometry: Codable {
+    let type: String
+    let coordinates: [[[Double]]]   // rings of [longitude, latitude]
+}
+
+struct CommunityHeatmapProperties: Codable, Equatable {
+    let avgVarroa: Double?
+    let moodScore: Double?          // percentage 0–100
+    let avgBrood: Double?
+    let swarmPct: Double            // percentage 0–100, never null
+    let apiaryCount: Int
+    let inspectionCount: Int
+    enum CodingKeys: String, CodingKey {
+        case avgVarroa       = "avg_varroa"
+        case moodScore       = "mood_score"
+        case avgBrood        = "avg_brood"
+        case swarmPct        = "swarm_pct"
+        case apiaryCount     = "apiary_count"
+        case inspectionCount = "inspection_count"
     }
 }
 

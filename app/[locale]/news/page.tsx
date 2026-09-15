@@ -18,6 +18,22 @@ export default function NewsPage() {
             <article className="news-card" data-aos="fade-up">
               <div className="news-date"><div className="day">15</div><div className="month">Sep 2026</div></div>
               <div className="news-body">
+                <span className="news-tag">Feature</span>
+                <h3>A Guided Tour for New Users in Both Apps</h3>
+                <p>The first time you sign in to the iOS or Android app, a short swipeable tour now introduces what HivePulse can do for you — QR codes on every hive, quick inspections, statistics, reminders and the hornet tracker. Skip it any time, and bring it back later from Settings with &quot;Show guided tour again&quot;.</p>
+              </div>
+            </article>
+            <article className="news-card" data-aos="fade-up" data-aos-delay="60">
+              <div className="news-date"><div className="day">15</div><div className="month">Sep 2026</div></div>
+              <div className="news-body">
+                <span className="news-tag">Feature</span>
+                <h3>The iOS App Gets the New HivePulse Look and Catches Up with Web and Android</h3>
+                <p>The iPhone app now uses the same amber-and-stone design and DM Sans typeface as the website. It also gained everything the Android app received recently: printable QR code PDFs that open right away, email reminders, the account-wide statistics overview, password reset links, managing your custom fields for all apiaries or just one, and — for supporters — the regional health map in the Members tab.</p>
+              </div>
+            </article>
+            <article className="news-card" data-aos="fade-up">
+              <div className="news-date"><div className="day">15</div><div className="month">Sep 2026</div></div>
+              <div className="news-body">
                 <span className="news-tag">Fix</span>
                 <h3>QR Code PDF Download Fixed in the Android App</h3>
                 <p>Tapping Download PDF on a QR batch in the Android app did nothing — the download was handed off outside the app and failed silently once your session had been open for a while. The app now downloads the printable PDF itself, saves it to your Downloads folder and opens it right away — and tapping again no longer piles up duplicate copies.</p>

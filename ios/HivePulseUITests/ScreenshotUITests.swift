@@ -60,6 +60,49 @@ final class ScreenshotUITests: XCTestCase {
         snap("10-members-supporter", app)
     }
 
+    func test_capture_qr_batch_pdf() {
+        let app = launch(["-resetKeychain", "-mockQrBatch"])
+        XCTAssertTrue(app.tabBars.buttons["Settings"].waitForExistence(timeout: 10))
+        app.tabBars.buttons["Settings"].tap()
+        XCTAssertTrue(app.staticTexts["QR Batches"].waitForExistence(timeout: 10))
+        app.staticTexts["QR Batches"].tap()
+        let row = app.collectionViews.cells.firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 10))
+        row.tap()
+        XCTAssertTrue(app.buttons["downloadPdfButton"].waitForExistence(timeout: 10))
+        snap("11-qr-batch-detail", app)
+
+        app.buttons["downloadPdfButton"].tap()
+        sleep(3)
+        snap("12-qr-batch-pdf-preview", app)
+    }
+
+    func test_capture_guided_tour() {
+        let app = launch(["-resetKeychain", "-mockAuthenticated", "-guidedTourSeen", "YES"])
+        XCTAssertTrue(app.tabBars.buttons["Settings"].waitForExistence(timeout: 10))
+        app.tabBars.buttons["Settings"].tap()
+        let showAgain = app.buttons["showGuidedTourButton"]
+        for _ in 0..<8 where !showAgain.exists { app.swipeUp(velocity: .slow) }
+        XCTAssertTrue(showAgain.waitForExistence(timeout: 10))
+        showAgain.tap()
+
+        XCTAssertTrue(app.staticTexts["Welcome to HivePulse"].waitForExistence(timeout: 10))
+        snap("13-guided-tour-welcome", app)
+
+        app.buttons["Next"].tap()
+        XCTAssertTrue(app.staticTexts["Every hive at a scan"].waitForExistence(timeout: 10))
+        sleep(1)
+        snap("14-guided-tour-qr", app)
+    }
+
+    func test_capture_home_screen_icon() {
+        let app = launch(["-resetKeychain"])
+        XCTAssertTrue(app.buttons["Log In"].waitForExistence(timeout: 10))
+        XCUIDevice.shared.press(.home)
+        sleep(2)
+        snap("15-home-screen-icon", app)
+    }
+
     // MARK: - Helpers
 
     private func launch(_ arguments: [String]) -> XCUIApplication {

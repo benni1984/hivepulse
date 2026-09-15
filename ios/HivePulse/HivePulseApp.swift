@@ -32,6 +32,12 @@ struct HivePulseApp: App {
             KeychainService.shared.refreshToken = "ui-test-refresh"
             MockURLProtocol.configure(MockURLProtocol.authenticatedSupporterHandlers)
             APIClient.shared = .forUITesting()
+        } else if args.contains("-mockQrBatch") {
+            KeychainService.shared.clearAll()
+            KeychainService.shared.accessToken = "ui-test-token"
+            KeychainService.shared.refreshToken = "ui-test-refresh"
+            MockURLProtocol.configure(MockURLProtocol.qrBatchHandlers)
+            APIClient.shared = .forUITesting()
         } else if args.contains("-mockAuthenticated") {
             KeychainService.shared.clearAll()
             KeychainService.shared.accessToken = "ui-test-token"
@@ -47,36 +53,46 @@ struct HivePulseApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if authVM.isAuthenticated {
-                MainTabView()
-                    .environmentObject(authVM)
-                    .task {
-                        await authVM.loadProfile()
-                        await requestPushPermission()
-                    }
-                    .onReceive(NotificationCenter.default.publisher(for: .apnsTokenReceived)) { note in
-                        if let tokenData = note.userInfo?["token"] as? Data {
-                            Task { await authVM.registerAPNsToken(tokenData) }
+            // Stable container so the tour cover survives the login -> tabs switch that happens in the same update.
+            ZStack {
+                if authVM.isAuthenticated {
+                    MainTabView()
+                        .environmentObject(authVM)
+                        .task {
+                            await authVM.loadProfile()
+                            await requestPushPermission()
+                        }
+                        .onReceive(NotificationCenter.default.publisher(for: .apnsTokenReceived)) { note in
+                            if let tokenData = note.userInfo?["token"] as? Data {
+                                Task { await authVM.registerAPNsToken(tokenData) }
+                            }
+                        }
+                } else {
+                    // Unauthenticated: HivePulse login + public Hornets tab always visible
+                    TabView {
+                        NavigationStack {
+                            LoginView()
+                                .environmentObject(authVM)
+                        }
+                        .tabItem {
+                            Label("HivePulse", systemImage: "hexagon.fill")
+                        }
+
+                        HornetView()
+                        .tabItem {
+                            Label {
+                                Text(NSLocalizedString("tab.hornets", comment: ""))
+                            } icon: {
+                                Image(uiImage: HornetIcon.tabImage)
+                            }
                         }
                     }
-            } else {
-                // Unauthenticated: HivePulse login + public Hornets tab always visible
-                TabView {
-                    NavigationStack {
-                        LoginView()
-                            .environmentObject(authVM)
-                    }
-                    .tabItem {
-                        Label("HivePulse", systemImage: "hexagon.fill")
-                    }
-
-                    HornetView()
-                    .tabItem {
-                        Label(NSLocalizedString("tab.hornets", comment: ""), systemImage: "ant")
-                    }
+                    .tint(.hpAmber)
+                    .font(.dmSans(17))
                 }
-                .tint(.hpAmber)
-                .font(.dmSans(17))
+            }
+            .fullScreenCover(isPresented: $authVM.showGuidedTour) {
+                GuidedTourView { authVM.finishGuidedTour() }
             }
         }
     }
@@ -84,6 +100,13 @@ struct HivePulseApp: App {
     // MARK: - Push permission
 
     private func requestPushPermission() async {
+        #if DEBUG
+        // UI tests launch with mock arguments; the system permission alert would appear at a random moment
+        // and swallow taps meant for the app.
+        if ProcessInfo.processInfo.arguments.contains(where: { $0 == "-resetKeychain" || $0.hasPrefix("-mock") }) {
+            return
+        }
+        #endif
         let center = UNUserNotificationCenter.current()
         let granted = (try? await center.requestAuthorization(options: [.alert, .sound, .badge])) ?? false
         if granted {

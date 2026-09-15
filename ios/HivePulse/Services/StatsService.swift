@@ -34,3 +34,10 @@ struct StatsService {
         try await client.get("public/stats")
     }
 }
+
+/// Narrow seam so the overview screen's view model can be tested without the network.
+protocol OverviewStatsProviding {
+    func overview(preset: String?, from: String?, to: String?) async throws -> OverviewStats
+}
+
+extension StatsService: OverviewStatsProviding {}
