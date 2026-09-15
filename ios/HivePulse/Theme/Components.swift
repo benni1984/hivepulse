@@ -107,6 +107,10 @@ extension View {
     func hpInputField() -> some View {
         self
             .font(.dmSans(16))
+            // Explicit text colour: the field background is always white, so system label colours
+            // (white in Dark Mode) would make typed text invisible.
+            .foregroundColor(.hpStone900)
+            .tint(.hpAmberDark)
             .padding(.horizontal, 14)
             .frame(minHeight: 50)
             .background(Color.white)

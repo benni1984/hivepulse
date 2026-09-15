@@ -20,11 +20,24 @@ Same tokens as web/Android (`hivepulse-redesign/bundle.html`), defined in `HiveP
 
 ## TestFlight
 
-`.github/workflows/testflight.yml` archives the Release build, signs it via Xcode **cloud signing** (App Store Connect API key — no local Mac, certificates or profiles) and uploads it with `xcodebuild -exportArchive` (`destination: upload`). It runs on manual dispatch and on pushes to `main` that touch `ios/HivePulse/**` or `ios/project.yml`.
+`.github/workflows/testflight.yml` imports our own **Apple Distribution certificate** from secrets into a temporary keychain, fetches the App Store profile with `fastlane sigh`, archives the Release build with **manual** distribution signing and uploads it via `xcodebuild -exportArchive` (`destination: upload`, manual style).
+
+- Do not switch the archive back to automatic signing: every fresh runner would create another "Created via API" development certificate (Apple caps the number per team) and it requires a registered device
+
+- Why not cloud-managed distribution signing: the cloud signer writes the account holder name ("Benjamin Müller") into the designated requirement in a different Unicode form than the certificate, so the signature fails its own requirement and App Store Connect rejects it with **ITMS-90035**. The workflow now runs `codesign --verify --strict` on an exported IPA before uploading and fails early if the requirement is not satisfied
+- Extra secrets: `IOS_DIST_CERT_P12_BASE64`, `IOS_DIST_CERT_P12_PASSWORD` (certificate valid for one year — renew by creating a new CSR/certificate and replacing both secrets)
+
+- Do not archive unsigned (`CODE_SIGNING_ALLOWED=NO`) — the upload is then rejected as "Invalid Signature"
+- App Store validation requires `UISupportedInterfaceOrientations` in `Info.plist` (checked by `AppBundleTests`) It runs on manual dispatch and on pushes to `main` that touch `ios/HivePulse/**` or `ios/project.yml`.
 
 - Secrets: `APPLE_TEAM_ID`, `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`, `APP_STORE_CONNECT_API_KEY_P8` (full `.p8` contents; key role Admin). Without them the job logs a notice and succeeds without building
 - Build number = `github.run_number` via `CURRENT_PROJECT_VERSION` (Info.plist `CFBundleVersion` is `$(CURRENT_PROJECT_VERSION)`); bump `CFBundleShortVersionString` for a new marketing version
 - The App Store Connect app record (bundle ID `com.hivepulse.app`) must exist before the first upload
+
+## Backend dates & appearance — IMPORTANT
+
+- The backend sends naive UTC timestamps with microseconds (`"2026-09-13T13:18:13.734534"`, no `Z`). Always decode with `.hivePulseBackend` (`Network/BackendDateDecoding.swift`), never `.iso8601` — that broke login and all lists against production while mock-based tests passed. Mock JSON in `MockURLProtocol` uses the real backend shape; keep it that way (`BackendDateTests`)
+- The app is light-only (`UIUserInterfaceStyle = Light`): the palette uses white cards/inputs, so Dark Mode system label colours made typed text invisible
 
 ## App icon & App Store metadata
 
