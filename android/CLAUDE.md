@@ -84,6 +84,10 @@ Replace the entire network stack:
 @BindValue val apiService: ApiService = mockk(relaxed = true)
 ```
 
+## Guided Tour
+
+The first successful sign-in or registration on a device routes to `GuidedTourScreen` (`guided_tour?fromSettings=false`) instead of the apiary list; `OnboardingStore.hasSeenGuidedTour` remembers it. Settings has "Show guided tour again". **UI tests that sign in and expect "My Apiaries" must set `onboardingStore.hasSeenGuidedTour = true` in their setup rule** (see `LoginScreenTest`); `GuidedTourScreenTest` covers the tour itself.
+
 ## Waiting for Async Results
 
 ```kotlin

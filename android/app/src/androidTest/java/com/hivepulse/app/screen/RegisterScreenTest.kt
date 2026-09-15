@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.hivepulse.app.MainActivity
 import com.hivepulse.app.data.api.*
 import com.hivepulse.app.data.local.TokenStore
+import com.hivepulse.app.data.local.OnboardingStore
 import com.hivepulse.app.di.NetworkModule
 import dagger.hilt.android.testing.*
 import io.mockk.*
@@ -24,10 +25,11 @@ class RegisterScreenTest {
     val apiService: ApiService = mockk(relaxed = true)
 
     @Inject lateinit var tokenStore: TokenStore
+    @Inject lateinit var onboardingStore: OnboardingStore
 
     @get:Rule(order = 0) val hiltRule    = HiltAndroidRule(this)
     @get:Rule(order = 1) val setupRule   = object : ExternalResource() {
-        override fun before() { hiltRule.inject(); tokenStore.clear() }
+        override fun before() { hiltRule.inject(); tokenStore.clear(); onboardingStore.hasSeenGuidedTour = true }
     }
     @get:Rule(order = 2) val composeRule = createAndroidComposeRule<MainActivity>()
 

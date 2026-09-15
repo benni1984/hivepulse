@@ -154,6 +154,7 @@ fun SettingsScreen(
     onBack: () -> Unit,
     onAdminClick: () -> Unit = {},
     onCustomFieldsClick: () -> Unit = {},
+    onGuidedTourClick: () -> Unit = {},
     vm: SettingsViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
@@ -528,6 +529,12 @@ fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(stringResource(R.string.action_help))
+                }
+                OutlinedButton(
+                    onClick  = onGuidedTourClick,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(stringResource(R.string.action_show_tour))
                 }
 
                 // Danger Zone

@@ -5,6 +5,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.*
 import androidx.navigation.compose.*
 import com.hivepulse.app.data.local.TokenStore
+import com.hivepulse.app.data.local.OnboardingStore
 import com.hivepulse.app.ui.apiaries.*
 import com.hivepulse.app.ui.auth.*
 import com.hivepulse.app.ui.hives.*
@@ -14,6 +15,7 @@ import com.hivepulse.app.ui.admin.*
 import com.hivepulse.app.ui.hornet.HornetHomeScreen
 import com.hivepulse.app.ui.fields.FieldDefinitionsScreen
 import com.hivepulse.app.ui.members.MembersScreen
+import com.hivepulse.app.ui.onboarding.GuidedTourScreen
 import com.hivepulse.app.ui.settings.SettingsScreen
 import com.hivepulse.app.ui.stats.HiveStatsScreen
 import com.hivepulse.app.ui.stats.OverviewStatsScreen
@@ -45,6 +47,7 @@ object Routes {
     const val HORNET_HOME        = "hornet_home"
     const val MEMBERS            = "members"
     const val FIELD_DEFINITIONS  = "field_definitions?apiaryId={apiaryId}"
+    const val GUIDED_TOUR        = "guided_tour?fromSettings={fromSettings}"
 }
 
 @Composable
@@ -55,14 +58,25 @@ fun HivePulseNavGraph(
         .fromApplication(
             androidx.compose.ui.platform.LocalContext.current.applicationContext,
             TokenStoreEntryPoint::class.java
-        ).tokenStore()
+        ).tokenStore(),
+    onboardingStore: OnboardingStore = dagger.hilt.android.EntryPointAccessors
+        .fromApplication(
+            androidx.compose.ui.platform.LocalContext.current.applicationContext,
+            TokenStoreEntryPoint::class.java
+        ).onboardingStore()
 ) {
     val start = if (tokenStore.isLoggedIn) Routes.APIARY_LIST else Routes.LOGIN
+
+    // The first successful sign-in on this device shows the guided tour before the apiary list
+    val afterAuth: () -> Unit = {
+        val destination = if (onboardingStore.hasSeenGuidedTour) Routes.APIARY_LIST else "guided_tour?fromSettings=false"
+        navController.navigate(destination) { popUpTo(Routes.LOGIN) { inclusive = true } }
+    }
 
     NavHost(navController, startDestination = start, modifier = modifier) {
         composable(Routes.LOGIN) {
             LoginScreen(
-                onLoginSuccess  = { navController.navigate(Routes.APIARY_LIST) { popUpTo(Routes.LOGIN) { inclusive = true } } },
+                onLoginSuccess  = afterAuth,
                 onNavigateRegister = { navController.navigate(Routes.REGISTER) },
                 onForgotPassword   = { email -> navController.navigate("forgot_password?email=${android.net.Uri.encode(email)}") }
             )
@@ -73,7 +87,7 @@ fun HivePulseNavGraph(
         }
         composable(Routes.REGISTER) {
             RegisterScreen(
-                onSuccess = { navController.navigate(Routes.APIARY_LIST) { popUpTo(Routes.LOGIN) { inclusive = true } } },
+                onSuccess = afterAuth,
                 onBack    = { navController.popBackStack() }
             )
         }
@@ -185,7 +199,8 @@ fun HivePulseNavGraph(
                 onLogout     = { navController.navigate(Routes.LOGIN) { popUpTo(0) { inclusive = true } } },
                 onBack       = { navController.popBackStack() },
                 onAdminClick = { navController.navigate(Routes.ADMIN) },
-                onCustomFieldsClick = { navController.navigate("field_definitions?apiaryId=") }
+                onCustomFieldsClick = { navController.navigate("field_definitions?apiaryId=") },
+                onGuidedTourClick = { navController.navigate("guided_tour?fromSettings=true") }
             )
         }
         composable(Routes.ADMIN) {
@@ -215,6 +230,14 @@ fun HivePulseNavGraph(
         composable(Routes.MEMBERS) {
             MembersScreen()
         }
+        composable(Routes.GUIDED_TOUR,
+            arguments = listOf(navArgument("fromSettings") { type = NavType.BoolType; defaultValue = false })) { back ->
+            val fromSettings = back.arguments?.getBoolean("fromSettings") ?: false
+            GuidedTourScreen(onFinished = {
+                if (fromSettings) navController.popBackStack()
+                else navController.navigate(Routes.APIARY_LIST) { popUpTo(Routes.GUIDED_TOUR) { inclusive = true } }
+            })
+        }
         composable(Routes.FIELD_DEFINITIONS,
             arguments = listOf(navArgument("apiaryId") { type = NavType.StringType; defaultValue = "" })) {
             FieldDefinitionsScreen(onBack = { navController.popBackStack() })
@@ -226,4 +249,5 @@ fun HivePulseNavGraph(
 @dagger.hilt.InstallIn(dagger.hilt.components.SingletonComponent::class)
 interface TokenStoreEntryPoint {
     fun tokenStore(): TokenStore
+    fun onboardingStore(): OnboardingStore
 }

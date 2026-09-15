@@ -41,10 +41,11 @@ class MainActivity : ComponentActivity() {
                 val currentRoute = backStackEntry?.destination?.route ?: ""
                 val isHornetSection  = currentRoute.startsWith("hornet")
                 val isMembersSection = currentRoute == Routes.MEMBERS
+                val isGuidedTour     = currentRoute.startsWith("guided_tour")
 
                 Scaffold(
                     bottomBar = {
-                        NavigationBar(
+                        if (!isGuidedTour) NavigationBar(
                             containerColor = Forest900,
                             contentColor   = Color.White,
                         ) {
