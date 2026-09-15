@@ -194,7 +194,9 @@
   "dl": {
     "tag": "Noch heute starten",
     "title": "HivePulse herunterladen – kostenlos",
-    "sub": "Für iOS und Android verfügbar. Scan dein erstes Volk in unter zwei Minuten."
+    "sub": "Für iOS und Android verfügbar. Scan dein erstes Volk in unter zwei Minuten.",
+    "subSoon": "Bald im App Store und bei Google Play – bis dahin läuft HivePulse direkt im Browser.",
+    "soon": "Bald verfügbar"
   },
   "map": {
     "hero": {

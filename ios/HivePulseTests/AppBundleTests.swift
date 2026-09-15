@@ -27,6 +27,13 @@ final class AppBundleTests: XCTestCase {
         }
     }
 
+    func test_buildNumber_resolvesToAPositiveInteger() {
+        // CFBundleVersion comes from CURRENT_PROJECT_VERSION so TestFlight uploads can bump it per build.
+        let build = info["CFBundleVersion"] as? String ?? ""
+        XCTAssertNotNil(Int(build), "CFBundleVersion \"\(build)\" must be a plain integer")
+        XCTAssertGreaterThan(Int(build) ?? 0, 0)
+    }
+
     func test_displayName_isHivePulse() {
         XCTAssertEqual(info["CFBundleDisplayName"] as? String, "HivePulse")
     }

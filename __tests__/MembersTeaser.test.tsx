@@ -111,6 +111,19 @@ describe('MembersTeaser', () => {
     expect(screen.getByText(/gate.unlockedBadge/)).toBeInTheDocument();
   });
 
+  it('shows the login gate without waiting for slow public stats', async () => {
+    mockGetMe.mockRejectedValue(new Error('unauthorized'));
+    let resolveStats: (s: typeof mockStats) => void = () => {};
+    mockGetPublicStats.mockReturnValue(new Promise((resolve) => { resolveStats = resolve; }));
+    render(<MembersTeaser />);
+
+    await waitFor(() => screen.getByText('gate.loginTitle'));
+    expect(screen.queryByText('2.8')).not.toBeInTheDocument();
+
+    resolveStats(mockStats);
+    await waitFor(() => screen.getByText('2.8'));
+  });
+
   it('still renders login gate when getPublicStats fails', async () => {
     mockGetMe.mockRejectedValue(new Error('unauthorized'));
     mockGetPublicStats.mockRejectedValue(new Error('network error'));

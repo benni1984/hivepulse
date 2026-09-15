@@ -11,14 +11,18 @@ export default function MembersTeaser() {
   const [stats, setStats] = useState<PublicStats | null>(null);
   const [checked, setChecked] = useState(false);
 
+  // The gate only depends on who is signed in; stats fill in whenever they arrive so a slow
+  // /public/stats response never hides the login or supporter prompt.
   useEffect(() => {
-    Promise.all([
-      getMe().catch(() => null),
-      getPublicStats().catch(() => null),
-    ]).then(([u, s]) => {
-      setUser(u);
-      setStats(s);
-    }).finally(() => setChecked(true));
+    let active = true;
+    getMe()
+      .then((u) => { if (active) setUser(u); })
+      .catch(() => { if (active) setUser(null); })
+      .finally(() => { if (active) setChecked(true); });
+    getPublicStats()
+      .then((s) => { if (active) setStats(s); })
+      .catch(() => {});
+    return () => { active = false; };
   }, []);
 
   const isLoggedIn = !!user;

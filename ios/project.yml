@@ -31,6 +31,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.hivepulse.app
         INFOPLIST_FILE: HivePulse/Resources/Info.plist
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon   # single 1024px icon in Resources/Assets.xcassets
+        CURRENT_PROJECT_VERSION: "1"                  # build number; the TestFlight workflow overrides it per upload
         DEVELOPMENT_TEAM: ""
         CODE_SIGN_STYLE: Automatic
       configs:

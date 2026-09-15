@@ -170,6 +170,48 @@ def test_global_stats_interval_computed(auth_client, client):
     assert data["avg_inspection_interval_days"] == 14.0
 
 
+def test_global_stats_query_count_does_not_grow_with_data(auth_client, client, db_session):
+    """Regression: lazy-loading hives/inspections per row made /public/stats take ~5 s on staging."""
+    from sqlalchemy import event
+
+    for a in range(3):
+        apiary = auth_client.post("/api/v1/apiaries", json={
+            "name": f"Apiary {a}", "latitude": 48.0 + a, "longitude": 11.0, "is_public": True
+        }).json()
+        for h in range(3):
+            token = auth_client.post("/api/v1/qr-batches", json={"count": 1}).json()["tokens"][0]["token"]
+            hive = auth_client.post("/api/v1/hives/initialize", json={
+                "qr_token": token, "apiary_id": apiary["id"], "name": f"H{h}", "hive_type": "langstroth"
+            }).json()
+            for day in ("2026-04-01", "2026-04-11"):
+                auth_client.post(f"/api/v1/hives/{hive['id']}/inspections", json={
+                    "date": day, "varroa_count": 2, "mood": "calm", "brood_frames": 4
+                })
+
+    engine = db_session.get_bind()
+    statements: list[str] = []
+
+    def count(conn, cursor, statement, *args):
+        statements.append(statement)
+
+    event.listen(engine, "before_cursor_execute", count)
+    try:
+        data = client.get("/api/v1/public/stats").json()
+    finally:
+        event.remove(engine, "before_cursor_execute", count)
+
+    selects = [s for s in statements if s.lstrip().upper().startswith("SELECT")]
+    assert len(selects) <= 3, f"expected a fixed number of queries, got {len(selects)}"
+    assert data["apiary_count"] == 3
+    assert data["hive_count"] == 9
+    assert data["inspection_count"] == 18
+    assert data["avg_varroa_count"] == 2.0
+    assert data["avg_brood_frames"] == 4.0
+    assert data["mood_distribution"] == {"calm": 18}
+    assert data["avg_inspection_interval_days"] == 10.0
+    assert sorted(p["hive_count"] for p in data["apiaries"]) == [3, 3, 3]
+
+
 def test_global_stats_empty_db(client):
     r = client.get("/api/v1/public/stats")
     assert r.status_code == 200

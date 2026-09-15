@@ -4,6 +4,7 @@ from datetime import date as date_type
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.deps import DB
@@ -63,26 +64,51 @@ class PublicApiaryDetail(BaseModel):
 
 @router.get("/stats", response_model=GlobalStats)
 def global_stats(db: DB):
+    # A fixed number of queries regardless of data size: lazy-loading apiary.hives and hive.inspections
+    # per row cost one database round trip each (~5 s on staging with 10 apiaries / 40 hives).
     public_apiaries = db.query(Apiary).filter(Apiary.is_public.is_(True)).all()
-    all_hives: list[Hive] = [h for a in public_apiaries for h in a.hives]
-    all_inspections: list[Inspection] = [i for h in all_hives for i in h.inspections]
 
-    inspection_count = len(all_inspections)
+    hive_counts: dict[str, int] = dict(
+        db.query(Hive.apiary_id, func.count(Hive.id))
+        .join(Apiary, Hive.apiary_id == Apiary.id)
+        .filter(Apiary.is_public.is_(True))
+        .group_by(Hive.apiary_id)
+        .all()
+    )
 
-    varroa_values = [i.varroa_count for i in all_inspections if i.varroa_count is not None]
+    inspections = (
+        db.query(
+            Inspection.hive_id,
+            Inspection.date,
+            Inspection.varroa_count,
+            Inspection.mood,
+            Inspection.brood_frames,
+        )
+        .join(Hive, Inspection.hive_id == Hive.id)
+        .join(Apiary, Hive.apiary_id == Apiary.id)
+        .filter(Apiary.is_public.is_(True))
+        .all()
+    )
+
+    inspection_count = len(inspections)
+
+    varroa_values = [i.varroa_count for i in inspections if i.varroa_count is not None]
     avg_varroa = round(sum(varroa_values) / len(varroa_values), 2) if varroa_values else None
 
     mood_dist: dict = defaultdict(int)
-    for i in all_inspections:
+    for i in inspections:
         if i.mood:
             mood_dist[i.mood] += 1
 
-    brood_values = [i.brood_frames for i in all_inspections if i.brood_frames is not None]
+    brood_values = [i.brood_frames for i in inspections if i.brood_frames is not None]
     avg_brood = round(sum(brood_values) / len(brood_values), 2) if brood_values else None
 
+    dates_by_hive: dict[str, list] = defaultdict(list)
+    for i in inspections:
+        dates_by_hive[i.hive_id].append(i.date)
     interval_avgs: list[float] = []
-    for hive in all_hives:
-        dates = sorted(i.date for i in hive.inspections)
+    for hive_dates in dates_by_hive.values():
+        dates = sorted(hive_dates)
         if len(dates) >= 2:
             gaps = [(dates[j] - dates[j - 1]).days for j in range(1, len(dates))]
             interval_avgs.append(sum(gaps) / len(gaps))
@@ -95,7 +121,7 @@ def global_stats(db: DB):
             city_name=a.city_name,
             latitude=a.city_latitude,
             longitude=a.city_longitude,
-            hive_count=len(a.hives),
+            hive_count=hive_counts.get(a.id, 0),
         )
         for a in public_apiaries
         if a.city_latitude is not None and a.city_longitude is not None
@@ -103,7 +129,7 @@ def global_stats(db: DB):
 
     return GlobalStats(
         apiary_count=len(public_apiaries),
-        hive_count=len(all_hives),
+        hive_count=sum(hive_counts.values()),
         inspection_count=inspection_count,
         avg_varroa_count=avg_varroa,
         mood_distribution=dict(mood_dist),

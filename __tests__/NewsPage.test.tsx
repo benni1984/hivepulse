@@ -15,13 +15,14 @@ describe('NewsPage', () => {
     expect(screen.getByText('title')).toBeTruthy();
   });
 
-  it('renders all thirteen news articles', () => {
+  it('renders all fourteen news articles', () => {
     const { container } = render(<NewsPage />);
-    expect(container.querySelectorAll('.news-card').length).toBe(13);
+    expect(container.querySelectorAll('.news-card').length).toBe(14);
   });
 
   it('renders each article headline', () => {
     render(<NewsPage />);
+    expect(screen.getByText('Members Page Loads Instantly Again')).toBeTruthy();
     expect(screen.getByText('A Guided Tour for New Users in Both Apps')).toBeTruthy();
     expect(screen.getByText('The iOS App Gets the New HivePulse Look and Catches Up with Web and Android')).toBeTruthy();
     expect(screen.getByText('QR Code PDF Download Fixed in the Android App')).toBeTruthy();

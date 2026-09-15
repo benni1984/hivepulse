@@ -7,8 +7,38 @@ import Link from 'next/link';
 
 const LiveStats = dynamic(() => import('@/components/LiveStats'), { ssr: false });
 
+type StoreBadgeProps = {
+  url?: string;
+  className: string;
+  label: string;
+  img: string;
+  event: string;
+  soonLabel: string;
+};
+
+/** Links to the store listing once its URL is configured; until then a non-clickable "coming soon" badge. */
+function StoreBadge({ url, className, label, img, event, soonLabel }: StoreBadgeProps) {
+  const image = <img src={img} alt={label} height={52} />;
+  if (url) {
+    return (
+      <a href={url} className={`store-badge ${className}`} aria-label={label} target="_blank" rel="noopener noreferrer" data-umami-event={event}>
+        {image}
+      </a>
+    );
+  }
+  return (
+    <span className={`store-badge is-soon ${className}`} role="img" aria-label={`${label} — ${soonLabel}`}>
+      {image}
+      <span className="store-soon-pill" aria-hidden="true">{soonLabel}</span>
+    </span>
+  );
+}
+
 export default function HomePage() {
   const t = useTranslations();
+  // Store listings don't exist yet (issues #6/#7) — set these in Vercel once the apps are published.
+  const appStoreUrl = process.env.NEXT_PUBLIC_APP_STORE_URL;
+  const playStoreUrl = process.env.NEXT_PUBLIC_PLAY_STORE_URL;
   return (
     <>
       {/* Hero */}
@@ -214,14 +244,24 @@ export default function HomePage() {
           <div className="download-content" data-aos="fade-up">
             <div className="section-tag light">{t('dl.tag')}</div>
             <h2>{t('dl.title')}</h2>
-            <p>{t('dl.sub')}</p>
+            <p>{appStoreUrl || playStoreUrl ? t('dl.sub') : t('dl.subSoon')}</p>
             <div className="download-badges">
-              <a href="#" className="store-badge apple-badge" aria-label="Download on the App Store" data-umami-event="download_ios">
-                <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" height={52} />
-              </a>
-              <a href="#" className="store-badge google-badge" aria-label="Get it on Google Play" data-umami-event="download_android">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" height={52} />
-              </a>
+              <StoreBadge
+                url={appStoreUrl}
+                className="apple-badge"
+                label="Download on the App Store"
+                img="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                event="download_ios"
+                soonLabel={t('dl.soon')}
+              />
+              <StoreBadge
+                url={playStoreUrl}
+                className="google-badge"
+                label="Get it on Google Play"
+                img="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                event="download_android"
+                soonLabel={t('dl.soon')}
+              />
             </div>
           </div>
         </div>
