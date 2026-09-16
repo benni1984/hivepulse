@@ -52,9 +52,11 @@ class SettingsScreenTest {
         composeRule.waitUntil(5_000) {
             composeRule.onAllNodesWithText("My Apiaries").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithContentDescription("Settings").performClick()
+        // Bottom-bar item and screen title share the text "Settings", so target the nav label
+        // explicitly and wait for a control that only the Settings screen has.
+        composeRule.onAllNodesWithText("Settings").onFirst().performClick()
         composeRule.waitUntil(5_000) {
-            composeRule.onAllNodesWithText("Settings").fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("Inspection Reminders").fetchSemanticsNodes().isNotEmpty()
         }
     }
 

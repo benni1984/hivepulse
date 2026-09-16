@@ -404,8 +404,12 @@ def capture_data_export():
     back_to_apiaries()
     wait_for("My Apiaries", timeout=15)
     dump = get_ui_dump()
-    tap_node(dump, content_desc="Settings")
-    wait_for("Settings", timeout=15)
+    # Settings moved from the apiary list top bar into the bottom navigation bar, where the item
+    # carries a text label instead of a content description.
+    tap_node(dump, text="Settings")
+    # "Settings" is also the bottom-bar label, so it is on screen everywhere — wait for a control
+    # that only the Settings screen has.
+    wait_for("Inspection Reminders", timeout=15)
     time.sleep(1)
     # Scroll down until "Export Data" button (or "Data Export" section header) is visible
     for _ in range(3):

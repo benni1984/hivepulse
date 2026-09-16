@@ -4,6 +4,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -94,7 +95,7 @@ class ApiaryScreenTest {
     @Test
     fun apiaryList_navigatesToSettingsAndShowsSignOutButton() {
         waitForApiaryList()
-        composeRule.onNodeWithContentDescription("Settings").performClick()
+        composeRule.onAllNodesWithText("Settings").onFirst().performClick()
         composeRule.waitUntil(timeoutMillis = 5_000) {
             composeRule.onAllNodesWithText("Sign Out").fetchSemanticsNodes().isNotEmpty()
         }
@@ -104,7 +105,7 @@ class ApiaryScreenTest {
     @Test
     fun settings_signOutDialogAppearsOnButtonClick() {
         waitForApiaryList()
-        composeRule.onNodeWithContentDescription("Settings").performClick()
+        composeRule.onAllNodesWithText("Settings").onFirst().performClick()
         composeRule.waitUntil(timeoutMillis = 5_000) {
             composeRule.onAllNodesWithText("Sign Out").fetchSemanticsNodes().isNotEmpty()
         }
@@ -116,7 +117,7 @@ class ApiaryScreenTest {
     @Test
     fun settings_showsUserEmailFromApi() {
         waitForApiaryList()
-        composeRule.onNodeWithContentDescription("Settings").performClick()
+        composeRule.onAllNodesWithText("Settings").onFirst().performClick()
         composeRule.waitUntil(timeoutMillis = 5_000) {
             composeRule.onAllNodesWithText("test@example.com").fetchSemanticsNodes().isNotEmpty()
         }
