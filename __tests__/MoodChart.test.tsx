@@ -10,6 +10,10 @@ vi.mock('chart.js/auto', () => ({
   default: MockChart,
 }));
 
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key,
+}));
+
 import MoodChart from '@/components/MoodChart';
 
 type MoodChartConfig = {
@@ -34,7 +38,7 @@ describe('MoodChart', () => {
     await waitFor(() => expect(MockChart).toHaveBeenCalled());
     const [, config] = MockChart.mock.calls[0] as unknown as [HTMLCanvasElement, MoodChartConfig];
     expect(config.type).toBe('doughnut');
-    expect(config.data.labels).toEqual(['Calm', 'Nervous']);
+    expect(config.data.labels).toEqual(['moodCalm', 'moodNervous']);
     expect(config.data.datasets[0].data).toEqual([5, 2]);
     expect(config.data.datasets[0].backgroundColor).toEqual(['#16a34a', '#f59e0b']);
   });

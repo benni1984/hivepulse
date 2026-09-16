@@ -380,3 +380,13 @@
 "fielddefs.createSuccess" = "Champ créé.";
 "fielddefs.saveSuccess" = "Champ enregistré.";
 "fielddefs.deleteConfirm" = "Supprimer ce champ ? Les données existantes seront perdues.";
+
+/* Inspection picker values */
+"mood.calm" = "Calme";
+"mood.nervous" = "Nerveuse";
+"mood.aggressive" = "Agressive";
+"queenColor.white" = "Blanc";
+"queenColor.yellow" = "Jaune";
+"queenColor.red" = "Rouge";
+"queenColor.green" = "Vert";
+"queenColor.blue" = "Bleu";

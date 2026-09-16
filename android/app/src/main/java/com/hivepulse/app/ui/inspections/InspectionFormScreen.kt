@@ -6,7 +6,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -77,8 +79,14 @@ class InspectionFormViewModel @Inject constructor(
     fun clearError() = _state.update { it.copy(error = null) }
 }
 
+/** Steps the weight text field in 0.5 kg increments, clamped at zero; a blank field starts from 0. */
+internal fun steppedWeight(current: String, delta: Double): String {
+    val value = current.replace(',', '.').toDoubleOrNull() ?: 0.0
+    val next  = (value + delta).coerceAtLeast(0.0)
+    return if (next == kotlin.math.floor(next)) next.toInt().toString() else String.format(Locale.US, "%.1f", next)
+}
+
 private val moodOptions    = listOf("calm", "nervous", "aggressive")
-private val moodLabels     = listOf("😌 Calm", "😤 Nervous", "😡 Aggressive")
 private val queenColorKeys = listOf("white", "yellow", "red", "green", "blue")
 private val feedingTypes   = listOf("sugar syrup", "fondant", "pollen substitute", "other")
 
@@ -188,7 +196,8 @@ fun InspectionFormScreen(
             SectionCard {
                 ToggleButtonGroup(
                     label    = stringResource(R.string.field_queen_seen),
-                    options  = listOf("?", "✓ Yes", "✗ No"),
+                    options  = listOf("?", stringResource(R.string.label_yes),
+                                          stringResource(R.string.label_no)),
                     selected = queenSeenIdx,
                     onSelect = { queenSeenIdx = it },
                     allowNone = true,
@@ -214,21 +223,26 @@ fun InspectionFormScreen(
             SectionCard {
                 ToggleButtonGroup(
                     label    = stringResource(R.string.field_mood),
-                    options  = moodLabels,
+                    options  = listOf(stringResource(R.string.mood_calm),
+                                      stringResource(R.string.mood_nervous),
+                                      stringResource(R.string.mood_aggressive)),
                     selected = moodIdx,
                     onSelect = { moodIdx = it },
                     allowNone = true,
                 )
                 ToggleButtonGroup(
                     label    = stringResource(R.string.field_population_strength),
-                    options  = listOf("Low", "Medium", "High"),
+                    options  = listOf(stringResource(R.string.population_low),
+                                      stringResource(R.string.population_medium),
+                                      stringResource(R.string.population_high)),
                     selected = populationIdx,
                     onSelect = { populationIdx = it },
                     allowNone = true,
                 )
                 ToggleButtonGroup(
                     label    = stringResource(R.string.field_swarm_cells_seen),
-                    options  = listOf("?", "✓ Yes", "✗ No"),
+                    options  = listOf("?", stringResource(R.string.label_yes),
+                                          stringResource(R.string.label_no)),
                     selected = swarmCellsIdx,
                     onSelect = { swarmCellsIdx = it },
                     allowNone = true,
@@ -252,7 +266,8 @@ fun InspectionFormScreen(
                 )
                 ToggleButtonGroup(
                     label    = stringResource(R.string.field_feeding_done),
-                    options  = listOf("?", "✓ Yes", "✗ No"),
+                    options  = listOf("?", stringResource(R.string.label_yes),
+                                          stringResource(R.string.label_no)),
                     selected = feedingIdx,
                     onSelect = { feedingIdx = it },
                     allowNone = true,
@@ -276,6 +291,16 @@ fun InspectionFormScreen(
                     label = { Text(stringResource(R.string.field_weight_kg)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     singleLine = true, modifier = Modifier.fillMaxWidth(),
+                    trailingIcon = {
+                        Row {
+                            IconButton(onClick = { weightKg = steppedWeight(weightKg, -0.5) }) {
+                                Icon(Icons.Default.Remove, contentDescription = "Decrease weight")
+                            }
+                            IconButton(onClick = { weightKg = steppedWeight(weightKg, 0.5) }) {
+                                Icon(Icons.Default.Add, contentDescription = "Increase weight")
+                            }
+                        }
+                    },
                 )
             }
 
@@ -298,7 +323,8 @@ fun InspectionFormScreen(
                         when (def.type) {
                             "boolean" -> ToggleButtonGroup(
                                 label    = def.name,
-                                options  = listOf("?", "✓ Yes", "✗ No"),
+                                options  = listOf("?", stringResource(R.string.label_yes),
+                                          stringResource(R.string.label_no)),
                                 selected = when (value.toBooleanStrictOrNull()) { true -> 1; false -> 2; else -> null },
                                 onSelect = { idx -> customValues[def.id] = when (idx) { 1 -> "true"; 2 -> "false"; else -> "" } },
                                 allowNone = true,

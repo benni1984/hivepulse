@@ -4,6 +4,10 @@ import React from 'react';
 
 const mockGetSearchParam = vi.hoisted(() => vi.fn());
 
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key,
+}));
+
 vi.mock('next/navigation', () => ({
   useSearchParams: () => ({ get: mockGetSearchParam }),
 }));
@@ -116,7 +120,7 @@ describe('ApiaryDetailClient', () => {
     await waitFor(() => expect(screen.getByText('Mood Distribution')).toBeTruthy());
     await waitFor(() => expect(MockChart).toHaveBeenCalled());
     const [, config] = MockChart.mock.calls[0] as unknown as [HTMLCanvasElement, MoodChartConfig];
-    expect(config.data.labels).toEqual(['Calm', 'Nervous']);
+    expect(config.data.labels).toEqual(['moodCalm', 'moodNervous']);
     expect(config.data.datasets[0].data).toEqual([5, 2]);
   });
 

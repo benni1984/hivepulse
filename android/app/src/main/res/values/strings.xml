@@ -372,4 +372,18 @@
     <string name="tour_reminders_body">Set your interval and season — HivePulse reminds you by push notification or email when hives are due.</string>
     <string name="tour_hornets_title">Protect your region</string>
     <string name="tour_hornets_body">Report Asian hornet sightings and nests, manage your traps and see community health data for your region.</string>
+    <!-- Inspection picker labels -->
+    <string name="mood_calm">😌 Calm</string>
+    <string name="mood_nervous">😤 Nervous</string>
+    <string name="mood_aggressive">😡 Aggressive</string>
+    <string name="population_low">Low</string>
+    <string name="population_medium">Medium</string>
+    <string name="population_high">High</string>
+    <string name="label_yes">✓ Yes</string>
+    <string name="label_no">✗ No</string>
+    <string name="queen_color_white">White</string>
+    <string name="queen_color_yellow">Yellow</string>
+    <string name="queen_color_red">Red</string>
+    <string name="queen_color_green">Green</string>
+    <string name="queen_color_blue">Blue</string>
 </resources>

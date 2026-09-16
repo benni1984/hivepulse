@@ -1,11 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 
 const Chart = dynamic(() => import('chart.js/auto').then(m => m.Chart as never), { ssr: false });
+
+// Second copy of the legend bug: the label was the raw API value capitalised, so the doughnut
+// stayed English in every locale (`MoodChart` had the same defect).
+const MOOD_LABEL_KEYS: Record<string, string> = {
+  calm: 'moodCalm',
+  nervous: 'moodNervous',
+  aggressive: 'moodAggressive',
+};
 
 interface Hive {
   name: string;
@@ -45,6 +54,8 @@ export default function ApiaryDetailClient() {
       .catch(err => setError(err.message === '404' ? 'Apiary not found.' : 'Could not load apiary data.'));
   }, [id]);
 
+  const t = useTranslations('dash.hive');
+
   useEffect(() => {
     if (!data?.mood_distribution) return;
     const entries = Object.entries(data.mood_distribution);
@@ -57,7 +68,8 @@ export default function ApiaryDetailClient() {
       new Chart(canvas, {
         type: 'doughnut',
         data: {
-          labels: entries.map(([k]) => k.charAt(0).toUpperCase() + k.slice(1)),
+          labels: entries.map(([k]) =>
+            MOOD_LABEL_KEYS[k] ? t(MOOD_LABEL_KEYS[k]) : k.charAt(0).toUpperCase() + k.slice(1)),
           datasets: [{
             data: entries.map(([, v]) => v),
             backgroundColor: ['#16a34a','#f59e0b','#ef4444','#3b82f6','#8b5cf6','#ec4899','#14b8a6'].slice(0, entries.length),
@@ -72,7 +84,7 @@ export default function ApiaryDetailClient() {
         },
       });
     });
-  }, [data]);
+  }, [data, t]);
 
   if (!id) {
     return <div className="empty">No apiary ID provided. <Link href="/map">Back to map</Link></div>;
