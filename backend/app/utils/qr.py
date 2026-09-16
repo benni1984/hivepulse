@@ -35,7 +35,7 @@ def _make_logo(size: int) -> Image.Image:
              cy + dy + inner_r * math.sin(math.radians(a)))
             for a in range(-30, 330, 60)
         ]
-        draw.polygon(pts, fill=(255, 255, 255, 180))
+        draw.polygon(pts, fill=(255, 255, 255, 255))
 
     return img
 
@@ -59,10 +59,20 @@ def make_qr_png(data: str) -> bytes:
         fill_color="black", back_color="white"
     ).convert("RGBA")
 
-    # Logo: 20 % of QR width
-    logo_size = qr_img.size[0] // 5
-    logo = _make_logo(logo_size)
+    # Punch a white quiet zone before pasting: without it the code pattern stayed visible around and
+    # between the hexagon's edges, so the logo read as a smudge instead of a mark.
+    logo_size = int(qr_img.size[0] * 0.22)
+    pad = max(4, logo_size // 8)
+    box = logo_size + 2 * pad
+    box_x = (qr_img.size[0] - box) // 2
+    box_y = (qr_img.size[1] - box) // 2
+    ImageDraw.Draw(qr_img).rounded_rectangle(
+        [(box_x, box_y), (box_x + box, box_y + box)],
+        radius=box // 6,
+        fill=(255, 255, 255, 255),
+    )
 
+    logo = _make_logo(logo_size)
     pos = (
         (qr_img.size[0] - logo_size) // 2,
         (qr_img.size[1] - logo_size) // 2,

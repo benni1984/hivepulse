@@ -63,6 +63,46 @@ def test_make_qr_png_is_square_rgb():
     assert w == h
 
 
+def test_make_qr_png_logo_sits_on_a_white_knockout():
+    """The code pattern must not show through around the logo.
+
+    Sampling a ring just outside the hexagon but inside the cleared box: every pixel there has to be
+    white, otherwise the logo reads as a smudge on top of the pattern.
+    """
+    img = Image.open(io.BytesIO(make_qr_png("knockout-token"))).convert("RGB")
+    w, _ = img.size
+    cx = cy = w // 2
+    logo_half = int(w * 0.22) // 2
+    box_half = logo_half + max(4, int(w * 0.22) // 8)
+
+    # Corners of the cleared box lie outside the hexagon, so they must be plain white
+    offset = int(box_half * 0.85)
+    for dx, dy in ((-offset, -offset), (offset, -offset), (-offset, offset), (offset, offset)):
+        assert img.getpixel((cx + dx, cy + dy)) == (255, 255, 255), f"pattern visible at {(dx, dy)}"
+
+
+def test_make_qr_png_logo_centre_is_amber():
+    img = Image.open(io.BytesIO(make_qr_png("amber-token"))).convert("RGB")
+    r, g, b = img.getpixel((img.size[0] // 2, img.size[1] // 2))
+    assert abs(r - 245) <= 5 and abs(g - 158) <= 10 and abs(b - 11) <= 10
+
+
+def test_make_qr_png_knockout_stays_within_error_correction_budget():
+    """ERROR_CORRECT_H recovers ~30 % of the code; the cleared box must stay well below that."""
+    img = Image.open(io.BytesIO(make_qr_png("budget-token"))).convert("RGB")
+    w, _ = img.size
+    box = int(w * 0.22) + 2 * max(4, int(w * 0.22) // 8)
+    assert (box / w) ** 2 < 0.10
+
+
+def test_make_logo_cells_are_opaque_white():
+    """Semi-transparent cells let the amber bleed through and looked muddy at print size."""
+    img = _make_logo(200)
+    cx, cy = img.size[0] // 2, img.size[1] // 2
+    r, g, b, a = img.getpixel((cx, cy - int(img.size[1] * 0.16)))  # top honeycomb cell
+    assert (r, g, b, a) == (255, 255, 255, 255)
+
+
 def test_make_qr_png_different_inputs_produce_different_outputs():
     png1 = make_qr_png("token-aaa")
     png2 = make_qr_png("token-bbb")
