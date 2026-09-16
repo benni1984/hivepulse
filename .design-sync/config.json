@@ -1,0 +1,16 @@
+{
+  "projectId": "2b7cd5d5-5258-4f14-884e-fabd79437b52",
+  "pkg": "HivePulse-web",
+  "globalName": "HivePulse",
+  "shape": "package",
+  "buildCmd": "node .design-sync/build-css.mjs",
+  "entry": ".design-sync/entry.mjs",
+  "cssEntry": ".design-sync/.cache/site.css",
+  "runtimeFontPrefixes": [
+    "DM Sans",
+    "Inter",
+    "JetBrains Mono"
+  ],
+  "guidelinesGlob": [],
+  "readmeHeader": ".design-sync/conventions.md"
+}
