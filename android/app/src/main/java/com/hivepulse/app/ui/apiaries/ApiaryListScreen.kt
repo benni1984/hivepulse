@@ -30,7 +30,6 @@ fun ApiaryListScreen(
     onApiaryClick: (String) -> Unit,
     onScanClick: () -> Unit,
     onBatchClick: () -> Unit,
-    onSettingsClick: () -> Unit,
     onStatsClick: () -> Unit = {},
     vm: ApiaryViewModel = hiltViewModel()
 ) {
@@ -45,7 +44,6 @@ fun ApiaryListScreen(
                     IconButton(onClick = onStatsClick)    { Icon(Icons.Default.BarChart,     contentDescription = stringResource(R.string.screen_stats_overview)) }
                     IconButton(onClick = onBatchClick)    { Icon(Icons.Default.Print,        contentDescription = stringResource(R.string.tab_print)) }
                     IconButton(onClick = onScanClick)     { Icon(Icons.Default.QrCodeScanner, contentDescription = stringResource(R.string.tab_scan)) }
-                    IconButton(onClick = onSettingsClick) { Icon(Icons.Default.Settings,      contentDescription = stringResource(R.string.tab_settings)) }
                 }
             )
         },

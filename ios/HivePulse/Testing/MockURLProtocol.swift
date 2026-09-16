@@ -50,6 +50,8 @@ extension MockURLProtocol {
 
     // Authenticated screens, all lists empty.
     static let authenticatedHandlers: [(String, Int, String)] = [
+        ("hives/by-qr/tok-free", 200, qrUnlinkedJSON),   // before "hives"
+        ("hives/by-qr/tok-h1",   200, qrLinkedHiveJSON),
         ("stats/overview",   200, overviewJSON),
         ("inspections",      200, emptyList),
         ("hives",            200, emptyList),
@@ -63,6 +65,8 @@ extension MockURLProtocol {
 
     // Authenticated screens, one apiary containing one hive (for deep-navigation tests).
     static let apiaryWithHiveHandlers: [(String, Int, String)] = [
+        ("hives/by-qr/tok-free", 200, qrUnlinkedJSON),   // before "hives"
+        ("hives/by-qr/tok-h1",   200, qrLinkedHiveJSON),
         ("stats/overview",                 200, overviewJSON),
         ("hives/h-1/inspections",          200, emptyList),
         ("apiaries/a-1/hives",             200, hiveListJSON),
@@ -100,6 +104,8 @@ extension MockURLProtocol {
 
     // Authenticated with one QR batch ("b-1") whose PDF can be downloaded.
     static let qrBatchHandlers: [(String, Int, String)] = [
+        ("hives/by-qr/tok-free", 200, qrUnlinkedJSON),   // before "hives"
+        ("hives/by-qr/tok-h1",   200, qrLinkedHiveJSON),
         ("qr-batches/b-1/pdf", 200, minimalPDF),        // before "qr-batches/b-1"
         ("qr-batches/b-1",     200, qrBatchJSON),       // before "qr-batches"
         ("qr-batches",         200, qrBatchListJSON),
@@ -111,6 +117,13 @@ extension MockURLProtocol {
     ]
 
     // MARK: - Canned JSON
+
+    // QR scan: an unlinked token, and a token already linked to a hive
+    static let qrUnlinkedJSON = """
+    {"status":"unlinked","token":"tok-free"}
+    """
+
+    static let qrLinkedHiveJSON = hiveJSON
 
     static let qrBatchJSON = """
     {"id":"b-1","count":2,"created_at":"2026-09-01T10:00:00.123456","tokens":[{"token":"tok-aaaa","linked_hive_id":null},{"token":"tok-bbbb","linked_hive_id":"h-1"}]}

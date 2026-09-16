@@ -61,6 +61,15 @@ struct ApiaryListView: View {
                     Image(systemName: "chart.bar")
                 }
                 .accessibilityLabel(NSLocalizedString("screen.statsOverview", comment: ""))
+                // Same place as Android's apiary list top bar — printing QR codes is a field task,
+                // not a settings chore, so it must not hide in Settings.
+                NavigationLink {
+                    QRBatchListView()
+                } label: {
+                    Image(systemName: "printer")
+                }
+                .accessibilityLabel(NSLocalizedString("screen.qrBatches", comment: ""))
+                .accessibilityIdentifier("qrBatchesButton")
                 Button { showCreate = true } label: { Image(systemName: "plus") }
             }
         }

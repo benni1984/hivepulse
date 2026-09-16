@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Groups
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Hive
 import androidx.compose.ui.res.painterResource
 import androidx.compose.material3.*
@@ -41,6 +42,7 @@ class MainActivity : ComponentActivity() {
                 val currentRoute = backStackEntry?.destination?.route ?: ""
                 val isHornetSection  = currentRoute.startsWith("hornet")
                 val isMembersSection = currentRoute == Routes.MEMBERS
+                val isSettingsSection = currentRoute == Routes.SETTINGS
                 val isGuidedTour     = currentRoute.startsWith("guided_tour")
 
                 Scaffold(
@@ -57,7 +59,7 @@ class MainActivity : ComponentActivity() {
                                 unselectedTextColor = Color(0xB3FFFFFF),
                             )
                             NavigationBarItem(
-                                selected = !isHornetSection && !isMembersSection,
+                                selected = !isHornetSection && !isMembersSection && !isSettingsSection,
                                 onClick  = {
                                     val dest = if (tokenStore.isLoggedIn) Routes.APIARY_LIST else Routes.LOGIN
                                     navController.navigate(dest) {
@@ -91,6 +93,20 @@ class MainActivity : ComponentActivity() {
                                 },
                                 icon   = { Icon(Icons.Default.Groups, contentDescription = null) },
                                 label  = { Text(stringResource(R.string.tab_members)) },
+                                colors = itemColors,
+                            )
+                            // Settings lives here, not in the apiary list top bar — that row had four
+                            // icons and felt crowded; iOS has it as a tab too.
+                            NavigationBarItem(
+                                selected = isSettingsSection,
+                                onClick  = {
+                                    navController.navigate(Routes.SETTINGS) {
+                                        launchSingleTop = true
+                                        popUpTo(navController.graph.startDestinationId) { saveState = true }
+                                    }
+                                },
+                                icon   = { Icon(Icons.Default.Settings, contentDescription = null) },
+                                label  = { Text(stringResource(R.string.tab_settings)) },
                                 colors = itemColors,
                             )
                         }

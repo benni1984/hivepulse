@@ -101,7 +101,6 @@ fun HivePulseNavGraph(
                 onApiaryClick = { id -> navController.navigate("apiary_detail/$id") },
                 onScanClick   = { navController.navigate(Routes.QR_SCAN) },
                 onBatchClick  = { navController.navigate(Routes.QR_BATCH_LIST) },
-                onSettingsClick = { navController.navigate(Routes.SETTINGS) },
                 onStatsClick    = { navController.navigate(Routes.STATS_OVERVIEW) }
             )
         }

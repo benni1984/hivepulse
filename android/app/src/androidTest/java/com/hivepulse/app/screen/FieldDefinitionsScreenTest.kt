@@ -47,7 +47,7 @@ class FieldDefinitionsScreenTest {
         composeRule.waitUntil(5_000) {
             composeRule.onAllNodesWithText("My Apiaries").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithContentDescription("Settings").performClick()
+        composeRule.onAllNodesWithText("Settings").onFirst().performClick()
         composeRule.waitUntil(5_000) {
             composeRule.onAllNodesWithText("Manage custom fields").fetchSemanticsNodes().isNotEmpty()
         }

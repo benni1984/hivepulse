@@ -90,10 +90,19 @@ struct QRScanEntryView: View {
         }
         .sheet(isPresented: $showInitialize) {
             if let token = scannedToken {
-                HiveInitializeView(qrToken: token, apiaries: apiaryVM.apiaries) { newHive in
-                    linkedHive = newHive
-                    navigateToHive = true
-                }
+                HiveInitializeView(
+                    qrToken: token,
+                    apiaries: apiaryVM.apiaries,
+                    onDone: { newHive in
+                        linkedHive = newHive
+                        navigateToHive = true
+                    },
+                    onCreateApiary: { name, description, latitude, longitude, address in
+                        _ = try await apiaryVM.create(name: name, description: description,
+                                                      latitude: latitude, longitude: longitude,
+                                                      address: address)
+                    }
+                )
             }
         }
         .navigationDestination(isPresented: $navigateToHive) {

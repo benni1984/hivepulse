@@ -40,8 +40,9 @@ struct HiveService: HiveServiceProtocol {
     }
 
     func resolveQR(token: String) async throws -> QRScanResult {
-        let url = "hives/by-qr/\(token)"
-        let data: Data = try await client.get(url)
+        // getRawData, not get(): `get` is generic over Decodable, so `Data` there decodes a base64
+        // *string* — against the real backend that threw "isn't in the correct format" for every scan.
+        let data = try await client.getRawData("hives/by-qr/\(token)")
 
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .hivePulseBackend

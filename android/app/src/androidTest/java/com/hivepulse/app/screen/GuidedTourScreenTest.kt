@@ -105,7 +105,7 @@ class GuidedTourScreenTest {
         onboardingStore.hasSeenGuidedTour = true
         signIn()
         waitForText("My Apiaries")
-        composeRule.onNodeWithContentDescription("Settings").performClick()
+        composeRule.onAllNodesWithText("Settings").onFirst().performClick()
         waitForText("Show guided tour again")
 
         composeRule.onNodeWithText("Show guided tour again").performScrollTo().performClick()

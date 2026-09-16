@@ -33,10 +33,9 @@ final class QRBatchDetailUITests: XCTestCase {
     // MARK: - Helper
 
     private func openBatch() {
-        XCTAssertTrue(app.tabBars.buttons["Settings"].waitForExistence(timeout: 5))
-        app.tabBars.buttons["Settings"].tap()
-        XCTAssertTrue(app.staticTexts["QR Batches"].waitForExistence(timeout: 5))
-        app.staticTexts["QR Batches"].tap()
+        XCTAssertTrue(app.navigationBars["Apiaries"].waitForExistence(timeout: 5))
+        app.buttons["qrBatchesButton"].tap()
+        XCTAssertTrue(app.navigationBars["QR Batches"].waitForExistence(timeout: 5))
         let row = app.collectionViews.cells.firstMatch
         XCTAssertTrue(row.waitForExistence(timeout: 5))
         row.tap()
