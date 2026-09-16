@@ -17,12 +17,12 @@ export default function VarroaChart({ data }: { data: Point[] }) {
           labels: data.map(p => p.date),
           datasets: [{
             data: data.map(p => p.value),
-            borderColor: '#ef4444',
-            backgroundColor: 'rgba(239,68,68,0.08)',
+            borderColor: '#b91c1c',
+            backgroundColor: 'rgba(185,28,28,0.08)',
             tension: 0.3,
             fill: true,
             pointRadius: 4,
-            pointBackgroundColor: '#ef4444',
+            pointBackgroundColor: '#b91c1c',
           }],
         },
         options: {
