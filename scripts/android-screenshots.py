@@ -470,9 +470,9 @@ def dump_failure_diagnostics(tag):
     """Best-effort screenshot + UI summary on failure — without this, a CI
     failure gives no visibility into what was actually on screen (login
     error toast? unexpected dialog? blank/crashed screen?). The screenshot
-    is named android-DEBUG-* so it matches the existing android-*.png
-    upload-artifact glob and shows up in the run's artifacts; the UI
-    summary goes to stdout so it's visible directly in the CI log."""
+    goes to DEBUG_DIR, which is gitignored and uploaded as its own artifact — it must never reach
+    public/docs/screenshots, which the workflow commits wholesale; the UI summary goes to stdout so
+    it's visible directly in the CI log."""
     try:
         screenshot(f"android-DEBUG-{tag}", out_dir=DEBUG_DIR)
     except Exception as e:
