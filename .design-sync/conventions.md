@@ -4,16 +4,23 @@ HivePulse is a beekeeping app (hive inspections, hornet tracker, community map).
 
 **Read before styling:** `_ds_bundle.css` (the complete site stylesheet — search it for a class before inventing one).
 
-## Tokens (always `var(--…)`, never raw hex)
-- Brand: `--amber` #f59e0b (primary CTA, active, "Pulse"), `--amber-dark`, `--amber-light`
-- Green: `--green` #14532d, `--green-mid`, `--green-light`; `--sidebar-bg` #0f2d1c (dashboard sidebar)
-- Neutrals: `--surface` #fafaf9 (page bg), `--card` #fff, `--border` #e7e5e4, `--text` #1c1917, `--muted` #78716c, `--warm-bg`
-- Text hierarchy: `--text-primary` (= `--text`), `--text-secondary` #57534e, `--text-muted` (= `--muted`)
-- Danger: `--crimson`, `--crimson-num`
-- Shape: `--radius` 10px; `--shadow`, `--shadow-lg`, `--shadow-xl`, `--amber-glow`
-- Signature hover: hard offset shadow `--shadow-offset-amber` / `--shadow-offset-green` plus `translate(-2px,-2px)`
+## Look (light direction)
+White/warm-grey surfaces; colour comes from **four section colours**. Dark tones only in text, strokes, dots and buttons. **No drop shadows, no lift transforms** — hover changes border or wash colour only.
 
-Brand name is always **HivePulse** (one word). Font: DM Sans; numbers in stat pills weight 900.
+## Tokens (always `var(--…)`, never raw hex)
+| Section | ink (text/button) | mid (stroke) | tint (pill) | wash (surface) | border |
+|---|---|---|---|---|---|
+| Green — brand, stock | `--green-ink` | `--green-mid-c` | `--green-tint` | `--green-wash` | `--green-border` |
+| Amber — harvest, notice | `--amber-ink` | `--amber-mid` | `--amber-tint` | `--amber-wash` | `--amber-border` |
+| Red — health, warning | `--red-ink` | `--red-mid` | `--red-tint` | `--red-wash` | `--red-border` |
+| Blue-grey — stats, help | `--slate-ink` | `--slate-mid` | `--slate-tint` | `--slate-wash` | `--slate-border` |
+
+- Neutrals: `--page` #fcfcfb (ground), `--card` #fff, `--border` #e7e5e4, `--field-border`, `--divider`, `--row-divider`, `--text` #1c1917 (headings), `--body-text` #57534e, `--muted` #78716c, `--tertiary` #a8a29e, `--empty-value`
+- Fonts: `--font-mono` (JetBrains Mono: numbers, eyebrows, table heads, dates), `--font-brand` (Nunito: wordmark only); everything else DM Sans
+- `--head-line`: the 3px green→amber line above the header
+- Legacy names still work: `--amber` #f59e0b ("Pulse" in the wordmark), `--green`, `--surface`, `--text-secondary`, `--text-muted`
+
+Brand name is always **HivePulse** (one word), wordmark "Hive" dark + "Pulse" amber in Nunito 600.
 
 ## Class families
 | Area | Classes |
@@ -27,7 +34,7 @@ Brand name is always **HivePulse** (one word). Font: DM Sans; numbers in stat pi
 | Public site | `container`, `section-header`, `section-tag`, `page-hero`, `hero`, `news-card`, `btn-primary`, `btn-outline`, `btn-sm`, `btn-store` + `btn-apple`/`btn-android`, `gradient-text` |
 | Other areas | `hornets-*` (hornet tracker), `help-*` (help pages), `nav-*`/`footer-*` (public nav/footer) |
 
-Stat pills always use the two-row layout (header, then big number).
+Stat pills always use the two-row layout (header, then big number); the icon class (`dash-stat-icon-amber|green|red|blue`) sets the whole card's section colour. Marketing buttons are pills (999px), product buttons 9px radius, min height 44px.
 
 ## Example — dashboard stats
 ```jsx
