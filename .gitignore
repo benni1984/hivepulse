@@ -70,3 +70,6 @@ hivepulse-redesign/package-lock.json
 hivepulse-redesign/tsconfig.json
 hivepulse-redesign/.gitignore
 .env*.local
+
+# Android screenshot capture diagnostics (never publish)
+_screenshot-debug/

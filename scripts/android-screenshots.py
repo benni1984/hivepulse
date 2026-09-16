@@ -21,6 +21,9 @@ PACKAGE       = "com.hivepulse.app"
 MAIN_ACTIVITY = "com.hivepulse.app/.MainActivity"
 APK_PATH      = "android/app/build/outputs/apk/debug/app-debug.apk"
 OUT_DIR       = "public/docs/screenshots"
+# Failure diagnostics must never land in the published help screenshots (a DEBUG capture of the
+# login screen — with the password field filled and an HTTP 500 banner — ended up in PR #261).
+DEBUG_DIR     = "_screenshot-debug"
 DEMO_EMAIL    = os.environ.get("DEMO_EMAIL",    "demo@apiscan.app")
 DEMO_PASSWORD = os.environ.get("DEMO_PASSWORD", "demo1234")
 
@@ -180,8 +183,9 @@ def tap_first_content_item(min_y=220, max_y_offset=220):
 
 # ── Screenshot helper ─────────────────────────────────────────────────────────
 
-def screenshot(name):
-    path = os.path.join(OUT_DIR, f"{name}.png")
+def screenshot(name, out_dir=OUT_DIR):
+    os.makedirs(out_dir, exist_ok=True)
+    path = os.path.join(out_dir, f"{name}.png")
     proc = subprocess.run(["adb", "exec-out", "screencap", "-p"],
                           capture_output=True, check=True)
     with open(path, "wb") as f:
@@ -312,7 +316,8 @@ def debug_dump_clickables(tag=""):
                 w,h = x2-x1,y2-y1
                 print(f"  [DEBUG] clickable cd={cd!r} txt={txt!r} bounds={b} wh={w}x{h}", flush=True)
     # Also save dump XML for artifact inspection
-    xml_path = os.path.join(OUT_DIR, f"debug-dump-{tag.replace(' ','_')}.xml")
+    os.makedirs(DEBUG_DIR, exist_ok=True)
+    xml_path = os.path.join(DEBUG_DIR, f"debug-dump-{tag.replace(' ','_')}.xml")
     with open(xml_path, "w", encoding="utf-8") as f:
         f.write(dump)
     print(f"  [DEBUG] dump saved to {xml_path}", flush=True)
@@ -372,7 +377,15 @@ def capture_qr_batches():
     dump = get_ui_dump()
     tap_node(dump, content_desc="Print QR codes")
     wait_for("QR Batches", timeout=15)
-    time.sleep(0.5)
+    # Wait for the list itself, not just the title: capturing right after the title gave a blank
+    # screen with a spinner (PR #261). Either batch rows ("Batch abc12345…") or the empty state show.
+    deadline = time.time() + 20
+    while time.time() < deadline:
+        dump = get_ui_dump()
+        if "Batch " in dump or "No QR batches" in dump:
+            break
+        time.sleep(0.5)
+    time.sleep(1.0)
     screenshot("android-qr-batches")
     keyevent("KEYCODE_BACK")
 
@@ -461,7 +474,7 @@ def dump_failure_diagnostics(tag):
     upload-artifact glob and shows up in the run's artifacts; the UI
     summary goes to stdout so it's visible directly in the CI log."""
     try:
-        screenshot(f"android-DEBUG-{tag}")
+        screenshot(f"android-DEBUG-{tag}", out_dir=DEBUG_DIR)
     except Exception as e:
         print(f"  [diagnostics] screenshot failed: {e}", flush=True)
     try:

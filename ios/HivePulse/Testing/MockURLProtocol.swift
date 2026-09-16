@@ -16,6 +16,17 @@ final class MockURLProtocol: URLProtocol {
 
     override func startLoading() {
         let url = request.url?.absoluteString ?? ""
+        // A percent-encoded "?" or "&" means the client pushed a query string into the path. The real
+        // backend answers 404 for that, so mirror it instead of matching a handler by substring — that
+        // mismatch hid the broken list URLs from every UI test.
+        if url.contains("%3F") || url.contains("%26") {
+            let response = HTTPURLResponse(url: request.url!, statusCode: 404, httpVersion: "HTTP/1.1",
+                                           headerFields: ["Content-Type": "application/json"])!
+            client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+            client?.urlProtocol(self, didLoad: Data(#"{"detail":"Not Found"}"#.utf8))
+            client?.urlProtocolDidFinishLoading(self)
+            return
+        }
         Self.lock.lock()
         let match = Self.handlers.first { url.contains($0.pattern) }
         Self.lock.unlock()
@@ -102,11 +113,11 @@ extension MockURLProtocol {
     // MARK: - Canned JSON
 
     static let qrBatchJSON = """
-    {"id":"b-1","count":2,"created_at":"2026-09-01T10:00:00Z","tokens":[{"token":"tok-aaaa","linked_hive_id":null},{"token":"tok-bbbb","linked_hive_id":"h-1"}]}
+    {"id":"b-1","count":2,"created_at":"2026-09-01T10:00:00.123456","tokens":[{"token":"tok-aaaa","linked_hive_id":null},{"token":"tok-bbbb","linked_hive_id":"h-1"}]}
     """
 
     static let qrBatchListJSON = """
-    {"items":[{"id":"b-1","count":2,"created_at":"2026-09-01T10:00:00Z","linked_count":1}],"total":1,"page":1,"per_page":20,"pages":1}
+    {"items":[{"id":"b-1","count":2,"created_at":"2026-09-01T10:00:00.123456","linked_count":1}],"total":1,"page":1,"per_page":20,"pages":1}
     """
 
     static let minimalPDF = """
@@ -119,7 +130,7 @@ extension MockURLProtocol {
     """
 
     static let userJSON = """
-    {"id":"u-1","email":"tester@example.com","name":"Test User","locale":"en","created_at":"2024-01-01T00:00:00Z","is_admin":false,"is_supporter":false}
+    {"id":"u-1","email":"tester@example.com","name":"Test User","locale":"en","created_at":"2024-01-01T00:00:00.123456","is_admin":false,"is_supporter":false}
     """
 
     // Two neighbouring 0.5° cells in central Germany: a healthy one (west) and a struggling one (east).
@@ -128,7 +139,7 @@ extension MockURLProtocol {
     """
 
     static let supporterUserJSON = """
-    {"id":"u-1","email":"tester@example.com","name":"Test Supporter","locale":"en","created_at":"2024-01-01T00:00:00Z","is_admin":false,"is_supporter":true}
+    {"id":"u-1","email":"tester@example.com","name":"Test Supporter","locale":"en","created_at":"2024-01-01T00:00:00.123456","is_admin":false,"is_supporter":true}
     """
 
     static let reminderJSON = """
@@ -140,7 +151,7 @@ extension MockURLProtocol {
     """
 
     private static let tokenResponseJSON = """
-    {"access_token":"ui-test-token","refresh_token":"ui-test-refresh","user":{"id":"u-1","email":"tester@example.com","name":"Test User","locale":"en","created_at":"2024-01-01T00:00:00Z","is_admin":false,"is_supporter":false}}
+    {"access_token":"ui-test-token","refresh_token":"ui-test-refresh","user":{"id":"u-1","email":"tester@example.com","name":"Test User","locale":"en","created_at":"2024-01-01T00:00:00.123456","is_admin":false,"is_supporter":false}}
     """
 
     private static let emptyList = """
@@ -152,19 +163,19 @@ extension MockURLProtocol {
     """
 
     private static let apiaryJSON = """
-    {"id":"a-1","name":"Meadow","description":null,"latitude":null,"longitude":null,"address":null,"hive_count":1,"created_at":"2024-01-01T00:00:00Z"}
+    {"id":"a-1","name":"Meadow","description":null,"latitude":null,"longitude":null,"address":null,"hive_count":1,"created_at":"2024-01-01T00:00:00.123456"}
     """
 
     private static let apiaryListJSON = """
-    {"items":[{"id":"a-1","name":"Meadow","description":null,"latitude":null,"longitude":null,"address":null,"hive_count":1,"created_at":"2024-01-01T00:00:00Z"}],"total":1,"page":1,"per_page":50,"pages":1}
+    {"items":[{"id":"a-1","name":"Meadow","description":null,"latitude":null,"longitude":null,"address":null,"hive_count":1,"created_at":"2024-01-01T00:00:00.123456"}],"total":1,"page":1,"per_page":50,"pages":1}
     """
 
     private static let hiveJSON = """
-    {"id":"h-1","qr_token":"tok-h1","apiary_id":"a-1","name":"Hive Alpha","hive_type":"langstroth","latitude":null,"longitude":null,"acquisition_date":null,"notes":null,"custom_fields":{},"initialized_at":"2024-01-01T00:00:00Z","last_inspection_at":null,"created_at":"2024-01-01T00:00:00Z"}
+    {"id":"h-1","qr_token":"tok-h1","apiary_id":"a-1","name":"Hive Alpha","hive_type":"langstroth","latitude":null,"longitude":null,"acquisition_date":null,"notes":null,"custom_fields":{},"initialized_at":"2024-01-01T00:00:00.123456","last_inspection_at":null,"created_at":"2024-01-01T00:00:00.123456"}
     """
 
     private static let hiveListJSON = """
-    {"items":[{"id":"h-1","qr_token":"tok-h1","apiary_id":"a-1","name":"Hive Alpha","hive_type":"langstroth","latitude":null,"longitude":null,"acquisition_date":null,"notes":null,"custom_fields":{},"initialized_at":"2024-01-01T00:00:00Z","last_inspection_at":null,"created_at":"2024-01-01T00:00:00Z"}],"total":1,"page":1,"per_page":50,"pages":1}
+    {"items":[{"id":"h-1","qr_token":"tok-h1","apiary_id":"a-1","name":"Hive Alpha","hive_type":"langstroth","latitude":null,"longitude":null,"acquisition_date":null,"notes":null,"custom_fields":{},"initialized_at":"2024-01-01T00:00:00.123456","last_inspection_at":null,"created_at":"2024-01-01T00:00:00.123456"}],"total":1,"page":1,"per_page":50,"pages":1}
     """
 }
 #endif
