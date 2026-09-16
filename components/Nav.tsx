@@ -123,11 +123,11 @@ export default function Nav({ locale }: { locale: string }) {
         </button>
 
         <ul className={`nav-links${menuOpen ? ' open' : ''}`} id="nav-links">
-          <li><Link href="/map"        className={isActive('/map') ? 'active' : ''}        onClick={() => setMenuOpen(false)}>{t('map')}</Link></li>
-          <li><Link href="/hornets"    className={isActive('/hornets') ? 'active' : ''}    onClick={() => setMenuOpen(false)}>{t('hornets')}</Link></li>
-          <li><Link href="/news"       className={isActive('/news') ? 'active' : ''}       onClick={() => setMenuOpen(false)}>{t('news')}</Link></li>
-          <li><Link href="/contribute" className={isActive('/contribute') ? 'active' : ''} onClick={() => setMenuOpen(false)}>{t('contribute')}</Link></li>
-          <li><Link href="/members"    className={isActive('/members') ? 'active' : ''}    onClick={() => setMenuOpen(false)}>{t('members')}</Link></li>
+          <li><Link href="/map"        className={`nav-link-map${isActive('/map') ? ' active' : ''}`}        onClick={() => setMenuOpen(false)}>{t('map')}</Link></li>
+          <li><Link href="/hornets"    className={`nav-link-hornets${isActive('/hornets') ? ' active' : ''}`}    onClick={() => setMenuOpen(false)}>{t('hornets')}</Link></li>
+          <li><Link href="/news"       className={`nav-link-news${isActive('/news') ? ' active' : ''}`}       onClick={() => setMenuOpen(false)}>{t('news')}</Link></li>
+          <li><Link href="/contribute" className={`nav-link-contribute${isActive('/contribute') ? ' active' : ''}`} onClick={() => setMenuOpen(false)}>{t('contribute')}</Link></li>
+          <li><Link href="/members"    className={`nav-link-members${isActive('/members') ? ' active' : ''}`}    onClick={() => setMenuOpen(false)}>{t('members')}</Link></li>
           {isLoggedIn && (
             <li className="nav-mobile-account">
               <Link href="/dashboard" onClick={() => setMenuOpen(false)}>{t('dashboard')}</Link>
