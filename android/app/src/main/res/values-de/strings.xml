@@ -278,4 +278,18 @@
     <string name="tour_reminders_body">Lege Intervall und Saison fest — HivePulse erinnert dich per Push oder E-Mail, wenn Kontrollen fällig sind.</string>
     <string name="tour_hornets_title">Schütze deine Region</string>
     <string name="tour_hornets_body">Melde Sichtungen und Nester der Asiatischen Hornisse, verwalte deine Fallen und sieh Gesundheitsdaten der Community für deine Region.</string>
+    <!-- Inspection picker labels -->
+    <string name="mood_calm">😌 Ruhig</string>
+    <string name="mood_nervous">😤 Nervös</string>
+    <string name="mood_aggressive">😡 Aggressiv</string>
+    <string name="population_low">Schwach</string>
+    <string name="population_medium">Mittel</string>
+    <string name="population_high">Stark</string>
+    <string name="label_yes">✓ Ja</string>
+    <string name="label_no">✗ Nein</string>
+    <string name="queen_color_white">Weiß</string>
+    <string name="queen_color_yellow">Gelb</string>
+    <string name="queen_color_red">Rot</string>
+    <string name="queen_color_green">Grün</string>
+    <string name="queen_color_blue">Blau</string>
 </resources>

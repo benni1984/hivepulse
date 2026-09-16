@@ -20,8 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.hivepulse.app.R
 import com.hivepulse.app.ui.theme.Amber500
 import com.hivepulse.app.ui.theme.Stone200
 
@@ -182,18 +184,19 @@ fun ColorChipRow(
     selected: String?,
     onSelect: (String) -> Unit,
 ) {
+    // The chip caption used to be the raw API value ("White"), so it stayed English in every locale.
     val options = listOf(
-        "white"  to Color.White,
-        "yellow" to Color(0xFFFFD700),
-        "red"    to Color(0xFFDC2626),
-        "green"  to Color(0xFF16A34A),
-        "blue"   to Color(0xFF2563EB),
+        Triple("white",  Color.White,       R.string.queen_color_white),
+        Triple("yellow", Color(0xFFFFD700), R.string.queen_color_yellow),
+        Triple("red",    Color(0xFFDC2626), R.string.queen_color_red),
+        Triple("green",  Color(0xFF16A34A), R.string.queen_color_green),
+        Triple("blue",   Color(0xFF2563EB), R.string.queen_color_blue),
     )
     Column {
         Text(label, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(8.dp))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-            options.forEach { (name, color) ->
+            options.forEach { (name, color, labelRes) ->
                 val isSelected = selected == name
                 val interactionSource = remember { MutableInteractionSource() }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -215,7 +218,7 @@ fun ColorChipRow(
                             modifier = Modifier.size(24.dp))
                     }
                     Spacer(Modifier.height(4.dp))
-                    Text(name.replaceFirstChar { it.uppercase() },
+                    Text(stringResource(labelRes),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }

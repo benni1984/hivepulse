@@ -554,7 +554,15 @@
       "deleteHasHives": "Cannot delete — this apiary still has hives. Delete all hives first.",
       "errorGeneric": "Something went wrong.",
       "moodTitle": "Mood Distribution",
-      "noMoodData": "No mood data yet."
+      "noMoodData": "No mood data yet.",
+      "lastInspection": "Last Inspection",
+      "colName": "Name",
+      "colType": "Type",
+      "never": "Never",
+      "noId": "No apiary ID provided.",
+      "notFound": "Apiary not found.",
+      "loadError": "Could not load apiary data.",
+      "backToMap": "Back to map"
     },
     "hive": {
       "inspections": "Inspections",

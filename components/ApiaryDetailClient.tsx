@@ -1,11 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 
 const Chart = dynamic(() => import('chart.js/auto').then(m => m.Chart as never), { ssr: false });
+
+// Second copy of the legend bug: the label was the raw API value capitalised, so the doughnut
+// stayed English in every locale (`MoodChart` had the same defect).
+const MOOD_LABEL_KEYS: Record<string, string> = {
+  calm: 'moodCalm',
+  nervous: 'moodNervous',
+  aggressive: 'moodAggressive',
+};
 
 interface Hive {
   name: string;
@@ -35,14 +44,17 @@ export default function ApiaryDetailClient() {
   const params = useSearchParams();
   const id = params.get('id');
   const [data, setData] = useState<ApiaryData | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  // Holds a `dash.apiary` message key, not display text, so it re-renders in the active locale.
+  const [error, setError] = useState<'noId' | 'notFound' | 'loadError' | null>(null);
+  const t = useTranslations('dash.apiary');
+  const th = useTranslations('dash.hive');
 
   useEffect(() => {
-    if (!id) { setError('No apiary ID provided.'); return; }
+    if (!id) { setError('noId'); return; }
     fetch(`/api/v1/public/apiaries/${encodeURIComponent(id)}`)
       .then(r => { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
       .then(setData)
-      .catch(err => setError(err.message === '404' ? 'Apiary not found.' : 'Could not load apiary data.'));
+      .catch(err => setError(err.message === '404' ? 'notFound' : 'loadError'));
   }, [id]);
 
   useEffect(() => {
@@ -57,7 +69,8 @@ export default function ApiaryDetailClient() {
       new Chart(canvas, {
         type: 'doughnut',
         data: {
-          labels: entries.map(([k]) => k.charAt(0).toUpperCase() + k.slice(1)),
+          labels: entries.map(([k]) =>
+            MOOD_LABEL_KEYS[k] ? th(MOOD_LABEL_KEYS[k]) : k.charAt(0).toUpperCase() + k.slice(1)),
           datasets: [{
             data: entries.map(([, v]) => v),
             backgroundColor: ['#16a34a','#f59e0b','#ef4444','#3b82f6','#8b5cf6','#ec4899','#14b8a6'].slice(0, entries.length),
@@ -72,13 +85,13 @@ export default function ApiaryDetailClient() {
         },
       });
     });
-  }, [data]);
+  }, [data, th]);
 
   if (!id) {
-    return <div className="empty">No apiary ID provided. <Link href="/map">Back to map</Link></div>;
+    return <div className="empty">{t('noId')} <Link href="/map">{t('backToMap')}</Link></div>;
   }
   if (error) {
-    return <div className="empty">{error} <Link href="/map">Back to map</Link></div>;
+    return <div className="empty">{t(error)} <Link href="/map">{t('backToMap')}</Link></div>;
   }
   if (!data) {
     return <div className="spinner" />;
@@ -103,24 +116,24 @@ export default function ApiaryDetailClient() {
         </div>
       </div>
       <div className="stat-grid">
-        <div className="stat-box"><div className="num">{data.hive_count}</div><div className="label">Hives</div></div>
-        <div className="stat-box"><div className="num">{data.inspection_count}</div><div className="label">Inspections</div></div>
-        <div className="stat-box"><div className="num">{avgVarroa}</div><div className="label">Avg Varroa</div></div>
-        <div className="stat-box"><div className="num" style={{fontSize:'1.2rem'}}>{lastInsp}</div><div className="label">Last Inspection</div></div>
+        <div className="stat-box"><div className="num">{data.hive_count}</div><div className="label">{t('hives')}</div></div>
+        <div className="stat-box"><div className="num">{data.inspection_count}</div><div className="label">{t('inspections')}</div></div>
+        <div className="stat-box"><div className="num">{avgVarroa}</div><div className="label">{t('avgVarroa')}</div></div>
+        <div className="stat-box"><div className="num" style={{fontSize:'1.2rem'}}>{lastInsp}</div><div className="label">{t('lastInspection')}</div></div>
       </div>
       {moodEntries.length > 0 && (
         <div className="card">
-          <h2>Mood Distribution</h2>
+          <h2>{t('moodTitle')}</h2>
           <div className="chart-wrap"><canvas id="moodChart" /></div>
         </div>
       )}
       <div className="card">
-        <h2>Hives</h2>
+        <h2>{t('hives')}</h2>
         {data.hives.length === 0 ? (
-          <div className="empty">No hives registered yet.</div>
+          <div className="empty">{t('noHives')}</div>
         ) : (
           <table>
-            <thead><tr><th>Name</th><th>Type</th><th>Last Inspection</th></tr></thead>
+            <thead><tr><th>{t('colName')}</th><th>{t('colType')}</th><th>{t('lastInspection')}</th></tr></thead>
             <tbody>
               {data.hives.map((h, i) => (
                 <tr key={i}>
@@ -128,7 +141,7 @@ export default function ApiaryDetailClient() {
                   <td><span className="badge">{esc(h.hive_type)}</span></td>
                   <td>{h.last_inspection_date
                     ? new Date(h.last_inspection_date).toLocaleDateString(undefined, { dateStyle: 'medium' })
-                    : <span className="never">Never</span>}
+                    : <span className="never">{t('never')}</span>}
                   </td>
                 </tr>
               ))}

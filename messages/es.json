@@ -554,7 +554,15 @@
       "deleteHasHives": "No se puede eliminar — este colmenar aún tiene colmenas. Elimina primero todas las colmenas.",
       "errorGeneric": "Algo salió mal.",
       "moodTitle": "Distribución del comportamiento",
-      "noMoodData": "Aún no hay datos de comportamiento."
+      "noMoodData": "Aún no hay datos de comportamiento.",
+      "lastInspection": "Última inspección",
+      "colName": "Nombre",
+      "colType": "Tipo",
+      "never": "Nunca",
+      "noId": "No se ha indicado ningún ID de colmenar.",
+      "notFound": "Colmenar no encontrado.",
+      "loadError": "No se pudieron cargar los datos del colmenar.",
+      "backToMap": "Volver al mapa"
     },
     "hive": {
       "inspections": "Inspecciones",

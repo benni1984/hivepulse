@@ -278,4 +278,18 @@
     <string name="tour_reminders_body">Définissez l\'intervalle et la saison — HivePulse vous rappelle par notification push ou e-mail quand des ruches sont à visiter.</string>
     <string name="tour_hornets_title">Protégez votre région</string>
     <string name="tour_hornets_body">Signalez les observations et les nids de frelons asiatiques, gérez vos pièges et consultez les données de santé de la communauté pour votre région.</string>
+    <!-- Inspection picker labels -->
+    <string name="mood_calm">😌 Calme</string>
+    <string name="mood_nervous">😤 Nerveuse</string>
+    <string name="mood_aggressive">😡 Agressive</string>
+    <string name="population_low">Faible</string>
+    <string name="population_medium">Moyenne</string>
+    <string name="population_high">Élevée</string>
+    <string name="label_yes">✓ Oui</string>
+    <string name="label_no">✗ Non</string>
+    <string name="queen_color_white">Blanc</string>
+    <string name="queen_color_yellow">Jaune</string>
+    <string name="queen_color_red">Rouge</string>
+    <string name="queen_color_green">Vert</string>
+    <string name="queen_color_blue">Bleu</string>
 </resources>

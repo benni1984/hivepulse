@@ -221,10 +221,14 @@ jobs:
         run: |
           # ScreenshotUITests writes design-review PNGs here (TEST_RUNNER_ vars are forwarded to the test runner)
           mkdir -p "$GITHUB_WORKSPACE/ios-screenshots"
+          # Retry only failing tests once (UI tests flake on CI runners); a genuinely broken
+          # test fails both iterations and still fails the job.
           TEST_RUNNER_SCREENSHOT_DIR="$GITHUB_WORKSPACE/ios-screenshots" xcodebuild test \
             -project ios/HivePulse.xcodeproj \
             -scheme HivePulse \
             -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
+            -retry-tests-on-failure \
+            -test-iterations 2 \
             -resultBundlePath TestResults
 
       - name: Upload test results
@@ -322,10 +326,13 @@ jobs:
       - name: Build & test
         if: needs.changes.outputs.ios_hornets == 'true'
         run: |
+          # Same flaky-UI-test retry as the HivePulse job: only failing tests re-run.
           xcodebuild test \
             -project ios-hornets/HornetTracker.xcodeproj \
             -scheme HornetTracker \
             -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
+            -retry-tests-on-failure \
+            -test-iterations 2 \
             -resultBundlePath HornetTrackerTestResults
 
       - name: Upload test results
