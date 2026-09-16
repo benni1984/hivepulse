@@ -139,13 +139,25 @@ final class APIClient {
         }
     }
 
+    /// Joins base URL and path. `path` may carry a query string ("apiaries?page=1&per_page=50"):
+    /// `appendingPathComponent` percent-encodes "?" and "&" into the path, so the backend answered 404
+    /// for every list endpoint and the app only showed "Unknown error".
+    static func makeURL(base: URL, path: String) -> URL? {
+        var prefix = base.absoluteString
+        if !prefix.hasSuffix("/") { prefix += "/" }
+        return URL(string: prefix + path)
+    }
+
     private func buildRequest(
         method: String,
         path: String,
         bodyData: Data?,
         requiresAuth: Bool
     ) throws -> URLRequest {
-        var req = URLRequest(url: baseURL.appendingPathComponent(path))
+        guard let url = Self.makeURL(base: baseURL, path: path) else {
+            throw APIError.network(URLError(.badURL))
+        }
+        var req = URLRequest(url: url)
         req.httpMethod = method
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
         let lang = Locale.current.language.languageCode?.identifier ?? "en"

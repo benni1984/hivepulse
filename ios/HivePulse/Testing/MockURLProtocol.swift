@@ -16,6 +16,17 @@ final class MockURLProtocol: URLProtocol {
 
     override func startLoading() {
         let url = request.url?.absoluteString ?? ""
+        // A percent-encoded "?" or "&" means the client pushed a query string into the path. The real
+        // backend answers 404 for that, so mirror it instead of matching a handler by substring — that
+        // mismatch hid the broken list URLs from every UI test.
+        if url.contains("%3F") || url.contains("%26") {
+            let response = HTTPURLResponse(url: request.url!, statusCode: 404, httpVersion: "HTTP/1.1",
+                                           headerFields: ["Content-Type": "application/json"])!
+            client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+            client?.urlProtocol(self, didLoad: Data(#"{"detail":"Not Found"}"#.utf8))
+            client?.urlProtocolDidFinishLoading(self)
+            return
+        }
         Self.lock.lock()
         let match = Self.handlers.first { url.contains($0.pattern) }
         Self.lock.unlock()
