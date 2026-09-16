@@ -554,7 +554,15 @@
       "deleteHasHives": "Suppression impossible — ce rucher contient encore des ruches. Veuillez d'abord supprimer toutes les ruches.",
       "errorGeneric": "Une erreur est survenue.",
       "moodTitle": "Répartition des humeurs",
-      "noMoodData": "Pas encore de données d'humeur."
+      "noMoodData": "Pas encore de données d'humeur.",
+      "lastInspection": "Dernière inspection",
+      "colName": "Nom",
+      "colType": "Type",
+      "never": "Jamais",
+      "noId": "Aucun identifiant de rucher fourni.",
+      "notFound": "Rucher introuvable.",
+      "loadError": "Impossible de charger les données du rucher.",
+      "backToMap": "Retour à la carte"
     },
     "hive": {
       "inspections": "Inspections",

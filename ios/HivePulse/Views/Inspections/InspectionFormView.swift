@@ -57,7 +57,7 @@ struct InspectionFormView: View {
                         )) {
                             Text(NSLocalizedString("label.unknown", comment: "")).tag("")
                             ForEach(queenColors, id: \.self) { c in
-                                Text(c.capitalized).tag(c)
+                                Text(NSLocalizedString("queenColor.\(c)", comment: "")).tag(c)
                             }
                         }
                     }
@@ -74,7 +74,9 @@ struct InspectionFormView: View {
                         set: { mood = $0.isEmpty ? nil : $0 }
                     )) {
                         Text(NSLocalizedString("label.notRecorded", comment: "")).tag("")
-                        ForEach(moods, id: \.self) { m in Text(m.capitalized).tag(m) }
+                        ForEach(moods, id: \.self) { m in
+                            Text(NSLocalizedString("mood.\(m)", comment: "")).tag(m)
+                        }
                     }
 
                     OptionalStepper(label: NSLocalizedString("field.populationStrength", comment: ""), value: $populationStrength, range: 1...5)
@@ -94,8 +96,14 @@ struct InspectionFormView: View {
                 }
 
                 Section(NSLocalizedString("section.weight", comment: "")) {
-                    TextField(NSLocalizedString("field.weightKg", comment: ""), text: $weightKg)
-                        .keyboardType(.decimalPad)
+                    HStack {
+                        TextField(NSLocalizedString("field.weightKg", comment: ""), text: $weightKg)
+                            .keyboardType(.decimalPad)
+                        // Typing decimals with gloves on is awkward — same reasoning as the frame steppers.
+                        Stepper("", onIncrement: { adjustWeight(by: 0.5) },
+                                    onDecrement: { adjustWeight(by: -0.5) })
+                            .labelsHidden()
+                    }
                 }
 
                 Section(NSLocalizedString("section.notes", comment: "")) {
@@ -181,6 +189,18 @@ struct InspectionFormView: View {
                 customValues[def.id] = val.displayString
             }
         }
+    }
+
+    /// Steps the weight field in 0.5 kg increments, clamped at zero; an empty field starts from 0.
+    /// Static so the arithmetic is unit-testable without building the view.
+    static func steppedWeight(from text: String, by delta: Double) -> String {
+        let current = Double(text.replacingOccurrences(of: ",", with: ".")) ?? 0
+        let next = max(0, current + delta)
+        return next == next.rounded() ? String(Int(next)) : String(format: "%.1f", next)
+    }
+
+    private func adjustWeight(by delta: Double) {
+        weightKg = Self.steppedWeight(from: weightKg, by: delta)
     }
 
     private func save() async {
@@ -301,6 +321,13 @@ private struct OptionalStepper: View {
             Text(label)
             Spacer()
             if let v = value {
+                // `.labelsHidden()` hides the Stepper's own title, which was the only place the number
+                // appeared — so the row showed just + and −.
+                Text("\(v)")
+                    .font(.dmSans(17, weight: .bold, relativeTo: .body))
+                    .foregroundColor(.hpStone900)
+                    .monospacedDigit()
+                    .frame(minWidth: 28, alignment: .trailing)
                 Stepper("\(v)", value: Binding(get: { v }, set: { value = $0 }), in: range)
                     .labelsHidden()
                 Button { value = nil } label: {

@@ -16,6 +16,14 @@ export default function NewsPage() {
         <div className="container">
           <div className="news-list">
             <article className="news-card" data-aos="fade-up">
+              <div className="news-date"><div className="day">16</div><div className="month">Sep 2026</div></div>
+              <div className="news-body">
+                <span className="news-tag">Fix</span>
+                <h3>Readable Numbers and Proper Translations in the Inspection Form</h3>
+                <p>Logging an inspection on the iPhone showed only a plus and a minus for brood frames, honey frames and colony strength — the number itself was missing, so you could not see what you were setting. The number is back. The colony mood, queen colour and colony strength options also appeared in English no matter which language you used; they are now translated in German, French, Spanish and English in both apps. Hive weight is no longer a bare text box either: it keeps the keyboard for exact values and adds plus and minus buttons in half-kilo steps, for gloved hands at the hive. On the website, the mood chart legend was showing English labels too, and now follows your language.</p>
+              </div>
+            </article>
+            <article className="news-card" data-aos="fade-up">
               <div className="news-date"><div className="day">15</div><div className="month">Sep 2026</div></div>
               <div className="news-body">
                 <span className="news-tag">Fix</span>

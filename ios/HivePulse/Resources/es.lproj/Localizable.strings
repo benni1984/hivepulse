@@ -380,3 +380,13 @@
 "fielddefs.createSuccess" = "Campo creado.";
 "fielddefs.saveSuccess" = "Campo guardado.";
 "fielddefs.deleteConfirm" = "¿Eliminar este campo? Los datos existentes se perderán.";
+
+/* Inspection picker values */
+"mood.calm" = "Tranquila";
+"mood.nervous" = "Nerviosa";
+"mood.aggressive" = "Agresiva";
+"queenColor.white" = "Blanco";
+"queenColor.yellow" = "Amarillo";
+"queenColor.red" = "Rojo";
+"queenColor.green" = "Verde";
+"queenColor.blue" = "Azul";
