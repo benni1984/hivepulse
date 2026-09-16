@@ -60,7 +60,8 @@ describe('ApiaryDetailClient', () => {
   it('shows a message when no apiary id is provided', () => {
     mockGetSearchParam.mockReturnValue(null);
     render(<ApiaryDetailClient />);
-    expect(screen.getByText(/No apiary ID provided/)).toBeTruthy();
+    expect(screen.getByText(/noId/)).toBeTruthy();
+    expect(screen.getByText('backToMap')).toBeTruthy();
   });
 
   it('shows a spinner while loading', () => {
@@ -74,14 +75,14 @@ describe('ApiaryDetailClient', () => {
     mockGetSearchParam.mockReturnValue('missing');
     vi.mocked(fetch).mockResolvedValue(notFound());
     render(<ApiaryDetailClient />);
-    await waitFor(() => expect(screen.getByText('Apiary not found.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/notFound/)).toBeTruthy());
   });
 
   it('shows a generic error on other failures', async () => {
     mockGetSearchParam.mockReturnValue('apiary-1');
     vi.mocked(fetch).mockRejectedValue(new Error('network'));
     render(<ApiaryDetailClient />);
-    await waitFor(() => expect(screen.getByText('Could not load apiary data.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/loadError/)).toBeTruthy());
   });
 
   it('renders apiary details once loaded', async () => {
@@ -94,6 +95,12 @@ describe('ApiaryDetailClient', () => {
     expect(screen.getByText('3')).toBeTruthy();
     expect(screen.getByText('12')).toBeTruthy();
     expect(screen.getByText('2.4')).toBeTruthy();
+    for (const label of ['inspections', 'avgVarroa']) {
+      expect(screen.getByText(label)).toBeTruthy();
+    }
+    // `hives` is both a stat label and the table card heading; `lastInspection` a stat label and a column.
+    expect(screen.getAllByText('hives')).toHaveLength(2);
+    expect(screen.getAllByText('lastInspection')).toHaveLength(2);
   });
 
   it('renders the hives table with names, types, and a fallback for missing dates', async () => {
@@ -103,21 +110,23 @@ describe('ApiaryDetailClient', () => {
     await waitFor(() => expect(screen.getByText('Hive Alpha')).toBeTruthy());
     expect(screen.getByText('langstroth')).toBeTruthy();
     expect(screen.getByText('Hive Beta')).toBeTruthy();
-    expect(screen.getByText('Never')).toBeTruthy();
+    expect(screen.getByText('colName')).toBeTruthy();
+    expect(screen.getByText('colType')).toBeTruthy();
+    expect(screen.getByText('never')).toBeTruthy();
   });
 
   it('shows an empty-hives message when there are no hives', async () => {
     mockGetSearchParam.mockReturnValue('apiary-1');
     vi.mocked(fetch).mockResolvedValue(ok({ ...apiaryData, hives: [] }));
     render(<ApiaryDetailClient />);
-    await waitFor(() => expect(screen.getByText('No hives registered yet.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('noHives')).toBeTruthy());
   });
 
   it('draws the mood distribution chart when data is present', async () => {
     mockGetSearchParam.mockReturnValue('apiary-1');
     vi.mocked(fetch).mockResolvedValue(ok(apiaryData));
     render(<ApiaryDetailClient />);
-    await waitFor(() => expect(screen.getByText('Mood Distribution')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('moodTitle')).toBeTruthy());
     await waitFor(() => expect(MockChart).toHaveBeenCalled());
     const [, config] = MockChart.mock.calls[0] as unknown as [HTMLCanvasElement, MoodChartConfig];
     expect(config.data.labels).toEqual(['moodCalm', 'moodNervous']);
@@ -129,6 +138,6 @@ describe('ApiaryDetailClient', () => {
     vi.mocked(fetch).mockResolvedValue(ok({ ...apiaryData, mood_distribution: {} }));
     render(<ApiaryDetailClient />);
     await waitFor(() => expect(screen.getByText('Sunny Meadow')).toBeTruthy());
-    expect(screen.queryByText('Mood Distribution')).toBeNull();
+    expect(screen.queryByText('moodTitle')).toBeNull();
   });
 });

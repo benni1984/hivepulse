@@ -554,7 +554,15 @@
       "deleteHasHives": "Löschen nicht möglich – dieser Bienenstand hat noch Völker. Bitte erst alle Völker löschen.",
       "errorGeneric": "Etwas ist schiefgelaufen.",
       "moodTitle": "Stimmungsverteilung",
-      "noMoodData": "Noch keine Stimmungsdaten."
+      "noMoodData": "Noch keine Stimmungsdaten.",
+      "lastInspection": "Letzte Kontrolle",
+      "colName": "Name",
+      "colType": "Typ",
+      "never": "Nie",
+      "noId": "Keine Bienenstand-ID angegeben.",
+      "notFound": "Bienenstand nicht gefunden.",
+      "loadError": "Bienenstand-Daten konnten nicht geladen werden.",
+      "backToMap": "Zurück zur Karte"
     },
     "hive": {
       "inspections": "Kontrollen",
