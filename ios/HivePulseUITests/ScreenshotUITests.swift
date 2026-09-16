@@ -46,7 +46,7 @@ final class ScreenshotUITests: XCTestCase {
         app.navigationBars["QR Batches"].buttons.firstMatch.tap()
 
         app.tabBars.buttons["Settings"].tap()
-        XCTAssertTrue(app.staticTexts["Save Profile"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["Save Profile"].waitForExistence(timeout: 10))
         snap("07-settings", app)
 
         app.tabBars.buttons["Members"].tap()
