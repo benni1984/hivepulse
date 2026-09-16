@@ -33,10 +33,9 @@ final class QRBatchListUITests: XCTestCase {
     // MARK: - Helper
 
     private func navigateToQRBatchList() {
-        XCTAssertTrue(app.tabBars.buttons["Settings"].waitForExistence(timeout: 5))
-        app.tabBars.buttons["Settings"].tap()
-        XCTAssertTrue(app.staticTexts["QR Batches"].waitForExistence(timeout: 5))
-        app.staticTexts["QR Batches"].tap()
+        // Reached from the apiary list toolbar (same spot as Android), not from Settings
+        XCTAssertTrue(app.navigationBars["Apiaries"].waitForExistence(timeout: 5))
+        app.buttons["qrBatchesButton"].tap()
         XCTAssertTrue(app.navigationBars["QR Batches"].waitForExistence(timeout: 5))
     }
 }

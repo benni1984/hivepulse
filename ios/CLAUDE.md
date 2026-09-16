@@ -99,3 +99,5 @@ AuthViewModelTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewMode
 LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests, QRBatchDetailUITests, OverviewStatsUITests, ForgotPasswordUITests, GuidedTourUITests, FieldDefinitionsUITests, HornetUITests, MembersUITests, ScreenshotUITests — all passing in CI.
 
 Screens: Login, Register, ApiaryList, ApiaryDetail, ApiaryForm, HiveDetail, HiveInitialize, HiveQR, InspectionForm, InspectionDetail, QRScanner, QRBatchList, QRBatchDetail, HiveStats, OverviewStats, ForgotPassword, GuidedTour, Members (community heatmap), FieldDefinitions (user scope from Settings, apiary scope from the apiary toolbar), Settings.
+
+**Entry points must match Android:** QR batches (`printer`, identifier `qrBatchesButton`) and the statistics overview (`chart.bar`) live in the **ApiaryList toolbar**, like Android's apiary list top bar — not in Settings. UI tests navigate via `app.buttons["qrBatchesButton"]`.

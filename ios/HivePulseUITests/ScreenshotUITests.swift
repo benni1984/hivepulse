@@ -39,13 +39,15 @@ final class ScreenshotUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Apiaries"].waitForExistence(timeout: 10))
         snap("06-apiaries-empty", app)
 
-        app.tabBars.buttons["Settings"].tap()
-        XCTAssertTrue(app.staticTexts["QR Batches"].waitForExistence(timeout: 10))
-        snap("07-settings", app)
-
-        app.staticTexts["QR Batches"].tap()
+        // QR batches now live in the apiary list toolbar
+        app.buttons["qrBatchesButton"].tap()
         XCTAssertTrue(app.navigationBars["QR Batches"].waitForExistence(timeout: 10))
         snap("08-qr-batches", app)
+        app.navigationBars["QR Batches"].buttons.firstMatch.tap()
+
+        app.tabBars.buttons["Settings"].tap()
+        XCTAssertTrue(app.staticTexts["Save Profile"].waitForExistence(timeout: 10))
+        snap("07-settings", app)
 
         app.tabBars.buttons["Members"].tap()
         XCTAssertTrue(app.staticTexts["Supporter Feature"].waitForExistence(timeout: 10))
@@ -62,10 +64,9 @@ final class ScreenshotUITests: XCTestCase {
 
     func test_capture_qr_batch_pdf() {
         let app = launch(["-resetKeychain", "-mockQrBatch"])
-        XCTAssertTrue(app.tabBars.buttons["Settings"].waitForExistence(timeout: 10))
-        app.tabBars.buttons["Settings"].tap()
-        XCTAssertTrue(app.staticTexts["QR Batches"].waitForExistence(timeout: 10))
-        app.staticTexts["QR Batches"].tap()
+        XCTAssertTrue(app.navigationBars["Apiaries"].waitForExistence(timeout: 10))
+        app.buttons["qrBatchesButton"].tap()
+        XCTAssertTrue(app.navigationBars["QR Batches"].waitForExistence(timeout: 10))
         let row = app.collectionViews.cells.firstMatch
         XCTAssertTrue(row.waitForExistence(timeout: 10))
         row.tap()
