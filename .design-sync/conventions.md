@@ -8,10 +8,10 @@ HivePulse is a beekeeping app (hive inspections, hornet tracker, community map).
 - Brand: `--amber` #f59e0b (primary CTA, active, "Pulse"), `--amber-dark`, `--amber-light`
 - Green: `--green` #14532d, `--green-mid`, `--green-light`; `--sidebar-bg` #0f2d1c (dashboard sidebar)
 - Neutrals: `--surface` #fafaf9 (page bg), `--card` #fff, `--border` #e7e5e4, `--text` #1c1917, `--muted` #78716c, `--warm-bg`
+- Text hierarchy: `--text-primary` (= `--text`), `--text-secondary` #57534e, `--text-muted` (= `--muted`)
 - Danger: `--crimson`, `--crimson-num`
 - Shape: `--radius` 10px; `--shadow`, `--shadow-lg`, `--shadow-xl`, `--amber-glow`
 - Signature hover: hard offset shadow `--shadow-offset-amber` / `--shadow-offset-green` plus `translate(-2px,-2px)`
-- Do **not** use `--text-primary`, `--text-secondary`, `--text-muted` — they are not defined.
 
 Brand name is always **HivePulse** (one word). Font: DM Sans; numbers in stat pills weight 900.
 

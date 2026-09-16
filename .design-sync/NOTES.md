@@ -6,7 +6,7 @@
 - **`aos/dist/aos.css` is excluded on purpose:** it hides every `[data-aos]` element until the AOS script runs, which designs don't load.
 - **`guidelinesGlob: []`:** the default glob picked up `docs/api-contract.md` (backend API spec) as a "design guideline". Keep it empty unless real design guidelines are added.
 - **Fonts are runtime-loaded** (`runtimeFontPrefixes`), so no `fonts/` dir ships.
-- Validate reports `tokens: 3 missing` — these are `--text-primary`, `--text-secondary`, `--text-muted`, used in the site CSS but defined nowhere. A real site bug, not a sync issue. `conventions.md` tells the design agent not to use them.
+- `--text-primary`, `--text-secondary`, `--text-muted` were used 26x in `web/help.css` but defined nowhere (validate reported `tokens: 3 missing`). Fixed on 2026-09-16 by defining them in `web/style.css` `:root`; validate should now report no missing tokens — a new "missing" count means a new undefined variable.
 - The command to run everything: `node .design-sync/build-css.mjs`, then the `resync.mjs` driver with `--entry ./.design-sync/entry.mjs --node-modules ./node_modules`. Playwright chromium-1223 is already cached (matches the repo's playwright-core).
 - **Auth on this machine:** in the desktop app, DesignSync only worked after `/design consent` in a terminal `claude` session followed by closing and reopening PowerShell.
 
