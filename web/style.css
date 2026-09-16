@@ -535,6 +535,18 @@ h1, h2, h3, .lead { text-wrap: pretty; }
   .lang-dropdown { right: auto; left: 0; }
 }
 
+@media (max-width: 840px) {
+  .nav-inner { padding: 0 16px; gap: 10px; }
+  .nav-logo { min-width: 0; gap: 9px; }
+  .nav-logo svg { width: 32px; height: 32px; }
+  .nav-logo-name { font-size: 20px; }
+  .nav-right { gap: 8px; }
+}
+@media (max-width: 480px) {
+  .nav-logo-tagline { display: none; }
+  .lang-current { padding: 6px 9px; }
+}
+
 /* ─────────────────────────────────────────────────────────────
    Sub-page hero (non-landing pages)
 ───────────────────────────────────────────────────────────── */
@@ -1302,7 +1314,7 @@ tr:last-child td { border-bottom: none; }
 .dash-profile-badge-admin { background: var(--amber-tint); color: var(--amber-ink); }
 .dash-profile-badge-supporter { background: var(--green-tint); color: var(--green-ink); }
 .dash-profile-since { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
-.dash-profile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.dash-profile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 16px; }
 .dash-profile-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 22px; }
 .dash-profile-select {
   width: 100%; padding: 11px 12px; border: 1px solid var(--field-border);
