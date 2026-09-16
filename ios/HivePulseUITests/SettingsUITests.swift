@@ -94,13 +94,31 @@ final class SettingsUITests: XCTestCase {
 
     /// A full-velocity `swipeUp()` can scroll past a target that only needs a small nudge into
     /// view — how far varies by simulator screen size. `.slow` velocity produces a shorter,
-    /// gentler scroll per call (less inertial coasting); repeat with an existence check between
-    /// each so the target is never skipped over.
-    private func scrollDownUntilVisible(_ element: XCUIElement, maxSteps: Int = 5) -> Bool {
+    /// gentler scroll per call (less inertial coasting). The Settings `Form` is a lazy
+    /// collection view: rows scrolled far off-screen are unloaded, so an overshoot makes the
+    /// target stop existing. Swipe the form itself (not the app centre, which can land on the
+    /// tab bar during transitions), require the target to be on screen (`isHittable`, not just
+    /// `exists`), and if the downward pass misses it, walk back up so an overshoot recovers.
+    private func scrollDownUntilVisible(_ element: XCUIElement, maxSteps: Int = 6) -> Bool {
+        let form = scrollContainer()
+        func isOnScreen() -> Bool { element.exists && element.isHittable }
+
+        if element.waitForExistence(timeout: 2), element.isHittable { return true }
         for _ in 0..<maxSteps {
-            if element.exists { return true }
-            app.swipeUp(velocity: .slow)
+            form.swipeUp(velocity: .slow)
+            if isOnScreen() { return true }
         }
-        return element.waitForExistence(timeout: 5)
+        for _ in 0..<maxSteps {
+            form.swipeDown(velocity: .slow)
+            if isOnScreen() { return true }
+        }
+        return element.waitForExistence(timeout: 5) && element.isHittable
+    }
+
+    private func scrollContainer() -> XCUIElement {
+        let collection = app.collectionViews.firstMatch
+        if collection.waitForExistence(timeout: 2) { return collection }
+        let table = app.tables.firstMatch
+        return table.exists ? table : app
     }
 }
