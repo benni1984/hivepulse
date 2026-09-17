@@ -49,7 +49,7 @@ final class MembersUITests: XCTestCase {
         launchAsSupporter()
         XCTAssertTrue(app.staticTexts["Regional Health Map"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["Varroa Risk"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["Low (< 2)"].exists)
+        XCTAssertTrue(app.staticTexts["None / low (< 1)"].exists)
     }
 
     func test_members_switchingOverlay_updatesLegend() {
