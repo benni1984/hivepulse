@@ -123,7 +123,7 @@
 "stat.queenSeenRate" = "Queen seen";
 "stat.swarmAlerts" = "Swarm alerts";
 "stat.moodDistribution" = "Colony Mood";
-"stat.varroaTrend" = "Varroa Count";
+"stat.varroaTrend" = "Varroa infestation";
 "stat.broodFrames" = "Brood Frames";
 "stat.honeyFrames" = "Honey Frames";
 "stat.weight" = "Weight (kg)";
@@ -335,9 +335,9 @@
 "heatmap.overlay.mood" = "Colony Mood";
 "heatmap.overlay.swarm" = "Swarm Pressure";
 "heatmap.overlay.brood" = "Brood Health";
-"heatmap.varroa.low" = "Low (< 2)";
-"heatmap.varroa.medium" = "Medium (2–5)";
-"heatmap.varroa.high" = "High (> 5)";
+"heatmap.varroa.low" = "None / low (< 1)";
+"heatmap.varroa.medium" = "Medium (1–2)";
+"heatmap.varroa.high" = "High (≥ 2)";
 "heatmap.mood.good" = "Good (≥ 70% calm)";
 "heatmap.mood.fair" = "Fair (40–70%)";
 "heatmap.mood.low" = "Low (< 40%)";
@@ -390,3 +390,14 @@
 "queenColor.red" = "Red";
 "queenColor.green" = "Green";
 "queenColor.blue" = "Blue";
+
+/* Inspection word scales and hive editing */
+"field.varroaLevel" = "Varroa infestation";
+"varroaLevel.0" = "None";
+"varroaLevel.1" = "Low";
+"varroaLevel.2" = "Medium";
+"varroaLevel.3" = "High";
+"strength.1" = "Weak";
+"strength.2" = "Medium";
+"strength.3" = "Strong";
+"screen.editHive" = "Edit Hive";

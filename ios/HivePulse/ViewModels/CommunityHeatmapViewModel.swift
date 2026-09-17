@@ -22,7 +22,8 @@ extension CommunityHeatmapProperties {
         switch overlay {
         case .varroa:
             guard let v = avgVarroa else { return .noData }
-            return v < 2 ? .good : v < 5 ? .fair : .poor
+            // avgVarroa is the mean varroa level: 0 none, 1 low, 2 medium, 3 high
+            return v < 1 ? .good : v < 2 ? .fair : .poor
         case .mood:
             guard let m = moodScore else { return .noData }
             return m >= 70 ? .good : m >= 40 ? .fair : .poor

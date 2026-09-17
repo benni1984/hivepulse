@@ -51,16 +51,19 @@ final class HiveViewModel: ObservableObject {
         return hive
     }
 
-    func update(_ id: String, name: String, hiveType: String, notes: String?) async throws {
+    @discardableResult
+    func update(_ id: String, name: String, hiveType: String, notes: String?,
+                acquisitionDate: String? = nil) async throws -> HiveOut {
         let req = HiveUpdateRequest(
             apiaryId: nil, name: name, hiveType: hiveType,
-            latitude: nil, longitude: nil, acquisitionDate: nil,
+            latitude: nil, longitude: nil, acquisitionDate: acquisitionDate,
             notes: notes, customFields: nil
         )
         let updated = try await service.update(id, request: req)
         if let idx = hives.firstIndex(where: { $0.id == id }) {
             hives[idx] = updated
         }
+        return updated
     }
 
     func delete(_ id: String) async throws {

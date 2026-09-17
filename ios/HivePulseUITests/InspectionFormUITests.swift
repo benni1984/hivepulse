@@ -47,6 +47,30 @@ final class InspectionFormUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Hive Alpha"].waitForExistence(timeout: 5))
     }
 
+    func test_inspectionForm_colonyStrengthIsAWordScale() {
+        let picker = app.segmentedControls["populationStrengthPicker"]
+        XCTAssertTrue(scrollUntilVisible(picker))
+        for word in ["Weak", "Medium", "Strong"] {
+            XCTAssertTrue(picker.buttons[word].exists, "missing strength option \(word)")
+        }
+    }
+
+    func test_inspectionForm_varroaIsAWordScale() {
+        let picker = app.segmentedControls["varroaLevelPicker"]
+        XCTAssertTrue(scrollUntilVisible(picker))
+        for word in ["None", "Low", "Medium", "High"] {
+            XCTAssertTrue(picker.buttons[word].exists, "missing varroa option \(word)")
+        }
+    }
+
+    private func scrollUntilVisible(_ element: XCUIElement, maxSteps: Int = 6) -> Bool {
+        for _ in 0..<maxSteps {
+            if element.exists && element.isHittable { return true }
+            app.swipeUp(velocity: .slow)
+        }
+        return element.waitForExistence(timeout: 3)
+    }
+
     // MARK: - Helper
 
     private func navigateToInspectionForm() {

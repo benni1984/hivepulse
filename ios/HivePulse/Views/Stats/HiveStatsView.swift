@@ -40,7 +40,8 @@ struct HiveStatsView: View {
 
                     // Varroa trend
                     if !s.varroaTrend.isEmpty {
-                        TrendChartCard(title: NSLocalizedString("stat.varroaTrend", comment: ""), points: s.varroaTrend, color: .red)
+                        TrendChartCard(title: NSLocalizedString("stat.varroaTrend", comment: ""), points: s.varroaTrend, color: .red,
+                                       yLabels: InspectionScale.varroaLevels.map(InspectionScale.varroaLabel))
                     }
 
                     // Brood frames
@@ -153,22 +154,43 @@ struct TrendChartCard: View {
     let title: String
     let points: [TrendPoint]
     let color: Color
+    /// When set, the y axis is fixed to 0…(count − 1) and each step is labelled with a word (e.g. varroa levels).
+    var yLabels: [String]? = nil
 
     var body: some View {
         ChartCard(title: title) {
-            Chart(points) { p in
-                LineMark(
-                    x: .value("Date", p.date),
-                    y: .value("Value", numericValue(p.value))
-                )
-                .foregroundStyle(color)
-                PointMark(
-                    x: .value("Date", p.date),
-                    y: .value("Value", numericValue(p.value))
-                )
-                .foregroundStyle(color)
+            if let yLabels, !yLabels.isEmpty {
+                chart
+                    .chartYScale(domain: 0...Double(yLabels.count - 1))
+                    .chartYAxis {
+                        AxisMarks(values: Array(0..<yLabels.count)) { value in
+                            AxisGridLine()
+                            AxisValueLabel {
+                                if let i = value.as(Int.self), yLabels.indices.contains(i) {
+                                    Text(yLabels[i])
+                                }
+                            }
+                        }
+                    }
+                    .frame(height: 160)
+            } else {
+                chart.frame(height: 160)
             }
-            .frame(height: 160)
+        }
+    }
+
+    private var chart: some View {
+        Chart(points) { p in
+            LineMark(
+                x: .value("Date", p.date),
+                y: .value("Value", numericValue(p.value))
+            )
+            .foregroundStyle(color)
+            PointMark(
+                x: .value("Date", p.date),
+                y: .value("Value", numericValue(p.value))
+            )
+            .foregroundStyle(color)
         }
     }
 

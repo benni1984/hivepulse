@@ -22,7 +22,7 @@ func makeHive(id: String = "h-1", name: String = "Test Hive") -> HiveOut {
 func makeInspection(id: String = "i-1") -> InspectionOut {
     InspectionOut(id: id, hiveId: "h-1", date: "2024-06-01",
                   queenSeen: nil, queenColor: nil, broodFrames: nil, honeyFrames: nil,
-                  mood: nil, populationStrength: nil, varroaCount: nil,
+                  mood: nil, populationStrength: nil, varroaLevel: nil, varroaCount: nil,
                   swarmCellsSeen: nil, treatmentApplied: nil, feedingDone: nil,
                   feedingType: nil, weightKg: nil, notes: nil,
                   customFields: [:], createdAt: Date())
@@ -142,7 +142,11 @@ final class MockHiveService: HiveServiceProtocol {
     func listForApiary(_ apiaryId: String, page: Int) async throws -> PaginatedResponse<HiveOut> { try listResult.get() }
     func get(_ id: String) async throws -> HiveOut { makeHive(id: id) }
     func initialize(request: HiveInitializeRequest) async throws -> HiveOut { makeHive(id: "h-new", name: request.name) }
-    func update(_ id: String, request: HiveUpdateRequest) async throws -> HiveOut { makeHive(id: id, name: request.name ?? "Updated") }
+    var lastUpdateRequest: HiveUpdateRequest?
+    func update(_ id: String, request: HiveUpdateRequest) async throws -> HiveOut {
+        lastUpdateRequest = request
+        return makeHive(id: id, name: request.name ?? "Updated")
+    }
     func delete(_ id: String) async throws { if let err = deleteError { throw err } }
     func resolveQR(token: String) async throws -> QRScanResult { resolveResult }
     func qrImageData(hiveId: String) async throws -> Data { try qrImageResult.get() }
