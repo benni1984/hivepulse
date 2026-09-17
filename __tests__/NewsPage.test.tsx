@@ -15,9 +15,9 @@ describe('NewsPage', () => {
     expect(screen.getByText('title')).toBeTruthy();
   });
 
-  it('renders all fifteen news articles', () => {
+  it('renders all sixteen news articles', () => {
     const { container } = render(<NewsPage />);
-    expect(container.querySelectorAll('.news-card').length).toBe(15);
+    expect(container.querySelectorAll('.news-card').length).toBe(16);
   });
 
   it('renders each article headline', () => {

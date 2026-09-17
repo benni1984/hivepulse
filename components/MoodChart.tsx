@@ -15,9 +15,9 @@ const MOOD_LABEL_KEYS: Record<string, string> = {
 };
 
 const MOOD_COLORS: Record<string, string> = {
-  calm: '#16a34a',
+  calm: '#14532d',
   nervous: '#f59e0b',
-  aggressive: '#ef4444',
+  aggressive: '#b91c1c',
 };
 
 export default function MoodChart({ distribution }: MoodChartProps) {
@@ -46,7 +46,7 @@ export default function MoodChart({ distribution }: MoodChartProps) {
           labels,
           datasets: [{
             data: entries.map(([, v]) => v),
-            backgroundColor: entries.map(([k]) => MOOD_COLORS[k] ?? '#6b7280'),
+            backgroundColor: entries.map(([k]) => MOOD_COLORS[k] ?? '#a8a29e'),
             borderWidth: 2,
             borderColor: '#fff',
           }],

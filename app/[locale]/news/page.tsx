@@ -16,6 +16,14 @@ export default function NewsPage() {
         <div className="container">
           <div className="news-list">
             <article className="news-card" data-aos="fade-up">
+              <div className="news-date"><div className="day">17</div><div className="month">Sep 2026</div></div>
+              <div className="news-body">
+                <span className="news-tag">Design</span>
+                <h3>A Lighter, Calmer HivePulse</h3>
+                <p>The website has a new look. The heavy dark green gave way to white and warm grey surfaces, and colour now signals what you are looking at: green for your apiaries and colonies, amber for notices, red for colony health and the hornet tracker, and blue-grey for statistics and help. The dashboard sidebar is light, figures are set in a clear monospaced font, and buttons are bigger and easier to hit. The HivePulse wordmark is rounder too. Nothing moved and every feature works exactly as before — it is simply easier on the eyes.</p>
+              </div>
+            </article>
+            <article className="news-card" data-aos="fade-up">
               <div className="news-date"><div className="day">16</div><div className="month">Sep 2026</div></div>
               <div className="news-body">
                 <span className="news-tag">Fix</span>

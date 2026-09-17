@@ -73,7 +73,7 @@ export default function ApiaryDetailClient() {
             MOOD_LABEL_KEYS[k] ? th(MOOD_LABEL_KEYS[k]) : k.charAt(0).toUpperCase() + k.slice(1)),
           datasets: [{
             data: entries.map(([, v]) => v),
-            backgroundColor: ['#16a34a','#f59e0b','#ef4444','#3b82f6','#8b5cf6','#ec4899','#14b8a6'].slice(0, entries.length),
+            backgroundColor: ['#14532d','#f59e0b','#b91c1c','#26688c','#166534','#b45309','#1d4e6b'].slice(0, entries.length),
             borderWidth: 2,
             borderColor: '#fff',
           }],

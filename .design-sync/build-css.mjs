@@ -6,7 +6,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 
 const FONTS =
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' +
-  '&family=DM+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap';
+  '&family=DM+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Nunito:wght@500;600;700&display=swap';
 
 // Icons: the layout loads Font Awesome from cdnjs (<i className="fas fa-…">).
 const ICONS = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css';
