@@ -18,6 +18,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hivepulse.app.R
+import com.hivepulse.app.data.api.ApiaryOut
 import com.hivepulse.app.data.api.HiveOut
 import com.hivepulse.app.data.repository.ApiaryRepository
 import com.hivepulse.app.data.repository.HiveRepository
@@ -30,6 +31,7 @@ import javax.inject.Inject
 
 data class ApiaryDetailState(
     val apiaryName: String = "",
+    val apiary: ApiaryOut? = null,
     val hives: List<HiveOut> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
@@ -52,7 +54,7 @@ class ApiaryDetailViewModel @Inject constructor(
         runCatching {
             val apiary = apiaryRepo.get(apiaryId)
             val hives  = hiveRepo.listForApiary(apiaryId)
-            _state.update { it.copy(isLoading = false, apiaryName = apiary.name, hives = hives) }
+            _state.update { it.copy(isLoading = false, apiaryName = apiary.name, apiary = apiary, hives = hives) }
         }.onFailure { e -> _state.update { it.copy(isLoading = false, error = e.message) } }
     }
 
@@ -61,6 +63,24 @@ class ApiaryDetailViewModel @Inject constructor(
             .onSuccess { _state.update { it.copy(hives = it.hives.filter { h -> h.id != id }) } }
             .onFailure { e -> _state.update { it.copy(error = e.message) } }
     }
+
+    /** Saves name, description, address and public-map visibility; keeps the stored coordinates. */
+    fun updateApiary(name: String, description: String?, address: String?, isPublic: Boolean, onDone: () -> Unit = {}) =
+        viewModelScope.launch {
+            val current = _state.value.apiary ?: return@launch
+            if (name.isBlank()) return@launch
+            runCatching {
+                apiaryRepo.update(
+                    apiaryId, name.trim(), description?.trim()?.ifBlank { null },
+                    current.latitude, current.longitude, address?.trim()?.ifBlank { null }, isPublic,
+                )
+            }
+                .onSuccess { updated ->
+                    _state.update { it.copy(apiary = updated, apiaryName = updated.name) }
+                    onDone()
+                }
+                .onFailure { e -> _state.update { it.copy(error = e.message) } }
+        }
 
     fun clearError() = _state.update { it.copy(error = null) }
 }
@@ -75,12 +95,18 @@ fun ApiaryDetailScreen(
     vm: ApiaryDetailViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
+    var showEdit by remember { mutableStateOf(false) }
 
     Scaffold(topBar = {
         TopAppBar(
             title = { Text(state.apiaryName) },
             navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } },
             actions = {
+                if (state.apiary != null) {
+                    IconButton(onClick = { showEdit = true }) {
+                        Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.action_edit_apiary))
+                    }
+                }
                 IconButton(onClick = onFieldsClick) {
                     Icon(Icons.Default.Tune, contentDescription = stringResource(R.string.fielddefs_apiary_title))
                 }
@@ -105,6 +131,17 @@ fun ApiaryDetailScreen(
                 }
             }
         }
+    }
+
+    val apiary = state.apiary
+    if (showEdit && apiary != null) {
+        ApiaryFormDialog(
+            initial = apiary,
+            onConfirm = { name, desc, _, _, addr, isPublic ->
+                vm.updateApiary(name, desc, addr, isPublic) { showEdit = false }
+            },
+            onDismiss = { showEdit = false },
+        )
     }
 }
 

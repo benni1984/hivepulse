@@ -1,12 +1,19 @@
 package com.hivepulse.app.screen
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsOff
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.hivepulse.app.MainActivity
+import com.hivepulse.app.data.api.ApiaryCreate
 import com.hivepulse.app.data.api.ApiaryOut
+import com.hivepulse.app.data.api.HiveOut
 import com.hivepulse.app.data.api.ApiService
 import com.hivepulse.app.data.api.PaginatedResponse
 import com.hivepulse.app.data.api.UserOut
@@ -17,6 +24,9 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.slot
+import org.junit.Assert
 import io.mockk.mockk
 import org.junit.Rule
 import org.junit.Test
@@ -37,6 +47,8 @@ class ApiaryWithDataTest {
     @BindValue @JvmField
     val apiService: ApiService = mockk<ApiService>(relaxed = true).also {
         coEvery { it.listApiaries(any(), any()) } returns PaginatedResponse(testApiaries, 2, 1, 1)
+        coEvery { it.getApiary("id-1") } returns testApiaries[0]
+        coEvery { it.listHives("id-1", any(), any()) } returns PaginatedResponse(emptyList<HiveOut>(), 0, 1, 1)
         coEvery { it.getMe() } returns UserOut("uid-1", "beekeeper@example.com", "Beekeeper", "en", "2024-01-01T00:00:00")
     }
 
@@ -82,5 +94,27 @@ class ApiaryWithDataTest {
         }
         // The list item shows "${apiary.hiveCount} hives"
         composeRule.onNodeWithText("3 hives").assertIsDisplayed()
+    }
+
+    @Test
+    fun apiaryDetail_editMakesAnExistingApiaryPublic() {
+        val sent = slot<ApiaryCreate>()
+        coEvery { apiService.updateApiary("id-1", capture(sent)) } returns testApiaries[0].copy(isPublic = true)
+        waitForApiaryList()
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithText("Honey Farm").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Honey Farm").performClick()
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithContentDescription("Edit Apiary").fetchSemanticsNodes().isNotEmpty()
+        }
+
+        composeRule.onNodeWithContentDescription("Edit Apiary").performClick()
+        composeRule.onNodeWithTag("apiaryPublicSwitch").assertIsOff().performClick()
+        composeRule.onNodeWithText("Save").performClick()
+
+        coVerify(timeout = 3_000) { apiService.updateApiary("id-1", any()) }
+        Assert.assertTrue(sent.captured.isPublic)
+        Assert.assertEquals("Honey Farm", sent.captured.name)
     }
 }
