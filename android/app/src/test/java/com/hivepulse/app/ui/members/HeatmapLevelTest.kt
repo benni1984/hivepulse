@@ -13,10 +13,11 @@ class HeatmapLevelTest {
 
     @Test
     fun `varroa thresholds match web legend`() {
-        assertEquals(GOOD, heatLevel(props(varroa = 1.9), VARROA))
-        assertEquals(FAIR, heatLevel(props(varroa = 2.0), VARROA))
-        assertEquals(FAIR, heatLevel(props(varroa = 4.9), VARROA))
-        assertEquals(POOR, heatLevel(props(varroa = 5.0), VARROA))
+        // avg_varroa is the mean varroa level (0 none … 3 high)
+        assertEquals(GOOD, heatLevel(props(varroa = 0.9), VARROA))
+        assertEquals(FAIR, heatLevel(props(varroa = 1.0), VARROA))
+        assertEquals(FAIR, heatLevel(props(varroa = 1.9), VARROA))
+        assertEquals(POOR, heatLevel(props(varroa = 2.0), VARROA))
         assertEquals(NO_DATA, heatLevel(props(), VARROA))
     }
 

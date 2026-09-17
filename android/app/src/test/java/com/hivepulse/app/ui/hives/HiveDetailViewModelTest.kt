@@ -91,6 +91,54 @@ class HiveDetailViewModelTest {
         assertNull(vm.state.value.error)
     }
 
+    @Test
+    fun `updateHive saves trimmed values and shows the updated hive`() {
+        val updated = hive().copy(name = "Linde 3", hiveType = "dadant", acquisitionDate = "2025-04-09", notes = "Swarm")
+        val sent = slot<HiveUpdateRequest>()
+        coEvery { hiveRepo.update("h1", capture(sent)) } returns updated
+
+        vm.updateHive("  Linde 3 ", "dadant", " 2025-04-09 ", " Swarm ")
+
+        assertEquals("Linde 3", sent.captured.name)
+        assertEquals("dadant", sent.captured.hiveType)
+        assertEquals("2025-04-09", sent.captured.acquisitionDate)
+        assertEquals("Swarm", sent.captured.notes)
+        assertNull(sent.captured.apiaryId)
+        assertEquals(updated, vm.state.value.hive)
+    }
+
+    @Test
+    fun `updateHive sends an empty string to clear notes and no blank date`() {
+        val sent = slot<HiveUpdateRequest>()
+        coEvery { hiveRepo.update("h1", capture(sent)) } returns hive()
+
+        vm.updateHive("Hive 1", "langstroth", "  ", null)
+
+        assertNull(sent.captured.acquisitionDate)
+        assertEquals("", sent.captured.notes)
+    }
+
+    @Test
+    fun `updateHive ignores a blank name`() {
+        vm.updateHive("   ", "langstroth", null, null)
+        coVerify(exactly = 0) { hiveRepo.update(any(), any()) }
+    }
+
+    @Test
+    fun `updateHive failure sets error`() {
+        coEvery { hiveRepo.update(any(), any()) } throws RuntimeException("offline")
+        vm.updateHive("Hive 1", "langstroth", null, null)
+        assertEquals("offline", vm.state.value.error)
+    }
+
+    @Test
+    fun `acquisition date must be empty or YYYY-MM-DD`() {
+        assertTrue(isValidAcquisitionDate(""))
+        assertTrue(isValidAcquisitionDate("2025-04-09"))
+        assertFalse(isValidAcquisitionDate("9.4.2025"))
+        assertFalse(isValidAcquisitionDate("2025-4-9"))
+    }
+
     private fun hive() = HiveOut(
         id = "h1", qrToken = "tok", apiaryId = "a1", name = "Hive 1",
         hiveType = "langstroth", latitude = null, longitude = null,

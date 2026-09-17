@@ -21,6 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.hivepulse.app.R
@@ -199,6 +202,7 @@ fun ColorChipRow(
             options.forEach { (name, color, labelRes) ->
                 val isSelected = selected == name
                 val interactionSource = remember { MutableInteractionSource() }
+                val colorName = stringResource(labelRes)
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Box(
                         modifier = Modifier
@@ -210,17 +214,18 @@ fun ColorChipRow(
                                 color = if (isSelected) Amber500 else Stone200,
                                 shape = CircleShape,
                             )
-                            .clickable(interactionSource = interactionSource, indication = null) { onSelect(name) },
+                            .clickable(interactionSource = interactionSource, indication = null) { onSelect(name) }
+                            // The dot is the whole control: the colour name is only announced, not printed.
+                            .semantics {
+                                contentDescription = colorName
+                                this.selected = isSelected
+                            },
                         contentAlignment = Alignment.Center,
                     ) {
                         if (isSelected) Icon(Icons.Default.Check, contentDescription = null,
                             tint     = if (name == "white" || name == "yellow") Color(0xFF1C1917) else Color.White,
                             modifier = Modifier.size(24.dp))
                     }
-                    Spacer(Modifier.height(4.dp))
-                    Text(stringResource(labelRes),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }

@@ -168,7 +168,11 @@ data class InspectionOut(
     @SerializedName("brood_frames")        val broodFrames: Int?,
     @SerializedName("honey_frames")        val honeyFrames: Int?,
     val mood: String?,
+    /** 1 weak, 2 medium, 3 strong */
     @SerializedName("population_strength") val populationStrength: Int?,
+    /** 0 none, 1 low, 2 medium, 3 high */
+    @SerializedName("varroa_level")        val varroaLevel: Int? = null,
+    /** Retired mite count, still returned for older inspections */
     @SerializedName("varroa_count")        val varroaCount: Int?,
     @SerializedName("swarm_cells_seen")    val swarmCellsSeen: Boolean?,
     @SerializedName("treatment_applied")   val treatmentApplied: String?,
@@ -186,8 +190,10 @@ data class InspectionCreateRequest(
     @SerializedName("brood_frames")        val broodFrames: Int?,
     @SerializedName("honey_frames")        val honeyFrames: Int?,
     val mood: String?,
+    /** 1 weak, 2 medium, 3 strong */
     @SerializedName("population_strength") val populationStrength: Int?,
-    @SerializedName("varroa_count")        val varroaCount: Int?,
+    /** 0 none, 1 low, 2 medium, 3 high */
+    @SerializedName("varroa_level")        val varroaLevel: Int?,
     @SerializedName("swarm_cells_seen")    val swarmCellsSeen: Boolean?,
     @SerializedName("treatment_applied")   val treatmentApplied: String?,
     @SerializedName("feeding_done")        val feedingDone: Boolean?,

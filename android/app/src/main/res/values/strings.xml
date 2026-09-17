@@ -167,7 +167,7 @@
     <string name="stat_queen_seen_rate">Queen seen rate</string>
     <string name="stat_swarm_cells">Swarm cell events</string>
     <string name="stat_mood_distribution">Mood Distribution</string>
-    <string name="stat_varroa_trend">Varroa Count Trend</string>
+    <string name="stat_varroa_trend">Varroa infestation</string>
     <string name="stat_brood_trend">Brood Frames Trend</string>
     <string name="stat_honey_trend">Honey Frames Trend</string>
     <string name="stat_weight_trend">Weight Trend</string>
@@ -266,9 +266,9 @@
     <string name="heatmap_overlay_mood">Colony Mood</string>
     <string name="heatmap_overlay_swarm">Swarm Pressure</string>
     <string name="heatmap_overlay_brood">Brood Health</string>
-    <string name="heatmap_varroa_low">Low (&lt; 2)</string>
-    <string name="heatmap_varroa_medium">Medium (2–5)</string>
-    <string name="heatmap_varroa_high">High (&gt; 5)</string>
+    <string name="heatmap_varroa_low">None / low (&lt; 1)</string>
+    <string name="heatmap_varroa_medium">Medium (1–2)</string>
+    <string name="heatmap_varroa_high">High (≥ 2)</string>
     <string name="heatmap_mood_good" formatted="false">Good (≥ 70% calm)</string>
     <string name="heatmap_mood_fair" formatted="false">Fair (40–70%)</string>
     <string name="heatmap_mood_low" formatted="false">Low (&lt; 40%)</string>
@@ -376,9 +376,9 @@
     <string name="mood_calm">😌 Calm</string>
     <string name="mood_nervous">😤 Nervous</string>
     <string name="mood_aggressive">😡 Aggressive</string>
-    <string name="population_low">Low</string>
+    <string name="population_low">Weak</string>
     <string name="population_medium">Medium</string>
-    <string name="population_high">High</string>
+    <string name="population_high">Strong</string>
     <string name="label_yes">✓ Yes</string>
     <string name="label_no">✗ No</string>
     <string name="queen_color_white">White</string>
@@ -386,4 +386,14 @@
     <string name="queen_color_red">Red</string>
     <string name="queen_color_green">Green</string>
     <string name="queen_color_blue">Blue</string>
+    <!-- Inspection word scales and hive editing -->
+    <string name="field_varroa_level">Varroa infestation</string>
+    <string name="varroa_level_0">None</string>
+    <string name="varroa_level_1">Low</string>
+    <string name="varroa_level_2">Medium</string>
+    <string name="varroa_level_3">High</string>
+    <string name="title_edit_hive">Edit hive</string>
+    <string name="field_hive_name_edit">Hive name</string>
+    <string name="action_save_hive">Save</string>
+    <string name="hint_acquisition_date">YYYY-MM-DD</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.hivepulse.app.ui.inspections
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
@@ -18,6 +19,8 @@ class InspectionFormLabelsTest {
         "label_yes", "label_no",
         "queen_color_white", "queen_color_yellow", "queen_color_red",
         "queen_color_green", "queen_color_blue",
+        "field_varroa_level", "varroa_level_0", "varroa_level_1", "varroa_level_2", "varroa_level_3",
+        "title_edit_hive", "field_hive_name_edit", "action_save_hive", "hint_acquisition_date",
     )
 
     private fun strings(dir: String): Map<String, String> {
@@ -45,6 +48,37 @@ class InspectionFormLabelsTest {
         assertTrue(de.getValue("mood_calm").endsWith("Ruhig"))
         assertTrue(de.getValue("mood_aggressive").endsWith("Aggressiv"))
         assertEquals("Weiß", de.getValue("queen_color_white"))
+    }
+
+    // Word scales
+
+    @Test
+    fun `colony strength words map to 1 to 3`() {
+        assertEquals(1, populationStrengthFor(0))
+        assertEquals(2, populationStrengthFor(1))
+        assertEquals(3, populationStrengthFor(2))
+        assertNull(populationStrengthFor(null))
+        assertNull(populationStrengthFor(3))
+    }
+
+    @Test
+    fun `strong is no longer sent as 9`() {
+        // The old mapping sent 1 / 5 / 9 and the API rejected 9, so "strong" never saved.
+        assertTrue((0..2).mapNotNull(::populationStrengthFor).all { it in 1..3 })
+    }
+
+    @Test
+    fun `varroa words map to levels 0 to 3`() {
+        assertEquals(listOf(0, 1, 2, 3), (0..3).map { varroaLevelFor(it) })
+        assertNull(varroaLevelFor(null))
+        assertNull(varroaLevelFor(4))
+    }
+
+    @Test
+    fun `stored values map back to words`() {
+        assertEquals(com.hivepulse.app.R.string.population_high, strengthLabelRes(3))
+        assertEquals(com.hivepulse.app.R.string.varroa_level_0, varroaLabelRes(0))
+        assertEquals(com.hivepulse.app.R.string.varroa_level_3, varroaLabelRes(3))
     }
 
     // Weight stepper (parity with the iOS form, which only had a free-text field)

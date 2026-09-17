@@ -88,6 +88,29 @@ class InspectionFormScreenTest {
     }
 
     @Test
+    fun inspectionForm_savesColonyStrengthAndVarroaAsWords() {
+        val sent = slot<InspectionCreateRequest>()
+        coEvery { apiService.createInspection(any(), capture(sent)) } returns savedInspection
+        navigateToInspectionForm()
+
+        composeRule.onNodeWithText("Strong").performScrollTo().performClick()
+        composeRule.onNodeWithText("Varroa infestation").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("None").performScrollTo().performClick()
+        composeRule.onNodeWithText("Save").performScrollTo().performClick()
+
+        coVerify(timeout = 3_000) { apiService.createInspection(any(), any()) }
+        Assert.assertEquals(3, sent.captured.populationStrength)
+        Assert.assertEquals(0, sent.captured.varroaLevel)
+    }
+
+    @Test
+    fun inspectionForm_queenColourIsADotWithoutCaption() {
+        navigateToInspectionForm()
+        composeRule.onNodeWithContentDescription("Blue").performScrollTo().assertIsDisplayed()
+        composeRule.onAllNodesWithText("Blue").assertCountEquals(0)
+    }
+
+    @Test
     fun inspectionForm_saveButtonIsEnabledByDefault() {
         navigateToInspectionForm()
         composeRule.onNodeWithText("Save").performScrollTo().assertIsDisplayed()

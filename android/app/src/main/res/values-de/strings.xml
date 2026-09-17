@@ -30,9 +30,9 @@
     <string name="heatmap_overlay_mood">Volksstimmung</string>
     <string name="heatmap_overlay_swarm">Schwarmdruck</string>
     <string name="heatmap_overlay_brood">Brutgesundheit</string>
-    <string name="heatmap_varroa_low">Niedrig (&lt; 2)</string>
-    <string name="heatmap_varroa_medium">Mittel (2–5)</string>
-    <string name="heatmap_varroa_high">Hoch (&gt; 5)</string>
+    <string name="heatmap_varroa_low">Keine / schwach (&lt; 1)</string>
+    <string name="heatmap_varroa_medium">Mittel (1–2)</string>
+    <string name="heatmap_varroa_high">Stark (≥ 2)</string>
     <string name="heatmap_mood_good" formatted="false">Gut (≥ 70 % ruhig)</string>
     <string name="heatmap_mood_fair" formatted="false">Mittel (40–70 %)</string>
     <string name="heatmap_mood_low" formatted="false">Niedrig (&lt; 40 %)</string>
@@ -179,7 +179,7 @@
     <string name="stat_queen_seen_rate">Königin-Sichtungsrate</string>
     <string name="stat_swarm_cells">Schwarmzellen-Ereignisse</string>
     <string name="stat_mood_distribution">Stimmungsverteilung</string>
-    <string name="stat_varroa_trend">Varroa-Verlauf</string>
+    <string name="stat_varroa_trend">Varroa-Befall</string>
     <string name="stat_brood_trend">Bruträhmchen-Verlauf</string>
     <string name="stat_honey_trend">Honigrähmchen-Verlauf</string>
     <string name="stat_weight_trend">Gewichtsverlauf</string>
@@ -292,4 +292,14 @@
     <string name="queen_color_red">Rot</string>
     <string name="queen_color_green">Grün</string>
     <string name="queen_color_blue">Blau</string>
+    <!-- Inspection word scales and hive editing -->
+    <string name="field_varroa_level">Varroa-Befall</string>
+    <string name="varroa_level_0">Keine</string>
+    <string name="varroa_level_1">Schwach</string>
+    <string name="varroa_level_2">Mittel</string>
+    <string name="varroa_level_3">Stark</string>
+    <string name="title_edit_hive">Bienenstock bearbeiten</string>
+    <string name="field_hive_name_edit">Name des Bienenstocks</string>
+    <string name="action_save_hive">Speichern</string>
+    <string name="hint_acquisition_date">JJJJ-MM-TT</string>
 </resources>

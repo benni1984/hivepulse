@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hivepulse.app.R
 import com.hivepulse.app.data.api.HiveOut
+import com.hivepulse.app.data.api.HiveUpdateRequest
 import com.hivepulse.app.data.api.InspectionOut
 import com.hivepulse.app.data.repository.HiveRepository
 import com.hivepulse.app.data.repository.InspectionRepository
@@ -31,6 +32,7 @@ import com.hivepulse.app.ui.common.ErrorBanner
 import com.hivepulse.app.ui.common.InfoRow
 import com.hivepulse.app.ui.common.LoadingScreen
 import com.hivepulse.app.ui.common.SectionHeader
+import com.hivepulse.app.ui.inspections.varroaLabelRes
 import com.hivepulse.app.ui.theme.Amber500
 import com.hivepulse.app.ui.theme.Stone200
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -72,6 +74,21 @@ class HiveDetailViewModel @Inject constructor(
             .onFailure { e -> _state.update { it.copy(error = e.message) } }
     }
 
+    /** Saves the edited hive details (PUT /hives/{id}); blank notes clear them. */
+    fun updateHive(name: String, hiveType: String, acquisitionDate: String?, notes: String?) = viewModelScope.launch {
+        val trimmed = name.trim()
+        if (trimmed.isEmpty()) return@launch
+        runCatching {
+            hiveRepo.update(hiveId, HiveUpdateRequest(
+                apiaryId = null, name = trimmed, hiveType = hiveType,
+                latitude = null, longitude = null,
+                acquisitionDate = acquisitionDate?.trim()?.ifBlank { null },
+                notes = notes?.trim() ?: "", customFields = null,
+            ))
+        }.onSuccess { hive -> _state.update { it.copy(hive = hive) } }
+         .onFailure { e -> _state.update { it.copy(error = e.message) } }
+    }
+
     fun clearError() = _state.update { it.copy(error = null) }
 }
 
@@ -87,6 +104,20 @@ fun HiveDetailScreen(
     vm: HiveDetailViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
+    var showEdit by remember { mutableStateOf(false) }
+
+    if (showEdit) {
+        state.hive?.let { hive ->
+            HiveEditDialog(
+                hive = hive,
+                onDismiss = { showEdit = false },
+                onSave = { name, type, date, notes ->
+                    vm.updateHive(name, type, date, notes)
+                    showEdit = false
+                },
+            )
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -94,6 +125,9 @@ fun HiveDetailScreen(
                 title = { Text(state.hive?.name ?: "", style = MaterialTheme.typography.titleLarge) },
                 navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } },
                 actions = {
+                    IconButton(onClick = { showEdit = true }, enabled = state.hive != null) {
+                        Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.title_edit_hive))
+                    }
                     IconButton(onClick = { onQrClick(hiveId) }) {
                         Icon(Icons.Default.QrCode, contentDescription = stringResource(R.string.action_view_qr))
                     }
@@ -211,7 +245,7 @@ fun InspectionListItem(insp: InspectionOut, onClick: () -> Unit, onDelete: (() -
                         val emoji = when (it) { "calm" -> "😌"; "nervous" -> "😤"; "aggressive" -> "😡"; else -> "" }
                         Text("$emoji ${it.replaceFirstChar { c -> c.uppercase() }}", style = MaterialTheme.typography.bodySmall)
                     }
-                    insp.varroaCount?.let { Text("🐛 $it", style = MaterialTheme.typography.bodySmall) }
+                    insp.varroaLevel?.let { Text("🐛 ${stringResource(varroaLabelRes(it))}", style = MaterialTheme.typography.bodySmall) }
                     if (insp.queenSeen == true) Text("👑", style = MaterialTheme.typography.bodySmall)
                 }
             }
