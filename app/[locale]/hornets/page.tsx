@@ -87,18 +87,18 @@ export default async function HornetsPage() {
         </div>
       </section>
 
-      {/* Species reference image (CC-BY Wikimedia) */}
+      {/* Species reference image (CC BY-SA 4.0, Wikimedia Commons). Wikimedia only serves standard thumbnail widths (e.g. 500/960) — 640px returns an error. */}
       <section className="hornets-species">
         <div className="container">
           <figure className="hornets-figure">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Vespa_velutina_nigrithorax_02.jpg/640px-Vespa_velutina_nigrithorax_02.jpg"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Asian_hornet_%28Vespa_velutina%29.jpg/960px-Asian_hornet_%28Vespa_velutina%29.jpg"
               alt="Vespa velutina — Asian hornet"
               className="hornets-species-img"
             />
             <figcaption>
-              <em>Vespa velutina</em> — CC-BY Wikimedia Commons
+              <em>Vespa velutina</em> — Charles J. Sharp, <a href="https://commons.wikimedia.org/wiki/File:Asian_hornet_(Vespa_velutina).jpg" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>, Wikimedia Commons
             </figcaption>
           </figure>
         </div>

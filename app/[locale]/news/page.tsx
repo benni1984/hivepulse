@@ -1,7 +1,10 @@
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { NEWS, newsText } from '@/lib/news';
 
 export default function NewsPage() {
   const t = useTranslations('news');
+  const locale = useLocale();
+  const monthYear = new Intl.DateTimeFormat(locale, { month: 'short', year: 'numeric', timeZone: 'UTC' });
   return (
     <>
       <section className="page-hero news-page-hero">
@@ -15,142 +18,23 @@ export default function NewsPage() {
       <section className="news-section">
         <div className="container">
           <div className="news-list">
-            <article className="news-card" data-aos="fade-up">
-              <div className="news-date"><div className="day">17</div><div className="month">Sep 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Feature</span>
-                <h3>Words Instead of Numbers When You Inspect</h3>
-                <p>Recording an inspection at the hive is now quicker. Colony strength is a simple choice of weak, medium or strong, and varroa is recorded as none, low, medium or high instead of a mite count — both in the iOS and Android apps and on the website. Your earlier entries were converted automatically. The queen colour is picked by tapping a coloured dot. And you can finally edit a hive's name, type, acquisition date and notes directly in the apps, not only on the website. Strong colonies now save correctly in the Android app as well.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up">
-              <div className="news-date"><div className="day">17</div><div className="month">Sep 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Design</span>
-                <h3>A Lighter, Calmer HivePulse</h3>
-                <p>The website has a new look. The heavy dark green gave way to white and warm grey surfaces, and colour now signals what you are looking at: green for your apiaries and colonies, amber for notices, red for colony health and the hornet tracker, and blue-grey for statistics and help. The dashboard sidebar is light, figures are set in a clear monospaced font, and buttons are bigger and easier to hit. The HivePulse wordmark is rounder too. Nothing moved and every feature works exactly as before — it is simply easier on the eyes.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up">
-              <div className="news-date"><div className="day">16</div><div className="month">Sep 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Fix</span>
-                <h3>Readable Numbers and Proper Translations in the Inspection Form</h3>
-                <p>Logging an inspection on the iPhone showed only a plus and a minus for brood frames, honey frames and colony strength — the number itself was missing, so you could not see what you were setting. The number is back. The colony mood, queen colour and colony strength options also appeared in English no matter which language you used; they are now translated in German, French, Spanish and English in both apps. Hive weight is no longer a bare text box either: it keeps the keyboard for exact values and adds plus and minus buttons in half-kilo steps, for gloved hands at the hive. On the website, the mood chart legend was showing English labels too, and now follows your language.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up">
-              <div className="news-date"><div className="day">15</div><div className="month">Sep 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Fix</span>
-                <h3>Members Page Loads Instantly Again</h3>
-                <p>The community box on the Members page waited for the global statistics before showing anything — and those statistics were being calculated with a separate database query for every apiary and hive, which took several seconds as the community grew. The server now gathers them in just a few queries, and the log-in or supporter prompt appears immediately while the numbers fill in.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up">
-              <div className="news-date"><div className="day">15</div><div className="month">Sep 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Feature</span>
-                <h3>A Guided Tour for New Users in Both Apps</h3>
-                <p>The first time you sign in to the iOS or Android app, a short swipeable tour now introduces what HivePulse can do for you — QR codes on every hive, quick inspections, statistics, reminders and the hornet tracker. Skip it any time, and bring it back later from Settings with &quot;Show guided tour again&quot;.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="60">
-              <div className="news-date"><div className="day">15</div><div className="month">Sep 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Feature</span>
-                <h3>The iOS App Gets the New HivePulse Look and Catches Up with Web and Android</h3>
-                <p>The iPhone app now uses the same amber-and-stone design and DM Sans typeface as the website. It also gained everything the Android app received recently: printable QR code PDFs that open right away, email reminders, the account-wide statistics overview, password reset links, managing your custom fields for all apiaries or just one, and — for supporters — the regional health map in the Members tab.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up">
-              <div className="news-date"><div className="day">15</div><div className="month">Sep 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Fix</span>
-                <h3>QR Code PDF Download Fixed in the Android App</h3>
-                <p>Tapping Download PDF on a QR batch in the Android app did nothing — the download was handed off outside the app and failed silently once your session had been open for a while. The app now downloads the printable PDF itself, saves it to your Downloads folder and opens it right away — and tapping again no longer piles up duplicate copies.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="60">
-              <div className="news-date"><div className="day">14</div><div className="month">Sep 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Feature</span>
-                <h3>Statistics Overview and Community Health Map Come to Android</h3>
-                <p>The Android app now has the same account-wide statistics page as the web dashboard — apiaries, hives and inspections at a glance, broken down per apiary for any time window. Supporters also get the regional health map in the Members tab, with the same varroa, mood, swarm and brood overlays as on the web.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="120">
-              <div className="news-date"><div className="day">14</div><div className="month">Sep 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Feature</span>
-                <h3>Custom Fields, Email Reminders and Password Resets Right in the Android App</h3>
-                <p>A few things could previously only be done on the website. In the Android app you can now create, edit and delete your custom fields — for all apiaries or just one — turn on email reminders alongside push notifications, and request a password reset link without leaving the app.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="180">
-              <div className="news-date"><div className="day">20</div><div className="month">Jul 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Fix</span>
-                <h3>Dashboard Navigation Now Works on Mobile</h3>
-                <p>The dashboard sidebar was hiding its entire navigation on small screens with nothing to replace it, leaving mobile visitors with no way to reach anything but a logout button. A new menu toggle now reveals your apiaries, stats, profile, and every other page from your phone.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="240">
-              <div className="news-date"><div className="day">20</div><div className="month">Jul 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Feature</span>
-                <h3>Inspection Reminders Now Also Available by Email</h3>
-                <p>Push notifications only ever reached the iOS and Android apps, leaving web-only beekeepers with no way to be reminded of an overdue inspection. You can now opt in to email reminders from your profile page — independently of push, so you can enable either, both, or neither.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="300">
-              <div className="news-date"><div className="day">16</div><div className="month">Jul 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Fix</span>
-                <h3>Public Map Pins Fixed for Address-Only Apiaries</h3>
-                <p>Public apiaries created through the web dashboard only ever collected a free-text address, never GPS coordinates — so they were counted in the community totals but never rendered as a pin on the live map. The backend now automatically resolves a saved address into coordinates, so every public apiary with an address shows up on the map going forward.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="360">
-              <div className="news-date"><div className="day">03</div><div className="month">Jun 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Feature</span>
-                <h3>Forgot Your Password? We&apos;ve Got You Covered</h3>
-                <p>A full forgot-password / reset-password flow is now live across the web dashboard, iOS, and Android — request a reset link by email, set a new password, and all of your existing sessions are automatically signed out for safety.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="420">
-              <div className="news-date"><div className="day">17</div><div className="month">May 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Feature</span>
-                <h3>Custom Inspection Fields — Log What Matters to You</h3>
-                <p>Every beekeeper tracks different things. Custom field definitions let you add your own inspection data points at the apiary or per-hive level, with support for text, number, boolean, date, and select-type fields — now available in the web dashboard, iOS, and Android.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="480">
-              <div className="news-date"><div className="day">14</div><div className="month">May 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Release</span>
-                <h3>Web Dashboard Launches — Manage Your Hives from Any Browser</h3>
-                <p>You no longer need the mobile app to check in on your bees. The new browser dashboard covers login, your apiary list, hive detail with varroa charts, QR batch management, and personal statistics — all from a desktop or laptop.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="540">
-              <div className="news-date"><div className="day">13</div><div className="month">May 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Feature</span>
-                <h3>Regional Varroa Heatmaps on the Public Map</h3>
-                <p>The public live map now overlays a varroa-density heatmap — mite pressure aggregated across public apiaries in ~50 km grid cells, colour-coded green to red, so beekeepers can spot regional risk trends at a glance.</p>
-              </div>
-            </article>
-            <article className="news-card" data-aos="fade-up" data-aos-delay="600">
-              <div className="news-date"><div className="day">12</div><div className="month">May 2026</div></div>
-              <div className="news-body">
-                <span className="news-tag">Privacy</span>
-                <h3>Apiary Locations Now Shown at City Level, Not Exact GPS</h3>
-                <p>To protect beekeepers from potential hive theft, the public map and community pages now show the nearest city or village centroid instead of an apiary&apos;s exact coordinates. You still see your own exact location when logged in — only the public-facing view is fuzzed.</p>
-              </div>
-            </article>
+            {NEWS.map((entry, i) => {
+              const { title, body } = newsText(entry, locale);
+              const date = new Date(`${entry.date}T00:00:00Z`);
+              return (
+                <article key={`${entry.date}-${i}`} className="news-card" data-aos="fade-up">
+                  <div className="news-date">
+                    <div className="day">{String(date.getUTCDate()).padStart(2, '0')}</div>
+                    <div className="month">{monthYear.format(date)}</div>
+                  </div>
+                  <div className="news-body">
+                    <span className="news-tag">{t(`tags.${entry.tag}`)}</span>
+                    <h3>{title}</h3>
+                    <p>{body}</p>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>

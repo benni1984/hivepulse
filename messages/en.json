@@ -243,7 +243,14 @@
   "news": {
     "tag": "Updates",
     "title": "News & Announcements",
-    "sub": "New features, research partnerships, conservation milestones, and everything happening in the HivePulse community."
+    "sub": "New features, research partnerships, conservation milestones, and everything happening in the HivePulse community.",
+    "tags": {
+      "feature": "Feature",
+      "fix": "Fix",
+      "design": "Design",
+      "release": "Release",
+      "privacy": "Privacy"
+    }
   },
   "contrib": {
     "tag": "Open Source",
