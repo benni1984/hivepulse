@@ -23,6 +23,9 @@ const VarroaChart = dynamic(() => import('@/components/VarroaChart'), { ssr: fal
 
 const HIVE_TYPES = ['langstroth', 'dadant', 'top_bar', 'warre', 'other'] as const;
 
+
+/** Varroa is recorded as a level: 0 none, 1 low, 2 medium, 3 high. */
+const VARROA_LEVELS = [0, 1, 2, 3] as const;
 export default function HivePage() {
   const { id } = useParams<{ id: string }>();
   const t = useTranslations('dash');
@@ -51,7 +54,7 @@ export default function HivePage() {
   const [showInspectionForm, setShowInspectionForm] = useState(false);
   const [inspectionFormMode, setInspectionFormMode] = useState<'create' | 'edit'>('create');
   const [editingInspectionId, setEditingInspectionId] = useState<string | null>(null);
-  const [inspectionForm, setInspectionForm] = useState({ date: '', varroa_count: '', mood: '', queen_seen: '', brood_frames: '' });
+  const [inspectionForm, setInspectionForm] = useState({ date: '', varroa_level: '', mood: '', queen_seen: '', brood_frames: '' });
   const [inspectionFieldDefs, setInspectionFieldDefs] = useState<FieldDefinition[]>([]);
   const [customFieldValues, setCustomFieldValues] = useState<Record<string, string>>({});
   const [savingInspection, setSavingInspection] = useState(false);
@@ -118,7 +121,7 @@ export default function HivePage() {
   function openCreateInspection() {
     setInspectionFormMode('create');
     setEditingInspectionId(null);
-    setInspectionForm({ date: new Date().toISOString().split('T')[0], varroa_count: '', mood: '', queen_seen: '', brood_frames: '' });
+    setInspectionForm({ date: new Date().toISOString().split('T')[0], varroa_level: '', mood: '', queen_seen: '', brood_frames: '' });
     const defaults: Record<string, string> = {};
     for (const fd of inspectionFieldDefs) {
       defaults[fd.id] = fd.default_value != null ? String(fd.default_value) : '';
@@ -133,7 +136,7 @@ export default function HivePage() {
     setEditingInspectionId(ins.id);
     setInspectionForm({
       date: ins.date,
-      varroa_count: ins.varroa_count != null ? String(ins.varroa_count) : '',
+      varroa_level: ins.varroa_level != null ? String(ins.varroa_level) : '',
       mood: ins.mood ?? '',
       queen_seen: ins.queen_seen == null ? '' : ins.queen_seen ? 'true' : 'false',
       brood_frames: ins.brood_frames != null ? String(ins.brood_frames) : '',
@@ -167,7 +170,7 @@ export default function HivePage() {
     }
     const data: InspectionInput = {
       date: inspectionForm.date,
-      varroa_count: inspectionForm.varroa_count !== '' ? parseInt(inspectionForm.varroa_count) : null,
+      varroa_level: inspectionForm.varroa_level !== '' ? parseInt(inspectionForm.varroa_level) : null,
       mood: inspectionForm.mood || null,
       queen_seen: inspectionForm.queen_seen === '' ? null : inspectionForm.queen_seen === 'true',
       brood_frames: inspectionForm.brood_frames !== '' ? parseInt(inspectionForm.brood_frames) : null,
@@ -272,7 +275,7 @@ export default function HivePage() {
           <h2 className="dash-section-title">{t('hive.varroaTrend')}</h2>
           <div className="dash-chart-box">
             {stats?.varroa_trend.length
-              ? <VarroaChart data={stats.varroa_trend} />
+              ? <VarroaChart data={stats.varroa_trend} levelLabels={VARROA_LEVELS.map(level => t(`hive.varroaLevel${level}` as never))} />
               : <p className="dash-empty">{t('hive.noTrend')}</p>}
           </div>
 
@@ -335,8 +338,13 @@ export default function HivePage() {
                 </div>
                 <div className="dash-form-group">
                   <label>{t('hive.varroa')}</label>
-                  <input type="number" min="0" value={inspectionForm.varroa_count}
-                    onChange={e => setInspectionForm(f => ({ ...f, varroa_count: e.target.value }))} />
+                  <select className="dash-profile-select" value={inspectionForm.varroa_level}
+                    onChange={e => setInspectionForm(f => ({ ...f, varroa_level: e.target.value }))}>
+                    <option value="">—</option>
+                    {VARROA_LEVELS.map(level => (
+                      <option key={level} value={level}>{t(`hive.varroaLevel${level}` as never)}</option>
+                    ))}
+                  </select>
                 </div>
                 <div className="dash-form-group">
                   <label>{t('hive.mood')}</label>
@@ -436,7 +444,7 @@ export default function HivePage() {
                     {inspections.map(ins => (
                       <tr key={ins.id}>
                         <td>{new Date(ins.date).toLocaleDateString()}</td>
-                        <td>{ins.varroa_count ?? '—'}</td>
+                        <td>{ins.varroa_level != null ? t(`hive.varroaLevel${ins.varroa_level}` as never) : '—'}</td>
                         <td>{ins.mood ?? '—'}</td>
                         <td>{ins.queen_seen == null ? '—' : ins.queen_seen ? t('hive.yes') : t('hive.no')}</td>
                         <td>{ins.brood_frames ?? '—'}</td>

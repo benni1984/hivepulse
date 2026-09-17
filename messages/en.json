@@ -611,7 +611,11 @@
       "moodAggressive": "Aggressive",
       "queenNotRecorded": "Not recorded",
       "moodTitle": "Mood Distribution",
-      "noMoodData": "No mood data yet."
+      "noMoodData": "No mood data yet.",
+      "varroaLevel0": "None",
+      "varroaLevel1": "Low",
+      "varroaLevel2": "Medium",
+      "varroaLevel3": "High"
     },
     "fieldDefs": {
       "title": "Custom Fields",

@@ -46,7 +46,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Enregistrement d'une inspection — les champs date et comptage varroa sont visibles" />
+        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Enregistrement d'une inspection — les champs date et infestation varroa sont visibles" />
       </section>
 
       <section className="help-section">
@@ -55,13 +55,12 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
         <h3 style={{ fontSize: '.95rem', fontWeight: 700, marginBottom: 12, color: 'var(--text-primary)' }}>Santé de la colonie</h3>
         <div className="help-stat-grid">
           <div className="help-stat-card">
-            <div className="help-stat-card-name">Comptage varroa</div>
+            <div className="help-stat-card-name">Infestation varroa</div>
             <div className="help-stat-card-desc">
-              Nombre d'acariens Varroa destructor trouvés dans un lavage d'échantillon (lavage au sucre ou à l'alcool de ~100 abeilles).
-              C'est l'indicateur de santé le plus important — une charge élevée en acariens réduit la durée de vie des ouvrières, affaiblit la colonie et transmet des virus.
+              Le niveau d'infestation de la colonie par Varroa destructor, choisi parmi Aucune, Faible, Moyenne ou Élevée. Évaluez-le à partir d'un lavage d'échantillon (sucre glace ou alcool sur ~100 abeilles) ou d'un lange. C'est l'indicateur de santé le plus important — une forte charge d'acariens réduit la durée de vie des ouvrières, affaiblit la colonie et transmet des virus.
             </div>
-            <span className="help-stat-card-good">Bon : 0–2 acariens pour 100</span>{' '}
-            <span className="help-stat-card-warn">Agir : 3+ acariens pour 100</span>
+            <span className="help-stat-card-good">Bien : Aucune ou Faible (0–2 acariens pour 100)</span>{' '}
+            <span className="help-stat-card-warn">Agir : Moyenne ou Élevée (3+ acariens pour 100)</span>
           </div>
           <div className="help-stat-card">
             <div className="help-stat-card-name">Humeur de la colonie</div>
@@ -117,8 +116,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           <div className="help-stat-card">
             <div className="help-stat-card-name">Force de la population</div>
             <div className="help-stat-card-desc">
-              Échelle subjective de 1 à 5 pour la force globale de la colonie. Utile quand vous voulez suivre la population relative
-              sans compter les cadres individuels.
+              Votre impression générale de la force de la colonie : Faible, Moyenne ou Forte. Utile quand vous voulez suivre la population relative sans compter les cadres un par un.
             </div>
           </div>
         </div>
@@ -158,7 +156,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
         <h2 className="help-section-title">Conseils</h2>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Enregistrez les comptages varroa de manière cohérente en utilisant la même méthode (lavage au sucre ou à l'alcool) pour que le graphique de tendances soit comparable entre les inspections.</p>
+          <p>Évaluez l'infestation varroa toujours de la même manière (même méthode d'échantillonnage, mêmes seuils) pour que le graphique de tendances soit comparable entre les inspections.</p>
         </div>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />

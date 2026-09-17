@@ -611,7 +611,11 @@
       "moodAggressive": "Agresiva",
       "queenNotRecorded": "No registrado",
       "moodTitle": "Distribución del comportamiento",
-      "noMoodData": "Aún no hay datos de comportamiento."
+      "noMoodData": "Aún no hay datos de comportamiento.",
+      "varroaLevel0": "Ninguna",
+      "varroaLevel1": "Baja",
+      "varroaLevel2": "Media",
+      "varroaLevel3": "Alta"
     },
     "fieldDefs": {
       "title": "Campos personalizados",

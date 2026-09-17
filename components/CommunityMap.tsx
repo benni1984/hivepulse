@@ -14,9 +14,9 @@ const OVERLAYS: { key: Overlay; label: string }[] = [
 
 const LEGEND: Record<Overlay, { color: string; label: string }[]> = {
   varroa: [
-    { color: '#22c55e', label: 'Low (< 2)' },
-    { color: '#f59e0b', label: 'Medium (2–5)' },
-    { color: '#ef4444', label: 'High (> 5)' },
+    { color: '#22c55e', label: 'None / low (< 1)' },
+    { color: '#f59e0b', label: 'Medium (1–2)' },
+    { color: '#ef4444', label: 'High (≥ 2)' },
     { color: '#9ca3af', label: 'No data' },
   ],
   mood: [
@@ -43,7 +43,8 @@ function cellColor(props: CommunityHeatmapProperties, ov: Overlay): string {
     case 'varroa': {
       const v = props.avg_varroa;
       if (v === null) return '#9ca3af';
-      return v < 2 ? '#22c55e' : v < 5 ? '#f59e0b' : '#ef4444';
+      // avg_varroa is the mean varroa level: 0 none, 1 low, 2 medium, 3 high
+      return v < 1 ? '#22c55e' : v < 2 ? '#f59e0b' : '#ef4444';
     }
     case 'mood': {
       const s = props.mood_score;

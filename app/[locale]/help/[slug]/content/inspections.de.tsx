@@ -46,7 +46,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Inspektion speichern — Datum- und Varroazähl-Felder sind sichtbar" />
+        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Inspektion speichern — Datum und Varroa-Befall sind sichtbar" />
       </section>
 
       <section className="help-section">
@@ -55,13 +55,12 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
         <h3 style={{ fontSize: '.95rem', fontWeight: 700, marginBottom: 12, color: 'var(--text-primary)' }}>Völkergesundheit</h3>
         <div className="help-stat-grid">
           <div className="help-stat-card">
-            <div className="help-stat-card-name">Varroazählung</div>
+            <div className="help-stat-card-name">Varroa-Befall</div>
             <div className="help-stat-card-desc">
-              Anzahl der gefundenen Varroa-destructor-Milben in einer Probenwaschung (Puderzucker- oder Alkoholwaschung von ~100 Bienen).
-              Dies ist der wichtigste Gesundheitsindikator — hohe Milbenlasten verkürzen die Lebenserwartung der Arbeitsbienen, schwächen das Volk und übertragen Viren.
+              Wie stark das Volk mit Varroa-destructor-Milben befallen ist, als Stufe Keine, Schwach, Mittel oder Stark. Beurteilen Sie ihn anhand einer Probenwaschung (Puderzucker- oder Alkoholwaschung von ~100 Bienen) oder einer Windel. Dies ist der wichtigste Gesundheitsindikator — hohe Milbenlasten verkürzen die Lebenserwartung der Arbeitsbienen, schwächen das Volk und übertragen Viren.
             </div>
-            <span className="help-stat-card-good">Gut: 0–2 Milben pro 100</span>{' '}
-            <span className="help-stat-card-warn">Handeln: 3+ Milben pro 100</span>
+            <span className="help-stat-card-good">Gut: Keine oder Schwach (0–2 Milben pro 100)</span>{' '}
+            <span className="help-stat-card-warn">Handeln: Mittel oder Stark (3+ Milben pro 100)</span>
           </div>
           <div className="help-stat-card">
             <div className="help-stat-card-name">Volksstimmung</div>
@@ -117,8 +116,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           <div className="help-stat-card">
             <div className="help-stat-card-name">Volksstärke</div>
             <div className="help-stat-card-desc">
-              Subjektive 1–5-Skala für die Gesamtstärke des Volkes. Nützlich, wenn Sie die relative
-              Population verfolgen möchten, ohne einzelne Rähmchen zu zählen.
+              Ihr Gesamteindruck, wie stark das Volk ist: Schwach, Mittel oder Stark. Nützlich, wenn Sie die relative Population verfolgen möchten, ohne einzelne Rähmchen zu zählen.
             </div>
           </div>
         </div>
@@ -158,7 +156,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
         <h2 className="help-section-title">Tipps</h2>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Notieren Sie Varroazählungen konsequent mit derselben Methode (Puderzucker- oder Alkoholwaschung), damit das Trenddiagramm über alle Inspektionen hinweg vergleichbar ist.</p>
+          <p>Beurteilen Sie den Varroa-Befall immer auf dieselbe Weise (gleiche Probenmethode, gleiche Grenzen), damit das Trenddiagramm über alle Inspektionen hinweg vergleichbar ist.</p>
         </div>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />

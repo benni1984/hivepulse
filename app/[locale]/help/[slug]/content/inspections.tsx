@@ -46,7 +46,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Saving an inspection — the date and varroa count fields are visible" />
+        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Saving an inspection — the date and varroa level fields are visible" />
       </section>
 
       <section className="help-section">
@@ -55,13 +55,12 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
         <h3 style={{ fontSize: '.95rem', fontWeight: 700, marginBottom: 12, color: 'var(--text-primary)' }}>Colony health</h3>
         <div className="help-stat-grid">
           <div className="help-stat-card">
-            <div className="help-stat-card-name">Varroa count</div>
+            <div className="help-stat-card-name">Varroa level</div>
             <div className="help-stat-card-desc">
-              Number of Varroa destructor mites found in a sample wash (sugar roll or alcohol wash of ~100 bees).
-              This is the most important health indicator — high mite loads reduce worker lifespan, weaken the colony, and transmit viruses.
+              How heavily the colony is infested with Varroa destructor mites, chosen as None, Low, Medium or High. Judge it from a sample wash (sugar roll or alcohol wash of ~100 bees) or a sticky board. This is the most important health indicator — high mite loads shorten worker lifespan, weaken the colony, and transmit viruses.
             </div>
-            <span className="help-stat-card-good">Good: 0–2 mites per 100</span>{' '}
-            <span className="help-stat-card-warn">Act: 3+ mites per 100</span>
+            <span className="help-stat-card-good">Good: None or Low (0–2 mites per 100)</span>{' '}
+            <span className="help-stat-card-warn">Act: Medium or High (3+ mites per 100)</span>
           </div>
           <div className="help-stat-card">
             <div className="help-stat-card-name">Colony mood</div>
@@ -117,8 +116,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           <div className="help-stat-card">
             <div className="help-stat-card-name">Population strength</div>
             <div className="help-stat-card-desc">
-              Subjective 1–5 scale for overall colony strength. Useful when you want to track relative
-              population without counting individual frames.
+              Your overall impression of how strong the colony is: Weak, Medium or Strong. Useful when you want to track relative population without counting individual frames.
             </div>
           </div>
         </div>
@@ -158,7 +156,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
         <h2 className="help-section-title">Tips</h2>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Record varroa counts consistently using the same method each time (sugar roll or alcohol wash) so the trend chart is comparable across inspections.</p>
+          <p>Judge the varroa level the same way each time (same sample method, same thresholds) so the trend chart is comparable across inspections.</p>
         </div>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />

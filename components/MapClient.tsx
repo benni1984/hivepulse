@@ -25,10 +25,10 @@ interface HeatmapData {
   }[];
 }
 
-// Highest varroa_count the app's inspection form accepts -- used to normalize
-// heat-layer intensity so the green->amber->red gradient lines up with the
-// same Low(<2)/Medium(2-5)/High(>5) thresholds shown in the legend.
-const VARROA_SCALE_MAX = 12;
+// avg_varroa is the mean varroa level (0 none … 3 high), so the heat-layer
+// intensity is normalised to that scale: green at none, amber around medium,
+// red at high.
+const VARROA_SCALE_MAX = 3;
 
 const GRADIENT_STOPS: [number, [number, number, number]][] = [
   [0, [0x22, 0xc5, 0x5e]],   // #22c55e green

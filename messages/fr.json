@@ -611,7 +611,11 @@
       "moodAggressive": "Agressive",
       "queenNotRecorded": "Non enregistré",
       "moodTitle": "Répartition des humeurs",
-      "noMoodData": "Pas encore de données d'humeur."
+      "noMoodData": "Pas encore de données d'humeur.",
+      "varroaLevel0": "Aucune",
+      "varroaLevel1": "Faible",
+      "varroaLevel2": "Moyenne",
+      "varroaLevel3": "Élevée"
     },
     "fieldDefs": {
       "title": "Champs personnalisés",
