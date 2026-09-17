@@ -23,6 +23,28 @@ export function newsText(entry: NewsEntry, locale: string): NewsText {
 export const NEWS: NewsEntry[] = [
   {
     date: '2026-09-17',
+    tag: 'fix',
+    text: {
+      en: {
+        title: 'Make an Apiary Public Later, and News in Your Language',
+        body: 'An apiary could only be put on the public map when you first created it — in the iPhone app not even then, and editing an apiary on the iPhone quietly discarded your changes. Both apps now let you edit an apiary at any time, including the "Show on public map" switch, and your changes are saved. Only public apiaries appear on the community map and count towards its figures. On the website, news posts now appear in your language, the Asian hornet photo in the hornet tracker is back, and the top navigation no longer cuts off the download button with longer German or French labels.',
+      },
+      de: {
+        title: 'Bienenstand nachträglich öffentlich machen, und News in deiner Sprache',
+        body: 'Einen Bienenstand konntest du bisher nur beim Anlegen auf die öffentliche Karte bringen — in der iPhone-App nicht einmal dann, und Änderungen an einem Bienenstand gingen auf dem iPhone stillschweigend verloren. In beiden Apps kannst du einen Bienenstand jetzt jederzeit bearbeiten, auch den Schalter „Auf öffentlicher Karte anzeigen“, und die Änderungen werden gespeichert. Nur öffentliche Bienenstände erscheinen auf der Gemeinschaftskarte und zählen in ihren Zahlen mit. Auf der Website erscheinen die News jetzt in deiner Sprache, das Foto der Asiatischen Hornisse im Hornissentracker ist zurück, und die obere Navigation schneidet den Download-Knopf bei längeren deutschen oder französischen Texten nicht mehr ab.',
+      },
+      fr: {
+        title: 'Rendre un rucher public après coup, et les actualités dans votre langue',
+        body: "Un rucher ne pouvait être placé sur la carte publique qu'au moment de sa création — et pas même alors dans l'application iPhone, où les modifications d'un rucher étaient perdues sans prévenir. Les deux applications permettent désormais de modifier un rucher à tout moment, y compris l'option « Afficher sur la carte publique », et vos changements sont enregistrés. Seuls les ruchers publics apparaissent sur la carte communautaire et comptent dans ses chiffres. Sur le site, les actualités s'affichent maintenant dans votre langue, la photo du frelon asiatique est de retour dans le suivi des frelons, et la navigation en haut de page ne coupe plus le bouton de téléchargement avec des libellés allemands ou français plus longs.",
+      },
+      es: {
+        title: 'Haz público un colmenar más tarde, y noticias en tu idioma',
+        body: 'Hasta ahora un colmenar solo podía aparecer en el mapa público si lo marcabas al crearlo, y en la app de iPhone ni siquiera entonces; además, los cambios en un colmenar se perdían sin aviso en el iPhone. Ambas apps permiten ahora editar un colmenar en cualquier momento, incluido el interruptor «Mostrar en el mapa público», y los cambios se guardan. Solo los colmenares públicos aparecen en el mapa de la comunidad y cuentan en sus cifras. En la web, las noticias se muestran ya en tu idioma, la foto del avispón asiático ha vuelto al rastreador de avispones y la navegación superior ya no corta el botón de descarga con textos más largos en alemán o francés.',
+      },
+    },
+  },
+  {
+    date: '2026-09-17',
     tag: 'feature',
     text: {
       en: {
