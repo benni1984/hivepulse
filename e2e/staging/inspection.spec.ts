@@ -32,9 +32,9 @@ test('create, edit, and delete an inspection', async ({ page }) => {
     await expect(form.locator('h2')).toContainText('Log Inspection');
 
     // Date is pre-filled with today; fill the other fields
-    await form.locator('input[type="number"][min="0"]').first().fill('3');        // varroa_count
-    await form.locator('select.dash-profile-select').nth(0).selectOption('calm'); // mood
-    await form.locator('select.dash-profile-select').nth(1).selectOption('true'); // queen_seen
+    await form.locator('select.dash-profile-select').nth(0).selectOption('1');    // varroa_level (low)
+    await form.locator('select.dash-profile-select').nth(1).selectOption('calm'); // mood
+    await form.locator('select.dash-profile-select').nth(2).selectOption('true'); // queen_seen
     await form.locator('input[type="number"][max="10"]').fill('5');               // brood_frames
 
     await form.locator('button.dash-submit-btn').click();
@@ -47,16 +47,12 @@ test('create, edit, and delete an inspection', async ({ page }) => {
     const form = page.locator('.dash-inline-form');
     await expect(form.locator('h2')).toContainText('Edit Inspection');
 
-    // Update varroa count from 3 → 7
-    const varroaInput = form.locator('input[type="number"][min="0"]').first();
-    await varroaInput.clear();
-    await varroaInput.fill('7');
+    // Update varroa level from low → high
+    await form.locator('select.dash-profile-select').nth(0).selectOption('3');
 
     await form.locator('button.dash-submit-btn').click();
     await expect(page.locator('.dash-success-banner')).toBeVisible({ timeout: 10_000 });
-    // Exact match — a plain substring match on '7' also matches the date cell
-    // whenever the day/month is 7, 17, or 27 (e.g. "7/7/2026").
-    await expect(page.locator('table.dash-inspection-table td', { hasText: /^7$/ })).toBeVisible();
+    await expect(page.locator('table.dash-inspection-table td', { hasText: /^High$/ })).toBeVisible();
   });
 
   await test.step('delete inspection', async () => {
