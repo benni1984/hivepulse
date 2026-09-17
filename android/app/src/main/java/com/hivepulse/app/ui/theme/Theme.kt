@@ -6,13 +6,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
-private val LightColors = lightColorScheme(
+internal val LightColors = lightColorScheme(
     primary            = Amber500,
     onPrimary          = Stone900,
     primaryContainer   = Amber200,
     onPrimaryContainer = Amber900,
     secondary          = Forest600,
     onSecondary        = Color.White,
+    // Tonal surfaces (FilledTonalIconButton, chips). Without these, Material falls back to its
+    // default lilac, which is what the number steppers used to show.
+    secondaryContainer   = Amber200,
+    onSecondaryContainer = Amber900,
     background         = Stone50,
     onBackground       = Stone900,
     surface            = Color.White,
