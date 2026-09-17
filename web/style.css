@@ -204,7 +204,7 @@ h1, h2, h3, .lead { text-wrap: pretty; }
 .site-nav.page-nav { background: rgba(255, 255, 255, .98); }
 
 .nav-inner {
-  max-width: 1140px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: 0 28px;
   height: 68px;
@@ -500,6 +500,15 @@ h1, h2, h3, .lead { text-wrap: pretty; }
   transition: transform .2s, opacity .2s;
 }
 
+/* German/French labels are long: below this width the download pill no longer fits next to
+   the account button, so it drops out (the landing page has its own store buttons). */
+@media (max-width: 1360px) {
+  .nav-inner { gap: 16px; }
+  .nav-links { gap: 4px; }
+  .nav-right { gap: 10px; }
+  .nav-right .nav-cta { display: none; }
+}
+
 @media (max-width: 1080px) {
   .nav-inner { gap: 14px; }
   .nav-links { gap: 4px; }
@@ -507,7 +516,8 @@ h1, h2, h3, .lead { text-wrap: pretty; }
   .nav-logo-tagline { display: none; }
 }
 
-@media (max-width: 840px) {
+/* Hamburger below 1000px: with German labels and the account button the pill row no longer fits */
+@media (max-width: 1000px) {
   .nav-toggle { display: flex; }
   .nav-right .nav-cta { display: none; }
   .nav-right .nav-help-btn { display: none; }
@@ -535,7 +545,7 @@ h1, h2, h3, .lead { text-wrap: pretty; }
   .lang-dropdown { right: auto; left: 0; }
 }
 
-@media (max-width: 840px) {
+@media (max-width: 1000px) {
   .nav-inner { padding: 0 16px; gap: 10px; }
   .nav-logo { min-width: 0; gap: 9px; }
   .nav-logo svg { width: 32px; height: 32px; }
