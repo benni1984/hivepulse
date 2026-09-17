@@ -70,7 +70,8 @@ fun ApiaryListScreen(
                     }
                 }
                 else -> LazyColumn(
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+                    // Bottom padding leaves room for the floating action button over the last card
+                    contentPadding = PaddingValues(start = 16.dp, top = 12.dp, end = 16.dp, bottom = 88.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     state.error?.let { item { ErrorBanner(it) { vm.clearError() } } }

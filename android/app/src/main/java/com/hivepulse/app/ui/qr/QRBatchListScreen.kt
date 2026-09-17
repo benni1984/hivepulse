@@ -42,7 +42,11 @@ fun QRBatchListScreen(
     ) { padding ->
         when {
             state.isLoading -> LoadingScreen()
-            else -> LazyColumn(Modifier.padding(padding)) {
+            else -> LazyColumn(
+                Modifier.padding(padding),
+                // Room for the floating action button, so the last batch stays reachable
+                contentPadding = PaddingValues(bottom = 88.dp),
+            ) {
                 state.error?.let { item { ErrorBanner(it) { vm.clearError() } } }
                 if (state.batches.isEmpty()) {
                     item {
