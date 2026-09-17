@@ -67,10 +67,15 @@ export default function HomePage() {
             </div>
           </div>
           <div className="hero-phone-wrap" data-aos="fade-left" data-aos-delay="120">
-            <div className="hero-phone">
-              <div className="hero-phone-screen">
-                <span>{t('hero.phoneLabel')}</span>
-              </div>
+            {/* Real app screens. android-hive-detail.png is refreshed by the "Update help page
+                screenshots" workflow; ios-apiaries.png comes from the iOS CI screenshot run. */}
+            <div className="hero-phone hero-phone-back">
+              <img src="/docs/screenshots/ios-apiaries.png" alt={t('hero.phoneLabel')}
+                width={603} height={1311} loading="eager" decoding="async" />
+            </div>
+            <div className="hero-phone hero-phone-front">
+              <img src="/docs/screenshots/android-hive-detail.png" alt=""
+                width={1080} height={2400} loading="eager" decoding="async" />
             </div>
           </div>
         </div>

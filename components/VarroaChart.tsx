@@ -3,7 +3,8 @@ import { useEffect, useRef } from 'react';
 
 interface Point { date: string; value: number; }
 
-export default function VarroaChart({ data }: { data: Point[] }) {
+/** Values are varroa levels 0–3; `levelLabels[i]` names level i on the y axis (none … high). */
+export default function VarroaChart({ data, levelLabels }: { data: Point[]; levelLabels?: string[] }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -29,14 +30,21 @@ export default function VarroaChart({ data }: { data: Point[] }) {
           responsive: true,
           plugins: { legend: { display: false } },
           scales: {
-            y: { beginAtZero: true, ticks: { stepSize: 1 } },
+            y: {
+              min: 0,
+              max: 3,
+              ticks: {
+                stepSize: 1,
+                callback: (value: string | number) => levelLabels?.[Number(value)] ?? value,
+              },
+            },
             x: { ticks: { maxRotation: 45, maxTicksLimit: 12 } },
           },
         },
       });
     });
     return () => { chart?.destroy(); };
-  }, [data]);
+  }, [data, levelLabels]);
 
   return <canvas ref={canvasRef} />;
 }

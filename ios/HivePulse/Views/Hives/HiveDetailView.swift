@@ -1,10 +1,17 @@
 import SwiftUI
 
 struct HiveDetailView: View {
-    let hive: HiveOut
+    @State private var hive: HiveOut
     let apiaryId: String
     @StateObject private var inspectionVM = InspectionViewModel()
+    @StateObject private var hiveVM = HiveViewModel()
     @State private var showAddInspection = false
+    @State private var showEdit = false
+
+    init(hive: HiveOut, apiaryId: String) {
+        _hive = State(initialValue: hive)
+        self.apiaryId = apiaryId
+    }
     @State private var showStats = false
     @State private var showQR = false
 
@@ -56,6 +63,9 @@ struct HiveDetailView: View {
         .hpScreenBackground()
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
+                Button { showEdit = true } label: { Image(systemName: "pencil") }
+                    .accessibilityLabel(NSLocalizedString("screen.editHive", comment: ""))
+                    .accessibilityIdentifier("editHiveButton")
                 Button { showQR = true } label: { Image(systemName: "qrcode") }
                 Button { showStats = true } label: { Image(systemName: "chart.xyaxis.line") }
                 Button { showAddInspection = true } label: { Image(systemName: "plus") }
@@ -68,6 +78,12 @@ struct HiveDetailView: View {
             InspectionFormView(hiveId: hive.id, apiaryId: apiaryId, mode: .create) { req in
                 _ = try await inspectionVM.create(hiveId: hive.id, request: req)
                 showAddInspection = false
+            }
+        }
+        .sheet(isPresented: $showEdit) {
+            HiveEditView(hive: hive) { name, hiveType, acquisitionDate, notes in
+                hive = try await hiveVM.update(hive.id, name: name, hiveType: hiveType,
+                                               notes: notes, acquisitionDate: acquisitionDate)
             }
         }
         .sheet(isPresented: $showStats) {
@@ -106,8 +122,8 @@ private struct InspectionRow: View {
                     Label(mood.capitalized, systemImage: moodIcon(mood))
                         .font(.caption).foregroundColor(moodColor(mood))
                 }
-                if let varroa = inspection.varroaCount {
-                    Label("\(varroa)", systemImage: "ant").font(.caption).foregroundColor(.secondary)
+                if let level = inspection.varroaLevel {
+                    Label(InspectionScale.varroaLabel(level), systemImage: "ant").font(.caption).foregroundColor(.secondary)
                 }
                 if inspection.queenSeen == true {
                     Label(NSLocalizedString("label.queenSeen", comment: ""), systemImage: "crown")

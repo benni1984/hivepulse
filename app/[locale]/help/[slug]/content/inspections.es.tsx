@@ -46,7 +46,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Guardando una inspección — los campos fecha y conteo de varroa son visibles" />
+        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Guardando una inspección — los campos fecha e infestación de varroa son visibles" />
       </section>
 
       <section className="help-section">
@@ -55,13 +55,12 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
         <h3 style={{ fontSize: '.95rem', fontWeight: 700, marginBottom: 12, color: 'var(--text-primary)' }}>Salud de la colonia</h3>
         <div className="help-stat-grid">
           <div className="help-stat-card">
-            <div className="help-stat-card-name">Conteo de varroa</div>
+            <div className="help-stat-card-name">Infestación de varroa</div>
             <div className="help-stat-card-desc">
-              Número de ácaros Varroa destructor encontrados en un lavado de muestra (lavado con azúcar o alcohol de ~100 abejas).
-              Este es el indicador de salud más importante — una carga alta de ácaros reduce la vida útil de las obreras, debilita la colonia y transmite virus.
+              Cuánto está infestada la colonia por ácaros Varroa destructor, elegido entre Ninguna, Baja, Media o Alta. Evalúela con un lavado de muestra (azúcar glas o alcohol con ~100 abejas) o una bandeja. Es el indicador de salud más importante: una carga alta de ácaros acorta la vida de las obreras, debilita la colonia y transmite virus.
             </div>
-            <span className="help-stat-card-good">Bueno: 0–2 ácaros por 100</span>{' '}
-            <span className="help-stat-card-warn">Actuar: 3+ ácaros por 100</span>
+            <span className="help-stat-card-good">Bien: Ninguna o Baja (0–2 ácaros por 100)</span>{' '}
+            <span className="help-stat-card-warn">Actuar: Media o Alta (3+ ácaros por 100)</span>
           </div>
           <div className="help-stat-card">
             <div className="help-stat-card-name">Estado de ánimo de la colonia</div>
@@ -117,8 +116,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           <div className="help-stat-card">
             <div className="help-stat-card-name">Fuerza de la población</div>
             <div className="help-stat-card-desc">
-              Escala subjetiva de 1–5 para la fuerza general de la colonia. Útil cuando desea rastrear la población relativa
-              sin contar marcos individuales.
+              Su impresión general de la fuerza de la colonia: Débil, Media o Fuerte. Útil cuando desea rastrear la población relativa sin contar marcos individuales.
             </div>
           </div>
         </div>
@@ -158,7 +156,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
         <h2 className="help-section-title">Consejos</h2>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Registre los conteos de varroa de forma consistente usando el mismo método (lavado con azúcar o alcohol) para que el gráfico de tendencias sea comparable entre inspecciones.</p>
+          <p>Evalúe la infestación de varroa siempre de la misma forma (mismo método de muestreo, mismos umbrales) para que el gráfico de tendencias sea comparable entre inspecciones.</p>
         </div>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />

@@ -123,7 +123,7 @@
 "stat.queenSeenRate" = "Königin gesehen";
 "stat.swarmAlerts" = "Schwarmmeldungen";
 "stat.moodDistribution" = "Volksstimmung";
-"stat.varroaTrend" = "Varroa-Verlauf";
+"stat.varroaTrend" = "Varroa-Befall";
 "stat.broodFrames" = "Brutwaben";
 "stat.honeyFrames" = "Honigwaben";
 "stat.weight" = "Gewicht (kg)";
@@ -335,9 +335,9 @@
 "heatmap.overlay.mood" = "Volksstimmung";
 "heatmap.overlay.swarm" = "Schwarmdruck";
 "heatmap.overlay.brood" = "Brutgesundheit";
-"heatmap.varroa.low" = "Niedrig (< 2)";
-"heatmap.varroa.medium" = "Mittel (2–5)";
-"heatmap.varroa.high" = "Hoch (> 5)";
+"heatmap.varroa.low" = "Keine / schwach (< 1)";
+"heatmap.varroa.medium" = "Mittel (1–2)";
+"heatmap.varroa.high" = "Stark (≥ 2)";
 "heatmap.mood.good" = "Gut (≥ 70 % ruhig)";
 "heatmap.mood.fair" = "Mittel (40–70 %)";
 "heatmap.mood.low" = "Niedrig (< 40 %)";
@@ -390,3 +390,14 @@
 "queenColor.red" = "Rot";
 "queenColor.green" = "Grün";
 "queenColor.blue" = "Blau";
+
+/* Inspection word scales and hive editing */
+"field.varroaLevel" = "Varroa-Befall";
+"varroaLevel.0" = "Keine";
+"varroaLevel.1" = "Schwach";
+"varroaLevel.2" = "Mittel";
+"varroaLevel.3" = "Stark";
+"strength.1" = "Schwach";
+"strength.2" = "Mittel";
+"strength.3" = "Stark";
+"screen.editHive" = "Bienenstock bearbeiten";

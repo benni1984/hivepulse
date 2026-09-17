@@ -35,6 +35,14 @@ final class HiveDetailUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["New Inspection"].waitForExistence(timeout: 5))
     }
 
+    func test_hiveDetail_editButtonOpensEditForm() {
+        app.buttons["editHiveButton"].tap()
+        XCTAssertTrue(app.navigationBars["Edit Hive"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.textFields["hiveEditName"].value as? String, "Hive Alpha")
+        app.buttons["Cancel"].tap()
+        XCTAssertTrue(app.navigationBars["Hive Alpha"].waitForExistence(timeout: 5))
+    }
+
     // MARK: - Helper
 
     private func navigateToHiveDetail() {

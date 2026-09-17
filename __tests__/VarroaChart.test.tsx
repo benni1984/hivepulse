@@ -37,6 +37,15 @@ describe('VarroaChart', () => {
     expect(config.data.labels).toEqual(['2024-01-01', '2024-02-01']);
   });
 
+  it('shows the varroa levels 0–3 as words on the y axis', async () => {
+    render(<VarroaChart data={[{ date: '2024-01-01', value: 2 }]} levelLabels={['None', 'Low', 'Medium', 'High']} />);
+    await waitFor(() => expect(MockChart).toHaveBeenCalled());
+    const [, config] = MockChart.mock.calls[0] as [HTMLCanvasElement, { options: { scales: { y: { min: number; max: number; ticks: { callback: (v: number) => string } } } } }];
+    expect(config.options.scales.y.min).toBe(0);
+    expect(config.options.scales.y.max).toBe(3);
+    expect(config.options.scales.y.ticks.callback(2)).toBe('Medium');
+  });
+
   it('destroys Chart instance on unmount', async () => {
     const data = [{ date: '2024-01-01', value: 3 }];
     const { unmount } = render(<VarroaChart data={data} />);

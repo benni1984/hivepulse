@@ -117,7 +117,7 @@ class InspectionFormViewModelTest {
     private fun request() = InspectionCreateRequest(
         date = "2024-06-01", queenSeen = true, queenColor = "yellow",
         broodFrames = 5, honeyFrames = 3, mood = "calm",
-        populationStrength = 8, varroaCount = 2, swarmCellsSeen = false,
+        populationStrength = 3, varroaLevel = 1, swarmCellsSeen = false,
         treatmentApplied = null, feedingDone = false, feedingType = null,
         weightKg = 45.5, notes = "Looks good"
     )
@@ -125,7 +125,7 @@ class InspectionFormViewModelTest {
     private fun inspection(id: String) = InspectionOut(
         id = id, hiveId = "h1", date = "2024-06-01", queenSeen = true,
         queenColor = "yellow", broodFrames = 5, honeyFrames = 3, mood = "calm",
-        populationStrength = 8, varroaCount = 2, swarmCellsSeen = false,
+        populationStrength = 3, varroaLevel = 1, varroaCount = null, swarmCellsSeen = false,
         treatmentApplied = null, feedingDone = false, feedingType = null,
         weightKg = 45.5, notes = "Looks good", customFields = emptyMap(),
         createdAt = "2024-06-01"

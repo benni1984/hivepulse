@@ -611,7 +611,11 @@
       "moodAggressive": "Aggressiv",
       "queenNotRecorded": "Nicht erfasst",
       "moodTitle": "Stimmungsverteilung",
-      "noMoodData": "Noch keine Stimmungsdaten."
+      "noMoodData": "Noch keine Stimmungsdaten.",
+      "varroaLevel0": "Keine",
+      "varroaLevel1": "Schwach",
+      "varroaLevel2": "Mittel",
+      "varroaLevel3": "Stark"
     },
     "fieldDefs": {
       "title": "Eigene Felder",

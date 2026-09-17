@@ -26,12 +26,12 @@ struct InspectionDetailView: View {
 
             Section(NSLocalizedString("section.colony", comment: "")) {
                 if let v = inspection.mood       { InfoRow(label: NSLocalizedString("field.mood", comment: ""), value: v.capitalized) }
-                if let v = inspection.populationStrength { InfoRow(label: NSLocalizedString("field.populationStrength", comment: ""), value: "\(v)/5") }
+                if let v = inspection.populationStrength { InfoRow(label: NSLocalizedString("field.populationStrength", comment: ""), value: InspectionScale.strengthLabel(v)) }
                 if let v = inspection.swarmCellsSeen { InfoRow(label: NSLocalizedString("field.swarmCellsSeen", comment: ""), value: v ? NSLocalizedString("label.yes", comment: "") : NSLocalizedString("label.no", comment: "")) }
             }
 
             Section(NSLocalizedString("section.varroa", comment: "")) {
-                if let v = inspection.varroaCount { InfoRow(label: NSLocalizedString("field.varroaCount", comment: ""), value: "\(v)") }
+                if let v = inspection.varroaLevel { InfoRow(label: NSLocalizedString("field.varroaLevel", comment: ""), value: InspectionScale.varroaLabel(v)) }
             }
 
             Section(NSLocalizedString("section.treatment", comment: "")) {

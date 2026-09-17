@@ -90,6 +90,30 @@ class HiveDetailScreenTest {
     }
 
     @Test
+    fun hiveDetail_editButtonOpensPrefilledDialog() {
+        navigateToHiveDetail()
+        composeRule.onNodeWithContentDescription("Edit hive").performClick()
+        composeRule.onNodeWithTag("hiveEditName").assertTextContains("Hive Alpha")
+    }
+
+    @Test
+    fun hiveDetail_savingEditsUpdatesTheHive() {
+        val sent = slot<HiveUpdateRequest>()
+        coEvery { apiService.updateHive("hive-1", capture(sent)) } returns hive.copy(name = "Hive Beta")
+        navigateToHiveDetail()
+
+        composeRule.onNodeWithContentDescription("Edit hive").performClick()
+        composeRule.onNodeWithTag("hiveEditName").performTextReplacement("Hive Beta")
+        composeRule.onNodeWithTag("hiveEditSave").performClick()
+
+        coVerify(timeout = 3_000) { apiService.updateHive("hive-1", any()) }
+        Assert.assertEquals("Hive Beta", sent.captured.name)
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Hive Beta").fetchSemanticsNodes().isNotEmpty()
+        }
+    }
+
+    @Test
     fun hiveDetail_qrButtonNavigatesToQrScreen() {
         navigateToHiveDetail()
         composeRule.onNodeWithContentDescription("View QR Code").performClick()

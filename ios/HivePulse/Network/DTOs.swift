@@ -357,7 +357,11 @@ struct InspectionOut: Codable, Identifiable {
     let broodFrames: Int?
     let honeyFrames: Int?
     let mood: String?
+    /// 1 weak, 2 medium, 3 strong
     let populationStrength: Int?
+    /// 0 none, 1 low, 2 medium, 3 high
+    let varroaLevel: Int?
+    /// Retired mite count, still returned for older inspections
     let varroaCount: Int?
     let swarmCellsSeen: Bool?
     let treatmentApplied: String?
@@ -376,6 +380,7 @@ struct InspectionOut: Codable, Identifiable {
         case honeyFrames      = "honey_frames"
         case mood
         case populationStrength = "population_strength"
+        case varroaLevel      = "varroa_level"
         case varroaCount      = "varroa_count"
         case swarmCellsSeen   = "swarm_cells_seen"
         case treatmentApplied = "treatment_applied"
@@ -395,7 +400,7 @@ struct InspectionCreateRequest: Encodable {
     let honeyFrames: Int?
     let mood: String?
     let populationStrength: Int?
-    let varroaCount: Int?
+    let varroaLevel: Int?
     let swarmCellsSeen: Bool?
     let treatmentApplied: String?
     let feedingDone: Bool?
@@ -411,7 +416,7 @@ struct InspectionCreateRequest: Encodable {
         case honeyFrames      = "honey_frames"
         case mood
         case populationStrength = "population_strength"
-        case varroaCount      = "varroa_count"
+        case varroaLevel      = "varroa_level"
         case swarmCellsSeen   = "swarm_cells_seen"
         case treatmentApplied = "treatment_applied"
         case feedingDone      = "feeding_done"

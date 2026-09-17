@@ -79,7 +79,7 @@ describe('HivePage', () => {
   function setupMocks({
     hive = { id: 'hive-1', name: 'Hive Alpha', hive_type: 'langstroth', apiary_id: 'apiary-1' },
     stats = { inspection_count: 0, varroa_trend: [] as { date: string; value: number }[], mood_distribution: { calm: 0, nervous: 0, aggressive: 0 } },
-    inspections = [] as { id: string; date: string; varroa_count?: number; mood?: string; queen_seen?: boolean; brood_frames?: number; custom_fields?: Record<string, unknown> }[],
+    inspections = [] as { id: string; date: string; varroa_level?: number; mood?: string; queen_seen?: boolean; brood_frames?: number; custom_fields?: Record<string, unknown> }[],
   } = {}) {
     mockGetHive.mockResolvedValueOnce(hive);
     mockGetHiveStats.mockResolvedValueOnce(stats);
@@ -102,12 +102,12 @@ describe('HivePage', () => {
   it('renders inspection table rows when inspections exist', async () => {
     setupMocks({
       inspections: [
-        { id: 'i-1', date: '2024-06-01', varroa_count: 3, mood: 'calm', queen_seen: true, brood_frames: 5 },
-        { id: 'i-2', date: '2024-07-01', varroa_count: 0, mood: 'nervous', queen_seen: false, brood_frames: 4 },
+        { id: 'i-1', date: '2024-06-01', varroa_level: 2, mood: 'calm', queen_seen: true, brood_frames: 5 },
+        { id: 'i-2', date: '2024-07-01', varroa_level: 0, mood: 'nervous', queen_seen: false, brood_frames: 4 },
       ],
     });
     render(<HivePage />);
-    await waitFor(() => expect(screen.getByText('3')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('hive.varroaLevel2')).toBeInTheDocument());
     expect(screen.getByText('calm')).toBeInTheDocument();
     expect(screen.getByText('hive.yes')).toBeInTheDocument();
     expect(screen.getByText('hive.no')).toBeInTheDocument();
@@ -253,7 +253,7 @@ describe('HivePage', () => {
 
   it('submitting create form calls createInspection and prepends the new row', async () => {
     setupMocks();
-    const newInspection = { id: 'i-new', date: '2024-08-01', varroa_count: 2, mood: 'calm', queen_seen: true, brood_frames: 4 };
+    const newInspection = { id: 'i-new', date: '2024-08-01', varroa_level: 1, mood: 'calm', queen_seen: true, brood_frames: 4 };
     mockCreateInspection.mockResolvedValueOnce(newInspection);
     render(<HivePage />);
     await waitFor(() => screen.getByText('Hive Alpha'));
@@ -264,7 +264,7 @@ describe('HivePage', () => {
     await waitFor(() => expect(mockCreateInspection).toHaveBeenCalledWith(
       'hive-1', expect.objectContaining({ date: expect.any(String) })
     ));
-    await waitFor(() => expect(screen.getByText('2')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('hive.varroaLevel1')).toBeInTheDocument());
     expect(screen.queryByText('hive.addInspectionTitle')).not.toBeInTheDocument();
     expect(screen.getByText('hive.inspectionSaveSuccess')).toBeInTheDocument();
   });
@@ -281,45 +281,45 @@ describe('HivePage', () => {
 
   it('Edit button on inspection row opens edit form pre-filled', async () => {
     setupMocks({
-      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_count: 3, mood: 'calm', queen_seen: true, brood_frames: 5 }],
+      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_level: 2, mood: 'calm', queen_seen: true, brood_frames: 5 }],
     });
     render(<HivePage />);
-    await waitFor(() => screen.getByText('3'));
+    await waitFor(() => screen.getByText('hive.varroaLevel2'));
     fireEvent.click(screen.getByText('hive.inspectionEditBtn'));
     expect(screen.getByText('hive.editInspectionTitle')).toBeInTheDocument();
     expect(screen.getByText('hive.inspectionUpdateBtn')).toBeInTheDocument();
     expect(screen.getByDisplayValue('2024-06-01')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('3')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('hive.varroaLevel2')).toBeInTheDocument();
   });
 
   it('submitting edit form calls updateInspection and updates the row', async () => {
     setupMocks({
-      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_count: 3, mood: 'calm', queen_seen: true, brood_frames: 5 }],
+      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_level: 2, mood: 'calm', queen_seen: true, brood_frames: 5 }],
     });
-    const updated = { id: 'i-1', date: '2024-06-01', varroa_count: 7, mood: 'nervous', queen_seen: false, brood_frames: 5 };
+    const updated = { id: 'i-1', date: '2024-06-01', varroa_level: 3, mood: 'nervous', queen_seen: false, brood_frames: 5 };
     mockUpdateInspection.mockResolvedValueOnce(updated);
     render(<HivePage />);
-    await waitFor(() => screen.getByText('3'));
+    await waitFor(() => screen.getByText('hive.varroaLevel2'));
 
     fireEvent.click(screen.getByText('hive.inspectionEditBtn'));
-    const varroaInput = screen.getByDisplayValue('3');
-    fireEvent.change(varroaInput, { target: { value: '7' } });
+    const varroaSelect = screen.getByDisplayValue('hive.varroaLevel2');
+    fireEvent.change(varroaSelect, { target: { value: '3' } });
     fireEvent.submit(screen.getByText('hive.inspectionUpdateBtn').closest('form')!);
 
     await waitFor(() => expect(mockUpdateInspection).toHaveBeenCalledWith(
-      'i-1', expect.objectContaining({ varroa_count: 7 })
+      'i-1', expect.objectContaining({ varroa_level: 3 })
     ));
-    await waitFor(() => expect(screen.getByText('7')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('hive.varroaLevel3')).toBeInTheDocument());
     expect(screen.queryByText('hive.editInspectionTitle')).not.toBeInTheDocument();
     expect(screen.getByText('hive.inspectionUpdateSuccess')).toBeInTheDocument();
   });
 
   it('Delete button shows confirmation step', async () => {
     setupMocks({
-      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_count: 3, mood: 'calm', queen_seen: true, brood_frames: 5 }],
+      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_level: 2, mood: 'calm', queen_seen: true, brood_frames: 5 }],
     });
     render(<HivePage />);
-    await waitFor(() => screen.getByText('3'));
+    await waitFor(() => screen.getByText('hive.varroaLevel2'));
     fireEvent.click(screen.getByText('hive.inspectionDeleteBtn'));
     expect(screen.getByText('hive.inspectionConfirmDeleteText')).toBeInTheDocument();
     expect(screen.getByText('hive.inspectionConfirmDeleteBtn')).toBeInTheDocument();
@@ -327,28 +327,28 @@ describe('HivePage', () => {
 
   it('confirming delete calls deleteInspection and removes the row', async () => {
     setupMocks({
-      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_count: 3, mood: 'calm', queen_seen: true, brood_frames: 5 }],
+      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_level: 2, mood: 'calm', queen_seen: true, brood_frames: 5 }],
     });
     mockDeleteInspection.mockResolvedValueOnce(undefined);
     render(<HivePage />);
-    await waitFor(() => screen.getByText('3'));
+    await waitFor(() => screen.getByText('hive.varroaLevel2'));
     fireEvent.click(screen.getByText('hive.inspectionDeleteBtn'));
     fireEvent.click(screen.getByText('hive.inspectionConfirmDeleteBtn'));
     await waitFor(() => expect(mockDeleteInspection).toHaveBeenCalledWith('i-1'));
-    expect(screen.queryByText('3')).not.toBeInTheDocument();
+    expect(screen.queryByText('hive.varroaLevel2')).not.toBeInTheDocument();
   });
 
   it('shows error when deleteInspection fails and row stays', async () => {
     setupMocks({
-      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_count: 3, mood: 'calm', queen_seen: true, brood_frames: 5 }],
+      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_level: 2, mood: 'calm', queen_seen: true, brood_frames: 5 }],
     });
     mockDeleteInspection.mockRejectedValueOnce(new Error('Delete failed'));
     render(<HivePage />);
-    await waitFor(() => screen.getByText('3'));
+    await waitFor(() => screen.getByText('hive.varroaLevel2'));
     fireEvent.click(screen.getByText('hive.inspectionDeleteBtn'));
     fireEvent.click(screen.getByText('hive.inspectionConfirmDeleteBtn'));
     await waitFor(() => expect(screen.getByText('Delete failed')).toBeInTheDocument());
-    expect(screen.getByText('3')).toBeInTheDocument();
+    expect(screen.getByText('hive.varroaLevel2')).toBeInTheDocument();
   });
 
   it('shows inspection count stat pill', async () => {
@@ -412,7 +412,7 @@ describe('HivePage', () => {
     const fieldDef = { id: 'fd-1', scope: 'user', apiary_id: null, target: 'inspection', name: 'Honey kg', type: 'number', options: [], required: false, default_value: null, sort_order: 0 };
     mockGetUserFieldDefs.mockResolvedValueOnce([fieldDef]);
     setupMocks();
-    const newInspection = { id: 'i-new', date: '2024-08-01', varroa_count: null, mood: null, queen_seen: null, brood_frames: null, custom_fields: { 'fd-1': 12.5 } };
+    const newInspection = { id: 'i-new', date: '2024-08-01', varroa_level: null, mood: null, queen_seen: null, brood_frames: null, custom_fields: { 'fd-1': 12.5 } };
     mockCreateInspection.mockResolvedValueOnce(newInspection);
     render(<HivePage />);
     await waitFor(() => screen.getByText('Hive Alpha'));
@@ -431,10 +431,10 @@ describe('HivePage', () => {
     const fieldDef = { id: 'fd-1', scope: 'user', apiary_id: null, target: 'inspection', name: 'Honey kg', type: 'number', options: [], required: false, default_value: null, sort_order: 0 };
     mockGetUserFieldDefs.mockResolvedValueOnce([fieldDef]);
     setupMocks({
-      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_count: 3, mood: 'calm', queen_seen: true, brood_frames: 5, custom_fields: { 'fd-1': 8 } }],
+      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_level: 2, mood: 'calm', queen_seen: true, brood_frames: 5, custom_fields: { 'fd-1': 8 } }],
     });
     render(<HivePage />);
-    await waitFor(() => screen.getByText('3'));
+    await waitFor(() => screen.getByText('hive.varroaLevel2'));
     fireEvent.click(screen.getByText('hive.inspectionEditBtn'));
     await waitFor(() => expect(screen.getByText('Honey kg')).toBeInTheDocument());
     expect(screen.getByDisplayValue('8')).toBeInTheDocument();
@@ -455,8 +455,8 @@ describe('HivePage', () => {
   // ── Pagination ─────────────────────────────────────────────────────────────
 
   it('shows Load More button when multiple pages exist and appends next page on click', async () => {
-    const page1 = [{ id: 'i-1', date: '2024-06-01', varroa_count: 3, mood: 'calm', queen_seen: true, brood_frames: 5 }];
-    const page2 = [{ id: 'i-2', date: '2024-07-01', varroa_count: 9, mood: 'nervous', queen_seen: false, brood_frames: 2 }];
+    const page1 = [{ id: 'i-1', date: '2024-06-01', varroa_level: 2, mood: 'calm', queen_seen: true, brood_frames: 5 }];
+    const page2 = [{ id: 'i-2', date: '2024-07-01', varroa_level: 3, mood: 'nervous', queen_seen: false, brood_frames: 2 }];
     mockGetHive.mockResolvedValueOnce({ id: 'hive-1', name: 'Hive Alpha', hive_type: 'langstroth', apiary_id: 'apiary-1' });
     mockGetHiveStats.mockResolvedValueOnce({ inspection_count: 2, varroa_trend: [], mood_distribution: { calm: 0, nervous: 0, aggressive: 0 } });
     mockGetInspections.mockResolvedValueOnce({ items: page1, total: 2, page: 1, per_page: 1, pages: 2 });
@@ -464,14 +464,14 @@ describe('HivePage', () => {
 
     render(<HivePage />);
     await waitFor(() => expect(screen.getByText('hive.inspectionLoadMore')).toBeInTheDocument());
-    expect(screen.getByText('3')).toBeInTheDocument();
-    expect(screen.queryByText('9')).not.toBeInTheDocument();
+    expect(screen.getByText('hive.varroaLevel2')).toBeInTheDocument();
+    expect(screen.queryByText('hive.varroaLevel3')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByText('hive.inspectionLoadMore'));
 
     await waitFor(() => expect(mockGetInspections).toHaveBeenCalledWith('hive-1', 2));
-    await waitFor(() => expect(screen.getByText('9')).toBeInTheDocument());
-    expect(screen.getByText('3')).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText('hive.varroaLevel3')).toBeInTheDocument());
+    expect(screen.getByText('hive.varroaLevel2')).toBeInTheDocument();
     expect(screen.queryByText('hive.inspectionLoadMore')).not.toBeInTheDocument();
   });
 
@@ -479,10 +479,10 @@ describe('HivePage', () => {
 
   it('shows Export CSV and Export JSON buttons when inspections exist', async () => {
     setupMocks({
-      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_count: 3, mood: 'calm', queen_seen: true, brood_frames: 5 }],
+      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_level: 2, mood: 'calm', queen_seen: true, brood_frames: 5 }],
     });
     render(<HivePage />);
-    await waitFor(() => screen.getByText('3'));
+    await waitFor(() => screen.getByText('hive.varroaLevel2'));
     expect(screen.getByText('hive.exportCsv')).toBeInTheDocument();
     expect(screen.getByText('hive.exportJson')).toBeInTheDocument();
   });
@@ -497,7 +497,7 @@ describe('HivePage', () => {
 
   it('calls exportHiveInspections with csv format when Export CSV is clicked', async () => {
     setupMocks({
-      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_count: 3, mood: 'calm', queen_seen: true, brood_frames: 5 }],
+      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_level: 2, mood: 'calm', queen_seen: true, brood_frames: 5 }],
     });
     mockExportHiveInspections.mockResolvedValueOnce(new Blob(['date,varroa\n2024-06-01,3'], { type: 'text/csv' }));
     const createObjectURL = vi.fn(() => 'blob:fake');
@@ -512,7 +512,7 @@ describe('HivePage', () => {
 
   it('hides Load More button when on last page', async () => {
     setupMocks({
-      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_count: 3, mood: 'calm', queen_seen: true, brood_frames: 5 }],
+      inspections: [{ id: 'i-1', date: '2024-06-01', varroa_level: 2, mood: 'calm', queen_seen: true, brood_frames: 5 }],
     });
     render(<HivePage />);
     await waitFor(() => screen.getByText('Hive Alpha'));

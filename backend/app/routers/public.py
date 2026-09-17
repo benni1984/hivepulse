@@ -80,7 +80,7 @@ def global_stats(db: DB):
         db.query(
             Inspection.hive_id,
             Inspection.date,
-            Inspection.varroa_count,
+            Inspection.varroa_level,
             Inspection.mood,
             Inspection.brood_frames,
         )
@@ -92,7 +92,7 @@ def global_stats(db: DB):
 
     inspection_count = len(inspections)
 
-    varroa_values = [i.varroa_count for i in inspections if i.varroa_count is not None]
+    varroa_values = [i.varroa_level for i in inspections if i.varroa_level is not None]
     avg_varroa = round(sum(varroa_values) / len(varroa_values), 2) if varroa_values else None
 
     mood_dist: dict = defaultdict(int)
@@ -153,7 +153,7 @@ def public_apiary(apiary_id: str, db: DB, accept_language: str = "en"):
     if all_inspections:
         last_date = str(max(i.date for i in all_inspections))
 
-    varroa_values = [i.varroa_count for i in all_inspections if i.varroa_count is not None]
+    varroa_values = [i.varroa_level for i in all_inspections if i.varroa_level is not None]
     avg_varroa = round(sum(varroa_values) / len(varroa_values), 2) if varroa_values else None
 
     mood_dist: dict = defaultdict(int)
@@ -189,13 +189,13 @@ def public_apiary(apiary_id: str, db: DB, accept_language: str = "en"):
 
 @router.get("/heatmap")
 def public_heatmap(db: DB) -> Dict[str, Any]:
-    """GeoJSON FeatureCollection of ~0.5° grid cells with average varroa counts."""
+    """GeoJSON FeatureCollection of ~0.5° grid cells with average varroa levels (0–3)."""
     rows = (
         db.query(
             Apiary.id,
             Apiary.city_latitude,
             Apiary.city_longitude,
-            Inspection.varroa_count,
+            Inspection.varroa_level,
         )
         .join(Hive, Hive.apiary_id == Apiary.id)
         .join(Inspection, Inspection.hive_id == Hive.id)
@@ -203,7 +203,7 @@ def public_heatmap(db: DB) -> Dict[str, Any]:
             Apiary.is_public.is_(True),
             Apiary.city_latitude.isnot(None),
             Apiary.city_longitude.isnot(None),
-            Inspection.varroa_count.isnot(None),
+            Inspection.varroa_level.isnot(None),
         )
         .all()
     )

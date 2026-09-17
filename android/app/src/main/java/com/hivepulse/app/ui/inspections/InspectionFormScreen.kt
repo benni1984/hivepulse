@@ -79,6 +79,30 @@ class InspectionFormViewModel @Inject constructor(
     fun clearError() = _state.update { it.copy(error = null) }
 }
 
+/**
+ * Colony strength is chosen as weak / medium / strong and stored as 1–3.
+ * (It used to send 1 / 5 / 9, and the API only accepted 1–5, so "strong" never saved.)
+ */
+internal fun populationStrengthFor(index: Int?): Int? = index?.takeIf { it in 0..2 }?.plus(1)
+
+/** Varroa is chosen as none / low / medium / high and stored as the 0–3 varroa level. */
+internal fun varroaLevelFor(index: Int?): Int? = index?.takeIf { it in 0..3 }
+
+/** Word for a stored colony strength (1–3). */
+fun strengthLabelRes(value: Int): Int = when (value) {
+    1 -> R.string.population_low
+    2 -> R.string.population_medium
+    else -> R.string.population_high
+}
+
+/** Word for a stored varroa level (0–3). */
+fun varroaLabelRes(level: Int): Int = when (level) {
+    0 -> R.string.varroa_level_0
+    1 -> R.string.varroa_level_1
+    2 -> R.string.varroa_level_2
+    else -> R.string.varroa_level_3
+}
+
 /** Steps the weight text field in 0.5 kg increments, clamped at zero; a blank field starts from 0. */
 internal fun steppedWeight(current: String, delta: Double): String {
     val value = current.replace(',', '.').toDoubleOrNull() ?: 0.0
@@ -119,11 +143,11 @@ fun InspectionFormScreen(
 
     // Colony
     var moodIdx         by remember { mutableStateOf<Int?>(null) }
-    var populationIdx   by remember { mutableStateOf<Int?>(null) }  // 0=low,1=medium,2=high
+    var populationIdx   by remember { mutableStateOf<Int?>(null) }  // 0=weak,1=medium,2=strong
     var swarmCellsIdx   by remember { mutableStateOf<Int?>(null) }  // 0=?,1=yes,2=no
 
     // Varroa
-    var varroaCount     by remember { mutableStateOf(0) }
+    var varroaIdx       by remember { mutableStateOf<Int?>(null) }  // 0=none,1=low,2=medium,3=high
 
     // Treatment
     var treatment       by remember { mutableStateOf("") }
@@ -140,7 +164,6 @@ fun InspectionFormScreen(
     fun queenSeenBool()  = when (queenSeenIdx)  { 1 -> true; 2 -> false; else -> null }
     fun swarmCellsBool() = when (swarmCellsIdx) { 1 -> true; 2 -> false; else -> null }
     fun feedingBool()    = when (feedingIdx)    { 1 -> true; 2 -> false; else -> null }
-    fun populationInt()  = when (populationIdx) { 0 -> 1; 1 -> 5; 2 -> 9; else -> null }
 
     if (showDatePicker) {
         DatePickerDialog(
@@ -252,8 +275,16 @@ fun InspectionFormScreen(
             // ── Varroa ───────────────────────────────────────────────────────
             FormSectionTitle(stringResource(R.string.section_varroa))
             SectionCard {
-                NumberStepper(label = stringResource(R.string.field_varroa_count), value = varroaCount,
-                    onValueChange = { varroaCount = it }, min = 0, max = 999)
+                ToggleButtonGroup(
+                    label    = stringResource(R.string.field_varroa_level),
+                    options  = listOf(stringResource(R.string.varroa_level_0),
+                                      stringResource(R.string.varroa_level_1),
+                                      stringResource(R.string.varroa_level_2),
+                                      stringResource(R.string.varroa_level_3)),
+                    selected = varroaIdx,
+                    onSelect = { varroaIdx = it },
+                    allowNone = true,
+                )
             }
 
             // ── Treatment ────────────────────────────────────────────────────
@@ -375,8 +406,8 @@ fun InspectionFormScreen(
                         broodFrames        = broodFrames.takeIf { it > 0 },
                         honeyFrames        = honeyFrames.takeIf { it > 0 },
                         mood               = moodIdx?.let { moodOptions[it] },
-                        populationStrength = populationInt(),
-                        varroaCount        = varroaCount.takeIf { it > 0 },
+                        populationStrength = populationStrengthFor(populationIdx),
+                        varroaLevel        = varroaLevelFor(varroaIdx),
                         swarmCellsSeen     = swarmCellsBool(),
                         treatmentApplied   = treatment.ifBlank { null },
                         feedingDone        = feedingBool(),

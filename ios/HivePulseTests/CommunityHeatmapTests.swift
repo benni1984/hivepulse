@@ -59,10 +59,11 @@ final class CommunityHeatmapTests: XCTestCase {
     // MARK: - Levels (thresholds mirror web + Android)
 
     func test_varroaLevels() {
-        XCTAssertEqual(props(varroa: 1.9).level(for: .varroa), .good)
-        XCTAssertEqual(props(varroa: 2).level(for: .varroa), .fair)
-        XCTAssertEqual(props(varroa: 4.9).level(for: .varroa), .fair)
-        XCTAssertEqual(props(varroa: 5).level(for: .varroa), .poor)
+        // avg_varroa is the mean varroa level (0 none … 3 high)
+        XCTAssertEqual(props(varroa: 0.9).level(for: .varroa), .good)
+        XCTAssertEqual(props(varroa: 1).level(for: .varroa), .fair)
+        XCTAssertEqual(props(varroa: 1.9).level(for: .varroa), .fair)
+        XCTAssertEqual(props(varroa: 2).level(for: .varroa), .poor)
         XCTAssertEqual(props(varroa: nil).level(for: .varroa), .noData)
     }
 

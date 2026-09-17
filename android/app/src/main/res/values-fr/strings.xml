@@ -30,9 +30,9 @@
     <string name="heatmap_overlay_mood">Humeur des colonies</string>
     <string name="heatmap_overlay_swarm">Pression d\'essaimage</string>
     <string name="heatmap_overlay_brood">Santé du couvain</string>
-    <string name="heatmap_varroa_low">Faible (&lt; 2)</string>
-    <string name="heatmap_varroa_medium">Moyen (2–5)</string>
-    <string name="heatmap_varroa_high">Élevé (&gt; 5)</string>
+    <string name="heatmap_varroa_low">Aucune / faible (&lt; 1)</string>
+    <string name="heatmap_varroa_medium">Moyenne (1–2)</string>
+    <string name="heatmap_varroa_high">Élevée (≥ 2)</string>
     <string name="heatmap_mood_good" formatted="false">Bonne (≥ 70 % calme)</string>
     <string name="heatmap_mood_fair" formatted="false">Moyenne (40–70 %)</string>
     <string name="heatmap_mood_low" formatted="false">Faible (&lt; 40 %)</string>
@@ -179,7 +179,7 @@
     <string name="stat_queen_seen_rate">Taux d\'observation de la reine</string>
     <string name="stat_swarm_cells">Événements d\'essaimage</string>
     <string name="stat_mood_distribution">Répartition de l\'humeur</string>
-    <string name="stat_varroa_trend">Évolution du Varroa</string>
+    <string name="stat_varroa_trend">Infestation varroa</string>
     <string name="stat_brood_trend">Évolution des cadres de couvain</string>
     <string name="stat_honey_trend">Évolution des cadres de miel</string>
     <string name="stat_weight_trend">Évolution du poids</string>
@@ -284,7 +284,7 @@
     <string name="mood_aggressive">😡 Agressive</string>
     <string name="population_low">Faible</string>
     <string name="population_medium">Moyenne</string>
-    <string name="population_high">Élevée</string>
+    <string name="population_high">Forte</string>
     <string name="label_yes">✓ Oui</string>
     <string name="label_no">✗ Non</string>
     <string name="queen_color_white">Blanc</string>
@@ -292,4 +292,14 @@
     <string name="queen_color_red">Rouge</string>
     <string name="queen_color_green">Vert</string>
     <string name="queen_color_blue">Bleu</string>
+    <!-- Inspection word scales and hive editing -->
+    <string name="field_varroa_level">Infestation varroa</string>
+    <string name="varroa_level_0">Aucune</string>
+    <string name="varroa_level_1">Faible</string>
+    <string name="varroa_level_2">Moyenne</string>
+    <string name="varroa_level_3">Élevée</string>
+    <string name="title_edit_hive">Modifier la ruche</string>
+    <string name="field_hive_name_edit">Nom de la ruche</string>
+    <string name="action_save_hive">Enregistrer</string>
+    <string name="hint_acquisition_date">AAAA-MM-JJ</string>
 </resources>

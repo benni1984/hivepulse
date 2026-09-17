@@ -10,7 +10,7 @@ final class InspectionViewModelTests: XCTestCase {
     private let minimalRequest = InspectionCreateRequest(
         date: "2024-07-01", queenSeen: nil, queenColor: nil,
         broodFrames: nil, honeyFrames: nil, mood: nil, populationStrength: nil,
-        varroaCount: nil, swarmCellsSeen: nil, treatmentApplied: nil,
+        varroaLevel: nil, swarmCellsSeen: nil, treatmentApplied: nil,
         feedingDone: nil, feedingType: nil, weightKg: nil, notes: nil,
         customFields: [:]
     )

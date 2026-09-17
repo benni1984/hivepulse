@@ -118,9 +118,10 @@ describe('CommunityMap', () => {
     render(<CommunityMap data={heatmap} />);
     await waitFor(() => expect(mockGeoJSON).toHaveBeenCalled());
     const [, options] = mockGeoJSON.mock.calls[0] as unknown as [CommunityHeatmap, GeoJSONOptions];
-    expect(options.style(makeFeature({ avg_varroa: 1 })).fillColor).toBe('#22c55e');
-    expect(options.style(makeFeature({ avg_varroa: 3 })).fillColor).toBe('#f59e0b');
-    expect(options.style(makeFeature({ avg_varroa: 6 })).fillColor).toBe('#ef4444');
+    // avg_varroa is the mean level (0 none … 3 high)
+    expect(options.style(makeFeature({ avg_varroa: 0.5 })).fillColor).toBe('#22c55e');
+    expect(options.style(makeFeature({ avg_varroa: 1.5 })).fillColor).toBe('#f59e0b');
+    expect(options.style(makeFeature({ avg_varroa: 2.5 })).fillColor).toBe('#ef4444');
     expect(options.style(makeFeature({ avg_varroa: null })).fillColor).toBe('#9ca3af');
   });
 

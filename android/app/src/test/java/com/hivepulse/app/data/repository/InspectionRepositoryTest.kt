@@ -75,7 +75,7 @@ class InspectionRepositoryTest {
     private fun request() = InspectionCreateRequest(
         date = "2024-06-01", queenSeen = null, queenColor = null,
         broodFrames = null, honeyFrames = null, mood = null,
-        populationStrength = null, varroaCount = null, swarmCellsSeen = null,
+        populationStrength = null, varroaLevel = null, swarmCellsSeen = null,
         treatmentApplied = null, feedingDone = null, feedingType = null,
         weightKg = null, notes = null
     )

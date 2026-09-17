@@ -88,7 +88,7 @@ class MembersScreenTest {
             composeRule.onAllNodesWithText("Varroa Risk").fetchSemanticsNodes().isNotEmpty()
         }
         composeRule.onNodeWithText("Regional Health Map").performScrollTo().assertIsDisplayed()
-        composeRule.onNodeWithText("Low (< 2)").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("None / low (< 1)").performScrollTo().assertIsDisplayed()
     }
 
     @Test

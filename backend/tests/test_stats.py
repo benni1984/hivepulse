@@ -68,11 +68,11 @@ def heatmap_seed(auth_client):
         "qr_token": token, "apiary_id": apiary["id"], "name": "H1", "hive_type": "langstroth"
     }).json()
     auth_client.post(f"/api/v1/hives/{hive['id']}/inspections", json={
-        "date": "2026-04-01", "varroa_count": 3, "mood": "calm",
+        "date": "2026-04-01", "varroa_level": 3, "mood": "calm",
         "brood_frames": 5, "swarm_cells_seen": True,
     })
     auth_client.post(f"/api/v1/hives/{hive['id']}/inspections", json={
-        "date": "2026-04-15", "varroa_count": 1, "mood": "calm",
+        "date": "2026-04-15", "varroa_level": 1, "mood": "calm",
         "brood_frames": 6, "swarm_cells_seen": False,
     })
     return apiary, hive

@@ -16,7 +16,7 @@ router = APIRouter(tags=["export"])
 _STD_FIELDS = [
     "id", "hive_id", "date", "queen_seen", "queen_color",
     "brood_frames", "honey_frames", "mood", "population_strength",
-    "varroa_count", "swarm_cells_seen", "treatment_applied",
+    "varroa_level", "varroa_count", "swarm_cells_seen", "treatment_applied",
     "feeding_done", "feeding_type", "weight_kg", "notes", "created_at",
 ]
 

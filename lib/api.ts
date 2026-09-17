@@ -419,13 +419,14 @@ export interface User { id: string; email: string; name: string; locale: string;
 export interface Apiary { id: string; name: string; hive_count: number; is_public: boolean; description?: string; address?: string; latitude?: number; longitude?: number; created_at: string; }
 export interface Hive { id: string; name: string; hive_type: string; apiary_id: string; last_inspection_at?: string; notes?: string; acquisition_date?: string; }
 export interface Inspection {
-  id: string; date: string; varroa_count?: number; mood?: string;
+  id: string; date: string; varroa_level?: number | null; varroa_count?: number | null; mood?: string;
   queen_seen?: boolean; brood_frames?: number; honey_frames?: number;
   custom_fields?: Record<string, unknown>;
 }
 export interface InspectionInput {
   date: string;
-  varroa_count?: number | null;
+  /** 0 none, 1 low, 2 medium, 3 high */
+  varroa_level?: number | null;
   mood?: string | null;
   queen_seen?: boolean | null;
   brood_frames?: number | null;

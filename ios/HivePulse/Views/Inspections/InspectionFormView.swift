@@ -19,7 +19,7 @@ struct InspectionFormView: View {
     @State private var honeyFrames: Int? = nil
     @State private var mood: String? = nil
     @State private var populationStrength: Int? = nil
-    @State private var varroaCount: Int? = nil
+    @State private var varroaLevel: Int? = nil
     @State private var swarmCellsSeen: Bool? = nil
     @State private var treatmentApplied = ""
     @State private var feedingDone: Bool? = nil
@@ -33,7 +33,6 @@ struct InspectionFormView: View {
 
     private let apiaryService = ApiaryService()
     private let moods = ["calm", "nervous", "aggressive"]
-    private let queenColors = ["white", "yellow", "red", "green", "blue"]
     private let dateFormatter: DateFormatter = {
         let f = DateFormatter()
         f.dateFormat = "yyyy-MM-dd"
@@ -51,15 +50,7 @@ struct InspectionFormView: View {
                     OptionalToggle(label: NSLocalizedString("field.queenSeen", comment: ""), value: $queenSeen)
 
                     if queenSeen == true {
-                        Picker(NSLocalizedString("field.queenColor", comment: ""), selection: Binding(
-                            get: { queenColor ?? "" },
-                            set: { queenColor = $0.isEmpty ? nil : $0 }
-                        )) {
-                            Text(NSLocalizedString("label.unknown", comment: "")).tag("")
-                            ForEach(queenColors, id: \.self) { c in
-                                Text(NSLocalizedString("queenColor.\(c)", comment: "")).tag(c)
-                            }
-                        }
+                        QueenColorDots(selection: $queenColor)
                     }
                 }
 
@@ -79,12 +70,20 @@ struct InspectionFormView: View {
                         }
                     }
 
-                    OptionalStepper(label: NSLocalizedString("field.populationStrength", comment: ""), value: $populationStrength, range: 1...5)
+                    ScaleChoice(label: NSLocalizedString("field.populationStrength", comment: ""),
+                                options: InspectionScale.strengthLevels,
+                                title: InspectionScale.strengthLabel,
+                                value: $populationStrength,
+                                identifier: "populationStrengthPicker")
                     OptionalToggle(label: NSLocalizedString("field.swarmCellsSeen", comment: ""), value: $swarmCellsSeen)
                 }
 
                 Section(NSLocalizedString("section.varroa", comment: "")) {
-                    OptionalIntField(label: NSLocalizedString("field.varroaCount", comment: ""), value: $varroaCount)
+                    ScaleChoice(label: NSLocalizedString("field.varroaLevel", comment: ""),
+                                options: InspectionScale.varroaLevels,
+                                title: InspectionScale.varroaLabel,
+                                value: $varroaLevel,
+                                identifier: "varroaLevelPicker")
                 }
 
                 Section(NSLocalizedString("section.treatment", comment: "")) {
@@ -176,7 +175,7 @@ struct InspectionFormView: View {
         honeyFrames        = i.honeyFrames
         mood               = i.mood
         populationStrength = i.populationStrength
-        varroaCount        = i.varroaCount
+        varroaLevel        = i.varroaLevel
         swarmCellsSeen     = i.swarmCellsSeen
         treatmentApplied   = i.treatmentApplied ?? ""
         feedingDone        = i.feedingDone
@@ -226,7 +225,7 @@ struct InspectionFormView: View {
             honeyFrames:        honeyFrames,
             mood:               mood,
             populationStrength: populationStrength,
-            varroaCount:        varroaCount,
+            varroaLevel:        varroaLevel,
             swarmCellsSeen:     swarmCellsSeen,
             treatmentApplied:   treatmentApplied.isEmpty ? nil : treatmentApplied,
             feedingDone:        feedingDone,

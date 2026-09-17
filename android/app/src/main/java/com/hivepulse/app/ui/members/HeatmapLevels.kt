@@ -8,8 +8,9 @@ enum class HeatmapOverlay { VARROA, MOOD, SWARM, BROOD }
 enum class HeatLevel { GOOD, FAIR, POOR, NO_DATA }
 
 fun heatLevel(props: CommunityHeatmapProperties, overlay: HeatmapOverlay): HeatLevel = when (overlay) {
+    // avgVarroa is the mean varroa level: 0 none, 1 low, 2 medium, 3 high
     HeatmapOverlay.VARROA -> props.avgVarroa?.let {
-        if (it < 2) HeatLevel.GOOD else if (it < 5) HeatLevel.FAIR else HeatLevel.POOR
+        if (it < 1) HeatLevel.GOOD else if (it < 2) HeatLevel.FAIR else HeatLevel.POOR
     } ?: HeatLevel.NO_DATA
     HeatmapOverlay.MOOD -> props.moodScore?.let {
         if (it >= 70) HeatLevel.GOOD else if (it >= 40) HeatLevel.FAIR else HeatLevel.POOR

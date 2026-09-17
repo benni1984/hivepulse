@@ -308,14 +308,14 @@ describe('getHive', () => {
 describe('createInspection', () => {
   it('sends POST /hives/{id}/inspections and returns new inspection', async () => {
     localStorage.setItem('access_token', 'tok');
-    const inspection = { id: 'i-1', date: '2024-06-01', varroa_count: 3, mood: 'calm', queen_seen: true, brood_frames: 5 };
+    const inspection = { id: 'i-1', date: '2024-06-01', varroa_level: 2, mood: 'calm', queen_seen: true, brood_frames: 5 };
     vi.mocked(fetch).mockResolvedValueOnce(ok(inspection, 201));
-    const result = await createInspection('h-1', { date: '2024-06-01', varroa_count: 3, mood: 'calm', queen_seen: true, brood_frames: 5 });
+    const result = await createInspection('h-1', { date: '2024-06-01', varroa_level: 2, mood: 'calm', queen_seen: true, brood_frames: 5 });
     expect(result).toEqual(inspection);
     const call = vi.mocked(fetch).mock.calls[0];
     expect((call[1] as RequestInit).method).toBe('POST');
     expect(String(call[0])).toContain('/hives/h-1/inspections');
-    expect(JSON.parse((call[1] as RequestInit).body as string)).toMatchObject({ date: '2024-06-01', varroa_count: 3 });
+    expect(JSON.parse((call[1] as RequestInit).body as string)).toMatchObject({ date: '2024-06-01', varroa_level: 2 });
   });
 
   it('throws with server message on failure', async () => {
@@ -328,9 +328,9 @@ describe('createInspection', () => {
 describe('updateInspection', () => {
   it('sends PUT /inspections/{id} and returns updated inspection', async () => {
     localStorage.setItem('access_token', 'tok');
-    const inspection = { id: 'i-1', date: '2024-06-01', varroa_count: 5, mood: 'nervous', queen_seen: false, brood_frames: 3 };
+    const inspection = { id: 'i-1', date: '2024-06-01', varroa_level: 3, mood: 'nervous', queen_seen: false, brood_frames: 3 };
     vi.mocked(fetch).mockResolvedValueOnce(ok(inspection));
-    const result = await updateInspection('i-1', { date: '2024-06-01', varroa_count: 5, mood: 'nervous' });
+    const result = await updateInspection('i-1', { date: '2024-06-01', varroa_level: 3, mood: 'nervous' });
     expect(result).toEqual(inspection);
     const call = vi.mocked(fetch).mock.calls[0];
     expect((call[1] as RequestInit).method).toBe('PUT');
