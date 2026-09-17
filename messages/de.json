@@ -128,7 +128,7 @@
     },
     "remind": {
       "title": "Erinnerungen an Kontrollen",
-      "desc": "Push-Benachrichtigungen, wenn ein Volk zu lange nicht kontrolliert wurde."
+      "desc": "Push-Benachrichtigungen und E-Mails, wenn ein Volk zu lange nicht kontrolliert wurde – jetzt live in den Apps und im Web."
     },
     "export": {
       "title": "Datenexport (CSV / JSON)",

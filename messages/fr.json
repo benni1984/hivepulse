@@ -128,7 +128,7 @@
     },
     "remind": {
       "title": "Rappels d'inspection",
-      "desc": "Notifications push quand une ruche est en retard d'inspection."
+      "desc": "Notifications push et e-mails quand une ruche est en retard d'inspection – désormais disponibles dans les applications et sur le web."
     },
     "export": {
       "title": "Export de données (CSV / JSON)",

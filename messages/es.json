@@ -128,7 +128,7 @@
     },
     "remind": {
       "title": "Recordatorios de inspección",
-      "desc": "Notificaciones push cuando una colmena lleva demasiado tiempo sin inspección."
+      "desc": "Notificaciones push y correos cuando una colmena lleva demasiado tiempo sin inspección: ya disponible en las apps y en la web."
     },
     "export": {
       "title": "Exportación de datos (CSV / JSON)",
