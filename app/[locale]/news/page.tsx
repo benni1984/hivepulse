@@ -18,6 +18,14 @@ export default function NewsPage() {
             <article className="news-card" data-aos="fade-up">
               <div className="news-date"><div className="day">17</div><div className="month">Sep 2026</div></div>
               <div className="news-body">
+                <span className="news-tag">Feature</span>
+                <h3>Words Instead of Numbers When You Inspect</h3>
+                <p>Recording an inspection at the hive is now quicker. Colony strength is a simple choice of weak, medium or strong, and varroa is recorded as none, low, medium or high instead of a mite count — both in the iOS and Android apps and on the website. Your earlier entries were converted automatically. The queen colour is picked by tapping a coloured dot. And you can finally edit a hive's name, type, acquisition date and notes directly in the apps, not only on the website. Strong colonies now save correctly in the Android app as well.</p>
+              </div>
+            </article>
+            <article className="news-card" data-aos="fade-up">
+              <div className="news-date"><div className="day">17</div><div className="month">Sep 2026</div></div>
+              <div className="news-body">
                 <span className="news-tag">Design</span>
                 <h3>A Lighter, Calmer HivePulse</h3>
                 <p>The website has a new look. The heavy dark green gave way to white and warm grey surfaces, and colour now signals what you are looking at: green for your apiaries and colonies, amber for notices, red for colony health and the hornet tracker, and blue-grey for statistics and help. The dashboard sidebar is light, figures are set in a clear monospaced font, and buttons are bigger and easier to hit. The HivePulse wordmark is rounder too. Nothing moved and every feature works exactly as before — it is simply easier on the eyes.</p>
