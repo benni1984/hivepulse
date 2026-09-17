@@ -189,7 +189,8 @@ class Inspection(Base):
     honey_frames = Column(Integer, nullable=True)
     mood = Column(SAEnum("calm", "nervous", "aggressive", name="mood_enum"), nullable=True)
     population_strength = Column(Integer, nullable=True)
-    varroa_count = Column(Integer, nullable=True)
+    varroa_count = Column(Integer, nullable=True)   # legacy mite count, kept for history
+    varroa_level = Column(Integer, nullable=True)   # 0 none, 1 low, 2 medium, 3 high
     swarm_cells_seen = Column(Boolean, nullable=True)
     treatment_applied = Column(String, nullable=True)
     feeding_done = Column(Boolean, nullable=True)

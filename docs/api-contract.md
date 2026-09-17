@@ -570,7 +570,8 @@ All fields optional.
   "brood_frames": "integer 0–10 | null",
   "honey_frames": "integer 0–10 | null",
   "mood": "calm | nervous | aggressive | null",
-  "population_strength": "integer 1–5 | null",
+  "population_strength": "integer 1–3 | null",
+  "varroa_level": "integer 0–3 | null",
   "varroa_count": "integer | null",
   "swarm_cells_seen": "boolean | null",
   "treatment_applied": "string | null",
@@ -584,6 +585,15 @@ All fields optional.
   "created_at": "datetime"
 }
 ```
+
+### Rating scales
+
+| Field | Values | Meaning |
+|-------|--------|---------|
+| `population_strength` | 1, 2, 3 | weak, medium, strong (subjective colony strength) |
+| `varroa_level` | 0, 1, 2, 3 | none, low, medium, high (subjective mite load) |
+
+Clients show these as word choices, not numbers. `varroa_count` is the retired mite count: it is still returned for older inspections, and a client that sends only `varroa_count` gets `varroa_level` derived from it (0 → 0, 1–2 → 1, 3–5 → 2, > 5 → 3). When both are sent, `varroa_level` wins. Migration 011 backfilled `varroa_level` the same way and rescaled `population_strength` from 1–5 (1–2 → 1, 3 → 2, 4–5 → 3).
 
 ### Queen color — SICAMM year cycle
 
@@ -607,8 +617,8 @@ All inspection fields are optional. Send only what was recorded during the visit
   "brood_frames": 4,
   "honey_frames": 3,
   "mood": "calm",
-  "population_strength": 4,
-  "varroa_count": 2,
+  "population_strength": 2,
+  "varroa_level": 1,
   "swarm_cells_seen": false,
   "treatment_applied": "Oxalic acid",
   "feeding_done": false,
@@ -663,8 +673,9 @@ Stats can be filtered by a preset window or an explicit date range. Both query p
     { "date": "2026-03-01", "treatment": "Oxalic acid" }
   ],
   "varroa_trend": [
-    { "date": "2026-04-01", "value": 3 }
+    { "date": "2026-04-01", "value": 2 }
   ],
+  "_note": "varroa_trend values are varroa_level (0–3)",
   "brood_frames_trend": [{ "date": "date", "value": "int" }],
   "honey_frames_trend": [{ "date": "date", "value": "int" }],
   "population_strength_trend": [{ "date": "date", "value": "int" }],
@@ -692,7 +703,7 @@ Stats can be filtered by a preset window or an explicit date range. Both query p
   "inspections_total": 48,
   "hives_inspected_last_30d": 4,
   "hives_not_inspected_30d": 1,
-  "average_varroa": 2.1,
+  "average_varroa": 1.4,
   "average_brood_frames": 4.8,
   "average_honey_frames": 3.2,
   "mood_distribution": { "calm": 40, "nervous": 6, "aggressive": 2 },
@@ -739,7 +750,7 @@ Requires `Authorization: Bearer <access_token>` for a **supporter or admin** acc
 }
 ```
 
-`mood_score` and `swarm_pct` are percentages (0–100). `avg_varroa`/`mood_score`/`avg_brood` are `null` for a cell if no inspections in that cell reported the underlying field.
+`avg_varroa` is the mean `varroa_level` (0–3). `mood_score` and `swarm_pct` are percentages (0–100). `avg_varroa`/`mood_score`/`avg_brood` are `null` for a cell if no inspections in that cell reported the underlying field.
 
 ---
 
@@ -761,7 +772,7 @@ Download all inspections for a single hive.
 ```
 
 **CSV response** (`text/csv`, `Content-Disposition: attachment; filename="hive_{id}_inspections.csv"`):
-Flat rows with columns: `id`, `hive_id`, `date`, `queen_seen`, `queen_color`, `brood_frames`, `honey_frames`, `mood`, `population_strength`, `varroa_count`, `swarm_cells_seen`, `treatment_applied`, `feeding_done`, `feeding_type`, `weight_kg`, `notes`, `created_at`, followed by one column per distinct custom-field key found across all inspections.
+Flat rows with columns: `id`, `hive_id`, `date`, `queen_seen`, `queen_color`, `brood_frames`, `honey_frames`, `mood`, `population_strength`, `varroa_level`, `varroa_count`, `swarm_cells_seen`, `treatment_applied`, `feeding_done`, `feeding_type`, `weight_kg`, `notes`, `created_at`, followed by one column per distinct custom-field key found across all inspections.
 
 ---
 
@@ -794,7 +805,7 @@ They expose only aggregate, anonymised data. Individual inspection records and u
 
 ### GET `/public/heatmap`
 
-Returns a GeoJSON FeatureCollection of ~0.5° grid cells (~50 km) showing average varroa mite counts from all public apiaries. Only cells with at least one varroa reading are included. Coordinates use city-level precision (privacy-protected centroids).
+Returns a GeoJSON FeatureCollection of ~0.5° grid cells (~50 km) showing the average `varroa_level` (0–3) from all public apiaries. Only cells with at least one varroa reading are included. Coordinates use city-level precision (privacy-protected centroids).
 
 **Response 200**
 
@@ -851,7 +862,7 @@ Returns platform-wide aggregate numbers and the coordinates of every apiary that
 The `apiaries` pin list includes **only** apiaries where `is_public = true` and coordinates could be resolved (either direct `latitude`/`longitude`, or forward-geocoded from the free-text `address` — see `POST /apiaries`). All other fields (`apiary_count`, `hive_count`, `inspection_count`, and the aggregates below) are computed over **all public apiaries**, regardless of whether coordinates could be resolved.
 
 Aggregate fields (computed over **all public apiaries**, not just those with GPS):
-- `avg_varroa_count` — mean `varroa_count` across public inspections that recorded it; `null` if none
+- `avg_varroa_count` — mean `varroa_level` (0–3) across public inspections that recorded it; `null` if none (name kept for compatibility)
 - `mood_distribution` — raw counts per mood value for public inspections that recorded mood
 - `avg_brood_frames` — mean `brood_frames` across public inspections that recorded it; `null` if none
 - `avg_inspection_interval_days` — mean days between consecutive inspections, averaged per hive then across all hives with ≥ 2 inspections; `null` if no hive qualifies
@@ -875,7 +886,7 @@ Returns a public summary of one apiary: location, hives, and aggregated inspecti
   "hive_count": 7,
   "inspection_count": 52,
   "last_inspection_date": "date | null",
-  "average_varroa": 2.1,
+  "average_varroa": 1.4,
   "mood_distribution": { "calm": 40, "nervous": 8, "aggressive": 2 },
   "hives": [
     {

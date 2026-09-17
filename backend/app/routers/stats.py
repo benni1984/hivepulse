@@ -103,7 +103,7 @@ def _build_hive_stats(hive: Hive, period: StatsPeriod, db: DB) -> HiveStats:
         mood_distribution=dict(mood_dist),
         swarm_cells_count=swarm_count,
         treatments=treatments,
-        varroa_trend=trend("varroa_count"),
+        varroa_trend=trend("varroa_level"),
         brood_frames_trend=trend("brood_frames"),
         honey_frames_trend=trend("honey_frames"),
         population_strength_trend=trend("population_strength"),
@@ -149,7 +149,7 @@ def apiary_stats(
 
     all_inspections = [i for h in apiary.hives for i in _filter_inspections(h.inspections, period)]
 
-    varroa_vals = [i.varroa_count for i in all_inspections if i.varroa_count is not None]
+    varroa_vals = [i.varroa_level for i in all_inspections if i.varroa_level is not None]
     brood_vals = [i.brood_frames for i in all_inspections if i.brood_frames is not None]
     honey_vals = [i.honey_frames for i in all_inspections if i.honey_frames is not None]
 
@@ -170,7 +170,7 @@ def apiary_stats(
         filtered = _filter_inspections(h.inspections, period)
         last_date = max((i.date for i in h.inspections), default=None) if h.inspections else None
         avg_varroa = None
-        vv = [i.varroa_count for i in filtered if i.varroa_count is not None]
+        vv = [i.varroa_level for i in filtered if i.varroa_level is not None]
         if vv:
             avg_varroa = round(sum(vv) / len(vv), 2)
         per_hive.append(HiveStatsSummary(
@@ -246,7 +246,7 @@ def community_heatmap(current_user: CurrentSupporter, db: DB) -> Dict[str, Any]:
             Apiary.id,
             Apiary.city_latitude,
             Apiary.city_longitude,
-            Inspection.varroa_count,
+            Inspection.varroa_level,
             Inspection.mood,
             Inspection.brood_frames,
             Inspection.swarm_cells_seen,

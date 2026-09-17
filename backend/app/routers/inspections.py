@@ -7,6 +7,7 @@ from app.deps import CurrentUser, DB
 from app.i18n import error
 from app.models import Hive, Inspection
 from app.schemas import InspectionCreate, InspectionOut, InspectionUpdate, PaginatedResponse
+from app.utils.scales import varroa_level_from_count
 
 router = APIRouter(tags=["inspections"])
 
@@ -59,7 +60,11 @@ def create_inspection(
     accept_language: Optional[str] = Header(default=None),
 ):
     _get_hive_or_404(hive_id, current_user.id, db, accept_language)
-    insp = Inspection(hive_id=hive_id, **body.model_dump())
+    data = body.model_dump()
+    # Older app builds still send a mite count; keep the level in step for them.
+    if data.get("varroa_level") is None and data.get("varroa_count") is not None:
+        data["varroa_level"] = varroa_level_from_count(data["varroa_count"])
+    insp = Inspection(hive_id=hive_id, **data)
     db.add(insp)
     db.commit()
     db.refresh(insp)
@@ -87,7 +92,10 @@ def update_inspection(
     accept_language: Optional[str] = Header(default=None),
 ):
     insp = _get_inspection_or_404(inspection_id, current_user.id, db, accept_language)
-    for field, value in body.model_dump(exclude_unset=True).items():
+    changes = body.model_dump(exclude_unset=True)
+    if "varroa_count" in changes and "varroa_level" not in changes:
+        changes["varroa_level"] = varroa_level_from_count(changes["varroa_count"])
+    for field, value in changes.items():
         setattr(insp, field, value)
     db.commit()
     db.refresh(insp)

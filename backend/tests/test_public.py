@@ -19,7 +19,7 @@ def seeded(auth_client):
                 "name": f"Hive {i+1}", "hive_type": "langstroth"
             }).json()
             auth_client.post(f"/api/v1/hives/{hive['id']}/inspections", json={
-                "date": "2026-04-01", "varroa_count": 3, "mood": "calm"
+                "date": "2026-04-01", "varroa_level": 3, "mood": "calm"
             })
 
     return apiary1, apiary2
@@ -147,7 +147,7 @@ def test_public_hides_user_data(client, seeded):
 
 def test_global_stats_aggregates(client, seeded):
     data = client.get("/api/v1/public/stats").json()
-    # seeded: 3 inspections all with varroa_count=3, mood="calm", no brood_frames set
+    # seeded: 3 inspections all with varroa_level=3, mood="calm", no brood_frames set
     assert data["avg_varroa_count"] == 3.0
     assert data["mood_distribution"]["calm"] == 3
     assert data["avg_brood_frames"] is None
@@ -185,7 +185,7 @@ def test_global_stats_query_count_does_not_grow_with_data(auth_client, client, d
             }).json()
             for day in ("2026-04-01", "2026-04-11"):
                 auth_client.post(f"/api/v1/hives/{hive['id']}/inspections", json={
-                    "date": day, "varroa_count": 2, "mood": "calm", "brood_frames": 4
+                    "date": day, "varroa_level": 2, "mood": "calm", "brood_frames": 4
                 })
 
     engine = db_session.get_bind()
@@ -299,10 +299,10 @@ def test_heatmap_excludes_private_apiaries(client, auth_client):
     hive = auth_client.post("/api/v1/hives/initialize", json={
         "qr_token": token, "apiary_id": private["id"], "name": "H", "hive_type": "langstroth"
     }).json()
-    auth_client.post(f"/api/v1/hives/{hive['id']}/inspections", json={"date": "2026-04-01", "varroa_count": 99})
+    auth_client.post(f"/api/v1/hives/{hive['id']}/inspections", json={"date": "2026-04-01", "varroa_level": 3})
     data = client.get("/api/v1/public/heatmap").json()
-    all_varroa = [f["properties"]["avg_varroa"] for f in data["features"]]
-    assert 99.0 not in all_varroa
+    # The only apiary with GPS and varroa data is private, so no cell may appear.
+    assert data["features"] == []
 
 
 def test_heatmap_excludes_inspections_without_varroa(client, auth_client):

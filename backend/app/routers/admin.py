@@ -341,7 +341,7 @@ def health_summary(admin: CurrentAdmin, db: DB) -> HealthSummary:
         .scalar() or 0
     )
     no_varroa_inspections = (
-        db.query(func.count(Inspection.id)).filter(Inspection.varroa_count.is_(None)).scalar() or 0
+        db.query(func.count(Inspection.id)).filter(Inspection.varroa_level.is_(None)).scalar() or 0
     )
     return HealthSummary(
         inactive_users=inactive_users,
@@ -397,7 +397,7 @@ def health_no_varroa_inspections(admin: CurrentAdmin, db: DB) -> list:
         .join(Hive, Hive.apiary_id == Apiary.id)
         .join(Inspection, Inspection.hive_id == Hive.id)
         .join(User, User.id == Apiary.user_id)
-        .filter(Inspection.varroa_count.is_(None))
+        .filter(Inspection.varroa_level.is_(None))
         .group_by(Apiary.id, Apiary.name, User.email)
         .order_by(func.count(Inspection.id).desc())
         .all()

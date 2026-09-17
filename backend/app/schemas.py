@@ -417,8 +417,9 @@ class InspectionCreate(BaseModel):
     brood_frames: Optional[int] = Field(default=None, ge=0, le=10)
     honey_frames: Optional[int] = Field(default=None, ge=0, le=10)
     mood: Optional[str] = Field(default=None, pattern="^(calm|nervous|aggressive)$")
-    population_strength: Optional[int] = Field(default=None, ge=1, le=5)
-    varroa_count: Optional[int] = Field(default=None, ge=0)
+    population_strength: Optional[int] = Field(default=None, ge=1, le=3)  # 1 weak, 2 medium, 3 strong
+    varroa_level: Optional[int] = Field(default=None, ge=0, le=3)  # 0 none, 1 low, 2 medium, 3 high
+    varroa_count: Optional[int] = Field(default=None, ge=0)  # legacy; derives varroa_level when that is absent
     swarm_cells_seen: Optional[bool] = None
     treatment_applied: Optional[str] = Field(default=None, max_length=500)
     feeding_done: Optional[bool] = None
@@ -435,8 +436,9 @@ class InspectionUpdate(BaseModel):
     brood_frames: Optional[int] = Field(default=None, ge=0, le=10)
     honey_frames: Optional[int] = Field(default=None, ge=0, le=10)
     mood: Optional[str] = Field(default=None, pattern="^(calm|nervous|aggressive)$")
-    population_strength: Optional[int] = Field(default=None, ge=1, le=5)
-    varroa_count: Optional[int] = Field(default=None, ge=0)
+    population_strength: Optional[int] = Field(default=None, ge=1, le=3)  # 1 weak, 2 medium, 3 strong
+    varroa_level: Optional[int] = Field(default=None, ge=0, le=3)  # 0 none, 1 low, 2 medium, 3 high
+    varroa_count: Optional[int] = Field(default=None, ge=0)  # legacy; derives varroa_level when that is absent
     swarm_cells_seen: Optional[bool] = None
     treatment_applied: Optional[str] = Field(default=None, max_length=500)
     feeding_done: Optional[bool] = None
@@ -456,6 +458,7 @@ class InspectionOut(BaseModel):
     honey_frames: Optional[int]
     mood: Optional[str]
     population_strength: Optional[int]
+    varroa_level: Optional[int]
     varroa_count: Optional[int]
     swarm_cells_seen: Optional[bool]
     treatment_applied: Optional[str]
