@@ -54,6 +54,27 @@ final class ApiaryListUITests: XCTestCase {
         XCTAssertTrue(app.alerts["Error"].waitForExistence(timeout: 5))
     }
 
+    // MARK: - Editing
+
+    func test_apiaryDetail_editFormHasPublicMapToggleAndSaves() {
+        launch(with: "-mockApiaryWithHive")
+        XCTAssertTrue(app.staticTexts["Meadow"].waitForExistence(timeout: 5))
+        app.staticTexts["Meadow"].tap()
+        let edit = app.buttons["editApiaryButton"]
+        XCTAssertTrue(edit.waitForExistence(timeout: 5))
+        edit.tap()
+
+        let toggle = app.switches["apiaryPublicToggle"]
+        XCTAssertTrue(toggle.waitForExistence(timeout: 5))
+        XCTAssertEqual(toggle.value as? String, "0")
+
+        app.navigationBars.buttons["Save"].tap()
+        // The sheet closes once the update request succeeded.
+        let gone = expectation(for: NSPredicate(format: "exists == false"), evaluatedWith: toggle)
+        wait(for: [gone], timeout: 5)
+        XCTAssertTrue(app.navigationBars["Meadow"].waitForExistence(timeout: 5))
+    }
+
     // MARK: - Helper
 
     private func launch(with arg: String) {

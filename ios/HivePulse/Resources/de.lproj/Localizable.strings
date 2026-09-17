@@ -31,6 +31,8 @@
 "field.date" = "Datum";
 "field.description" = "Beschreibung";
 "field.address" = "Adresse";
+"field.showOnPublicMap" = "Auf öffentlicher Karte anzeigen";
+"field.showOnPublicMapHint" = "Der Bienenstand erscheint auf Ortsebene auf der Gemeinschaftskarte und zählt in den Gemeinschaftsstatistiken mit.";
 "field.location" = "Position";
 "field.notes" = "Notizen";
 "field.acquisitionDate" = "Anschaffungsdatum";

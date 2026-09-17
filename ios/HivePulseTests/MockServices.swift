@@ -93,8 +93,11 @@ final class MockApiaryService: ApiaryServiceProtocol {
 
     func list(page: Int) async throws -> PaginatedResponse<ApiaryOut> { try listResult.get() }
     func get(_ id: String) async throws -> ApiaryOut { makeApiary(id: id) }
-    func create(name: String, description: String?, latitude: Double?, longitude: Double?, address: String?) async throws -> ApiaryOut { try createResult.get() }
-    func update(_ id: String, name: String?, description: String?, latitude: Double?, longitude: Double?, address: String?) async throws -> ApiaryOut { try updateResult.get() }
+    var lastCreateIsPublic: Bool?
+    var lastUpdateIsPublic: Bool?
+    var updateCalled = false
+    func create(name: String, description: String?, latitude: Double?, longitude: Double?, address: String?, isPublic: Bool) async throws -> ApiaryOut { lastCreateIsPublic = isPublic; return try createResult.get() }
+    func update(_ id: String, name: String?, description: String?, latitude: Double?, longitude: Double?, address: String?, isPublic: Bool?) async throws -> ApiaryOut { updateCalled = true; lastUpdateIsPublic = isPublic; return try updateResult.get() }
     func delete(_ id: String) async throws { if let err = deleteError { throw err } }
     func fieldDefinitions(_ apiaryId: String) async throws -> [FieldDefinitionOut] { [] }
     func userFieldDefinitions() async throws -> [FieldDefinitionOut] { [] }

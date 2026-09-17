@@ -1,10 +1,15 @@
 import SwiftUI
 
 struct ApiaryDetailView: View {
-    let apiary: ApiaryOut
+    @State private var apiary: ApiaryOut
     @StateObject private var hiveVM = HiveViewModel()
+    @StateObject private var apiaryVM = ApiaryViewModel()
     @State private var showEdit = false
     @State private var showAddHive = false
+
+    init(apiary: ApiaryOut) {
+        _apiary = State(initialValue: apiary)
+    }
 
     var body: some View {
         Group {
@@ -63,12 +68,18 @@ struct ApiaryDetailView: View {
                 Button { showEdit = true } label: {
                     Image(systemName: "pencil")
                 }
+                .accessibilityLabel(NSLocalizedString("action.editApiary", comment: ""))
+                .accessibilityIdentifier("editApiaryButton")
             }
         }
         .task { await hiveVM.load(apiaryId: apiary.id) }
         .refreshable { await hiveVM.load(apiaryId: apiary.id) }
         .sheet(isPresented: $showEdit) {
-            ApiaryFormView(mode: .edit(apiary)) { name, desc, lat, lon, addr in
+            // Saving used to only close the sheet, so edits (and making an apiary public) were lost.
+            ApiaryFormView(mode: .edit(apiary)) { name, desc, lat, lon, addr, isPublic in
+                apiary = try await apiaryVM.update(apiary.id, name: name, description: desc,
+                                                   latitude: lat, longitude: lon, address: addr,
+                                                   isPublic: isPublic)
                 showEdit = false
             }
         }
