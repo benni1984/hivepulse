@@ -8,7 +8,8 @@ enum ApiaryFormMode {
 
 struct ApiaryFormView: View {
     let mode: ApiaryFormMode
-    let onSave: (String, String?, Double?, Double?, String?) async throws -> Void
+    /// name, description, latitude, longitude, address, isPublic
+    let onSave: (String, String?, Double?, Double?, String?, Bool) async throws -> Void
 
     @Environment(\.dismiss) var dismiss
     @State private var name = ""
@@ -16,6 +17,7 @@ struct ApiaryFormView: View {
     @State private var address = ""
     @State private var latitude: Double?
     @State private var longitude: Double?
+    @State private var isPublic = false
     @State private var isLocating = false
     @State private var errorMessage: String?
     @State private var isSaving = false
@@ -53,6 +55,13 @@ struct ApiaryFormView: View {
                     .disabled(isLocating)
                 }
 
+                Section {
+                    Toggle(NSLocalizedString("field.showOnPublicMap", comment: ""), isOn: $isPublic)
+                        .accessibilityIdentifier("apiaryPublicToggle")
+                } footer: {
+                    Text(NSLocalizedString("field.showOnPublicMapHint", comment: ""))
+                }
+
                 if let err = errorMessage {
                     Section {
                         ErrorBanner(message: err) { errorMessage = nil }
@@ -79,6 +88,7 @@ struct ApiaryFormView: View {
                     address     = a.address ?? ""
                     latitude    = a.latitude
                     longitude   = a.longitude
+                    isPublic    = a.isPublic ?? false
                 }
             }
         }
@@ -92,7 +102,8 @@ struct ApiaryFormView: View {
                 description.isEmpty ? nil : description,
                 latitude,
                 longitude,
-                address.isEmpty ? nil : address
+                address.isEmpty ? nil : address,
+                isPublic
             )
             dismiss()
         } catch {

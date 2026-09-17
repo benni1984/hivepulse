@@ -217,10 +217,13 @@ struct ApiaryOut: Codable, Identifiable {
     let address: String?
     let hiveCount: Int
     let createdAt: Date
+    /// Shown on the public map and counted in community statistics. Optional so older payloads still decode.
+    var isPublic: Bool? = nil
     enum CodingKeys: String, CodingKey {
         case id, name, description, latitude, longitude, address
         case hiveCount = "hive_count"
         case createdAt = "created_at"
+        case isPublic = "is_public"
     }
 }
 
@@ -230,6 +233,12 @@ struct ApiaryCreate: Encodable {
     let latitude: Double?
     let longitude: Double?
     let address: String?
+    /// nil leaves visibility unchanged on update (the key is omitted).
+    var isPublic: Bool? = nil
+    enum CodingKeys: String, CodingKey {
+        case name, description, latitude, longitude, address
+        case isPublic = "is_public"
+    }
 }
 
 // MARK: - QR Batches

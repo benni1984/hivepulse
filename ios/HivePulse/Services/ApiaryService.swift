@@ -3,8 +3,8 @@ import Foundation
 protocol ApiaryServiceProtocol {
     func list(page: Int) async throws -> PaginatedResponse<ApiaryOut>
     func get(_ id: String) async throws -> ApiaryOut
-    func create(name: String, description: String?, latitude: Double?, longitude: Double?, address: String?) async throws -> ApiaryOut
-    func update(_ id: String, name: String?, description: String?, latitude: Double?, longitude: Double?, address: String?) async throws -> ApiaryOut
+    func create(name: String, description: String?, latitude: Double?, longitude: Double?, address: String?, isPublic: Bool) async throws -> ApiaryOut
+    func update(_ id: String, name: String?, description: String?, latitude: Double?, longitude: Double?, address: String?, isPublic: Bool?) async throws -> ApiaryOut
     func delete(_ id: String) async throws
     func fieldDefinitions(_ apiaryId: String) async throws -> [FieldDefinitionOut]
     func createFieldDefinition(_ apiaryId: String, body: FieldDefinitionCreate) async throws -> FieldDefinitionOut
@@ -27,13 +27,13 @@ struct ApiaryService: ApiaryServiceProtocol {
         try await client.get("apiaries/\(id)")
     }
 
-    func create(name: String, description: String?, latitude: Double?, longitude: Double?, address: String?) async throws -> ApiaryOut {
-        let body = ApiaryCreate(name: name, description: description, latitude: latitude, longitude: longitude, address: address)
+    func create(name: String, description: String?, latitude: Double?, longitude: Double?, address: String?, isPublic: Bool) async throws -> ApiaryOut {
+        let body = ApiaryCreate(name: name, description: description, latitude: latitude, longitude: longitude, address: address, isPublic: isPublic)
         return try await client.post("apiaries", body: body)
     }
 
-    func update(_ id: String, name: String?, description: String?, latitude: Double?, longitude: Double?, address: String?) async throws -> ApiaryOut {
-        let body = ApiaryCreate(name: name ?? "", description: description, latitude: latitude, longitude: longitude, address: address)
+    func update(_ id: String, name: String?, description: String?, latitude: Double?, longitude: Double?, address: String?, isPublic: Bool?) async throws -> ApiaryOut {
+        let body = ApiaryCreate(name: name ?? "", description: description, latitude: latitude, longitude: longitude, address: address, isPublic: isPublic)
         return try await client.put("apiaries/\(id)", body: body)
     }
 

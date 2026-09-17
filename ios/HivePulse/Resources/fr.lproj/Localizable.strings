@@ -31,6 +31,8 @@
 "field.date" = "Date";
 "field.description" = "Description";
 "field.address" = "Adresse";
+"field.showOnPublicMap" = "Afficher sur la carte publique";
+"field.showOnPublicMapHint" = "Le rucher apparaît à l'échelle de la commune sur la carte communautaire et compte dans les statistiques de la communauté.";
 "field.location" = "Position";
 "field.notes" = "Notes";
 "field.acquisitionDate" = "Date d'acquisition";

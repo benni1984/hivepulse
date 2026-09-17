@@ -128,7 +128,7 @@
     },
     "remind": {
       "title": "Recordatorios de inspección",
-      "desc": "Notificaciones push cuando una colmena lleva demasiado tiempo sin inspección."
+      "desc": "Notificaciones push y correos cuando una colmena lleva demasiado tiempo sin inspección: ya disponible en las apps y en la web."
     },
     "export": {
       "title": "Exportación de datos (CSV / JSON)",
@@ -243,7 +243,14 @@
   "news": {
     "tag": "Novedades",
     "title": "Noticias & Anuncios",
-    "sub": "Nuevas funciones, alianzas de investigación, hitos de conservación y todo lo que sucede en la comunidad HivePulse."
+    "sub": "Nuevas funciones, alianzas de investigación, hitos de conservación y todo lo que sucede en la comunidad HivePulse.",
+    "tags": {
+      "feature": "Novedad",
+      "fix": "Corrección",
+      "design": "Diseño",
+      "release": "Lanzamiento",
+      "privacy": "Privacidad"
+    }
   },
   "contrib": {
     "tag": "Código abierto",

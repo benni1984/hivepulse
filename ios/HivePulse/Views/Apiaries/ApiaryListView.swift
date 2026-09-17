@@ -75,8 +75,8 @@ struct ApiaryListView: View {
         }
         .refreshable { await apiaryVM.load() }
         .sheet(isPresented: $showCreate) {
-            ApiaryFormView(mode: .create) { name, desc, lat, lon, addr in
-                try await apiaryVM.create(name: name, description: desc, latitude: lat, longitude: lon, address: addr)
+            ApiaryFormView(mode: .create) { name, desc, lat, lon, addr, isPublic in
+                try await apiaryVM.create(name: name, description: desc, latitude: lat, longitude: lon, address: addr, isPublic: isPublic)
                 showCreate = false
             }
         }

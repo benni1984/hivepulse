@@ -24,17 +24,19 @@ final class ApiaryViewModel: ObservableObject {
         isLoading = false
     }
 
-    func create(name: String, description: String?, latitude: Double?, longitude: Double?, address: String?) async throws -> ApiaryOut {
-        let apiary = try await service.create(name: name, description: description, latitude: latitude, longitude: longitude, address: address)
+    func create(name: String, description: String?, latitude: Double?, longitude: Double?, address: String?, isPublic: Bool = false) async throws -> ApiaryOut {
+        let apiary = try await service.create(name: name, description: description, latitude: latitude, longitude: longitude, address: address, isPublic: isPublic)
         apiaries.append(apiary)
         return apiary
     }
 
-    func update(_ id: String, name: String, description: String?, latitude: Double?, longitude: Double?, address: String?) async throws {
-        let updated = try await service.update(id, name: name, description: description, latitude: latitude, longitude: longitude, address: address)
+    @discardableResult
+    func update(_ id: String, name: String, description: String?, latitude: Double?, longitude: Double?, address: String?, isPublic: Bool? = nil) async throws -> ApiaryOut {
+        let updated = try await service.update(id, name: name, description: description, latitude: latitude, longitude: longitude, address: address, isPublic: isPublic)
         if let idx = apiaries.firstIndex(where: { $0.id == id }) {
             apiaries[idx] = updated
         }
+        return updated
     }
 
     func delete(_ id: String) async throws {

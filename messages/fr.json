@@ -128,7 +128,7 @@
     },
     "remind": {
       "title": "Rappels d'inspection",
-      "desc": "Notifications push quand une ruche est en retard d'inspection."
+      "desc": "Notifications push et e-mails quand une ruche est en retard d'inspection – désormais disponibles dans les applications et sur le web."
     },
     "export": {
       "title": "Export de données (CSV / JSON)",
@@ -243,7 +243,14 @@
   "news": {
     "tag": "Mises à jour",
     "title": "Actualités & Annonces",
-    "sub": "Nouvelles fonctionnalités, partenariats de recherche, jalons de conservation et tout ce qui se passe dans la communauté HivePulse."
+    "sub": "Nouvelles fonctionnalités, partenariats de recherche, jalons de conservation et tout ce qui se passe dans la communauté HivePulse.",
+    "tags": {
+      "feature": "Nouveauté",
+      "fix": "Correction",
+      "design": "Design",
+      "release": "Lancement",
+      "privacy": "Confidentialité"
+    }
   },
   "contrib": {
     "tag": "Open Source",

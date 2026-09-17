@@ -127,8 +127,8 @@
       "desc": "Veröffentlichung der iOS- und Android-App im App Store und bei Google Play, damit HivePulse ohne eigenes Kompilieren installiert werden kann."
     },
     "remind": {
-      "title": "Kontrollierungserinnerungen",
-      "desc": "Push-Benachrichtigungen, wenn ein Volk zu lange nicht kontrolliert wurde."
+      "title": "Erinnerungen an Kontrollen",
+      "desc": "Push-Benachrichtigungen und E-Mails, wenn ein Volk zu lange nicht kontrolliert wurde – jetzt live in den Apps und im Web."
     },
     "export": {
       "title": "Datenexport (CSV / JSON)",
@@ -243,7 +243,14 @@
   "news": {
     "tag": "Aktuelles",
     "title": "News & Ankündigungen",
-    "sub": "Neue Funktionen, Forschungspartnerschaften, Naturschutzmeilensteine und alles Wichtige aus der HivePulse-Gemeinschaft."
+    "sub": "Neue Funktionen, Forschungspartnerschaften, Naturschutzmeilensteine und alles Wichtige aus der HivePulse-Gemeinschaft.",
+    "tags": {
+      "feature": "Neu",
+      "fix": "Fehlerbehebung",
+      "design": "Design",
+      "release": "Start",
+      "privacy": "Datenschutz"
+    }
   },
   "contrib": {
     "tag": "Open Source",

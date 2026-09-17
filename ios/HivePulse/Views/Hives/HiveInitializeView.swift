@@ -6,7 +6,7 @@ struct HiveInitializeView: View {
     let onDone: (HiveOut) -> Void
     /// Creating an apiary from here: without one the hive cannot be saved, and sending the user away
     /// meant losing the scanned code and starting over.
-    var onCreateApiary: ((String, String?, Double?, Double?, String?) async throws -> Void)? = nil
+    var onCreateApiary: ((String, String?, Double?, Double?, String?, Bool) async throws -> Void)? = nil
 
     @Environment(\.dismiss) var dismiss
     @StateObject private var hiveVM = HiveViewModel()
@@ -105,8 +105,8 @@ struct HiveInitializeView: View {
                 selectedApiaryId = Self.resolvedApiaryId(current: selectedApiaryId, apiaries: apiaries)
             }
             .sheet(isPresented: $showCreateApiary) {
-                ApiaryFormView(mode: .create) { name, description, latitude, longitude, address in
-                    try await onCreateApiary?(name, description, latitude, longitude, address)
+                ApiaryFormView(mode: .create) { name, description, latitude, longitude, address, isPublic in
+                    try await onCreateApiary?(name, description, latitude, longitude, address, isPublic)
                     showCreateApiary = false
                 }
             }

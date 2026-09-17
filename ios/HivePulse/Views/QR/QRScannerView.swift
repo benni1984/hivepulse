@@ -97,10 +97,10 @@ struct QRScanEntryView: View {
                         linkedHive = newHive
                         navigateToHive = true
                     },
-                    onCreateApiary: { name, description, latitude, longitude, address in
+                    onCreateApiary: { name, description, latitude, longitude, address, isPublic in
                         _ = try await apiaryVM.create(name: name, description: description,
                                                       latitude: latitude, longitude: longitude,
-                                                      address: address)
+                                                      address: address, isPublic: isPublic)
                     }
                 )
             }

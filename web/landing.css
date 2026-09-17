@@ -13,7 +13,7 @@
 
 .roadmap-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
   gap: 14px;
 }
 
@@ -25,6 +25,10 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 0;
+  /* Long German compounds ("Kontrollierungserinnerungen") must break inside the card */
+  hyphens: auto;
+  overflow-wrap: break-word;
 }
 
 /* Status pill (soft): ink on tint */

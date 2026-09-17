@@ -31,6 +31,8 @@
 "field.date" = "Fecha";
 "field.description" = "Descripción";
 "field.address" = "Dirección";
+"field.showOnPublicMap" = "Mostrar en el mapa público";
+"field.showOnPublicMapHint" = "El colmenar aparece a nivel de localidad en el mapa de la comunidad y cuenta en las estadísticas de la comunidad.";
 "field.location" = "Ubicación";
 "field.notes" = "Notas";
 "field.acquisitionDate" = "Fecha de adquisición";
