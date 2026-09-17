@@ -73,3 +73,10 @@ hivepulse-redesign/.gitignore
 
 # Android screenshot capture diagnostics (never publish)
 _screenshot-debug/
+
+# design-sync (Claude Design) working files
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules
