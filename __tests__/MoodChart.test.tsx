@@ -40,7 +40,7 @@ describe('MoodChart', () => {
     expect(config.type).toBe('doughnut');
     expect(config.data.labels).toEqual(['moodCalm', 'moodNervous']);
     expect(config.data.datasets[0].data).toEqual([5, 2]);
-    expect(config.data.datasets[0].backgroundColor).toEqual(['#16a34a', '#f59e0b']);
+    expect(config.data.datasets[0].backgroundColor).toEqual(['#14532d', '#f59e0b']);
   });
 
   it('does not create a chart when all values are zero', async () => {

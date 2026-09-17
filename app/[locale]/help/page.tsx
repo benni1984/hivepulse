@@ -20,7 +20,7 @@ export default async function HelpIndexPage({
   const t = await getTranslations({ locale, namespace: 'helpIndex' });
 
   return (
-    <div style={{ margin: '0 -48px' }}>
+    <div className="help-index-bleed">
       {/* Hero */}
       <section className="help-hero">
         <div className="container">
