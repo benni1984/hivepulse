@@ -408,8 +408,9 @@ def capture_data_export():
     # carries a text label instead of a content description.
     tap_node(dump, text="Settings")
     # "Settings" is also the bottom-bar label, so it is on screen everywhere — wait for a control
-    # that only the Settings screen has.
-    wait_for("Inspection Reminders", timeout=15)
+    # that only the Settings screen has *above the fold*. "Inspection Reminders" sits below the
+    # account and password sections and is never on screen without scrolling (CI run 35123747449).
+    wait_for("Display Name", timeout=15)
     time.sleep(1)
     # Scroll down until "Export Data" button (or "Data Export" section header) is visible
     for _ in range(3):
