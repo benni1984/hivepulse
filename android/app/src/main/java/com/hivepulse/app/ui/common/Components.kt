@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.hivepulse.app.R
 import com.hivepulse.app.ui.theme.Amber500
 import com.hivepulse.app.ui.theme.Stone200
+import com.hivepulse.app.ui.theme.Stone900
 
 @Composable
 fun ErrorBanner(message: String, onDismiss: (() -> Unit)? = null) {
@@ -138,6 +140,59 @@ fun NumberStepper(
                     bottomStart = CornerSize(0.dp),
                 ),
             ) { Icon(Icons.Default.Add, contentDescription = "Increase", Modifier.size(28.dp)) }
+        }
+    }
+}
+
+/**
+ * Glove-friendly number picker — every value of a small range is its own large button,
+ * so a value is one tap away instead of up to ten taps on a small +/- control.
+ * Buttons fill the width of the form; tapping the selected value clears it.
+ */
+@Composable
+fun NumberChoiceGrid(
+    label: String,
+    value: Int?,
+    onSelect: (Int?) -> Unit,
+    range: IntRange = 0..10,
+    perRow: Int = 4,
+    testTagPrefix: String? = null,
+) {
+    Column {
+        Text(label, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Spacer(Modifier.height(8.dp))
+        range.toList().chunked(perRow).forEach { row ->
+            Row(
+                Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                row.forEach { number ->
+                    val isSelected = value == number
+                    val tag = testTagPrefix?.let { "$it$number" }
+                    val cell = Modifier
+                        .weight(1f)
+                        .heightIn(min = 68.dp)
+                        .semantics { this.selected = isSelected }
+                        .let { if (tag != null) it.testTag(tag) else it }
+                    if (isSelected) {
+                        Button(
+                            onClick = { onSelect(null) },
+                            modifier = cell,
+                            colors = ButtonDefaults.buttonColors(containerColor = Amber500, contentColor = Stone900),
+                            shape = MaterialTheme.shapes.medium,
+                        ) { Text("$number", style = MaterialTheme.typography.headlineSmall, maxLines = 1) }
+                    } else {
+                        OutlinedButton(
+                            onClick = { onSelect(number) },
+                            modifier = cell,
+                            shape = MaterialTheme.shapes.medium,
+                            border = BorderStroke(1.5.dp, Stone200),
+                        ) { Text("$number", style = MaterialTheme.typography.headlineSmall, maxLines = 1) }
+                    }
+                }
+                // Keep the last row aligned with the ones above it
+                repeat(perRow - row.size) { Spacer(Modifier.weight(1f)) }
+            }
         }
     }
 }

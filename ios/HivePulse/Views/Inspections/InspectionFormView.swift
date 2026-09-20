@@ -55,8 +55,10 @@ struct InspectionFormView: View {
                 }
 
                 Section(NSLocalizedString("section.frames", comment: "")) {
-                    OptionalStepper(label: NSLocalizedString("field.broodFrames", comment: ""), value: $broodFrames, range: 0...10)
-                    OptionalStepper(label: NSLocalizedString("field.honeyFrames", comment: ""), value: $honeyFrames, range: 0...10)
+                    NumberChoiceGrid(label: NSLocalizedString("field.broodFrames", comment: ""),
+                                     range: 0...10, value: $broodFrames, identifierPrefix: "broodFrames")
+                    NumberChoiceGrid(label: NSLocalizedString("field.honeyFrames", comment: ""),
+                                     range: 0...10, value: $honeyFrames, identifierPrefix: "honeyFrames")
                 }
 
                 Section(NSLocalizedString("section.colony", comment: "")) {
@@ -305,36 +307,6 @@ private struct OptionalToggle: View {
             } label: {
                 Text(value == nil ? NSLocalizedString("label.notRecorded", comment: "") : (value! ? NSLocalizedString("label.yes", comment: "") : NSLocalizedString("label.no", comment: "")))
                     .foregroundColor(value == nil ? .secondary : .primary)
-            }
-        }
-    }
-}
-
-private struct OptionalStepper: View {
-    let label: String
-    @Binding var value: Int?
-    let range: ClosedRange<Int>
-
-    var body: some View {
-        HStack {
-            Text(label)
-            Spacer()
-            if let v = value {
-                // `.labelsHidden()` hides the Stepper's own title, which was the only place the number
-                // appeared — so the row showed just + and −.
-                Text("\(v)")
-                    .font(.dmSans(17, weight: .bold, relativeTo: .body))
-                    .foregroundColor(.hpStone900)
-                    .monospacedDigit()
-                    .frame(minWidth: 28, alignment: .trailing)
-                Stepper("\(v)", value: Binding(get: { v }, set: { value = $0 }), in: range)
-                    .labelsHidden()
-                Button { value = nil } label: {
-                    Image(systemName: "xmark.circle").foregroundColor(.secondary)
-                }
-            } else {
-                Button(NSLocalizedString("label.add", comment: "")) { value = range.lowerBound }
-                    .foregroundColor(.hpAmberDark)
             }
         }
     }

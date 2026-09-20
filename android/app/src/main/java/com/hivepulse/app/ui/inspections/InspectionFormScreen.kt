@@ -235,10 +235,18 @@ fun InspectionFormScreen(
             // ── Frames ───────────────────────────────────────────────────────
             FormSectionTitle(stringResource(R.string.section_frames))
             SectionCard {
-                NumberStepper(label = stringResource(R.string.field_brood_frames), value = broodFrames,
-                    onValueChange = { broodFrames = it }, min = 0, max = 10)
-                NumberStepper(label = stringResource(R.string.field_honey_frames), value = honeyFrames,
-                    onValueChange = { honeyFrames = it }, min = 0, max = 10)
+                NumberChoiceGrid(
+                    label = stringResource(R.string.field_brood_frames),
+                    value = broodFrames,
+                    onSelect = { broodFrames = it ?: 0 },
+                    testTagPrefix = "broodFrames",
+                )
+                NumberChoiceGrid(
+                    label = stringResource(R.string.field_honey_frames),
+                    value = honeyFrames,
+                    onSelect = { honeyFrames = it ?: 0 },
+                    testTagPrefix = "honeyFrames",
+                )
             }
 
             // ── Colony ───────────────────────────────────────────────────────

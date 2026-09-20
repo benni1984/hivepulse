@@ -27,7 +27,8 @@ Key values — already seeded in `ui/theme/Color.kt` and `ui/theme/Theme.kt`:
 
 - Use `MaterialTheme.colorScheme.*` tokens, not hardcoded hex values
 - Bottom nav: `Forest900` container, `Amber500` selected indicator (see `MainActivity.kt`)
-- Glove-friendly UX: use `NumberStepper` and `ToggleButtonGroup` from `ui/common/Components.kt` instead of text fields and dropdowns for all integer and enum inputs
+- Glove-friendly UX: use `NumberChoiceGrid` (small fixed ranges such as 0–10 frames — one tap per value, 68dp buttons),
+  `NumberStepper` (open-ended numbers) and `ToggleButtonGroup` from `ui/common/Components.kt` instead of text fields and dropdowns
 
 ## Help Page Screenshots — IMPORTANT
 

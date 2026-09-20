@@ -15,6 +15,58 @@ enum InspectionScale {
     }
 }
 
+/// Glove-friendly number picker: every value of a small range is its own large button,
+/// so a value is one tap away instead of many taps on the tiny system stepper.
+/// Tapping the selected number again clears the field.
+struct NumberChoiceGrid: View {
+    let label: String
+    let range: ClosedRange<Int>
+    @Binding var value: Int?
+    let identifierPrefix: String
+    var perRow: Int = 4
+
+    private var rows: [[Int]] {
+        stride(from: range.lowerBound, through: range.upperBound, by: perRow).map { start in
+            Array(start...min(start + perRow - 1, range.upperBound))
+        }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(label)
+            ForEach(rows, id: \.first) { row in
+                HStack(spacing: 8) {
+                    ForEach(row, id: \.self) { number in
+                        Button {
+                            value = (value == number) ? nil : number
+                        } label: {
+                            Text("\(number)")
+                                .font(.dmSans(20, weight: .bold, relativeTo: .title3))
+                                .monospacedDigit()
+                                .frame(maxWidth: .infinity, minHeight: 60)
+                        }
+                        .buttonStyle(.plain)
+                        .background(value == number ? Color.hpAmber : Color.white)
+                        .foregroundColor(.hpStone900)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(value == number ? Color.hpAmber : Color.hpStone200, lineWidth: 1.5)
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .accessibilityIdentifier("\(identifierPrefix)\(number)")
+                        .accessibilityAddTraits(value == number ? [.isSelected] : [])
+                    }
+                    // Keep the last row aligned with the rows above it
+                    ForEach(0..<(perRow - row.count), id: \.self) { _ in
+                        Color.clear.frame(maxWidth: .infinity, minHeight: 60)
+                    }
+                }
+            }
+        }
+        .padding(.vertical, 4)
+    }
+}
+
 /// A segmented word choice for an optional value, with an explicit reset back to "not recorded".
 struct ScaleChoice: View {
     let label: String

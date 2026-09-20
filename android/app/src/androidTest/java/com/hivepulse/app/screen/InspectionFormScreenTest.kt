@@ -88,6 +88,36 @@ class InspectionFormScreenTest {
     }
 
     @Test
+    fun inspectionForm_broodFramesArePickedWithOneTapOnALargeButton() {
+        val sent = slot<InspectionCreateRequest>()
+        coEvery { apiService.createInspection(any(), capture(sent)) } returns savedInspection
+        navigateToInspectionForm()
+
+        // One tap on the number itself — no repeated taps on a small +/- control
+        composeRule.onNodeWithTag("broodFrames8").performScrollTo().performClick()
+        composeRule.onNodeWithTag("honeyFrames3").performScrollTo().performClick()
+        composeRule.onNodeWithText("Save").performScrollTo().performClick()
+
+        coVerify(timeout = 3_000) { apiService.createInspection(any(), any()) }
+        Assert.assertEquals(8, sent.captured.broodFrames)
+        Assert.assertEquals(3, sent.captured.honeyFrames)
+    }
+
+    @Test
+    fun inspectionForm_tappingTheChosenNumberAgainClearsIt() {
+        val sent = slot<InspectionCreateRequest>()
+        coEvery { apiService.createInspection(any(), capture(sent)) } returns savedInspection
+        navigateToInspectionForm()
+
+        composeRule.onNodeWithTag("broodFrames8").performScrollTo().performClick()
+        composeRule.onNodeWithTag("broodFrames8").performScrollTo().performClick()
+        composeRule.onNodeWithText("Save").performScrollTo().performClick()
+
+        coVerify(timeout = 3_000) { apiService.createInspection(any(), any()) }
+        Assert.assertNull(sent.captured.broodFrames)
+    }
+
+    @Test
     fun inspectionForm_savesColonyStrengthAndVarroaAsWords() {
         val sent = slot<InspectionCreateRequest>()
         coEvery { apiService.createInspection(any(), capture(sent)) } returns savedInspection
