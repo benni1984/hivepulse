@@ -104,6 +104,45 @@ final class ScreenshotUITests: XCTestCase {
         snap("15-home-screen-icon", app)
     }
 
+    /// The inspection form, the hive edit sheet and the apiary edit sheet were never captured,
+    /// so the help pages had no picture of how an inspection is logged or how an apiary is
+    /// put on the public map.
+    func test_capture_inspection_form_and_edit_sheets() {
+        let app = launch(["-resetKeychain", "-mockApiaryWithHive"])
+        XCTAssertTrue(app.staticTexts["Meadow"].waitForExistence(timeout: 10))
+
+        app.staticTexts["Meadow"].tap()
+        XCTAssertTrue(app.staticTexts["Hive Alpha"].waitForExistence(timeout: 10))
+
+        // Apiary edit sheet — holds the public-map toggle
+        app.buttons["editApiaryButton"].tap()
+        XCTAssertTrue(app.switches["apiaryPublicToggle"].waitForExistence(timeout: 10))
+        snap("16-apiary-edit", app)
+        app.buttons["Cancel"].tap()
+
+        app.staticTexts["Hive Alpha"].tap()
+        XCTAssertTrue(app.navigationBars["Hive Alpha"].waitForExistence(timeout: 10))
+
+        // Hive edit sheet
+        app.buttons["editHiveButton"].tap()
+        XCTAssertTrue(app.textFields["hiveEditName"].waitForExistence(timeout: 10))
+        snap("17-hive-edit", app)
+        app.buttons["Cancel"].tap()
+
+        // Inspection form: top, then the frame buttons further down
+        XCTAssertTrue(app.buttons["New Inspection"].waitForExistence(timeout: 10))
+        app.buttons["New Inspection"].tap()
+        XCTAssertTrue(app.navigationBars["New Inspection"].waitForExistence(timeout: 10))
+        snap("18-inspection-form", app)
+
+        let eight = app.buttons["broodFrames8"]
+        for _ in 0..<6 where !(eight.exists && eight.isHittable) {
+            app.swipeUp(velocity: .slow)
+        }
+        XCTAssertTrue(eight.exists, "frame buttons never came into view")
+        snap("19-inspection-frames", app)
+    }
+
     // MARK: - Helpers
 
     private func launch(_ arguments: [String]) -> XCUIApplication {

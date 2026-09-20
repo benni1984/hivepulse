@@ -109,6 +109,15 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           <p>Log inspections consistently — even if you only record the varroa count — and HivePulse will build meaningful trend charts after a few visits.</p>
         </div>
       </section>
+      <section className="help-section">
+        <h2 className="help-section-title">The guided tour in the apps</h2>
+        <p>
+          The first time you sign in to the iPhone or Android app, a short swipeable tour introduces
+          QR codes, inspections, statistics, reminders and the hornet tracker. Skip it whenever you like —
+          and bring it back later from <strong>Settings → Show guided tour again</strong>.
+        </p>
+      </section>
+
     </>
   );
 }

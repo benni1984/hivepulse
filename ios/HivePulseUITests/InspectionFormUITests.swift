@@ -63,6 +63,25 @@ final class InspectionFormUITests: XCTestCase {
         }
     }
 
+    func test_inspectionForm_broodFramesArePickedWithOneTap() {
+        let eight = app.buttons["broodFrames8"]
+        XCTAssertTrue(scrollUntilVisible(eight))
+        eight.tap()
+        XCTAssertTrue(eight.isSelected, "tapping a number should select it")
+
+        // Tapping it again clears the field
+        eight.tap()
+        XCTAssertFalse(eight.isSelected)
+    }
+
+    func test_inspectionForm_frameButtonsAreLargeEnoughForGloves() {
+        let zero = app.buttons["honeyFrames0"]
+        XCTAssertTrue(scrollUntilVisible(zero))
+        // Apple's minimum is 44pt; gloves need more, so the buttons are 60pt tall
+        XCTAssertGreaterThanOrEqual(zero.frame.height, 56)
+        XCTAssertGreaterThanOrEqual(zero.frame.width, 56)
+    }
+
     private func scrollUntilVisible(_ element: XCUIElement, maxSteps: Int = 6) -> Bool {
         for _ in 0..<maxSteps {
             if element.exists && element.isHittable { return true }

@@ -79,6 +79,21 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Editing a hive</h2>
+        <p>
+          Name, hive type, acquisition date and notes can be changed at any time — in the browser and,
+          since the latest release, in both apps.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Web</strong> — open the hive and press <strong>Edit</strong>.</li>
+          <li><strong>iPhone and Android</strong> — open the hive and tap the pencil in the title bar.</li>
+        </ul>
+        <p>
+          The QR code stays with the hive record, so renaming a colony does not invalidate the sticker on the box.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Viewing a hive</h2>
         <p>
           The hive detail screen shows:

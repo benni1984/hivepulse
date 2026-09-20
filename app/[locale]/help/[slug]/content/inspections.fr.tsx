@@ -104,6 +104,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
               Nombre de cadres contenant du couvain (œufs, larves ou cellules operculées). Cela mesure le potentiel de croissance de la colonie.
               Une colonie forte et saine en pleine saison remplit typiquement 7–9 cadres dans une Langstroth standard.
             </div>
+            <div className="help-stat-card-desc">Dans les applications, vous touchez directement le chiffre — de 0 à 10 sous forme de grands boutons, adaptés aux mains gantées. Un second appui sur le chiffre choisi l'efface.</div>
             <span className="help-stat-card-good">Bon (printemps/été) : 6–9 cadres</span>
           </div>
           <div className="help-stat-card">

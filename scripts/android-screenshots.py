@@ -441,6 +441,64 @@ def capture_inspection_form():
     screenshot("android-inspection-form")
     keyevent("KEYCODE_BACK")
 
+def capture_inspection_frames():
+    """The frame pickers sit below the fold — scroll to them so the help page can show
+    the glove-friendly number buttons."""
+    print("Capturing: android-inspection-frames", flush=True)
+    dump = get_ui_dump()
+    if "Date" not in dump:
+        tap_node(dump, content_desc="New Inspection")
+        wait_for("Date", timeout=15)
+    wait_for("Brood Frames", timeout=15)
+    for _ in range(3):
+        if "Honey Frames" in get_ui_dump():
+            break
+        swipe(540, 1800, 540, 900)
+        time.sleep(0.6)
+    time.sleep(0.8)
+    screenshot("android-inspection-frames")
+    keyevent("KEYCODE_BACK")
+    time.sleep(0.5)
+
+
+def capture_hive_edit():
+    """Hive detail → pencil: name, type, acquisition date and notes."""
+    print("Capturing: android-hive-edit", flush=True)
+    if "Inspections" not in get_ui_dump():
+        navigate_to_hive_detail()
+    dump = get_ui_dump()
+    tap_node(dump, content_desc="Edit hive")
+    wait_for("Hive name", timeout=15)
+    time.sleep(0.6)
+    screenshot("android-hive-edit")
+    try:
+        tap_node(get_ui_dump(), text="Cancel")
+    except RuntimeError:
+        keyevent("KEYCODE_BACK")
+    time.sleep(0.5)
+
+
+def capture_apiary_edit():
+    """Apiary detail → pencil: this is where an apiary is put on the public map."""
+    print("Capturing: android-apiary-edit", flush=True)
+    if "Inspections" in get_ui_dump():
+        keyevent("KEYCODE_BACK")
+        time.sleep(1)
+    if "My Apiaries" in get_ui_dump():
+        tap_first_content_item()
+        time.sleep(1.5)
+    dump = get_ui_dump()
+    tap_node(dump, content_desc="Edit Apiary")
+    wait_for("Show on public map", timeout=15)
+    time.sleep(0.6)
+    screenshot("android-apiary-edit")
+    try:
+        tap_node(get_ui_dump(), text="Cancel")
+    except RuntimeError:
+        keyevent("KEYCODE_BACK")
+    time.sleep(0.5)
+
+
 # ── Failure diagnostics ───────────────────────────────────────────────────────
 
 def summarize_ui_dump(dump, max_nodes=60):
@@ -504,6 +562,9 @@ def main():
     # Re-navigate to hive detail for inspection form capture
     navigate_to_hive_detail()
     capture_inspection_form()
+    capture_inspection_frames()
+    capture_hive_edit()
+    capture_apiary_edit()
 
     print("\nAll Android screenshots captured.", flush=True)
 

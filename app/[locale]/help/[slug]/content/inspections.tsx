@@ -104,6 +104,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
               Number of frames containing brood (eggs, larvae, or capped cells). This measures colony growth
               potential. A strong, healthy colony in peak season typically fills 7–9 frames in a standard Langstroth.
             </div>
+            <div className="help-stat-card-desc">In the apps you pick the count by tapping the number itself — 0 to 10 as large buttons, sized for gloved hands. Tap the chosen number again to clear it.</div>
             <span className="help-stat-card-good">Good (spring/summer): 6–9 frames</span>
           </div>
           <div className="help-stat-card">

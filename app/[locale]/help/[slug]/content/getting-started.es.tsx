@@ -109,6 +109,15 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           <p>Registre las inspecciones de forma consistente — aunque solo anote el conteo de varroa — y HivePulse creará gráficos de tendencias significativos después de algunas visitas.</p>
         </div>
       </section>
+      <section className="help-section">
+        <h2 className="help-section-title">El recorrido guiado en las apps</h2>
+        <p>
+          La primera vez que inicias sesión en la app de iPhone o Android, un breve recorrido deslizable presenta
+          los códigos QR, las inspecciones, las estadísticas, los recordatorios y el rastreador de avispones. Puedes
+          saltarlo cuando quieras y volver a verlo en <strong>Ajustes → Mostrar de nuevo el recorrido</strong>.
+        </p>
+      </section>
+
     </>
   );
 }

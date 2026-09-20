@@ -22,6 +22,28 @@ export function newsText(entry: NewsEntry, locale: string): NewsText {
 
 export const NEWS: NewsEntry[] = [
   {
+    date: '2026-09-20',
+    tag: 'feature',
+    text: {
+      en: {
+        title: 'Frame Counts With Gloves On: Tap the Number',
+        body: 'Brood and honey frames were entered with a plus and a minus button — on the iPhone those were the tiny system arrows, barely usable with gloves, and picking eight frames meant eight taps. Both apps now show every value from 0 to 10 as its own large button across the full width of the form. One tap sets the number, tapping it again clears it. The buttons are 60 points tall on the iPhone and 68dp on Android, comfortably above what a gloved finger needs.',
+      },
+      de: {
+        title: 'Waben zählen mit Handschuhen: einfach die Zahl antippen',
+        body: 'Brut- und Honigwaben hast du bisher mit einem Plus- und einem Minus-Knopf eingegeben — auf dem iPhone waren das die winzigen System-Pfeile, mit Handschuhen kaum zu treffen, und für acht Waben brauchte es acht Tipper. Beide Apps zeigen jetzt jeden Wert von 0 bis 10 als eigenen großen Knopf über die volle Breite des Formulars. Ein Tipp setzt die Zahl, ein zweiter löscht sie wieder. Die Knöpfe sind auf dem iPhone 60 Punkt und auf Android 68dp hoch, also deutlich größer als das, was ein Finger im Handschuh braucht.',
+      },
+      fr: {
+        title: 'Compter les cadres avec des gants : touchez le chiffre',
+        body: "Les cadres de couvain et de miel se saisissaient avec un bouton plus et un bouton moins — sur iPhone, c'étaient les minuscules flèches du système, presque impossibles à viser avec des gants, et huit cadres demandaient huit appuis. Les deux applications affichent désormais chaque valeur de 0 à 10 comme un grand bouton sur toute la largeur du formulaire. Un appui choisit le chiffre, un second l'efface. Les boutons font 60 points de haut sur iPhone et 68dp sur Android, bien au-delà de ce qu'exige un doigt ganté.",
+      },
+      es: {
+        title: 'Contar cuadros con guantes: toca el número',
+        body: 'Los cuadros de cría y de miel se introducían con un botón de más y otro de menos; en el iPhone eran las diminutas flechas del sistema, casi imposibles de acertar con guantes, y ocho cuadros exigían ocho toques. Ahora ambas apps muestran cada valor de 0 a 10 como un botón grande a lo ancho del formulario. Un toque fija el número y otro lo borra. Los botones miden 60 puntos de alto en el iPhone y 68dp en Android, muy por encima de lo que necesita un dedo con guante.',
+      },
+    },
+  },
+  {
     date: '2026-09-18',
     tag: 'design',
     text: {

@@ -87,6 +87,21 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Push o correo, o ambos</h2>
+        <p>
+          Un recordatorio puede llegarte de dos formas, que se activan por separado en tu perfil:
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Notificación push</strong> — en las apps de iPhone y Android, en el dispositivo donde permitiste las notificaciones.</li>
+          <li><strong>Correo electrónico</strong> — a la dirección de tu cuenta, la única opción si trabajas solo desde el navegador.</li>
+        </ul>
+        <p>
+          Ambos usan el mismo intervalo y la misma temporada, así que activar el correo no duplica los avisos:
+          solo añade un segundo canal para el mismo recordatorio.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Consejos</h2>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />

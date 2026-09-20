@@ -79,6 +79,21 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Editar una colmena</h2>
+        <p>
+          El nombre, el tipo de colmena, la fecha de adquisición y las notas se pueden cambiar en cualquier momento:
+          en el navegador y, desde la última versión, también en ambas apps.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Web</strong> — abre la colmena y pulsa <strong>Editar</strong>.</li>
+          <li><strong>iPhone y Android</strong> — abre la colmena y toca el lápiz de la barra de título.</li>
+        </ul>
+        <p>
+          El código QR sigue vinculado al registro de la colmena, así que cambiar el nombre no invalida la pegatina de la caja.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Ver una colmena</h2>
         <p>
           La pantalla de detalles de la colmena muestra:

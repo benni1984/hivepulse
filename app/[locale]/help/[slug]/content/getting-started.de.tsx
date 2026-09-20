@@ -109,6 +109,15 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           <p>Protokollieren Sie Inspektionen regelmäßig — auch wenn Sie nur die Varroazählung notieren — und HivePulse erstellt nach einigen Besuchen aussagekräftige Trenddiagramme.</p>
         </div>
       </section>
+      <section className="help-section">
+        <h2 className="help-section-title">Die geführte Tour in den Apps</h2>
+        <p>
+          Wenn du dich zum ersten Mal in der iPhone- oder Android-App anmeldest, stellt dir eine kurze Tour zum
+          Durchwischen QR-Codes, Durchsichten, Statistiken, Erinnerungen und den Hornissentracker vor. Du kannst sie
+          jederzeit überspringen und später unter <strong>Einstellungen → Tour erneut anzeigen</strong> zurückholen.
+        </p>
+      </section>
+
     </>
   );
 }

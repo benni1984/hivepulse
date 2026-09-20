@@ -109,6 +109,15 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           <p>Enregistrez les inspections régulièrement — même si vous ne notez que le comptage varroa — et HivePulse créera des graphiques de tendances significatifs après quelques visites.</p>
         </div>
       </section>
+      <section className="help-section">
+        <h2 className="help-section-title">La visite guidée dans les applications</h2>
+        <p>
+          À votre première connexion à l'application iPhone ou Android, une courte visite à faire défiler présente
+          les QR codes, les visites, les statistiques, les rappels et le suivi des frelons. Passez-la quand vous voulez
+          et relancez-la plus tard depuis <strong>Réglages → Revoir la visite guidée</strong>.
+        </p>
+      </section>
+
     </>
   );
 }

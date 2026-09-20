@@ -58,6 +58,27 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Editing an apiary — and going public later</h2>
+        <p>
+          Everything you entered when creating an apiary can be changed afterwards, including
+          whether it appears on the community map. You do not have to create a new apiary for that.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Web</strong> — open the apiary and press <strong>Edit</strong> above the hive list.</li>
+          <li><strong>iPhone and Android</strong> — open the apiary and tap the pencil in the title bar.</li>
+        </ul>
+        <p>
+          The form holds name, description, address and the <strong>Show on public map</strong> switch.
+          Turning that switch on is what puts the apiary on the community map and makes its inspections
+          count towards the community figures; turning it off removes it again.
+        </p>
+        <div className="help-callout info">
+          <i className="fas fa-info-circle" />
+          <p>If the community map and the member statistics show zero for you, this switch is usually the reason: private apiaries are never counted.</p>
+        </div>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Public vs private apiaries</h2>
         <div className="help-stat-grid">
           <div className="help-stat-card">

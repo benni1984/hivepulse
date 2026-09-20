@@ -86,6 +86,21 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Push ou e-mail — ou les deux</h2>
+        <p>
+          Un rappel peut vous parvenir de deux façons, activées indépendamment dans votre profil :
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Notification push</strong> — dans les applications iPhone et Android, sur l'appareil où vous avez autorisé les notifications.</li>
+          <li><strong>E-mail</strong> — à l'adresse de votre compte, la seule option si vous travaillez uniquement depuis le navigateur.</li>
+        </ul>
+        <p>
+          Les deux utilisent le même intervalle et la même saison : activer l'e-mail ne double pas la fréquence,
+          cela ajoute simplement un second canal pour le même rappel.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Conseils</h2>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />

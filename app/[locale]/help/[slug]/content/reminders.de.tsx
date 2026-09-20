@@ -86,6 +86,21 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Push oder E-Mail — oder beides</h2>
+        <p>
+          Eine Erinnerung erreicht dich auf zwei Wegen, die du im Profil unabhängig voneinander einschaltest:
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Push-Benachrichtigung</strong> — in der iPhone- und Android-App, auf dem Gerät, auf dem du Benachrichtigungen erlaubt hast.</li>
+          <li><strong>E-Mail</strong> — an deine Konto-Adresse. Wenn du nur im Browser arbeitest, ist das der einzige Weg.</li>
+        </ul>
+        <p>
+          Beide nutzen dasselbe Intervall und dieselbe Saison. E-Mail zusätzlich einzuschalten verdoppelt also nichts,
+          sondern schickt dieselbe Erinnerung nur über einen zweiten Kanal.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Tipps</h2>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
