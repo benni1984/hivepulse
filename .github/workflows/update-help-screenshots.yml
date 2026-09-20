@@ -232,6 +232,13 @@ jobs:
           path: public/docs/screenshots
         continue-on-error: true
 
+      # The status-bar clock and counters like "Days since last inspection" change every run,
+      # so without this the workflow would open a pull request (and deploy) every day.
+      - name: Drop screenshots that only changed by noise
+        run: |
+          python3 -m pip install --quiet pillow
+          python3 scripts/drop_insignificant_screenshots.py public/docs/screenshots
+
       - name: Commit and open PR for updated screenshots
         uses: peter-evans/create-pull-request@v6
         with:

@@ -22,6 +22,28 @@ export function newsText(entry: NewsEntry, locale: string): NewsText {
 
 export const NEWS: NewsEntry[] = [
   {
+    date: '2026-09-18',
+    tag: 'design',
+    text: {
+      en: {
+        title: 'The Android App Is Amber Again, Everywhere',
+        body: 'Buttons and cards in the Android app showed Android\'s default lilac in a few places — the plus and minus buttons for brood and honey frames, and the statistics card — because the app never told the system which colours to use for those surfaces. They now follow the HivePulse amber and stone palette like everything else. The apiary list and the QR batch list also leave room at the bottom, so the last entry is no longer hidden behind the round button.',
+      },
+      de: {
+        title: 'Die Android-App ist überall wieder bernsteinfarben',
+        body: 'An ein paar Stellen zeigte die Android-App das Standard-Lila von Android: bei den Plus- und Minus-Knöpfen für Brut- und Honigwaben und bei der Statistik-Karte. Die App hatte dem System für diese Flächen nie eigene Farben genannt. Jetzt folgen sie wie alles andere dem Bernstein-Stein-Farbschema von HivePulse. In der Bienenstandsliste und der QR-Stapel-Liste ist unten außerdem Platz gelassen, sodass der letzte Eintrag nicht mehr hinter dem runden Knopf verschwindet.',
+      },
+      fr: {
+        title: 'L\'application Android retrouve son ambre partout',
+        body: "À quelques endroits, l'application Android affichait le lilas par défaut d'Android : les boutons plus et moins des cadres de couvain et de miel, ainsi que la carte des statistiques. L'application n'avait jamais indiqué au système quelles couleurs utiliser pour ces surfaces. Elles suivent désormais la palette ambre et pierre de HivePulse comme le reste. La liste des ruchers et celle des lots de QR codes laissent aussi de la place en bas, si bien que la dernière entrée n'est plus cachée derrière le bouton rond.",
+      },
+      es: {
+        title: 'La app de Android vuelve a ser ámbar en todas partes',
+        body: 'En algunos puntos la app de Android mostraba el lila predeterminado de Android: los botones de más y menos de los cuadros de cría y miel, y la tarjeta de estadísticas. La app nunca le había indicado al sistema qué colores usar en esas superficies. Ahora siguen la paleta ámbar y piedra de HivePulse como todo lo demás. La lista de colmenares y la de lotes de QR también dejan espacio abajo, así que la última entrada ya no queda oculta tras el botón redondo.',
+      },
+    },
+  },
+  {
     date: '2026-09-17',
     tag: 'fix',
     text: {
