@@ -22,6 +22,20 @@ internal val LightColors = lightColorScheme(
     surface            = Color.White,
     onSurface          = Stone900,
     surfaceVariant     = Stone100,
+    // Card/sheet elevation levels. Material's defaults are lilac-tinted, which showed up on
+    // every Card that does not set its own container colour (e.g. the hive statistics card).
+    surfaceContainerLowest  = Color.White,
+    surfaceContainerLow     = Color.White,
+    surfaceContainer        = Stone50,
+    surfaceContainerHigh    = Stone100,
+    surfaceContainerHighest = Stone100,
+    surfaceTint             = Amber500,
+    // Tertiary defaults are pink; keep the brand greens instead
+    tertiary            = Forest600,
+    onTertiary          = Color.White,
+    tertiaryContainer   = Amber200,
+    onTertiaryContainer = Amber900,
+    outlineVariant      = Stone200,
     onSurfaceVariant   = Stone500,
     outline            = Stone200,
     error              = Red500,
