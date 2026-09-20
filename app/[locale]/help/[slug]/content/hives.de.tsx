@@ -79,6 +79,21 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Volk bearbeiten</h2>
+        <p>
+          Name, Beutentyp, Anschaffungsdatum und Notizen kannst du jederzeit ändern — im Browser und
+          seit dem letzten Update auch in beiden Apps.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Website</strong> — Volk öffnen und auf <strong>Bearbeiten</strong> klicken.</li>
+          <li><strong>iPhone und Android</strong> — Volk öffnen und oben auf den Stift tippen.</li>
+        </ul>
+        <p>
+          Der QR-Code bleibt am Volk hängen. Ein neuer Name macht also den Aufkleber an der Beute nicht ungültig.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Volk ansehen</h2>
         <p>
           Die Volk-Detailansicht zeigt:

@@ -86,6 +86,21 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Push or email — or both</h2>
+        <p>
+          A reminder can reach you two ways, and they are switched on independently in your profile:
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Push notification</strong> — on the iPhone and Android apps, on the device you allowed notifications on.</li>
+          <li><strong>Email</strong> — to your account address, which is the only option if you work from the browser alone.</li>
+        </ul>
+        <p>
+          Both use the same interval and season settings, so turning on email does not double the schedule —
+          it only adds a second channel for the same reminder.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Tips</h2>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />

@@ -104,6 +104,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
               Número de marcos que contienen cría (huevos, larvas o celdas operculadas). Esto mide el potencial de crecimiento de la colonia.
               Una colonia fuerte y saludable en la temporada alta generalmente llena 7–9 marcos en una Langstroth estándar.
             </div>
+            <div className="help-stat-card-desc">En las apps eliges el número tocándolo directamente: del 0 al 10 como botones grandes, pensados para manos con guantes. Al tocar de nuevo el número elegido, se borra.</div>
             <span className="help-stat-card-good">Bueno (primavera/verano): 6–9 marcos</span>
           </div>
           <div className="help-stat-card">

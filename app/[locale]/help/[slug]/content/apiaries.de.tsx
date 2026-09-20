@@ -58,6 +58,27 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Bienenstand bearbeiten und nachträglich öffentlich machen</h2>
+        <p>
+          Alles, was du beim Anlegen eines Bienenstands eingegeben hast, kannst du später ändern —
+          auch, ob er auf der Gemeinschaftskarte erscheint. Dafür musst du keinen neuen Bienenstand anlegen.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Website</strong> — Bienenstand öffnen und über der Völkerliste auf <strong>Bearbeiten</strong> klicken.</li>
+          <li><strong>iPhone und Android</strong> — Bienenstand öffnen und oben auf den Stift tippen.</li>
+        </ul>
+        <p>
+          Im Formular stehen Name, Beschreibung, Adresse und der Schalter <strong>Auf öffentlicher Karte anzeigen</strong>.
+          Erst dieser Schalter bringt den Bienenstand auf die Gemeinschaftskarte und lässt seine Durchsichten in die
+          Gemeinschaftszahlen einfließen. Schaltest du ihn aus, verschwindet er wieder.
+        </p>
+        <div className="help-callout info">
+          <i className="fas fa-info-circle" />
+          <p>Wenn die Gemeinschaftskarte und die Mitgliederzahlen bei dir null anzeigen, liegt es meist an diesem Schalter: Private Bienenstände zählen nie mit.</p>
+        </div>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Öffentliche vs. private Bienenstände</h2>
         <div className="help-stat-grid">
           <div className="help-stat-card">

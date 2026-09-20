@@ -104,6 +104,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
               Anzahl der Waben mit Brut (Eier, Larven oder verdeckelte Zellen). Dies misst das Wachstumspotenzial des Volkes.
               Ein starkes, gesundes Volk in der Hauptsaison füllt typischerweise 7–9 Rähmchen in einem Standard-Langstroth.
             </div>
+            <div className="help-stat-card-desc">In den Apps tippst du die Zahl direkt an — 0 bis 10 als große Knöpfe, passend für Handschuhe. Ein zweiter Tipp auf die gewählte Zahl löscht sie wieder.</div>
             <span className="help-stat-card-good">Gut (Frühling/Sommer): 6–9 Rähmchen</span>
           </div>
           <div className="help-stat-card">

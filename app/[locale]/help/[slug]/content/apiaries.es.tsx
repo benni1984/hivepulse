@@ -58,6 +58,27 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Editar un colmenar y hacerlo público más tarde</h2>
+        <p>
+          Todo lo que introdujiste al crear un colmenar se puede cambiar después, incluido si aparece
+          en el mapa de la comunidad. No hace falta crear un colmenar nuevo para eso.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Web</strong> — abre el colmenar y pulsa <strong>Editar</strong> encima de la lista de colmenas.</li>
+          <li><strong>iPhone y Android</strong> — abre el colmenar y toca el lápiz de la barra de título.</li>
+        </ul>
+        <p>
+          El formulario incluye nombre, descripción, dirección y el interruptor <strong>Mostrar en el mapa público</strong>.
+          Ese interruptor es lo que coloca el colmenar en el mapa de la comunidad y hace que sus inspecciones cuenten
+          en las cifras comunitarias; al desactivarlo, vuelve a desaparecer.
+        </p>
+        <div className="help-callout info">
+          <i className="fas fa-info-circle" />
+          <p>Si el mapa de la comunidad y las estadísticas de miembros te muestran cero, normalmente la causa es este interruptor: los colmenares privados nunca se cuentan.</p>
+        </div>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Colmenares públicos vs privados</h2>
         <div className="help-stat-grid">
           <div className="help-stat-card">

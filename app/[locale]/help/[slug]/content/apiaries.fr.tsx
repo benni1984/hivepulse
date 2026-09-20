@@ -58,6 +58,27 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Modifier un rucher et le rendre public plus tard</h2>
+        <p>
+          Tout ce que vous avez saisi à la création d'un rucher peut être modifié ensuite, y compris
+          le fait qu'il apparaisse ou non sur la carte communautaire. Inutile de créer un nouveau rucher.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Site web</strong> — ouvrez le rucher et cliquez sur <strong>Modifier</strong> au-dessus de la liste des ruches.</li>
+          <li><strong>iPhone et Android</strong> — ouvrez le rucher et touchez le crayon dans la barre de titre.</li>
+        </ul>
+        <p>
+          Le formulaire contient le nom, la description, l'adresse et l'option <strong>Afficher sur la carte publique</strong>.
+          C'est cette option qui place le rucher sur la carte communautaire et fait compter ses visites dans les chiffres
+          de la communauté ; en la désactivant, il en disparaît.
+        </p>
+        <div className="help-callout info">
+          <i className="fas fa-info-circle" />
+          <p>Si la carte communautaire et les statistiques des membres affichent zéro pour vous, cette option en est le plus souvent la cause : les ruchers privés ne sont jamais comptés.</p>
+        </div>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Ruchers publics vs privés</h2>
         <div className="help-stat-grid">
           <div className="help-stat-card">

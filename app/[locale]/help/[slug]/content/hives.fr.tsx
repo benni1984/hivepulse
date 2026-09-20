@@ -79,6 +79,21 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Modifier une ruche</h2>
+        <p>
+          Le nom, le type de ruche, la date d'acquisition et les notes peuvent être modifiés à tout moment —
+          dans le navigateur et, depuis la dernière version, dans les deux applications.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Site web</strong> — ouvrez la ruche et cliquez sur <strong>Modifier</strong>.</li>
+          <li><strong>iPhone et Android</strong> — ouvrez la ruche et touchez le crayon dans la barre de titre.</li>
+        </ul>
+        <p>
+          Le QR code reste attaché à la fiche de la ruche : renommer une colonie n'invalide donc pas l'autocollant posé sur la ruche.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Consulter une ruche</h2>
         <p>
           L'écran de détail de la ruche affiche :
