@@ -10,6 +10,7 @@ from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from app.config import settings
+from app.notifications_i18n import reset_email
 from app.database import get_db
 from app.i18n import error
 from app.models import PasswordResetToken, RefreshToken, User
@@ -159,12 +160,14 @@ def logout(
         db.commit()
 
 
-def _send_reset_email(to_email: str, reset_url: str) -> None:
+def _send_reset_email(to_email: str, reset_url: str, locale: Optional[str] = None) -> None:
     """Send password-reset email via Resend. Logs URL when API key is not configured."""
     if not settings.resend_api_key:
         logger.warning("RESEND_API_KEY not configured — password reset URL: %s", reset_url)
         return
     import httpx
+
+    subject, html = reset_email(reset_url, RESET_TOKEN_TTL_MINUTES, locale)
     try:
         resp = httpx.post(
             "https://api.resend.com/emails",
@@ -172,13 +175,8 @@ def _send_reset_email(to_email: str, reset_url: str) -> None:
             json={
                 "from": "HivePulse <noreply@multihead.de>",
                 "to": [to_email],
-                "subject": "Reset your HivePulse password",
-                "html": (
-                    f"<p>Click the link below to reset your password. "
-                    f"It expires in {RESET_TOKEN_TTL_MINUTES} minutes.</p>"
-                    f"<p><a href='{reset_url}'>{reset_url}</a></p>"
-                    f"<p>If you did not request this, you can safely ignore this email.</p>"
-                ),
+                "subject": subject,
+                "html": html,
             },
             timeout=10,
         )
@@ -205,7 +203,7 @@ def forgot_password(body: ForgotPasswordRequest, request: Request, db: Session =
     db.commit()
 
     reset_url = f"{settings.app_base_url}/dashboard/reset-password?token={token_str}"
-    _send_reset_email(user.email, reset_url)
+    _send_reset_email(user.email, reset_url, user.locale)
 
 
 @router.post("/reset-password", status_code=204)
