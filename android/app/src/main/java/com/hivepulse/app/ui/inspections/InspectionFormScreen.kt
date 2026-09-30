@@ -333,10 +333,10 @@ fun InspectionFormScreen(
                     trailingIcon = {
                         Row {
                             IconButton(onClick = { weightKg = steppedWeight(weightKg, -0.5) }) {
-                                Icon(Icons.Default.Remove, contentDescription = "Decrease weight")
+                                Icon(Icons.Default.Remove, contentDescription = stringResource(R.string.action_decrease_weight))
                             }
                             IconButton(onClick = { weightKg = steppedWeight(weightKg, 0.5) }) {
-                                Icon(Icons.Default.Add, contentDescription = "Increase weight")
+                                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.action_increase_weight))
                             }
                         }
                     },

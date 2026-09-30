@@ -123,7 +123,7 @@ fun NumberStepper(
                     topEnd    = CornerSize(0.dp),
                     bottomEnd = CornerSize(0.dp),
                 ),
-            ) { Icon(Icons.Default.Remove, contentDescription = "Decrease", Modifier.size(28.dp)) }
+            ) { Icon(Icons.Default.Remove, contentDescription = stringResource(R.string.action_decrease), Modifier.size(28.dp)) }
 
             Text(
                 text     = value.toString(),
@@ -139,7 +139,7 @@ fun NumberStepper(
                     topStart    = CornerSize(0.dp),
                     bottomStart = CornerSize(0.dp),
                 ),
-            ) { Icon(Icons.Default.Add, contentDescription = "Increase", Modifier.size(28.dp)) }
+            ) { Icon(Icons.Default.Add, contentDescription = stringResource(R.string.action_increase), Modifier.size(28.dp)) }
         }
     }
 }
