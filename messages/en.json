@@ -951,5 +951,12 @@
       "history": "Catch History",
       "backToList": "← Back"
     }
+  },
+  "meta": {
+    "siteTitle": "HivePulse — Protecting Pollinators Together",
+    "siteDescription": "The beekeeping community app that turns every inspection into global data for bee conservation. Free for iOS and Android.",
+    "helpTitle": "Help & Documentation",
+    "helpDescription": "Guides for every part of HivePulse — apiaries, hives, inspections, QR codes, statistics and the hornet tracker.",
+    "helpSuffix": "HivePulse Help"
   }
 }

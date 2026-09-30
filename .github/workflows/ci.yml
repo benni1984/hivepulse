@@ -89,6 +89,21 @@ jobs:
         if: needs.changes.outputs.backend == 'true'
         run: pytest
 
+  # ── Translations ─────────────────────────────────────────────────────────────
+  # Always runs: a translation gap usually appears in one component (a new Android
+  # string, a new web message) and only shows up in the others, so path filtering
+  # would hide exactly the case this guards against.
+  i18n:
+    name: Translations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check translations across web, iOS, Android and backend
+        run: python scripts/check_i18n.py --list
+
   # ── Android unit tests ───────────────────────────────────────────────────────
   android-unit:
     name: Android unit tests
