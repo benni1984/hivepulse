@@ -396,4 +396,11 @@
     <string name="field_hive_name_edit">Hive name</string>
     <string name="action_save_hive">Save</string>
     <string name="hint_acquisition_date">YYYY-MM-DD</string>
+    <string name="action_decrease">Decrease</string>
+    <string name="action_increase">Increase</string>
+    <string name="field_latitude_short">Lat</string>
+    <string name="field_longitude_short">Lon</string>
+    <string name="admin_user_summary">%1$d apiaries · %2$d hives · %3$d inspections</string>
+    <string name="action_decrease_weight">Decrease weight</string>
+    <string name="action_increase_weight">Increase weight</string>
 </resources>

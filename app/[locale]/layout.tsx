@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import Script from 'next/script';
 import { routing } from '@/i18n/routing';
@@ -12,10 +12,20 @@ import '@/web/style.css';
 import '@/web/landing.css';
 import '@/web/help.css';
 
-export const metadata: Metadata = {
-  title: 'HivePulse — Protecting Pollinators Together',
-  description: 'The beekeeping community app that turns every inspection into global data for bee conservation. Free for iOS and Android.',
-};
+// A single static title left every locale with the English one in the browser tab,
+// in search results and in link previews.
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'meta' });
+  return {
+    title: t('siteTitle'),
+    description: t('siteDescription'),
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map(locale => ({ locale }));

@@ -106,14 +106,18 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const topic = getTopicBySlug(slug);
   if (!topic) return {};
+  // The topic title and description live in the message files, one set per locale —
+  // the English constants are only the fallback.
+  const help = await getTranslations({ locale, namespace: 'helpIndex' });
+  const meta = await getTranslations({ locale, namespace: 'meta' });
   return {
-    title: `${topic.title} — HivePulse Help`,
-    description: topic.description,
+    title: `${help(`topics.${slug}.title` as never)} — ${meta('helpSuffix')}`,
+    description: help(`topics.${slug}.desc` as never),
   };
 }
 

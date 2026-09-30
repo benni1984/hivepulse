@@ -951,5 +951,12 @@
       "history": "Historial de capturas",
       "backToList": "← Volver"
     }
+  },
+  "meta": {
+    "siteTitle": "HivePulse — protejamos juntos a los polinizadores",
+    "siteDescription": "La app apícola que convierte cada inspección en datos mundiales para la protección de las abejas. Gratis para iPhone y Android.",
+    "helpTitle": "Ayuda y documentación",
+    "helpDescription": "Guías de todas las partes de HivePulse: colmenares, colmenas, inspecciones, códigos QR, estadísticas y rastreador de avispones.",
+    "helpSuffix": "Ayuda de HivePulse"
   }
 }

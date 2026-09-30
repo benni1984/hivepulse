@@ -3,10 +3,18 @@ import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { HELP_TOPICS, HELP_GROUPS } from '@/lib/helpTopics';
 
-export const metadata: Metadata = {
-  title: 'Help & Documentation — HivePulse',
-  description: 'Step-by-step guides for every HivePulse feature across web, iOS, and Android.',
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'meta' });
+  return {
+    title: `${t('helpTitle')} — HivePulse`,
+    description: t('helpDescription'),
+  };
+}
 
 // Help index renders outside the sidebar layout so it can show its own hero + full-width grid.
 // We override the layout's padding by using negative margins.

@@ -287,9 +287,10 @@ private fun AdminUserRow(
             Column {
                 Text(user.name, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.secondary)
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text("${user.apiaryCount} apiaries", style = MaterialTheme.typography.labelSmall)
-                    Text("${user.hiveCount} hives", style = MaterialTheme.typography.labelSmall)
-                    Text("${user.inspectionCount} inspections", style = MaterialTheme.typography.labelSmall)
+                    Text(
+                        stringResource(R.string.admin_user_summary, user.apiaryCount, user.hiveCount, user.inspectionCount),
+                        style = MaterialTheme.typography.labelSmall,
+                    )
                     if (user.isSupporter) {
                         Text(
                             stringResource(R.string.admin_users_supporter),

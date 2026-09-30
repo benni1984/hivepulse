@@ -119,6 +119,29 @@ Work in one component per session. Do not mix backend, iOS, and Android in the s
 - Android: unit test every ViewModel + Repository; instrumented test for significant UI flows
 - No PR is complete without tests for all new code. If impossible (e.g. pure CSS), state why.
 
+## Translations — IMPORTANT
+
+Four languages everywhere: **en, de, fr, es** — web (`messages/*.json`), iOS
+(`ios/HivePulse/Resources/*.lproj/Localizable.strings`), Android
+(`android/app/src/main/res/values{,-de,-fr,-es}/strings.xml`) and backend error messages
+(`backend/app/i18n.py`).
+
+A missing translation never fails at runtime — it silently falls back to English. Before
+finishing any user-facing change run:
+
+```bash
+python scripts/check_i18n.py
+```
+
+It checks key parity, empty values, placeholder mismatches ({name}, %1$s, %@), the
+per-language help URL, hardcoded English in iOS/Android UI files, and backend messages.
+CI runs it in the always-on **Translations** job; `TranslationCompletenessTest` (Android),
+`MessagesCompleteness.test.ts` (web) and `test_i18n_completeness.py` (backend) cover the
+same ground in the component suites.
+
+Page titles and descriptions come from the `meta` namespace via `generateMetadata` — never
+add a static English `metadata` export.
+
 ## Implementation Status
 
 All components complete across web, Android, and iOS. No open feature gaps.

@@ -951,5 +951,12 @@
       "history": "Fangverlauf",
       "backToList": "← Zurück"
     }
+  },
+  "meta": {
+    "siteTitle": "HivePulse — gemeinsam Bestäuber schützen",
+    "siteDescription": "Die Imker-App, die jede Durchsicht zu weltweiten Daten für den Bienenschutz macht. Kostenlos für iPhone und Android.",
+    "helpTitle": "Hilfe & Dokumentation",
+    "helpDescription": "Anleitungen zu allen Bereichen von HivePulse — Bienenstände, Völker, Durchsichten, QR-Codes, Statistiken und Hornissentracker.",
+    "helpSuffix": "HivePulse Hilfe"
   }
 }

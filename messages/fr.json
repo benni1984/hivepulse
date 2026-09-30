@@ -951,5 +951,12 @@
       "history": "Historique des captures",
       "backToList": "← Retour"
     }
+  },
+  "meta": {
+    "siteTitle": "HivePulse — protégeons les pollinisateurs ensemble",
+    "siteDescription": "L'application des apiculteurs qui transforme chaque visite en données mondiales pour la protection des abeilles. Gratuite sur iPhone et Android.",
+    "helpTitle": "Aide & documentation",
+    "helpDescription": "Des guides pour chaque partie de HivePulse — ruchers, ruches, visites, QR codes, statistiques et suivi des frelons.",
+    "helpSuffix": "Aide HivePulse"
   }
 }

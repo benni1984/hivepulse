@@ -304,13 +304,13 @@ private fun TrapRegisterView(
                         verticalAlignment = Alignment.CenterVertically) {
                         OutlinedTextField(
                             value = lat, onValueChange = { lat = it },
-                            label = { Text("Lat") },
+                            label = { Text(stringResource(R.string.field_latitude_short)) },
                             modifier = Modifier.weight(1f), singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                         )
                         OutlinedTextField(
                             value = lon, onValueChange = { lon = it },
-                            label = { Text("Lon") },
+                            label = { Text(stringResource(R.string.field_longitude_short)) },
                             modifier = Modifier.weight(1f), singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                         )
