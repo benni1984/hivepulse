@@ -27,9 +27,6 @@ import javax.inject.Singleton
 object NetworkModule {
 
     @Provides @Singleton
-    fun provideGson(): Gson = GsonBuilder().create()
-
-    @Provides @Singleton
     fun provideOkHttpClient(tokenStore: TokenStore, apiService: Lazy<ApiService>): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor { chain ->

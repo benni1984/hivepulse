@@ -95,6 +95,20 @@ In ViewModels use `e.message ?: e.cause?.message` for robustness.
 
 Order 1 injects `@Inject` fields before the activity starts at order 2.
 
+## IMPORTANT: Verifying the Hilt graph for instrumented tests
+
+`./gradlew compileDebugAndroidTestKotlin` compiles the test sources but does **not** build the
+Hilt component graph, so a missing binding only shows up in CI. Before pushing changes that add
+an injected dependency, run:
+
+```bash
+./gradlew :app:hiltJavaCompileDebugAndroidTest
+```
+
+Anything the tests still need must live **outside** `NetworkModule` — instrumented tests uninstall
+it (see below), so a provider placed there vanishes for every one of them. That is why `Gson` has
+its own `SerializationModule`.
+
 ## UI Tests: No Backend Needed
 
 Replace the entire network stack:
