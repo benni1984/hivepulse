@@ -31,10 +31,28 @@ development, in the test suite, and in any build made from this repository witho
 The app secrets are read by the APK workflow and the TestFlight workflow; a build without
 them simply ships with reporting off.
 
+Two things about the Vercel variable that cost an evening the first time:
+
+- **Choose type "Config", not "Secret".** Deployment runs through the CLI
+  (`vercel pull` + `vercel build --prebuilt`), and a Secret is deliberately withheld from
+  it — the function then starts with no DSN and reports nothing, silently. A DSN is not
+  worth protecting anyway: it ships inside every APK and only allows submitting reports.
+- **A variable only reaches a deployment made after it was saved.** Existing deployments
+  keep the environment they were created with, so the value needs a new deployment
+  (a merge to `main`, or Redeploy where the plan offers it).
+
+Both halves of a DSN belong together: the key before the `@` and the project number at the
+end. Mixing them across projects yields `403 event submission rejected with_reason:
+ProjectId` and no visible error anywhere else. Copy the whole line from
+**Settings → Projects → [project] → Client Keys (DSN)** rather than assembling it.
+
 ## 3. Checking it works
 
-- Backend: after the next deploy, an unhandled error on any endpoint appears in the
-  project within a minute.
+- **Backend: press the button.** Dashboard → Admin → Data Health → *Crash Reporting* →
+  **Send test error** (`POST /admin/self-test/error`). It answers with the event id and the
+  environment, or says that nothing is configured. The event appears in Sentry within a
+  minute; resolve it there afterwards. Repeat this after every key change — it is the only
+  way to know before the first real crash does the telling.
 - Apps: install a build made **after** the secret exists. Sentry's project page has a
   "waiting for first event" banner until one arrives.
 
