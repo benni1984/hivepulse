@@ -91,3 +91,30 @@ def test_secrets_in_extra_data_are_filtered():
 def test_an_event_without_request_or_user_passes_through():
     event = {"message": "something broke"}
     assert scrub_event(event) == {"message": "something broke"}
+
+
+def test_the_real_sdk_starts_the_way_production_has_it_installed():
+    """Starting reporting must survive the dependency set the production image actually has.
+
+    Production installs markupsafe (alembic -> Mako -> MarkupSafe) but no jinja2, and
+    sentry-sdk 2.20 raised ImportError on exactly that combination while patching
+    Starlette's template class. init_monitoring() runs at import time, before the app
+    object exists, so that one line took the entire API down the moment a DSN was set.
+
+    A fresh interpreter, because the SDK patches globally and would otherwise be warm.
+    """
+    import os
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    backend = Path(__file__).resolve().parents[1]
+    env = {**os.environ, "SENTRY_DSN": "https://key@o0.ingest.de.sentry.io/1"}
+    code = "from app.monitoring import init_monitoring; print(init_monitoring())"
+
+    result = subprocess.run(
+        [sys.executable, "-c", code], cwd=backend, env=env, capture_output=True, text=True
+    )
+
+    assert result.returncode == 0, f"startup crashed:\n{result.stderr}"
+    assert result.stdout.strip().endswith("True"), f"reporting did not start:\n{result.stderr}"

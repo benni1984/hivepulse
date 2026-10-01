@@ -63,17 +63,25 @@ def init_monitoring() -> bool:
         logger.warning("SENTRY_DSN is set but sentry-sdk is not installed — error reporting off")
         return False
 
-    sentry_sdk.init(
-        dsn=dsn,
-        environment=settings.environment,
-        release=settings.release,
-        # Errors only: performance tracing on a serverless backend costs quota without
-        # telling us much that the Vercel logs do not.
-        traces_sample_rate=0.0,
-        send_default_pii=False,
-        max_request_body_size="never",
-        before_send=scrub_event,
-        integrations=[StarletteIntegration(), FastApiIntegration()],
-    )
+    try:
+        sentry_sdk.init(
+            dsn=dsn,
+            environment=settings.environment,
+            release=settings.release,
+            # Errors only: performance tracing on a serverless backend costs quota without
+            # telling us much that the Vercel logs do not.
+            traces_sample_rate=0.0,
+            send_default_pii=False,
+            max_request_body_size="never",
+            before_send=scrub_event,
+            integrations=[StarletteIntegration(), FastApiIntegration()],
+        )
+    except Exception:
+        # Reporting runs before the app object exists, so anything raised here would take
+        # the whole API down at import. sentry-sdk 2.20 did exactly that when markupsafe
+        # was installed without jinja2. Losing reports is bad; losing the API is worse.
+        logger.exception("Error reporting could not be started — continuing without it")
+        return False
+
     logger.info("Error reporting enabled for environment %s", settings.environment)
     return True
