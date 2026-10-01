@@ -18,6 +18,11 @@ android {
     val baseUrl: String = (project.findProperty("BASE_URL") as? String)
         ?: "http://10.0.2.2:8000/api/v1/"
 
+    // Crash reporting is off unless a DSN is passed at build time
+    // (-PSENTRY_DSN=… or the SENTRY_DSN_ANDROID environment variable).
+    val sentryDsn: String = (project.findProperty("SENTRY_DSN") as? String)
+        ?: System.getenv("SENTRY_DSN_ANDROID") ?: ""
+
     defaultConfig {
         applicationId = "com.hivepulse.app"
         minSdk        = 26
@@ -26,6 +31,7 @@ android {
         versionName   = "1.0"
         testInstrumentationRunner = "com.hivepulse.app.HiltTestRunner"
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
+        buildConfigField("String", "SENTRY_DSN", "\"$sentryDsn\"")
     }
 
     buildTypes {
@@ -107,6 +113,9 @@ dependencies {
     // Firebase (FCM push notifications — delivery activates when google-services.json has real credentials)
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-messaging-ktx")
+
+    // Crash reporting (inert without a DSN)
+    implementation("io.sentry:sentry-android:7.20.0")
 
     // Offline: local cache + queue for inspections recorded without a connection
     implementation("androidx.room:room-runtime:2.6.1")

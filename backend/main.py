@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
+from app.monitoring import init_monitoring
 from app.database import Base, SessionLocal, engine
 from app.routers import auth, users, field_definitions, apiaries, qr_batches, hives, inspections, stats, public, export
 from app.routers import admin, hornets, notifications
@@ -26,6 +27,9 @@ def check_secret_key_safety(environment: str, secret_key: str) -> None:
 
 
 check_secret_key_safety(settings.environment, settings.secret_key)
+
+# Before the app object: an error during startup should be reported too.
+init_monitoring()
 
 app = FastAPI(title="HivePulse", version="1.0.0", lifespan=lifespan)
 

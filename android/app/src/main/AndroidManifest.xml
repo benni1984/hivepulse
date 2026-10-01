@@ -24,6 +24,11 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/Theme.HivePulse">
 
+        <!-- Sentry auto-starts from a ContentProvider and throws "DSN is required" when the
+             manifest carries none — that would crash the app on launch in every build without
+             a DSN. The app starts it itself in HivePulseApplication instead. -->
+        <meta-data android:name="io.sentry.auto-init" android:value="false" />
+
         <!-- The app configures WorkManager itself (Hilt-injected worker factory), so the
              default initializer must not run first. -->
         <provider

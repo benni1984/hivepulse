@@ -14,6 +14,8 @@ struct HivePulseApp: App {
     @StateObject private var authVM = AuthViewModel()
 
     init() {
+        // First statement: a crash during setup should still be reported.
+        _ = CrashReporting.start()
         HivePulseAppearance.apply()
         #if DEBUG
         let args = ProcessInfo.processInfo.arguments

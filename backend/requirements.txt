@@ -14,3 +14,4 @@ reportlab==4.2.5
 pytest==9.0.3
 httpx[http2]==0.28.1   # http2 extra: APNs only speaks HTTP/2
 pytest-asyncio==1.4.0
+sentry-sdk[fastapi]==2.20.0   # error reporting; inert without SENTRY_DSN
