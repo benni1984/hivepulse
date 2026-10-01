@@ -3,7 +3,7 @@ from datetime import datetime, date
 
 from sqlalchemy import (
     Boolean, Column, Date, DateTime, Float, ForeignKey,
-    Integer, String, Text, JSON, Enum as SAEnum
+    Integer, String, Text, JSON, UniqueConstraint, Enum as SAEnum
 )
 from sqlalchemy.orm import relationship
 
@@ -198,9 +198,16 @@ class Inspection(Base):
     weight_kg = Column(Float, nullable=True)
     notes = Column(Text, nullable=True)
     custom_fields = Column(JSON, default=dict)
+    # Set by apps that record offline: the same value is reused for every retry, so a
+    # second POST returns the stored inspection instead of creating a duplicate.
+    client_id = Column(String(64), nullable=True, index=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     hive = relationship("Hive", back_populates="inspections")
+
+    __table_args__ = (
+        UniqueConstraint("hive_id", "client_id", name="uq_inspection_hive_client_id"),
+    )
 
 
 # ---------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 import math
 from typing import Optional
 
-from fastapi import APIRouter, Header, HTTPException, Query
+from fastapi import Response, APIRouter, Header, HTTPException, Query
 
 from app.deps import CurrentUser, DB
 from app.i18n import error
@@ -57,10 +57,25 @@ def create_inspection(
     body: InspectionCreate,
     current_user: CurrentUser,
     db: DB,
+    response: Response,
     accept_language: Optional[str] = Header(default=None),
 ):
     _get_hive_or_404(hive_id, current_user.id, db, accept_language)
     data = body.model_dump()
+
+    # An app that recorded this visit without a connection retries with the same
+    # client_id; returning the stored inspection keeps the retry from duplicating it.
+    client_id = data.get("client_id")
+    if client_id:
+        existing = (
+            db.query(Inspection)
+            .filter(Inspection.hive_id == hive_id, Inspection.client_id == client_id)
+            .first()
+        )
+        if existing:
+            response.status_code = 200
+            return InspectionOut.model_validate(existing)
+
     # Older app builds still send a mite count; keep the level in step for them.
     if data.get("varroa_level") is None and data.get("varroa_count") is not None:
         data["varroa_level"] = varroa_level_from_count(data["varroa_count"])

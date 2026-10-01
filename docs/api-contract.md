@@ -625,9 +625,24 @@ All inspection fields are optional. Send only what was recorded during the visit
   "feeding_type": null,
   "weight_kg": 34.5,
   "notes": "Free text notes",
-  "custom_fields": {}
+  "custom_fields": {},
+  "client_id": "6f1c0f3e-9a1e-4c0a-9a5b-1e2d3c4b5a6f"
 }
 ```
+
+#### `client_id` — safe retries for offline clients
+
+`client_id` is optional and only meaningful on **POST**. An app that records an inspection
+without a connection queues it and retries later; a retry that is sent after the server
+already stored the first attempt would otherwise create a duplicate.
+
+- The client generates a UUID once per recorded inspection and reuses it for every retry.
+- The first POST stores it and returns `201`.
+- A later POST with the same `client_id` **for the same hive** does not create a second
+  inspection: it returns the stored one with `200` and leaves it unchanged.
+- Omitting `client_id` keeps the old behaviour — every POST creates an inspection.
+- `client_id` is echoed in `InspectionOut` so a client can match a queued entry to the
+  stored one; it is at most 64 characters.
 
 ---
 
