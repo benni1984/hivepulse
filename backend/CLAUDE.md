@@ -7,6 +7,17 @@
 - ORM: SQLAlchemy + Alembic migrations in `backend/alembic/versions/`
 - Latest migration: `010_add_reminder_email_enabled.py`
 
+## Push notifications
+
+Real delivery lives in `app/utils/push.py`: **FCM HTTP v1** for Android (service account →
+OAuth2 access token, cached) and **APNs HTTP/2** for iPhones (ES256 provider token, cached
+for 40 minutes because Apple refuses more frequent refreshes). Both return a `PushResult`;
+`UNREGISTERED` makes the reminder run drop that token from the account.
+
+Without credentials both senders log a warning and return `SKIPPED` — a cron run must never
+fail for everyone because one channel is unconfigured. Setup steps for the Firebase and
+Apple side are in `docs/push-setup.md`.
+
 ## Endpoints & Tests
 
 | Domain | Endpoints | Test file |

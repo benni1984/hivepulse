@@ -216,3 +216,79 @@ def test_send_reminders_returns_counts(auth_client):
     for key in ("sent", "skipped_off_season", "skipped_disabled", "skipped_no_channel"):
         assert key in data
         assert isinstance(data[key], int)
+
+
+def _overdue_user_with_tokens(db_session):
+    """A user whose single hive has never been inspected, reachable on both platforms."""
+    from app.models import User, Apiary, Hive, QrBatch, QrToken
+    import uuid
+
+    user = db_session.query(User).filter(User.email == "test@example.com").first()
+    user.push_token_fcm = "fcm-token"
+    user.push_token_apns = "apns-token"
+    user.reminder_interval_days = 7
+    user.reminder_season_start = 1
+    user.reminder_season_end = 12
+
+    apiary = Apiary(id=str(uuid.uuid4()), user_id=user.id, name="Test Apiary")
+    batch = QrBatch(id=str(uuid.uuid4()), user_id=user.id, count=1)
+    qr = QrToken(token=str(uuid.uuid4()), batch_id=batch.id, user_id=user.id)
+    hive = Hive(id=str(uuid.uuid4()), qr_token=qr.token, apiary_id=apiary.id,
+                user_id=user.id, name="Test Hive")
+    db_session.add_all([apiary, batch, qr, hive])
+    db_session.commit()
+    return user
+
+
+def test_reminder_push_goes_to_both_platforms_in_the_users_language(auth_client, db_session, monkeypatch):
+    """The stub never sent anything; this pins that both senders are actually called."""
+    from app.routers import notifications
+    from app.utils.push import PushResult
+
+    user = _overdue_user_with_tokens(db_session)
+    user.locale = "de"
+    db_session.commit()
+
+    sent = []
+    monkeypatch.setattr(notifications, "send_fcm",
+                        lambda token, title, body: sent.append(("fcm", token, title)) or PushResult.SENT)
+    monkeypatch.setattr(notifications, "send_apns",
+                        lambda token, title, body: sent.append(("apns", token, title)) or PushResult.SENT)
+
+    r = auth_client.post(ENDPOINT, headers=_cron_headers())
+
+    assert r.status_code == 200
+    assert [channel for channel, _, _ in sent] == ["fcm", "apns"]
+    assert all(title == "Durchsicht fällig" for _, _, title in sent)
+
+
+def test_a_dead_token_is_dropped_instead_of_being_retried_nightly(auth_client, db_session, monkeypatch):
+    from app.models import User
+    from app.routers import notifications
+    from app.utils.push import PushResult
+
+    _overdue_user_with_tokens(db_session)
+
+    monkeypatch.setattr(notifications, "send_fcm", lambda *a: PushResult.UNREGISTERED)
+    monkeypatch.setattr(notifications, "send_apns", lambda *a: PushResult.SENT)
+
+    auth_client.post(ENDPOINT, headers=_cron_headers())
+
+    db_session.expire_all()
+    user = db_session.query(User).filter(User.email == "test@example.com").first()
+    assert user.push_token_fcm is None, "the uninstalled app's token must not be kept"
+    assert user.push_token_apns == "apns-token", "the working token stays"
+
+
+def test_a_failing_push_does_not_stop_the_run(auth_client, db_session, monkeypatch):
+    from app.routers import notifications
+    from app.utils.push import PushResult
+
+    _overdue_user_with_tokens(db_session)
+    monkeypatch.setattr(notifications, "send_fcm", lambda *a: PushResult.FAILED)
+    monkeypatch.setattr(notifications, "send_apns", lambda *a: PushResult.FAILED)
+
+    r = auth_client.post(ENDPOINT, headers=_cron_headers())
+
+    assert r.status_code == 200
+    assert r.json()["sent"] == 1
