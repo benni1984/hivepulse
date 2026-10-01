@@ -1362,6 +1362,29 @@ All endpoints in this section require `Authorization: Bearer <access_token>` for
 | DELETE | `/admin/users/{user_id}/tokens` | Revoke all sessions for one user |
 | PUT | `/admin/hornets/sightings/{id}/status` | Override a hornet sighting status |
 | POST | `/admin/self-test/error` | Send a deliberate test error to the crash reporter |
+| GET | `/admin/health/configuration` | What the running server actually received — environment, signing key, reporting |
+
+---
+
+### GET `/admin/health/configuration`
+
+Reports what the **running process** received, which is not necessarily what the hosting
+dashboard shows: a variable that never reaches the function is invisible everywhere else,
+because the application keeps working with its default.
+
+**Response 200:**
+
+```json
+{
+  "environment": "production",
+  "signing_key_is_the_public_default": false,
+  "crash_reporting_configured": true
+}
+```
+
+`signing_key_is_the_public_default: true` is a security problem, not a note: the default
+lives in this repository, so anyone could forge an access token for any account. The
+dashboard shows a warning for it. Values are never echoed, only answers about them.
 
 ---
 

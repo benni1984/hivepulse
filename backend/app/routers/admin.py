@@ -6,6 +6,7 @@ from fastapi import APIRouter, HTTPException, Query, status
 from sqlalchemy import func, or_, and_
 
 from app.deps import CurrentAdmin, DB
+from app.config import settings
 from app.monitoring import send_self_test
 from app.models import Apiary, Hive, Inspection, RefreshToken, User, HornetSighting
 from app.schemas import (
@@ -22,6 +23,21 @@ router = APIRouter(prefix="/admin", tags=["admin"])
 def ping(admin: CurrentAdmin) -> dict:
     """Health-check for the admin dependency. Returns 403 for non-admins."""
     return {"ok": True, "email": admin.email}
+
+
+@router.get("/health/configuration")
+def configuration_health(admin: CurrentAdmin) -> dict:
+    """What the running server actually received — not what the hosting dashboard shows.
+
+    A variable that never reaches the function is invisible everywhere else: the app keeps
+    working, just with the default. For the signing key that is a security hole, because the
+    default is published in this repository and anyone could forge a login token with it.
+    """
+    return {
+        "environment": settings.environment,
+        "signing_key_is_the_public_default": settings.secret_key == "dev-secret-change-me",
+        "crash_reporting_configured": bool(settings.sentry_dsn.strip()),
+    }
 
 
 @router.post("/self-test/error")

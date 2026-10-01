@@ -5,9 +5,9 @@ import DashboardShell from '@/components/DashboardShell';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import {
   adminGetHealthSummary, adminGetInactiveUsers, adminGetNoVarroaApiaries, adminGetZeroInspectionHives,
-  adminSelfTestError,
+  adminSelfTestError, adminGetConfigurationHealth,
   type HealthSummary, type InactiveUser, type NoVarroaApiary, type ZeroInspectionHive, type Paginated,
-  type CrashReportSelfTest,
+  type CrashReportSelfTest, type ConfigurationHealth,
 } from '@/lib/api';
 
 type Section = 'inactive' | 'zeroHives' | 'noVarroa';
@@ -165,8 +165,27 @@ export default function AdminHealthPage() {
         </div>
       )}
 
+      <ConfigurationWarnings />
       <CrashReportingSelfTest />
     </DashboardShell>
+  );
+}
+
+/** A variable that never reached the server is invisible everywhere else. */
+function ConfigurationWarnings() {
+  const t = useTranslations('dash');
+  const ready = useDashboardReady();
+  const [config, setConfig] = useState<ConfigurationHealth | null>(null);
+
+  useEffect(() => {
+    if (!ready) return;
+    adminGetConfigurationHealth().then(setConfig).catch(() => {});
+  }, [ready]);
+
+  if (!config?.signing_key_is_the_public_default) return null;
+
+  return (
+    <p className="dash-admin-config-warning">{t('admin.health.defaultSigningKey')}</p>
   );
 }
 

@@ -108,3 +108,37 @@ def test_self_test_diagnosis_counts_characters_without_leaking_the_key(admin_cli
 
     assert str(len(dsn)) in body
     assert dsn not in body, "a length is enough; the key itself must not travel back"
+
+
+# ---------------------------------------------------------------------------
+# GET /admin/health/configuration — what the running server actually received
+# ---------------------------------------------------------------------------
+
+def test_configuration_health_flags_the_published_default_signing_key(admin_client, monkeypatch):
+    from app.routers import admin as admin_router
+
+    monkeypatch.setattr(admin_router.settings, "secret_key", "dev-secret-change-me", raising=False)
+
+    data = admin_client.get("/api/v1/admin/health/configuration").json()
+
+    assert data["signing_key_is_the_public_default"] is True, (
+        "the default is in this repository; anyone could forge a login token with it"
+    )
+
+
+def test_configuration_health_is_quiet_with_a_real_signing_key(monkeypatch):
+    # Called directly, not over HTTP: swapping the signing key invalidates the token the
+    # test client is already holding, so the request would come back as 401 instead.
+    from app.routers import admin as admin_router
+
+    monkeypatch.setattr(admin_router.settings, "secret_key", "a-real-secret", raising=False)
+
+    data = admin_router.configuration_health(admin=None)
+
+    assert data["signing_key_is_the_public_default"] is False
+    assert "a-real-secret" not in str(data), "never echo the key itself"
+
+
+def test_configuration_health_as_regular_user_returns_403(auth_client):
+    resp = auth_client.get("/api/v1/admin/health/configuration")
+    assert resp.status_code == 403

@@ -1376,6 +1376,7 @@ tr:last-child td { border-bottom: none; }
 .dash-admin-health-count { font-family: var(--font-mono); font-size: 28px; font-weight: 600; letter-spacing: -.02em; color: var(--green-ink); line-height: 1.1; }
 .dash-admin-health-label { font-weight: 600; font-size: 14.5px; color: var(--text); margin-top: 6px; }
 .dash-admin-health-desc { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.dash-admin-config-warning { margin-top: 28px; padding: 12px 14px; border: 1px solid #fca5a5; background: #fef2f2; border-radius: 10px; font-size: 13.5px; color: #991b1b; max-width: 72ch; }
 .dash-admin-selftest { margin-top: 36px; padding-top: 4px; border-top: 1px solid var(--border); }
 .dash-admin-selftest-desc { font-size: 13.5px; color: var(--muted); max-width: 62ch; margin: 0 0 14px; }
 .dash-admin-selftest-result { font-size: 13.5px; color: var(--text); max-width: 62ch; margin-top: 12px; }
