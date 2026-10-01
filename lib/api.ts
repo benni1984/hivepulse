@@ -548,7 +548,8 @@ export async function adminSetPrivate(apiaryId: string): Promise<AdminApiary> {
   return res.json();
 }
 
-export interface CrashReportSelfTest { reporting_enabled: boolean; event_id: string | null; environment: string; release: string; }
+export interface CrashReportSelfTestDiagnosis { dsn_characters_in_settings: number; dsn_characters_in_process_env: number; }
+export interface CrashReportSelfTest { reporting_enabled: boolean; event_id: string | null; environment: string; release: string; diagnosis: CrashReportSelfTestDiagnosis; }
 
 export async function adminSelfTestError(): Promise<CrashReportSelfTest> {
   const res = await apiFetch('/admin/self-test/error', { method: 'POST' });

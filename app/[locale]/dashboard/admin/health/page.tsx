@@ -192,11 +192,21 @@ function CrashReportingSelfTest() {
       </button>
 
       {state === 'done' && result && (
-        <p className="dash-admin-selftest-result">
-          {result.reporting_enabled && result.event_id
-            ? t('admin.health.crashSent', { id: result.event_id, environment: result.environment })
-            : t('admin.health.crashOff')}
-        </p>
+        <>
+          <p className="dash-admin-selftest-result">
+            {result.reporting_enabled && result.event_id
+              ? t('admin.health.crashSent', { id: result.event_id, environment: result.environment })
+              : t('admin.health.crashOff')}
+          </p>
+          {!result.reporting_enabled && result.diagnosis && (
+            <p className="dash-admin-selftest-result muted">
+              {t('admin.health.crashDiagnosis', {
+                settingsChars: result.diagnosis.dsn_characters_in_settings,
+                envChars: result.diagnosis.dsn_characters_in_process_env,
+              })}
+            </p>
+          )}
+        </>
       )}
       {state === 'failed' && (
         <p className="dash-admin-selftest-result error">{t('admin.health.crashFailed')}</p>
