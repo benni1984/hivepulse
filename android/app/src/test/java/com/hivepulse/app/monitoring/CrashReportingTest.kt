@@ -33,4 +33,15 @@ class CrashReportingTest {
         assertFalse(CrashReporting.isConfigured("your-dsn-here"))
         assertFalse(CrashReporting.isConfigured("sentry.io/42"))
     }
+
+    @Test
+    fun `the manifest switches off sentry's own auto start`() {
+        // Sentry's ContentProvider throws "DSN is required" at app launch when the manifest
+        // carries no DSN, so every build without one would crash on start.
+        val manifest = java.io.File("src/main/AndroidManifest.xml").readText()
+        assertTrue(
+            "io.sentry.auto-init must stay false — the app starts the SDK itself",
+            manifest.contains("io.sentry.auto-init") && manifest.contains("android:value=\"false\""),
+        )
+    }
 }
