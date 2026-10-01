@@ -191,6 +191,30 @@ def check_backend() -> None:
         for locale in sorted(set(LOCALES) - have):
             fail(area, f"error {code} has no {locale} message")
 
+    if "SUPPORTED_LANGUAGES" in source:
+        accepted = set(re.findall(r'"(en|de|fr|es)"', source.split("SUPPORTED_LANGUAGES")[1][:80]))
+        for locale in sorted(set(LOCALES) - accepted):
+            fail(area, f"get_message never selects {locale!r} — that language is served in English")
+
+    # Outgoing messages: reminder push, reminder email, password-reset email
+    templates = ROOT / "backend/app/notifications_i18n.py"
+    if not templates.exists():
+        fail(area, "backend/app/notifications_i18n.py is missing")
+        return
+    source = templates.read_text(encoding="utf-8")
+    entries = re.findall(r'^    "([a-z.]+)": \{\n(.*?)^    \},', source, re.S | re.M)
+    if not entries:
+        fail(area, "no notification templates found — has the format changed?")
+    placeholder = re.compile(r"\{[a-z_]+\}")
+    for key, body in entries:
+        variants = dict(re.findall(r'"(en|de|fr|es)":\s*"(.*)",', body))
+        for locale in sorted(set(LOCALES) - set(variants)):
+            fail(area, f"notification template {key} has no {locale} text")
+        english = sorted(placeholder.findall(variants.get("en", "")))
+        for locale, text in sorted(variants.items()):
+            if sorted(placeholder.findall(text)) != english:
+                fail(area, f"notification template {key}/{locale} has different placeholders")
+
 
 def main() -> int:
     parser = argparse.ArgumentParser()

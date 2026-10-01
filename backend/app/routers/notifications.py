@@ -15,7 +15,10 @@ from datetime import datetime, timedelta, timezone
 import httpx
 from fastapi import APIRouter, HTTPException, Request
 
+from typing import Optional
+
 from app.config import settings
+from app.notifications_i18n import reminder_email, reminder_push
 from app.database import get_db
 from app.deps import DB
 from app.models import Apiary, Hive, Inspection, User
@@ -56,7 +59,7 @@ def _send_push(
         logger.info("APNs push stub (not yet configured): %s", title)
 
 
-def _send_reminder_email(to_email: str, overdue_count: int) -> None:
+def _send_reminder_email(to_email: str, overdue_count: int, locale: Optional[str] = None) -> None:
     """Send an inspection-reminder email via Resend.
 
     Same provider/pattern as the password-reset email (auth.py's
@@ -67,7 +70,7 @@ def _send_reminder_email(to_email: str, overdue_count: int) -> None:
     if not settings.resend_api_key:
         logger.warning("RESEND_API_KEY not configured — skipping reminder email to %s", to_email)
         return
-    hive_word = "hive" if overdue_count == 1 else "hives"
+    subject, html = reminder_email(overdue_count, settings.app_base_url, locale)
     try:
         resp = httpx.post(
             "https://api.resend.com/emails",
@@ -75,12 +78,8 @@ def _send_reminder_email(to_email: str, overdue_count: int) -> None:
             json={
                 "from": "HivePulse <noreply@multihead.de>",
                 "to": [to_email],
-                "subject": "Inspection due",
-                "html": (
-                    f"<p>{overdue_count} {hive_word} in your apiaries are due for inspection.</p>"
-                    f"<p><a href='{settings.app_base_url}/dashboard'>Open HivePulse</a></p>"
-                    f"<p>You can turn off email reminders any time in your profile settings.</p>"
-                ),
+                "subject": subject,
+                "html": html,
             },
             timeout=10,
         )
@@ -187,15 +186,15 @@ def send_reminders(request: Request, db: DB) -> ReminderSendResult:
             # Independent channels -- a user with both a push token and
             # reminder_email_enabled gets both, not one-or-the-other.
             if has_push_token:
-                hive_word = "hive" if overdue == 1 else "hives"
+                title, body = reminder_push(overdue, user.locale)
                 _send_push(
                     user.push_token_fcm,
                     user.push_token_apns,
-                    title="Inspection due",
-                    body=f"{overdue} {hive_word} need inspection",
+                    title=title,
+                    body=body,
                 )
             if user.reminder_email_enabled:
-                _send_reminder_email(user.email, overdue)
+                _send_reminder_email(user.email, overdue, user.locale)
             sent += 1
 
     return ReminderSendResult(
