@@ -37,7 +37,14 @@ describe('NewsPage', () => {
     const { container } = render(<NewsPage />);
     expect(screen.getByText('Worte statt Zahlen bei der Durchsicht')).toBeTruthy();
     expect(screen.queryByText('Words Instead of Numbers When You Inspect')).toBeNull();
-    expect(container.querySelector('.news-date .month')?.textContent).toMatch(/Sept?\.? 2026/);
+    // Derived from the newest entry, so adding news does not break this test. It still
+    // proves the German spelling is used: English would render "Oct 2026", not "Okt. 2026".
+    const germanMonth = new Intl.DateTimeFormat('de', {
+      month: 'short',
+      year: 'numeric',
+      timeZone: 'UTC',
+    }).format(new Date(NEWS[0].date));
+    expect(container.querySelector('.news-date .month')?.textContent).toBe(germanMonth);
   });
 
   it('labels tags through translations', () => {

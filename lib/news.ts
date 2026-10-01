@@ -22,6 +22,28 @@ export function newsText(entry: NewsEntry, locale: string): NewsText {
 
 export const NEWS: NewsEntry[] = [
   {
+    date: '2026-10-01',
+    tag: 'privacy',
+    text: {
+      en: {
+        title: 'Crashes No Longer Go Unnoticed',
+        body: 'When an app closed itself in the middle of an inspection, nobody found out unless the beekeeper wrote in. Both apps and the server now send a report when something breaks: the place in the code, the app version and the kind of device. What they deliberately leave out is everything about you — no inspection notes, no passwords, no email addresses, no IP addresses, no screenshots. A report names your account number and nothing else, and it is stored in Europe. The reports go to Sentry, which processes them on our behalf.',
+      },
+      de: {
+        title: 'Abstürze bleiben nicht mehr unbemerkt',
+        body: 'Wenn sich eine App mitten in einer Kontrolle beendet hat, hat das niemand erfahren — außer der Imker hat geschrieben. Beide Apps und der Server melden jetzt, wenn etwas kaputtgeht: die Stelle im Code, die App-Version und die Art des Geräts. Bewusst nicht enthalten ist alles, was mit dir zu tun hat: keine Kontroll-Notizen, keine Passwörter, keine E-Mail-Adressen, keine IP-Adressen, keine Bildschirmfotos. Ein Bericht nennt deine Kontonummer und sonst nichts, und er wird in Europa gespeichert. Die Berichte gehen an Sentry, das sie in unserem Auftrag verarbeitet.',
+      },
+      fr: {
+        title: 'Les plantages ne passent plus inaperçus',
+        body: "Quand une application se fermait au milieu d'une visite, personne ne l'apprenait, sauf si l'apiculteur écrivait. Les deux applications et le serveur signalent désormais ce qui casse : l'endroit dans le code, la version de l'application et le type d'appareil. Ce qui en est délibérément absent, c'est tout ce qui vous concerne : aucune note de visite, aucun mot de passe, aucune adresse e-mail, aucune adresse IP, aucune capture d'écran. Un rapport indique votre numéro de compte et rien d'autre, et il est conservé en Europe. Les rapports vont à Sentry, qui les traite pour notre compte.",
+      },
+      es: {
+        title: 'Los fallos ya no pasan desapercibidos',
+        body: 'Cuando una app se cerraba en mitad de una revisión, nadie se enteraba salvo que el apicultor escribiera. Ahora ambas apps y el servidor avisan cuando algo se rompe: el punto del código, la versión de la app y el tipo de dispositivo. Queda fuera a propósito todo lo que tiene que ver contigo: ninguna nota de revisión, ninguna contraseña, ninguna dirección de correo, ninguna dirección IP, ninguna captura de pantalla. Un informe indica tu número de cuenta y nada más, y se guarda en Europa. Los informes van a Sentry, que los procesa por encargo nuestro.',
+      },
+    },
+  },
+  {
     date: '2026-09-20',
     tag: 'feature',
     text: {
