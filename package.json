@@ -41,7 +41,7 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "baseline-browser-mapping": "^2.10.28",
+    "baseline-browser-mapping": "2.11.26",
     "jsdom": "^27.0.1",
     "typescript": "^5",
     "vitest": "^3.2.4"
