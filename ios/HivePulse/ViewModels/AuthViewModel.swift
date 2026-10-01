@@ -49,6 +49,10 @@ final class AuthViewModel: ObservableObject {
             try? await service.logout(refreshToken: refresh)
         }
         KeychainService.shared.clearAll()
+        // The next account on this device must not see the previous one's hives, and a
+        // queued inspection could no longer be uploaded with the signed-out session.
+        await OfflineInspectionQueue.shared.clear()
+        OfflineStore.shared.clear()
         currentUser = nil
         isAuthenticated = false
         showGuidedTour = false

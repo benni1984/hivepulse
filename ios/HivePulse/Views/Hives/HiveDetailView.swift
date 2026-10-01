@@ -44,13 +44,24 @@ struct HiveDetailView: View {
                         .foregroundColor(.secondary)
                 } else {
                     ForEach(inspectionVM.inspections) { insp in
-                        NavigationLink(destination: InspectionDetailView(inspection: insp, hiveId: hive.id, apiaryId: apiaryId, inspectionVM: inspectionVM)) {
+                        if insp.isPending {
+                            // Recorded at the apiary without a connection: it exists only on
+                            // this device until the upload succeeds, so there is nothing to
+                            // open or delete on the server yet.
                             InspectionRow(inspection: insp)
+                        } else {
+                            NavigationLink(destination: InspectionDetailView(inspection: insp, hiveId: hive.id, apiaryId: apiaryId, inspectionVM: inspectionVM)) {
+                                InspectionRow(inspection: insp)
+                            }
                         }
                     }
                     .onDelete { indices in
                         Task {
-                            for i in indices { try? await inspectionVM.delete(inspectionVM.inspections[i].id) }
+                            for i in indices {
+                                let inspection = inspectionVM.inspections[i]
+                                guard !inspection.isPending else { continue }
+                                try? await inspectionVM.delete(inspection.id)
+                            }
                         }
                     }
                     if inspectionVM.isLoading {
@@ -116,7 +127,15 @@ private struct InspectionRow: View {
     let inspection: InspectionOut
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(inspection.date).font(.dmSans(16, weight: .bold, relativeTo: .headline))
+            HStack(spacing: 8) {
+                Text(inspection.date).font(.dmSans(16, weight: .bold, relativeTo: .headline))
+                if inspection.isPending {
+                    Label(NSLocalizedString("offline.pendingUpload", comment: ""), systemImage: "icloud.and.arrow.up")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .accessibilityIdentifier("pendingUploadBadge")
+                }
+            }
             HStack(spacing: 12) {
                 if let mood = inspection.mood {
                     Label(mood.capitalized, systemImage: moodIcon(mood))

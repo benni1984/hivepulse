@@ -25,7 +25,7 @@ func makeInspection(id: String = "i-1") -> InspectionOut {
                   mood: nil, populationStrength: nil, varroaLevel: nil, varroaCount: nil,
                   swarmCellsSeen: nil, treatmentApplied: nil, feedingDone: nil,
                   feedingType: nil, weightKg: nil, notes: nil,
-                  customFields: [:], createdAt: Date())
+                  customFields: [:], clientId: nil, createdAt: Date())
 }
 
 func makeTokenResponse() -> TokenResponse {
@@ -305,15 +305,21 @@ final class MockHornetService: HornetServiceProtocol {
 
 // MARK: - MockInspectionService
 
-final class MockInspectionService: InspectionServiceProtocol {
+final class MockInspectionService: InspectionServiceProtocol, @unchecked Sendable {
     var listResult: Result<PaginatedResponse<InspectionOut>, Error> = .success(makePage([], perPage: 20))
     var createResult: Result<InspectionOut, Error> = .success(makeInspection())
     var updateResult: Result<InspectionOut, Error> = .success(makeInspection())
     var deleteError: Error? = nil
+    /// Every create the queue attempted, so a test can check the retry carries the same client_id.
+    var sentRequests: [InspectionCreateRequest] = []
+    var lastRequest: InspectionCreateRequest? { sentRequests.last }
 
     func list(hiveId: String, page: Int) async throws -> PaginatedResponse<InspectionOut> { try listResult.get() }
     func get(_ id: String) async throws -> InspectionOut { makeInspection(id: id) }
-    func create(hiveId: String, request: InspectionCreateRequest) async throws -> InspectionOut { try createResult.get() }
+    func create(hiveId: String, request: InspectionCreateRequest) async throws -> InspectionOut {
+        sentRequests.append(request)
+        return try createResult.get()
+    }
     func update(_ id: String, request: InspectionCreateRequest) async throws -> InspectionOut { try updateResult.get() }
     func delete(_ id: String) async throws { if let err = deleteError { throw err } }
 }

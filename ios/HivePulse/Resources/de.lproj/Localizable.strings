@@ -403,3 +403,5 @@
 "strength.2" = "Mittel";
 "strength.3" = "Stark";
 "screen.editHive" = "Bienenstock bearbeiten";
+"offline.pendingUpload" = "Wartet auf Upload";
+"offline.savedLocally" = "Ohne Verbindung erfasst. Wird von selbst hochgeladen, sobald du online bist.";

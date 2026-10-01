@@ -44,12 +44,23 @@ struct HivePulseApp: App {
             KeychainService.shared.refreshToken = "ui-test-refresh"
             MockURLProtocol.configure(MockURLProtocol.authenticatedHandlers)
             APIClient.shared = .forUITesting()
+        } else if args.contains("-mockApiaryOffline") {
+            // Lists load, writing fails like a missing connection does.
+            KeychainService.shared.clearAll()
+            KeychainService.shared.accessToken = "ui-test-token"
+            KeychainService.shared.refreshToken = "ui-test-refresh"
+            MockURLProtocol.configure(MockURLProtocol.apiaryWithHiveHandlers)
+            MockURLProtocol.failWritesAsOffline = true
+            OfflineStore.shared.clear()
+            APIClient.shared = .forUITesting()
         } else if args.contains("-mockServer") {
             MockURLProtocol.configure(MockURLProtocol.unauthenticatedHandlers)
             APIClient.shared = .forUITesting()
         }
         #endif
     }
+
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some Scene {
         WindowGroup {
@@ -61,6 +72,14 @@ struct HivePulseApp: App {
                         .task {
                             await authVM.loadProfile()
                             await requestPushPermission()
+                            // Inspections recorded at the apiary go up as soon as the app
+                            // is open again with a connection.
+                            await OfflineInspectionQueue.shared.flush()
+                        }
+                        .onChange(of: scenePhase) { _, phase in
+                            if phase == .active {
+                                Task { await OfflineInspectionQueue.shared.flush() }
+                            }
                         }
                         .onReceive(NotificationCenter.default.publisher(for: .apnsTokenReceived)) { note in
                             if let tokenData = note.userInfo?["token"] as? Data {
