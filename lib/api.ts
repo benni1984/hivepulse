@@ -557,6 +557,14 @@ export async function adminSelfTestError(): Promise<CrashReportSelfTest> {
   return res.json();
 }
 
+export interface ConfigurationHealth { environment: string; signing_key_is_the_public_default: boolean; crash_reporting_configured: boolean; }
+
+export async function adminGetConfigurationHealth(): Promise<ConfigurationHealth> {
+  const res = await apiFetch('/admin/health/configuration');
+  if (!res.ok) throw new Error('Failed to get configuration health');
+  return res.json();
+}
+
 export async function adminGetHealthSummary(): Promise<HealthSummary> {
   const res = await apiFetch('/admin/health/summary');
   if (!res.ok) throw new Error('Failed to get health summary');

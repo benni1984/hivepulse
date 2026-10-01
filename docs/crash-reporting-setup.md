@@ -33,13 +33,19 @@ them simply ships with reporting off.
 
 Two things about the Vercel variable that cost an evening the first time:
 
-- **Choose type "Config", not "Secret".** Deployment runs through the CLI
-  (`vercel pull` + `vercel build --prebuilt`), and a Secret is deliberately withheld from
-  it — the function then starts with no DSN and reports nothing, silently. A DSN is not
-  worth protecting anyway: it ships inside every APK and only allows submitting reports.
+- **Type "Config" or "Secret" both work** — an earlier version of this page claimed a
+  Secret never reaches the function, which turned out to be wrong. Config is the simpler
+  choice because the value stays readable, and a DSN is not worth hiding anyway: it ships
+  inside every APK and only allows submitting reports.
 - **A variable only reaches a deployment made after it was saved.** Existing deployments
   keep the environment they were created with, so the value needs a new deployment
   (a merge to `main`, or Redeploy where the plan offers it).
+
+The failure that actually cost the evening was elsewhere: `sentry-sdk` was missing from the
+**root** `requirements.txt`, which is the list the deployed function installs. The server
+had its key, `import sentry_sdk` failed, and the code treats a missing optional dependency
+as "that feature is off". `backend/tests/test_runtime_requirements.py` now compares both
+lists so this cannot repeat.
 
 Both halves of a DSN belong together: the key before the `@` and the project number at the
 end. Mixing them across projects yields `403 event submission rejected with_reason:

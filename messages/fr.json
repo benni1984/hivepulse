@@ -528,7 +528,8 @@
         "crashSent": "Envoyé comme événement {id} dans l'environnement {environment}. Il devrait apparaître dans Sentry en moins d'une minute — pensez à l'y résoudre ensuite.",
         "crashOff": "Aucun service de rapports n'est configuré, rien n'a été envoyé.",
         "crashFailed": "Le test n'a pas pu être exécuté.",
-        "crashDiagnosis": "Détail technique : la clé compte {settingsChars} caractères dans la configuration et {envChars} dans l'environnement du processus. Deux zéros signifient que la plateforme d'hébergement ne l'a jamais transmise au serveur."
+        "crashDiagnosis": "Détail technique : la clé compte {settingsChars} caractères dans la configuration et {envChars} dans l'environnement du processus. Deux zéros signifient que la plateforme d'hébergement ne l'a jamais transmise au serveur.",
+        "defaultSigningKey": "Avertissement : ce serveur signe les connexions avec la clé par défaut publique du code source. Quiconque la connaît peut forger un jeton pour n'importe quel compte. Définissez une vraie valeur SECRET_KEY dans l'environnement d'hébergement."
       }
     },
     "apiaries": {

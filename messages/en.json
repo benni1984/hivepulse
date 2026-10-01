@@ -528,7 +528,8 @@
         "crashSent": "Sent as event {id} in environment {environment}. It should appear in Sentry within a minute — resolve it there afterwards.",
         "crashOff": "No crash reporter is configured, so nothing was sent.",
         "crashFailed": "The test could not be run.",
-        "crashDiagnosis": "Technical detail: the key has {settingsChars} characters in the configuration and {envChars} in the process environment. Two zeros mean the hosting platform never passed it to the server."
+        "crashDiagnosis": "Technical detail: the key has {settingsChars} characters in the configuration and {envChars} in the process environment. Two zeros mean the hosting platform never passed it to the server.",
+        "defaultSigningKey": "Warning: this server signs logins with the public default key from the source code. Anyone who knows it can forge a token for any account. Set a real SECRET_KEY in the hosting environment."
       }
     },
     "apiaries": {

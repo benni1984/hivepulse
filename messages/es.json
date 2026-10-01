@@ -528,7 +528,8 @@
         "crashSent": "Enviado como evento {id} en el entorno {environment}. Debería aparecer en Sentry en menos de un minuto; resuélvelo allí después.",
         "crashOff": "No hay ningún servicio de informes configurado, no se envió nada.",
         "crashFailed": "No se pudo ejecutar la prueba.",
-        "crashDiagnosis": "Detalle técnico: la clave tiene {settingsChars} caracteres en la configuración y {envChars} en el entorno del proceso. Dos ceros significan que la plataforma de alojamiento nunca se la pasó al servidor."
+        "crashDiagnosis": "Detalle técnico: la clave tiene {settingsChars} caracteres en la configuración y {envChars} en el entorno del proceso. Dos ceros significan que la plataforma de alojamiento nunca se la pasó al servidor.",
+        "defaultSigningKey": "Advertencia: este servidor firma los inicios de sesión con la clave predeterminada pública del código fuente. Quien la conozca puede falsificar un token de cualquier cuenta. Define un SECRET_KEY real en el entorno de alojamiento."
       }
     },
     "apiaries": {
