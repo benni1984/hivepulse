@@ -404,7 +404,8 @@ struct InspectionOut: Codable, Identifiable {
     }
 }
 
-struct InspectionCreateRequest: Encodable {
+/// Codable, not just Encodable: a queued inspection is written to disk and read back.
+struct InspectionCreateRequest: Codable {
     let date: String
     let queenSeen: Bool?
     let queenColor: String?
