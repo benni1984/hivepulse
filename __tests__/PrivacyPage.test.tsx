@@ -34,6 +34,8 @@ describe('PrivacyPage', () => {
     expect(en.privacy.s4body).toMatch(/Sentry/);
     expect(en.privacy.s5body).toMatch(/Sentry/);
     expect(en.privacy.s4body).toMatch(/OpenStreetMap/);
+    // Analytics runs on production, so it belongs here whether or not it uses cookies.
+    expect(en.privacy.s4body).toMatch(/Umami/);
     for (const forbidden of ['inspection notes', 'passwords', 'IP address']) {
       expect(en.privacy.s5body).toContain(forbidden);
     }
