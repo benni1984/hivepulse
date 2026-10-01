@@ -14,4 +14,6 @@ reportlab==4.2.5
 pytest==9.0.3
 httpx[http2]==0.28.1   # http2 extra: APNs only speaks HTTP/2
 pytest-asyncio==1.4.0
-sentry-sdk[fastapi]==2.20.0   # error reporting; inert without SENTRY_DSN
+sentry-sdk[fastapi]==2.71.0   # error reporting; inert without SENTRY_DSN. 2.20 crashed at
+                              # startup when markupsafe was installed but jinja2 was not —
+                              # exactly what alembic -> Mako gives us (fixed upstream in 2.56)
