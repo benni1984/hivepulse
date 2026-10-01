@@ -113,9 +113,11 @@ extension Error {
                 return false
             }
         }
-        if case APIError.network(let underlying) = self {
-            // APIClient wraps URLSession failures here; an HTTP status never lands in this case.
-            return (underlying as? URLError).map { _ in underlying.isOffline } ?? true
+        // APIClient wraps URLSession transport failures in .network; an HTTP status never
+        // lands there, so anything but a URLError in that case is a connection failure too.
+        if let apiError = self as? APIError, case .network(let underlying) = apiError {
+            guard let urlError = underlying as? URLError else { return true }
+            return urlError.isOffline
         }
         return false
     }
