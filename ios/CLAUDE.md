@@ -4,7 +4,28 @@
 - UI: SwiftUI
 - QR scanning: `AVFoundation` / `DataScannerViewController`
 - Networking: `URLSession` async/await
-- Local persistence: none — data is fetched live from the backend on each screen; only auth tokens are persisted, via `KeychainService` (`Services/KeychainService.swift`)
+- Local persistence: auth tokens via `KeychainService`, plus the offline layer in `Storage/`:
+  `OfflineStore` (JSON files in Application Support, excluded from backups, complete file protection)
+  and `OfflineInspectionQueue` (an actor)
+
+## Offline — IMPORTANT
+
+At the apiary there is usually no signal, so the field path works without one:
+
+- **Reads** (`ApiaryService`, `HiveService`, `InspectionService`) try the network first and fall back to
+  `OfflineStore` **only** when `error.isOffline` — an HTTP 401/404/422 must keep surfacing, stale data
+  must never hide a real answer.
+- **`InspectionService` is the offline-aware one**; `InspectionAPIService` talks to the API directly and
+  is what the queue uses — routing the queue through `InspectionService` would put an entry back into it.
+- **Recording an inspection** always goes through `OfflineInspectionQueue`: stored before the request,
+  sent with the `client_id` the server deduplicates on (api-contract.md), removed only once confirmed.
+  The queue is flushed on launch and whenever the app becomes active (`scenePhase`); there is no
+  background upload while the app is closed.
+- Queued visits carry the id prefix `pending:` (`InspectionOut.isPending`), show "Waiting to upload" in
+  the hive list, and cannot be opened or deleted.
+- Signing out clears store and queue.
+- Tests: `OfflineInspectionQueueTests`, `OfflineFallbackTests` (unit) and `OfflineInspectionUITests`
+  (UI, launch argument `-mockApiaryOffline`: reads succeed, writes fail like a missing connection).
 - Build: open `ios/HivePulse.xcodeproj` in Xcode (requires macOS)
 - Run tests: Cmd+U in Xcode, or push to CI (see below)
 

@@ -403,3 +403,5 @@
 "strength.2" = "Moyenne";
 "strength.3" = "Forte";
 "screen.editHive" = "Modifier la ruche";
+"offline.pendingUpload" = "En attente d'envoi";
+"offline.savedLocally" = "Saisi sans connexion. L'envoi se fait tout seul dès que vous êtes en ligne.";

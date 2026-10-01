@@ -403,3 +403,5 @@
 "strength.2" = "Media";
 "strength.3" = "Fuerte";
 "screen.editHive" = "Editar colmena";
+"offline.pendingUpload" = "Pendiente de subir";
+"offline.savedLocally" = "Registrado sin conexión. Se sube solo en cuanto vuelvas a tener red.";

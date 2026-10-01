@@ -18,13 +18,34 @@ extension ApiaryServiceProtocol {
 
 struct ApiaryService: ApiaryServiceProtocol {
     private let client = APIClient.shared
+    private let store: OfflineStore
 
+    init(store: OfflineStore = .shared) { self.store = store }
+
+    /// Network first; the cached list is what keeps the app usable at the apiary.
     func list(page: Int = 1) async throws -> PaginatedResponse<ApiaryOut> {
-        try await client.get("apiaries?page=\(page)&per_page=50")
+        do {
+            let response: PaginatedResponse<ApiaryOut> = try await client.get("apiaries?page=\(page)&per_page=50")
+            if page == 1 { store.save(response.items, for: OfflineStore.Key.apiaries) }
+            return response
+        } catch {
+            guard error.isOffline, page == 1,
+                  let cached = store.load([ApiaryOut].self, for: OfflineStore.Key.apiaries),
+                  !cached.isEmpty
+            else { throw error }
+            return PaginatedResponse(items: cached, total: cached.count, page: 1, perPage: cached.count, pages: 1)
+        }
     }
 
     func get(_ id: String) async throws -> ApiaryOut {
-        try await client.get("apiaries/\(id)")
+        do {
+            return try await client.get("apiaries/\(id)")
+        } catch {
+            guard error.isOffline,
+                  let cached = store.load([ApiaryOut].self, for: OfflineStore.Key.apiaries)?.first(where: { $0.id == id })
+            else { throw error }
+            return cached
+        }
     }
 
     func create(name: String, description: String?, latitude: Double?, longitude: Double?, address: String?, isPublic: Bool) async throws -> ApiaryOut {
@@ -42,7 +63,15 @@ struct ApiaryService: ApiaryServiceProtocol {
     }
 
     func fieldDefinitions(_ apiaryId: String) async throws -> [FieldDefinitionOut] {
-        try await client.get("apiaries/\(apiaryId)/field-definitions")
+        let key = OfflineStore.Key.fieldDefinitions(apiaryId: apiaryId)
+        do {
+            let definitions: [FieldDefinitionOut] = try await client.get("apiaries/\(apiaryId)/field-definitions")
+            store.save(definitions, for: key)
+            return definitions
+        } catch {
+            guard error.isOffline, let cached = store.load([FieldDefinitionOut].self, for: key) else { throw error }
+            return cached
+        }
     }
 
     func createFieldDefinition(_ apiaryId: String, body: FieldDefinitionCreate) async throws -> FieldDefinitionOut {
@@ -54,6 +83,14 @@ struct ApiaryService: ApiaryServiceProtocol {
     }
 
     func userFieldDefinitions() async throws -> [FieldDefinitionOut] {
-        try await client.get("field-definitions")
+        let key = OfflineStore.Key.fieldDefinitions(apiaryId: nil)
+        do {
+            let definitions: [FieldDefinitionOut] = try await client.get("field-definitions")
+            store.save(definitions, for: key)
+            return definitions
+        } catch {
+            guard error.isOffline, let cached = store.load([FieldDefinitionOut].self, for: key) else { throw error }
+            return cached
+        }
     }
 }

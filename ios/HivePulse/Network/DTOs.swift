@@ -379,10 +379,13 @@ struct InspectionOut: Codable, Identifiable {
     let weightKg: Double?
     let notes: String?
     let customFields: [String: JSONValue]
+    /// Set for inspections an app recorded offline; see api-contract.md.
+    let clientId: String?
     let createdAt: Date
     enum CodingKeys: String, CodingKey {
         case id, date, notes
         case hiveId           = "hive_id"
+        case clientId         = "client_id"
         case queenSeen        = "queen_seen"
         case queenColor       = "queen_color"
         case broodFrames      = "brood_frames"
@@ -401,7 +404,8 @@ struct InspectionOut: Codable, Identifiable {
     }
 }
 
-struct InspectionCreateRequest: Encodable {
+/// Codable, not just Encodable: a queued inspection is written to disk and read back.
+struct InspectionCreateRequest: Codable {
     let date: String
     let queenSeen: Bool?
     let queenColor: String?
@@ -417,8 +421,11 @@ struct InspectionCreateRequest: Encodable {
     let weightKg: Double?
     let notes: String?
     let customFields: [String: JSONValue]
+    /// Reused across retries of a queued inspection so the server stores it once.
+    var clientId: String? = nil
     enum CodingKeys: String, CodingKey {
         case date, notes
+        case clientId         = "client_id"
         case queenSeen        = "queen_seen"
         case queenColor       = "queen_color"
         case broodFrames      = "brood_frames"
@@ -432,6 +439,15 @@ struct InspectionCreateRequest: Encodable {
         case feedingType      = "feeding_type"
         case weightKg         = "weight_kg"
         case customFields     = "custom_fields"
+    }
+}
+
+extension InspectionCreateRequest {
+    /// The queue stamps every attempt of the same recorded visit with one id.
+    func withClientId(_ id: String) -> InspectionCreateRequest {
+        var copy = self
+        copy.clientId = id
+        return copy
     }
 }
 

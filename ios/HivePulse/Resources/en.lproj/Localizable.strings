@@ -403,3 +403,5 @@
 "strength.2" = "Medium";
 "strength.3" = "Strong";
 "screen.editHive" = "Edit Hive";
+"offline.pendingUpload" = "Waiting to upload";
+"offline.savedLocally" = "Recorded without a connection. It uploads by itself as soon as you are online.";

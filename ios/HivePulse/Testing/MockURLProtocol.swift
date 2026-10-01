@@ -5,6 +5,10 @@ final class MockURLProtocol: URLProtocol {
     private static let lock = NSLock()
     private static var handlers: [(pattern: String, status: Int, body: Data)] = []
 
+    /// Simulates "no connection" for writes while reads keep working — what a beekeeper has
+    /// at the apiary after the lists were loaded at home.
+    static var failWritesAsOffline = false
+
     static func configure(_ entries: [(String, Int, String)]) {
         lock.lock()
         defer { lock.unlock() }
@@ -25,6 +29,10 @@ final class MockURLProtocol: URLProtocol {
             client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
             client?.urlProtocol(self, didLoad: Data(#"{"detail":"Not Found"}"#.utf8))
             client?.urlProtocolDidFinishLoading(self)
+            return
+        }
+        if Self.failWritesAsOffline, request.httpMethod != "GET" {
+            client?.urlProtocol(self, didFailWithError: URLError(.notConnectedToInternet))
             return
         }
         Self.lock.lock()
