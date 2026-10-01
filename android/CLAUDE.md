@@ -4,7 +4,26 @@
 - UI: Jetpack Compose + Material Design 3
 - QR scanning: ML Kit Barcode Scanning
 - Networking: Retrofit + OkHttp
-- Local persistence: none — data is fetched live from the backend on each screen; only auth tokens are persisted, in `TokenStore` (`data/local/TokenStore.kt`, Keystore-backed encrypted storage)
+- Local persistence: auth tokens in `TokenStore` (`data/local/TokenStore.kt`, Keystore-backed), plus the
+  offline layer in `data/local/` (Room): a cache of apiaries, hives, inspections and custom fields, and a
+  queue of inspections recorded without a connection
+
+## Offline — IMPORTANT
+
+At the apiary there is usually no signal, so the field path works without one:
+
+- **Reads** (`ApiaryRepository`, `HiveRepository`, `InspectionRepository`) try the network first and
+  fall back to `OfflineCache` **only** when the failure is an `IOException` (see `Throwable.isOffline()`).
+  An HTTP error (401, 404, 422) must keep surfacing — stale data must never hide a real answer.
+- **Recording an inspection** always goes through `OfflineInspectionQueue`: the entry is written to Room
+  *before* the request, carries a `client_id` the server uses to ignore a repeated POST (api-contract.md),
+  and is deleted only once the server confirmed it. `InspectionSyncWorker` (WorkManager, network
+  constraint, exponential backoff) uploads what is waiting.
+- Queued visits appear in the hive's list marked "Waiting to upload" (`offline_pending_upload`), cannot be
+  opened or deleted, and carry the id prefix `pending:` (`InspectionOut.isPending()`).
+- Signing out clears cache and queue — the next account must not see them.
+- Tests: `OfflineInspectionQueueTest`, `OfflineFallbackTest` (unit) and `OfflineInspectionTest`
+  (instrumented, real Room, network mocked as offline).
 - Build: `./gradlew assembleDebug` (from `android/`)
 - Unit tests: `./gradlew test`
 - UI tests (emulator/device): `./gradlew connectedAndroidTest`

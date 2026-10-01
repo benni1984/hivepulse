@@ -401,4 +401,6 @@
     <string name="admin_user_summary">%1$d ruchers · %2$d ruches · %3$d visites</string>
     <string name="action_decrease_weight">Diminuer le poids</string>
     <string name="action_increase_weight">Augmenter le poids</string>
+    <string name="offline_pending_upload">En attente d\'envoi</string>
+    <string name="offline_saved_locally">Saisi sans connexion. L\'envoi se fait tout seul dès que vous êtes en ligne.</string>
 </resources>

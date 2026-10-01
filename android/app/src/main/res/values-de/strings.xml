@@ -401,4 +401,6 @@
     <string name="admin_user_summary">%1$d Bienenstände · %2$d Völker · %3$d Durchsichten</string>
     <string name="action_decrease_weight">Gewicht verringern</string>
     <string name="action_increase_weight">Gewicht erhöhen</string>
+    <string name="offline_pending_upload">Wartet auf Upload</string>
+    <string name="offline_saved_locally">Ohne Verbindung erfasst. Wird von selbst hochgeladen, sobald du online bist.</string>
 </resources>

@@ -7,13 +7,15 @@ import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import com.hivepulse.app.data.local.OfflineCache
 
 class ApiaryRepositoryTest {
 
     private val api = mockk<ApiService>()
+    private val cache = mockk<OfflineCache>(relaxed = true)
     private lateinit var repo: ApiaryRepository
 
-    @Before fun setUp()    { repo = ApiaryRepository(api) }
+    @Before fun setUp()    { repo = ApiaryRepository(api, cache) }
     @After  fun tearDown() = clearAllMocks()
 
     @Test

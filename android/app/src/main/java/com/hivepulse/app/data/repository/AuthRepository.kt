@@ -1,14 +1,19 @@
 package com.hivepulse.app.data.repository
 
 import com.hivepulse.app.data.api.*
+import com.hivepulse.app.data.local.OfflineCache
 import com.hivepulse.app.data.local.TokenStore
+import com.hivepulse.app.data.sync.SyncScheduler
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AuthRepository @Inject constructor(
     private val api: ApiService,
-    private val tokenStore: TokenStore
+    private val tokenStore: TokenStore,
+    private val cache: OfflineCache,
+    private val queue: OfflineInspectionQueue,
+    private val syncScheduler: SyncScheduler,
 ) {
     val isLoggedIn get() = tokenStore.isLoggedIn
 
@@ -29,6 +34,11 @@ class AuthRepository @Inject constructor(
     suspend fun logout() {
         tokenStore.refreshToken?.let { runCatching { api.logout(LogoutRequest(it)) } }
         tokenStore.clear()
+        // The next account on this device must not see the previous one's hives, and a
+        // queued inspection could no longer be uploaded with the signed-out session.
+        cache.clear()
+        queue.clear()
+        syncScheduler.cancel()
     }
 
     suspend fun getMe(): UserOut = api.getMe()

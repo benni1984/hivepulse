@@ -14,6 +14,7 @@ import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import com.hivepulse.app.data.sync.SyncScheduler
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class InspectionFormViewModelTest {
@@ -21,6 +22,7 @@ class InspectionFormViewModelTest {
     private val repo = mockk<InspectionRepository>()
     private val hiveRepo = mockk<HiveRepository>()
     private val apiaryRepo = mockk<ApiaryRepository>()
+    private val syncScheduler = mockk<SyncScheduler>(relaxed = true)
 
     @Before
     fun setUp() {
@@ -107,11 +109,11 @@ class InspectionFormViewModelTest {
     }
 
     private fun vmForNew() = InspectionFormViewModel(
-        SavedStateHandle(mapOf("hiveId" to "h1", "inspectionId" to "")), repo, hiveRepo, apiaryRepo
+        SavedStateHandle(mapOf("hiveId" to "h1", "inspectionId" to "")), repo, hiveRepo, apiaryRepo, syncScheduler
     )
 
     private fun vmForEdit(inspectionId: String) = InspectionFormViewModel(
-        SavedStateHandle(mapOf("hiveId" to "h1", "inspectionId" to inspectionId)), repo, hiveRepo, apiaryRepo
+        SavedStateHandle(mapOf("hiveId" to "h1", "inspectionId" to inspectionId)), repo, hiveRepo, apiaryRepo, syncScheduler
     )
 
     private fun request() = InspectionCreateRequest(
