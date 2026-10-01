@@ -12,5 +12,5 @@ python-multipart==0.0.29
 qrcode[pil]==8.0
 reportlab==4.2.5
 pytest==9.0.3
-httpx==0.28.1
+httpx[http2]==0.28.1   # http2 extra: APNs only speaks HTTP/2
 pytest-asyncio==1.4.0

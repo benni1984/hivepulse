@@ -19,6 +19,7 @@ from typing import Optional
 
 from app.config import settings
 from app.notifications_i18n import reminder_email, reminder_push
+from app.utils.push import PushResult, send_apns, send_fcm
 from app.database import get_db
 from app.deps import DB
 from app.models import Apiary, Hive, Inspection, User
@@ -33,30 +34,21 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 
-def _send_push(
-    token_fcm: str | None,
-    token_apns: str | None,
-    title: str,
-    body: str,
-) -> None:
-    """Stub push sender.
+def _send_push(user, title: str, body: str, db) -> None:
+    """Deliver to whichever device tokens the account has, and forget dead ones.
 
-    Logs a warning when credentials are absent; will call FCM v1 HTTP API
-    once FIREBASE_SERVER_KEY is configured.
+    A token the platform reports as unregistered (app uninstalled, token replaced) would
+    otherwise be retried on every cron run forever.
     """
-    if token_fcm:
-        if not settings.firebase_server_key:
-            logger.warning(
-                "FCM token present but FIREBASE_SERVER_KEY not configured — skipping push"
-            )
-            return
-        # TODO: implement real FCM v1 HTTP call when Firebase project is created
-        logger.info("FCM push sent (stub): %s", title)
-        return
-
-    if token_apns:
-        # TODO: implement APNs HTTP/2 call when certificates are available
-        logger.info("APNs push stub (not yet configured): %s", title)
+    if user.push_token_fcm:
+        if send_fcm(user.push_token_fcm, title, body) is PushResult.UNREGISTERED:
+            logger.info("Dropping dead FCM token for user %s", user.id)
+            user.push_token_fcm = None
+    if user.push_token_apns:
+        if send_apns(user.push_token_apns, title, body) is PushResult.UNREGISTERED:
+            logger.info("Dropping dead APNs token for user %s", user.id)
+            user.push_token_apns = None
+    db.commit()
 
 
 def _send_reminder_email(to_email: str, overdue_count: int, locale: Optional[str] = None) -> None:
@@ -187,12 +179,7 @@ def send_reminders(request: Request, db: DB) -> ReminderSendResult:
             # reminder_email_enabled gets both, not one-or-the-other.
             if has_push_token:
                 title, body = reminder_push(overdue, user.locale)
-                _send_push(
-                    user.push_token_fcm,
-                    user.push_token_apns,
-                    title=title,
-                    body=body,
-                )
+                _send_push(user, title=title, body=body, db=db)
             if user.reminder_email_enabled:
                 _send_reminder_email(user.email, overdue, user.locale)
             sent += 1
