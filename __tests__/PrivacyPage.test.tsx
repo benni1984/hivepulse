@@ -36,6 +36,8 @@ describe('PrivacyPage', () => {
     expect(en.privacy.s4body).toMatch(/OpenStreetMap/);
     // Analytics runs on production, so it belongs here whether or not it uses cookies.
     expect(en.privacy.s4body).toMatch(/Umami/);
+    // Font Awesome still comes from Cloudflare, so visitors' addresses go there too.
+    expect(en.privacy.s4body).toMatch(/Cloudflare/);
     for (const forbidden of ['inspection notes', 'passwords', 'IP address']) {
       expect(en.privacy.s5body).toContain(forbidden);
     }
