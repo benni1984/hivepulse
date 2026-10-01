@@ -1376,6 +1376,10 @@ tr:last-child td { border-bottom: none; }
 .dash-admin-health-count { font-family: var(--font-mono); font-size: 28px; font-weight: 600; letter-spacing: -.02em; color: var(--green-ink); line-height: 1.1; }
 .dash-admin-health-label { font-weight: 600; font-size: 14.5px; color: var(--text); margin-top: 6px; }
 .dash-admin-health-desc { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.dash-admin-selftest { margin-top: 36px; padding-top: 4px; border-top: 1px solid var(--border); }
+.dash-admin-selftest-desc { font-size: 13.5px; color: var(--muted); max-width: 62ch; margin: 0 0 14px; }
+.dash-admin-selftest-result { font-size: 13.5px; color: var(--text); max-width: 62ch; margin-top: 12px; }
+.dash-admin-selftest-result.error { color: var(--danger, #b91c1c); }
 .dash-admin-signups { display: flex; flex-direction: column; gap: 4px; max-height: 400px; overflow-y: auto; margin-bottom: 24px; }
 .dash-admin-signup-row { display: flex; align-items: center; gap: 10px; font-size: 13px; }
 .dash-admin-signup-date { width: 84px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); flex-shrink: 0; }

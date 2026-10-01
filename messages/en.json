@@ -520,7 +520,14 @@
         "hive": "Hive",
         "apiary": "Apiary",
         "missing": "Missing Count",
-        "noData": "No issues found."
+        "noData": "No issues found.",
+        "crashTitle": "Crash Reporting",
+        "crashDesc": "Sends a deliberate error to the crash reporter, so you can see whether reports really arrive instead of finding out during a real failure.",
+        "crashButton": "Send test error",
+        "crashSending": "Sending…",
+        "crashSent": "Sent as event {id} in environment {environment}. It should appear in Sentry within a minute — resolve it there afterwards.",
+        "crashOff": "No crash reporter is configured, so nothing was sent.",
+        "crashFailed": "The test could not be run."
       }
     },
     "apiaries": {

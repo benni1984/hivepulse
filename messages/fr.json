@@ -520,7 +520,14 @@
         "hive": "Ruche",
         "apiary": "Rucher",
         "missing": "Nombre manquant",
-        "noData": "Aucun problème trouvé."
+        "noData": "Aucun problème trouvé.",
+        "crashTitle": "Rapports de plantage",
+        "crashDesc": "Envoie une erreur volontaire au service de rapports, pour voir si les rapports arrivent vraiment au lieu de le découvrir lors d'une vraie panne.",
+        "crashButton": "Envoyer une erreur de test",
+        "crashSending": "Envoi…",
+        "crashSent": "Envoyé comme événement {id} dans l'environnement {environment}. Il devrait apparaître dans Sentry en moins d'une minute — pensez à l'y résoudre ensuite.",
+        "crashOff": "Aucun service de rapports n'est configuré, rien n'a été envoyé.",
+        "crashFailed": "Le test n'a pas pu être exécuté."
       }
     },
     "apiaries": {
