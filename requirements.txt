@@ -1,3 +1,8 @@
+# Dependencies for the Vercel Python function (api/index.py) — this is the list the
+# deployed API actually runs on. backend/requirements.txt is the development and CI list.
+# A package missing here fails only in production, and silently: the application catches
+# the ImportError and carries on with that feature switched off. test_runtime_requirements
+# keeps the two lists from drifting apart again.
 fastapi==0.115.12
 uvicorn==0.34.2
 sqlalchemy==2.0.40
@@ -12,4 +17,5 @@ python-multipart==0.0.20
 qrcode[pil]==8.1
 reportlab==4.4.0
 psycopg2-binary==2.9.10
-httpx==0.28.1
+httpx[http2]==0.28.1   # http2 extra: APNs only speaks HTTP/2
+sentry-sdk[fastapi]==2.71.0   # error reporting; inert without SENTRY_DSN
