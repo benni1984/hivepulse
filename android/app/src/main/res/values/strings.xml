@@ -403,4 +403,6 @@
     <string name="admin_user_summary">%1$d apiaries · %2$d hives · %3$d inspections</string>
     <string name="action_decrease_weight">Decrease weight</string>
     <string name="action_increase_weight">Increase weight</string>
+    <string name="offline_pending_upload">Waiting to upload</string>
+    <string name="offline_saved_locally">Recorded without a connection. It uploads by itself as soon as you are online.</string>
 </resources>

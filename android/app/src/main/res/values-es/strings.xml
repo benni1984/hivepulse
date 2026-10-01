@@ -368,4 +368,6 @@
     <string name="admin_user_summary">%1$d colmenares · %2$d colmenas · %3$d inspecciones</string>
     <string name="action_decrease_weight">Reducir el peso</string>
     <string name="action_increase_weight">Aumentar el peso</string>
+    <string name="offline_pending_upload">Pendiente de subir</string>
+    <string name="offline_saved_locally">Registrado sin conexión. Se sube solo en cuanto vuelvas a tener red.</string>
 </resources>

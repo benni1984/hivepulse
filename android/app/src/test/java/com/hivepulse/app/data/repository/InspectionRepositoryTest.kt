@@ -7,15 +7,18 @@ import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import com.hivepulse.app.data.local.OfflineCache
 
 class InspectionRepositoryTest {
 
     private val api = mockk<ApiService>()
+    private val cache = mockk<OfflineCache>(relaxed = true)
+    private val queue = mockk<OfflineInspectionQueue>(relaxed = true)
     private lateinit var repo: InspectionRepository
 
     @Before
     fun setUp() {
-        repo = InspectionRepository(api)
+        repo = InspectionRepository(api, cache, queue)
     }
 
     @After
@@ -42,14 +45,18 @@ class InspectionRepositoryTest {
     }
 
     @Test
-    fun `create calls api and returns created inspection`() = runTest {
+    fun `create goes through the offline queue so a visit is never lost`() = runTest {
+        // The queue stores the visit before any network attempt and returns either the
+        // server's inspection or the queued one — the repository must not bypass it.
         val req = request()
         val created = inspection("i2")
-        coEvery { api.createInspection("h1", req) } returns created
+        coEvery { queue.submit("h1", req) } returns created
 
         val result = repo.create("h1", req)
 
         assertEquals(created, result)
+        coVerify { queue.submit("h1", req) }
+        coVerify(exactly = 0) { api.createInspection(any(), any()) }
     }
 
     @Test

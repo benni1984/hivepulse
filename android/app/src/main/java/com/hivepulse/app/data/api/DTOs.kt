@@ -181,6 +181,7 @@ data class InspectionOut(
     @SerializedName("weight_kg")           val weightKg: Double?,
     val notes: String?,
     @SerializedName("custom_fields")       val customFields: Map<String, Any?>,
+    @SerializedName("client_id")           val clientId: String? = null,
     @SerializedName("created_at")          val createdAt: String
 )
 data class InspectionCreateRequest(
@@ -200,7 +201,9 @@ data class InspectionCreateRequest(
     @SerializedName("feeding_type")        val feedingType: String?,
     @SerializedName("weight_kg")           val weightKg: Double?,
     val notes: String?,
-    @SerializedName("custom_fields")       val customFields: Map<String, Any?> = emptyMap()
+    @SerializedName("custom_fields")       val customFields: Map<String, Any?> = emptyMap(),
+    /** Reused across retries of a queued inspection so the server stores it once. */
+    @SerializedName("client_id")           val clientId: String? = null
 )
 
 // MARK: - Stats

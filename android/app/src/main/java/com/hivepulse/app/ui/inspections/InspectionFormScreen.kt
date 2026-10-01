@@ -26,6 +26,8 @@ import com.hivepulse.app.data.api.InspectionOut
 import com.hivepulse.app.data.repository.ApiaryRepository
 import com.hivepulse.app.data.repository.HiveRepository
 import com.hivepulse.app.data.repository.InspectionRepository
+import com.hivepulse.app.data.repository.isPending
+import com.hivepulse.app.data.sync.SyncScheduler
 import com.hivepulse.app.ui.common.*
 import com.hivepulse.app.ui.hives.ExposedDropdownMenuForList
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,6 +43,8 @@ data class InspectionFormState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val saved: Boolean = false,
+    /** True when the visit went into the upload queue instead of reaching the server. */
+    val queuedOffline: Boolean = false,
 )
 
 @HiltViewModel
@@ -49,6 +53,7 @@ class InspectionFormViewModel @Inject constructor(
     private val repo: InspectionRepository,
     private val hiveRepo: HiveRepository,
     private val apiaryRepo: ApiaryRepository,
+    private val syncScheduler: SyncScheduler,
 ) : ViewModel() {
     val hiveId       = savedState.get<String>("hiveId")!!
     val inspectionId = savedState.get<String>("inspectionId")?.ifEmpty { null }
@@ -72,7 +77,12 @@ class InspectionFormViewModel @Inject constructor(
             if (inspectionId == null) repo.create(hiveId, request)
             else repo.update(inspectionId, request)
         }
-        .onSuccess { _state.update { it.copy(isLoading = false, saved = true) } }
+        .onSuccess { saved ->
+            // Recorded without a connection: the entry is queued, so ask WorkManager to
+            // upload it as soon as the device has a network again.
+            if (saved.isPending()) syncScheduler.requestSync()
+            _state.update { it.copy(isLoading = false, saved = true, queuedOffline = saved.isPending()) }
+        }
         .onFailure { e -> _state.update { it.copy(isLoading = false, error = e.message) } }
     }
 

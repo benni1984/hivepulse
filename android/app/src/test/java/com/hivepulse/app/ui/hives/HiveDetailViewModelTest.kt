@@ -35,12 +35,15 @@ class HiveDetailViewModelTest {
     }
 
     @Test
-    fun `init loads hive and inspections`() {
+    fun `load fetches hive and inspections`() {
+        // The screen calls load() every time it appears, so a visit recorded in the
+        // inspection form shows up when the user comes back.
         val inspections = listOf(inspection("i1"), inspection("i2"))
         coEvery { inspRepo.list("h1") } returns PaginatedResponse(inspections, 2, 1, 1)
         val vm = HiveDetailViewModel(
             SavedStateHandle(mapOf("hiveId" to "h1")), hiveRepo, inspRepo
         )
+        vm.load()
 
         assertEquals(hive(), vm.state.value.hive)
         assertEquals(inspections, vm.state.value.inspections)
@@ -53,6 +56,7 @@ class HiveDetailViewModelTest {
         val vm = HiveDetailViewModel(
             SavedStateHandle(mapOf("hiveId" to "h1")), hiveRepo, inspRepo
         )
+        vm.load()
 
         assertEquals("not found", vm.state.value.error)
     }
@@ -84,6 +88,7 @@ class HiveDetailViewModelTest {
         val vm = HiveDetailViewModel(
             SavedStateHandle(mapOf("hiveId" to "h1")), hiveRepo, inspRepo
         )
+        vm.load()
         assertNotNull(vm.state.value.error)
 
         vm.clearError()

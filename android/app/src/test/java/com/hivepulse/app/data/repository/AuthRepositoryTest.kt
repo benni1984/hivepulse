@@ -10,16 +10,22 @@ import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import com.hivepulse.app.data.local.OfflineCache
+import com.hivepulse.app.data.repository.OfflineInspectionQueue
+import com.hivepulse.app.data.sync.SyncScheduler
 
 class AuthRepositoryTest {
 
     private val api = mockk<ApiService>()
     private val tokenStore = mockk<TokenStore>(relaxed = true)
+    private val cache = mockk<OfflineCache>(relaxed = true)
+    private val queue = mockk<OfflineInspectionQueue>(relaxed = true)
+    private val syncScheduler = mockk<SyncScheduler>(relaxed = true)
     private lateinit var repo: AuthRepository
 
     @Before
     fun setUp() {
-        repo = AuthRepository(api, tokenStore)
+        repo = AuthRepository(api, tokenStore, cache, queue, syncScheduler)
     }
 
     @After

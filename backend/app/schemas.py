@@ -427,6 +427,8 @@ class InspectionCreate(BaseModel):
     weight_kg: Optional[float] = None
     notes: Optional[str] = Field(default=None, max_length=2000)
     custom_fields: Dict[str, Any] = Field(default_factory=dict)
+    # Offline clients reuse this across retries so a resend does not duplicate the visit.
+    client_id: Optional[str] = Field(default=None, max_length=64)
 
 
 class InspectionUpdate(BaseModel):
@@ -467,6 +469,7 @@ class InspectionOut(BaseModel):
     weight_kg: Optional[float]
     notes: Optional[str]
     custom_fields: Dict[str, Any]
+    client_id: Optional[str] = None
     created_at: datetime
 
     model_config = {"from_attributes": True}

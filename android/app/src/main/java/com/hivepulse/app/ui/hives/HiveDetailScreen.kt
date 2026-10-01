@@ -27,6 +27,7 @@ import com.hivepulse.app.data.api.HiveOut
 import com.hivepulse.app.data.api.HiveUpdateRequest
 import com.hivepulse.app.data.api.InspectionOut
 import com.hivepulse.app.data.repository.HiveRepository
+import com.hivepulse.app.data.repository.isPending
 import com.hivepulse.app.data.repository.InspectionRepository
 import com.hivepulse.app.ui.common.ErrorBanner
 import com.hivepulse.app.ui.common.InfoRow
@@ -39,6 +40,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import androidx.compose.runtime.LaunchedEffect
 
 data class HiveDetailState(
     val hive: HiveOut? = null,
@@ -56,8 +58,6 @@ class HiveDetailViewModel @Inject constructor(
     val hiveId = savedState.get<String>("hiveId")!!
     private val _state = MutableStateFlow(HiveDetailState())
     val state = _state.asStateFlow()
-
-    init { load() }
 
     fun load() = viewModelScope.launch {
         _state.update { it.copy(isLoading = true) }
@@ -105,6 +105,11 @@ fun HiveDetailScreen(
 ) {
     val state by vm.state.collectAsState()
     var showEdit by remember { mutableStateOf(false) }
+
+    // The ViewModel survives while the inspection form is open (it belongs to this
+    // navigation entry), but the composable is recreated when the user comes back — so
+    // loading here is what makes a visit just recorded appear, online or queued offline.
+    LaunchedEffect(hiveId) { vm.load() }
 
     if (showEdit) {
         state.hive?.let { hive ->
@@ -206,9 +211,11 @@ fun HiveDetailScreen(
                     }
                 } else {
                     items(state.inspections) { insp ->
-                        InspectionListItem(insp,
-                            onClick   = { onInspectionClick(insp.id, hiveId) },
-                            onDelete  = { vm.deleteInspection(insp.id) })
+                        InspectionListItem(
+                            insp,
+                            onClick  = { if (!insp.isPending()) onInspectionClick(insp.id, hiveId) },
+                            onDelete = if (insp.isPending()) null else ({ vm.deleteInspection(insp.id) }),
+                        )
                     }
                 }
             }
@@ -239,7 +246,24 @@ fun InspectionListItem(insp: InspectionOut, onClick: () -> Unit, onDelete: (() -
                 modifier = Modifier.size(28.dp), tint = Amber500)
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(insp.date, style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Text(insp.date, style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold))
+                    if (insp.isPending()) {
+                        // Recorded at the apiary without a connection — it is stored on the
+                        // device and goes up by itself once there is a network again.
+                        Icon(
+                            Icons.Default.CloudUpload,
+                            contentDescription = stringResource(R.string.offline_pending_upload),
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                        Text(
+                            stringResource(R.string.offline_pending_upload),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     insp.mood?.let {
                         val emoji = when (it) { "calm" -> "😌"; "nervous" -> "😤"; "aggressive" -> "😡"; else -> "" }
