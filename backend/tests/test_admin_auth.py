@@ -34,3 +34,54 @@ def test_admin_user_out_shows_is_admin_true(admin_client):
     resp = admin_client.get("/api/v1/users/me")
     assert resp.status_code == 200
     assert resp.json()["is_admin"] is True
+
+
+# ---------------------------------------------------------------------------
+# POST /admin/self-test/error — proving crash reporting works without a real crash
+# ---------------------------------------------------------------------------
+
+def test_self_test_reports_that_nothing_is_configured(admin_client):
+    # The test suite has no DSN, so the honest answer is "off", not a pretend success.
+    resp = admin_client.post("/api/v1/admin/self-test/error")
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["reporting_enabled"] is False
+    assert data["event_id"] is None
+    assert "environment" in data
+
+
+def test_self_test_sends_an_event_when_a_dsn_is_configured(admin_client, monkeypatch):
+    from app import monitoring
+
+    sent = {}
+
+    class FakeSentry:
+        @staticmethod
+        def capture_exception():
+            import sys
+            sent["exception"] = sys.exc_info()[1]
+            return "abc123"
+
+        @staticmethod
+        def flush(timeout=None):
+            sent["flushed"] = timeout
+
+    import sys
+    monkeypatch.setattr(monitoring.settings, "sentry_dsn", "https://key@example.ingest.sentry.io/1", raising=False)
+    monkeypatch.setitem(sys.modules, "sentry_sdk", FakeSentry)
+
+    resp = admin_client.post("/api/v1/admin/self-test/error")
+
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["reporting_enabled"] is True
+    assert data["event_id"] == "abc123"
+    assert isinstance(sent["exception"], monitoring.CrashReportingSelfTest)
+    assert sent["flushed"], "a serverless function is frozen before a background send finishes"
+    assert "admin@example.com" not in str(sent["exception"]), "no account data in the report"
+
+
+def test_self_test_as_regular_user_returns_403(auth_client):
+    resp = auth_client.post("/api/v1/admin/self-test/error")
+    assert resp.status_code == 403
+    assert resp.json()["detail"]["code"] == "FORBIDDEN"
