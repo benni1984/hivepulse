@@ -15,11 +15,19 @@ settings:
     ENABLE_PREVIEWS: YES
     DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
 
+packages:
+  Sentry:
+    url: https://github.com/getsentry/sentry-cocoa
+    from: 8.44.0
+
 targets:
   HivePulse:
     type: application
     platform: iOS
     deploymentTarget: "17.0"
+    dependencies:
+      - package: Sentry
+        product: Sentry
     sources:
       - path: HivePulse
         excludes:
@@ -37,8 +45,12 @@ targets:
       configs:
         Debug:
           API_BASE_URL: http://localhost:8000/api/v1
+          SENTRY_DSN: ""
         Release:
           API_BASE_URL: https://hivepulse.multihead.de/api/v1
+          # Filled by the TestFlight workflow from the SENTRY_DSN_IOS secret; empty here
+          # so a local build and a build from source report nothing.
+          SENTRY_DSN: ""
 
   HivePulseTests:
     type: bundle.unit-test

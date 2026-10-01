@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     apns_sandbox: bool = False
     resend_api_key: str = ""        # Resend API key — reset emails logged to stdout when empty
     app_base_url: str = "https://hivepulse.multihead.de"  # used to build password-reset links
+    # Error reporting — see docs/crash-reporting-setup.md. Inert while empty.
+    sentry_dsn: str = ""
+    release: str = ""              # commit sha, so a report points at the code that failed
 
     model_config = {"env_file": ".env"}
 

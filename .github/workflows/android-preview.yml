@@ -36,6 +36,9 @@ jobs:
       - uses: gradle/actions/setup-gradle@v3
 
       - name: Build debug APK
+        # SENTRY_DSN_ANDROID is optional: without it the APK ships with crash reporting off.
+        env:
+          SENTRY_DSN_ANDROID: ${{ secrets.SENTRY_DSN_ANDROID }}
         run: |
           chmod +x android/gradlew
           cd android
