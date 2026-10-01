@@ -85,3 +85,26 @@ def test_self_test_as_regular_user_returns_403(auth_client):
     resp = auth_client.post("/api/v1/admin/self-test/error")
     assert resp.status_code == 403
     assert resp.json()["detail"]["code"] == "FORBIDDEN"
+
+
+def test_self_test_reports_where_the_key_is_missing(admin_client, monkeypatch):
+    # Both zero is the answer to "did the platform ever hand the key to the server".
+    monkeypatch.delenv("SENTRY_DSN", raising=False)
+
+    data = admin_client.post("/api/v1/admin/self-test/error").json()
+
+    assert data["diagnosis"]["dsn_characters_in_settings"] == 0
+    assert data["diagnosis"]["dsn_characters_in_process_env"] == 0
+
+
+def test_self_test_diagnosis_counts_characters_without_leaking_the_key(admin_client, monkeypatch):
+    from app import monitoring
+
+    dsn = "https://key@o1.ingest.de.sentry.io/42"
+    monkeypatch.setenv("SENTRY_DSN", dsn)
+    monkeypatch.setattr(monitoring.settings, "sentry_dsn", dsn, raising=False)
+
+    body = admin_client.post("/api/v1/admin/self-test/error").text
+
+    assert str(len(dsn)) in body
+    assert dsn not in body, "a length is enough; the key itself must not travel back"

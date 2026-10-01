@@ -1380,6 +1380,7 @@ tr:last-child td { border-bottom: none; }
 .dash-admin-selftest-desc { font-size: 13.5px; color: var(--muted); max-width: 62ch; margin: 0 0 14px; }
 .dash-admin-selftest-result { font-size: 13.5px; color: var(--text); max-width: 62ch; margin-top: 12px; }
 .dash-admin-selftest-result.error { color: var(--danger, #b91c1c); }
+.dash-admin-selftest-result.muted { color: var(--muted); font-size: 12.5px; }
 .dash-admin-signups { display: flex; flex-direction: column; gap: 4px; max-height: 400px; overflow-y: auto; margin-bottom: 24px; }
 .dash-admin-signup-row { display: flex; align-items: center; gap: 10px; font-size: 13px; }
 .dash-admin-signup-date { width: 84px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); flex-shrink: 0; }

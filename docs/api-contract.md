@@ -1379,7 +1379,11 @@ No body. Nothing is written to the database.
   "reporting_enabled": true,
   "event_id": "708b97e0f3984e2ebe7337c4012eadc7",
   "environment": "production",
-  "release": "4e4e0fa"
+  "release": "4e4e0fa",
+  "diagnosis": {
+    "dsn_characters_in_settings": 97,
+    "dsn_characters_in_process_env": 97
+  }
 }
 ```
 
@@ -1393,6 +1397,12 @@ No body. Nothing is written to the database.
 A `reporting_enabled: true` with an `event_id` that never appears in Sentry means the DSN is
 syntactically valid but rejected — most often a key and project number that do not belong
 together.
+
+`diagnosis` carries lengths, never the value. Both zero means the hosting platform never
+passed the variable to the server — on Vercel, a variable only reaches deployments created
+after it was saved, and a Secret-type variable is withheld from CLI builds entirely. A
+non-zero process value with zero in settings would mean the server received it and failed
+to read it, which is a different bug in a different place.
 
 ---
 

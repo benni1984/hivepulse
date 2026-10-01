@@ -10,6 +10,7 @@ IP addresses, and [scrub_event] removes the fields that still tend to carry secr
 from __future__ import annotations
 
 import logging
+import os
 from typing import Any, Optional
 
 from app.config import settings
@@ -98,11 +99,19 @@ def send_self_test() -> dict:
     point of having it. The message carries no account data: the admin who triggered it
     is identifiable from the access log, and Sentry does not need to know.
     """
+    # Lengths, never the value: enough to tell "the platform never passed it in" apart
+    # from "it arrived and was not read", which is the question an unexplained silence
+    # always comes down to.
+    raw_env = os.environ.get("SENTRY_DSN", "").strip()
     result = {
         "reporting_enabled": False,
         "event_id": None,
         "environment": settings.environment,
         "release": settings.release,
+        "diagnosis": {
+            "dsn_characters_in_settings": len(settings.sentry_dsn.strip()),
+            "dsn_characters_in_process_env": len(raw_env),
+        },
     }
     if not settings.sentry_dsn.strip():
         return result

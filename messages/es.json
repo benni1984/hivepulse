@@ -527,7 +527,8 @@
         "crashSending": "Enviando…",
         "crashSent": "Enviado como evento {id} en el entorno {environment}. Debería aparecer en Sentry en menos de un minuto; resuélvelo allí después.",
         "crashOff": "No hay ningún servicio de informes configurado, no se envió nada.",
-        "crashFailed": "No se pudo ejecutar la prueba."
+        "crashFailed": "No se pudo ejecutar la prueba.",
+        "crashDiagnosis": "Detalle técnico: la clave tiene {settingsChars} caracteres en la configuración y {envChars} en el entorno del proceso. Dos ceros significan que la plataforma de alojamiento nunca se la pasó al servidor."
       }
     },
     "apiaries": {

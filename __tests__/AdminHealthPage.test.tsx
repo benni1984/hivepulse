@@ -39,7 +39,7 @@ describe('AdminHealthPage', () => {
     mockAdminGetInactiveUsers.mockResolvedValue({ items: [], total: 0, page: 1, per_page: 20, pages: 1 });
     mockAdminGetNoVarroaApiaries.mockResolvedValue([]);
     mockAdminGetZeroInspectionHives.mockResolvedValue([]);
-    mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: true, event_id: 'abc123', environment: 'production', release: '' });
+    mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: true, event_id: 'abc123', environment: 'production', release: '', diagnosis: { dsn_characters_in_settings: 97, dsn_characters_in_process_env: 97 } });
   });
 
   it('renders health title', async () => {
@@ -90,7 +90,7 @@ describe('AdminHealthPage crash reporting self-test', () => {
     mockAdminGetInactiveUsers.mockResolvedValue({ items: [], total: 0, page: 1, per_page: 20, pages: 1 });
     mockAdminGetNoVarroaApiaries.mockResolvedValue([]);
     mockAdminGetZeroInspectionHives.mockResolvedValue([]);
-    mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: true, event_id: 'abc123', environment: 'production', release: '' });
+    mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: true, event_id: 'abc123', environment: 'production', release: '', diagnosis: { dsn_characters_in_settings: 97, dsn_characters_in_process_env: 97 } });
   });
 
   it('offers the test without sending anything on its own', async () => {
@@ -107,7 +107,7 @@ describe('AdminHealthPage crash reporting self-test', () => {
   });
 
   it('says plainly when no reporter is configured', async () => {
-    mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: false, event_id: null, environment: 'development', release: '' });
+    mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: false, event_id: null, environment: 'development', release: '', diagnosis: { dsn_characters_in_settings: 0, dsn_characters_in_process_env: 0 } });
     render(<AdminHealthPage />);
     fireEvent.click(await screen.findByText('admin.health.crashButton'));
     await waitFor(() => expect(screen.getByText('admin.health.crashOff')).toBeInTheDocument());
@@ -118,5 +118,30 @@ describe('AdminHealthPage crash reporting self-test', () => {
     render(<AdminHealthPage />);
     fireEvent.click(await screen.findByText('admin.health.crashButton'));
     await waitFor(() => expect(screen.getByText('admin.health.crashFailed')).toBeInTheDocument());
+  });
+});
+
+describe('AdminHealthPage crash reporting diagnosis', () => {
+  beforeEach(() => {
+    mockUseDashboardAuth.mockReturnValue({ user: mockAdmin, loading: false });
+    mockAdminGetHealthSummary.mockResolvedValue(mockSummary);
+    mockAdminGetInactiveUsers.mockResolvedValue({ items: [], total: 0, page: 1, per_page: 20, pages: 1 });
+    mockAdminGetNoVarroaApiaries.mockResolvedValue([]);
+    mockAdminGetZeroInspectionHives.mockResolvedValue([]);
+  });
+
+  it('explains why nothing was sent', async () => {
+    mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: false, event_id: null, environment: 'production', release: '', diagnosis: { dsn_characters_in_settings: 0, dsn_characters_in_process_env: 0 } });
+    render(<AdminHealthPage />);
+    fireEvent.click(await screen.findByText('admin.health.crashButton'));
+    await waitFor(() => expect(screen.getByText('admin.health.crashDiagnosis')).toBeInTheDocument());
+  });
+
+  it('keeps the diagnosis out of the way when reporting works', async () => {
+    mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: true, event_id: 'abc123', environment: 'production', release: '', diagnosis: { dsn_characters_in_settings: 97, dsn_characters_in_process_env: 97 } });
+    render(<AdminHealthPage />);
+    fireEvent.click(await screen.findByText('admin.health.crashButton'));
+    await waitFor(() => expect(screen.getByText('admin.health.crashSent')).toBeInTheDocument());
+    expect(screen.queryByText('admin.health.crashDiagnosis')).toBeNull();
   });
 });

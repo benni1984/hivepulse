@@ -527,7 +527,8 @@
         "crashSending": "Sending…",
         "crashSent": "Sent as event {id} in environment {environment}. It should appear in Sentry within a minute — resolve it there afterwards.",
         "crashOff": "No crash reporter is configured, so nothing was sent.",
-        "crashFailed": "The test could not be run."
+        "crashFailed": "The test could not be run.",
+        "crashDiagnosis": "Technical detail: the key has {settingsChars} characters in the configuration and {envChars} in the process environment. Two zeros mean the hosting platform never passed it to the server."
       }
     },
     "apiaries": {

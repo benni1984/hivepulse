@@ -527,7 +527,8 @@
         "crashSending": "Wird gesendet…",
         "crashSent": "Als Ereignis {id} in der Umgebung {environment} gesendet. Es sollte innerhalb einer Minute in Sentry auftauchen — dort danach auf erledigt setzen.",
         "crashOff": "Es ist keine Absturzmeldung eingerichtet, es wurde nichts gesendet.",
-        "crashFailed": "Der Test konnte nicht ausgeführt werden."
+        "crashFailed": "Der Test konnte nicht ausgeführt werden.",
+        "crashDiagnosis": "Technisches Detail: Der Schlüssel hat {settingsChars} Zeichen in der Konfiguration und {envChars} in der Prozessumgebung. Zweimal null bedeutet, dass die Hosting-Plattform ihn nie an den Server weitergegeben hat."
       }
     },
     "apiaries": {
