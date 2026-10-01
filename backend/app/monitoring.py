@@ -85,3 +85,42 @@ def init_monitoring() -> bool:
 
     logger.info("Error reporting enabled for environment %s", settings.environment)
     return True
+
+
+class CrashReportingSelfTest(RuntimeError):
+    """Raised on purpose by the admin self-test. Never a real failure."""
+
+
+def send_self_test() -> dict:
+    """Report a deliberate error so an admin can see whether reports actually arrive.
+
+    Waiting for a real crash to find out that reporting was misconfigured defeats the
+    point of having it. The message carries no account data: the admin who triggered it
+    is identifiable from the access log, and Sentry does not need to know.
+    """
+    result = {
+        "reporting_enabled": False,
+        "event_id": None,
+        "environment": settings.environment,
+        "release": settings.release,
+    }
+    if not settings.sentry_dsn.strip():
+        return result
+
+    try:
+        import sentry_sdk
+    except ImportError:
+        return result
+
+    result["reporting_enabled"] = True
+    try:
+        raise CrashReportingSelfTest(
+            "Crash reporting self-test — a deliberate error, safe to resolve"
+        )
+    except CrashReportingSelfTest:
+        result["event_id"] = sentry_sdk.capture_exception()
+
+    # Sending happens on a background thread, and a serverless function is frozen the
+    # moment it answers — without this the report would often never leave the machine.
+    sentry_sdk.flush(timeout=5)
+    return result

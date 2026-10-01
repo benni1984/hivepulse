@@ -7,6 +7,7 @@ const mockAdminGetHealthSummary = vi.hoisted(() => vi.fn());
 const mockAdminGetInactiveUsers = vi.hoisted(() => vi.fn());
 const mockAdminGetNoVarroaApiaries = vi.hoisted(() => vi.fn());
 const mockAdminGetZeroInspectionHives = vi.hoisted(() => vi.fn());
+const mockAdminSelfTestError = vi.hoisted(() => vi.fn());
 const mockUseDashboardAuth = vi.hoisted(() => vi.fn());
 
 vi.mock('@/hooks/useDashboardAuth', () => ({
@@ -24,6 +25,7 @@ vi.mock('@/lib/api', () => ({
   adminGetInactiveUsers: mockAdminGetInactiveUsers,
   adminGetNoVarroaApiaries: mockAdminGetNoVarroaApiaries,
   adminGetZeroInspectionHives: mockAdminGetZeroInspectionHives,
+  adminSelfTestError: mockAdminSelfTestError,
   logout: vi.fn(),
 }));
 
@@ -37,6 +39,7 @@ describe('AdminHealthPage', () => {
     mockAdminGetInactiveUsers.mockResolvedValue({ items: [], total: 0, page: 1, per_page: 20, pages: 1 });
     mockAdminGetNoVarroaApiaries.mockResolvedValue([]);
     mockAdminGetZeroInspectionHives.mockResolvedValue([]);
+    mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: true, event_id: 'abc123', environment: 'production', release: '' });
   });
 
   it('renders health title', async () => {
@@ -77,5 +80,43 @@ describe('AdminHealthPage', () => {
     await waitFor(() => screen.getByText('admin.health.zeroHives'));
     fireEvent.click(screen.getByText('admin.health.zeroHives'));
     await waitFor(() => expect(screen.getByText('admin.health.noData')).toBeInTheDocument());
+  });
+});
+
+describe('AdminHealthPage crash reporting self-test', () => {
+  beforeEach(() => {
+    mockUseDashboardAuth.mockReturnValue({ user: mockAdmin, loading: false });
+    mockAdminGetHealthSummary.mockResolvedValue(mockSummary);
+    mockAdminGetInactiveUsers.mockResolvedValue({ items: [], total: 0, page: 1, per_page: 20, pages: 1 });
+    mockAdminGetNoVarroaApiaries.mockResolvedValue([]);
+    mockAdminGetZeroInspectionHives.mockResolvedValue([]);
+    mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: true, event_id: 'abc123', environment: 'production', release: '' });
+  });
+
+  it('offers the test without sending anything on its own', async () => {
+    render(<AdminHealthPage />);
+    await waitFor(() => expect(screen.getByText('admin.health.crashTitle')).toBeInTheDocument());
+    expect(mockAdminSelfTestError).not.toHaveBeenCalled();
+  });
+
+  it('reports where the event went after sending', async () => {
+    render(<AdminHealthPage />);
+    fireEvent.click(await screen.findByText('admin.health.crashButton'));
+    await waitFor(() => expect(screen.getByText('admin.health.crashSent')).toBeInTheDocument());
+    expect(mockAdminSelfTestError).toHaveBeenCalledTimes(1);
+  });
+
+  it('says plainly when no reporter is configured', async () => {
+    mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: false, event_id: null, environment: 'development', release: '' });
+    render(<AdminHealthPage />);
+    fireEvent.click(await screen.findByText('admin.health.crashButton'));
+    await waitFor(() => expect(screen.getByText('admin.health.crashOff')).toBeInTheDocument());
+  });
+
+  it('shows a failure instead of a silent nothing', async () => {
+    mockAdminSelfTestError.mockRejectedValue(new Error('boom'));
+    render(<AdminHealthPage />);
+    fireEvent.click(await screen.findByText('admin.health.crashButton'));
+    await waitFor(() => expect(screen.getByText('admin.health.crashFailed')).toBeInTheDocument());
   });
 });

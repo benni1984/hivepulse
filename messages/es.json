@@ -520,7 +520,14 @@
         "hive": "Colmena",
         "apiary": "Colmenar",
         "missing": "Cantidad faltante",
-        "noData": "No se encontraron problemas."
+        "noData": "No se encontraron problemas.",
+        "crashTitle": "Informes de fallos",
+        "crashDesc": "Envía un error a propósito al servicio de informes, para comprobar si los informes llegan de verdad en lugar de descubrirlo durante un fallo real.",
+        "crashButton": "Enviar error de prueba",
+        "crashSending": "Enviando…",
+        "crashSent": "Enviado como evento {id} en el entorno {environment}. Debería aparecer en Sentry en menos de un minuto; resuélvelo allí después.",
+        "crashOff": "No hay ningún servicio de informes configurado, no se envió nada.",
+        "crashFailed": "No se pudo ejecutar la prueba."
       }
     },
     "apiaries": {

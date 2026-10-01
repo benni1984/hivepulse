@@ -520,7 +520,14 @@
         "hive": "Volk",
         "apiary": "Bienenstand",
         "missing": "Fehlende Anzahl",
-        "noData": "Keine Probleme gefunden."
+        "noData": "Keine Probleme gefunden.",
+        "crashTitle": "Absturzberichte",
+        "crashDesc": "Schickt absichtlich einen Fehler an die Absturzmeldung, damit du siehst, ob Berichte wirklich ankommen — statt es im Ernstfall zu erfahren.",
+        "crashButton": "Testfehler senden",
+        "crashSending": "Wird gesendet…",
+        "crashSent": "Als Ereignis {id} in der Umgebung {environment} gesendet. Es sollte innerhalb einer Minute in Sentry auftauchen — dort danach auf erledigt setzen.",
+        "crashOff": "Es ist keine Absturzmeldung eingerichtet, es wurde nichts gesendet.",
+        "crashFailed": "Der Test konnte nicht ausgeführt werden."
       }
     },
     "apiaries": {

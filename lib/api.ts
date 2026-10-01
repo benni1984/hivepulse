@@ -548,6 +548,14 @@ export async function adminSetPrivate(apiaryId: string): Promise<AdminApiary> {
   return res.json();
 }
 
+export interface CrashReportSelfTest { reporting_enabled: boolean; event_id: string | null; environment: string; release: string; }
+
+export async function adminSelfTestError(): Promise<CrashReportSelfTest> {
+  const res = await apiFetch('/admin/self-test/error', { method: 'POST' });
+  if (!res.ok) throw new Error('Failed to run the crash reporting self-test');
+  return res.json();
+}
+
 export async function adminGetHealthSummary(): Promise<HealthSummary> {
   const res = await apiFetch('/admin/health/summary');
   if (!res.ok) throw new Error('Failed to get health summary');

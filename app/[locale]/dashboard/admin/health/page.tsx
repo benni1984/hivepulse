@@ -5,7 +5,9 @@ import DashboardShell from '@/components/DashboardShell';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import {
   adminGetHealthSummary, adminGetInactiveUsers, adminGetNoVarroaApiaries, adminGetZeroInspectionHives,
+  adminSelfTestError,
   type HealthSummary, type InactiveUser, type NoVarroaApiary, type ZeroInspectionHive, type Paginated,
+  type CrashReportSelfTest,
 } from '@/lib/api';
 
 type Section = 'inactive' | 'zeroHives' | 'noVarroa';
@@ -162,7 +164,44 @@ export default function AdminHealthPage() {
           </table>
         </div>
       )}
+
+      <CrashReportingSelfTest />
     </DashboardShell>
+  );
+}
+
+/** Crash reporting is the one thing nobody notices is broken until it is needed. */
+function CrashReportingSelfTest() {
+  const t = useTranslations('dash');
+  const [state, setState] = useState<'idle' | 'sending' | 'done' | 'failed'>('idle');
+  const [result, setResult] = useState<CrashReportSelfTest | null>(null);
+
+  const run = () => {
+    setState('sending');
+    adminSelfTestError()
+      .then(data => { setResult(data); setState('done'); })
+      .catch(() => setState('failed'));
+  };
+
+  return (
+    <section className="dash-admin-selftest">
+      <h2 className="dash-section-title">{t('admin.health.crashTitle')}</h2>
+      <p className="dash-admin-selftest-desc">{t('admin.health.crashDesc')}</p>
+      <button className="btn-outline" onClick={run} disabled={state === 'sending'}>
+        {state === 'sending' ? t('admin.health.crashSending') : t('admin.health.crashButton')}
+      </button>
+
+      {state === 'done' && result && (
+        <p className="dash-admin-selftest-result">
+          {result.reporting_enabled && result.event_id
+            ? t('admin.health.crashSent', { id: result.event_id, environment: result.environment })
+            : t('admin.health.crashOff')}
+        </p>
+      )}
+      {state === 'failed' && (
+        <p className="dash-admin-selftest-result error">{t('admin.health.crashFailed')}</p>
+      )}
+    </section>
   );
 }
 

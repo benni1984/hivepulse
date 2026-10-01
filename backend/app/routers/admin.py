@@ -6,6 +6,7 @@ from fastapi import APIRouter, HTTPException, Query, status
 from sqlalchemy import func, or_, and_
 
 from app.deps import CurrentAdmin, DB
+from app.monitoring import send_self_test
 from app.models import Apiary, Hive, Inspection, RefreshToken, User, HornetSighting
 from app.schemas import (
     AdminApiaryOut, AdminPlatformStats, AdminUserDetail, AdminTokenOut,
@@ -21,6 +22,16 @@ router = APIRouter(prefix="/admin", tags=["admin"])
 def ping(admin: CurrentAdmin) -> dict:
     """Health-check for the admin dependency. Returns 403 for non-admins."""
     return {"ok": True, "email": admin.email}
+
+
+@router.post("/self-test/error")
+def self_test_error(admin: CurrentAdmin) -> dict:
+    """Send a deliberate error to the crash reporter and report where it went.
+
+    Crash reporting is the one feature nobody notices is broken until the day it is
+    needed, so it gets a button instead of a hope.
+    """
+    return send_self_test()
 
 
 # ---------------------------------------------------------------------------

@@ -1361,6 +1361,38 @@ All endpoints in this section require `Authorization: Bearer <access_token>` for
 | GET | `/admin/users/{user_id}/tokens` | Active sessions for one user |
 | DELETE | `/admin/users/{user_id}/tokens` | Revoke all sessions for one user |
 | PUT | `/admin/hornets/sightings/{id}/status` | Override a hornet sighting status |
+| POST | `/admin/self-test/error` | Send a deliberate test error to the crash reporter |
+
+---
+
+### POST `/admin/self-test/error`
+
+Proves that crash reporting is actually wired up, instead of waiting for a real crash to find
+out it was not. Raises an error on purpose, reports it, and tells you where it went.
+
+No body. Nothing is written to the database.
+
+**Response 200:**
+
+```json
+{
+  "reporting_enabled": true,
+  "event_id": "708b97e0f3984e2ebe7337c4012eadc7",
+  "environment": "production",
+  "release": "4e4e0fa"
+}
+```
+
+| Field | Meaning |
+|-------|---------|
+| `reporting_enabled` | `false` when no `SENTRY_DSN` is configured — then nothing was sent and `event_id` is `null` |
+| `event_id` | Search for it in Sentry; `null` if the report could not be handed over |
+| `environment` | Which environment the report is tagged with (`production`, `staging`, `development`) |
+| `release` | The configured release, empty string when unset |
+
+A `reporting_enabled: true` with an `event_id` that never appears in Sentry means the DSN is
+syntactically valid but rejected — most often a key and project number that do not belong
+together.
 
 ---
 
