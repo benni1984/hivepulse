@@ -40,10 +40,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
+import androidx.compose.runtime.LaunchedEffect
 
 data class HiveDetailState(
     val hive: HiveOut? = null,
@@ -61,8 +58,6 @@ class HiveDetailViewModel @Inject constructor(
     val hiveId = savedState.get<String>("hiveId")!!
     private val _state = MutableStateFlow(HiveDetailState())
     val state = _state.asStateFlow()
-
-    init { load() }
 
     fun load() = viewModelScope.launch {
         _state.update { it.copy(isLoading = true) }
@@ -111,20 +106,10 @@ fun HiveDetailScreen(
     val state by vm.state.collectAsState()
     var showEdit by remember { mutableStateOf(false) }
 
-    // The screen keeps its ViewModel while the inspection form is open, so without this the
-    // list would still show what it loaded before — a visit just recorded (online or queued
-    // offline) would only appear after leaving and re-entering the hive.
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
-        var skipFirst = true // init {} already loaded once
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                if (skipFirst) skipFirst = false else vm.load()
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-    }
+    // The ViewModel survives while the inspection form is open (it belongs to this
+    // navigation entry), but the composable is recreated when the user comes back — so
+    // loading here is what makes a visit just recorded appear, online or queued offline.
+    LaunchedEffect(hiveId) { vm.load() }
 
     if (showEdit) {
         state.hive?.let { hive ->
