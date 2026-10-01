@@ -12,6 +12,11 @@ vi.mock('next/link', () => ({
   ),
 }));
 
+const imprintComplete = vi.hoisted(() => ({ value: false }));
+vi.mock('@/lib/imprint', () => ({
+  imprintIsComplete: () => imprintComplete.value,
+}));
+
 import Footer from '@/components/Footer';
 
 describe('Footer', () => {
@@ -60,5 +65,24 @@ describe('Footer', () => {
     expect(screen.getByText('copyright')).toBeTruthy();
     expect(screen.getByText('made')).toBeTruthy();
     expect(screen.getByText('tagline')).toBeTruthy();
+  });
+});
+
+describe('Footer imprint link', () => {
+  it('stays hidden while the operator details are missing', () => {
+    // A link to an Impressum that answers 404 is worse than no link.
+    imprintComplete.value = false;
+
+    const { container } = render(<Footer />);
+
+    expect(container.querySelector('a[href="/impressum"]')).toBeNull();
+  });
+
+  it('appears once the details are there', () => {
+    imprintComplete.value = true;
+
+    const { container } = render(<Footer />);
+
+    expect(container.querySelector('a[href="/impressum"]')).toBeTruthy();
   });
 });

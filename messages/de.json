@@ -23,7 +23,8 @@
     "legal": "Rechtliches",
     "privacy": "Datenschutzerklärung",
     "copyright": "© 2025 HivePulse. Veröffentlicht unter der MIT-Lizenz.",
-    "made": "Mit 🐝 für Imkerinnen und Imker weltweit."
+    "made": "Mit 🐝 für Imkerinnen und Imker weltweit.",
+    "imprint": "Impressum"
   },
   "hero": {
     "badge": "Open Source · Gemeinschaftsprojekt · Kostenlos",
@@ -966,6 +967,22 @@
     "siteDescription": "Die Imker-App, die jede Durchsicht zu weltweiten Daten für den Bienenschutz macht. Kostenlos für iPhone und Android.",
     "helpTitle": "Hilfe & Dokumentation",
     "helpDescription": "Anleitungen zu allen Bereichen von HivePulse — Bienenstände, Völker, Durchsichten, QR-Codes, Statistiken und Hornissentracker.",
-    "helpSuffix": "HivePulse Hilfe"
+    "helpSuffix": "HivePulse Hilfe",
+    "imprintTitle": "Impressum",
+    "imprintDescription": "Wer HivePulse betreibt und wie du uns erreichst."
+  },
+  "imprint": {
+    "title": "Impressum",
+    "operator": "Betreiber",
+    "contact": "Kontakt",
+    "emailLabel": "E-Mail",
+    "phoneLabel": "Telefon",
+    "responsible": "Verantwortlich für den Inhalt",
+    "responsibleBody": "{name}, Anschrift wie oben.",
+    "vat": "Umsatzsteuer-Identifikationsnummer",
+    "disputes": "Online-Streitbeilegung",
+    "disputesBody": "Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.",
+    "liability": "Haftung für Links",
+    "liabilityBody": "Diese Seite verweist auf externe Websites, deren Inhalte wir nicht beeinflussen können. Für diese Inhalte ist der jeweilige Anbieter verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf Rechtsverstöße geprüft; eine dauerhafte Kontrolle ohne konkrete Anhaltspunkte für einen Verstoß ist nicht zumutbar."
   }
 }

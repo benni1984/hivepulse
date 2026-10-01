@@ -23,7 +23,8 @@
     "legal": "Mentions légales",
     "privacy": "Politique de confidentialité",
     "copyright": "© 2025 HivePulse. Publié sous la licence MIT.",
-    "made": "Fait avec 🐝 pour les apiculteurs du monde entier."
+    "made": "Fait avec 🐝 pour les apiculteurs du monde entier.",
+    "imprint": "Mentions légales"
   },
   "hero": {
     "badge": "Open Source · Communautaire · Gratuit",
@@ -966,6 +967,22 @@
     "siteDescription": "L'application des apiculteurs qui transforme chaque visite en données mondiales pour la protection des abeilles. Gratuite sur iPhone et Android.",
     "helpTitle": "Aide & documentation",
     "helpDescription": "Des guides pour chaque partie de HivePulse — ruchers, ruches, visites, QR codes, statistiques et suivi des frelons.",
-    "helpSuffix": "Aide HivePulse"
+    "helpSuffix": "Aide HivePulse",
+    "imprintTitle": "Mentions légales",
+    "imprintDescription": "Qui exploite HivePulse et comment nous joindre."
+  },
+  "imprint": {
+    "title": "Mentions légales",
+    "operator": "Exploitant",
+    "contact": "Contact",
+    "emailLabel": "E-mail",
+    "phoneLabel": "Téléphone",
+    "responsible": "Responsable du contenu",
+    "responsibleBody": "{name}, à l'adresse ci-dessus.",
+    "vat": "Numéro de TVA intracommunautaire",
+    "disputes": "Règlement en ligne des litiges",
+    "disputesBody": "Nous ne sommes ni obligés ni disposés à participer à une procédure de règlement des litiges devant un organisme de médiation de la consommation.",
+    "liability": "Responsabilité concernant les liens",
+    "liabilityBody": "Ce site renvoie vers des sites externes dont nous ne contrôlons pas le contenu. La responsabilité de ces contenus incombe à leurs exploitants respectifs. Les pages liées ont été vérifiées au moment de la création du lien ; une surveillance permanente sans indice concret de violation ne serait pas raisonnable."
   }
 }

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { imprintIsComplete } from '@/lib/imprint';
 
 export default function Footer() {
   const t = useTranslations('footer');
@@ -56,6 +57,8 @@ export default function Footer() {
             <ul>
               <li><Link href="/help">Help &amp; Docs</Link></li>
               <li><Link href="/privacy">{t('privacy')}</Link></li>
+              {/* Appears once lib/imprint.ts carries the operator's details. */}
+              {imprintIsComplete() && <li><Link href="/impressum">{t('imprint')}</Link></li>}
             </ul>
           </div>
         </div>
