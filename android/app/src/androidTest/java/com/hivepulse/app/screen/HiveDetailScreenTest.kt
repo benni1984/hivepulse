@@ -60,6 +60,12 @@ class HiveDetailScreenTest {
         composeRule.waitUntil(5_000) {
             composeRule.onAllNodesWithText("Inspections").fetchSemanticsNodes().isNotEmpty()
         }
+        // "Inspections" is a static header, so it appears before the hive itself has
+        // loaded — the toolbar actions are still disabled at that point.
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodes(hasContentDescription("Edit hive") and isEnabled())
+                .fetchSemanticsNodes().isNotEmpty()
+        }
     }
 
     @Test
