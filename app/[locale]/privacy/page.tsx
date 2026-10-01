@@ -3,16 +3,11 @@ import { useTranslations } from 'next-intl';
 export default function PrivacyPage() {
   const t = useTranslations('privacy');
 
-  const sections = [
-    { title: t('s1title'), body: t('s1body') },
-    { title: t('s2title'), body: t('s2body') },
-    { title: t('s3title'), body: t('s3body') },
-    { title: t('s4title'), body: t('s4body') },
-    { title: t('s5title'), body: t('s5body') },
-    { title: t('s6title'), body: t('s6body') },
-    { title: t('s7title'), body: t('s7body') },
-    { title: t('s8title'), body: t('s8body') },
-  ];
+  // Ten numbered sections; the numbers live in the translated titles.
+  const sections = Array.from({ length: 10 }, (_, i) => ({
+    title: t(`s${i + 1}title`),
+    body: t(`s${i + 1}body`),
+  }));
 
   return (
     <main className="legal-page">

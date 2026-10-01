@@ -7,6 +7,7 @@ vi.mock('next-intl', () => ({
 }));
 
 import PrivacyPage from '@/app/[locale]/privacy/page';
+import en from '@/messages/en.json';
 
 describe('PrivacyPage', () => {
   it('renders the title, updated date, and intro', () => {
@@ -16,10 +17,25 @@ describe('PrivacyPage', () => {
     expect(screen.getByText('intro')).toBeTruthy();
   });
 
-  it('renders all eight policy sections', () => {
+  it('renders one section per numbered section in the message file', () => {
+    // Derived, so adding a section to the policy cannot leave it unrendered.
+    const sectionCount = Object.keys(en.privacy).filter(k => /^s\d+title$/.test(k)).length;
+
     const { container } = render(<PrivacyPage />);
-    expect(container.querySelectorAll('section')).toHaveLength(8);
+
+    expect(sectionCount).toBeGreaterThan(0);
+    expect(container.querySelectorAll('section')).toHaveLength(sectionCount);
     expect(screen.getByText('s1title')).toBeTruthy();
-    expect(screen.getByText('s8title')).toBeTruthy();
+    expect(screen.getByText(`s${sectionCount}title`)).toBeTruthy();
+  });
+
+  it('covers the processors and the crash reports', () => {
+    // Both are legally required statements, not decoration: Sentry receives personal data.
+    expect(en.privacy.s4body).toMatch(/Sentry/);
+    expect(en.privacy.s5body).toMatch(/Sentry/);
+    expect(en.privacy.s4body).toMatch(/OpenStreetMap/);
+    for (const forbidden of ['inspection notes', 'passwords', 'IP address']) {
+      expect(en.privacy.s5body).toContain(forbidden);
+    }
   });
 });
