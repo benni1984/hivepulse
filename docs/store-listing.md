@@ -291,7 +291,7 @@ Los fallos ahora se informan, para poder corregir un problema sin esperar un men
 
 | Field | Value |
 |-------|-------|
-| Category | Play: *Education* or *Lifestyle*; App Store: *Utilities* with *Education* as secondary |
+| Category | Play: **Productivity** (*Effizienz*), tags *Notebook* and *Barcode scanner*; App Store: *Utilities* with *Education* as secondary |
 | Website | <https://hivepulse.multihead.de> |
 | Support URL | <https://hivepulse.multihead.de/help> |
 | Privacy policy URL | <https://hivepulse.multihead.de/privacy> |
@@ -302,6 +302,24 @@ Los fallos ahora se informan, para poder corregir un problema sin esperar un men
 **The user-generated content question matters.** Hornet sighting photos are user content,
 so both stores want to know that reports can be moderated and that there is a way to
 report abuse. The admin moderation for sightings exists; the listing has to say so.
+
+## Graphics
+
+`scripts/make_store_graphics.py` redraws both bitmaps Play insists on, from the same geometry
+as `public/brand/hivepulse-logo.svg`:
+
+| File | Size | Where |
+|------|------|-------|
+| `public/brand/play-icon-512.png` | 512×512 | App icon |
+| `public/brand/play-feature-1024x500.png` | 1024×500 | Feature graphic |
+
+Both are **wordless apart from the brand name**, so one of each serves all four languages —
+text on them would mean four versions, and "HivePulse" is the same everywhere. The feature
+graphic is saved without an alpha channel, which Play requires and which a test pins.
+
+Icon and feature graphic are language-independent in practice; **screenshots are not**, since
+the interface in them is in one language. Play falls back to the default language's graphics
+for any language where none are uploaded, so one set works to start with.
 
 ## Screenshots
 
