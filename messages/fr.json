@@ -1012,6 +1012,8 @@
     "removed4": "Vos sessions et, si vous aviez activé les rappels, le jeton d'appareil utilisé pour les envoyer.",
     "keptTitle": "Ce qui subsiste",
     "keptBody": "Les signalements de frelons et les pièges restent. Ce sont des observations sur l'environnement sur lesquelles d'autres apiculteurs s'appuient, et elles ne sont plus liées à votre compte : un piège garde son nom et son emplacement, mais ne désigne plus personne. Les statistiques communautaires agrégées restent également, car elles ne contiennent aucune donnée personnelle : un nombre de ruches par région, jamais une de vos ruches.",
+    "retentionTitle": "Durée de conservation",
+    "retentionBody": "Dans la base de données en service, la suppression est immédiate : une minute plus tard, il ne reste rien de votre compte. Notre hébergeur conserve des sauvegardes automatiques pendant 30 jours au maximum ; une sauvegarde ne peut être restaurée qu'intégralement, jamais pour un seul compte, et passé ce délai les données en ont également disparu. Les signalements et pièges à frelons décrits plus haut n'ont pas de durée limite, car ils ne concernent plus une personne. Nous ne conservons ni copies, ni archives, ni exports distincts.",
     "noAccessTitle": "Plus d'accès à l'application ?",
     "noAccessBody": "Si vous ne pouvez plus vous connecter, écrivez-nous et nous supprimerons le compte pour vous sous 30 jours. Utilisez l'adresse avec laquelle le compte a été créé, afin que nous sachions de quel compte il s'agit :"
   }

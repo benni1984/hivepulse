@@ -1012,6 +1012,8 @@
     "removed4": "Deine Sitzungen und, falls du Erinnerungen aktiviert hattest, das Gerätekennzeichen für den Versand.",
     "keptTitle": "Was bleibt",
     "keptBody": "Hornissen-Meldungen und Hornissen-Fallen bleiben bestehen. Es sind Beobachtungen über die Umwelt, auf die sich andere Imker verlassen, und sie sind danach nicht mehr mit deinem Konto verknüpft — eine Falle behält Name und Standort, zeigt aber auf keine Person mehr. Auch die zusammengefassten Gemeinschaftsstatistiken bleiben, weil sie keine personenbezogenen Daten enthalten: eine Anzahl Völker pro Region, nie ein Volk von dir.",
+    "retentionTitle": "Wie lange etwas aufbewahrt wird",
+    "retentionBody": "In der laufenden Datenbank passiert die Löschung sofort — eine Minute später ist von deinem Konto nichts mehr da. Unser Hosting-Anbieter hält automatische Sicherungskopien der Datenbank für bis zu 30 Tage; eine Sicherung lässt sich immer nur vollständig wiederherstellen, nie für ein einzelnes Konto, und nach diesem Zeitraum sind die Daten auch dort verschwunden. Für die oben beschriebenen Hornissen-Meldungen und -Fallen gibt es keine Frist, weil sie keinen Personenbezug mehr haben. Eigene Kopien, Archive oder Exporte führen wir nicht.",
     "noAccessTitle": "Kein Zugang zur App?",
     "noAccessBody": "Wenn du dich nicht mehr anmelden kannst, schreib uns — wir löschen das Konto dann innerhalb von 30 Tagen für dich. Nimm dafür die Adresse, mit der das Konto registriert wurde, damit wir wissen, um welches es geht:"
   }

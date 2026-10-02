@@ -20,7 +20,7 @@ describe('DeleteAccountPage', () => {
     expect(screen.getByText('title')).toBeTruthy();
     expect(container.querySelectorAll('ol.legal-list li')).toHaveLength(3);
     expect(container.querySelectorAll('ul.legal-list li')).toHaveLength(4);
-    for (const key of ['inAppTitle', 'removedTitle', 'keptTitle', 'noAccessTitle']) {
+    for (const key of ['inAppTitle', 'removedTitle', 'keptTitle', 'retentionTitle', 'noAccessTitle']) {
       expect(screen.getByText(key)).toBeTruthy();
     }
   });
@@ -41,7 +41,7 @@ describe('the deletion texts', () => {
   const required = [
     'title', 'intro', 'inAppTitle', 'step1', 'step2', 'step3', 'immediate',
     'removedTitle', 'removed1', 'removed2', 'removed3', 'removed4',
-    'keptTitle', 'keptBody', 'noAccessTitle', 'noAccessBody',
+    'keptTitle', 'keptBody', 'retentionTitle', 'retentionBody', 'noAccessTitle', 'noAccessBody',
   ];
 
   it('exist in all four languages', () => {
@@ -49,6 +49,13 @@ describe('the deletion texts', () => {
       for (const key of required) {
         expect(messages.deleteAccount?.[key], `${name} is missing ${key}`).toBeTruthy();
       }
+    }
+  });
+
+  it('name a retention period, which Play requires on this page', () => {
+    // "the type of data deleted or retained, and any additional retention period"
+    for (const [name, messages] of Object.entries(locales)) {
+      expect(messages.deleteAccount.retentionBody, `${name} names no period`).toMatch(/30/);
     }
   });
 

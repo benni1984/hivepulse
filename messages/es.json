@@ -1012,6 +1012,8 @@
     "removed4": "Tus sesiones y, si habías activado los recordatorios, el identificador del dispositivo usado para enviarlos.",
     "keptTitle": "Qué se conserva",
     "keptBody": "Los avisos de avispas y las trampas se conservan. Son observaciones sobre el entorno en las que confían otros apicultores, y después dejan de estar vinculadas a tu cuenta: una trampa mantiene su nombre y su ubicación, pero ya no señala a ninguna persona. También se conservan las estadísticas agregadas de la comunidad, porque no contienen datos personales: un número de colmenas por región, nunca una colmena tuya.",
+    "retentionTitle": "Cuánto tiempo se conserva algo",
+    "retentionBody": "En la base de datos en funcionamiento la eliminación es inmediata: un minuto después no queda nada de tu cuenta. Nuestro proveedor de alojamiento guarda copias de seguridad automáticas durante un máximo de 30 días; una copia solo puede restaurarse por completo, nunca para una sola cuenta, y pasado ese plazo los datos también desaparecen de ahí. Los avisos y trampas de avispas descritos arriba no tienen plazo, porque ya no se refieren a ninguna persona. No mantenemos copias, archivos ni exportaciones aparte.",
     "noAccessTitle": "¿Sin acceso a la aplicación?",
     "noAccessBody": "Si ya no puedes iniciar sesión, escríbenos y eliminaremos la cuenta por ti en un plazo de 30 días. Usa la dirección con la que se registró la cuenta, para que sepamos de cuál se trata:"
   }

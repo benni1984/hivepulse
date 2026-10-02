@@ -59,6 +59,11 @@ export default async function DeleteAccountPage({
         </section>
 
         <section>
+          <h2>{t('retentionTitle')}</h2>
+          <p>{t('retentionBody')}</p>
+        </section>
+
+        <section>
           <h2>{t('noAccessTitle')}</h2>
           <p>
             {t('noAccessBody')} <a href={`mailto:${contact}`}>{contact}</a>

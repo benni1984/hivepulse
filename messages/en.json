@@ -1012,6 +1012,8 @@
     "removed4": "Your sessions and, if you enabled reminders, the device token used to send them.",
     "keptTitle": "What remains",
     "keptBody": "Hornet reports and hornet traps stay. They are observations about the environment that other beekeepers rely on, and they are not linked to your account afterwards — the trap keeps its name and location, but no longer points at a person. Aggregate community statistics also stay, because they contain no personal data: a number of hives per region, never a hive of yours.",
+    "retentionTitle": "How long anything is kept",
+    "retentionBody": "In the live database the deletion is immediate — nothing of your account is left a minute later. Our hosting provider keeps automatic database backups for up to 30 days; a backup can only ever be restored as a whole, never for a single account, and after that window the data is gone from there too. The hornet reports and traps described above have no retention limit, because they no longer relate to a person. We keep no separate copies, no archives and no exports.",
     "noAccessTitle": "No access to the app?",
     "noAccessBody": "If you cannot log in any more, write to us and we will delete the account for you within 30 days. Use the address the account was registered with, so we can tell whose account it is:"
   }
