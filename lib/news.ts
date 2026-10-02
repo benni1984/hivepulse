@@ -22,6 +22,28 @@ export function newsText(entry: NewsEntry, locale: string): NewsText {
 
 export const NEWS: NewsEntry[] = [
   {
+    date: '2026-10-02',
+    tag: 'privacy',
+    text: {
+      en: {
+        title: 'The Site No Longer Tells Google You Were Here',
+        body: 'The fonts used across the site were loaded from Google servers, which means every single page view handed your IP address to Google before a word was rendered. They are now delivered from our own servers, so nobody outside learns that you visited. One of the four fonts turned out to be loaded with five weights and used nowhere at all, so it is gone too — a little less to download on your first visit.',
+      },
+      de: {
+        title: 'Die Seite verrät Google nicht mehr, dass du hier warst',
+        body: 'Die Schriften der Seite wurden von Google-Servern geladen — bei jedem Seitenaufruf ging deine IP-Adresse also an Google, noch bevor ein Wort zu sehen war. Jetzt liefern wir sie von unseren eigenen Servern aus, damit niemand von außen erfährt, dass du hier warst. Eine der vier Schriften wurde übrigens in fünf Schnitten geladen und nirgends verwendet — die ist ebenfalls weg, das macht deinen ersten Besuch ein wenig schneller.',
+      },
+      fr: {
+        title: 'Le site ne dit plus à Google que vous étiez là',
+        body: "Les polices du site étaient chargées depuis des serveurs de Google : à chaque page consultée, votre adresse IP partait chez Google avant même qu'un mot soit affiché. Elles sont désormais servies depuis nos propres serveurs, si bien que personne à l'extérieur n'apprend votre visite. L'une des quatre polices était d'ailleurs chargée en cinq graisses sans être utilisée nulle part : elle a disparu aussi, ce qui allège votre première visite.",
+      },
+      es: {
+        title: 'El sitio ya no le cuenta a Google que estuviste aquí',
+        body: 'Las tipografías del sitio se cargaban desde servidores de Google: en cada visita tu dirección IP llegaba a Google antes de que se mostrara una sola palabra. Ahora las servimos desde nuestros propios servidores, así que nadie de fuera se entera de tu visita. Una de las cuatro tipografías, por cierto, se cargaba en cinco grosores y no se usaba en ningún sitio; también ha desaparecido, lo que aligera tu primera visita.',
+      },
+    },
+  },
+  {
     date: '2026-10-01',
     tag: 'privacy',
     text: {
