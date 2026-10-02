@@ -36,7 +36,9 @@ test('create a hive, view its detail page, then clean up', async ({ page }) => {
     await expect(page).toHaveURL(/\/dashboard\/hive\//, { timeout: 15_000 });
     await expect(page.locator('.spinner')).not.toBeVisible({ timeout: 10_000 });
     await expect(page.locator('h1.dash-page-title')).toContainText(hiveName);
-    await expect(page.locator('p.dash-hive-type-label')).toContainText('langstroth');
+    // The label is translated now; the stored value stays 'langstroth'. English UI here,
+    // so this is messages/en.json → hiveTypes.langstroth.
+    await expect(page.locator('p.dash-hive-type-label')).toContainText('Langstroth');
     await expect(page.locator('h2.dash-section-title', { hasText: 'Varroa Trend' })).toBeVisible();
     await expect(page.locator('button.dash-new-btn', { hasText: 'New Inspection' })).toBeVisible();
   });
@@ -98,7 +100,7 @@ test('edit hive: rename and change type, then restore', async ({ page }) => {
     await form.locator('button.dash-submit-btn').click();
     await expect(page.locator('.dash-success-banner')).toBeVisible({ timeout: 10_000 });
     await expect(page.locator('h1.dash-page-title')).toContainText(renamedHive);
-    await expect(page.locator('p.dash-hive-type-label')).toContainText('dadant');
+    await expect(page.locator('p.dash-hive-type-label')).toContainText('Dadant');
   });
 
   await test.step('clean up', async () => {
