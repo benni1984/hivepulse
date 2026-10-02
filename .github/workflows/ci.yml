@@ -471,7 +471,10 @@ jobs:
   # ── Deploy preview (PRs only, after all quality gates pass) ──────────────────
   deploy-preview:
     name: Deploy preview to Vercel
-    needs: [changes, backend, android-unit, android-ui, android-hornets, ios, ios-hornets, web]
+    # Only what Vercel actually serves. The app jobs still run on every push, they just no
+    # longer hold the website hostage: a failing Android test says nothing about whether
+    # the site and the API are fit to deploy, and the iOS job alone takes 26 minutes.
+    needs: [changes, backend, web]
     if: github.event_name == 'pull_request' && needs.changes.outputs.deployable == 'true'
     runs-on: ubuntu-latest
     env:
@@ -615,7 +618,10 @@ jobs:
 
   deploy-staging:
     name: Deploy staging to Vercel
-    needs: [changes, backend, android-unit, android-ui, android-hornets, ios, ios-hornets, web]
+    # Only what Vercel actually serves. The app jobs still run on every push, they just no
+    # longer hold the website hostage: a failing Android test says nothing about whether
+    # the site and the API are fit to deploy, and the iOS job alone takes 26 minutes.
+    needs: [changes, backend, web]
     if: >-
       (github.event_name == 'workflow_dispatch'
         || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
