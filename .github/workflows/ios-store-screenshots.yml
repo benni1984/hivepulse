@@ -117,10 +117,40 @@ jobs:
           fi
           echo "All $count images are an accepted size"
 
+      - name: Pick the eight the stores accept
+        run: |
+          # Play allows 8 phone screenshots per language, the App Store 10. Nineteen pictures
+          # are the design review's job; a listing needs the ones that answer "what is this
+          # and why would I want it", in that order.
+          src="$GITHUB_WORKSPACE/screenshots/${{ matrix.language }}"
+          out="$GITHUB_WORKSPACE/store/${{ matrix.language }}"
+          mkdir -p "$out"
+          i=1
+          for name in 03-apiaries 05-hive-detail 18-inspection-form 19-inspection-frames                       04-apiary-detail 08-qr-batches 10-members-supporter 07-settings
+          do
+            if [ -f "$src/$name.png" ]; then
+              cp "$src/$name.png" "$out/$(printf '%d' $i)-$name.png"
+              i=$((i + 1))
+            else
+              echo "::warning::$name.png was not captured, the listing set is one short"
+            fi
+          done
+          count=$((i - 1))
+          echo "Selected $count screenshots for the listing" >> "$GITHUB_STEP_SUMMARY"
+          test "$count" -ge 4 || { echo "::error::only $count of 8 made it"; exit 1; }
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: app-store-screenshots-${{ matrix.language }}
+          path: store/${{ matrix.language }}/*.png
+          if-no-files-found: error
+          retention-days: 30
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: all-screenshots-${{ matrix.language }}
           path: screenshots/${{ matrix.language }}/*.png
           if-no-files-found: error
           retention-days: 30
