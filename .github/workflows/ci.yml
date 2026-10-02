@@ -125,6 +125,21 @@ jobs:
       - name: Check translations across web, iOS, Android and backend
         run: python scripts/check_i18n.py --list
 
+  # ── Screenshot freshness ─────────────────────────────────────────────────────
+  # Store and help screenshots go stale silently: the interface gets a new button and the
+  # pictures keep showing the old one. This says so in the run summary. Deliberately a
+  # notice and not a gate — a stale picture is not a reason to block a merge.
+  screenshots:
+    name: Screenshot freshness
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check whether the interface changed since the screenshots were taken
+        run: python scripts/check_screenshot_freshness.py
+
   # ── Android unit tests ───────────────────────────────────────────────────────
   android-unit:
     name: Android unit tests
@@ -279,7 +294,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ios-screenshots
-          path: ios-screenshots/*.png
+          # The screenshot test writes into a per-language subfolder now.
+          path: ios-screenshots/**/*.png
           if-no-files-found: warn
           retention-days: 14
 

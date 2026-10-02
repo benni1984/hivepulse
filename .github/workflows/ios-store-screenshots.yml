@@ -1,7 +1,7 @@
 name: iOS Store Screenshots
 
-# Captures the App Store screenshots by running the existing ScreenshotUITests on the largest
-# iPhone simulator the runner has. Nothing new is photographed — the same screens the design
+# Captures the App Store screenshots in all four store languages, by running the existing
+# ScreenshotUITests once per language on the largest iPhone simulator the runner has. Nothing new is photographed — the same screens the design
 # review already captures, on a device whose pixel size App Store Connect accepts.
 #
 # Apple requires one set for the 6.9" iPhone slot and derives the smaller sizes from it; the
@@ -16,9 +16,17 @@ on:
 
 jobs:
   capture:
-    name: App Store screenshots
+    name: App Store screenshots (${{ matrix.language }})
     runs-on: macos-latest
     timeout-minutes: 60
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # The store lists each language separately, and a German listing showing an English
+        # interface reads as "not translated" — the one screenshot detail that actually
+        # changes whether somebody installs.
+        language: [de, en, fr, es]
 
     steps:
       - uses: actions/checkout@v4
@@ -59,6 +67,8 @@ jobs:
           fi
 
       - name: Capture
+        env:
+          SCREENSHOT_LANG: ${{ matrix.language }}
         run: |
           mkdir -p "$GITHUB_WORKSPACE/screenshots"
           # Only the screenshot class: the rest of the UI suite has nothing to contribute here
@@ -70,11 +80,11 @@ jobs:
             -only-testing:HivePulseUITests/ScreenshotUITests \
             -retry-tests-on-failure \
             -test-iterations 2 \
-            -resultBundlePath StoreScreenshots
+            -resultBundlePath "StoreScreenshots-${{ matrix.language }}"
 
       - name: Check the images are a size App Store Connect accepts
         run: |
-          cd "$GITHUB_WORKSPACE/screenshots"
+          cd "$GITHUB_WORKSPACE/screenshots/${{ matrix.language }}"
           count=$(ls -1 *.png 2>/dev/null | wc -l | tr -d ' ')
           if [ "$count" -eq 0 ]; then
             echo "::error::No screenshots were written although the capture step succeeded."
@@ -96,6 +106,7 @@ jobs:
           {
             echo "### App Store screenshots"
             echo ""
+            echo "- Language: ${{ matrix.language }}"
             echo "- Simulator: $SIMULATOR_NAME"
             echo "- Images: $count, $wrong with a size the store does not accept"
             echo "- Sizes seen:$(printf '%s\n' $sizes | sort -u | tr '\n' ' ')"
@@ -109,8 +120,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: app-store-screenshots
-          path: screenshots/*.png
+          name: app-store-screenshots-${{ matrix.language }}
+          path: screenshots/${{ matrix.language }}/*.png
           if-no-files-found: error
           retention-days: 30
 
@@ -118,6 +129,6 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: store-screenshots-results
-          path: StoreScreenshots.xcresult
+          name: store-screenshots-results-${{ matrix.language }}
+          path: StoreScreenshots-${{ matrix.language }}.xcresult
           retention-days: 7
