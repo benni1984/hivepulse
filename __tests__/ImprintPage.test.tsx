@@ -40,10 +40,24 @@ const FILLED = {
 };
 
 describe('imprint details', () => {
-  it('are still waiting to be filled in', () => {
-    // Fails the day they are provided — that is the reminder to remove this test.
-    expect(imprintIsComplete(IMPRINT)).toBe(false);
-    expect(missingImprintFields(IMPRINT)).toContain('name');
+  // The page tests replace the module, so these two read the file itself.
+  const real = async () => (await vi.importActual<typeof import('@/lib/imprint')>('@/lib/imprint'));
+
+  it('are complete, so the page and the footer link are live', async () => {
+    const { IMPRINT, imprintIsComplete, missingImprintFields } = await real();
+
+    expect(missingImprintFields(IMPRINT)).toEqual([]);
+    expect(imprintIsComplete(IMPRINT)).toBe(true);
+  });
+
+  it('carry a real postal address and a reachable mail address', async () => {
+    const { IMPRINT } = await real();
+
+    // § 5 DDG and the Swiss UWG both want an address a letter can reach; a PO box or a
+    // contact form is not enough, and the stores check the page exists at all.
+    expect(IMPRINT.street).toMatch(/\d/);
+    expect(IMPRINT.city).toMatch(/\d/);
+    expect(IMPRINT.email).toMatch(/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i);
   });
 
   it('count as complete only when every mandatory field is set', () => {

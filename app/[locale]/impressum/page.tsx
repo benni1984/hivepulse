@@ -73,11 +73,6 @@ export default async function ImprintPage({
         )}
 
         <section>
-          <h2>{t('disputes')}</h2>
-          <p>{t('disputesBody')}</p>
-        </section>
-
-        <section>
           <h2>{t('liability')}</h2>
           <p>{t('liabilityBody')}</p>
         </section>
