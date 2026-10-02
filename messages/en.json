@@ -24,7 +24,8 @@
     "privacy": "Privacy Policy",
     "copyright": "© 2025 HivePulse. Released under the MIT License.",
     "made": "Made with 🐝 for beekeepers everywhere.",
-    "imprint": "Legal notice"
+    "imprint": "Legal notice",
+    "deleteAccount": "Delete account"
   },
   "hero": {
     "badge": "Open Source · Community Driven · Free to Use",
@@ -980,7 +981,9 @@
     "helpDescription": "Guides for every part of HivePulse — apiaries, hives, inspections, QR codes, statistics and the hornet tracker.",
     "helpSuffix": "HivePulse Help",
     "imprintTitle": "Legal notice",
-    "imprintDescription": "Who operates HivePulse, and how to reach them."
+    "imprintDescription": "Who operates HivePulse, and how to reach them.",
+    "deleteAccountTitle": "Delete your account",
+    "deleteAccountDescription": "How to delete your HivePulse account and what exactly is removed."
   },
   "imprint": {
     "title": "Legal notice",
@@ -993,5 +996,23 @@
     "vat": "VAT identification number",
     "liability": "Liability for links",
     "liabilityBody": "This site links to external websites whose content we do not control. Responsibility for their content rests with their respective operators. We checked the linked pages for legal violations when the link was created; continuous monitoring without concrete evidence of a violation is not reasonable."
+  },
+  "deleteAccount": {
+    "title": "Deleting your account and data",
+    "intro": "You can delete your HivePulse account yourself, at any time, without asking anyone. This page explains how and what exactly disappears — it exists because Google and Apple require it to be readable without installing the app.",
+    "inAppTitle": "In the app or on the website",
+    "step1": "Open your profile: in the apps under Settings, on the website under Dashboard → Profile.",
+    "step2": "Scroll to the bottom and choose “Delete account”.",
+    "step3": "Confirm. There is no waiting period and no further email.",
+    "immediate": "The deletion happens immediately and cannot be undone. Export your inspections first if you want to keep them — the dashboard offers a CSV download per apiary.",
+    "removedTitle": "What is deleted",
+    "removed1": "Your account: email address, name, language and password.",
+    "removed2": "All your apiaries and hives, including their QR codes.",
+    "removed3": "Every inspection you recorded, with notes and custom fields.",
+    "removed4": "Your sessions and, if you enabled reminders, the device token used to send them.",
+    "keptTitle": "What remains",
+    "keptBody": "Hornet reports and hornet traps stay. They are observations about the environment that other beekeepers rely on, and they are not linked to your account afterwards — the trap keeps its name and location, but no longer points at a person. Aggregate community statistics also stay, because they contain no personal data: a number of hives per region, never a hive of yours.",
+    "noAccessTitle": "No access to the app?",
+    "noAccessBody": "If you cannot log in any more, write to us and we will delete the account for you within 30 days. Use the address the account was registered with, so we can tell whose account it is:"
   }
 }

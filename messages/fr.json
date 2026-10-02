@@ -24,7 +24,8 @@
     "privacy": "Politique de confidentialité",
     "copyright": "© 2025 HivePulse. Publié sous la licence MIT.",
     "made": "Fait avec 🐝 pour les apiculteurs du monde entier.",
-    "imprint": "Mentions légales"
+    "imprint": "Mentions légales",
+    "deleteAccount": "Supprimer le compte"
   },
   "hero": {
     "badge": "Open Source · Communautaire · Gratuit",
@@ -980,7 +981,9 @@
     "helpDescription": "Des guides pour chaque partie de HivePulse — ruchers, ruches, visites, QR codes, statistiques et suivi des frelons.",
     "helpSuffix": "Aide HivePulse",
     "imprintTitle": "Mentions légales",
-    "imprintDescription": "Qui exploite HivePulse et comment nous joindre."
+    "imprintDescription": "Qui exploite HivePulse et comment nous joindre.",
+    "deleteAccountTitle": "Supprimer le compte",
+    "deleteAccountDescription": "Comment supprimer votre compte HivePulse et ce qui est effacé exactement."
   },
   "imprint": {
     "title": "Mentions légales",
@@ -993,5 +996,23 @@
     "vat": "Numéro de TVA intracommunautaire",
     "liability": "Responsabilité concernant les liens",
     "liabilityBody": "Ce site renvoie vers des sites externes dont nous ne contrôlons pas le contenu. La responsabilité de ces contenus incombe à leurs exploitants respectifs. Les pages liées ont été vérifiées au moment de la création du lien ; une surveillance permanente sans indice concret de violation ne serait pas raisonnable."
+  },
+  "deleteAccount": {
+    "title": "Supprimer votre compte et vos données",
+    "intro": "Vous pouvez supprimer votre compte HivePulse vous-même, à tout moment, sans demander à personne. Cette page explique comment faire et ce qui disparaît exactement ; elle existe parce que Google et Apple exigent qu'elle soit lisible sans installer l'application.",
+    "inAppTitle": "Dans l'application ou sur le site",
+    "step1": "Ouvrez votre profil : dans les applications sous Réglages, sur le site sous Tableau de bord → Profil.",
+    "step2": "Descendez tout en bas et choisissez « Supprimer le compte ».",
+    "step3": "Confirmez. Il n'y a ni délai d'attente ni e-mail supplémentaire.",
+    "immediate": "La suppression est immédiate et irréversible. Exportez d'abord vos visites si vous souhaitez les conserver : le tableau de bord propose un téléchargement CSV par rucher.",
+    "removedTitle": "Ce qui est supprimé",
+    "removed1": "Votre compte : adresse e-mail, nom, langue et mot de passe.",
+    "removed2": "Tous vos ruchers et toutes vos ruches, y compris leurs QR codes.",
+    "removed3": "Chaque visite que vous avez saisie, avec les notes et les champs personnalisés.",
+    "removed4": "Vos sessions et, si vous aviez activé les rappels, le jeton d'appareil utilisé pour les envoyer.",
+    "keptTitle": "Ce qui subsiste",
+    "keptBody": "Les signalements de frelons et les pièges restent. Ce sont des observations sur l'environnement sur lesquelles d'autres apiculteurs s'appuient, et elles ne sont plus liées à votre compte : un piège garde son nom et son emplacement, mais ne désigne plus personne. Les statistiques communautaires agrégées restent également, car elles ne contiennent aucune donnée personnelle : un nombre de ruches par région, jamais une de vos ruches.",
+    "noAccessTitle": "Plus d'accès à l'application ?",
+    "noAccessBody": "Si vous ne pouvez plus vous connecter, écrivez-nous et nous supprimerons le compte pour vous sous 30 jours. Utilisez l'adresse avec laquelle le compte a été créé, afin que nous sachions de quel compte il s'agit :"
   }
 }
