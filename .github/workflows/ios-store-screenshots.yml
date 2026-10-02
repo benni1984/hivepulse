@@ -1,48 +1,35 @@
 name: iOS Store Screenshots
 
-# Captures the App Store screenshots at the exact pixel sizes Apple accepts, by running the
-# existing ScreenshotUITests on one simulator per required size. Nothing new is photographed
-# here — the same screens the design review already captures, just on the right devices.
+# Captures the App Store screenshots by running the existing ScreenshotUITests on the largest
+# iPhone simulator the runner has. Nothing new is photographed — the same screens the design
+# review already captures, on a device whose pixel size App Store Connect accepts.
 #
-# App Store Connect wants, as of 2026:
-#   6.9" / 6.7"  1290 × 2796   iPhone 16 Pro Max (also covers the 6.7" slot)
-#   6.5"         1242 × 2688   iPhone 11 Pro Max
-# An upload is rejected when a single image is off by one pixel, hence the check at the end.
+# Apple requires one set for the 6.9" iPhone slot and derives the smaller sizes from it; the
+# accepted pixel sizes for that slot are 1320×2868 and 1290×2796. An upload is rejected over a
+# single wrong pixel, so the size is checked here rather than in the console.
+#
+# The device list of the macOS runner image changes without notice — hence a preference list
+# instead of one pinned device, and a check against every accepted size instead of one pair.
 
 on:
   workflow_dispatch:
   # Lets this workflow be iterated on without a merge to main (and without a production deploy
-  # for every attempt). Remove once it works.
+  # per attempt). Remove once it works.
   push:
     branches: [ci/ios-store-screenshots]
 
 jobs:
   capture:
-    name: ${{ matrix.label }}
+    name: App Store screenshots
     runs-on: macos-latest
     timeout-minutes: 60
-
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - label: 6.9 inch (1290x2796)
-            device: iPhone 16 Pro Max
-            slug: 6_9
-            width: 1290
-            height: 2796
-          - label: 6.5 inch (1242x2688)
-            device: iPhone 11 Pro Max
-            slug: 6_5
-            width: 1242
-            height: 2688
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Select Xcode
-        # Whatever the image ships, like the other iOS jobs — a pinned version disappears
-        # with the next runner image.
+        # Whatever the image ships, like the other iOS jobs — a pinned version disappears with
+        # the next runner image.
         run: sudo xcode-select -s /Applications/Xcode.app
 
       - name: Install XcodeGen and generate project
@@ -50,18 +37,30 @@ jobs:
           brew install xcodegen
           cd ios && xcodegen generate
 
-      - name: Resolve the simulator
+      - name: Resolve the largest available iPhone simulator
         run: |
-          UDID=$(xcrun simctl list devices available \
-            | grep -F "${{ matrix.device }} (" | head -1 | awk -F'[()]' '{print $2}')
-          if [ -z "$UDID" ]; then
-            echo "::error::'${{ matrix.device }}' is not available on this runner image."
+          available=$(xcrun simctl list devices available)
+          for candidate in \
+            "iPhone 17 Pro Max" \
+            "iPhone 16 Pro Max" \
+            "iPhone 15 Pro Max" \
+            "iPhone 17 Plus" \
+            "iPhone 16 Plus"
+          do
+            udid=$(printf '%s\n' "$available" | grep -F "$candidate (" | head -1 | awk -F'[()]' '{print $2}')
+            if [ -n "$udid" ]; then
+              echo "Using $candidate ($udid)"
+              echo "SIMULATOR_UDID=$udid" >> "$GITHUB_ENV"
+              echo "SIMULATOR_NAME=$candidate" >> "$GITHUB_ENV"
+              break
+            fi
+          done
+          if [ -z "${SIMULATOR_UDID:-}" ] && ! grep -q SIMULATOR_UDID "$GITHUB_ENV"; then
+            echo "::error::None of the candidate simulators exist on this runner image."
             echo "Available iPhone simulators:"
-            xcrun simctl list devices available | grep iPhone
+            printf '%s\n' "$available" | grep iPhone || true
             exit 1
           fi
-          echo "Using ${{ matrix.device }} ($UDID)"
-          echo "SIMULATOR_UDID=$UDID" >> "$GITHUB_ENV"
 
       - name: Capture
         run: |
@@ -75,40 +74,46 @@ jobs:
             -only-testing:HivePulseUITests/ScreenshotUITests \
             -retry-tests-on-failure \
             -test-iterations 2 \
-            -resultBundlePath "StoreScreenshots-${{ matrix.slug }}"
+            -resultBundlePath StoreScreenshots
 
-      - name: Check every image has the size Apple expects
+      - name: Check the images are a size App Store Connect accepts
         run: |
           cd "$GITHUB_WORKSPACE/screenshots"
           count=$(ls -1 *.png 2>/dev/null | wc -l | tr -d ' ')
           if [ "$count" -eq 0 ]; then
-            echo "::error::No screenshots were written. The capture step reported success, so the test wrote nothing."
+            echo "::error::No screenshots were written although the capture step succeeded."
             exit 1
           fi
+          # The 6.9" iPhone slot; Apple derives the smaller device sizes from it.
+          accepted="1320x2868 2868x1320 1290x2796 2796x1290"
           wrong=0
+          sizes=""
           for f in *.png; do
-            size=$(sips -g pixelWidth -g pixelHeight "$f" | awk '/pixel/ {printf "%s ", $2}')
-            set -- $size
-            if [ "$1" != "${{ matrix.width }}" ] || [ "$2" != "${{ matrix.height }}" ]; then
-              echo "::warning file=$f::$f is ${1}x${2}, expected ${{ matrix.width }}x${{ matrix.height }}"
-              wrong=$((wrong + 1))
-            fi
+            read -r w h <<< "$(sips -g pixelWidth -g pixelHeight "$f" | awk '/pixel/ {printf "%s ", $2}')"
+            case " $accepted " in
+              *" ${w}x${h} "*) ;;
+              *) echo "::warning file=$f::$f is ${w}x${h}, which the 6.9\" slot does not accept"
+                 wrong=$((wrong + 1));;
+            esac
+            sizes="$sizes ${w}x${h}"
           done
           {
-            echo "### ${{ matrix.label }}"
+            echo "### App Store screenshots"
             echo ""
-            echo "$count screenshots, $wrong with an unexpected size."
+            echo "- Simulator: $SIMULATOR_NAME"
+            echo "- Images: $count, $wrong with a size the store does not accept"
+            echo "- Sizes seen:$(printf '%s\n' $sizes | sort -u | tr '\n' ' ')"
           } >> "$GITHUB_STEP_SUMMARY"
           if [ "$wrong" -gt 0 ]; then
-            echo "::error::$wrong of $count images do not match ${{ matrix.width }}x${{ matrix.height }} — App Store Connect would reject them."
+            echo "::error::$wrong of $count images are not an accepted 6.9\" size."
             exit 1
           fi
-          echo "All $count images are ${{ matrix.width }}x${{ matrix.height }}"
+          echo "All $count images are an accepted size"
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: app-store-screenshots-${{ matrix.slug }}
+          name: app-store-screenshots
           path: screenshots/*.png
           if-no-files-found: error
           retention-days: 30
@@ -117,6 +122,6 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: store-screenshots-results-${{ matrix.slug }}
-          path: StoreScreenshots-${{ matrix.slug }}.xcresult
+          name: store-screenshots-results
+          path: StoreScreenshots.xcresult
           retention-days: 7
