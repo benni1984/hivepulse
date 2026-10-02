@@ -333,16 +333,16 @@
     "s4body": "Für den Betrieb von HivePulse sind einige Unternehmen beteiligt, die Daten in unserem Auftrag verarbeiten — jeweils auf Grundlage eines Auftragsverarbeitungsvertrags. Hosting und Website: Vercel. Datenbank: Neon (Server in der EU). E-Mails zum Zurücksetzen des Passworts: Resend. Absturzberichte: Sentry (Server in der EU, siehe nächster Abschnitt). Push-Benachrichtigungen, nur wenn du Erinnerungen einschaltest: Google Firebase für Android-Geräte und Apple für iPhones — dorthin gehen ein Gerätetoken und der Text der Benachrichtigung. Die Kartenkacheln stammen von der OpenStreetMap Foundation, deren Server deine IP-Adresse erhalten, wenn du eine Karte öffnest. Die Schriften liefern wir von unseren eigenen Servern aus, dabei erfährt also kein Dritter etwas. Der Symbolsatz Font Awesome wird weiterhin von Cloudflares cdnjs geladen, deren Server dabei deine IP-Adresse sehen; auch das wollen wir künftig selbst ausliefern. Besucherzählung: Umami Cloud — nach Angaben des Anbieters ohne Cookies, ohne Werbekennungen und ohne Speicherung vollständiger IP-Adressen; erfasst werden Seitenaufrufe, die verweisende Seite, das Land und die Art des Geräts. Rechtsgrundlage ist unser berechtigtes Interesse daran, überhaupt zu erfahren, ob die Seite genutzt wird (Art. 6 Abs. 1 lit. f DSGVO).",
     "s5title": "5. Absturzberichte",
     "s5body": "Wenn in der App oder auf dem Server ein unerwarteter Fehler auftritt, geht ein Bericht an Sentry, damit er behoben werden kann. Enthalten sind die Stelle im Code, die Version und die Art des Geräts. Bewusst nicht enthalten sind deine Inhalte: keine Kontroll-Notizen, keine Passwörter, keine E-Mail-Adresse, keine IP-Adresse, keine Bildschirmfotos und keine Aufzeichnung deiner Eingaben. Ein Bericht benennt dein Konto nur über seine interne Nummer. Die Berichte werden in der EU gespeichert und nach 30 Tagen gelöscht. Rechtsgrundlage ist unser berechtigtes Interesse an einer funktionierenden und sicheren Anwendung (Art. 6 Abs. 1 lit. f DSGVO).",
-    "s6title": "6. Rechtsgrundlage (DSGVO)",
-    "s6body": "Für EU/EWR-Nutzer verarbeiten wir deine Daten auf Basis der Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO) für die App-Kernfunktionen und auf Basis deiner ausdrücklichen Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) für die öffentliche Karte. Du kannst die Einwilligung jederzeit widerrufen.",
+    "s6title": "6. Rechtsgrundlage (DSGVO und schweizerisches DSG)",
+    "s6body": "Für EU/EWR-Nutzer verarbeiten wir deine Daten auf Basis der Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO) für die App-Kernfunktionen und auf Basis deiner ausdrücklichen Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) für die öffentliche Karte. Du kannst die Einwilligung jederzeit widerrufen. Wir betreiben den Dienst aus der Schweiz, daher gilt für diese Verarbeitung auch das schweizerische Datenschutzgesetz (DSG); wo sich beide unterscheiden, richten wir uns nach dem, was dir das stärkere Recht gibt.",
     "s7title": "7. Datenspeicherung",
-    "s7body": "Deine Daten werden gespeichert, solange dein Konto aktiv ist. Du kannst die vollständige Löschung unter privacy@HivePulse.app beantragen – wir löschen alle Daten innerhalb von 30 Tagen.",
+    "s7body": "Deine Daten werden gespeichert, solange dein Konto aktiv ist. Du kannst die vollständige Löschung unter hivepulse@multihead.de beantragen – wir löschen alle Daten innerhalb von 30 Tagen.",
     "s8title": "8. Deine Rechte",
-    "s8body": "Du hast das Recht auf Auskunft, Berichtigung, Löschung und Datenübertragbarkeit sowie das Widerspruchsrecht. Kontakt: privacy@HivePulse.app.",
+    "s8body": "Du hast das Recht auf Auskunft, Berichtigung, Löschung und Datenübertragbarkeit sowie das Widerspruchsrecht. Kontakt: hivepulse@multihead.de.",
     "s9title": "9. Sicherheit",
     "s9body": "Passwörter werden mit bcrypt gehasht. Der API-Zugriff erfordert ein signiertes JWT-Token. Datenübertragungen sind TLS-verschlüsselt.",
     "s10title": "10. Kontakt",
-    "s10body": "Fragen zu dieser Erklärung oder deinen Daten? Schreib uns an privacy@HivePulse.app."
+    "s10body": "Fragen zu dieser Erklärung oder deinen Daten? Schreib an hivepulse@multihead.de. Verantwortlich ist Benjamin Müller, Sonnhaldenweg 5D, 4450 Sissach, Schweiz."
   },
   "dash": {
     "login": {
@@ -984,8 +984,6 @@
     "responsible": "Verantwortlich für den Inhalt",
     "responsibleBody": "{name}, Anschrift wie oben.",
     "vat": "Umsatzsteuer-Identifikationsnummer",
-    "disputes": "Online-Streitbeilegung",
-    "disputesBody": "Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.",
     "liability": "Haftung für Links",
     "liabilityBody": "Diese Seite verweist auf externe Websites, deren Inhalte wir nicht beeinflussen können. Für diese Inhalte ist der jeweilige Anbieter verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf Rechtsverstöße geprüft; eine dauerhafte Kontrolle ohne konkrete Anhaltspunkte für einen Verstoß ist nicht zumutbar."
   }

@@ -27,11 +27,11 @@ export interface ImprintDetails {
 }
 
 export const IMPRINT: ImprintDetails = {
-  name: '',
-  street: '',
-  city: '',
-  country: '',
-  email: '',
+  name: 'Benjamin Müller',
+  street: 'Sonnhaldenweg 5D',
+  city: '4450 Sissach',
+  country: 'Schweiz',
+  email: 'hivepulse@multihead.de',
   phone: '',
   vatId: '',
 };

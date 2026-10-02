@@ -333,16 +333,16 @@
     "s4body": "El funcionamiento de HivePulse implica a algunas empresas que tratan datos por nuestra cuenta, en cada caso mediante un contrato de encargo del tratamiento. Alojamiento y sitio web: Vercel. Base de datos: Neon (servidores en la UE). Correos de restablecimiento de contraseña: Resend. Informes de fallos: Sentry (servidores en la UE, véase la sección siguiente). Notificaciones push, solo si activas los recordatorios: Google Firebase para dispositivos Android y Apple para iPhone, que reciben un token de dispositivo y el texto de la notificación. Los mapas base provienen de la OpenStreetMap Foundation, cuyos servidores reciben tu dirección IP al abrir un mapa. Las tipografías se sirven desde nuestros propios servidores, por lo que ningún tercero se entera de nada. El conjunto de iconos Font Awesome se sigue cargando desde el cdnjs de Cloudflare, cuyos servidores ven entonces tu dirección IP; también tenemos previsto servirlo nosotros mismos. Estadísticas de visitas: Umami Cloud, que según su proveedor no utiliza cookies ni identificadores publicitarios y no almacena direcciones IP completas; registra las páginas vistas, el sitio de procedencia, el país y el tipo de dispositivo. La base legal es nuestro interés legítimo en saber si el sitio se usa (art. 6.1.f del RGPD).",
     "s5title": "5. Informes de fallos",
     "s5body": "Cuando la aplicación o el servidor encuentra un error inesperado, se envía un informe a Sentry para poder corregirlo. Incluye el punto del código, la versión y el tipo de dispositivo. A propósito no incluye ninguno de tus contenidos: ninguna nota de revisión, ninguna contraseña, ninguna dirección de correo, ninguna dirección IP, ninguna captura de pantalla y ningún registro de lo que escribes. Un informe identifica tu cuenta solo por su número interno. Los informes se guardan en la UE y se eliminan a los 30 días. La base legal es nuestro interés legítimo en una aplicación que funcione y sea segura (art. 6.1.f del RGPD).",
-    "s6title": "6. Base legal (RGPD)",
-    "s6body": "Para usuarios de la UE/EEE, procesamos tus datos sobre la base del cumplimiento del contrato (Art. 6(1)(b) RGPD) para las funciones principales de la app, y sobre la base de tu consentimiento explícito (Art. 6(1)(a) RGPD) para el mapa público. Puedes retirar el consentimiento en cualquier momento.",
+    "s6title": "6. Base legal (RGPD y LPD suiza)",
+    "s6body": "Para usuarios de la UE/EEE, procesamos tus datos sobre la base del cumplimiento del contrato (Art. 6(1)(b) RGPD) para las funciones principales de la app, y sobre la base de tu consentimiento explícito (Art. 6(1)(a) RGPD) para el mapa público. Puedes retirar el consentimiento en cualquier momento. Operamos el servicio desde Suiza, por lo que a este tratamiento le resulta también aplicable la Ley Federal suiza de Protección de Datos (LPD); cuando ambas difieran, nos atenemos a la que te otorgue el derecho más amplio.",
     "s7title": "7. Retención de datos",
-    "s7body": "Tus datos se conservan mientras tu cuenta esté activa. Puedes solicitar la eliminación completa en privacy@HivePulse.app — eliminaremos tu cuenta y todos los registros asociados en 30 días.",
+    "s7body": "Tus datos se conservan mientras tu cuenta esté activa. Puedes solicitar la eliminación completa en hivepulse@multihead.de — eliminaremos tu cuenta y todos los registros asociados en 30 días.",
     "s8title": "8. Tus derechos",
-    "s8body": "Conforme al RGPD, tienes derecho de acceso, rectificación, supresión y portabilidad de tus datos. Contacto: privacy@HivePulse.app.",
+    "s8body": "Conforme al RGPD, tienes derecho de acceso, rectificación, supresión y portabilidad de tus datos. Contacto: hivepulse@multihead.de.",
     "s9title": "9. Seguridad",
     "s9body": "Las contraseñas se cifran con bcrypt. El acceso a la API requiere un token JWT firmado. Los datos en tránsito están cifrados con TLS.",
     "s10title": "10. Contacto",
-    "s10body": "¿Preguntas sobre esta política o tus datos? Escríbenos a privacy@HivePulse.app."
+    "s10body": "¿Preguntas sobre esta política o tus datos? Escribe a hivepulse@multihead.de. El responsable del tratamiento es Benjamin Müller, Sonnhaldenweg 5D, 4450 Sissach, Suiza."
   },
   "dash": {
     "login": {
@@ -984,8 +984,6 @@
     "responsible": "Responsable del contenido",
     "responsibleBody": "{name}, en la dirección indicada arriba.",
     "vat": "Número de identificación fiscal (IVA)",
-    "disputes": "Resolución de litigios en línea",
-    "disputesBody": "No estamos obligados ni dispuestos a participar en procedimientos de resolución de litigios ante una entidad de resolución alternativa de consumo.",
     "liability": "Responsabilidad por los enlaces",
     "liabilityBody": "Este sitio enlaza a páginas externas cuyo contenido no podemos controlar. La responsabilidad de esos contenidos corresponde a sus respectivos titulares. Las páginas enlazadas se revisaron en el momento de crear el enlace; una vigilancia permanente sin indicios concretos de infracción no resulta exigible."
   }

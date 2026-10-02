@@ -333,16 +333,16 @@
     "s4body": "Running HivePulse involves a few companies that process data on our behalf, under a data processing agreement in each case. Hosting and the website: Vercel. Database: Neon (servers in the EU). Password reset emails: Resend. Crash reports: Sentry (servers in the EU, see the next section). Push notifications, only if you switch reminders on: Google Firebase for Android devices and Apple for iPhones, which receive a device token and the text of the notification. Map tiles come from the OpenStreetMap Foundation, so your IP address reaches them when you open a map. Fonts are served from our own servers, so no third party learns anything from them. The icon set Font Awesome is still loaded from Cloudflare's cdnjs, whose servers therefore see your IP address; we intend to serve it ourselves too. Visitor statistics: Umami Cloud, which according to its operator uses no cookies, no advertising identifiers and does not store full IP addresses; it records page views, the referring site, the country and the type of device. The legal basis is our legitimate interest in knowing whether the site is used at all (Art. 6(1)(f) GDPR).",
     "s5title": "5. Crash reports",
     "s5body": "When the app or the server hits an unexpected error, a report goes to Sentry so it can be fixed. It contains the place in the code, the version, and the kind of device. It deliberately contains none of your content: no inspection notes, no passwords, no email address, no IP address, no screenshots and no record of what you typed. A report identifies your account by its internal number only. Reports are stored in the EU and kept for 30 days. The legal basis is our legitimate interest in a working, secure application (Art. 6(1)(f) GDPR).",
-    "s6title": "6. Legal basis (GDPR)",
-    "s6body": "For EU/EEA users, we process your data on the basis of contract performance (Art. 6(1)(b) GDPR) for the core app features, and on the basis of your explicit consent (Art. 6(1)(a) GDPR) for public map participation. You can withdraw consent at any time by toggling the 'Show on public map' switch off.",
+    "s6title": "6. Legal basis (GDPR and Swiss FADP)",
+    "s6body": "For EU/EEA users, we process your data on the basis of contract performance (Art. 6(1)(b) GDPR) for the core app features, and on the basis of your explicit consent (Art. 6(1)(a) GDPR) for public map participation. You can withdraw consent at any time by toggling the 'Show on public map' switch off. We operate from Switzerland, so the Swiss Federal Act on Data Protection (FADP) applies to this processing as well; where the two differ, we follow whichever gives you the stronger right.",
     "s7title": "7. Data retention",
     "s7body": "Your account data is kept for as long as your account is active. You can request full deletion by contacting us at the address below — we will delete your account and all associated records within 30 days. Anonymised aggregate statistics (total counts) that have already been served publicly cannot be retracted.",
     "s8title": "8. Your rights",
-    "s8body": "Under GDPR you have the right to access, rectify, erase, and port your personal data, and to object to processing. To exercise these rights, contact us at privacy@HivePulse.app. If you believe your rights have not been respected, you may lodge a complaint with your national data protection authority.",
+    "s8body": "Under GDPR you have the right to access, rectify, erase, and port your personal data, and to object to processing. To exercise these rights, contact us at hivepulse@multihead.de. If you believe your rights have not been respected, you may lodge a complaint with your national data protection authority.",
     "s9title": "9. Security",
     "s9body": "Passwords are hashed with bcrypt and never stored in plain text. API access requires a signed JWT token. Data in transit is encrypted via TLS. We review security practices regularly.",
     "s10title": "10. Contact",
-    "s10body": "Questions about this policy or your data? Email us at privacy@HivePulse.app."
+    "s10body": "Questions about this policy or your data? Write to hivepulse@multihead.de. The controller is Benjamin Müller, Sonnhaldenweg 5D, 4450 Sissach, Switzerland."
   },
   "dash": {
     "login": {
@@ -984,8 +984,6 @@
     "responsible": "Responsible for the content",
     "responsibleBody": "{name}, at the address above.",
     "vat": "VAT identification number",
-    "disputes": "Online dispute resolution",
-    "disputesBody": "We are not obliged and not willing to take part in dispute resolution proceedings before a consumer arbitration board.",
     "liability": "Liability for links",
     "liabilityBody": "This site links to external websites whose content we do not control. Responsibility for their content rests with their respective operators. We checked the linked pages for legal violations when the link was created; continuous monitoring without concrete evidence of a violation is not reasonable."
   }
