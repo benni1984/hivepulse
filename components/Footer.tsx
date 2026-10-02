@@ -59,6 +59,7 @@ export default function Footer() {
               <li><Link href="/privacy">{t('privacy')}</Link></li>
               {/* Appears once lib/imprint.ts carries the operator's details. */}
               {imprintIsComplete() && <li><Link href="/impressum">{t('imprint')}</Link></li>}
+              <li><Link href="/delete-account">{t('deleteAccount')}</Link></li>
             </ul>
           </div>
         </div>

@@ -24,7 +24,8 @@
     "privacy": "Datenschutzerklärung",
     "copyright": "© 2025 HivePulse. Veröffentlicht unter der MIT-Lizenz.",
     "made": "Mit 🐝 für Imkerinnen und Imker weltweit.",
-    "imprint": "Impressum"
+    "imprint": "Impressum",
+    "deleteAccount": "Konto löschen"
   },
   "hero": {
     "badge": "Open Source · Gemeinschaftsprojekt · Kostenlos",
@@ -980,7 +981,9 @@
     "helpDescription": "Anleitungen zu allen Bereichen von HivePulse — Bienenstände, Völker, Durchsichten, QR-Codes, Statistiken und Hornissentracker.",
     "helpSuffix": "HivePulse Hilfe",
     "imprintTitle": "Impressum",
-    "imprintDescription": "Wer HivePulse betreibt und wie du uns erreichst."
+    "imprintDescription": "Wer HivePulse betreibt und wie du uns erreichst.",
+    "deleteAccountTitle": "Konto löschen",
+    "deleteAccountDescription": "Wie du dein HivePulse-Konto löschst und was genau entfernt wird."
   },
   "imprint": {
     "title": "Impressum",
@@ -993,5 +996,25 @@
     "vat": "Umsatzsteuer-Identifikationsnummer",
     "liability": "Haftung für Links",
     "liabilityBody": "Diese Seite verweist auf externe Websites, deren Inhalte wir nicht beeinflussen können. Für diese Inhalte ist der jeweilige Anbieter verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf Rechtsverstöße geprüft; eine dauerhafte Kontrolle ohne konkrete Anhaltspunkte für einen Verstoß ist nicht zumutbar."
+  },
+  "deleteAccount": {
+    "title": "Konto und Daten löschen",
+    "intro": "Du kannst dein HivePulse-Konto jederzeit selbst löschen, ohne jemanden zu fragen. Diese Seite erklärt, wie das geht und was genau verschwindet — sie existiert, weil Google und Apple verlangen, dass das ohne installierte App lesbar ist.",
+    "inAppTitle": "In der App oder auf der Website",
+    "step1": "Öffne dein Profil: in den Apps unter Einstellungen, auf der Website unter Dashboard → Profil.",
+    "step2": "Scroll nach unten und wähle „Konto löschen\".",
+    "step3": "Bestätige. Es gibt keine Wartefrist und keine weitere E-Mail.",
+    "immediate": "Die Löschung passiert sofort und lässt sich nicht zurücknehmen. Exportiere vorher deine Kontrollen, wenn du sie behalten willst — im Dashboard gibt es einen CSV-Download pro Bienenstand.",
+    "removedTitle": "Was gelöscht wird",
+    "removed1": "Dein Konto: E-Mail-Adresse, Name, Sprache und Passwort.",
+    "removed2": "Alle deine Bienenstände und Völker, samt ihren QR-Codes.",
+    "removed3": "Jede Kontrolle, die du erfasst hast, mit Notizen und eigenen Feldern.",
+    "removed4": "Deine Sitzungen und, falls du Erinnerungen aktiviert hattest, das Gerätekennzeichen für den Versand.",
+    "keptTitle": "Was bleibt",
+    "keptBody": "Hornissen-Meldungen und Hornissen-Fallen bleiben bestehen. Es sind Beobachtungen über die Umwelt, auf die sich andere Imker verlassen, und sie sind danach nicht mehr mit deinem Konto verknüpft — eine Falle behält Name und Standort, zeigt aber auf keine Person mehr. Auch die zusammengefassten Gemeinschaftsstatistiken bleiben, weil sie keine personenbezogenen Daten enthalten: eine Anzahl Völker pro Region, nie ein Volk von dir.",
+    "retentionTitle": "Wie lange etwas aufbewahrt wird",
+    "retentionBody": "In der laufenden Datenbank passiert die Löschung sofort — eine Minute später ist von deinem Konto nichts mehr da. Unser Hosting-Anbieter hält automatische Sicherungskopien der Datenbank für bis zu 30 Tage; eine Sicherung lässt sich immer nur vollständig wiederherstellen, nie für ein einzelnes Konto, und nach diesem Zeitraum sind die Daten auch dort verschwunden. Für die oben beschriebenen Hornissen-Meldungen und -Fallen gibt es keine Frist, weil sie keinen Personenbezug mehr haben. Eigene Kopien, Archive oder Exporte führen wir nicht.",
+    "noAccessTitle": "Kein Zugang zur App?",
+    "noAccessBody": "Wenn du dich nicht mehr anmelden kannst, schreib uns — wir löschen das Konto dann innerhalb von 30 Tagen für dich. Nimm dafür die Adresse, mit der das Konto registriert wurde, damit wir wissen, um welches es geht:"
   }
 }
