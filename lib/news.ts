@@ -23,6 +23,28 @@ export function newsText(entry: NewsEntry, locale: string): NewsText {
 export const NEWS: NewsEntry[] = [
   {
     date: '2026-10-02',
+    tag: 'release',
+    text: {
+      en: {
+        title: 'Twelve Beekeepers Needed Before the App May Be Published',
+        body: 'HivePulse is finished, but not yet in the stores — and that is not for want of trying. Before Google lets a new developer publish an app, twelve people have to test it for fourteen consecutive days. So the test round is the gate, not a formality. If you keep bees and own an Android phone or an iPhone, you can get the app now and help it reach everybody else: there is a page explaining what it involves, what to report and what happens with your data. It takes a quarter of an hour to set up and one visit to the hives to be useful.',
+      },
+      de: {
+        title: 'Zwölf Imker, damit die App überhaupt erscheinen darf',
+        body: 'HivePulse ist fertig, aber noch nicht in den Stores — und das liegt nicht am Wollen. Bevor Google einen neuen Entwickler veröffentlichen lässt, müssen zwölf Leute die App vierzehn Tage lang hintereinander testen. Die Testrunde ist also die Hürde, keine Formsache. Wer Bienen hält und ein Android-Telefon oder iPhone hat, bekommt die App jetzt und hilft, dass sie bei allen anderen ankommt: Auf einer eigenen Seite steht, was dazugehört, was zu melden ist und was mit deinen Daten passiert. Das Einrichten dauert eine Viertelstunde, nützlich wird es bei einem Gang zu den Völkern.',
+      },
+      fr: {
+        title: "Douze apiculteurs pour que l'application puisse paraître",
+        body: "HivePulse est terminée, mais pas encore dans les boutiques — et ce n'est pas faute d'essayer. Avant que Google autorise un nouveau développeur à publier, douze personnes doivent tester l'application pendant quatorze jours consécutifs. La phase de test est donc la condition, pas une formalité. Si vous avez des ruches et un téléphone Android ou un iPhone, vous pouvez obtenir l'application dès maintenant et aider à ce qu'elle parvienne aux autres : une page explique ce que cela implique, quoi signaler et ce qu'il advient de vos données. Un quart d'heure pour l'installer, une visite aux ruches pour être utile.",
+      },
+      es: {
+        title: 'Doce apicultores para que la aplicación pueda publicarse',
+        body: 'HivePulse está terminada, pero todavía no está en las tiendas, y no por falta de ganas. Antes de que Google deje publicar a un desarrollador nuevo, doce personas tienen que probar la aplicación durante catorce días seguidos. La ronda de pruebas es, por tanto, la condición y no un trámite. Si tienes colmenas y un teléfono Android o un iPhone, puedes conseguir la aplicación ya y ayudar a que llegue a todos los demás: hay una página que explica qué implica, qué informar y qué pasa con tus datos. Un cuarto de hora para instalarla y una visita a las colmenas para resultar útil.',
+      },
+    },
+  },
+  {
+    date: '2026-10-02',
     tag: 'privacy',
     text: {
       en: {

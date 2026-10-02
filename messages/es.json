@@ -25,7 +25,8 @@
     "copyright": "© 2025 HivePulse. Publicado bajo la licencia MIT.",
     "made": "Hecho con 🐝 para apicultores de todo el mundo.",
     "imprint": "Aviso legal",
-    "deleteAccount": "Eliminar la cuenta"
+    "deleteAccount": "Eliminar la cuenta",
+    "beta": "Unirse a la prueba"
   },
   "hero": {
     "badge": "Código abierto · Comunidad · Gratuito",
@@ -983,7 +984,9 @@
     "imprintTitle": "Aviso legal",
     "imprintDescription": "Quién gestiona HivePulse y cómo contactar.",
     "deleteAccountTitle": "Eliminar la cuenta",
-    "deleteAccountDescription": "Cómo eliminar tu cuenta de HivePulse y qué se borra exactamente."
+    "deleteAccountDescription": "Cómo eliminar tu cuenta de HivePulse y qué se borra exactamente.",
+    "betaTitle": "Unirse a la prueba",
+    "betaDescription": "Prueba HivePulse antes de que llegue a las tiendas y ayuda a que llegue."
   },
   "imprint": {
     "title": "Aviso legal",
@@ -1016,5 +1019,25 @@
     "retentionBody": "En la base de datos en funcionamiento la eliminación es inmediata: un minuto después no queda nada de tu cuenta. Nuestro proveedor de alojamiento guarda copias de seguridad automáticas durante un máximo de 30 días; una copia solo puede restaurarse por completo, nunca para una sola cuenta, y pasado ese plazo los datos también desaparecen de ahí. Los avisos y trampas de avispas descritos arriba no tienen plazo, porque ya no se refieren a ninguna persona. No mantenemos copias, archivos ni exportaciones aparte.",
     "noAccessTitle": "¿Sin acceso a la aplicación?",
     "noAccessBody": "Si ya no puedes iniciar sesión, escríbenos y eliminaremos la cuenta por ti en un plazo de 30 días. Usa la dirección con la que se registró la cuenta, para que sepamos de cuál se trata:"
+  },
+  "beta": {
+    "title": "Probar HivePulse antes que nadie",
+    "intro": "HivePulse está terminada, pero todavía no está en las tiendas. Antes de que Google deje publicar a un desarrollador nuevo, doce personas tienen que probar la aplicación durante dos semanas: esta fase no es un trámite, es la condición. Si tienes colmenas y un teléfono, puedes ayudar.",
+    "joinTitle": "Participar",
+    "joinAndroid": "Unirse a la prueba de Android",
+    "joinIos": "Unirse a la prueba de iPhone",
+    "notOpenYet": "Las rondas de prueba se están preparando y los enlaces aparecerán aquí. Escríbenos y los recibirás en cuanto existan.",
+    "joinNote": "Necesitas una cuenta de Google para Android o un ID de Apple para el iPhone: el mismo que ya usa tu teléfono. Sin registro aparte, y puedes salir cuando quieras.",
+    "expectTitle": "Qué implica",
+    "expect1": "Instalar la aplicación y crear un colmenar con unas cuantas colmenas. Un cuarto de hora.",
+    "expect2": "Anotar una revisión la próxima vez que vayas a las colmenas: esa es la parte que debe demostrarse en el campo, con guantes incluidos.",
+    "expect3": "Quedarte en la prueba dos semanas. Google cuenta a los probadores cada día; quien se va antes reinicia el reloj para todos.",
+    "expect4": "Contarnos qué no quedó claro. Una frase vale más que ninguna, y «no se rompió nada» también es una respuesta.",
+    "feedbackTitle": "Informar de algo",
+    "feedbackBody": "Sin foro, sin cuenta, sin sistema de incidencias: escribe simplemente a",
+    "feedbackSubject": "Comentarios de la prueba de HivePulse",
+    "feedbackHint": "Útil en un aviso: qué teléfono, qué hiciste y qué esperabas en su lugar. Una foto de la pantalla dice más que una descripción. Si la aplicación se cerró sola, ya ha enviado un informe de fallo; no hace falta describirlo.",
+    "dataTitle": "Qué pasa con tus datos",
+    "dataBody": "Lo mismo que para todos: tus colmenares son privados mientras no los pongas tú en el mapa público, nada se vende ni se cede, y no hay publicidad. Las versiones de prueba informan de los fallos, enviando el punto del código y el tipo de dispositivo; nunca tus notas, tu contraseña ni tu dirección. Puedes eliminar tu cuenta y todo su contenido tú mismo en cualquier momento."
   }
 }

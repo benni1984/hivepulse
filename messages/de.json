@@ -25,7 +25,8 @@
     "copyright": "© 2025 HivePulse. Veröffentlicht unter der MIT-Lizenz.",
     "made": "Mit 🐝 für Imkerinnen und Imker weltweit.",
     "imprint": "Impressum",
-    "deleteAccount": "Konto löschen"
+    "deleteAccount": "Konto löschen",
+    "beta": "Am Test teilnehmen"
   },
   "hero": {
     "badge": "Open Source · Gemeinschaftsprojekt · Kostenlos",
@@ -983,7 +984,9 @@
     "imprintTitle": "Impressum",
     "imprintDescription": "Wer HivePulse betreibt und wie du uns erreichst.",
     "deleteAccountTitle": "Konto löschen",
-    "deleteAccountDescription": "Wie du dein HivePulse-Konto löschst und was genau entfernt wird."
+    "deleteAccountDescription": "Wie du dein HivePulse-Konto löschst und was genau entfernt wird.",
+    "betaTitle": "Am Test teilnehmen",
+    "betaDescription": "HivePulse ausprobieren, bevor es in die Stores kommt — und helfen, dass es dort ankommt."
   },
   "imprint": {
     "title": "Impressum",
@@ -1016,5 +1019,25 @@
     "retentionBody": "In der laufenden Datenbank passiert die Löschung sofort — eine Minute später ist von deinem Konto nichts mehr da. Unser Hosting-Anbieter hält automatische Sicherungskopien der Datenbank für bis zu 30 Tage; eine Sicherung lässt sich immer nur vollständig wiederherstellen, nie für ein einzelnes Konto, und nach diesem Zeitraum sind die Daten auch dort verschwunden. Für die oben beschriebenen Hornissen-Meldungen und -Fallen gibt es keine Frist, weil sie keinen Personenbezug mehr haben. Eigene Kopien, Archive oder Exporte führen wir nicht.",
     "noAccessTitle": "Kein Zugang zur App?",
     "noAccessBody": "Wenn du dich nicht mehr anmelden kannst, schreib uns — wir löschen das Konto dann innerhalb von 30 Tagen für dich. Nimm dafür die Adresse, mit der das Konto registriert wurde, damit wir wissen, um welches es geht:"
+  },
+  "beta": {
+    "title": "HivePulse vor allen anderen ausprobieren",
+    "intro": "HivePulse ist fertig, aber noch nicht in den Stores. Bevor Google einen neuen Entwickler veröffentlichen lässt, müssen zwölf Leute die App zwei Wochen lang testen — diese Phase ist also keine Formsache, sondern die Hürde. Wer Bienen hält und ein Telefon hat, kann helfen.",
+    "joinTitle": "Mitmachen",
+    "joinAndroid": "Am Android-Test teilnehmen",
+    "joinIos": "Am iPhone-Test teilnehmen",
+    "notOpenYet": "Die Testrunden werden gerade eingerichtet, die Links erscheinen hier. Schreib uns, dann bekommst du sie, sobald es sie gibt.",
+    "joinNote": "Du brauchst ein Google-Konto für Android oder eine Apple-ID für das iPhone — dasselbe, das dein Telefon schon benutzt. Keine getrennte Anmeldung, und du kannst jederzeit aussteigen.",
+    "expectTitle": "Was dazugehört",
+    "expect1": "App installieren und einen Bienenstand mit ein paar Völkern anlegen. Eine Viertelstunde.",
+    "expect2": "Beim nächsten Gang zu den Völkern eine Durchsicht erfassen — das ist der Teil, der sich am Stand beweisen muss, mit Handschuhen und allem.",
+    "expect3": "Zwei Wochen im Test bleiben. Google zählt die Tester täglich; wer früher aussteigt, setzt die Uhr für alle zurück.",
+    "expect4": "Sagen, was unklar war. Ein Satz ist nützlicher als keiner, und „nichts kaputt“ ist auch eine Antwort.",
+    "feedbackTitle": "Etwas melden",
+    "feedbackBody": "Kein Forum, kein Konto, kein Ticketsystem — schreib einfach an",
+    "feedbackSubject": "HivePulse Testrückmeldung",
+    "feedbackHint": "Nützlich in einer Meldung: welches Telefon, was du getan hast, was du stattdessen erwartet hättest. Ein Foto vom Bildschirm sagt mehr als eine Beschreibung. Hat sich die App selbst beendet, hat sie schon einen Absturzbericht geschickt — den musst du nicht beschreiben.",
+    "dataTitle": "Was mit deinen Daten passiert",
+    "dataBody": "Dasselbe wie bei allen anderen: Deine Bienenstände sind privat, solange du sie nicht selbst auf die öffentliche Karte stellst, nichts wird verkauft oder weitergegeben, und Werbung gibt es nicht. Testversionen melden Abstürze, dabei gehen die Stelle im Code und die Art des Geräts mit — nie deine Notizen, dein Passwort oder deine Adresse. Dein Konto und alles darin kannst du jederzeit selbst löschen."
   }
 }
