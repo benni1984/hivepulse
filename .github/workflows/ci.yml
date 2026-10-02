@@ -20,6 +20,7 @@ jobs:
       android:     ${{ steps.filter.outputs.android }}
       ios:         ${{ steps.filter.outputs.ios }}
       web:         ${{ steps.filter.outputs.web }}
+      deployable:  ${{ steps.filter.outputs.deployable }}
       ios_hornets: ${{ steps.filter.outputs.ios_hornets }}
       android_hornets: ${{ steps.filter.outputs.android_hornets }}
     steps:
@@ -54,6 +55,26 @@ jobs:
               - 'package.json'
               - 'package-lock.json'
               - '.github/workflows/ci.yml'
+            # What the hosting platform actually serves. Deliberately without
+            # '.github/workflows/ci.yml': a change to the pipeline has to re-run the tests,
+            # but it does not change the site, and Vercel's free tier allows 100 deployments
+            # a day — a budget that an Android-only or docs-only merge should not spend.
+            deployable:
+              - 'app/**'
+              - 'components/**'
+              - 'hooks/**'
+              - 'i18n/**'
+              - 'lib/**'
+              - 'messages/**'
+              - 'web/**'
+              - 'public/**'
+              - 'api/**'
+              - 'backend/**'
+              - 'next.config.ts'
+              - 'proxy.ts'
+              - 'vercel.json'
+              - 'package.json'
+              - 'package-lock.json'
 
   # Each component job below always runs and always reports success when its
   # source tree is untouched, so the branch protection ruleset on main can keep
@@ -409,8 +430,8 @@ jobs:
   # ── Deploy preview (PRs only, after all quality gates pass) ──────────────────
   deploy-preview:
     name: Deploy preview to Vercel
-    needs: [backend, android-unit, android-ui, android-hornets, ios, ios-hornets, web]
-    if: github.event_name == 'pull_request'
+    needs: [changes, backend, android-unit, android-ui, android-hornets, ios, ios-hornets, web]
+    if: github.event_name == 'pull_request' && needs.changes.outputs.deployable == 'true'
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -457,8 +478,8 @@ jobs:
   # ── E2E tests against live staging (push to main only) ───────────────────────
   e2e-staging:
     name: E2E tests against staging
-    needs: [deploy-staging]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [changes, deploy-staging]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changes.outputs.deployable == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -493,8 +514,8 @@ jobs:
   # ── Deploy production (push to main only, after staging E2E gate passes) ──────
   deploy-production:
     name: Deploy production to Vercel
-    needs: [e2e-staging]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [changes, e2e-staging]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changes.outputs.deployable == 'true'
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -547,8 +568,8 @@ jobs:
 
   deploy-staging:
     name: Deploy staging to Vercel
-    needs: [backend, android-unit, android-ui, android-hornets, ios, ios-hornets, web]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [changes, backend, android-unit, android-ui, android-hornets, ios, ios-hornets, web]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changes.outputs.deployable == 'true'
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
