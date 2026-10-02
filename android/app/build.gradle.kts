@@ -23,19 +23,52 @@ android {
     val sentryDsn: String = (project.findProperty("SENTRY_DSN") as? String)
         ?: System.getenv("SENTRY_DSN_ANDROID") ?: ""
 
+    // Google Play refuses an upload whose version code it has seen before, so the release
+    // workflow passes a strictly increasing one. Local builds stay at 1.
+    val buildVersionCode: Int = (project.findProperty("VERSION_CODE") as? String)?.toIntOrNull() ?: 1
+    val buildVersionName: String = (project.findProperty("VERSION_NAME") as? String) ?: "1.0"
+
+    // The upload keystore never lives in this repository. The release workflow writes it from
+    // a secret and points at it; without it a release build is simply left unsigned, which is
+    // enough for CI to prove it compiles.
+    val keystorePath: String? = (project.findProperty("KEYSTORE_FILE") as? String)
+        ?: System.getenv("ANDROID_KEYSTORE_FILE")
+    val keystoreFile = keystorePath?.let(::File)?.takeIf { it.isFile }
+
     defaultConfig {
         applicationId = "com.hivepulse.app"
         minSdk        = 26
         targetSdk     = 35
-        versionCode   = 1
-        versionName   = "1.0"
+        versionCode   = buildVersionCode
+        versionName   = buildVersionName
         testInstrumentationRunner = "com.hivepulse.app.HiltTestRunner"
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
         buildConfigField("String", "SENTRY_DSN", "\"$sentryDsn\"")
     }
 
+    if (keystoreFile != null) {
+        signingConfigs {
+            create("release") {
+                storeFile = keystoreFile
+                storePassword = (project.findProperty("KEYSTORE_PASSWORD") as? String)
+                    ?: System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                keyAlias = (project.findProperty("KEY_ALIAS") as? String)
+                    ?: System.getenv("ANDROID_KEY_ALIAS")
+                keyPassword = (project.findProperty("KEY_PASSWORD") as? String)
+                    ?: System.getenv("ANDROID_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
-        release { isMinifyEnabled = false }
+        release {
+            // Shrinking is deliberately off for the first store release: Hilt, Room, Gson and
+            // Sentry all need keep rules, and a rule that is wrong breaks the release build
+            // only — never the debug build the tests run against. Worth turning on once there
+            // is a device to smoke-test it on.
+            isMinifyEnabled = false
+            signingConfig = signingConfigs.findByName("release")
+        }
     }
 
     compileOptions {

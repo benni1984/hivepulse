@@ -1,0 +1,110 @@
+name: Android Release Bundle
+
+# Builds the signed .aab that Google Play accepts and attaches it to the run as an
+# artifact. Deliberately not a public release: the bundle is signed with the upload key
+# and belongs in the Play Console, not on a download page. The public preview APK has its
+# own workflow (android-preview.yml).
+#
+# Setup steps for the keystore and the secrets: docs/android-release-setup.md
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: 'Version shown to users, e.g. "1.0.0"'
+        required: true
+        type: string
+      version_code:
+        description: 'Version code; must be higher than every previous upload. Leave empty to use the run number.'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  bundle:
+    name: Build signed app bundle
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: temurin
+
+      - uses: gradle/actions/setup-gradle@v3
+
+      - name: Check the signing secrets are present
+        env:
+          KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          missing=""
+          [ -n "$KEYSTORE" ] || missing="$missing ANDROID_KEYSTORE_BASE64"
+          [ -n "$KEYSTORE_PASSWORD" ] || missing="$missing ANDROID_KEYSTORE_PASSWORD"
+          [ -n "$KEY_ALIAS" ] || missing="$missing ANDROID_KEY_ALIAS"
+          [ -n "$KEY_PASSWORD" ] || missing="$missing ANDROID_KEY_PASSWORD"
+          if [ -n "$missing" ]; then
+            echo "Missing repository secrets:$missing" >&2
+            echo "See docs/android-release-setup.md — an unsigned bundle would be rejected by Play." >&2
+            exit 1
+          fi
+
+      - name: Write the upload keystore from the secret
+        env:
+          KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          echo "$KEYSTORE" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          # A truncated or mis-pasted secret decodes into something unusable; fail here
+          # rather than two minutes into the build with an opaque Gradle error.
+          keytool -list -keystore "$RUNNER_TEMP/upload.jks" \
+            -storepass "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" > /dev/null
+          echo "Keystore decoded and readable"
+
+      - name: Resolve the version
+        id: version
+        env:
+          REQUESTED_CODE: ${{ inputs.version_code }}
+        run: |
+          code="${REQUESTED_CODE:-$GITHUB_RUN_NUMBER}"
+          case "$code" in
+            ''|*[!0-9]*) echo "version_code must be a whole number, got '$code'" >&2; exit 1;;
+          esac
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "Version ${{ inputs.version_name }} (code $code)" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Build the app bundle
+        env:
+          SENTRY_DSN_ANDROID: ${{ secrets.SENTRY_DSN_ANDROID }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ANDROID_KEYSTORE_FILE: ${{ runner.temp }}/upload.jks
+        run: |
+          chmod +x android/gradlew
+          cd android
+          ./gradlew bundleRelease --no-daemon \
+            -Dorg.gradle.jvmargs="-Xmx3g -XX:MaxMetaspaceSize=512m" \
+            -PBASE_URL="https://hivepulse.multihead.de/api/v1/" \
+            -PVERSION_NAME="${{ inputs.version_name }}" \
+            -PVERSION_CODE="${{ steps.version.outputs.code }}"
+
+      - name: Confirm the bundle is signed
+        run: |
+          bundle="android/app/build/outputs/bundle/release/app-release.aab"
+          test -f "$bundle" || { echo "No bundle at $bundle" >&2; exit 1; }
+          # An unsigned bundle builds happily and is then rejected on upload, so check here.
+          unzip -l "$bundle" | grep -q "META-INF/.*\.RSA\|META-INF/.*\.EC\|META-INF/MANIFEST.MF" \
+            || { echo "Bundle carries no signature block" >&2; exit 1; }
+          ls -lh "$bundle" >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hivepulse-${{ inputs.version_name }}-${{ steps.version.outputs.code }}-aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          retention-days: 30
+          if-no-files-found: error
