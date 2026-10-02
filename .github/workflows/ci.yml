@@ -5,6 +5,10 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  # Deploying has to be possible without touching a file. The deploy jobs are gated on the
+  # changed paths, so a fix that unblocks a deploy — a corrected e2e expectation, say — does
+  # not itself trigger one, and Vercel's own Redeploy is rate limited on this plan.
+  workflow_dispatch:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -16,17 +20,18 @@ jobs:
     name: Detect changed paths
     runs-on: ubuntu-latest
     outputs:
-      backend:     ${{ steps.filter.outputs.backend }}
-      android:     ${{ steps.filter.outputs.android }}
-      ios:         ${{ steps.filter.outputs.ios }}
-      web:         ${{ steps.filter.outputs.web }}
-      deployable:  ${{ steps.filter.outputs.deployable }}
-      ios_hornets: ${{ steps.filter.outputs.ios_hornets }}
-      android_hornets: ${{ steps.filter.outputs.android_hornets }}
+      backend:     ${{ steps.resolve.outputs.backend }}
+      android:     ${{ steps.resolve.outputs.android }}
+      ios:         ${{ steps.resolve.outputs.ios }}
+      web:         ${{ steps.resolve.outputs.web }}
+      deployable:  ${{ steps.resolve.outputs.deployable }}
+      ios_hornets: ${{ steps.resolve.outputs.ios_hornets }}
+      android_hornets: ${{ steps.resolve.outputs.android_hornets }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
         id: filter
+        if: github.event_name != 'workflow_dispatch'
         with:
           base: ${{ github.event.before }}
           filters: |
@@ -75,6 +80,26 @@ jobs:
               - 'vercel.json'
               - 'package.json'
               - 'package-lock.json'
+      - name: Resolve what to run
+        id: resolve
+        env:
+          MANUAL: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          for name in backend android ios web deployable ios_hornets android_hornets; do
+            case "$name" in
+              backend)         detected="${{ steps.filter.outputs.backend }}";;
+              android)         detected="${{ steps.filter.outputs.android }}";;
+              ios)             detected="${{ steps.filter.outputs.ios }}";;
+              web)             detected="${{ steps.filter.outputs.web }}";;
+              deployable)      detected="${{ steps.filter.outputs.deployable }}";;
+              ios_hornets)     detected="${{ steps.filter.outputs.ios_hornets }}";;
+              android_hornets) detected="${{ steps.filter.outputs.android_hornets }}";;
+            esac
+            if [ "$MANUAL" = "true" ]; then detected=true; fi
+            echo "$name=${detected:-false}" >> "$GITHUB_OUTPUT"
+            echo "$name=${detected:-false}"
+          done
+
 
   # Each component job below always runs and always reports success when its
   # source tree is untouched, so the branch protection ruleset on main can keep
@@ -495,7 +520,10 @@ jobs:
   e2e-staging:
     name: E2E tests against staging
     needs: [changes, deploy-staging]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changes.outputs.deployable == 'true'
+    if: >-
+      (github.event_name == 'workflow_dispatch'
+        || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
+      && needs.changes.outputs.deployable == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -531,7 +559,10 @@ jobs:
   deploy-production:
     name: Deploy production to Vercel
     needs: [changes, e2e-staging]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changes.outputs.deployable == 'true'
+    if: >-
+      (github.event_name == 'workflow_dispatch'
+        || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
+      && needs.changes.outputs.deployable == 'true'
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -585,7 +616,10 @@ jobs:
   deploy-staging:
     name: Deploy staging to Vercel
     needs: [changes, backend, android-unit, android-ui, android-hornets, ios, ios-hornets, web]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changes.outputs.deployable == 'true'
+    if: >-
+      (github.event_name == 'workflow_dispatch'
+        || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
+      && needs.changes.outputs.deployable == 'true'
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
