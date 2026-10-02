@@ -1,0 +1,120 @@
+name: iOS Store Screenshots
+
+# Captures the App Store screenshots at the exact pixel sizes Apple accepts, by running the
+# existing ScreenshotUITests on one simulator per required size. Nothing new is photographed
+# here — the same screens the design review already captures, just on the right devices.
+#
+# App Store Connect wants, as of 2026:
+#   6.9" / 6.7"  1290 × 2796   iPhone 16 Pro Max (also covers the 6.7" slot)
+#   6.5"         1242 × 2688   iPhone 11 Pro Max
+# An upload is rejected when a single image is off by one pixel, hence the check at the end.
+
+on:
+  workflow_dispatch:
+  # Lets this workflow be iterated on without a merge to main (and without a production deploy
+  # for every attempt). Remove once it works.
+  push:
+    branches: [ci/ios-store-screenshots]
+
+jobs:
+  capture:
+    name: ${{ matrix.label }}
+    runs-on: macos-15
+    timeout-minutes: 60
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: 6.9 inch (1290x2796)
+            device: iPhone 16 Pro Max
+            slug: 6_9
+            width: 1290
+            height: 2796
+          - label: 6.5 inch (1242x2688)
+            device: iPhone 11 Pro Max
+            slug: 6_5
+            width: 1242
+            height: 2688
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_26.6.app
+
+      - name: Install XcodeGen and generate project
+        run: |
+          brew install xcodegen
+          cd ios && xcodegen generate
+
+      - name: Resolve the simulator
+        run: |
+          UDID=$(xcrun simctl list devices available \
+            | grep -F "${{ matrix.device }} (" | head -1 | awk -F'[()]' '{print $2}')
+          if [ -z "$UDID" ]; then
+            echo "::error::'${{ matrix.device }}' is not available on this runner image."
+            echo "Available iPhone simulators:"
+            xcrun simctl list devices available | grep iPhone
+            exit 1
+          fi
+          echo "Using ${{ matrix.device }} ($UDID)"
+          echo "SIMULATOR_UDID=$UDID" >> "$GITHUB_ENV"
+
+      - name: Capture
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/screenshots"
+          # Only the screenshot class: the rest of the UI suite has nothing to contribute here
+          # and would triple the runtime.
+          TEST_RUNNER_SCREENSHOT_DIR="$GITHUB_WORKSPACE/screenshots" xcodebuild test \
+            -project ios/HivePulse.xcodeproj \
+            -scheme HivePulse \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
+            -only-testing:HivePulseUITests/ScreenshotUITests \
+            -retry-tests-on-failure \
+            -test-iterations 2 \
+            -resultBundlePath "StoreScreenshots-${{ matrix.slug }}"
+
+      - name: Check every image has the size Apple expects
+        run: |
+          cd "$GITHUB_WORKSPACE/screenshots"
+          count=$(ls -1 *.png 2>/dev/null | wc -l | tr -d ' ')
+          if [ "$count" -eq 0 ]; then
+            echo "::error::No screenshots were written. The capture step reported success, so the test wrote nothing."
+            exit 1
+          fi
+          wrong=0
+          for f in *.png; do
+            size=$(sips -g pixelWidth -g pixelHeight "$f" | awk '/pixel/ {printf "%s ", $2}')
+            set -- $size
+            if [ "$1" != "${{ matrix.width }}" ] || [ "$2" != "${{ matrix.height }}" ]; then
+              echo "::warning file=$f::$f is ${1}x${2}, expected ${{ matrix.width }}x${{ matrix.height }}"
+              wrong=$((wrong + 1))
+            fi
+          done
+          {
+            echo "### ${{ matrix.label }}"
+            echo ""
+            echo "$count screenshots, $wrong with an unexpected size."
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$wrong" -gt 0 ]; then
+            echo "::error::$wrong of $count images do not match ${{ matrix.width }}x${{ matrix.height }} — App Store Connect would reject them."
+            exit 1
+          fi
+          echo "All $count images are ${{ matrix.width }}x${{ matrix.height }}"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: app-store-screenshots-${{ matrix.slug }}
+          path: screenshots/*.png
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload the result bundle when something went wrong
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: store-screenshots-results-${{ matrix.slug }}
+          path: StoreScreenshots-${{ matrix.slug }}.xcresult
+          retention-days: 7
