@@ -72,6 +72,16 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: HivePulseUITests
+      # The screenshot test looks elements up by their translated label, so it needs the same
+      # strings the app has. A UI test runs in its own process and cannot read the app bundle.
+      - path: HivePulse/Resources/en.lproj
+        buildPhase: resources
+      - path: HivePulse/Resources/de.lproj
+        buildPhase: resources
+      - path: HivePulse/Resources/fr.lproj
+        buildPhase: resources
+      - path: HivePulse/Resources/es.lproj
+        buildPhase: resources
     dependencies:
       - target: HivePulse
     settings:

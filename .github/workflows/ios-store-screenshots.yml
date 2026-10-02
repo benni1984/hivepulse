@@ -1,7 +1,7 @@
 name: iOS Store Screenshots
 
-# Captures the App Store screenshots by running the existing ScreenshotUITests on the largest
-# iPhone simulator the runner has. Nothing new is photographed — the same screens the design
+# Captures the App Store screenshots in all four store languages, by running the existing
+# ScreenshotUITests once per language on the largest iPhone simulator the runner has. Nothing new is photographed — the same screens the design
 # review already captures, on a device whose pixel size App Store Connect accepts.
 #
 # Apple requires one set for the 6.9" iPhone slot and derives the smaller sizes from it; the
@@ -16,9 +16,17 @@ on:
 
 jobs:
   capture:
-    name: App Store screenshots
+    name: App Store screenshots (${{ matrix.language }})
     runs-on: macos-latest
     timeout-minutes: 60
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # The store lists each language separately, and a German listing showing an English
+        # interface reads as "not translated" — the one screenshot detail that actually
+        # changes whether somebody installs.
+        language: [de, en, fr, es]
 
     steps:
       - uses: actions/checkout@v4
@@ -63,18 +71,23 @@ jobs:
           mkdir -p "$GITHUB_WORKSPACE/screenshots"
           # Only the screenshot class: the rest of the UI suite has nothing to contribute here
           # and would triple the runtime.
-          TEST_RUNNER_SCREENSHOT_DIR="$GITHUB_WORKSPACE/screenshots" xcodebuild test \
+          # Only TEST_RUNNER_-prefixed variables reach the test process; xcodebuild strips
+          # the prefix. Without it the test falls back to English and all four languages
+          # write into the same folder.
+          TEST_RUNNER_SCREENSHOT_DIR="$GITHUB_WORKSPACE/screenshots" \
+          TEST_RUNNER_SCREENSHOT_LANG="${{ matrix.language }}" \
+          xcodebuild test \
             -project ios/HivePulse.xcodeproj \
             -scheme HivePulse \
             -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
             -only-testing:HivePulseUITests/ScreenshotUITests \
             -retry-tests-on-failure \
             -test-iterations 2 \
-            -resultBundlePath StoreScreenshots
+            -resultBundlePath "StoreScreenshots-${{ matrix.language }}"
 
       - name: Check the images are a size App Store Connect accepts
         run: |
-          cd "$GITHUB_WORKSPACE/screenshots"
+          cd "$GITHUB_WORKSPACE/screenshots/${{ matrix.language }}"
           count=$(ls -1 *.png 2>/dev/null | wc -l | tr -d ' ')
           if [ "$count" -eq 0 ]; then
             echo "::error::No screenshots were written although the capture step succeeded."
@@ -96,6 +109,7 @@ jobs:
           {
             echo "### App Store screenshots"
             echo ""
+            echo "- Language: ${{ matrix.language }}"
             echo "- Simulator: $SIMULATOR_NAME"
             echo "- Images: $count, $wrong with a size the store does not accept"
             echo "- Sizes seen:$(printf '%s\n' $sizes | sort -u | tr '\n' ' ')"
@@ -106,11 +120,44 @@ jobs:
           fi
           echo "All $count images are an accepted size"
 
+      - name: Pick the eight the stores accept
+        run: |
+          # Play allows 8 phone screenshots per language, the App Store 10. The full set is
+          # the design review's job; a listing gets the core.
+          src="$GITHUB_WORKSPACE/screenshots/${{ matrix.language }}"
+          out="$GITHUB_WORKSPACE/store/${{ matrix.language }}"
+          mkdir -p "$out"
+          i=1
+          # Open a hive, record a visit, tap the frame count, work without a signal,
+          # read the season, track hornets, print the QR codes.
+          names="03-apiaries 05-hive-detail 18-inspection-form 19-inspection-frames"
+          names="$names 20-offline-pending 21-hive-stats 22-hornets 08-qr-batches"
+          for name in $names
+          do
+            if [ -f "$src/$name.png" ]; then
+              cp "$src/$name.png" "$out/$(printf '%d' $i)-$name.png"
+              i=$((i + 1))
+            else
+              echo "::warning::$name.png was not captured, the listing set is one short"
+            fi
+          done
+          count=$((i - 1))
+          echo "Selected $count screenshots for the listing" >> "$GITHUB_STEP_SUMMARY"
+          test "$count" -ge 4 || { echo "::error::only $count of 8 made it"; exit 1; }
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: app-store-screenshots
-          path: screenshots/*.png
+          name: app-store-screenshots-${{ matrix.language }}
+          path: store/${{ matrix.language }}/*.png
+          if-no-files-found: error
+          retention-days: 30
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: all-screenshots-${{ matrix.language }}
+          path: screenshots/${{ matrix.language }}/*.png
           if-no-files-found: error
           retention-days: 30
 
@@ -118,6 +165,6 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: store-screenshots-results
-          path: StoreScreenshots.xcresult
+          name: store-screenshots-results-${{ matrix.language }}
+          path: StoreScreenshots-${{ matrix.language }}.xcresult
           retention-days: 7

@@ -142,6 +142,24 @@ same ground in the component suites.
 Page titles and descriptions come from the `meta` namespace via `generateMetadata` — never
 add a static English `metadata` export.
 
+## Screenshots
+
+Store screenshots live nowhere in the repo — they are produced on demand and uploaded by
+hand. **Actions → "iOS Store Screenshots"** captures the App Store set in all four languages
+(`ScreenshotUITests` once per language, labels looked up through the app's own `.strings`).
+Help-page screenshots are in `public/docs/screenshots/`.
+
+Both go stale silently, so CI has an always-on **Screenshot freshness** job:
+
+```bash
+python scripts/check_screenshot_freshness.py            # notice when the UI moved on
+python scripts/check_screenshot_freshness.py --update   # after retaking them
+```
+
+It hashes the views, strings and styles that decide what a screenshot shows and compares
+against `docs/screenshot-manifest.json`. **Run `--update` in the same commit that adds new
+screenshots** — otherwise the notice stays on and starts being ignored.
+
 ## Implementation Status
 
 All components complete across web, Android, and iOS. No open feature gaps.
