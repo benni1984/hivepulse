@@ -143,6 +143,53 @@ final class ScreenshotUITests: XCTestCase {
         snap("19-inspection-frames", app)
     }
 
+    // MARK: - Core functionality, for the store listing
+
+    /// Recording a visit without a signal, and seeing it marked as waiting. The single
+    /// strongest argument for the app, and it was missing from the captures.
+    func test_capture_offline_pending() {
+        let app = launch(["-resetKeychain", "-mockApiaryOffline"])
+        XCTAssertTrue(app.staticTexts["Meadow"].waitForExistence(timeout: 10))
+        app.staticTexts["Meadow"].tap()
+        XCTAssertTrue(app.staticTexts["Hive Alpha"].waitForExistence(timeout: 10))
+        app.staticTexts["Hive Alpha"].tap()
+
+        XCTAssertTrue(app.buttons[label("action.newInspection")].waitForExistence(timeout: 10))
+        app.buttons[label("action.newInspection")].tap()
+        XCTAssertTrue(app.navigationBars[label("action.newInspection")].waitForExistence(timeout: 10))
+        app.navigationBars.buttons[label("action.save")].tap()
+
+        let badge = app.staticTexts[label("offline.pendingUpload")]
+        XCTAssertTrue(badge.waitForExistence(timeout: 10), "the pending marker never appeared")
+        snap("20-offline-pending", app)
+    }
+
+    /// What the logbook is for: the season of one colony as a curve.
+    func test_capture_hive_statistics() {
+        let app = launch(["-resetKeychain", "-mockApiaryWithHive"])
+        XCTAssertTrue(app.staticTexts["Meadow"].waitForExistence(timeout: 10))
+        app.staticTexts["Meadow"].tap()
+        XCTAssertTrue(app.staticTexts["Hive Alpha"].waitForExistence(timeout: 10))
+        app.staticTexts["Hive Alpha"].tap()
+
+        let stats = app.buttons["hiveStatsButton"]
+        XCTAssertTrue(stats.waitForExistence(timeout: 10))
+        stats.tap()
+        // The sheet needs a moment to draw its chart before it is worth photographing.
+        Thread.sleep(forTimeInterval: 1.5)
+        snap("21-hive-stats", app)
+    }
+
+    /// The hornet tracker, which is the reason many beekeepers hear about this at all.
+    func test_capture_hornet_tracker() {
+        let app = launch(["-resetKeychain", "-mockAuthenticated"])
+        let hornets = app.tabBars.buttons[label("tab.hornets")]
+        XCTAssertTrue(hornets.waitForExistence(timeout: 10))
+        hornets.tap()
+        Thread.sleep(forTimeInterval: 1.5)
+        snap("22-hornets", app)
+    }
+
     // MARK: - Helpers
 
     /// The language this run captures, from SCREENSHOT_LANG; English when unset.

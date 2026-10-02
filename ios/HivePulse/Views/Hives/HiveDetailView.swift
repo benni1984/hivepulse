@@ -79,6 +79,7 @@ struct HiveDetailView: View {
                     .accessibilityIdentifier("editHiveButton")
                 Button { showQR = true } label: { Image(systemName: "qrcode") }
                 Button { showStats = true } label: { Image(systemName: "chart.xyaxis.line") }
+                    .accessibilityIdentifier("hiveStatsButton")
                 Button { showAddInspection = true } label: { Image(systemName: "plus") }
                     .accessibilityLabel(NSLocalizedString("action.newInspection", comment: ""))
             }

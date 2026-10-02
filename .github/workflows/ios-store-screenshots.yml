@@ -119,14 +119,17 @@ jobs:
 
       - name: Pick the eight the stores accept
         run: |
-          # Play allows 8 phone screenshots per language, the App Store 10. Nineteen pictures
-          # are the design review's job; a listing needs the ones that answer "what is this
-          # and why would I want it", in that order.
+          # Play allows 8 phone screenshots per language, the App Store 10. The full set is
+          # the design review's job; a listing gets the core.
           src="$GITHUB_WORKSPACE/screenshots/${{ matrix.language }}"
           out="$GITHUB_WORKSPACE/store/${{ matrix.language }}"
           mkdir -p "$out"
           i=1
-          for name in 03-apiaries 05-hive-detail 18-inspection-form 19-inspection-frames                       04-apiary-detail 08-qr-batches 10-members-supporter 07-settings
+          # Open a hive, record a visit, tap the frame count, work without a signal,
+          # read the season, track hornets, print the QR codes.
+          names="03-apiaries 05-hive-detail 18-inspection-form 19-inspection-frames"
+          names="$names 20-offline-pending 21-hive-stats 22-hornets 08-qr-batches"
+          for name in $names
           do
             if [ -f "$src/$name.png" ]; then
               cp "$src/$name.png" "$out/$(printf '%d' $i)-$name.png"

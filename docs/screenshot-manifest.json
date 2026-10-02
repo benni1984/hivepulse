@@ -65,7 +65,7 @@
       "ios/HivePulse/Views/Auth/RegisterView.swift": "04dc7df547b4f8233139522874f43d4d03ddb54c06163a47feb822334b900183",
       "ios/HivePulse/Views/Components/ErrorBanner.swift": "1aff84efd755ab6abca81a45129153daac0043aa67182d39b2d3d3ffa58ba542",
       "ios/HivePulse/Views/Fields/FieldDefinitionsView.swift": "c97bfa8b16e1986cf67e6c024dc672837a8f97ce187366aeaed0b20678bf99bf",
-      "ios/HivePulse/Views/Hives/HiveDetailView.swift": "8c226d84fb7152d3ada66687d8b38b6be99c9c0eb40dfefd95b9942fafe6527b",
+      "ios/HivePulse/Views/Hives/HiveDetailView.swift": "8dd2d879b73e9c604be3999c08f5f8af59e6b82c6cb98053824419a2cd3963bd",
       "ios/HivePulse/Views/Hives/HiveEditView.swift": "eb57cdd3b86bb6622005440d96a9fc58dc0ede89911e473436aff98f429ddd9c",
       "ios/HivePulse/Views/Hives/HiveInitializeView.swift": "b48e385571f55dc9fca17487c5b6adceed1d8e6fa3e730ddb82d0d052acc9d16",
       "ios/HivePulse/Views/Hives/HiveQRView.swift": "9b75a872af6c61e10dfb84666e61f9aa9534d662700d475a58184a1abc0e5888",
@@ -88,7 +88,7 @@
       "ios/HivePulse/Views/Stats/HiveStatsView.swift": "43889650cc9425d80d928cab8a0573233331d2d2d89c7e49876fec6074fd0c45",
       "ios/HivePulse/Views/Stats/OverviewStatsView.swift": "3c550edc6a090f98b6728be7f332c6b19546a52d6c035a26c6a2f002428ed700"
     },
-    "fingerprint": "c41510e30ba018d315f48efe37ad55cf90c623fd0e5ed4a4232166a704bd81c5"
+    "fingerprint": "b15d7f7e0e9a3bc0d103a93417dfd853788d05bb1f4eda42ae11e154e7a208f9"
   },
   "web": {
     "captured": "2026-10-02",
