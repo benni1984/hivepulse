@@ -27,6 +27,11 @@
 "field.language" = "Sprache";
 "field.hiveName" = "Stockname";
 "field.hiveType" = "Stocktyp";
+"hiveType.langstroth" = "Langstroth";
+"hiveType.dadant" = "Dadant";
+"hiveType.top_bar" = "Oberträgerbeute";
+"hiveType.warre" = "Warré";
+"hiveType.other" = "Andere";
 "field.apiary" = "Bienenstand";
 "field.date" = "Datum";
 "field.description" = "Beschreibung";

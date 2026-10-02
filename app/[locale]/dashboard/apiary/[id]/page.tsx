@@ -28,6 +28,7 @@ const HIVE_TYPES = ['langstroth', 'dadant', 'top_bar', 'warre', 'other'] as cons
 export default function ApiaryPage() {
   const { id } = useParams<{ id: string }>();
   const t = useTranslations('dash');
+  const tht = useTranslations('hiveTypes');
   const router = useRouter();
   const ready = useDashboardReady();
 
@@ -318,7 +319,7 @@ export default function ApiaryPage() {
                     onChange={e => setHiveForm(f => ({ ...f, hive_type: e.target.value }))}
                   >
                     {HIVE_TYPES.map(ht => (
-                      <option key={ht} value={ht}>{ht}</option>
+                      <option key={ht} value={ht}>{tht(ht)}</option>
                     ))}
                   </select>
                 </div>
@@ -353,7 +354,7 @@ export default function ApiaryPage() {
                     <span className="dash-hive-icon">🐝</span>
                     <div>
                       <div className="hive-name">{h.name}</div>
-                      <div className="hive-type">{h.hive_type}</div>
+                      <div className="hive-type">{tht(h.hive_type)}</div>
                     </div>
                     {h.last_inspection_at && (
                       <span className="dash-hive-date">{new Date(h.last_inspection_at).toLocaleDateString()}</span>

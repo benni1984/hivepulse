@@ -723,6 +723,13 @@
       "lastCatch": "Última captura"
     }
   },
+  "hiveTypes": {
+    "langstroth": "Langstroth",
+    "dadant": "Dadant",
+    "top_bar": "Colmena de barras",
+    "warre": "Warré",
+    "other": "Otra"
+  },
   "members": {
     "tag": "Área de miembros",
     "title": "Perspectivas comunitarias",

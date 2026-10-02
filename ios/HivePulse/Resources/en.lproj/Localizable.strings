@@ -27,6 +27,11 @@
 "field.language" = "Language";
 "field.hiveName" = "Hive name";
 "field.hiveType" = "Hive type";
+"hiveType.langstroth" = "Langstroth";
+"hiveType.dadant" = "Dadant";
+"hiveType.top_bar" = "Top-bar hive";
+"hiveType.warre" = "Warré";
+"hiveType.other" = "Other";
 "field.apiary" = "Apiary";
 "field.date" = "Date";
 "field.description" = "Description";

@@ -723,6 +723,13 @@
       "lastCatch": "Letzter Fang"
     }
   },
+  "hiveTypes": {
+    "langstroth": "Langstroth",
+    "dadant": "Dadant",
+    "top_bar": "Oberträgerbeute",
+    "warre": "Warré",
+    "other": "Andere"
+  },
   "members": {
     "tag": "Mitgliederbereich",
     "title": "Gemeinschaftseinblicke",

@@ -94,7 +94,7 @@ struct HiveRow: View {
                 .font(.dmSans(17, weight: .bold, relativeTo: .headline))
                 .foregroundColor(.hpStone900)
             HStack(spacing: 8) {
-                Text(hive.hiveType.capitalized)
+                Text(NSLocalizedString("hiveType.\(hive.hiveType)", comment: ""))
                     .font(.caption)
                     .padding(.horizontal, 8).padding(.vertical, 2)
                     .background(Color.hpAmber.opacity(0.15))

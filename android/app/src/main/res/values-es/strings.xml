@@ -65,6 +65,11 @@
     <string name="field_date_to">Hasta</string>
     <string name="field_hive_name">Nombre de la colmena</string>
     <string name="field_hive_type">Tipo de colmena</string>
+    <string name="hive_type_langstroth">Langstroth</string>
+    <string name="hive_type_dadant">Dadant</string>
+    <string name="hive_type_top_bar">Colmena de barras</string>
+    <string name="hive_type_warre">Warré</string>
+    <string name="hive_type_other">Otra</string>
     <string name="field_apiary">Colmenar</string>
     <string name="field_acquisition_date">Fecha de adquisición</string>
     <string name="field_location">Ubicación</string>

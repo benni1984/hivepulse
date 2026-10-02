@@ -24,6 +24,19 @@ import com.hivepulse.app.data.api.HiveOut
 /** Hive types the API accepts, in the same order as the create form. */
 internal val HIVE_TYPES = listOf("langstroth", "dadant", "top_bar", "warre", "other")
 
+/**
+ * The translated label for a hive type. The values themselves are what the API stores and
+ * never change; only what the beekeeper reads does. Langstroth, Dadant and Warré are the
+ * names of the people who designed those hives, so they read the same in every language.
+ */
+internal fun hiveTypeLabelRes(value: String): Int = when (value) {
+    "langstroth" -> R.string.hive_type_langstroth
+    "dadant" -> R.string.hive_type_dadant
+    "top_bar" -> R.string.hive_type_top_bar
+    "warre" -> R.string.hive_type_warre
+    else -> R.string.hive_type_other
+}
+
 /** An acquisition date is optional; when given it must be YYYY-MM-DD. */
 internal fun isValidAcquisitionDate(value: String): Boolean =
     value.isBlank() || Regex("""\d{4}-\d{2}-\d{2}""").matches(value.trim())
@@ -60,7 +73,7 @@ fun HiveEditDialog(
                 )
                 ExposedDropdownMenuForList(
                     label = stringResource(R.string.field_hive_type),
-                    options = HIVE_TYPES.map { it.replace("_", " ").replaceFirstChar { c -> c.uppercase() } },
+                    options = HIVE_TYPES.map { stringResource(hiveTypeLabelRes(it)) },
                     selectedIndex = HIVE_TYPES.indexOf(hiveType),
                     onSelect = { hiveType = HIVE_TYPES[it] },
                 )

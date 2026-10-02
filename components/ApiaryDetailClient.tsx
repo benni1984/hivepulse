@@ -47,6 +47,7 @@ export default function ApiaryDetailClient() {
   // Holds a `dash.apiary` message key, not display text, so it re-renders in the active locale.
   const [error, setError] = useState<'noId' | 'notFound' | 'loadError' | null>(null);
   const t = useTranslations('dash.apiary');
+  const tht = useTranslations('hiveTypes');
   const th = useTranslations('dash.hive');
 
   useEffect(() => {
@@ -138,7 +139,7 @@ export default function ApiaryDetailClient() {
               {data.hives.map((h, i) => (
                 <tr key={i}>
                   <td>{esc(h.name)}</td>
-                  <td><span className="badge">{esc(h.hive_type)}</span></td>
+                  <td><span className="badge">{tht(h.hive_type)}</span></td>
                   <td>{h.last_inspection_date
                     ? new Date(h.last_inspection_date).toLocaleDateString(undefined, { dateStyle: 'medium' })
                     : <span className="never">{t('never')}</span>}
