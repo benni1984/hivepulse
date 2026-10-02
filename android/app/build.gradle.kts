@@ -13,7 +13,8 @@ configurations.all {
 
 android {
     namespace   = "com.hivepulse.app"
-    compileSdk  = 35
+    // Google Play requires new submissions to target API 36 (Android 16).
+    compileSdk  = 36
 
     val baseUrl: String = (project.findProperty("BASE_URL") as? String)
         ?: "http://10.0.2.2:8000/api/v1/"
@@ -38,7 +39,7 @@ android {
     defaultConfig {
         applicationId = "com.hivepulse.app"
         minSdk        = 26
-        targetSdk     = 35
+        targetSdk     = 36
         versionCode   = buildVersionCode
         versionName   = buildVersionName
         testInstrumentationRunner = "com.hivepulse.app.HiltTestRunner"
@@ -68,6 +69,7 @@ android {
             // is a device to smoke-test it on.
             isMinifyEnabled = false
             signingConfig = signingConfigs.findByName("release")
+
         }
     }
 
