@@ -1,11 +1,12 @@
 name: Android Release Bundle
 
-# Builds the signed .aab that Google Play accepts and attaches it to the run as an
-# artifact. Deliberately not a public release: the bundle is signed with the upload key
-# and belongs in the Play Console, not on a download page. The public preview APK has its
-# own workflow (android-preview.yml).
+# Builds the signed .aab that Google Play accepts, attaches it to the run as an artifact,
+# and — when a track is given — uploads it to Play with the release notes from
+# distribution/whatsnew/. Deliberately not a public release: the bundle is signed with the
+# upload key and belongs in the Play Console, not on a download page. The public preview APK
+# has its own workflow (android-preview.yml).
 #
-# Setup steps for the keystore and the secrets: docs/android-release-setup.md
+# Setup for the keystore, the service account and the secrets: docs/android-release-setup.md
 
 on:
   workflow_dispatch:
@@ -19,6 +20,23 @@ on:
         required: false
         default: ''
         type: string
+      track:
+        description: 'Upload to this Play track. "none" only builds the artifact.'
+        required: true
+        default: none
+        type: choice
+        options: [none, internal, alpha, beta, production]
+      status:
+        description: 'draft leaves it for you to roll out in the console; completed releases it to that track.'
+        required: true
+        default: draft
+        type: choice
+        options: [draft, completed]
+      changes_not_sent_for_review:
+        description: 'Tick when the console has other pending changes — otherwise Play rejects the upload.'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   bundle:
@@ -108,3 +126,63 @@ jobs:
           path: android/app/build/outputs/bundle/release/app-release.aab
           retention-days: 30
           if-no-files-found: error
+
+      # ── Upload to Play, only when a track was chosen ───────────────────────────
+      - name: Check the service account secret is present
+        if: inputs.track != 'none'
+        env:
+          KEY: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          if [ -z "$KEY" ]; then
+            echo "::error::PLAY_SERVICE_ACCOUNT_JSON is not set — see docs/android-release-setup.md step 5." >&2
+            exit 1
+          fi
+          # A truncated paste is the usual failure and the API error for it is unhelpful.
+          printf '%s' "$KEY" | python3 -c "import json,sys; d=json.load(sys.stdin); print('service account:', d['client_email'])"
+
+      - name: Check the release notes exist for every language
+        if: inputs.track != 'none'
+        run: |
+          missing=""
+          for locale in de-DE en-US fr-FR es-ES; do
+            file="distribution/whatsnew/whatsnew-$locale"
+            if [ ! -s "$file" ]; then
+              missing="$missing $locale"
+            # Characters, not bytes: wc -c counts bytes and would reject a French text of
+            # 489 characters because its accents make it 494 bytes.
+            elif ! python3 -c "import sys,pathlib; t=pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'); sys.exit(0 if len(t) <= 500 else 1)" "$file"; then
+              echo "::error::$file is longer than the 500 characters Play allows" >&2
+              exit 1
+            fi
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::release notes missing for:$missing" >&2
+            exit 1
+          fi
+          echo "Release notes present and within the limit for all four languages"
+
+      - name: Upload to Play
+        if: inputs.track != 'none'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.hivepulse.app
+          releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
+          track: ${{ inputs.track }}
+          status: ${{ inputs.status }}
+          whatsNewDirectory: distribution/whatsnew
+          changesNotSentForReview: ${{ inputs.changes_not_sent_for_review }}
+
+      - name: Summary
+        if: inputs.track != 'none'
+        run: |
+          {
+            echo "### Uploaded to Play"
+            echo ""
+            echo "- Track: ${{ inputs.track }}"
+            echo "- Status: ${{ inputs.status }}"
+            echo "- Version: ${{ inputs.version_name }} (${{ steps.version.outputs.code }})"
+            echo ""
+            echo "A draft still has to be rolled out in the console. Play reviews every"
+            echo "release, including closed tests, so being uploaded is not being available."
+          } >> "$GITHUB_STEP_SUMMARY"

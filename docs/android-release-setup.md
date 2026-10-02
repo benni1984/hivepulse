@@ -54,13 +54,40 @@ Then add four secrets under **GitHub → Settings → Secrets and variables → 
 
 Delete the `.base64` file afterwards; keep the `.jks`.
 
-## 3. Build a bundle (either of us)
+## 3. A service account, so uploads do not need the console (you, once)
+
+Without this, step 4 is clicking. With it, a release is a workflow run.
+
+1. <https://console.cloud.google.com> → create a project (any name).
+2. **IAM & Admin → Service Accounts → Create**, name `play-publisher`. Assign **no** Google
+   Cloud role — the permissions come from the Play Console, not from here.
+3. **APIs & Services → Library** → enable the **Google Play Android Developer API**. Skipping
+   this produces a permission error later that looks like anything but a missing API.
+4. On the service account: **Keys → Add key → JSON**. Downloaded once. **This key can publish
+   in your name.**
+5. Play Console → **Users and permissions → Invite new user** → the service account address
+   (it ends in `.iam.gserviceaccount.com`, and is `client_email` in the JSON). Grant, for
+   HivePulse only: *release to testing tracks*, *release to production*, *edit store
+   listing*. Not financial data, not user management.
+6. GitHub secret **`PLAY_SERVICE_ACCOUNT_JSON`** = the whole file contents. Then delete the
+   file or keep it in a password manager.
+
+## 4. Build a bundle, and optionally publish it (either of us)
 
 **GitHub → Actions → "Android Release Bundle" → Run workflow.** It asks for:
 
 - **version_name** — what users see, e.g. `1.0.0`
 - **version_code** — optional. Leave it empty and the run number is used. Play rejects any
   upload whose code it has seen before, so it only ever goes up.
+
+Pick a **track** to upload straight to Play, or `none` to only get the artifact. `status:
+draft` leaves the release for you to roll out in the console; `completed` releases it to that
+track. Tick **changes_not_sent_for_review** when the console already has pending changes —
+otherwise Play refuses the upload with a message about unreviewed changes.
+
+Release notes come from `distribution/whatsnew/whatsnew-<locale>`, one file per store
+language. The workflow refuses to upload when one is missing or over 500 characters, because
+a rejected upload burns the version code: the next attempt needs a higher one.
 
 The signed `.aab` is attached to the run as an artifact, kept for 30 days. It is not
 published anywhere: a bundle signed with your upload key belongs in the Play Console, not
@@ -71,7 +98,7 @@ The workflow refuses to start when a secret is missing, checks that the decoded 
 actually readable, and verifies the finished bundle carries a signature — an unsigned
 bundle builds happily and is only rejected on upload, which is a slow way to find out.
 
-## 4. Play Console (you)
+## 5. Play Console (you)
 
 1. <https://play.google.com/console>, one-off developer registration (25 USD).
 2. Create the app, package name `com.hivepulse.app`.
