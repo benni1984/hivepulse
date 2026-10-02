@@ -125,6 +125,11 @@
     <string name="field_date_to">Au</string>
     <string name="field_hive_name">Nom de la ruche</string>
     <string name="field_hive_type">Type de ruche</string>
+    <string name="hive_type_langstroth">Langstroth</string>
+    <string name="hive_type_dadant">Dadant</string>
+    <string name="hive_type_top_bar">Ruche à barrettes</string>
+    <string name="hive_type_warre">Warré</string>
+    <string name="hive_type_other">Autre</string>
     <string name="field_apiary">Rucher</string>
     <string name="field_acquisition_date">Date d\'acquisition</string>
     <string name="field_location">Emplacement</string>

@@ -18,7 +18,7 @@ struct HiveDetailView: View {
     var body: some View {
         List {
             Section {
-                HiveInfoRow(icon: "hexagon", label: NSLocalizedString("field.hiveType", comment: ""), value: hive.hiveType.capitalized)
+                HiveInfoRow(icon: "hexagon", label: NSLocalizedString("field.hiveType", comment: ""), value: NSLocalizedString("hiveType.\(hive.hiveType)", comment: ""))
                 if let date = hive.acquisitionDate {
                     HiveInfoRow(icon: "calendar", label: NSLocalizedString("field.acquisitionDate", comment: ""), value: date)
                 }

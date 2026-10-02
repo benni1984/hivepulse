@@ -125,6 +125,11 @@
     <string name="field_date_to">Bis</string>
     <string name="field_hive_name">Beutenname</string>
     <string name="field_hive_type">Beutentyp</string>
+    <string name="hive_type_langstroth">Langstroth</string>
+    <string name="hive_type_dadant">Dadant</string>
+    <string name="hive_type_top_bar">Oberträgerbeute</string>
+    <string name="hive_type_warre">Warré</string>
+    <string name="hive_type_other">Andere</string>
     <string name="field_apiary">Standort</string>
     <string name="field_acquisition_date">Anschaffungsdatum</string>
     <string name="field_location">Standort</string>

@@ -27,6 +27,11 @@
 "field.language" = "Idioma";
 "field.hiveName" = "Nombre de la colmena";
 "field.hiveType" = "Tipo de colmena";
+"hiveType.langstroth" = "Langstroth";
+"hiveType.dadant" = "Dadant";
+"hiveType.top_bar" = "Colmena de barras";
+"hiveType.warre" = "Warré";
+"hiveType.other" = "Otra";
 "field.apiary" = "Colmenar";
 "field.date" = "Fecha";
 "field.description" = "Descripción";

@@ -104,7 +104,7 @@ fun HiveInitializeScreen(
 
             ExposedDropdownMenuForList(
                 label = stringResource(R.string.field_hive_type),
-                options = hiveTypes.map { it.replace("_", " ").replaceFirstChar { c -> c.uppercase() } },
+                options = hiveTypes.map { stringResource(hiveTypeLabelRes(it)) },
                 selectedIndex = hiveTypes.indexOf(hiveType),
                 onSelect = { hiveType = hiveTypes[it] }
             )

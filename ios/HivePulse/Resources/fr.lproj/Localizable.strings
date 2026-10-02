@@ -27,6 +27,11 @@
 "field.language" = "Langue";
 "field.hiveName" = "Nom de la ruche";
 "field.hiveType" = "Type de ruche";
+"hiveType.langstroth" = "Langstroth";
+"hiveType.dadant" = "Dadant";
+"hiveType.top_bar" = "Ruche à barrettes";
+"hiveType.warre" = "Warré";
+"hiveType.other" = "Autre";
 "field.apiary" = "Rucher";
 "field.date" = "Date";
 "field.description" = "Description";

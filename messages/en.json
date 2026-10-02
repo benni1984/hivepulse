@@ -723,6 +723,13 @@
       "lastCatch": "Last Catch"
     }
   },
+  "hiveTypes": {
+    "langstroth": "Langstroth",
+    "dadant": "Dadant",
+    "top_bar": "Top-bar hive",
+    "warre": "Warré",
+    "other": "Other"
+  },
   "members": {
     "tag": "Members Area",
     "title": "Community Insights",

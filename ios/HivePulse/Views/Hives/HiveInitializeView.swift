@@ -30,7 +30,7 @@ struct HiveInitializeView: View {
 
                     Picker(NSLocalizedString("field.hiveType", comment: ""), selection: $hiveType) {
                         ForEach(hiveTypes, id: \.self) { t in
-                            Text(t.replacingOccurrences(of: "_", with: " ").capitalized).tag(t)
+                            Text(NSLocalizedString("hiveType.\(t)", comment: "")).tag(t)
                         }
                     }
 

@@ -72,6 +72,11 @@
     <string name="field_date_to">To</string>
     <string name="field_hive_name">Hive Name</string>
     <string name="field_hive_type">Hive Type</string>
+    <string name="hive_type_langstroth">Langstroth</string>
+    <string name="hive_type_dadant">Dadant</string>
+    <string name="hive_type_top_bar">Top-bar hive</string>
+    <string name="hive_type_warre">Warré</string>
+    <string name="hive_type_other">Other</string>
     <string name="field_apiary">Apiary</string>
     <string name="field_acquisition_date">Acquisition Date</string>
     <string name="field_location">Location</string>

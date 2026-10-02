@@ -174,7 +174,7 @@ fun HiveDetailScreen(
                         ) {
                             Column(Modifier.padding(16.dp)) {
                                 InfoRow(stringResource(R.string.field_hive_type),
-                                    hive.hiveType.replace("_", " ").replaceFirstChar { it.uppercase() })
+                                    stringResource(hiveTypeLabelRes(hive.hiveType)))
                                 hive.acquisitionDate?.let { InfoRow(stringResource(R.string.field_acquisition_date), it) }
                                 if (hive.latitude != null && hive.longitude != null) {
                                     InfoRow(stringResource(R.string.field_location), "%.4f, %.4f".format(hive.latitude, hive.longitude))

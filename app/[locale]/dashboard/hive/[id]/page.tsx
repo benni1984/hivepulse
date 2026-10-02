@@ -29,6 +29,7 @@ const VARROA_LEVELS = [0, 1, 2, 3] as const;
 export default function HivePage() {
   const { id } = useParams<{ id: string }>();
   const t = useTranslations('dash');
+  const tht = useTranslations('hiveTypes');
   const router = useRouter();
   const ready = useDashboardReady();
 
@@ -254,7 +255,7 @@ export default function HivePage() {
       {!loading && hive && (
         <>
           <h1 className="dash-page-title">{hive.name}</h1>
-          <p className="dash-hive-type-label">{hive.hive_type}</p>
+          <p className="dash-hive-type-label">{tht(hive.hive_type)}</p>
 
           {/* Stats row */}
           {stats && (
@@ -519,7 +520,7 @@ export default function HivePage() {
                     onChange={e => setEditForm(f => ({ ...f, hive_type: e.target.value }))}
                   >
                     {HIVE_TYPES.map(ht => (
-                      <option key={ht} value={ht}>{ht}</option>
+                      <option key={ht} value={ht}>{tht(ht)}</option>
                     ))}
                   </select>
                 </div>

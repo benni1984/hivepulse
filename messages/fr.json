@@ -723,6 +723,13 @@
       "lastCatch": "Dernière capture"
     }
   },
+  "hiveTypes": {
+    "langstroth": "Langstroth",
+    "dadant": "Dadant",
+    "top_bar": "Ruche à barrettes",
+    "warre": "Warré",
+    "other": "Autre"
+  },
   "members": {
     "tag": "Espace membres",
     "title": "Aperçus communautaires",

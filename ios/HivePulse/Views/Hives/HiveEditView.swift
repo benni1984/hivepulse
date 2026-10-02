@@ -54,7 +54,7 @@ struct HiveEditView: View {
                         .accessibilityIdentifier("hiveEditName")
                     Picker(NSLocalizedString("field.hiveType", comment: ""), selection: $hiveType) {
                         ForEach(Self.hiveTypes, id: \.self) { t in
-                            Text(t.replacingOccurrences(of: "_", with: " ").capitalized).tag(t)
+                            Text(NSLocalizedString("hiveType.\(t)", comment: "")).tag(t)
                         }
                     }
                     Toggle(NSLocalizedString("field.acquisitionDate", comment: ""), isOn: $hasAcquisitionDate)
