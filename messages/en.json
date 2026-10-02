@@ -25,7 +25,8 @@
     "copyright": "© 2025 HivePulse. Released under the MIT License.",
     "made": "Made with 🐝 for beekeepers everywhere.",
     "imprint": "Legal notice",
-    "deleteAccount": "Delete account"
+    "deleteAccount": "Delete account",
+    "beta": "Join the test"
   },
   "hero": {
     "badge": "Open Source · Community Driven · Free to Use",
@@ -983,7 +984,9 @@
     "imprintTitle": "Legal notice",
     "imprintDescription": "Who operates HivePulse, and how to reach them.",
     "deleteAccountTitle": "Delete your account",
-    "deleteAccountDescription": "How to delete your HivePulse account and what exactly is removed."
+    "deleteAccountDescription": "How to delete your HivePulse account and what exactly is removed.",
+    "betaTitle": "Join the test",
+    "betaDescription": "Try HivePulse before it reaches the stores, and help it get there."
   },
   "imprint": {
     "title": "Legal notice",
@@ -1016,5 +1019,25 @@
     "retentionBody": "In the live database the deletion is immediate — nothing of your account is left a minute later. Our hosting provider keeps automatic database backups for up to 30 days; a backup can only ever be restored as a whole, never for a single account, and after that window the data is gone from there too. The hornet reports and traps described above have no retention limit, because they no longer relate to a person. We keep no separate copies, no archives and no exports.",
     "noAccessTitle": "No access to the app?",
     "noAccessBody": "If you cannot log in any more, write to us and we will delete the account for you within 30 days. Use the address the account was registered with, so we can tell whose account it is:"
+  },
+  "beta": {
+    "title": "Try HivePulse before everybody else",
+    "intro": "HivePulse is finished, but not yet in the stores. Before Google lets a new developer publish an app, twelve people have to test it for two weeks — so this phase is not a formality, it is the gate. If you keep bees and own a phone, you can help.",
+    "joinTitle": "Joining",
+    "joinAndroid": "Join the Android test",
+    "joinIos": "Join the iPhone test",
+    "notOpenYet": "The test rounds are being set up and the links will appear here. Write to us and you will get them the moment they exist.",
+    "joinNote": "You need a Google account for Android or an Apple ID for the iPhone — the same one your phone already uses. No separate registration, and you can leave at any time.",
+    "expectTitle": "What it involves",
+    "expect1": "Install the app and set up one apiary with a couple of hives. Fifteen minutes.",
+    "expect2": "Record a visit the next time you are at the hives — that is the part worth testing in the field, gloves and all.",
+    "expect3": "Stay in the test for two weeks. Google counts the testers daily, so leaving early sets the clock back for everyone.",
+    "expect4": "Tell us what was confusing. One sentence is more useful than none, and “nothing broke” is also an answer.",
+    "feedbackTitle": "Reporting something",
+    "feedbackBody": "No forum, no account, no ticket system — just write to",
+    "feedbackSubject": "HivePulse test feedback",
+    "feedbackHint": "Useful in a report: which phone, what you did, what you expected instead. A photo of the screen says more than a description. If the app closed itself, it has already sent a crash report — you do not have to describe it.",
+    "dataTitle": "What happens with your data",
+    "dataBody": "The same as for everybody else: your apiaries are private unless you put them on the public map yourself, nothing is sold or passed on, and there is no advertising. Test builds carry crash reporting, which sends the place in the code and the kind of device — never your notes, your password or your address. You can delete your account and everything in it yourself at any time."
   }
 }

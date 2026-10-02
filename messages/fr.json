@@ -25,7 +25,8 @@
     "copyright": "© 2025 HivePulse. Publié sous la licence MIT.",
     "made": "Fait avec 🐝 pour les apiculteurs du monde entier.",
     "imprint": "Mentions légales",
-    "deleteAccount": "Supprimer le compte"
+    "deleteAccount": "Supprimer le compte",
+    "beta": "Participer au test"
   },
   "hero": {
     "badge": "Open Source · Communautaire · Gratuit",
@@ -983,7 +984,9 @@
     "imprintTitle": "Mentions légales",
     "imprintDescription": "Qui exploite HivePulse et comment nous joindre.",
     "deleteAccountTitle": "Supprimer le compte",
-    "deleteAccountDescription": "Comment supprimer votre compte HivePulse et ce qui est effacé exactement."
+    "deleteAccountDescription": "Comment supprimer votre compte HivePulse et ce qui est effacé exactement.",
+    "betaTitle": "Participer au test",
+    "betaDescription": "Essayer HivePulse avant son arrivée dans les boutiques, et aider à l'y amener."
   },
   "imprint": {
     "title": "Mentions légales",
@@ -1016,5 +1019,25 @@
     "retentionBody": "Dans la base de données en service, la suppression est immédiate : une minute plus tard, il ne reste rien de votre compte. Notre hébergeur conserve des sauvegardes automatiques pendant 30 jours au maximum ; une sauvegarde ne peut être restaurée qu'intégralement, jamais pour un seul compte, et passé ce délai les données en ont également disparu. Les signalements et pièges à frelons décrits plus haut n'ont pas de durée limite, car ils ne concernent plus une personne. Nous ne conservons ni copies, ni archives, ni exports distincts.",
     "noAccessTitle": "Plus d'accès à l'application ?",
     "noAccessBody": "Si vous ne pouvez plus vous connecter, écrivez-nous et nous supprimerons le compte pour vous sous 30 jours. Utilisez l'adresse avec laquelle le compte a été créé, afin que nous sachions de quel compte il s'agit :"
+  },
+  "beta": {
+    "title": "Essayer HivePulse avant tout le monde",
+    "intro": "HivePulse est terminée, mais pas encore dans les boutiques. Avant que Google autorise un nouveau développeur à publier, douze personnes doivent tester l'application pendant deux semaines : cette phase n'est donc pas une formalité, c'est la condition. Si vous avez des ruches et un téléphone, vous pouvez aider.",
+    "joinTitle": "Participer",
+    "joinAndroid": "Rejoindre le test Android",
+    "joinIos": "Rejoindre le test iPhone",
+    "notOpenYet": "Les sessions de test sont en préparation et les liens apparaîtront ici. Écrivez-nous et vous les recevrez dès qu'ils existent.",
+    "joinNote": "Il vous faut un compte Google pour Android ou un identifiant Apple pour l'iPhone — celui que votre téléphone utilise déjà. Pas d'inscription séparée, et vous pouvez arrêter à tout moment.",
+    "expectTitle": "Ce que cela implique",
+    "expect1": "Installer l'application et créer un rucher avec quelques ruches. Un quart d'heure.",
+    "expect2": "Saisir une visite lors de votre prochain passage aux ruches : c'est la partie qui doit faire ses preuves sur le terrain, gants compris.",
+    "expect3": "Rester dans le test pendant deux semaines. Google compte les testeurs chaque jour ; un départ anticipé remet le compteur à zéro pour tous.",
+    "expect4": "Dire ce qui n'était pas clair. Une phrase vaut mieux que rien, et « rien n'a cassé » est aussi une réponse.",
+    "feedbackTitle": "Signaler quelque chose",
+    "feedbackBody": "Pas de forum, pas de compte, pas de système de tickets — écrivez simplement à",
+    "feedbackSubject": "Retour sur le test HivePulse",
+    "feedbackHint": "Utile dans un signalement : quel téléphone, ce que vous avez fait, ce que vous attendiez à la place. Une photo de l'écran dit plus qu'une description. Si l'application s'est fermée d'elle-même, elle a déjà envoyé un rapport — inutile de le décrire.",
+    "dataTitle": "Ce qu'il advient de vos données",
+    "dataBody": "La même chose que pour tout le monde : vos ruchers restent privés tant que vous ne les placez pas vous-même sur la carte publique, rien n'est vendu ni transmis, et il n'y a aucune publicité. Les versions de test signalent les plantages, avec l'endroit dans le code et le type d'appareil — jamais vos notes, votre mot de passe ou votre adresse. Vous pouvez supprimer votre compte et tout son contenu vous-même, à tout moment."
   }
 }
