@@ -932,6 +932,7 @@ They allow any citizen (no account needed) to report Asian hornet (*Vespa veluti
 | GET | `/hornets/sightings` | Public | Paginated photo sightings |
 | POST | `/hornets/sightings` | Public | Submit a photo sighting |
 | POST | `/hornets/sightings/{id}/vote` | Public | Vote yes/no on a sighting |
+| POST | `/hornets/sightings/{id}/report` | Public | Report a sighting as objectionable |
 | PUT | `/admin/hornets/sightings/{id}/status` | Admin | Override sighting status |
 | GET | `/hornets/traps` | Auth | List traps owned by the current user |
 | POST | `/hornets/traps` | Public (optional auth) | Create a named trap |
@@ -1125,6 +1126,42 @@ Cast a yes/no vote on whether the photo shows an Asian hornet. Each call counts 
 **Response 204** — no body.
 
 **Response 404** — `HORNET_SIGHTING_NOT_FOUND`
+
+---
+
+### POST `/hornets/sightings/{id}/report`
+
+Report a photo sighting as objectionable — a wrong photo, something offensive, spam. Both
+stores require an in-app way to report publicly visible user content, and a community vote
+is not one: "this is not a hornet" and "this photo does not belong here" are different
+statements.
+
+Public and unauthenticated, like voting, because the community page can be read without an
+account. Rate limited per client (10 per hour) so one person cannot bury a sighting.
+
+**No request body.**
+
+**Response 200:**
+
+```json
+{ "id": "uuid", "report_count": 2, "hidden": false }
+```
+
+| Field | Meaning |
+|-------|---------|
+| `report_count` | How many reports this sighting has now |
+| `hidden` | `true` once the third report arrives: the sighting disappears from the public list until an admin decides |
+
+**Hiding is reversible and never silent.** The admin sighting list shows `report_count` and
+`hidden`, and `PUT /admin/hornets/sightings/{id}/status` clears both — an admin decision
+overrides the reports, in either direction.
+
+Three reports rather than one, because a single click would otherwise let anybody remove
+any photo.
+
+**Response 404** — `HORNET_SIGHTING_NOT_FOUND`
+
+**Response 429** — `RATE_LIMITED`
 
 ---
 
