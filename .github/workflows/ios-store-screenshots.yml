@@ -13,10 +13,6 @@ name: iOS Store Screenshots
 
 on:
   workflow_dispatch:
-  # Lets this workflow be iterated on without a merge to main (and without a production deploy
-  # per attempt). Remove once it works.
-  push:
-    branches: [ci/ios-store-screenshots]
 
 jobs:
   capture:
