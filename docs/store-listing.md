@@ -309,10 +309,23 @@ Play wants at least two phone screenshots, 16:9 or 9:16, min 1080px on the short
 App Store wants 6.7" and 6.5" iPhone sizes, and iPad sizes only if the app is listed for
 iPad.
 
-`public/docs/screenshots/` already holds Android captures from the emulator (Pixel 9) and
-iOS captures from the simulator, taken for the help pages. They are the right content but
-not necessarily the right dimensions — check each store's requirement before uploading, and
-retake rather than upscale.
+`public/docs/screenshots/` already holds captures taken for the help pages. Measured, not
+assumed:
+
+| | Files | Size | Verdict |
+|---|---|---|---|
+| Android | 16 | 1080×2424 and 1080×2400 | short side is fine; the ratio is taller than 9:16 |
+| iOS | 1 | 603×1311 | far too small, and one is not enough |
+
+**Android is probably ready to upload as is.** Play wants at least 320px and at most 3840px
+per side, which these clear. Their ratio (1:2.24) is taller than the 9:16 the older
+guidance names; modern phone captures usually pass anyway. If the console refuses one, a
+centre crop to 1080×1920 fixes it — ask and it will be generated rather than guessed at.
+
+**iOS has to be redone.** The App Store wants 1290×2796 for the 6.7" size and 1242×2688
+for 6.5"; the single existing capture is a help-page thumbnail. These need a simulator run,
+which is a Mac job — the CI machine that builds for TestFlight could take them, which is
+the cheapest route if nobody has a Mac at hand.
 
 Worth showing, in this order: the apiary list, one hive with its history, the inspection
 form with the frame buttons, the hornet map. The offline state is worth a shot too, with
