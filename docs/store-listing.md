@@ -305,9 +305,31 @@ report abuse. The admin moderation for sightings exists; the listing has to say 
 
 ## Screenshots
 
-Play wants at least two phone screenshots, 16:9 or 9:16, min 1080px on the short side. The
-App Store wants 6.7" and 6.5" iPhone sizes, and iPad sizes only if the app is listed for
-iPad.
+**Play accepts 8 phone screenshots per language, the App Store 10**, and each language is
+listed separately — a German listing showing an English interface reads as "not translated".
+
+**Actions → "iOS Store Screenshots"** captures the iPhone set in all four languages and
+uploads two artifacts per language: `app-store-screenshots-<lang>` holds exactly the eight
+below, numbered in upload order, and `all-screenshots-<lang>` holds all nineteen for
+reference.
+
+| # | Screen | Why it earns a slot |
+|---|--------|---------------------|
+| 1 | Apiary list | What the app is, in one picture |
+| 2 | Hive with its history | The reason to keep using it |
+| 3 | Inspection form | The daily work |
+| 4 | Frame buttons 0–10 | The gloves argument, visible at a glance |
+| 5 | Apiary detail | How hives are organised |
+| 6 | QR batches | The QR idea, which is the hook |
+| 7 | Community stats | That there are others |
+| 8 | Settings | Reminders and language exist |
+
+Login and registration are deliberately absent: nobody installs an app because of its login
+form. The offline state would deserve a slot, but it needs a capture with the pending marker
+visible, which the screenshot test does not produce yet.
+
+Play also wants at least 320px and at most 3840px per side; the App Store wants 1320×2868 or
+1290×2796 for the 6.9" slot and derives the smaller sizes from it.
 
 `public/docs/screenshots/` already holds captures taken for the help pages. Measured, not
 assumed:
