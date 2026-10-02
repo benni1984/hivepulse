@@ -67,13 +67,16 @@ jobs:
           fi
 
       - name: Capture
-        env:
-          SCREENSHOT_LANG: ${{ matrix.language }}
         run: |
           mkdir -p "$GITHUB_WORKSPACE/screenshots"
           # Only the screenshot class: the rest of the UI suite has nothing to contribute here
           # and would triple the runtime.
-          TEST_RUNNER_SCREENSHOT_DIR="$GITHUB_WORKSPACE/screenshots" xcodebuild test \
+          # Only TEST_RUNNER_-prefixed variables reach the test process; xcodebuild strips
+          # the prefix. Without it the test falls back to English and all four languages
+          # write into the same folder.
+          TEST_RUNNER_SCREENSHOT_DIR="$GITHUB_WORKSPACE/screenshots" \
+          TEST_RUNNER_SCREENSHOT_LANG="${{ matrix.language }}" \
+          xcodebuild test \
             -project ios/HivePulse.xcodeproj \
             -scheme HivePulse \
             -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \

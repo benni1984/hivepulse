@@ -194,8 +194,14 @@ final class ScreenshotUITests: XCTestCase {
 
     /// The language this run captures, from SCREENSHOT_LANG; English when unset.
     private var language: String {
+        // The workflow passes TEST_RUNNER_SCREENSHOT_LANG; xcodebuild strips that prefix
+        // before handing it to this process, and anything without it never arrives at all.
         let value = ProcessInfo.processInfo.environment["SCREENSHOT_LANG"] ?? "en"
-        return ["en", "de", "fr", "es"].contains(value) ? value : "en"
+        guard ["en", "de", "fr", "es"].contains(value) else {
+            XCTFail("SCREENSHOT_LANG=\(value) is not one of the four store languages")
+            return "en"
+        }
+        return value
     }
 
     /// The app's own translation for `key`, in the language being captured.
