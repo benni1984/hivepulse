@@ -98,6 +98,28 @@ Based on what the app actually does:
 Declare crash logs. Sentry is active in release builds, and an undeclared category is a
 common reason for a rejection.
 
+## Two upload warnings that are expected
+
+Play shows both on every upload, and neither is a problem:
+
+**"No deobfuscation file"** — there is none because R8 is off, so no code is obfuscated and
+there is nothing to map back. The message is really an invitation to enable shrinking.
+
+**"Contains native code without debug symbols"** — the native libraries are third-party and
+arrive already stripped: `libbarhopper_v3.so` (ML Kit, the QR scanner) and `libsentry.so`.
+`ndk { debugSymbolLevel = ... }` does **not** help here; it only covers native code this
+project compiles itself, of which there is none. Tried it, measured the resulting bundle,
+found zero symbol entries, removed it again. Sentry uploads symbols for its own library
+through its own tooling.
+
+## A size note, before it alarms somebody
+
+The bundle is ~27 MB, and ~20 MB of that is the ML Kit barcode scanner shipped for four
+CPU architectures. **Play serves each device only its own architecture**, so the actual
+download is far smaller than the bundle. If it ever needs to shrink further, the unbundled
+variant (`play-services-mlkit-barcode-scanning`) keeps the scanner in Play Services instead
+of in the app — at the cost of a first-use download on the device.
+
 ## Deliberately left off
 
 **Code shrinking (R8) is disabled** for the first release. Hilt, Room, Gson and Sentry all
