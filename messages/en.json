@@ -23,7 +23,8 @@
     "legal": "Legal",
     "privacy": "Privacy Policy",
     "copyright": "© 2025 HivePulse. Released under the MIT License.",
-    "made": "Made with 🐝 for beekeepers everywhere."
+    "made": "Made with 🐝 for beekeepers everywhere.",
+    "imprint": "Legal notice"
   },
   "hero": {
     "badge": "Open Source · Community Driven · Free to Use",
@@ -970,6 +971,22 @@
     "siteDescription": "The beekeeping community app that turns every inspection into global data for bee conservation. Free for iOS and Android.",
     "helpTitle": "Help & Documentation",
     "helpDescription": "Guides for every part of HivePulse — apiaries, hives, inspections, QR codes, statistics and the hornet tracker.",
-    "helpSuffix": "HivePulse Help"
+    "helpSuffix": "HivePulse Help",
+    "imprintTitle": "Legal notice",
+    "imprintDescription": "Who operates HivePulse, and how to reach them."
+  },
+  "imprint": {
+    "title": "Legal notice",
+    "operator": "Operator",
+    "contact": "Contact",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone",
+    "responsible": "Responsible for the content",
+    "responsibleBody": "{name}, at the address above.",
+    "vat": "VAT identification number",
+    "disputes": "Online dispute resolution",
+    "disputesBody": "We are not obliged and not willing to take part in dispute resolution proceedings before a consumer arbitration board.",
+    "liability": "Liability for links",
+    "liabilityBody": "This site links to external websites whose content we do not control. Responsibility for their content rests with their respective operators. We checked the linked pages for legal violations when the link was created; continuous monitoring without concrete evidence of a violation is not reasonable."
   }
 }

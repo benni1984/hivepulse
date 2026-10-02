@@ -23,7 +23,8 @@
     "legal": "Legal",
     "privacy": "Política de privacidad",
     "copyright": "© 2025 HivePulse. Publicado bajo la licencia MIT.",
-    "made": "Hecho con 🐝 para apicultores de todo el mundo."
+    "made": "Hecho con 🐝 para apicultores de todo el mundo.",
+    "imprint": "Aviso legal"
   },
   "hero": {
     "badge": "Código abierto · Comunidad · Gratuito",
@@ -970,6 +971,22 @@
     "siteDescription": "La app apícola que convierte cada inspección en datos mundiales para la protección de las abejas. Gratis para iPhone y Android.",
     "helpTitle": "Ayuda y documentación",
     "helpDescription": "Guías de todas las partes de HivePulse: colmenares, colmenas, inspecciones, códigos QR, estadísticas y rastreador de avispones.",
-    "helpSuffix": "Ayuda de HivePulse"
+    "helpSuffix": "Ayuda de HivePulse",
+    "imprintTitle": "Aviso legal",
+    "imprintDescription": "Quién gestiona HivePulse y cómo contactar."
+  },
+  "imprint": {
+    "title": "Aviso legal",
+    "operator": "Titular",
+    "contact": "Contacto",
+    "emailLabel": "Correo electrónico",
+    "phoneLabel": "Teléfono",
+    "responsible": "Responsable del contenido",
+    "responsibleBody": "{name}, en la dirección indicada arriba.",
+    "vat": "Número de identificación fiscal (IVA)",
+    "disputes": "Resolución de litigios en línea",
+    "disputesBody": "No estamos obligados ni dispuestos a participar en procedimientos de resolución de litigios ante una entidad de resolución alternativa de consumo.",
+    "liability": "Responsabilidad por los enlaces",
+    "liabilityBody": "Este sitio enlaza a páginas externas cuyo contenido no podemos controlar. La responsabilidad de esos contenidos corresponde a sus respectivos titulares. Las páginas enlazadas se revisaron en el momento de crear el enlace; una vigilancia permanente sin indicios concretos de infracción no resulta exigible."
   }
 }
