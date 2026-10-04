@@ -380,8 +380,18 @@ def seed_screenshot_account(db: Session, language: str) -> User:
 
 
 def seed_screenshot_visits(db: Session, hive: Hive, notes: list):
-    if db.query(Inspection).filter_by(hive_id=hive.id).count() >= len(SCREENSHOT_VISITS):
-        return
+    """Rewrite the visits rather than skipping them when some already exist.
+
+    These are props, so the list above is the authority: when it changes — a varroa level
+    added, a mood softened — the next seed must carry that through. The ordinary demo data
+    is left alone; only these accounts are rewritten, and the row count stays the same, so
+    reseeding still changes nothing that anybody can see.
+    """
+    existing = db.query(Inspection).filter_by(hive_id=hive.id).all()
+    for inspection in existing:
+        db.delete(inspection)
+    db.flush()
+
     for position, (days_ago, brood, honey, varroa, mood, queen_seen) in enumerate(SCREENSHOT_VISITS):
         db.add(Inspection(
             id=_uuid(), hive_id=hive.id,
