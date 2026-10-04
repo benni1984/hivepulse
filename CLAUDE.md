@@ -92,11 +92,24 @@ Push branch → open PR immediately → merge once all CI checks are green (no c
 
 ## CI/CD Pipeline
 
-Sequential gates:
-1. **Quality gates** — TypeScript, lint, `npm test`, `pytest`
-2. **deploy-staging** — Vercel preview
-3. **e2e-staging** — Playwright vs staging URL
-4. **deploy-production** — Vercel production
+**Pull request:** tests only. There is no preview deployment — it cost a Vercel deployment
+on every push, nobody ever opened it, and staging does the same job better with a stable
+URL and its own database.
+
+**Push to main**, in order:
+1. **Quality gates** — TypeScript, lint, `npm test`, `pytest`, the app suites
+2. **deploy-staging** — the separate `hivepulse-staging` project, which exists because the
+   E2E suite registers accounts and writes data, and that must not touch production
+3. **e2e-staging** — Playwright against `apiscan-staging.vercel.app`
+4. **deploy-production** — only after the E2E gate passes
+
+The deploy jobs wait on `backend` and `web` only; a red Android or iOS job no longer blocks
+a website deploy, because it says nothing about the artifact being deployed. Read those
+failures rather than relying on them to stop something.
+
+**Actions → CI → Run workflow** deploys whatever main currently is — needed because the
+deploy jobs are gated on changed paths, so a fix that unblocks a deploy does not itself
+trigger one.
 
 ## Build Order for New Features
 
