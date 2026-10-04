@@ -106,7 +106,10 @@ def screenshot(name: str) -> Path:
         out = OUT_DIR / f"{name}.png"
         flattened.save(out, "PNG")
     raw.unlink()
-    print(f"  saved {out.relative_to(REPO)} ({width}x{height})", flush=True)
+    # Not relative_to(REPO): SCREENSHOT_DIR is usually a relative path, and the resulting
+    # ValueError was thrown *after* the image was saved — losing every later capture in the
+    # same step to an error about a log line.
+    print(f"  saved {out} ({width}x{height})", flush=True)
     return out
 
 
@@ -224,8 +227,10 @@ def capture_hive_stats():
 
 def capture_inspection_form():
     A.wait_for(S("section_inspections"), timeout=20)
-    A.tap_node(A.get_ui_dump(), text=S("action_new_inspection"))
-    time.sleep(2.5)
+    # A content description, not a text node — the extended button carries its label there.
+    A.tap_node(A.get_ui_dump(), content_desc=S("action_new_inspection"))
+    A.wait_for(S("section_date"), timeout=20)
+    time.sleep(1.5)
     screenshot("4-inspection-form")
     # The glove-friendly tap grid is the thing that sets this app apart at the hive, and it
     # sits below the fold.
@@ -260,8 +265,12 @@ def capture_qr_batches():
 def capture_settings():
     back_to_apiaries()
     A.wait_for(S("screen_apiaries"), timeout=20)
-    A.tap_node(A.get_ui_dump(), content_desc=S("tab_settings"))
-    A.wait_for(S("screen_settings"), timeout=20)
+    # The bottom bar item carries a text label, not a content description.
+    A.tap_node(A.get_ui_dump(), text=S("tab_settings"))
+    # Not the screen title: the same word labels the bottom bar and is on screen everywhere,
+    # so waiting for it would photograph whatever happened to be showing. Wait for a field
+    # only the settings screen has above the fold.
+    A.wait_for(S("field_display_name"), timeout=20)
     time.sleep(1)
     screenshot("7-settings")
     # Reminders are the reason a beekeeper comes back, and they are further down.
@@ -278,6 +287,37 @@ def back_to_apiaries():
         time.sleep(1.2)
 
 
+def set_app_language():
+    """Set the app's language and read it back.
+
+    The first two attempts at this set the locale blind: the helper's shell() swallows both
+    output and exit code, so a rejected command looked exactly like a successful one and the
+    failure only surfaced much later, as "the app is showing English". Anything worth setting
+    on a device is worth reading back.
+    """
+    attempt = subprocess.run(
+        ["adb", "shell", "cmd", "locale", "set-app-locales", A.PACKAGE,
+         "--user", "current", "--locales", LANG],
+        capture_output=True, text=True,
+    )
+    said = (attempt.stdout + attempt.stderr).strip()
+    if said:
+        print(f"  set-app-locales: {said}", flush=True)
+
+    readback = subprocess.run(
+        ["adb", "shell", "cmd", "locale", "get-app-locales", A.PACKAGE],
+        capture_output=True, text=True,
+    ).stdout.strip()
+    print(f"  get-app-locales: {readback or '(nothing set)'}", flush=True)
+
+    # English needs no override — it is what the resources fall back to anyway.
+    if LANG != "en" and LANG not in readback:
+        raise RuntimeError(
+            f"Asked Android for {LANG} and it reports {readback or 'no app locale'}. "
+            f"set-app-locales said: {said or '(nothing)'}"
+        )
+
+
 def install_in_language():
     """Install, set the app's language, then launch.
 
@@ -287,10 +327,21 @@ def install_in_language():
     """
     print(f"Installing and setting the app language to {LANG}", flush=True)
     A.adb("install", "-r", A.APK_PATH)
-    A.shell("cmd", "locale", "set-app-locales", A.PACKAGE, "--user", "current", "--locale", LANG)
+    set_app_language()
     time.sleep(1)
-    A.shell("am", "start", "-n", A.MAIN_ACTIVITY)
-    time.sleep(8)
+
+    # A flat sleep after `am start` was enough for the English run and not for the Spanish
+    # one, which reported no login screen at all after 60s — a cold emulator can simply be
+    # slower than any fixed wait. Poll, and give the app one more start before giving up.
+    for attempt in (1, 2):
+        A.shell("am", "start", "-n", A.MAIN_ACTIVITY)
+        deadline = time.time() + 60
+        while time.time() < deadline:
+            if label_in(A.get_ui_dump(), "action_login"):
+                return
+            time.sleep(2)
+        print(f"  no login screen {attempt * 60}s after launch — starting the app again", flush=True)
+    raise RuntimeError("The app never reached its login screen")
 
 
 def confirm_the_app_speaks(language: str):
@@ -343,7 +394,10 @@ def main():
     print(f"\n{len(captured)} screenshots in {LANG}:", flush=True)
     for shot in captured:
         print(f"  {shot.name}", flush=True)
-    if not captured:
+    if len(captured) != 8:
+        # Half a set passed silently once already, because nothing counted them.
+        print(f"Expected 8 screenshots, got {len(captured)} — the listing needs all eight.",
+              flush=True)
         return 1
     if _reported_gaps:
         print(f"\nShown in English because {LANG} has no translation: "

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The languages HivePulse ships. Declaring them has two effects:
+
+  1. Android offers HivePulse its own entry under Settings → Apps → Language, so a beekeeper
+     whose phone is in English can read the app in German without changing the whole phone.
+     Until now the in-app language picker only told the server which language to write emails
+     in — the interface itself followed the phone and nothing else.
+  2. `adb shell cmd locale set-app-locales` has a list to validate against, which is how the
+     store screenshots are captured in four languages.
+-->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="en" />
+    <locale android:name="de" />
+    <locale android:name="fr" />
+    <locale android:name="es" />
+</locale-config>
