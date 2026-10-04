@@ -61,7 +61,10 @@ jobs:
         env:
           SCREENSHOT_LANG: ${{ matrix.language }}
           SCREENSHOT_DIR: store-screenshots
-          DEMO_EMAIL: ${{ secrets.STAGING_DEMO_EMAIL }}
+          # Not the demo account: the staging E2E suite signs in as demo and leaves its
+          # apiaries behind, so its list reads "e2e-apiary-1790951543272" seven times over.
+          # These accounts are seeded for this purpose and nothing else writes to them.
+          DEMO_EMAIL: screenshots-${{ matrix.language }}@apiscan.app
           DEMO_PASSWORD: ${{ secrets.STAGING_DEMO_PASSWORD }}
         with:
           # API 34: per-app languages need Android 13 or newer, and the help-page capture
