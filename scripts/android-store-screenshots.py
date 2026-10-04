@@ -278,6 +278,37 @@ def back_to_apiaries():
         time.sleep(1.2)
 
 
+def set_app_language():
+    """Set the app's language and read it back.
+
+    The first two attempts at this set the locale blind: the helper's shell() swallows both
+    output and exit code, so a rejected command looked exactly like a successful one and the
+    failure only surfaced much later, as "the app is showing English". Anything worth setting
+    on a device is worth reading back.
+    """
+    attempt = subprocess.run(
+        ["adb", "shell", "cmd", "locale", "set-app-locales", A.PACKAGE,
+         "--user", "current", "--locales", LANG],
+        capture_output=True, text=True,
+    )
+    said = (attempt.stdout + attempt.stderr).strip()
+    if said:
+        print(f"  set-app-locales: {said}", flush=True)
+
+    readback = subprocess.run(
+        ["adb", "shell", "cmd", "locale", "get-app-locales", A.PACKAGE],
+        capture_output=True, text=True,
+    ).stdout.strip()
+    print(f"  get-app-locales: {readback or '(nothing set)'}", flush=True)
+
+    # English needs no override — it is what the resources fall back to anyway.
+    if LANG != "en" and LANG not in readback:
+        raise RuntimeError(
+            f"Asked Android for {LANG} and it reports {readback or 'no app locale'}. "
+            f"set-app-locales said: {said or '(nothing)'}"
+        )
+
+
 def install_in_language():
     """Install, set the app's language, then launch.
 
@@ -287,7 +318,7 @@ def install_in_language():
     """
     print(f"Installing and setting the app language to {LANG}", flush=True)
     A.adb("install", "-r", A.APK_PATH)
-    A.shell("cmd", "locale", "set-app-locales", A.PACKAGE, "--user", "current", "--locale", LANG)
+    set_app_language()
     time.sleep(1)
 
     # A flat sleep after `am start` was enough for the English run and not for the Spanish
