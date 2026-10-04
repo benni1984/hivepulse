@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Push for TestFlight and App Store builds. "production" is the right value for both: a
+  development value would make the device register with Apple's sandbox, which the server
+  does not talk to (APNS_SANDBOX defaults to false).
+
+  This had to wait until Push Notifications was enabled for the App ID — an entitlement the
+  provisioning profile does not carry fails the signing step, which is why it was left out
+  of the original push work.
+
+  No UIBackgroundModes entry: the reminders are ordinary alerts, not silent pushes.
+-->
+<plist version="1.0">
+<dict>
+	<key>aps-environment</key>
+	<string>production</string>
+</dict>
+</plist>

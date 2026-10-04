@@ -109,7 +109,11 @@ jobs:
               "in_house": False,
           }, open(os.path.join(os.environ["RUNNER_TEMP"], "asc_api_key.json"), "w"))
           PY
+          # --force regenerates the profile on every run. Without it sigh reuses whatever
+          # exists, and a profile created before Push Notifications was enabled for the App ID
+          # does not carry aps-environment — which fails signing rather than the build.
           fastlane sigh \
+            --force \
             --api_key_path "$RUNNER_TEMP/asc_api_key.json" \
             --app_identifier com.hivepulse.app \
             --platform ios \
