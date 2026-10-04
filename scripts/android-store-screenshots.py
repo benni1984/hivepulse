@@ -289,8 +289,19 @@ def install_in_language():
     A.adb("install", "-r", A.APK_PATH)
     A.shell("cmd", "locale", "set-app-locales", A.PACKAGE, "--user", "current", "--locale", LANG)
     time.sleep(1)
-    A.shell("am", "start", "-n", A.MAIN_ACTIVITY)
-    time.sleep(8)
+
+    # A flat sleep after `am start` was enough for the English run and not for the Spanish
+    # one, which reported no login screen at all after 60s — a cold emulator can simply be
+    # slower than any fixed wait. Poll, and give the app one more start before giving up.
+    for attempt in (1, 2):
+        A.shell("am", "start", "-n", A.MAIN_ACTIVITY)
+        deadline = time.time() + 60
+        while time.time() < deadline:
+            if label_in(A.get_ui_dump(), "action_login"):
+                return
+            time.sleep(2)
+        print(f"  no login screen {attempt * 60}s after launch — starting the app again", flush=True)
+    raise RuntimeError("The app never reached its login screen")
 
 
 def confirm_the_app_speaks(language: str):

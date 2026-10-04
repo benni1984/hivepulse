@@ -81,4 +81,29 @@ class TranslationCompletenessTest {
             }
         assertEquals("hardcoded English in the UI: $offenders", emptyList<String>(), offenders)
     }
+
+    @Test
+    fun `the locale config lists exactly the languages that have translations`() {
+        // Without this file Android gives the app no entry under Settings - Apps - Language,
+        // so a beekeeper whose phone is in English cannot read HivePulse in German. A list
+        // that drifts from the values-* folders is worse than none: it offers a language the
+        // app cannot actually show.
+        val config = File("src/main/res/xml/locales_config.xml")
+        assertTrue("missing res/xml/locales_config.xml", config.exists())
+
+        val declared = Regex("""android:name="([a-z-]+)"""")
+            .findAll(config.readText())
+            .map { it.groupValues[1] }
+            .toSortedSet()
+        val translated = (listOf("en") + locales.map { it.removePrefix("values-") }).toSortedSet()
+
+        assertEquals("locales_config.xml and the values-* folders disagree", translated, declared)
+
+        val manifest = File("src/main/AndroidManifest.xml").readText()
+        assertTrue(
+            "AndroidManifest must point at the locale config, or it has no effect",
+            manifest.contains("android:localeConfig=\"@xml/locales_config\""),
+        )
+    }
+
 }
