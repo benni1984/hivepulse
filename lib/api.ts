@@ -557,7 +557,7 @@ export async function adminSelfTestError(): Promise<CrashReportSelfTest> {
   return res.json();
 }
 
-export interface ConfigurationHealth { environment: string; signing_key_is_the_public_default: boolean; crash_reporting_configured: boolean; }
+export interface ConfigurationHealth { environment: string; signing_key_is_the_public_default: boolean; crash_reporting_configured: boolean; push_android_configured: boolean; push_ios_configured: boolean; }
 
 export async function adminGetConfigurationHealth(): Promise<ConfigurationHealth> {
   const res = await apiFetch('/admin/health/configuration');

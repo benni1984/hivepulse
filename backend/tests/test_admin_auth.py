@@ -142,3 +142,36 @@ def test_configuration_health_is_quiet_with_a_real_signing_key(monkeypatch):
 def test_configuration_health_as_regular_user_returns_403(auth_client):
     resp = auth_client.get("/api/v1/admin/health/configuration")
     assert resp.status_code == 403
+
+
+def test_configuration_health_reports_push_as_unconfigured_by_default(admin_client):
+    # The test suite has no push credentials, and that is what the endpoint must say rather
+    # than implying reminders are going out.
+    data = admin_client.get("/api/v1/admin/health/configuration").json()
+
+    assert data["push_android_configured"] is False
+    assert data["push_ios_configured"] is False
+
+
+def test_configuration_health_needs_every_apns_value(admin_client, monkeypatch):
+    from app.routers import admin as admin_router
+
+    # Two of three is not configured: APNs refuses a token signed without all of them.
+    monkeypatch.setattr(admin_router.settings, "apns_key_id", "ABC1234567", raising=False)
+    monkeypatch.setattr(admin_router.settings, "apns_team_id", "CZQ6BZ4UW5", raising=False)
+    assert admin_router.configuration_health(admin=None)["push_ios_configured"] is False
+
+    monkeypatch.setattr(admin_router.settings, "apns_private_key_p8", "-----BEGIN PRIVATE KEY-----", raising=False)
+    assert admin_router.configuration_health(admin=None)["push_ios_configured"] is True
+
+
+def test_configuration_health_never_echoes_the_push_secrets(admin_client, monkeypatch):
+    from app.routers import admin as admin_router
+
+    monkeypatch.setattr(admin_router.settings, "apns_private_key_p8", "SECRET-KEY-MATERIAL", raising=False)
+    monkeypatch.setattr(admin_router.settings, "firebase_service_account_json", "SECRET-JSON", raising=False)
+
+    body = str(admin_router.configuration_health(admin=None))
+
+    assert "SECRET-KEY-MATERIAL" not in body
+    assert "SECRET-JSON" not in body

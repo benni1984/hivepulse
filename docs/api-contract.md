@@ -1415,9 +1415,17 @@ because the application keeps working with its default.
 {
   "environment": "production",
   "signing_key_is_the_public_default": false,
-  "crash_reporting_configured": true
+  "crash_reporting_configured": true,
+  "push_android_configured": true,
+  "push_ios_configured": false
 }
 ```
+
+The two push flags are `true` only when **every** value that channel needs is present —
+`FIREBASE_PROJECT_ID` plus the service account JSON for Android, and the key id, team id and
+`.p8` for iPhones. Two of three is not configured: APNs refuses a token signed without all
+of them. Push is designed to fail quietly, so without this nothing anywhere says that
+reminders never leave the building.
 
 `signing_key_is_the_public_default: true` is a security problem, not a note: the default
 lives in this repository, so anyone could forge an access token for any account. The

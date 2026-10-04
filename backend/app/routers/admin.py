@@ -37,6 +37,16 @@ def configuration_health(admin: CurrentAdmin) -> dict:
         "environment": settings.environment,
         "signing_key_is_the_public_default": settings.secret_key == "dev-secret-change-me",
         "crash_reporting_configured": bool(settings.sentry_dsn.strip()),
+        # Push fails quietly by design: without credentials a reminder run logs a warning and
+        # carries on, so nothing anywhere says that iPhones never hear anything. This does.
+        "push_android_configured": bool(
+            settings.firebase_project_id.strip() and settings.firebase_service_account_json.strip()
+        ),
+        "push_ios_configured": bool(
+            settings.apns_key_id.strip()
+            and settings.apns_team_id.strip()
+            and settings.apns_private_key_p8.strip()
+        ),
     }
 
 

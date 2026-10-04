@@ -536,7 +536,9 @@
         "crashOff": "No crash reporter is configured, so nothing was sent.",
         "crashFailed": "The test could not be run.",
         "crashDiagnosis": "Technical detail: the key has {settingsChars} characters in the configuration and {envChars} in the process environment. Two zeros mean the hosting platform never passed it to the server.",
-        "defaultSigningKey": "Warning: this server signs logins with the public default key from the source code. Anyone who knows it can forge a token for any account. Set a real SECRET_KEY in the hosting environment."
+        "defaultSigningKey": "Warning: this server signs logins with the public default key from the source code. Anyone who knows it can forge a token for any account. Set a real SECRET_KEY in the hosting environment.",
+        "pushAndroidMissing": "Android push is not configured: reminders never reach an Android phone. Needs FIREBASE_PROJECT_ID and FIREBASE_SERVICE_ACCOUNT_JSON in the hosting environment.",
+        "pushIosMissing": "iPhone push is not configured: reminders never reach an iPhone. Needs APNS_KEY_ID, APNS_TEAM_ID and APNS_PRIVATE_KEY_P8 in the hosting environment."
       }
     },
     "apiaries": {
