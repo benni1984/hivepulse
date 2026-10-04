@@ -408,4 +408,13 @@
     <string name="action_increase_weight">Augmenter le poids</string>
     <string name="offline_pending_upload">En attente d\'envoi</string>
     <string name="offline_saved_locally">Saisi sans connexion. L\'envoi se fait tout seul dès que vous êtes en ligne.</string>
+
+    <!-- Diagnostics -->
+    <string name="section_diagnostics">Diagnostic</string>
+    <string name="diagnostics_version">Version %1$s (%2$d)</string>
+    <string name="action_send_test_report">Envoyer un rapport de test</string>
+    <string name="diagnostics_test_report_sent">Arrivé. Référence : %1$s</string>
+    <string name="diagnostics_test_report_failed">Rien n’est parti. Le rapport d’erreur ne fonctionne pas dans cette version.</string>
+    <string name="diagnostics_reporting_off">Le rapport d’erreur est désactivé dans cette version.</string>
+
 </resources>

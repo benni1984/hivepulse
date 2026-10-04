@@ -235,4 +235,50 @@ class SettingsViewModelTest {
         pushTokenApns        = null,
         pushTokenFcm         = null
     )
+
+    @Test
+    fun `sendTestReport keeps the event id so it can be found in the dashboard`() = runTest {
+        vm.testReportSender = { "a1b2c3" }
+
+        vm.sendTestReport()
+
+        assertEquals("a1b2c3", vm.state.value.testReportId)
+        assertFalse(vm.state.value.testReportFailed)
+        assertFalse(vm.state.value.isSendingTestReport)
+    }
+
+    @Test
+    fun `sendTestReport treats nothing sent as a failure, not a success`() = runTest {
+        // Reporting switched off in this build. Showing "sent" here would be the one lie this
+        // button exists to prevent.
+        vm.testReportSender = { null }
+
+        vm.sendTestReport()
+
+        assertNull(vm.state.value.testReportId)
+        assertTrue(vm.state.value.testReportFailed)
+    }
+
+    @Test
+    fun `sendTestReport survives a throwing sdk`() = runTest {
+        vm.testReportSender = { throw RuntimeException("no network") }
+
+        vm.sendTestReport()
+
+        assertTrue(vm.state.value.testReportFailed)
+        assertFalse(vm.state.value.isSendingTestReport)
+    }
+
+    @Test
+    fun `a second attempt clears the result of the first`() = runTest {
+        vm.testReportSender = { "first" }
+        vm.sendTestReport()
+        assertEquals("first", vm.state.value.testReportId)
+
+        vm.testReportSender = { null }
+        vm.sendTestReport()
+
+        assertNull(vm.state.value.testReportId)
+    }
+
 }

@@ -1,8 +1,12 @@
 package com.hivepulse.app.monitoring
 
 import android.content.Context
+import io.sentry.Sentry
 import io.sentry.SentryLevel
+import io.sentry.protocol.SentryId
 import io.sentry.android.core.SentryAndroid
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * Crash reporting.
@@ -42,4 +46,31 @@ object CrashReporting {
     /** A DSN that is blank or still the placeholder means reporting stays off. */
     fun isConfigured(dsn: String?): Boolean =
         !dsn.isNullOrBlank() && dsn != "null" && dsn.startsWith("http")
+
+    /**
+     * Sends one deliberate report and waits for it to leave the device.
+     *
+     * An empty crash reporting channel looks exactly like a healthy one — in both cases
+     * nothing arrives. This is the only way to tell the difference from a real phone, and
+     * the only reason this is reachable from the settings screen at all.
+     *
+     * Returns the Sentry event id, or null when reporting is off or the send failed, so the
+     * screen can say which of the two happened rather than claiming success.
+     */
+    suspend fun sendTestReport(): String? = withContext(Dispatchers.IO) {
+        if (!Sentry.isEnabled()) return@withContext null
+
+        val id = Sentry.captureException(
+            CrashReportingSelfTest("Crash reporting self-test from the Android app — safe to resolve"),
+        )
+        // The id comes back before the report is on the wire; without the flush, backgrounding
+        // the app right after tapping could discard it and we would report a false success.
+        Sentry.flush(FLUSH_TIMEOUT_MS)
+        if (id == SentryId.EMPTY_ID) null else id.toString()
+    }
+
+    private const val FLUSH_TIMEOUT_MS = 5_000L
 }
+
+/** Marks the self-test so it groups separately from real crashes and can be resolved as a batch. */
+class CrashReportingSelfTest(message: String) : Exception(message)

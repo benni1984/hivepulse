@@ -1,6 +1,8 @@
 package com.hivepulse.app.monitoring
 
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -32,6 +34,14 @@ class CrashReportingTest {
     fun `something that is not a dsn keeps reporting off`() {
         assertFalse(CrashReporting.isConfigured("your-dsn-here"))
         assertFalse(CrashReporting.isConfigured("sentry.io/42"))
+    }
+
+    @Test
+    fun `the test report says nothing was sent when reporting is off`() = runTest {
+        // The SDK is never started in the test suite, so this is the state a build without a
+        // DSN is in. Reporting null here is what lets the settings screen say "switched off"
+        // instead of showing a success it cannot back up.
+        assertNull(CrashReporting.sendTestReport())
     }
 
     @Test
