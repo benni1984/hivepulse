@@ -120,6 +120,13 @@ jobs:
             || { echo "Bundle carries no signature block" >&2; exit 1; }
           ls -lh "$bundle" >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Confirm the native libraries support 16 KB pages
+        run: |
+          # Play only reports this after the upload, in the bundle explorer, where it is easy
+          # to miss — 1.0.0 (3) reached Google's review with a 4 KB CameraX library.
+          python3 scripts/check_16kb_alignment.py \
+            android/app/build/outputs/bundle/release/app-release.aab
+
       - uses: actions/upload-artifact@v4
         with:
           name: hivepulse-${{ inputs.version_name }}-${{ steps.version.outputs.code }}-aab
