@@ -81,4 +81,31 @@ class TranslationCompletenessTest {
             }
         assertEquals("hardcoded English in the UI: $offenders", emptyList<String>(), offenders)
     }
+
+    @Test
+    fun `the colony mood is looked up, never printed raw`() {
+        // The hive detail list and the inspection detail both rendered the stored API value
+        // with a capital letter, so a German beekeeper read "Calm" and "Nervous" between
+        // "Kontrollen" and "Stark". The strings had existed in all four languages the whole
+        // time — nothing looked them up. check_i18n.py cannot see this: the keys are present,
+        // they are simply unused.
+        val moods = listOf("calm", "nervous", "aggressive")
+        val resources = moods.map { com.hivepulse.app.ui.inspections.moodLabelRes(it) }
+        assertEquals("each mood needs its own string", moods.size, resources.toSet().size)
+
+        val offenders = File("src/main/java/com/hivepulse/app/ui").walkTopDown()
+            .filter { it.extension == "kt" }
+            .filter { file ->
+                file.readLines().any { line ->
+                    line.contains("mood", ignoreCase = true) &&
+                        (line.contains("replaceFirstChar") || line.contains(".uppercase()"))
+                }
+            }
+            .map { it.name }
+            .toList()
+
+        assertEquals("these screens print the raw mood instead of the translation",
+                     emptyList<String>(), offenders)
+    }
+
 }

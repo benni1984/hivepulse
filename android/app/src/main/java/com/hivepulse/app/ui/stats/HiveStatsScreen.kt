@@ -19,6 +19,7 @@ import com.hivepulse.app.data.api.HiveStats
 import com.hivepulse.app.data.api.TrendPoint
 import com.hivepulse.app.data.repository.StatsRepository
 import com.hivepulse.app.ui.common.ErrorBanner
+import com.hivepulse.app.ui.inspections.moodLabelRes
 import com.hivepulse.app.ui.common.LoadingScreen
 import com.hivepulse.app.ui.common.SimpleLineChart
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -149,7 +150,7 @@ private fun StatsContent(s: HiveStats) {
         Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 s.moodDistribution.forEach { (mood, cnt) ->
-                    StatRow(mood.replaceFirstChar { it.uppercase() }, "$cnt")
+                    StatRow(stringResource(moodLabelRes(mood)), "$cnt")
                 }
             }
         }

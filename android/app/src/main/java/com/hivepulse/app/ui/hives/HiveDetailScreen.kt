@@ -33,6 +33,7 @@ import com.hivepulse.app.ui.common.ErrorBanner
 import com.hivepulse.app.ui.common.InfoRow
 import com.hivepulse.app.ui.common.LoadingScreen
 import com.hivepulse.app.ui.common.SectionHeader
+import com.hivepulse.app.ui.inspections.moodLabelRes
 import com.hivepulse.app.ui.inspections.varroaLabelRes
 import com.hivepulse.app.ui.theme.Amber500
 import com.hivepulse.app.ui.theme.Stone200
@@ -265,9 +266,10 @@ fun InspectionListItem(insp: InspectionOut, onClick: () -> Unit, onDelete: (() -
                     }
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    // The string resources carry the emoji, so the mood reads in the user's
+                    // language instead of the API's.
                     insp.mood?.let {
-                        val emoji = when (it) { "calm" -> "😌"; "nervous" -> "😤"; "aggressive" -> "😡"; else -> "" }
-                        Text("$emoji ${it.replaceFirstChar { c -> c.uppercase() }}", style = MaterialTheme.typography.bodySmall)
+                        Text(stringResource(moodLabelRes(it)), style = MaterialTheme.typography.bodySmall)
                     }
                     insp.varroaLevel?.let { Text("🐛 ${stringResource(varroaLabelRes(it))}", style = MaterialTheme.typography.bodySmall) }
                     if (insp.queenSeen == true) Text("👑", style = MaterialTheme.typography.bodySmall)

@@ -82,7 +82,7 @@ fun InspectionDetailScreen(
             item {
                 Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
                     Column(Modifier.padding(16.dp)) {
-                        i.mood?.let               { InfoRow(stringResource(R.string.field_mood), it.replaceFirstChar { c -> c.uppercase() }) }
+                        i.mood?.let               { InfoRow(stringResource(R.string.field_mood), stringResource(moodLabelRes(it))) }
                         i.populationStrength?.let { InfoRow(stringResource(R.string.field_population_strength), stringResource(strengthLabelRes(it))) }
                         i.swarmCellsSeen?.let     { InfoRow(stringResource(R.string.field_swarm_cells_seen), if (it) "✓" else "✗") }
                         i.varroaLevel?.let        { InfoRow(stringResource(R.string.field_varroa_level), stringResource(varroaLabelRes(it))) }
