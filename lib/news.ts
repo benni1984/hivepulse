@@ -22,6 +22,28 @@ export function newsText(entry: NewsEntry, locale: string): NewsText {
 
 export const NEWS: NewsEntry[] = [
   {
+    date: '2026-10-04',
+    tag: 'fix',
+    text: {
+      en: {
+        title: 'No More Errors After a Quiet Hour',
+        body: 'If you had not used HivePulse for a while, the next thing you opened could fail with an error — an apiary that would not load, for no reason you could see. The server keeps a set of open lines to the database to answer quickly, and those lines were being closed from the other end while nothing was happening. The server now checks a line before it uses it and quietly opens a fresh one when needed. Nothing to do on your side; the apps simply stop failing on the first tap after a break.',
+      },
+      de: {
+        title: 'Keine Fehlermeldung mehr nach einer Pause',
+        body: 'Wer HivePulse eine Weile nicht benutzt hatte, bekam beim nächsten Öffnen womöglich eine Fehlermeldung — ein Bienenstand, der nicht lud, ohne erkennbaren Grund. Der Server hält offene Leitungen zur Datenbank, um schnell antworten zu können, und genau diese Leitungen wurden von der anderen Seite geschlossen, während nichts passierte. Jetzt prüft der Server eine Leitung, bevor er sie benutzt, und baut bei Bedarf still eine neue auf. Zu tun ist nichts: Die Apps hören einfach auf, beim ersten Tippen nach einer Pause zu scheitern.',
+      },
+      fr: {
+        title: "Plus d'erreur après une pause",
+        body: "Si vous n'aviez pas utilisé HivePulse depuis un moment, la page suivante pouvait échouer avec une erreur — un rucher qui refusait de charger, sans raison visible. Le serveur garde des lignes ouvertes vers la base de données pour répondre vite, et ce sont ces lignes qui étaient fermées de l'autre côté pendant que rien ne se passait. Le serveur vérifie désormais une ligne avant de s'en servir et en ouvre discrètement une nouvelle si besoin. Rien à faire de votre côté : les applications cessent simplement d'échouer à la première touche après une pause.",
+      },
+      es: {
+        title: 'Sin errores después de un rato sin usarla',
+        body: 'Si llevabas un tiempo sin usar HivePulse, lo siguiente que abrías podía fallar con un error — un colmenar que no cargaba, sin motivo aparente. El servidor mantiene líneas abiertas hacia la base de datos para responder rápido, y justo esas líneas se cerraban desde el otro lado mientras no pasaba nada. Ahora el servidor comprueba una línea antes de usarla y abre otra nueva sin hacer ruido cuando hace falta. No hay nada que hacer por tu parte: las aplicaciones dejan de fallar en el primer toque tras una pausa.',
+      },
+    },
+  },
+  {
     date: '2026-10-02',
     tag: 'release',
     text: {
