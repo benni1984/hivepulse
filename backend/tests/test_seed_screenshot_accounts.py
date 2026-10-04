@@ -154,3 +154,36 @@ def test_running_it_twice_changes_nothing(seeded):
     )
     # Seeding runs on every staging refresh; a second run must not double the data.
     assert before == after
+
+
+def test_the_capture_workflow_signs_in_with_the_password_the_seed_sets():
+    """Drift between these two is invisible until four emulator runs fail at once.
+
+    It happened: the workflow pointed at STAGING_DEMO_PASSWORD, the seed wrote its own
+    literal, and every language failed with "login failed" while the accounts were fine.
+    """
+    import yaml
+
+    seed = importlib.import_module("scripts.seed_staging")
+    workflow = yaml.safe_load(
+        (BACKEND.parent / ".github/workflows/android-store-screenshots.yml").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    # Read the parsed value, not the file text: the first attempt at this test matched the
+    # comment that explains why STAGING_DEMO_PASSWORD is not used.
+    capture = next(
+        step for step in workflow["jobs"]["capture"]["steps"]
+        if step.get("name") == "Capture"
+    )
+    environment = capture["env"]
+
+    assert environment["DEMO_PASSWORD"] == seed.SCREENSHOT_PASSWORD, (
+        f"the workflow signs in with {environment['DEMO_PASSWORD']!r} but the seed writes "
+        f"{seed.SCREENSHOT_PASSWORD!r}"
+    )
+    assert "screenshots-" in environment["DEMO_EMAIL"], (
+        "the capture must use the screenshot accounts, not the demo account the E2E suite "
+        "fills with its leftovers"
+    )
