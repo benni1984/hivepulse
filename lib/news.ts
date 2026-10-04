@@ -26,20 +26,20 @@ export const NEWS: NewsEntry[] = [
     tag: 'fix',
     text: {
       en: {
-        title: 'No More Errors After a Quiet Hour',
-        body: 'If you had not used HivePulse for a while, the next thing you opened could fail with an error — an apiary that would not load, for no reason you could see. The server keeps a set of open lines to the database to answer quickly, and those lines were being closed from the other end while nothing was happening. The server now checks a line before it uses it and quietly opens a fresh one when needed. Nothing to do on your side; the apps simply stop failing on the first tap after a break.',
+        title: 'A Fault Found Before Anyone Ran Into It',
+        body: 'The server keeps a set of open lines to the database so it can answer quickly. Those lines were being closed from the other end during quiet spells, and the server did not notice — so the first request after a break could fail with an error, an apiary that simply would not load. Our own monitoring caught it in the test system before any beekeeper met it. The server now checks a line before it uses it and quietly opens a fresh one when needed. Nothing to do on your side.',
       },
       de: {
-        title: 'Keine Fehlermeldung mehr nach einer Pause',
-        body: 'Wer HivePulse eine Weile nicht benutzt hatte, bekam beim nächsten Öffnen womöglich eine Fehlermeldung — ein Bienenstand, der nicht lud, ohne erkennbaren Grund. Der Server hält offene Leitungen zur Datenbank, um schnell antworten zu können, und genau diese Leitungen wurden von der anderen Seite geschlossen, während nichts passierte. Jetzt prüft der Server eine Leitung, bevor er sie benutzt, und baut bei Bedarf still eine neue auf. Zu tun ist nichts: Die Apps hören einfach auf, beim ersten Tippen nach einer Pause zu scheitern.',
+        title: 'Ein Fehler, gefunden bevor jemand hineinlief',
+        body: 'Der Server hält offene Leitungen zur Datenbank, um schnell antworten zu können. Diese Leitungen wurden in ruhigen Zeiten von der anderen Seite geschlossen, ohne dass der Server es merkte — die erste Anfrage nach einer Pause konnte deshalb mit einer Fehlermeldung enden, ein Bienenstand, der einfach nicht lud. Unsere eigene Überwachung hat das im Testsystem gefunden, bevor ein Imker darauf gestoßen ist. Jetzt prüft der Server eine Leitung, bevor er sie benutzt, und baut bei Bedarf still eine neue auf. Zu tun ist nichts.',
       },
       fr: {
-        title: "Plus d'erreur après une pause",
-        body: "Si vous n'aviez pas utilisé HivePulse depuis un moment, la page suivante pouvait échouer avec une erreur — un rucher qui refusait de charger, sans raison visible. Le serveur garde des lignes ouvertes vers la base de données pour répondre vite, et ce sont ces lignes qui étaient fermées de l'autre côté pendant que rien ne se passait. Le serveur vérifie désormais une ligne avant de s'en servir et en ouvre discrètement une nouvelle si besoin. Rien à faire de votre côté : les applications cessent simplement d'échouer à la première touche après une pause.",
+        title: "Une panne trouvée avant que personne ne la rencontre",
+        body: "Le serveur garde des lignes ouvertes vers la base de données pour répondre vite. Ces lignes étaient fermées de l'autre côté pendant les périodes calmes, sans que le serveur s'en aperçoive : la première requête après une pause pouvait donc échouer avec une erreur, un rucher qui refusait tout simplement de charger. Notre propre surveillance l'a détectée dans le système de test avant qu'un apiculteur ne la rencontre. Le serveur vérifie désormais une ligne avant de s'en servir et en ouvre discrètement une nouvelle si besoin. Rien à faire de votre côté.",
       },
       es: {
-        title: 'Sin errores después de un rato sin usarla',
-        body: 'Si llevabas un tiempo sin usar HivePulse, lo siguiente que abrías podía fallar con un error — un colmenar que no cargaba, sin motivo aparente. El servidor mantiene líneas abiertas hacia la base de datos para responder rápido, y justo esas líneas se cerraban desde el otro lado mientras no pasaba nada. Ahora el servidor comprueba una línea antes de usarla y abre otra nueva sin hacer ruido cuando hace falta. No hay nada que hacer por tu parte: las aplicaciones dejan de fallar en el primer toque tras una pausa.',
+        title: 'Un fallo encontrado antes de que nadie se topara con él',
+        body: 'El servidor mantiene líneas abiertas hacia la base de datos para responder rápido. Esas líneas se cerraban desde el otro lado durante los ratos tranquilos, sin que el servidor se diera cuenta: la primera petición tras una pausa podía fallar con un error, un colmenar que simplemente no cargaba. Nuestra propia supervisión lo detectó en el sistema de pruebas antes de que ningún apicultor se topara con él. Ahora el servidor comprueba una línea antes de usarla y abre otra nueva sin hacer ruido cuando hace falta. No hay nada que hacer por tu parte.',
       },
     },
   },
