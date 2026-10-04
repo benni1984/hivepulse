@@ -22,6 +22,7 @@ from passlib.context import CryptContext
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
+from app.utils.scales import varroa_level_from_count
 from app.models import (
     Base, User, Apiary, Hive, Inspection, QrBatch, QrToken,
     HornetCatch, HornetNest, HornetSighting, HornetTrap, HornetTrapCatch,
@@ -392,6 +393,10 @@ def seed_screenshot_visits(db: Session, hive: Hive, notes: list):
             brood_frames=brood,
             honey_frames=honey,
             varroa_count=varroa,
+            # The router derives this from the count when an inspection comes through the
+            # API; this script writes straight to the database and has to do it itself, or
+            # the hive list shows no varroa reading at all. Same helper, so the two agree.
+            varroa_level=varroa_level_from_count(varroa),
             mood=mood,
             notes=notes[position % len(notes)] if position < 3 else None,
             created_at=_ago(days_ago),

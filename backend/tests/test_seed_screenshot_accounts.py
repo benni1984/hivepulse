@@ -102,6 +102,10 @@ def test_the_most_recent_visit_shows_a_colony_worth_keeping(seeded):
     assert newest.varroa_count <= 2
     assert newest.brood_frames >= 6
     assert newest.notes, "the top row is the one a reader actually reads"
+    # Derived by the API router for inspections that arrive through it; the seed writes
+    # straight to the database, so without this the hive list shows no varroa reading.
+    assert newest.varroa_level is not None
+    assert newest.varroa_level <= 1, "a listing should not open on a mite warning"
 
 
 def test_the_visits_are_the_same_every_run(seeded):
