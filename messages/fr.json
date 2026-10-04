@@ -536,7 +536,9 @@
         "crashOff": "Aucun service de rapports n'est configuré, rien n'a été envoyé.",
         "crashFailed": "Le test n'a pas pu être exécuté.",
         "crashDiagnosis": "Détail technique : la clé compte {settingsChars} caractères dans la configuration et {envChars} dans l'environnement du processus. Deux zéros signifient que la plateforme d'hébergement ne l'a jamais transmise au serveur.",
-        "defaultSigningKey": "Avertissement : ce serveur signe les connexions avec la clé par défaut publique du code source. Quiconque la connaît peut forger un jeton pour n'importe quel compte. Définissez une vraie valeur SECRET_KEY dans l'environnement d'hébergement."
+        "defaultSigningKey": "Avertissement : ce serveur signe les connexions avec la clé par défaut publique du code source. Quiconque la connaît peut forger un jeton pour n'importe quel compte. Définissez une vraie valeur SECRET_KEY dans l'environnement d'hébergement.",
+        "pushAndroidMissing": "Le push Android n'est pas configuré : les rappels n'atteignent aucun téléphone Android. Il faut FIREBASE_PROJECT_ID et FIREBASE_SERVICE_ACCOUNT_JSON dans l'environnement d'hébergement.",
+        "pushIosMissing": "Le push iPhone n'est pas configuré : les rappels n'atteignent aucun iPhone. Il faut APNS_KEY_ID, APNS_TEAM_ID et APNS_PRIVATE_KEY_P8 dans l'environnement d'hébergement."
       }
     },
     "apiaries": {

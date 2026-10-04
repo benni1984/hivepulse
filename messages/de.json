@@ -536,7 +536,9 @@
         "crashOff": "Es ist keine Absturzmeldung eingerichtet, es wurde nichts gesendet.",
         "crashFailed": "Der Test konnte nicht ausgeführt werden.",
         "crashDiagnosis": "Technisches Detail: Der Schlüssel hat {settingsChars} Zeichen in der Konfiguration und {envChars} in der Prozessumgebung. Zweimal null bedeutet, dass die Hosting-Plattform ihn nie an den Server weitergegeben hat.",
-        "defaultSigningKey": "Warnung: Dieser Server signiert Anmeldungen mit dem öffentlichen Standardschlüssel aus dem Quelltext. Wer ihn kennt, kann einen Token für jedes Konto fälschen. Setze einen echten SECRET_KEY in der Hosting-Umgebung."
+        "defaultSigningKey": "Warnung: Dieser Server signiert Anmeldungen mit dem öffentlichen Standardschlüssel aus dem Quelltext. Wer ihn kennt, kann einen Token für jedes Konto fälschen. Setze einen echten SECRET_KEY in der Hosting-Umgebung.",
+        "pushAndroidMissing": "Android-Push ist nicht eingerichtet: Erinnerungen erreichen kein Android-Telefon. Dafür braucht es FIREBASE_PROJECT_ID und FIREBASE_SERVICE_ACCOUNT_JSON in der Hosting-Umgebung.",
+        "pushIosMissing": "iPhone-Push ist nicht eingerichtet: Erinnerungen erreichen kein iPhone. Dafür braucht es APNS_KEY_ID, APNS_TEAM_ID und APNS_PRIVATE_KEY_P8 in der Hosting-Umgebung."
       }
     },
     "apiaries": {

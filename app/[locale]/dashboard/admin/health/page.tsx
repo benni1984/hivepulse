@@ -182,10 +182,22 @@ function ConfigurationWarnings() {
     adminGetConfigurationHealth().then(setConfig).catch(() => {});
   }, [ready]);
 
-  if (!config?.signing_key_is_the_public_default) return null;
+  if (!config) return null;
+
+  const notices: string[] = [];
+  if (config.signing_key_is_the_public_default) notices.push(t('admin.health.defaultSigningKey'));
+  // Push fails quietly without credentials, so its absence has to be said out loud.
+  if (!config.push_android_configured) notices.push(t('admin.health.pushAndroidMissing'));
+  if (!config.push_ios_configured) notices.push(t('admin.health.pushIosMissing'));
+
+  if (notices.length === 0) return null;
 
   return (
-    <p className="dash-admin-config-warning">{t('admin.health.defaultSigningKey')}</p>
+    <>
+      {notices.map((notice, i) => (
+        <p key={i} className="dash-admin-config-warning">{notice}</p>
+      ))}
+    </>
   );
 }
 

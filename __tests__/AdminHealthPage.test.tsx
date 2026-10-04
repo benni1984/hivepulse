@@ -41,7 +41,7 @@ describe('AdminHealthPage', () => {
     mockAdminGetInactiveUsers.mockResolvedValue({ items: [], total: 0, page: 1, per_page: 20, pages: 1 });
     mockAdminGetNoVarroaApiaries.mockResolvedValue([]);
     mockAdminGetZeroInspectionHives.mockResolvedValue([]);
-    mockAdminGetConfigurationHealth.mockResolvedValue({ environment: 'production', signing_key_is_the_public_default: false, crash_reporting_configured: true });
+    mockAdminGetConfigurationHealth.mockResolvedValue({ environment: 'production', signing_key_is_the_public_default: false, crash_reporting_configured: true, push_android_configured: true, push_ios_configured: true });
     mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: true, event_id: 'abc123', environment: 'production', release: '', diagnosis: { dsn_characters_in_settings: 97, dsn_characters_in_process_env: 97 } });
   });
 
@@ -93,7 +93,7 @@ describe('AdminHealthPage crash reporting self-test', () => {
     mockAdminGetInactiveUsers.mockResolvedValue({ items: [], total: 0, page: 1, per_page: 20, pages: 1 });
     mockAdminGetNoVarroaApiaries.mockResolvedValue([]);
     mockAdminGetZeroInspectionHives.mockResolvedValue([]);
-    mockAdminGetConfigurationHealth.mockResolvedValue({ environment: 'production', signing_key_is_the_public_default: false, crash_reporting_configured: true });
+    mockAdminGetConfigurationHealth.mockResolvedValue({ environment: 'production', signing_key_is_the_public_default: false, crash_reporting_configured: true, push_android_configured: true, push_ios_configured: true });
     mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: true, event_id: 'abc123', environment: 'production', release: '', diagnosis: { dsn_characters_in_settings: 97, dsn_characters_in_process_env: 97 } });
   });
 
@@ -111,7 +111,7 @@ describe('AdminHealthPage crash reporting self-test', () => {
   });
 
   it('says plainly when no reporter is configured', async () => {
-    mockAdminGetConfigurationHealth.mockResolvedValue({ environment: 'production', signing_key_is_the_public_default: false, crash_reporting_configured: true });
+    mockAdminGetConfigurationHealth.mockResolvedValue({ environment: 'production', signing_key_is_the_public_default: false, crash_reporting_configured: true, push_android_configured: true, push_ios_configured: true });
     mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: false, event_id: null, environment: 'development', release: '', diagnosis: { dsn_characters_in_settings: 0, dsn_characters_in_process_env: 0 } });
     render(<AdminHealthPage />);
     fireEvent.click(await screen.findByText('admin.health.crashButton'));
@@ -136,7 +136,7 @@ describe('AdminHealthPage crash reporting diagnosis', () => {
   });
 
   it('explains why nothing was sent', async () => {
-    mockAdminGetConfigurationHealth.mockResolvedValue({ environment: 'production', signing_key_is_the_public_default: false, crash_reporting_configured: true });
+    mockAdminGetConfigurationHealth.mockResolvedValue({ environment: 'production', signing_key_is_the_public_default: false, crash_reporting_configured: true, push_android_configured: true, push_ios_configured: true });
     mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: false, event_id: null, environment: 'production', release: '', diagnosis: { dsn_characters_in_settings: 0, dsn_characters_in_process_env: 0 } });
     render(<AdminHealthPage />);
     fireEvent.click(await screen.findByText('admin.health.crashButton'));
@@ -144,7 +144,7 @@ describe('AdminHealthPage crash reporting diagnosis', () => {
   });
 
   it('keeps the diagnosis out of the way when reporting works', async () => {
-    mockAdminGetConfigurationHealth.mockResolvedValue({ environment: 'production', signing_key_is_the_public_default: false, crash_reporting_configured: true });
+    mockAdminGetConfigurationHealth.mockResolvedValue({ environment: 'production', signing_key_is_the_public_default: false, crash_reporting_configured: true, push_android_configured: true, push_ios_configured: true });
     mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: true, event_id: 'abc123', environment: 'production', release: '', diagnosis: { dsn_characters_in_settings: 97, dsn_characters_in_process_env: 97 } });
     render(<AdminHealthPage />);
     fireEvent.click(await screen.findByText('admin.health.crashButton'));
@@ -164,13 +164,13 @@ describe('AdminHealthPage configuration warning', () => {
   });
 
   it('warns when logins are signed with the published default key', async () => {
-    mockAdminGetConfigurationHealth.mockResolvedValue({ environment: 'production', signing_key_is_the_public_default: true, crash_reporting_configured: true });
+    mockAdminGetConfigurationHealth.mockResolvedValue({ environment: 'production', signing_key_is_the_public_default: true, crash_reporting_configured: true, push_android_configured: true, push_ios_configured: true });
     render(<AdminHealthPage />);
     await waitFor(() => expect(screen.getByText('admin.health.defaultSigningKey')).toBeInTheDocument());
   });
 
   it('stays silent when the key is a real one', async () => {
-    mockAdminGetConfigurationHealth.mockResolvedValue({ environment: 'production', signing_key_is_the_public_default: false, crash_reporting_configured: true });
+    mockAdminGetConfigurationHealth.mockResolvedValue({ environment: 'production', signing_key_is_the_public_default: false, crash_reporting_configured: true, push_android_configured: true, push_ios_configured: true });
     render(<AdminHealthPage />);
     await waitFor(() => expect(screen.getByText('admin.health.title')).toBeInTheDocument());
     expect(screen.queryByText('admin.health.defaultSigningKey')).toBeNull();
@@ -181,5 +181,42 @@ describe('AdminHealthPage configuration warning', () => {
     render(<AdminHealthPage />);
     await waitFor(() => expect(screen.getByText('admin.health.title')).toBeInTheDocument());
     expect(screen.queryByText('admin.health.defaultSigningKey')).toBeNull();
+  });
+});
+
+describe('AdminHealthPage push configuration', () => {
+  beforeEach(() => {
+    mockUseDashboardAuth.mockReturnValue({ user: mockAdmin, loading: false });
+    mockAdminGetHealthSummary.mockResolvedValue(mockSummary);
+    mockAdminGetInactiveUsers.mockResolvedValue({ items: [], total: 0, page: 1, per_page: 20, pages: 1 });
+    mockAdminGetNoVarroaApiaries.mockResolvedValue([]);
+    mockAdminGetZeroInspectionHives.mockResolvedValue([]);
+    mockAdminSelfTestError.mockResolvedValue({ reporting_enabled: true, event_id: 'abc123', environment: 'production', release: '', diagnosis: { dsn_characters_in_settings: 97, dsn_characters_in_process_env: 97 } });
+  });
+
+  it('says so when iPhone push has no credentials', async () => {
+    // Push fails quietly on the server, so the absence has to be visible somewhere.
+    mockAdminGetConfigurationHealth.mockResolvedValue({
+      environment: 'production', signing_key_is_the_public_default: false,
+      crash_reporting_configured: true, push_android_configured: true, push_ios_configured: false,
+    });
+
+    render(<AdminHealthPage />);
+
+    await waitFor(() => expect(screen.getByText('admin.health.pushIosMissing')).toBeInTheDocument());
+    expect(screen.queryByText('admin.health.pushAndroidMissing')).toBeNull();
+  });
+
+  it('stays quiet when both channels are configured', async () => {
+    mockAdminGetConfigurationHealth.mockResolvedValue({
+      environment: 'production', signing_key_is_the_public_default: false,
+      crash_reporting_configured: true, push_android_configured: true, push_ios_configured: true,
+    });
+
+    render(<AdminHealthPage />);
+
+    await waitFor(() => expect(screen.getByText('admin.health.title')).toBeInTheDocument());
+    expect(screen.queryByText('admin.health.pushIosMissing')).toBeNull();
+    expect(screen.queryByText('admin.health.pushAndroidMissing')).toBeNull();
   });
 });

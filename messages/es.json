@@ -536,7 +536,9 @@
         "crashOff": "No hay ningún servicio de informes configurado, no se envió nada.",
         "crashFailed": "No se pudo ejecutar la prueba.",
         "crashDiagnosis": "Detalle técnico: la clave tiene {settingsChars} caracteres en la configuración y {envChars} en el entorno del proceso. Dos ceros significan que la plataforma de alojamiento nunca se la pasó al servidor.",
-        "defaultSigningKey": "Advertencia: este servidor firma los inicios de sesión con la clave predeterminada pública del código fuente. Quien la conozca puede falsificar un token de cualquier cuenta. Define un SECRET_KEY real en el entorno de alojamiento."
+        "defaultSigningKey": "Advertencia: este servidor firma los inicios de sesión con la clave predeterminada pública del código fuente. Quien la conozca puede falsificar un token de cualquier cuenta. Define un SECRET_KEY real en el entorno de alojamiento.",
+        "pushAndroidMissing": "El push de Android no está configurado: los recordatorios no llegan a ningún teléfono Android. Hacen falta FIREBASE_PROJECT_ID y FIREBASE_SERVICE_ACCOUNT_JSON en el entorno de alojamiento.",
+        "pushIosMissing": "El push de iPhone no está configurado: los recordatorios no llegan a ningún iPhone. Hacen falta APNS_KEY_ID, APNS_TEAM_ID y APNS_PRIVATE_KEY_P8 en el entorno de alojamiento."
       }
     },
     "apiaries": {
