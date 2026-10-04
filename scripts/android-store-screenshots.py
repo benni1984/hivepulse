@@ -106,7 +106,10 @@ def screenshot(name: str) -> Path:
         out = OUT_DIR / f"{name}.png"
         flattened.save(out, "PNG")
     raw.unlink()
-    print(f"  saved {out.relative_to(REPO)} ({width}x{height})", flush=True)
+    # Not relative_to(REPO): SCREENSHOT_DIR is usually a relative path, and the resulting
+    # ValueError was thrown *after* the image was saved — losing every later capture in the
+    # same step to an error about a log line.
+    print(f"  saved {out} ({width}x{height})", flush=True)
     return out
 
 
@@ -224,8 +227,10 @@ def capture_hive_stats():
 
 def capture_inspection_form():
     A.wait_for(S("section_inspections"), timeout=20)
-    A.tap_node(A.get_ui_dump(), text=S("action_new_inspection"))
-    time.sleep(2.5)
+    # A content description, not a text node — the extended button carries its label there.
+    A.tap_node(A.get_ui_dump(), content_desc=S("action_new_inspection"))
+    A.wait_for(S("section_date"), timeout=20)
+    time.sleep(1.5)
     screenshot("4-inspection-form")
     # The glove-friendly tap grid is the thing that sets this app apart at the hive, and it
     # sits below the fold.
@@ -260,8 +265,12 @@ def capture_qr_batches():
 def capture_settings():
     back_to_apiaries()
     A.wait_for(S("screen_apiaries"), timeout=20)
-    A.tap_node(A.get_ui_dump(), content_desc=S("tab_settings"))
-    A.wait_for(S("screen_settings"), timeout=20)
+    # The bottom bar item carries a text label, not a content description.
+    A.tap_node(A.get_ui_dump(), text=S("tab_settings"))
+    # Not the screen title: the same word labels the bottom bar and is on screen everywhere,
+    # so waiting for it would photograph whatever happened to be showing. Wait for a field
+    # only the settings screen has above the fold.
+    A.wait_for(S("field_display_name"), timeout=20)
     time.sleep(1)
     screenshot("7-settings")
     # Reminders are the reason a beekeeper comes back, and they are further down.
@@ -385,7 +394,10 @@ def main():
     print(f"\n{len(captured)} screenshots in {LANG}:", flush=True)
     for shot in captured:
         print(f"  {shot.name}", flush=True)
-    if not captured:
+    if len(captured) != 8:
+        # Half a set passed silently once already, because nothing counted them.
+        print(f"Expected 8 screenshots, got {len(captured)} — the listing needs all eight.",
+              flush=True)
         return 1
     if _reported_gaps:
         print(f"\nShown in English because {LANG} has no translation: "
