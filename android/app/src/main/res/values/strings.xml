@@ -410,4 +410,13 @@
     <string name="action_increase_weight">Increase weight</string>
     <string name="offline_pending_upload">Waiting to upload</string>
     <string name="offline_saved_locally">Recorded without a connection. It uploads by itself as soon as you are online.</string>
+
+    <!-- Diagnostics -->
+    <string name="section_diagnostics">Diagnostics</string>
+    <string name="diagnostics_version">Version %1$s (%2$d)</string>
+    <string name="action_send_test_report">Send test report</string>
+    <string name="diagnostics_test_report_sent">Arrived. Reference: %1$s</string>
+    <string name="diagnostics_test_report_failed">Did not go out. Crash reporting is not working in this version.</string>
+    <string name="diagnostics_reporting_off">Crash reporting is switched off in this version.</string>
+
 </resources>

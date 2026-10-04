@@ -92,6 +92,21 @@ final class SettingsUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 5))
     }
 
+    // MARK: - Diagnostics
+
+    func test_settings_showsDiagnosticsSection() {
+        XCTAssertTrue(scrollDownUntilVisible(app.staticTexts["Diagnostics"]))
+    }
+
+    func test_settings_saysReportingIsOffWithoutADsn() {
+        // The simulator build carries no DSN, so the section must say so rather than offer a
+        // button that would silently do nothing.
+        XCTAssertTrue(scrollDownUntilVisible(
+            app.staticTexts["Crash reporting is switched off in this version."]
+        ))
+        XCTAssertFalse(app.buttons["sendTestReportButton"].exists)
+    }
+
     /// A full-velocity `swipeUp()` can scroll past a target that only needs a small nudge into
     /// view — how far varies by simulator screen size. `.slow` velocity produces a shorter,
     /// gentler scroll per call (less inertial coasting). The Settings `Form` is a lazy

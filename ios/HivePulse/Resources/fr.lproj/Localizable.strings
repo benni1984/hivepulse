@@ -410,3 +410,11 @@
 "screen.editHive" = "Modifier la ruche";
 "offline.pendingUpload" = "En attente d'envoi";
 "offline.savedLocally" = "Saisi sans connexion. L'envoi se fait tout seul dès que vous êtes en ligne.";
+
+/* Diagnostics */
+"diagnostics.title" = "Diagnostic";
+"diagnostics.version" = "Version %@ (%@)";
+"diagnostics.sendTestReport" = "Envoyer un rapport de test";
+"diagnostics.sent" = "Arrivé. Référence : %@";
+"diagnostics.failed" = "Rien n’est parti. Le rapport d’erreur ne fonctionne pas dans cette version.";
+"diagnostics.off" = "Le rapport d’erreur est désactivé dans cette version.";

@@ -21,7 +21,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.messaging.FirebaseMessaging
+import com.hivepulse.app.BuildConfig
 import com.hivepulse.app.R
+import com.hivepulse.app.monitoring.CrashReporting
 import com.hivepulse.app.ui.common.NumberStepper
 import com.hivepulse.app.ui.common.ToggleButtonGroup
 import com.hivepulse.app.data.api.ApiaryOut
@@ -52,7 +54,11 @@ data class SettingsState(
     val deleted: Boolean = false,
     val reminderSettings: ReminderSettingsOut? = null,
     val isSavingReminder: Boolean = false,
-    val reminderSaved: Boolean = false
+    val reminderSaved: Boolean = false,
+    val isSendingTestReport: Boolean = false,
+    /** Sentry's id for the test report, so it can be found again in the dashboard. */
+    val testReportId: String? = null,
+    val testReportFailed: Boolean = false
 )
 
 @HiltViewModel
@@ -140,6 +146,18 @@ class SettingsViewModel @Inject constructor(
     fun logout() = viewModelScope.launch {
         runCatching { repo.logout() }
         _state.update { it.copy(loggedOut = true) }
+    }
+
+    /** Swapped out in unit tests; the real one talks to the Sentry SDK. */
+    internal var testReportSender: suspend () -> String? = { CrashReporting.sendTestReport() }
+
+    fun sendTestReport() = viewModelScope.launch {
+        _state.update { it.copy(isSendingTestReport = true, testReportId = null, testReportFailed = false) }
+        runCatching { testReportSender() }
+            // A null id means reporting is switched off in this build, which is a failure to
+            // report honestly rather than a success with nothing to show.
+            .onSuccess { id -> _state.update { it.copy(isSendingTestReport = false, testReportId = id, testReportFailed = id == null) } }
+            .onFailure { _state.update { it.copy(isSendingTestReport = false, testReportFailed = true) } }
     }
 
     fun clearError() = _state.update { it.copy(error = null) }
@@ -535,6 +553,49 @@ fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(stringResource(R.string.action_show_tour))
+                }
+
+                // Diagnostics — the version a tester reads out, and proof that crash
+                // reporting actually leaves this device. Without the button, a silent
+                // reporting channel is indistinguishable from a healthy one.
+                Text(
+                    stringResource(R.string.section_diagnostics),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Text(
+                    stringResource(R.string.diagnostics_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE),
+                    style = MaterialTheme.typography.bodySmall
+                )
+                if (CrashReporting.isConfigured(BuildConfig.SENTRY_DSN)) {
+                    OutlinedButton(
+                        onClick  = { vm.sendTestReport() },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled  = !state.isSendingTestReport
+                    ) {
+                        if (state.isSendingTestReport)
+                            CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
+                        else
+                            Text(stringResource(R.string.action_send_test_report))
+                    }
+                    state.testReportId?.let { id ->
+                        Text(
+                            stringResource(R.string.diagnostics_test_report_sent, id),
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                    if (state.testReportFailed) {
+                        Text(
+                            stringResource(R.string.diagnostics_test_report_failed),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                } else {
+                    Text(
+                        stringResource(R.string.diagnostics_reporting_off),
+                        style = MaterialTheme.typography.bodySmall
+                    )
                 }
 
                 // Danger Zone

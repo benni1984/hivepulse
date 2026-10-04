@@ -39,6 +39,12 @@ struct SettingsView: View {
     @State private var shareItems: [Any] = []
     @State private var showShareSheet = false
 
+    // Diagnostics
+    @State private var isSendingTestReport = false
+    /// Sentry's id for the test report, so it can be found again in the dashboard.
+    @State private var testReportId: String?
+    @State private var testReportFailed = false
+
     private let locales = [("en", "English"), ("fr", "Français"), ("de", "Deutsch"), ("es", "Español")]
     private let apiaryService = ApiaryService()
     private let exportService = ExportService()
@@ -185,6 +191,45 @@ struct SettingsView: View {
                 .accessibilityIdentifier("showGuidedTourButton")
             }
 
+            // MARK: - Diagnostics
+            // The version a tester reads out, and proof that crash reporting actually leaves
+            // this iPhone. Without the button, a silent reporting channel is
+            // indistinguishable from a healthy one.
+            Section(NSLocalizedString("diagnostics.title", comment: "")) {
+                Text(String(format: NSLocalizedString("diagnostics.version", comment: ""), appVersion, appBuild))
+                    .font(.footnote)
+                    .foregroundStyle(Color.hpStone500)
+
+                if CrashReporting.isConfigured(Bundle.main.object(forInfoDictionaryKey: "SENTRY_DSN") as? String) {
+                    Button {
+                        Task { await sendTestReport() }
+                    } label: {
+                        HStack {
+                            if isSendingTestReport { ProgressView() }
+                            Label(NSLocalizedString("diagnostics.sendTestReport", comment: ""),
+                                  systemImage: "paperplane")
+                        }
+                    }
+                    .disabled(isSendingTestReport)
+                    .accessibilityIdentifier("sendTestReportButton")
+
+                    if let testReportId {
+                        Text(String(format: NSLocalizedString("diagnostics.sent", comment: ""), testReportId))
+                            .font(.footnote)
+                            .foregroundStyle(Color.hpStone500)
+                    }
+                    if testReportFailed {
+                        Text(NSLocalizedString("diagnostics.failed", comment: ""))
+                            .font(.footnote)
+                            .foregroundStyle(Color.hpRed)
+                    }
+                } else {
+                    Text(NSLocalizedString("diagnostics.off", comment: ""))
+                        .font(.footnote)
+                        .foregroundStyle(Color.hpStone500)
+                }
+            }
+
             // MARK: - Log Out
             Section {
                 Button(role: .destructive) {
@@ -307,6 +352,28 @@ struct SettingsView: View {
         isDeleting = true
         await authVM.deleteAccount()
         isDeleting = false
+    }
+
+    private var appVersion: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
+    }
+
+    private var appBuild: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "?"
+    }
+
+    private func sendTestReport() async {
+        isSendingTestReport = true
+        testReportId = nil
+        testReportFailed = false
+
+        let id = await CrashReporting.sendTestReport()
+
+        isSendingTestReport = false
+        // No id means reporting is off in this build, which is a failure to report honestly
+        // rather than a success with nothing to show.
+        testReportId = id
+        testReportFailed = id == nil
     }
 
     private func saveReminderSettings() async {

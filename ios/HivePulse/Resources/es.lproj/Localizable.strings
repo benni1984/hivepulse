@@ -410,3 +410,11 @@
 "screen.editHive" = "Editar colmena";
 "offline.pendingUpload" = "Pendiente de subir";
 "offline.savedLocally" = "Registrado sin conexión. Se sube solo en cuanto vuelvas a tener red.";
+
+/* Diagnostics */
+"diagnostics.title" = "Diagnóstico";
+"diagnostics.version" = "Versión %@ (%@)";
+"diagnostics.sendTestReport" = "Enviar informe de prueba";
+"diagnostics.sent" = "Ha llegado. Referencia: %@";
+"diagnostics.failed" = "No ha salido. El informe de errores no funciona en esta versión.";
+"diagnostics.off" = "El informe de errores está desactivado en esta versión.";

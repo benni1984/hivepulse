@@ -30,6 +30,14 @@ final class CrashReportingTests: XCTestCase {
         XCTAssertFalse(CrashReporting.start(dsn: ""))
     }
 
+    func test_theTestReportSaysNothingWasSentWhenReportingIsOff() async {
+        // The SDK is never started in the test suite, so this is the state a build without a
+        // DSN is in. Returning nil here is what lets the settings screen say "switched off"
+        // instead of showing a success it cannot back up.
+        let id = await CrashReporting.sendTestReport()
+        XCTAssertNil(id)
+    }
+
     func test_theReleaseNameIdentifiesTheBuild() {
         let release = CrashReporting.releaseName
         XCTAssertNotNil(release)
