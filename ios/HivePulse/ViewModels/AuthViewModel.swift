@@ -13,6 +13,10 @@ final class AuthViewModel: ObservableObject {
     /// Whether the server accepts Sign in with Apple. The button stays hidden until it says
     /// yes, so it can never offer a sign-in that would be refused on arrival.
     @Published var appleSignInAvailable = false
+    /// Google on the iPhone is about account continuity: somebody who signed in with Google
+    /// on Android must reach the same account here. Without it, hiding their address behind
+    /// Apple's relay would hand them a second, empty one.
+    @Published var googleSignInAvailable = false
 
     private let service: any AuthServiceProtocol
     private let onboarding: OnboardingStore
@@ -67,10 +71,27 @@ final class AuthViewModel: ObservableObject {
         isLoading = false
     }
 
+    /// Signs in with the identity token Google handed the app.
+    ///
+    /// No name is passed: Google puts it inside the token, so the server reads it there and
+    /// the client has nothing to hand over. Apple is the exception, not the rule.
+    func signInWithGoogle(identityToken: String) async {
+        isLoading = true
+        errorMessage = nil
+        do {
+            store(try await service.signInWithGoogle(idToken: identityToken))
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        isLoading = false
+    }
+
     /// Asks the server which sign-ins it accepts. Failure is silence: the password form is
     /// still there, and a button that cannot work is worse than no button.
     func loadSignInProviders() async {
-        appleSignInAvailable = (try? await service.signInProviders())?.apple != nil
+        let providers = try? await service.signInProviders()
+        appleSignInAvailable = providers?.apple != nil
+        googleSignInAvailable = providers?.google != nil
     }
 
     func logout() async {

@@ -423,3 +423,7 @@
 "label.or" = "ou";
 "action.signInWithEmail" = "Se connecter avec une adresse e-mail";
 "error.appleSignIn" = "Apple n’a transmis aucune connexion. Veuillez réessayer.";
+
+/* Sign in with Google */
+"action.continueWithGoogle" = "Continuer avec Google";
+"error.googleSignIn" = "Google n’a transmis aucune connexion. Veuillez réessayer.";
