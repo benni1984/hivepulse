@@ -1030,7 +1030,7 @@
     "joinAndroid": "Rejoindre le test Android",
     "joinIos": "Rejoindre le test iPhone",
     "notOpenYet": "Les sessions de test sont en préparation et les liens apparaîtront ici. Écrivez-nous et vous les recevrez dès qu'ils existent.",
-    "joinNote": "Il vous faut un compte Google pour Android ou un identifiant Apple pour l'iPhone — celui que votre téléphone utilise déjà. Pas d'inscription séparée, et vous pouvez arrêter à tout moment.",
+    "joinNote": "Pour participer, il vous faut un compte Google pour Android ou un identifiant Apple pour l'iPhone — celui que votre téléphone utilise déjà. Dans l'application, vous créez ensuite un compte HivePulse avec une adresse e-mail et un mot de passe ; cela prend une minute et c'est gratuit. Vous pouvez arrêter à tout moment.",
     "expectTitle": "Ce que cela implique",
     "expect1": "Installer l'application et créer un rucher avec quelques ruches. Un quart d'heure.",
     "expect2": "Saisir une visite lors de votre prochain passage aux ruches : c'est la partie qui doit faire ses preuves sur le terrain, gants compris.",
