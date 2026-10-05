@@ -471,6 +471,16 @@ jobs:
   # ── Deploy staging (push to main only, after the website quality gates) ──────
   deploy-staging:
     name: Deploy staging to Vercel
+    # Two merges in quick succession each start their own run, and nothing kept them in
+    # order: on 2026-10-05 the older commit's deploy landed 73 seconds after the newer one
+    # and overwrote it, so main's newest code sat undeployed while every check was green.
+    #
+    # Serialised, never cancelled: GitHub cancels by arrival, and here the *older* commit
+    # arrived second — cancelling would have thrown away the newer deploy. Queueing lets the
+    # guard in the deploy step decide, and it decides by commit.
+    concurrency:
+      group: deploy-staging
+      cancel-in-progress: false
     # Only what Vercel actually serves. The app jobs still run on every push, they just no
     # longer hold the website hostage: a failing Android test says nothing about whether
     # the site and the API are fit to deploy, and the iOS job alone takes 26 minutes.
@@ -527,7 +537,17 @@ jobs:
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: |
+          # main may have moved while this run waited its turn. Deploying now would put an
+          # older commit live and leave the newer one unpublished with every check green —
+          # which is exactly what happened once.
+          git fetch --quiet origin main
+          tip=$(git rev-parse origin/main)
+          if [ "$tip" != "$GITHUB_SHA" ]; then
+            echo "::notice::main is at ${tip:0:7}, this run is for ${GITHUB_SHA:0:7} — leaving the deploy to that run."
+            exit 0
+          fi
+          vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
 
   # ── E2E tests against live staging (push to main only) ───────────────────────
   e2e-staging:
@@ -571,6 +591,14 @@ jobs:
   # ── Deploy production (push to main only, after staging E2E gate passes) ──────
   deploy-production:
     name: Deploy production to Vercel
+    # Two merges in quick succession each start their own run, and nothing kept them in
+    # order: on 2026-10-05 the older commit's deploy landed 73 seconds after the newer one
+    # and overwrote it, so main's newest code sat undeployed while every check was green.
+    # One deploy at a time, and a newer run cancels an older one that is still going —
+    # the newest commit is the one that should win.
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
     needs: [changes, e2e-staging]
     if: >-
       (github.event_name == 'workflow_dispatch'
@@ -624,4 +652,14 @@ jobs:
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: |
+          # main may have moved while this run waited its turn. Deploying now would put an
+          # older commit live and leave the newer one unpublished with every check green —
+          # which is exactly what happened once.
+          git fetch --quiet origin main
+          tip=$(git rev-parse origin/main)
+          if [ "$tip" != "$GITHUB_SHA" ]; then
+            echo "::notice::main is at ${tip:0:7}, this run is for ${GITHUB_SHA:0:7} — leaving the deploy to that run."
+            exit 0
+          fi
+          vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
