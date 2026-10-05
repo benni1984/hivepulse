@@ -18,8 +18,9 @@ from app.rate_limit import enforce_rate_limit
 from app.schemas import (
     AccessTokenResponse, LoginRequest, LogoutRequest,
     RefreshRequest, RegisterRequest, TokenResponse, UserOut,
-    CISetupRequest, ForgotPasswordRequest, ResetPasswordRequest,
+    CISetupRequest, ForgotPasswordRequest, ResetPasswordRequest, SocialSignInRequest,
 )
+from app.utils import social_identity
 
 # A bcrypt hash of an unguessable placeholder — used to run a real bcrypt
 # verify (and burn the same ~100ms) even when the email doesn't exist, so
@@ -86,6 +87,60 @@ def register(
     )
 
 
+@router.post("/social", response_model=TokenResponse)
+def social_sign_in(
+    body: SocialSignInRequest,
+    request: Request,
+    db: Session = Depends(get_db),
+    accept_language: Optional[str] = Header(default=None),
+):
+    """Sign in with an Apple or Google identity token, creating the account on first use."""
+    enforce_rate_limit(db, request, "social_sign_in", limit=10, window_minutes=5)
+
+    try:
+        identity = social_identity.verify(body.provider, body.id_token)
+    except social_identity.ProviderUnconfigured:
+        raise HTTPException(503, detail=error("SOCIAL_SIGN_IN_UNCONFIGURED", accept_language))
+    except social_identity.IdentityError as failure:
+        # The reason belongs in the log, not in the response: it would tell an attacker which
+        # part of a forged token to fix next.
+        logger.info("Rejected %s identity token: %s", body.provider, failure)
+        raise HTTPException(401, detail=error("INVALID_IDENTITY_TOKEN", accept_language))
+
+    column = User.apple_sub if identity.provider == "apple" else User.google_sub
+    user = db.query(User).filter(column == identity.subject).first()
+
+    if user is None and identity.email:
+        # A known address may claim its account, but only when the provider vouches for it.
+        # Without that check, anybody able to register an unverified address at either
+        # provider could walk into a stranger's hives.
+        if not identity.email_verified:
+            raise HTTPException(401, detail=error("EMAIL_NOT_VERIFIED", accept_language))
+        user = db.query(User).filter(User.email == identity.email).first()
+        if user is not None:
+            setattr(user, f"{identity.provider}_sub", identity.subject)
+
+    if user is None:
+        if not identity.email:
+            raise HTTPException(401, detail=error("EMAIL_NOT_VERIFIED", accept_language))
+        user = User(
+            email=identity.email,
+            hashed_password=None,  # there is no password to this account, and never was
+            name=body.name or identity.name or identity.email.split("@")[0],
+            locale=body.locale,
+            **{f"{identity.provider}_sub": identity.subject},
+        )
+        db.add(user)
+
+    db.commit()
+    db.refresh(user)
+    return TokenResponse(
+        access_token=_make_access_token(user.id),
+        refresh_token=_make_refresh_token(user.id, db),
+        user=UserOut.model_validate(user),
+    )
+
+
 @router.post("/login", response_model=TokenResponse)
 def login(
     body: LoginRequest,
@@ -97,7 +152,11 @@ def login(
     user = db.query(User).filter(User.email == body.email).first()
     # Always run a real bcrypt verify, even for an unknown email, so response
     # timing doesn't reveal whether the address is registered.
-    password_ok = _verify(body.password, user.hashed_password if user else _DUMMY_HASH)
+    # An account created through Apple or Google has no password. Falling through to the
+    # dummy hash keeps the timing constant and, more importantly, turns what would be a
+    # crash on None into the plain refusal the caller deserves.
+    stored = user.hashed_password if user and user.hashed_password else _DUMMY_HASH
+    password_ok = _verify(body.password, stored)
     if not user or not password_ok:
         raise HTTPException(401, detail=error("INVALID_CREDENTIALS", accept_language))
     return TokenResponse(

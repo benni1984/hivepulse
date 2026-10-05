@@ -7,6 +7,24 @@ MESSAGES = {
         "de": "Ungültige E-Mail oder Passwort.",
         "es": "Correo electrónico o contraseña no válidos.",
     },
+    "INVALID_IDENTITY_TOKEN": {
+        "en": "That sign-in could not be verified. Please try again.",
+        "fr": "Cette connexion n'a pas pu être vérifiée. Veuillez réessayer.",
+        "de": "Diese Anmeldung konnte nicht bestätigt werden. Bitte versuche es erneut.",
+        "es": "No se ha podido verificar este inicio de sesión. Inténtalo de nuevo.",
+    },
+    "EMAIL_NOT_VERIFIED": {
+        "en": "Your provider has not confirmed this email address.",
+        "fr": "Votre fournisseur n'a pas confirmé cette adresse e-mail.",
+        "de": "Dein Anbieter hat diese E-Mail-Adresse nicht bestätigt.",
+        "es": "Tu proveedor no ha confirmado esta dirección de correo.",
+    },
+    "SOCIAL_SIGN_IN_UNCONFIGURED": {
+        "en": "Signing in this way is not available yet.",
+        "fr": "Cette méthode de connexion n'est pas encore disponible.",
+        "de": "Diese Anmeldeart steht noch nicht zur Verfügung.",
+        "es": "Este modo de inicio de sesión aún no está disponible.",
+    },
     "TOKEN_EXPIRED": {
         "en": "Access token has expired.",
         "fr": "Le jeton d'accès a expiré.",
