@@ -84,3 +84,32 @@ def test_unknown_language_falls_back_to_english():
 def test_render_rejects_an_unknown_key():
     with pytest.raises(KeyError):
         render("does.not.exist", "en")
+
+
+def test_the_reset_mail_says_which_account_it_is_for():
+    """Three of these arrived at once and the only honest answer to "what is this" was that
+    the mail did not say. A reader has to be able to tell whether it concerns them."""
+    from app.notifications_i18n import reset_email
+
+    for locale in ("en", "de", "fr", "es"):
+        _, body = reset_email("https://example.com/r?t=x", 30, locale,
+                              account="imker@example.com")
+        assert "imker@example.com" in body, f"{locale} does not name the account"
+
+
+def test_the_reset_mail_escapes_the_address_it_prints():
+    """It goes into HTML. The address is validated on the way in, but that is not a reason
+    to hand it to a mail client unescaped."""
+    from app.notifications_i18n import reset_email
+
+    _, body = reset_email("https://example.com/r?t=x", 30, "de",
+                          account='a<script>alert(1)</script>@example.com')
+    assert "<script>" not in body
+    assert "&lt;script&gt;" in body
+
+
+def test_the_reset_mail_still_works_without_an_account():
+    from app.notifications_i18n import reset_email
+
+    subject, body = reset_email("https://example.com/r?t=x", 30, "de")
+    assert subject and "example.com" in body

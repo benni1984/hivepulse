@@ -167,7 +167,7 @@ def _send_reset_email(to_email: str, reset_url: str, locale: Optional[str] = Non
         return
     import httpx
 
-    subject, html = reset_email(reset_url, RESET_TOKEN_TTL_MINUTES, locale)
+    subject, html = reset_email(reset_url, RESET_TOKEN_TTL_MINUTES, locale, account=to_email)
     try:
         resp = httpx.post(
             "https://api.resend.com/emails",
