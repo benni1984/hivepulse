@@ -28,9 +28,14 @@ def enforce_rate_limit(
     bucket: str,
     limit: int,
     window_minutes: int,
+    identity: str | None = None,
 ) -> None:
     """Raise 429 if `bucket` has been hit >= `limit` times by this client
     within the last `window_minutes`. Otherwise records this hit.
+
+    `identity` replaces the client IP as the thing being counted — pass the target of the
+    request (an email address, say) to cap what one victim can receive no matter how many
+    addresses the requests come from.
 
     State lives in the database (not process memory) since the backend runs
     as stateless serverless functions.
@@ -38,7 +43,10 @@ def enforce_rate_limit(
     now = datetime.utcnow()
     db.query(RateLimitHit).filter(RateLimitHit.created_at < now - _MAX_ROW_AGE).delete()
 
-    key = f"{bucket}:{_client_ip(request)}"
+    # Counting per client IP stops one caller hammering an endpoint. It does not stop a
+    # caller with many addresses from aiming at one target — a mailbox, say — so a caller
+    # may pass an identity of its own to count against instead.
+    key = f"{bucket}:{identity or _client_ip(request)}"
     window_start = now - timedelta(minutes=window_minutes)
     count = (
         db.query(RateLimitHit)

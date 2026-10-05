@@ -10,6 +10,8 @@ counts we send (a number of hives).
 """
 from __future__ import annotations
 
+import html
+
 from typing import Optional
 
 SUPPORTED = ("en", "de", "fr", "es")
@@ -77,6 +79,12 @@ TEMPLATES: dict[str, dict[str, str]] = {
         "fr": "<p>Cliquez sur le lien ci-dessous pour réinitialiser votre mot de passe. Il expire dans {minutes} minutes.</p>",
         "es": "<p>Haz clic en el enlace para restablecer tu contraseña. Caduca en {minutes} minutos.</p>",
     },
+    "reset.email.account": {
+        "en": "<p>This request is for the account <strong>{email}</strong>.</p>",
+        "de": "<p>Diese Anfrage betrifft das Konto <strong>{email}</strong>.</p>",
+        "fr": "<p>Cette demande concerne le compte <strong>{email}</strong>.</p>",
+        "es": "<p>Esta solicitud es para la cuenta <strong>{email}</strong>.</p>",
+    },
     "reset.email.ignore": {
         "en": "<p>If you did not request this, you can safely ignore this email.</p>",
         "de": "<p>Wenn du das nicht angefordert hast, kannst du diese E-Mail einfach ignorieren.</p>",
@@ -123,10 +131,19 @@ def reminder_email(count: int, app_url: str, locale: Optional[str] = None) -> tu
     return render("reminder.email.subject", locale), body
 
 
-def reset_email(reset_url: str, minutes: int, locale: Optional[str] = None) -> tuple[str, str]:
-    body = (
-        render("reset.email.intro", locale, minutes=minutes)
-        + f"<p><a href='{reset_url}'>{reset_url}</a></p>"
+def reset_email(reset_url: str, minutes: int, locale: Optional[str] = None,
+                account: Optional[str] = None) -> tuple[str, str]:
+    """The mail has to say which account it is for.
+
+    Without it the reader cannot tell whether it concerns them. Three of these arrived at
+    once and the only honest answer to "what is this" was "the mail does not say".
+    """
+    body = render("reset.email.intro", locale, minutes=minutes)
+    if account:
+        # Goes into HTML; an address is validated on the way in, but escaping is not optional.
+        body += render("reset.email.account", locale, email=html.escape(account))
+    body += (
+        f"<p><a href='{reset_url}'>{reset_url}</a></p>"
         + render("reset.email.ignore", locale)
     )
     return render("reset.email.subject", locale), body

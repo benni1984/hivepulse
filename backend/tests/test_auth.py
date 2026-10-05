@@ -299,3 +299,43 @@ def test_reset_password_revokes_existing_sessions(client, db_session):
     # Old refresh token must be revoked
     r = client.post("/api/v1/auth/refresh", json={"refresh_token": old_refresh})
     assert r.status_code == 401
+
+
+def test_forgot_password_is_capped_per_address_even_from_new_ips(client):
+    """The per-IP limit is blind to the case that actually fills a mailbox.
+
+    Each of these comes from a different address, so the per-IP counter never reaches its
+    threshold — only the per-address one does.
+    """
+    target = {"email": "target@example.com"}
+    for i in range(5):
+        r = client.post("/api/v1/auth/forgot-password", json=target,
+                        headers={"X-Forwarded-For": f"203.0.113.{i}"})
+        assert r.status_code == 204, f"request {i} from a fresh IP should pass the IP limit"
+
+    r = client.post("/api/v1/auth/forgot-password", json=target,
+                    headers={"X-Forwarded-For": "203.0.113.200"})
+    assert r.status_code == 429
+
+
+def test_the_address_cap_does_not_block_everybody_else(client):
+    target = {"email": "victim@example.com"}
+    for i in range(5):
+        client.post("/api/v1/auth/forgot-password", json=target,
+                    headers={"X-Forwarded-For": f"198.51.100.{i}"})
+
+    # Somebody else's reset must still go through from an address that has barely been used.
+    r = client.post("/api/v1/auth/forgot-password", json={"email": "bystander@example.com"},
+                    headers={"X-Forwarded-For": "198.51.100.1"})
+    assert r.status_code == 204
+
+
+def test_the_address_cap_is_not_fooled_by_capitalisation(client):
+    """Email addresses are not case sensitive in practice, and neither is this cap."""
+    for i in range(5):
+        client.post("/api/v1/auth/forgot-password", json={"email": "mixed@example.com"},
+                    headers={"X-Forwarded-For": f"192.0.2.{i}"})
+
+    r = client.post("/api/v1/auth/forgot-password", json={"email": "MiXeD@Example.COM"},
+                    headers={"X-Forwarded-For": "192.0.2.77"})
+    assert r.status_code == 429
