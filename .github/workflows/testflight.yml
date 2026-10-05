@@ -128,6 +128,10 @@ jobs:
           echo "PROFILE_NAME=$NAME" >> "$GITHUB_ENV"
           echo "Installed App Store profile: $NAME"
 
+      # The profile goes in as APP_PROFILE_NAME, which only the app target reads (ios/project.yml).
+      # As a global PROVISIONING_PROFILE_SPECIFIER it also hit the resource bundles of the Swift
+      # packages, which Xcode refuses; the archive failed the day GoogleSignIn arrived.
+      #
       # Signed directly for distribution with the imported certificate and the App Store profile.
       # Automatic signing here would create a new "Created via API" development certificate on every run
       # (a fresh runner never has the previous one's private key) and needs a registered device.
@@ -146,7 +150,7 @@ jobs:
             DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
             CODE_SIGN_STYLE=Manual \
             CODE_SIGN_IDENTITY="Apple Distribution" \
-            PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
+            APP_PROFILE_NAME="$PROFILE_NAME" \
             CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
             SENTRY_DSN="$SENTRY_DSN"
 
