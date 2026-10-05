@@ -355,7 +355,8 @@
       "noAccount": "No account?",
       "register": "Register",
       "forgotPassword": "Forgot password?",
-      "errorGeneric": "Login failed. Please try again."
+      "errorGeneric": "Login failed. Please try again.",
+      "or": "or"
     },
     "forgotPassword": {
       "title": "Reset your password",

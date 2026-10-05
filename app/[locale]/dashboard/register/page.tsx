@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import { register } from '@/lib/api';
+import SocialSignIn from '@/components/SocialSignIn';
 
 export default function RegisterPage() {
   const t = useTranslations('dash');
@@ -61,6 +62,7 @@ export default function RegisterPage() {
             {loading ? '…' : t('register.submit')}
           </button>
         </form>
+        <SocialSignIn onSignedIn={() => router.replace('/dashboard')} />
         <p className="dash-auth-link">
           {t('register.hasAccount')} <Link href="/dashboard/login">{t('register.login')}</Link>
         </p>

@@ -355,7 +355,8 @@
       "noAccount": "Pas de compte ?",
       "register": "S'inscrire",
       "forgotPassword": "Mot de passe oublié ?",
-      "errorGeneric": "Connexion échouée. Veuillez réessayer."
+      "errorGeneric": "Connexion échouée. Veuillez réessayer.",
+      "or": "ou"
     },
     "forgotPassword": {
       "title": "Réinitialiser votre mot de passe",

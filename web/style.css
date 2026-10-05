@@ -1141,6 +1141,15 @@ tr:last-child td { border-bottom: none; }
 }
 .dash-submit-btn:hover { background: #14532d; }
 .dash-submit-btn:disabled { opacity: .6; cursor: not-allowed; }
+/* Sign in with Apple or Google — rendered only when the server accepts one. */
+.dash-auth-social { margin-top: 20px; }
+.dash-auth-divider { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; color: var(--muted); font-size: 13px; }
+.dash-auth-divider::before,
+.dash-auth-divider::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+/* Google renders its own button into this slot and insists on its own styling, so the only
+   job here is to centre it and give it the same width as the form above. */
+.dash-auth-social-button { display: flex; justify-content: center; }
+
 .dash-auth-link { text-align: center; margin-top: 16px; font-size: 14px; color: var(--muted); }
 .dash-auth-link a { color: var(--green-ink); text-decoration: none; font-weight: 600; }
 .dash-auth-link a:hover { color: var(--green-mid-c); }
