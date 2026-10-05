@@ -245,3 +245,31 @@ def test_an_account_without_a_password_cannot_be_logged_into(client, signing):
 
     assert r.status_code == 401
     assert r.json()["detail"]["code"] == "INVALID_CREDENTIALS"
+
+
+def test_providers_names_the_client_id_a_browser_should_use(client, monkeypatch):
+    monkeypatch.setattr(settings, "google_client_ids", "web-id,ios-id")
+    monkeypatch.setattr(settings, "apple_client_ids", "com.hivepulse.app")
+
+    body = client.get("/api/v1/auth/providers").json()
+
+    # The first is the one a browser uses; the rest are other platforms' audiences.
+    assert body["google"]["client_id"] == "web-id"
+    assert body["apple"]["client_id"] == "com.hivepulse.app"
+
+
+def test_an_unconfigured_provider_is_null_so_its_button_stays_hidden(client, monkeypatch):
+    monkeypatch.setattr(settings, "google_client_ids", "")
+    monkeypatch.setattr(settings, "apple_client_ids", "com.hivepulse.app")
+
+    body = client.get("/api/v1/auth/providers").json()
+
+    # Offering a button the server would refuse is worse than offering no button.
+    assert body["google"] is None
+    assert body["apple"] is not None
+
+
+def test_providers_needs_no_sign_in_of_its_own(client, monkeypatch):
+    monkeypatch.setattr(settings, "google_client_ids", "web-id")
+    # It is read by the login screen, which by definition has no token yet.
+    assert client.get("/api/v1/auth/providers").status_code == 200

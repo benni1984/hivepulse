@@ -80,6 +80,7 @@ All auth endpoints are **public** (no token required).
 | POST | `/auth/register` | Create account |
 | POST | `/auth/login` | Obtain token pair |
 | POST | `/auth/social` | Sign in with an Apple or Google identity token |
+| GET | `/auth/providers` | Which sign-in providers this server accepts |
 | POST | `/auth/refresh` | Refresh access token |
 | POST | `/auth/logout` | Invalidate refresh token |
 | POST | `/auth/forgot-password` | Request a password-reset email |
@@ -163,6 +164,27 @@ stranger's account.
 `GOOGLE_CLIENT_IDS` and `APPLE_CLIENT_IDS` (comma-separated) list the audiences a token may
 carry — one per platform. A token whose `aud` is not on the list is refused, which is what
 stops a token minted for an unrelated app from working here.
+
+### GET `/auth/providers`
+
+Public. Tells a client which providers are configured and under which client ID, so that
+nothing has to carry a copy of it.
+
+**Response 200**
+```json
+{
+  "google": { "client_id": "1057...apps.googleusercontent.com" },
+  "apple": { "client_id": "com.hivepulse.app" }
+}
+```
+
+A provider the server cannot verify tokens for is `null`, and the client hides its button.
+That way the buttons appear everywhere the moment the server is configured, with no client
+release — and a button can never offer a sign-in the server would reject.
+
+Client IDs are public by design: Google's sits in the markup of every page showing its
+button, Apple's is the bundle identifier. The client *secret* takes no part in this flow and
+is never sent anywhere.
 
 ### POST `/auth/refresh`
 

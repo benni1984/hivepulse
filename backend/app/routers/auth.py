@@ -87,6 +87,30 @@ def register(
     )
 
 
+@router.get("/providers")
+def sign_in_providers():
+    """Which providers this server can verify tokens for, and under which client ID.
+
+    Public on purpose, and the single source of truth: nothing else has to carry a copy of
+    the client ID, so the two can never drift apart. A provider the server cannot verify is
+    null, the client hides its button, and no button can offer a sign-in that would be
+    refused on arrival.
+
+    Client IDs are public by design — Google's appears in the markup of every page showing
+    its button. The client secret takes no part in this flow.
+    """
+    def first(raw: str) -> Optional[str]:
+        ids = [value.strip() for value in raw.split(",") if value.strip()]
+        return ids[0] if ids else None
+
+    return {
+        "google": ({"client_id": first(settings.google_client_ids)}
+                   if first(settings.google_client_ids) else None),
+        "apple": ({"client_id": first(settings.apple_client_ids)}
+                  if first(settings.apple_client_ids) else None),
+    }
+
+
 @router.post("/social", response_model=TokenResponse)
 def social_sign_in(
     body: SocialSignInRequest,
