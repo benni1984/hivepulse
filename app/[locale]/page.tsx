@@ -4,6 +4,8 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { Link as LocaleLink } from '@/i18n/navigation';
+import { BETA, hasAnyBetaLink } from '@/lib/beta';
 
 const LiveStats = dynamic(() => import('@/components/LiveStats'), { ssr: false });
 
@@ -250,6 +252,17 @@ export default function HomePage() {
             <div className="section-tag light">{t('dl.tag')}</div>
             <h2>{t('dl.title')}</h2>
             <p>{appStoreUrl || playStoreUrl ? t('dl.sub') : t('dl.subSoon')}</p>
+            {/* The test round comes first: until the stores list the app, this is the only way
+                to get it, and twelve testers are what stands between HivePulse and the
+                stores. Appears by itself once lib/beta.ts holds a link, and goes when it is
+                emptied again. */}
+            {hasAnyBetaLink(BETA) && (
+              <div className="download-beta">
+                <LocaleLink href="/beta" className="btn-primary btn-beta" data-umami-event="download_beta">
+                  {t('dl.beta')}
+                </LocaleLink>
+              </div>
+            )}
             <div className="download-badges">
               <StoreBadge
                 url={appStoreUrl}
