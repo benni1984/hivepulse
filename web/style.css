@@ -1149,6 +1149,15 @@ tr:last-child td { border-bottom: none; }
 /* Google renders its own button into this slot and insists on its own styling, so the only
    job here is to centre it and give it the same width as the form above. */
 .dash-auth-social-button { display: flex; justify-content: center; }
+/* Apple's own button is only available to native apps, so this one follows their guidance
+   for the web: black, their mark, their wording. */
+.dash-auth-apple-button {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; max-width: 320px; height: 40px; margin: 0 auto 10px;
+  background: #000; color: #fff; border: none; border-radius: 6px;
+  font-family: inherit; font-size: 15px; font-weight: 500; cursor: pointer;
+}
+.dash-auth-apple-button:hover { background: #1a1a1a; }
 /* The way in for people without an Apple or Google account. Visible and reachable, but
    deliberately quieter than the two buttons above it. */
 .dash-auth-email-toggle {

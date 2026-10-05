@@ -12,15 +12,23 @@ import UserNotifications
 struct HivePulseApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var authVM = AuthViewModel()
+    /// The language chosen in Settings, or empty to follow the phone. Reading it here is what
+    /// rebuilds the views when it changes: they ask for their strings again, now from the new
+    /// language.
+    @AppStorage(AppLanguage.key) private var languageOverride = ""
 
     init() {
         // First statement: a crash during setup should still be reported.
         _ = CrashReporting.start()
         HivePulseAppearance.apply()
+        // Before any view reads a string.
+        AppLanguage.applyStored()
         #if DEBUG
         let args = ProcessInfo.processInfo.arguments
         if args.contains("-resetKeychain") {
             KeychainService.shared.clearAll()
+            // A language picked in an earlier run would override the launch arguments.
+            AppLanguage.reset()
         }
         if args.contains("-mockApiaryWithHive") {
             KeychainService.shared.clearAll()
@@ -70,6 +78,9 @@ struct HivePulseApp: App {
             ZStack {
                 if authVM.isAuthenticated {
                     MainTabView()
+                        // On the view, not the container: keying the container would restart
+                        // the .task below and ask for push permission again.
+                        .id(languageOverride)
                         .environmentObject(authVM)
                         .task {
                             await authVM.loadProfile()
@@ -110,6 +121,7 @@ struct HivePulseApp: App {
                     }
                     .tint(.hpAmber)
                     .font(.dmSans(17))
+                    .id(languageOverride)
                 }
             }
             .fullScreenCover(isPresented: $authVM.showGuidedTour) {

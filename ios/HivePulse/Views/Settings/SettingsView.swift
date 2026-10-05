@@ -6,6 +6,9 @@ struct SettingsView: View {
     @State private var showLogoutConfirm = false
     @State private var name = ""
     @State private var locale = "en"
+    /// What the picker said when the profile loaded, so that saving a changed *name* is not
+    /// mistaken for choosing a language: the profile's locale is not what the phone shows.
+    @State private var loadedLocale = ""
     @State private var isSaving = false
 
     // Password change
@@ -266,6 +269,7 @@ struct SettingsView: View {
         .task {
             name   = authVM.currentUser?.name ?? ""
             locale = authVM.currentUser?.locale ?? "en"
+            loadedLocale = locale
             apiaries = (try? await apiaryService.list().items) ?? []
             await authVM.loadReminderSettings()
             if let r = authVM.reminderSettings {
@@ -318,6 +322,12 @@ struct SettingsView: View {
         isSaving = true
         await authVM.updateProfile(name: name, locale: locale)
         isSaving = false
+        // Only when the server accepted it: the picker says what language the app speaks, and
+        // it should not change on a save that failed.
+        if authVM.errorMessage == nil {
+            if locale != loadedLocale { AppLanguage.choose(locale) }
+            loadedLocale = locale
+        }
     }
 
     private func doChangePassword() async {

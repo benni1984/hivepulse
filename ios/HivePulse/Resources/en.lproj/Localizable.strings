@@ -423,3 +423,7 @@
 "label.or" = "or";
 "action.signInWithEmail" = "Sign in with an email address instead";
 "error.appleSignIn" = "Apple did not hand over a sign-in. Please try again.";
+
+/* Sign in with Google */
+"action.continueWithGoogle" = "Continue with Google";
+"error.googleSignIn" = "Google did not hand over a sign-in. Please try again.";

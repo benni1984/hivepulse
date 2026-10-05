@@ -417,4 +417,8 @@
     <string name="diagnostics_test_report_failed">Rien n’est parti. Le rapport d’erreur ne fonctionne pas dans cette version.</string>
     <string name="diagnostics_reporting_off">Le rapport d’erreur est désactivé dans cette version.</string>
 
+    <!-- Sign in with Google -->
+    <string name="action_continue_with_google">Continuer avec Google</string>
+    <string name="label_or">ou</string>
+    <string name="action_sign_in_with_email">Se connecter avec une adresse e-mail</string>
 </resources>

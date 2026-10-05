@@ -132,6 +132,13 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:1.5.3")
     implementation("androidx.camera:camera-view:1.5.3")
 
+    // Sign in with Google. Credential Manager is the way in since the old Google Sign-In
+    // SDK was retired; the googleid artifact is what turns a credential into an ID token.
+    implementation("androidx.credentials:credentials:1.6.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.6.0")
+    // 1.2.x is built against Kotlin 2.4 metadata and will not link against this project's 2.0.
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
     // Security (encrypted token storage)
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 

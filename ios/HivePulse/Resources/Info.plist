@@ -53,5 +53,24 @@
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<!--
+	  Sign in with Google. Both values are public by design: a client id ships inside every
+	  copy of the app, and Google's own setup has you commit it. The secret that belongs to
+	  the web client takes no part in this flow and is nowhere near this repository.
+
+	  The URL scheme is the client id with its parts reversed — Google hands the browser
+	  back to the app through it, and a mismatch makes the sheet open and never return.
+	-->
+	<key>GIDClientID</key>
+	<string>105759954852-d0s8859p2bcgu6h17mf9sh0trd2l97ea.apps.googleusercontent.com</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.105759954852-d0s8859p2bcgu6h17mf9sh0trd2l97ea</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

@@ -419,4 +419,8 @@
     <string name="diagnostics_test_report_failed">Did not go out. Crash reporting is not working in this version.</string>
     <string name="diagnostics_reporting_off">Crash reporting is switched off in this version.</string>
 
+    <!-- Sign in with Google -->
+    <string name="action_continue_with_google">Continue with Google</string>
+    <string name="label_or">or</string>
+    <string name="action_sign_in_with_email">Sign in with an email address instead</string>
 </resources>

@@ -9,6 +9,15 @@ data class RefreshRequest(@SerializedName("refresh_token") val refreshToken: Str
 data class LogoutRequest(@SerializedName("refresh_token") val refreshToken: String)
 data class ForgotPasswordRequest(val email: String)
 
+data class SocialSignInRequest(
+    val provider: String,
+    @SerializedName("id_token") val idToken: String,
+    val name: String? = null,
+)
+
+data class SignInProvider(@SerializedName("client_id") val clientId: String?)
+data class SignInProviders(val google: SignInProvider?, val apple: SignInProvider?)
+
 data class TokenResponse(
     @SerializedName("access_token")  val accessToken: String,
     @SerializedName("refresh_token") val refreshToken: String,

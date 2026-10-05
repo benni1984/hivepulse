@@ -9,6 +9,20 @@ import XCTest
 @MainActor
 final class AppleSignInTests: XCTestCase {
 
+    // A successful sign-in writes its token to the real keychain, and the next view model
+    // reads it back in init — so without this, every test after a success starts out signed
+    // in, and "a refused token leaves nobody signed in" fails for a reason that has nothing
+    // to do with the token. AuthViewModelTests does the same.
+    override func setUp() {
+        super.setUp()
+        KeychainService.shared.clearAll()
+    }
+
+    override func tearDown() {
+        KeychainService.shared.clearAll()
+        super.tearDown()
+    }
+
     private func makeViewModel() -> (AuthViewModel, MockAuthService) {
         // The same shape the rest of the suite uses: default onboarding store, mock service.
         let service = MockAuthService()
@@ -106,4 +120,53 @@ final class AppleSignInTests: XCTestCase {
         XCTAssertNil(AppleSignInButton.displayName(from: nil))
         XCTAssertNil(AppleSignInButton.displayName(from: PersonNameComponents()))
     }
+
+    // MARK: - Google, for the sake of one account across two phones
+
+    func test_aGoogleSignInAuthenticates() async {
+        let (viewModel, service) = makeViewModel()
+        service.socialResult = .success(tokenResponse())
+
+        await viewModel.signInWithGoogle(identityToken: "g.token")
+
+        XCTAssertTrue(viewModel.isAuthenticated)
+        XCTAssertNil(viewModel.errorMessage)
+    }
+
+    func test_aRefusedGoogleTokenSaysSo() async {
+        let (viewModel, service) = makeViewModel()
+        service.socialResult = .failure(APIError.unauthorized)
+
+        await viewModel.signInWithGoogle(identityToken: "forged")
+
+        XCTAssertFalse(viewModel.isAuthenticated)
+        XCTAssertNotNil(viewModel.errorMessage)
+        XCTAssertFalse(viewModel.isLoading)
+    }
+
+    func test_bothButtonsFollowWhatTheServerAccepts() async {
+        let (viewModel, service) = makeViewModel()
+        service.providersResult = .success(SignInProviders(
+            google: SignInProvider(clientId: "web-id"),
+            apple: SignInProvider(clientId: "com.hivepulse.app")
+        ))
+
+        await viewModel.loadSignInProviders()
+
+        XCTAssertTrue(viewModel.appleSignInAvailable)
+        XCTAssertTrue(viewModel.googleSignInAvailable)
+    }
+
+    func test_onlyTheProviderTheServerAcceptsIsOffered() async {
+        let (viewModel, service) = makeViewModel()
+        service.providersResult = .success(
+            SignInProviders(google: nil, apple: SignInProvider(clientId: "com.hivepulse.app"))
+        )
+
+        await viewModel.loadSignInProviders()
+
+        XCTAssertTrue(viewModel.appleSignInAvailable)
+        XCTAssertFalse(viewModel.googleSignInAvailable)
+    }
+
 }

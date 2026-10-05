@@ -703,6 +703,10 @@
   margin: 0 auto 28px;
 }
 
+/* The beta button sits above the two store badges and is the loudest thing in the section. */
+.download-beta { display: flex; justify-content: center; margin-bottom: 20px; }
+.btn-beta { padding: 14px 32px; font-size: 17px; font-weight: 700; }
+
 .download-badges {
   display: flex;
   gap: 16px;

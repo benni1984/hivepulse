@@ -12,6 +12,14 @@ vi.mock('next/link', () => ({
   ),
 }));
 
+// The download section links to the beta page through the locale-aware Link, which pulls in
+// next-intl's navigation and cannot be resolved under vitest.
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => (
+    <a href={href} className={className}>{children}</a>
+  ),
+}));
+
 vi.mock('next/dynamic', () => ({
   default: (fn: () => Promise<{ default: React.ComponentType }>) => {
     const Comp = React.lazy(fn);

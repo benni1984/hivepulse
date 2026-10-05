@@ -199,7 +199,8 @@
     "title": "Descarga HivePulse — es gratis",
     "sub": "Disponible en iOS y Android. Escanea tu primera colmena en menos de dos minutos.",
     "subSoon": "Pronto en App Store y Google Play: mientras tanto, HivePulse funciona directamente en tu navegador.",
-    "soon": "Próximamente"
+    "soon": "Próximamente",
+    "beta": "Participar en la prueba beta"
   },
   "map": {
     "hero": {
@@ -357,7 +358,8 @@
       "forgotPassword": "¿Olvidaste tu contraseña?",
       "errorGeneric": "Error al iniciar sesión. Inténtalo de nuevo.",
       "or": "o",
-      "withEmail": "Iniciar sesión con un correo electrónico"
+      "withEmail": "Iniciar sesión con un correo electrónico",
+      "continueWithApple": "Continuar con Apple"
     },
     "forgotPassword": {
       "title": "Restablecer tu contraseña",

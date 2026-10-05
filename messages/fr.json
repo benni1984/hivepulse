@@ -199,7 +199,8 @@
     "title": "Téléchargez HivePulse — c'est gratuit",
     "sub": "Disponible sur iOS et Android. Scannez votre première ruche en moins de deux minutes.",
     "subSoon": "Bientôt sur l’App Store et Google Play — en attendant, HivePulse fonctionne directement dans votre navigateur.",
-    "soon": "Bientôt disponible"
+    "soon": "Bientôt disponible",
+    "beta": "Participer au test bêta"
   },
   "map": {
     "hero": {
@@ -357,7 +358,8 @@
       "forgotPassword": "Mot de passe oublié ?",
       "errorGeneric": "Connexion échouée. Veuillez réessayer.",
       "or": "ou",
-      "withEmail": "Se connecter avec une adresse e-mail"
+      "withEmail": "Se connecter avec une adresse e-mail",
+      "continueWithApple": "Continuer avec Apple"
     },
     "forgotPassword": {
       "title": "Réinitialiser votre mot de passe",
