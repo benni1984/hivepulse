@@ -12,11 +12,15 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [socialAvailable, setSocialAvailable] = useState(false);
+  // null until the server has answered. Three states, because "not yet known" must not
+  // look like "none": the form used to appear at once and then fold away behind its
+  // toggle the moment a provider turned up — a flash for people, and a click on nothing
+  // for the staging E2E suite, which deployed nothing for it.
+  const [socialAvailable, setSocialAvailable] = useState<boolean | null>(null);
   const [showEmailForm, setShowEmailForm] = useState(false);
   // Tucked away only when there is something better on offer. With no provider configured
   // the form is the only way in, and hiding it behind a click would be absurd.
-  const emailFormVisible = showEmailForm || !socialAvailable;
+  const emailFormVisible = showEmailForm || socialAvailable === false;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -53,10 +57,10 @@ export default function LoginPage() {
           onSignedIn={() => router.replace('/dashboard')}
           onAvailable={setSocialAvailable}
         />
-        {socialAvailable && (
+        {socialAvailable === true && (
           <div className="dash-auth-divider"><span>{t('login.or')}</span></div>
         )}
-        {!emailFormVisible && (
+        {socialAvailable === true && !emailFormVisible && (
           <button
             type="button"
             className="dash-auth-email-toggle"

@@ -126,7 +126,9 @@ export interface SignInProviders {
  * invalid token that has nothing to do with the token.
  */
 export async function getSignInProviders(): Promise<SignInProviders> {
-  const res = await fetch(`${BASE}/auth/providers`);
+  // Bounded, because the login form now waits for this answer: a server that never replies
+  // must not leave the only way in permanently hidden.
+  const res = await fetch(`${BASE}/auth/providers`, { signal: AbortSignal.timeout(4000) });
   if (!res.ok) return { google: null, apple: null };
   return res.json();
 }

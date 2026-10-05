@@ -25,6 +25,14 @@ vi.mock('@/lib/api', () => ({
 
 const mockUser = { id: '2', email: 'new@b.com', name: 'New User', locale: 'en', created_at: '2024-01-01' };
 
+/** The form appears once the server has said which sign-ins it offers, so tests wait for it. */
+async function renderPage() {
+  const rendered = render(<RegisterPage />);
+  await waitFor(() =>
+    expect(rendered.container.querySelector('input[type="email"]')).toBeInTheDocument());
+  return rendered;
+}
+
 describe('RegisterPage', () => {
   beforeEach(() => {
     mockReplace.mockClear();
@@ -38,8 +46,8 @@ describe('RegisterPage', () => {
     fireEvent.click(screen.getByRole('button'));
   }
 
-  it('renders name, email, and password inputs', () => {
-    const { container } = render(<RegisterPage />);
+  it('renders name, email, and password inputs', async () => {
+    const { container } = await renderPage();
     expect(container.querySelector('input[type="text"]')).toBeInTheDocument();
     expect(container.querySelector('input[type="email"]')).toBeInTheDocument();
     expect(container.querySelector('input[type="password"]')).toBeInTheDocument();
@@ -47,26 +55,26 @@ describe('RegisterPage', () => {
 
   it('calls register with all fields on submit', async () => {
     mockRegister.mockResolvedValueOnce(mockUser);
-    const { container } = render(<RegisterPage />);
+    const { container } = await renderPage();
     fillAndSubmit(container);
     await waitFor(() => expect(mockRegister).toHaveBeenCalledWith('New User', 'new@b.com', 'password123'));
   });
 
   it('redirects to /dashboard on success', async () => {
     mockRegister.mockResolvedValueOnce(mockUser);
-    const { container } = render(<RegisterPage />);
+    const { container } = await renderPage();
     fillAndSubmit(container);
     await waitFor(() => expect(mockReplace).toHaveBeenCalledWith('/dashboard'));
   });
 
   it('shows error banner when registration throws', async () => {
     mockRegister.mockRejectedValueOnce(new Error('Email already registered'));
-    const { container } = render(<RegisterPage />);
+    const { container } = await renderPage();
     fillAndSubmit(container);
     await waitFor(() => expect(screen.getByText('Email already registered')).toBeInTheDocument());
   });
 
-  it('contains a link to the login page', () => {
+  it('contains a link to the login page', async () => {
     render(<RegisterPage />);
     expect(screen.getByRole('link', { name: /register\.login/i })).toHaveAttribute('href', '/dashboard/login');
   });
