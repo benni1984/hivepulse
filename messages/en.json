@@ -357,7 +357,8 @@
       "forgotPassword": "Forgot password?",
       "errorGeneric": "Login failed. Please try again.",
       "or": "or",
-      "withEmail": "Sign in with an email address instead"
+      "withEmail": "Sign in with an email address instead",
+      "continueWithApple": "Continue with Apple"
     },
     "forgotPassword": {
       "title": "Reset your password",
