@@ -25,6 +25,12 @@ MESSAGES = {
         "de": "Diese Anmeldeart steht noch nicht zur Verfügung.",
         "es": "Este modo de inicio de sesión aún no está disponible.",
     },
+    "NO_PASSWORD_SET": {
+        "en": "This account signs in with Apple or Google and has no password. Use \"Forgot password\" to set one.",
+        "fr": "Ce compte se connecte avec Apple ou Google et n'a pas de mot de passe. Utilisez \"Mot de passe oublié\" pour en définir un.",
+        "de": "Dieses Konto meldet sich mit Apple oder Google an und hat kein Passwort. Über \"Passwort vergessen\" lässt sich eines festlegen.",
+        "es": "Esta cuenta inicia sesión con Apple o Google y no tiene contraseña. Usa \"Olvidé mi contraseña\" para crear una.",
+    },
     "TOKEN_EXPIRED": {
         "en": "Access token has expired.",
         "fr": "Le jeton d'accès a expiré.",

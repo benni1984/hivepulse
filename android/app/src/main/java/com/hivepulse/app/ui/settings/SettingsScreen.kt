@@ -292,51 +292,55 @@ fun SettingsScreen(
                         onSelect = { idx -> idx?.let { vm.updateLocale(locales[it]) } },
                     )
 
-                    // Change Password
-                    Text(stringResource(R.string.section_change_password), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
-                    OutlinedTextField(
-                        value = currentPw,
-                        onValueChange = { currentPw = it; pwError = null },
-                        label = { Text(stringResource(R.string.field_current_password)) },
-                        visualTransformation = PasswordVisualTransformation(),
-                        singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    OutlinedTextField(
-                        value = newPw,
-                        onValueChange = { newPw = it; pwError = null },
-                        label = { Text(stringResource(R.string.field_new_password)) },
-                        visualTransformation = PasswordVisualTransformation(),
-                        singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    OutlinedTextField(
-                        value = confirmPw,
-                        onValueChange = { confirmPw = it; pwError = null },
-                        label = { Text(stringResource(R.string.field_confirm_password)) },
-                        visualTransformation = PasswordVisualTransformation(),
-                        singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    pwError?.let {
-                        Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
-                    }
-                    Button(
-                        onClick = {
-                            when {
-                                newPw != confirmPw  -> pwError = "Passwords do not match."
-                                newPw.length < 8    -> pwError = "Password must be at least 8 characters."
-                                else -> {
-                                    pwError = null
-                                    vm.changePassword(currentPw, newPw)
+                    // An account made through Apple or Google has no password, so there is nothing to
+                    // change, and asking the server to would only be refused.
+                    if (user.canChangePassword) {
+                        // Change Password
+                        Text(stringResource(R.string.section_change_password), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
+                        OutlinedTextField(
+                            value = currentPw,
+                            onValueChange = { currentPw = it; pwError = null },
+                            label = { Text(stringResource(R.string.field_current_password)) },
+                            visualTransformation = PasswordVisualTransformation(),
+                            singleLine = true,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        OutlinedTextField(
+                            value = newPw,
+                            onValueChange = { newPw = it; pwError = null },
+                            label = { Text(stringResource(R.string.field_new_password)) },
+                            visualTransformation = PasswordVisualTransformation(),
+                            singleLine = true,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        OutlinedTextField(
+                            value = confirmPw,
+                            onValueChange = { confirmPw = it; pwError = null },
+                            label = { Text(stringResource(R.string.field_confirm_password)) },
+                            visualTransformation = PasswordVisualTransformation(),
+                            singleLine = true,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        pwError?.let {
+                            Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                        }
+                        Button(
+                            onClick = {
+                                when {
+                                    newPw != confirmPw  -> pwError = "Passwords do not match."
+                                    newPw.length < 8    -> pwError = "Password must be at least 8 characters."
+                                    else -> {
+                                        pwError = null
+                                        vm.changePassword(currentPw, newPw)
+                                    }
                                 }
-                            }
-                        },
-                        enabled = !state.isChangingPassword && currentPw.isNotEmpty() && newPw.isNotEmpty() && confirmPw.isNotEmpty(),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        if (state.isChangingPassword) CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
-                        else Text(stringResource(R.string.action_change_password))
+                            },
+                            enabled = !state.isChangingPassword && currentPw.isNotEmpty() && newPw.isNotEmpty() && confirmPw.isNotEmpty(),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            if (state.isChangingPassword) CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
+                            else Text(stringResource(R.string.action_change_password))
+                        }
                     }
 
                     // Inspection Reminders

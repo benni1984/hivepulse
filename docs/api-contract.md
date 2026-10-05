@@ -260,9 +260,14 @@ Sets a new password. The token is the value from the reset link. On success all 
   "email": "string",
   "name": "string",
   "locale": "en | fr | de | es",
+  "has_password": true,
   "created_at": "datetime"
 }
 ```
+
+`has_password` is `false` for an account created through Apple or Google, which has no
+password at all. Clients use it to show "Change password" only where there is something to
+change.
 
 ### PUT `/users/me`
 
@@ -271,9 +276,16 @@ All fields optional.
 ```json
 {
   "name": "string",
-  "locale": "en | fr | de | es"
+  "locale": "en | fr | de | es",
+  "password": "string (min 8 chars)",
+  "current_password": "string"
 }
 ```
+
+Changing the password needs `current_password`. An account without a password has none to
+check against, so asking to change it is refused with **400 `NO_PASSWORD_SET`** rather than
+failing: such an account sets a password through `/auth/forgot-password`, which proves control
+of the mailbox, instead of through an access token that may have been lifted.
 
 ### GET `/users/me/reminder`
 

@@ -194,3 +194,48 @@ describe('ProfilePage — reminder settings', () => {
     await waitFor(() => expect(screen.getByText('Reminder settings saved.')).toBeTruthy());
   });
 });
+
+describe('ProfilePage — accounts without a password', () => {
+  beforeEach(() => {
+    mockGetReminderSettings.mockResolvedValue(DEFAULT_REMINDERS);
+    mockUpdateReminderSettings.mockResolvedValue(DEFAULT_REMINDERS);
+    mockUpdateMe.mockResolvedValue(MOCK_USER);
+  });
+
+  it('shows the password card for an account that has one', async () => {
+    mockUseDashboardAuth.mockReturnValue({ user: { ...MOCK_USER, has_password: true }, loading: false });
+
+    render(<ProfilePage />);
+
+    expect(await screen.findByText('Edit Profile')).toBeInTheDocument();
+    expect(screen.getByText('Current Password')).toBeInTheDocument();
+  });
+
+  it('shows it when the server does not say, so older responses behave as before', async () => {
+    mockUseDashboardAuth.mockReturnValue({ user: MOCK_USER, loading: false });
+
+    render(<ProfilePage />);
+
+    expect(await screen.findByText('Current Password')).toBeInTheDocument();
+  });
+
+  it('hides it for an account made through Apple or Google', async () => {
+    mockUseDashboardAuth.mockReturnValue({ user: { ...MOCK_USER, has_password: false }, loading: false });
+
+    render(<ProfilePage />);
+
+    // There is nothing to change, and asking the server to would only be refused.
+    expect(await screen.findByText('Edit Profile')).toBeInTheDocument();
+    expect(screen.queryByText('Current Password')).toBeNull();
+    expect(screen.queryByText('Change Password')).toBeNull();
+  });
+
+  it('still offers the rest of the profile and the deletion', async () => {
+    mockUseDashboardAuth.mockReturnValue({ user: { ...MOCK_USER, has_password: false }, loading: false });
+
+    render(<ProfilePage />);
+
+    expect(await screen.findByText('Save Profile')).toBeInTheDocument();
+    expect(screen.getByText('Delete My Account')).toBeInTheDocument();
+  });
+});

@@ -209,4 +209,29 @@ final class DTOTests: XCTestCase {
         let data = try JSONEncoder().encode(value)
         return try JSONDecoder().decode(T.self, from: data)
     }
+
+
+    private func decodeUser(_ json: String) throws -> UserOut {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .hivePulseBackend
+        return try decoder.decode(UserOut.self, from: Data(json.utf8))
+    }
+
+    // MARK: - Accounts without a password
+
+    func test_userOut_withoutAPasswordCannotChangeOne() throws {
+        let json = #"{"id":"u","email":"a@b.de","name":"A","locale":"de","created_at":"2026-01-01T00:00:00.123456","is_admin":false,"is_supporter":false,"has_password":false}"#
+        let user = try decodeUser(json)
+
+        XCTAssertFalse(user.canChangePassword)
+    }
+
+    func test_userOut_withoutTheFieldIsTreatedAsHavingAPassword() throws {
+        // An older response, or a mock, must not hide the section from everybody.
+        let json = #"{"id":"u","email":"a@b.de","name":"A","locale":"de","created_at":"2026-01-01T00:00:00.123456","is_admin":false,"is_supporter":false}"#
+        let user = try decodeUser(json)
+
+        XCTAssertTrue(user.canChangePassword)
+    }
+
 }

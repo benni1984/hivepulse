@@ -39,6 +39,11 @@ class User(Base):
     push_token_apns = Column(String, nullable=True)
     push_token_fcm = Column(String, nullable=True)
 
+    @property
+    def has_password(self) -> bool:
+        """False for an account created through Apple or Google, which never had one."""
+        return self.hashed_password is not None
+
     refresh_tokens = relationship("RefreshToken", back_populates="user", cascade="all, delete-orphan")
     apiaries = relationship("Apiary", back_populates="user", cascade="all, delete-orphan")
     field_definitions = relationship("FieldDefinition", back_populates="user", cascade="all, delete-orphan")

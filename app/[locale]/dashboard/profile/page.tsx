@@ -179,51 +179,55 @@ export default function ProfilePage() {
         </div>
 
         {/* ── Change password ───────────────────────────────────────── */}
-        <div className="dash-profile-card">
-          <h2 className="dash-section-title">{t('passwordTitle')}</h2>
-          {pwMsg && (
-            <div className={pwMsg.type === 'ok' ? 'dash-success-banner' : 'dash-error-banner'}>
-              {pwMsg.text}
-            </div>
-          )}
-          <form onSubmit={handlePasswordSave}>
-            <div className="dash-form-group">
-              <label>{t('currentPassword')}</label>
-              <input
-                type="password"
-                value={currentPw}
-                onChange={e => setCurrentPw(e.target.value)}
-                required
-                autoComplete="current-password"
-              />
-            </div>
-            <div className="dash-form-group">
-              <label>{t('newPassword')}</label>
-              <input
-                type="password"
-                value={newPw}
-                onChange={e => setNewPw(e.target.value)}
-                required
-                minLength={8}
-                autoComplete="new-password"
-              />
-            </div>
-            <div className="dash-form-group">
-              <label>{t('confirmPassword')}</label>
-              <input
-                type="password"
-                value={confirmPw}
-                onChange={e => setConfirmPw(e.target.value)}
-                required
-                minLength={8}
-                autoComplete="new-password"
-              />
-            </div>
-            <button className="dash-submit-btn" type="submit" disabled={pwSaving}>
-              {pwSaving ? '…' : t('savePassword')}
-            </button>
-          </form>
-        </div>
+        {/* An account made through Apple or Google has no password, so there is nothing to
+            change — and asking the server to would only be refused. */}
+        {user?.has_password !== false && (
+          <div className="dash-profile-card">
+            <h2 className="dash-section-title">{t('passwordTitle')}</h2>
+            {pwMsg && (
+              <div className={pwMsg.type === 'ok' ? 'dash-success-banner' : 'dash-error-banner'}>
+                {pwMsg.text}
+              </div>
+            )}
+            <form onSubmit={handlePasswordSave}>
+              <div className="dash-form-group">
+                <label>{t('currentPassword')}</label>
+                <input
+                  type="password"
+                  value={currentPw}
+                  onChange={e => setCurrentPw(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                />
+              </div>
+              <div className="dash-form-group">
+                <label>{t('newPassword')}</label>
+                <input
+                  type="password"
+                  value={newPw}
+                  onChange={e => setNewPw(e.target.value)}
+                  required
+                  minLength={8}
+                  autoComplete="new-password"
+                />
+              </div>
+              <div className="dash-form-group">
+                <label>{t('confirmPassword')}</label>
+                <input
+                  type="password"
+                  value={confirmPw}
+                  onChange={e => setConfirmPw(e.target.value)}
+                  required
+                  minLength={8}
+                  autoComplete="new-password"
+                />
+              </div>
+              <button className="dash-submit-btn" type="submit" disabled={pwSaving}>
+                {pwSaving ? '…' : t('savePassword')}
+              </button>
+            </form>
+          </div>
+        )}
       </div>
 
       {/* ── Inspection Reminders ─────────────────────────────────────── */}
