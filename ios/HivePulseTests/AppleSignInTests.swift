@@ -9,6 +9,20 @@ import XCTest
 @MainActor
 final class AppleSignInTests: XCTestCase {
 
+    // A successful sign-in writes its token to the real keychain, and the next view model
+    // reads it back in init — so without this, every test after a success starts out signed
+    // in, and "a refused token leaves nobody signed in" fails for a reason that has nothing
+    // to do with the token. AuthViewModelTests does the same.
+    override func setUp() {
+        super.setUp()
+        KeychainService.shared.clearAll()
+    }
+
+    override func tearDown() {
+        KeychainService.shared.clearAll()
+        super.tearDown()
+    }
+
     private func makeViewModel() -> (AuthViewModel, MockAuthService) {
         // The same shape the rest of the suite uses: default onboarding store, mock service.
         let service = MockAuthService()
