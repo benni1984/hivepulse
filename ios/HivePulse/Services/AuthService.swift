@@ -3,6 +3,8 @@ import Foundation
 protocol AuthServiceProtocol {
     func register(email: String, password: String, name: String, locale: String) async throws -> TokenResponse
     func login(email: String, password: String) async throws -> TokenResponse
+    func signInWithApple(idToken: String, name: String?) async throws -> TokenResponse
+    func signInProviders() async throws -> SignInProviders
     func logout(refreshToken: String) async throws
     func getMe() async throws -> UserOut
     func updateMe(name: String?, locale: String?) async throws -> UserOut
@@ -24,6 +26,17 @@ struct AuthService: AuthServiceProtocol {
     func login(email: String, password: String) async throws -> TokenResponse {
         let body = LoginRequest(email: email, password: password)
         return try await client.postNoAuth("auth/login", body: body)
+    }
+
+    func signInWithApple(idToken: String, name: String?) async throws -> TokenResponse {
+        let body = SocialSignInRequest(provider: "apple", idToken: idToken, name: name)
+        return try await client.postNoAuth("auth/social", body: body)
+    }
+
+    /// Which sign-ins the server accepts. Asked rather than assumed, so a button never
+    /// offers something the server would refuse on arrival.
+    func signInProviders() async throws -> SignInProviders {
+        try await client.getNoAuth("auth/providers")
     }
 
     func logout(refreshToken: String) async throws {

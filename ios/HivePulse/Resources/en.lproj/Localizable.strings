@@ -418,3 +418,8 @@
 "diagnostics.sent" = "Arrived. Reference: %@";
 "diagnostics.failed" = "Did not go out. Crash reporting is not working in this version.";
 "diagnostics.off" = "Crash reporting is switched off in this version.";
+
+/* Sign in with Apple */
+"label.or" = "or";
+"action.signInWithEmail" = "Sign in with an email address instead";
+"error.appleSignIn" = "Apple did not hand over a sign-in. Please try again.";

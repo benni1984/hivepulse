@@ -63,6 +63,31 @@ struct RegisterRequest: Encodable {
     let locale: String
 }
 
+struct SocialSignInRequest: Encodable {
+    let provider: String
+    let idToken: String
+    /// Apple sends the name once, in the very first authorization and never in the token, so
+    /// it travels with this request or it is lost for good.
+    let name: String?
+
+    enum CodingKeys: String, CodingKey {
+        case provider
+        case idToken = "id_token"
+        case name
+    }
+}
+
+struct SignInProvider: Decodable {
+    let clientId: String
+
+    enum CodingKeys: String, CodingKey { case clientId = "client_id" }
+}
+
+struct SignInProviders: Decodable {
+    let google: SignInProvider?
+    let apple: SignInProvider?
+}
+
 struct LoginRequest: Encodable {
     let email: String
     let password: String

@@ -418,3 +418,8 @@
 "diagnostics.sent" = "Arrivé. Référence : %@";
 "diagnostics.failed" = "Rien n’est parti. Le rapport d’erreur ne fonctionne pas dans cette version.";
 "diagnostics.off" = "Le rapport d’erreur est désactivé dans cette version.";
+
+/* Sign in with Apple */
+"label.or" = "ou";
+"action.signInWithEmail" = "Se connecter avec une adresse e-mail";
+"error.appleSignIn" = "Apple n’a transmis aucune connexion. Veuillez réessayer.";

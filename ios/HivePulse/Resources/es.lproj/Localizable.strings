@@ -418,3 +418,8 @@
 "diagnostics.sent" = "Ha llegado. Referencia: %@";
 "diagnostics.failed" = "No ha salido. El informe de errores no funciona en esta versión.";
 "diagnostics.off" = "El informe de errores está desactivado en esta versión.";
+
+/* Sign in with Apple */
+"label.or" = "o";
+"action.signInWithEmail" = "Iniciar sesión con un correo electrónico";
+"error.appleSignIn" = "Apple no ha entregado ningún inicio de sesión. Inténtalo de nuevo.";
