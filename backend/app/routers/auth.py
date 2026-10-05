@@ -192,6 +192,12 @@ def _send_reset_email(to_email: str, reset_url: str, locale: Optional[str] = Non
 def forgot_password(body: ForgotPasswordRequest, request: Request, db: Session = Depends(get_db)):
     """Always returns 204 — never reveals whether the email is registered."""
     enforce_rate_limit(db, request, "forgot_password", limit=5, window_minutes=60)
+    # The limit above counts per client IP, which does nothing against somebody aiming at one
+    # mailbox from a fresh address each time. Three of these landed in one inbox in a single
+    # night. The cost is that a stranger can keep a real user waiting an hour for their reset
+    # link; a mailbox nobody can empty is the worse of the two.
+    enforce_rate_limit(db, request, "forgot_password_address", limit=5, window_minutes=60,
+                       identity=body.email.strip().lower())
     user = db.query(User).filter(User.email == body.email).first()
     if not user:
         return  # silent — no user enumeration

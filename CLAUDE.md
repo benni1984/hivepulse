@@ -86,6 +86,20 @@ Source of truth for all endpoints, shapes, and enums: `docs/api-contract.md`. Up
 - Admin: `admin@apiscan.app` / `admin1234` (admin + supporter)
 - Seed: GitHub → Actions → "Seed Staging" → Run workflow
 
+## Store review account — IMPORTANT
+
+`review@multihead.de` on **production** is the account the store reviewers sign in with. Its
+password is in the Play Console under App access, and nowhere in this repository — this repo
+is public.
+
+It is not created by any seed script and exists only because somebody made it by hand. If
+the production database is ever rebuilt, it has to be recreated, or the next review is
+rejected with "we could not sign in", which costs a full review round.
+
+Google's reviewer asked for a password reset through it during the 1.0.0 (3) review, so if a
+reviewer ever completed one, the password stored in the console is stale. Signing in with the
+stored credentials is the only way to tell.
+
 ## Git & PR Workflow
 
 Push branch → open PR immediately → merge once all CI checks are green (no confirmation needed). **Never push directly to main** — branch protection is enforced; bypassing it skips required CI checks.
