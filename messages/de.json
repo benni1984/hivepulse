@@ -357,7 +357,8 @@
       "forgotPassword": "Passwort vergessen?",
       "errorGeneric": "Anmeldung fehlgeschlagen. Bitte erneut versuchen.",
       "or": "oder",
-      "withEmail": "Stattdessen mit E-Mail-Adresse anmelden"
+      "withEmail": "Stattdessen mit E-Mail-Adresse anmelden",
+      "continueWithApple": "Weiter mit Apple"
     },
     "forgotPassword": {
       "title": "Passwort zurücksetzen",

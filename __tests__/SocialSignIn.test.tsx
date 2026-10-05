@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
 import SocialSignIn from '@/components/SocialSignIn';
 import messages from '../messages/en.json';
@@ -174,4 +174,103 @@ describe('SocialSignIn', () => {
     await waitFor(() => expect(google.renderButton).toHaveBeenCalled());
     expect(document.head.querySelectorAll('script[data-gsi]').length).toBe(0);
   });
+
+  describe('Apple', () => {
+    function fakeAppleScript(signIn: ReturnType<typeof vi.fn>) {
+      const init = vi.fn();
+      (window as unknown as Record<string, unknown>).AppleID = { auth: { init, signIn } };
+      // The component waits for the script to load; in a test it never does, so pretend it has.
+      const script = document.createElement('script');
+      script.dataset.apple = 'true';
+      script.dataset.loaded = 'true';
+      document.head.appendChild(script);
+      return init;
+    }
+
+    afterEach(() => {
+      delete (window as unknown as Record<string, unknown>).AppleID;
+      document.head.querySelectorAll('script[data-apple]').forEach(s => s.remove());
+    });
+
+    it('shows an Apple button when the server accepts Apple', async () => {
+      vi.mocked(api.getSignInProviders).mockResolvedValue({
+        google: null, apple: { client_id: 'com.hivepulse.app.web' },
+      });
+
+      renderButton();
+
+      expect(await screen.findByText('Continue with Apple')).toBeInTheDocument();
+    });
+
+    it('opens Apple with the client id the server named', async () => {
+      const signIn = vi.fn().mockResolvedValue({
+        authorization: { id_token: 'apple.token' }, user: undefined,
+      });
+      const init = fakeAppleScript(signIn);
+      vi.mocked(api.getSignInProviders).mockResolvedValue({
+        google: null, apple: { client_id: 'com.hivepulse.app.web' },
+      });
+      vi.mocked(api.socialSignIn).mockResolvedValue({ id: 'u1' } as never);
+
+      renderButton();
+      fireEvent.click(await screen.findByText('Continue with Apple'));
+
+      // The web flow needs the Services ID, not the bundle identifier the app uses.
+      await waitFor(() => expect(init).toHaveBeenCalled());
+      expect(init.mock.calls[0][0].clientId).toBe('com.hivepulse.app.web');
+    });
+
+    it('passes the name on, because Apple sends it only once', async () => {
+      const signIn = vi.fn().mockResolvedValue({
+        authorization: { id_token: 'apple.token' },
+        user: { name: { firstName: 'Ada', lastName: 'Imkerin' } },
+      });
+      fakeAppleScript(signIn);
+      vi.mocked(api.getSignInProviders).mockResolvedValue({
+        google: null, apple: { client_id: 'com.hivepulse.app.web' },
+      });
+      vi.mocked(api.socialSignIn).mockResolvedValue({ id: 'u1' } as never);
+
+      renderButton();
+      fireEvent.click(await screen.findByText('Continue with Apple'));
+
+      await waitFor(() =>
+        expect(api.socialSignIn).toHaveBeenCalledWith('apple', 'apple.token', 'Ada Imkerin'));
+    });
+
+    it('sends no name at all when Apple sends none', async () => {
+      const signIn = vi.fn().mockResolvedValue({
+        authorization: { id_token: 'apple.token' }, user: undefined,
+      });
+      fakeAppleScript(signIn);
+      vi.mocked(api.getSignInProviders).mockResolvedValue({
+        google: null, apple: { client_id: 'com.hivepulse.app.web' },
+      });
+      vi.mocked(api.socialSignIn).mockResolvedValue({ id: 'u1' } as never);
+
+      renderButton();
+      fireEvent.click(await screen.findByText('Continue with Apple'));
+
+      // undefined, not "": every sign-in after the first carries no name, and an empty
+      // string would overwrite a perfectly good one.
+      await waitFor(() =>
+        expect(api.socialSignIn).toHaveBeenCalledWith('apple', 'apple.token', undefined));
+    });
+
+    it('says nothing when somebody closes the Apple window', async () => {
+      const signIn = vi.fn().mockRejectedValue({ error: 'popup_closed_by_user' });
+      fakeAppleScript(signIn);
+      vi.mocked(api.getSignInProviders).mockResolvedValue({
+        google: null, apple: { client_id: 'com.hivepulse.app.web' },
+      });
+
+      renderButton();
+      fireEvent.click(await screen.findByText('Continue with Apple'));
+
+      // Changing your mind is not an error worth a red banner.
+      await waitFor(() => expect(signIn).toHaveBeenCalled());
+      expect(screen.queryByText(/could not|fehlgeschlagen/i)).toBeNull();
+    });
+  });
+
 });
