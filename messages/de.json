@@ -1046,6 +1046,8 @@
     "feedbackSubject": "HivePulse Testrückmeldung",
     "feedbackHint": "Nützlich in einer Meldung: welches Telefon, was du getan hast, was du stattdessen erwartet hättest. Ein Foto vom Bildschirm sagt mehr als eine Beschreibung. Hat sich die App selbst beendet, hat sie schon einen Absturzbericht geschickt — den musst du nicht beschreiben.",
     "dataTitle": "Was mit deinen Daten passiert",
-    "dataBody": "Dasselbe wie bei allen anderen: Deine Bienenstände sind privat, solange du sie nicht selbst auf die öffentliche Karte stellst, nichts wird verkauft oder weitergegeben, und Werbung gibt es nicht. Testversionen melden Abstürze, dabei gehen die Stelle im Code und die Art des Geräts mit — nie deine Notizen, dein Passwort oder deine Adresse. Dein Konto und alles darin kannst du jederzeit selbst löschen."
+    "dataBody": "Dasselbe wie bei allen anderen: Deine Bienenstände sind privat, solange du sie nicht selbst auf die öffentliche Karte stellst, nichts wird verkauft oder weitergegeben, und Werbung gibt es nicht. Testversionen melden Abstürze, dabei gehen die Stelle im Code und die Art des Geräts mit — nie deine Notizen, dein Passwort oder deine Adresse. Dein Konto und alles darin kannst du jederzeit selbst löschen.",
+    "androidNote": "Für Android trägt Google nur Konten ein, die wir vorher angemeldet haben — ohne Eintrag zeigt der Link „App nicht verfügbar“. Schreib uns deine Google-Adresse an",
+    "androidNoteSubject": "HivePulse Android-Test: bitte eintragen"
   }
 }

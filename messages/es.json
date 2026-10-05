@@ -1046,6 +1046,8 @@
     "feedbackSubject": "Comentarios de la prueba de HivePulse",
     "feedbackHint": "Útil en un aviso: qué teléfono, qué hiciste y qué esperabas en su lugar. Una foto de la pantalla dice más que una descripción. Si la aplicación se cerró sola, ya ha enviado un informe de fallo; no hace falta describirlo.",
     "dataTitle": "Qué pasa con tus datos",
-    "dataBody": "Lo mismo que para todos: tus colmenares son privados mientras no los pongas tú en el mapa público, nada se vende ni se cede, y no hay publicidad. Las versiones de prueba informan de los fallos, enviando el punto del código y el tipo de dispositivo; nunca tus notas, tu contraseña ni tu dirección. Puedes eliminar tu cuenta y todo su contenido tú mismo en cualquier momento."
+    "dataBody": "Lo mismo que para todos: tus colmenares son privados mientras no los pongas tú en el mapa público, nada se vende ni se cede, y no hay publicidad. Las versiones de prueba informan de los fallos, enviando el punto del código y el tipo de dispositivo; nunca tus notas, tu contraseña ni tu dirección. Puedes eliminar tu cuenta y todo su contenido tú mismo en cualquier momento.",
+    "androidNote": "En Android, Google solo admite las cuentas que hayamos registrado antes; sin registro, el enlace muestra «Aplicación no disponible». Envíanos la dirección de tu cuenta de Google a",
+    "androidNoteSubject": "Prueba Android de HivePulse: por favor, añádeme"
   }
 }

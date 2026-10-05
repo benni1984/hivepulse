@@ -102,4 +102,46 @@ describe('the beta texts', () => {
     expect(fr.beta.expect3).toMatch(/deux semaines|14/i);
     expect(es.beta.expect3).toMatch(/dos semanas|14/i);
   });
+
+  describe('the Android invitation note', () => {
+    it('tells Android visitors they must be added first, once there is an Android link', async () => {
+      links.current = { ...links.current, android: 'https://play.google.com/apps/testing/x' };
+
+      const { container } = await render_();
+
+      // Google lets only listed accounts into a closed test; anybody else opens the link and
+      // meets "App not available". The page has to say so rather than let people find out.
+      const note = container.querySelector('[data-testid="android-invitation-note"]');
+      expect(note).not.toBeNull();
+      expect(note!.querySelector('a[href^="mailto:"]')?.getAttribute('href'))
+        .toContain('hivepulse@multihead.de');
+    });
+
+    it('is absent when there is no Android link', async () => {
+      // Stated outright: this block sits next to others that leave their links behind.
+      links.current = { android: '', ios: 'https://testflight.apple.com/join/y', email: 'hivepulse@multihead.de' };
+
+      const { container } = await render_();
+
+      expect(container.querySelector('[data-testid="android-invitation-note"]')).toBeNull();
+    });
+
+    it('does not apply to iPhone, whose link is open to anyone', async () => {
+      links.current = { android: '', ios: 'https://testflight.apple.com/join/y', email: 'hivepulse@multihead.de' };
+
+      const { container } = await render_();
+
+      expect(container.querySelector('[data-testid="android-invitation-note"]')).toBeNull();
+      expect(container.querySelectorAll('.beta-actions a')).toHaveLength(1);
+    });
+
+    it('exists in every language', () => {
+      for (const messages of [en, de, fr, es]) {
+        const beta = (messages as { beta: Record<string, string> }).beta;
+        expect(beta.androidNote).toBeTruthy();
+        expect(beta.androidNoteSubject).toBeTruthy();
+      }
+    });
+  });
+
 });

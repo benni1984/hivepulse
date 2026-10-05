@@ -1046,6 +1046,8 @@
     "feedbackSubject": "Retour sur le test HivePulse",
     "feedbackHint": "Utile dans un signalement : quel téléphone, ce que vous avez fait, ce que vous attendiez à la place. Une photo de l'écran dit plus qu'une description. Si l'application s'est fermée d'elle-même, elle a déjà envoyé un rapport — inutile de le décrire.",
     "dataTitle": "Ce qu'il advient de vos données",
-    "dataBody": "La même chose que pour tout le monde : vos ruchers restent privés tant que vous ne les placez pas vous-même sur la carte publique, rien n'est vendu ni transmis, et il n'y a aucune publicité. Les versions de test signalent les plantages, avec l'endroit dans le code et le type d'appareil — jamais vos notes, votre mot de passe ou votre adresse. Vous pouvez supprimer votre compte et tout son contenu vous-même, à tout moment."
+    "dataBody": "La même chose que pour tout le monde : vos ruchers restent privés tant que vous ne les placez pas vous-même sur la carte publique, rien n'est vendu ni transmis, et il n'y a aucune publicité. Les versions de test signalent les plantages, avec l'endroit dans le code et le type d'appareil — jamais vos notes, votre mot de passe ou votre adresse. Vous pouvez supprimer votre compte et tout son contenu vous-même, à tout moment.",
+    "androidNote": "Sur Android, Google n’admet que les comptes que nous avons inscrits au préalable — sans inscription, le lien affiche « Application non disponible ». Envoie-nous l’adresse de ton compte Google à",
+    "androidNoteSubject": "Test Android HivePulse : merci de m’ajouter"
   }
 }
