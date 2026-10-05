@@ -27,6 +27,14 @@ vi.mock('@/lib/api', () => ({
 
 const mockUser = { id: '1', email: 'a@b.com', name: 'Test', locale: 'en', created_at: '2024-01-01' };
 
+/** The form appears once the server has said which sign-ins it offers, so tests wait for it. */
+async function renderPage() {
+  const rendered = render(<LoginPage />);
+  await waitFor(() =>
+    expect(rendered.container.querySelector('input[type="email"]')).toBeInTheDocument());
+  return rendered;
+}
+
 describe('LoginPage', () => {
   beforeEach(() => {
     mockReplace.mockClear();
@@ -42,8 +50,8 @@ describe('LoginPage', () => {
     fireEvent.click(screen.getByRole('button'));
   }
 
-  it('renders email and password inputs and a submit button', () => {
-    const { container } = render(<LoginPage />);
+  it('renders email and password inputs and a submit button', async () => {
+    const { container } = await renderPage();
     expect(container.querySelector('input[type="email"]')).toBeInTheDocument();
     expect(container.querySelector('input[type="password"]')).toBeInTheDocument();
     expect(screen.getByRole('button')).toBeInTheDocument();
@@ -51,21 +59,21 @@ describe('LoginPage', () => {
 
   it('calls login with entered credentials on submit', async () => {
     mockLogin.mockResolvedValueOnce(mockUser);
-    const { container } = render(<LoginPage />);
+    const { container } = await renderPage();
     fillAndSubmit(container);
     await waitFor(() => expect(mockLogin).toHaveBeenCalledWith('a@b.com', 'pass123'));
   });
 
   it('redirects to /dashboard on successful login', async () => {
     mockLogin.mockResolvedValueOnce(mockUser);
-    const { container } = render(<LoginPage />);
+    const { container } = await renderPage();
     fillAndSubmit(container);
     await waitFor(() => expect(mockReplace).toHaveBeenCalledWith('/dashboard'));
   });
 
   it('shows error banner when login throws', async () => {
     mockLogin.mockRejectedValueOnce(new Error('Invalid credentials'));
-    const { container } = render(<LoginPage />);
+    const { container } = await renderPage();
     fillAndSubmit(container);
     await waitFor(() => expect(screen.getByText('Invalid credentials')).toBeInTheDocument());
     expect(mockReplace).not.toHaveBeenCalled();
@@ -74,14 +82,14 @@ describe('LoginPage', () => {
   it('disables submit button while request is in flight', async () => {
     let resolve!: () => void;
     mockLogin.mockReturnValueOnce(new Promise<typeof mockUser>(r => { resolve = () => r(mockUser); }));
-    const { container } = render(<LoginPage />);
+    const { container } = await renderPage();
     fillAndSubmit(container);
     expect(screen.getByRole('button')).toBeDisabled();
     resolve();
     await waitFor(() => expect(screen.getByRole('button')).not.toBeDisabled());
   });
 
-  it('contains a link to the register page', () => {
+  it('contains a link to the register page', async () => {
     render(<LoginPage />);
     expect(screen.getByRole('link', { name: /login\.register/i })).toHaveAttribute('href', '/dashboard/register');
   });
@@ -102,12 +110,36 @@ describe('LoginPage', () => {
   });
 
   it('leaves the email form in plain sight when there is no provider', async () => {
-    const { container } = render(<LoginPage />);
+    const { container } = await renderPage();
 
     // Hiding the only way in behind a click would be absurd.
     await waitFor(() =>
       expect(container.querySelector('input[type="email"]')).toBeInTheDocument());
     expect(screen.queryByTestId('email-signin-toggle')).toBeNull();
+  });
+
+
+  it('does not show the form while the server has not yet said what it offers', async () => {
+    // A pending answer: the lookup never resolves during this test.
+    mockProviders.mockReturnValue(new Promise(() => {}));
+
+    const { container } = render(<LoginPage />);
+    await new Promise(resolve => setTimeout(resolve, 30));
+
+    // "Not yet known" must not look like "none". The form used to appear at once and then
+    // fold away behind its toggle when a provider turned up: a flash for people, and a click
+    // on nothing for the staging E2E suite, which blocked every deploy.
+    expect(container.querySelector('input[type="email"]')).toBeNull();
+    expect(screen.queryByTestId('email-signin-toggle')).toBeNull();
+  });
+
+  it('shows the form once the lookup fails, so a broken server cannot lock people out', async () => {
+    mockProviders.mockRejectedValue(new Error('timeout'));
+
+    const { container } = render(<LoginPage />);
+
+    await waitFor(() =>
+      expect(container.querySelector('input[type="email"]')).toBeInTheDocument());
   });
 
 });

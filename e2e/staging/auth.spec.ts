@@ -11,7 +11,11 @@ test('login page renders and rejects wrong credentials', async ({ page }) => {
   // toggle whenever a provider is configured. Conditional on purpose: the toggle is absent
   // when none is, and a test that insisted on it would fail for the wrong reason.
   const emailToggle = page.getByTestId('email-signin-toggle');
-  if (await emailToggle.isVisible().catch(() => false)) {
+  // Wait for the page to settle on one of the two layouts. Looking at once raced the
+  // provider lookup: the form was briefly visible, so nothing was clicked, and then it folded
+  // away behind the toggle under the test's feet.
+  await emailToggle.or(page.locator('input[type="email"]')).first().waitFor({ timeout: 15_000 });
+  if (await emailToggle.isVisible()) {
     await emailToggle.click();
   }
   await page.locator('input[type="email"]').fill('nobody@nowhere.invalid');
