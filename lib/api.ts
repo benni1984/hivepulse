@@ -109,6 +109,49 @@ export async function register(name: string, email: string, password: string): P
   return data.user;
 }
 
+export interface SignInProvider {
+  client_id: string;
+}
+
+export interface SignInProviders {
+  google: SignInProvider | null;
+  apple: SignInProvider | null;
+}
+
+/**
+ * Which sign-ins the server accepts, and under which client ID.
+ *
+ * Asked rather than hardcoded: the same ID would otherwise live here and in the server's
+ * audience check, and the day the two drift apart a sign-in fails with a complaint about an
+ * invalid token that has nothing to do with the token.
+ */
+export async function getSignInProviders(): Promise<SignInProviders> {
+  const res = await fetch(`${BASE}/auth/providers`);
+  if (!res.ok) return { google: null, apple: null };
+  return res.json();
+}
+
+/** Signs in with an Apple or Google identity token, creating the account on first use. */
+export async function socialSignIn(
+  provider: 'google' | 'apple',
+  idToken: string,
+  name?: string,
+): Promise<User> {
+  const res = await fetch(`${BASE}/auth/social`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ provider, id_token: idToken, name }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(extractDetail(err, 'Sign-in failed'));
+  }
+  const data = await res.json();
+  localStorage.setItem('access_token', data.access_token);
+  localStorage.setItem('refresh_token', data.refresh_token);
+  return data.user;
+}
+
 export async function logout() {
   const rt = getRefreshToken();
   if (rt) {

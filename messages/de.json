@@ -355,7 +355,8 @@
       "noAccount": "Noch kein Konto?",
       "register": "Registrieren",
       "forgotPassword": "Passwort vergessen?",
-      "errorGeneric": "Anmeldung fehlgeschlagen. Bitte erneut versuchen."
+      "errorGeneric": "Anmeldung fehlgeschlagen. Bitte erneut versuchen.",
+      "or": "oder"
     },
     "forgotPassword": {
       "title": "Passwort zurücksetzen",

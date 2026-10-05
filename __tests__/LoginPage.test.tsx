@@ -17,6 +17,10 @@ vi.mock('@/i18n/navigation', () => ({
 
 vi.mock('@/lib/api', () => ({
   login: mockLogin,
+  // The page now carries the sign-in buttons, which ask the server which providers it
+  // accepts. Answering "none" keeps these tests about the password form.
+  getSignInProviders: () => Promise.resolve({ google: null, apple: null }),
+  socialSignIn: vi.fn(),
 }));
 
 const mockUser = { id: '1', email: 'a@b.com', name: 'Test', locale: 'en', created_at: '2024-01-01' };
