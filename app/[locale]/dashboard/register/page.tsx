@@ -13,6 +13,11 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [socialAvailable, setSocialAvailable] = useState(false);
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  // Tucked away only when there is something better on offer. With no provider configured
+  // the form is the only way in, and hiding it behind a click would be absurd.
+  const emailFormVisible = showEmailForm || !socialAvailable;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -45,24 +50,42 @@ export default function RegisterPage() {
         </div>
         <h1>{t('register.title')}</h1>
         {error && <div className="dash-error-banner">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="dash-form-group">
-            <label>{t('register.name')}</label>
-            <input type="text" value={name} onChange={e => setName(e.target.value)} required autoFocus />
-          </div>
-          <div className="dash-form-group">
-            <label>{t('register.email')}</label>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
-          </div>
-          <div className="dash-form-group">
-            <label>{t('register.password')}</label>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={8} />
-          </div>
-          <button className="dash-submit-btn" type="submit" disabled={loading}>
-            {loading ? '…' : t('register.submit')}
+        <SocialSignIn
+          onSignedIn={() => router.replace('/dashboard')}
+          onAvailable={setSocialAvailable}
+        />
+        {socialAvailable && (
+          <div className="dash-auth-divider"><span>{t('register.or')}</span></div>
+        )}
+        {!emailFormVisible && (
+          <button
+            type="button"
+            className="dash-auth-email-toggle"
+            data-testid="email-signin-toggle"
+            onClick={() => setShowEmailForm(true)}
+          >
+            {t('register.withEmail')}
           </button>
-        </form>
-        <SocialSignIn onSignedIn={() => router.replace('/dashboard')} />
+        )}
+        {emailFormVisible && (
+          <form onSubmit={handleSubmit}>
+            <div className="dash-form-group">
+              <label>{t('register.name')}</label>
+              <input type="text" value={name} onChange={e => setName(e.target.value)} required autoFocus />
+            </div>
+            <div className="dash-form-group">
+              <label>{t('register.email')}</label>
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+            </div>
+            <div className="dash-form-group">
+              <label>{t('register.password')}</label>
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={8} />
+            </div>
+            <button className="dash-submit-btn" type="submit" disabled={loading}>
+              {loading ? '…' : t('register.submit')}
+            </button>
+          </form>
+        )}
         <p className="dash-auth-link">
           {t('register.hasAccount')} <Link href="/dashboard/login">{t('register.login')}</Link>
         </p>

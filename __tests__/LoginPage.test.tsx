@@ -15,11 +15,13 @@ vi.mock('@/i18n/navigation', () => ({
   Link: ({ href, children }: { href: string; children: React.ReactNode }) => <a href={href}>{children}</a>,
 }));
 
+const mockProviders = vi.hoisted(() => vi.fn());
+
 vi.mock('@/lib/api', () => ({
   login: mockLogin,
   // The page now carries the sign-in buttons, which ask the server which providers it
-  // accepts. Answering "none" keeps these tests about the password form.
-  getSignInProviders: () => Promise.resolve({ google: null, apple: null }),
+  // accepts. Answering "none" keeps most of these tests about the password form.
+  getSignInProviders: mockProviders,
   socialSignIn: vi.fn(),
 }));
 
@@ -29,6 +31,9 @@ describe('LoginPage', () => {
   beforeEach(() => {
     mockReplace.mockClear();
     mockLogin.mockClear();
+    // Most of these tests are about the password form, so: no provider on offer.
+    mockProviders.mockReset();
+    mockProviders.mockResolvedValue({ google: null, apple: null });
   });
 
   function fillAndSubmit(container: HTMLElement, email = 'a@b.com', password = 'pass123') {
@@ -80,4 +85,29 @@ describe('LoginPage', () => {
     render(<LoginPage />);
     expect(screen.getByRole('link', { name: /login\.register/i })).toHaveAttribute('href', '/dashboard/register');
   });
+
+  it('puts the email form behind a toggle when a provider is on offer', async () => {
+    mockProviders.mockResolvedValue({ google: { client_id: 'web-id' }, apple: null });
+
+    const { container } = render(<LoginPage />);
+
+    // The point of the change: Apple and Google first, email as the quieter alternative.
+    const toggle = await screen.findByTestId('email-signin-toggle');
+    expect(container.querySelector('input[type="email"]')).toBeNull();
+
+    fireEvent.click(toggle);
+
+    await waitFor(() =>
+      expect(container.querySelector('input[type="email"]')).toBeInTheDocument());
+  });
+
+  it('leaves the email form in plain sight when there is no provider', async () => {
+    const { container } = render(<LoginPage />);
+
+    // Hiding the only way in behind a click would be absurd.
+    await waitFor(() =>
+      expect(container.querySelector('input[type="email"]')).toBeInTheDocument());
+    expect(screen.queryByTestId('email-signin-toggle')).toBeNull();
+  });
+
 });

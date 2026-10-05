@@ -356,7 +356,8 @@
       "register": "Registrarse",
       "forgotPassword": "¿Olvidaste tu contraseña?",
       "errorGeneric": "Error al iniciar sesión. Inténtalo de nuevo.",
-      "or": "o"
+      "or": "o",
+      "withEmail": "Iniciar sesión con un correo electrónico"
     },
     "forgotPassword": {
       "title": "Restablecer tu contraseña",
@@ -384,7 +385,9 @@
       "submit": "Crear cuenta",
       "hasAccount": "¿Ya tienes cuenta?",
       "login": "Iniciar sesión",
-      "errorGeneric": "Error al registrarse. Inténtalo de nuevo."
+      "errorGeneric": "Error al registrarse. Inténtalo de nuevo.",
+      "withEmail": "Crear una cuenta con un correo electrónico",
+      "or": "o"
     },
     "nav": {
       "sectionBeekeeping": "Apicultura",

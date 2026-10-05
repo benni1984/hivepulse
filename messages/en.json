@@ -356,7 +356,8 @@
       "register": "Register",
       "forgotPassword": "Forgot password?",
       "errorGeneric": "Login failed. Please try again.",
-      "or": "or"
+      "or": "or",
+      "withEmail": "Sign in with an email address instead"
     },
     "forgotPassword": {
       "title": "Reset your password",
@@ -384,7 +385,9 @@
       "submit": "Create account",
       "hasAccount": "Already have an account?",
       "login": "Log in",
-      "errorGeneric": "Registration failed. Please try again."
+      "errorGeneric": "Registration failed. Please try again.",
+      "withEmail": "Create an account with an email address instead",
+      "or": "or"
     },
     "nav": {
       "sectionBeekeeping": "Beekeeping",

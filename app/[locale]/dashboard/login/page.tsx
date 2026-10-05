@@ -12,6 +12,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [socialAvailable, setSocialAvailable] = useState(false);
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  // Tucked away only when there is something better on offer. With no provider configured
+  // the form is the only way in, and hiding it behind a click would be absurd.
+  const emailFormVisible = showEmailForm || !socialAvailable;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -44,23 +49,45 @@ export default function LoginPage() {
         </div>
         <h1>{t('login.title')}</h1>
         {error && <div className="dash-error-banner">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="dash-form-group">
-            <label>{t('login.email')}</label>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} required autoFocus />
-          </div>
-          <div className="dash-form-group">
-            <label>{t('login.password')}</label>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
-          </div>
-          <button className="dash-submit-btn" type="submit" disabled={loading}>
-            {loading ? '…' : t('login.submit')}
+        <SocialSignIn
+          onSignedIn={() => router.replace('/dashboard')}
+          onAvailable={setSocialAvailable}
+        />
+        {socialAvailable && (
+          <div className="dash-auth-divider"><span>{t('login.or')}</span></div>
+        )}
+        {!emailFormVisible && (
+          <button
+            type="button"
+            className="dash-auth-email-toggle"
+            data-testid="email-signin-toggle"
+            onClick={() => setShowEmailForm(true)}
+          >
+            {t('login.withEmail')}
           </button>
-        </form>
-        <SocialSignIn onSignedIn={() => router.replace('/dashboard')} />
-        <p className="dash-auth-link">
-          <Link href="/dashboard/forgot-password">{t('login.forgotPassword')}</Link>
-        </p>
+        )}
+        {emailFormVisible && (
+          <form onSubmit={handleSubmit}>
+            <div className="dash-form-group">
+              <label>{t('login.email')}</label>
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)} required autoFocus />
+            </div>
+            <div className="dash-form-group">
+              <label>{t('login.password')}</label>
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+            </div>
+            <button className="dash-submit-btn" type="submit" disabled={loading}>
+              {loading ? '…' : t('login.submit')}
+            </button>
+          </form>
+        )}
+        {/* Belongs to the email path and appears with it: there is no password to forget
+            when signing in with Apple or Google. */}
+        {emailFormVisible && (
+          <p className="dash-auth-link">
+            <Link href="/dashboard/forgot-password">{t('login.forgotPassword')}</Link>
+          </p>
+        )}
         <p className="dash-auth-link">
           {t('login.noAccount')} <Link href="/dashboard/register">{t('login.register')}</Link>
         </p>

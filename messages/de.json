@@ -356,7 +356,8 @@
       "register": "Registrieren",
       "forgotPassword": "Passwort vergessen?",
       "errorGeneric": "Anmeldung fehlgeschlagen. Bitte erneut versuchen.",
-      "or": "oder"
+      "or": "oder",
+      "withEmail": "Stattdessen mit E-Mail-Adresse anmelden"
     },
     "forgotPassword": {
       "title": "Passwort zurücksetzen",
@@ -384,7 +385,9 @@
       "submit": "Konto erstellen",
       "hasAccount": "Bereits ein Konto?",
       "login": "Anmelden",
-      "errorGeneric": "Registrierung fehlgeschlagen. Bitte erneut versuchen."
+      "errorGeneric": "Registrierung fehlgeschlagen. Bitte erneut versuchen.",
+      "withEmail": "Stattdessen Konto mit E-Mail-Adresse anlegen",
+      "or": "oder"
     },
     "nav": {
       "sectionBeekeeping": "Imkerei",
