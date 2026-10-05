@@ -31,6 +31,25 @@ class AuthRepository @Inject constructor(
         return resp.user
     }
 
+    suspend fun signInWithGoogle(idToken: String): UserOut {
+        val resp = api.signInWithGoogle(SocialSignInRequest(provider = "google", idToken = idToken))
+        tokenStore.accessToken  = resp.accessToken
+        tokenStore.refreshToken = resp.refreshToken
+        return resp.user
+    }
+
+    /**
+     * The client id a Google sign-in must be requested with, or null when the server accepts
+     * none.
+     *
+     * Blank counts as none. A relaxed mock in the instrumented tests returns an empty string
+     * rather than null, and a button built on an empty id would fail at the tap.
+     */
+    suspend fun googleClientId(): String? =
+        runCatching { api.signInProviders().google?.clientId }
+            .getOrNull()
+            ?.takeIf { it.isNotBlank() }
+
     suspend fun logout() {
         tokenStore.refreshToken?.let { runCatching { api.logout(LogoutRequest(it)) } }
         tokenStore.clear()

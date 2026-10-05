@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -25,6 +26,7 @@ import com.hivepulse.app.ui.common.ErrorBanner
 import com.hivepulse.app.ui.theme.Amber500
 import com.hivepulse.app.ui.theme.Stone50
 import com.hivepulse.app.ui.theme.Stone500
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
@@ -36,7 +38,14 @@ fun LoginScreen(
     val state by vm.state.collectAsState()
     var email    by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var showEmailForm by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    // Tucked away only when there is something better on offer. With no provider the form is
+    // the only way in, and hiding it behind a tap would be absurd.
+    val emailFormVisible = showEmailForm || state.googleClientId == null
 
+    LaunchedEffect(Unit) { vm.loadSignInProviders() }
     LaunchedEffect(state.success) { if (state.success) onLoginSuccess() }
 
     Box(
@@ -71,6 +80,37 @@ fun LoginScreen(
                 )
                 Spacer(Modifier.height(28.dp))
 
+                state.googleClientId?.let { clientId ->
+                    Spacer(Modifier.height(20.dp))
+                    OutlinedButton(
+                        onClick = {
+                            scope.launch {
+                                runCatching { requestGoogleIdToken(context, clientId) }
+                                    .onSuccess { token -> token?.let { vm.signInWithGoogle(it) } }
+                                    .onFailure { vm.showError(it.message) }
+                            }
+                        },
+                        enabled  = !state.isLoading,
+                        modifier = Modifier.fillMaxWidth().height(56.dp),
+                        shape    = MaterialTheme.shapes.medium,
+                    ) {
+                        Text(stringResource(R.string.action_continue_with_google),
+                             style = MaterialTheme.typography.titleMedium)
+                    }
+
+                    Spacer(Modifier.height(16.dp))
+                    Text(stringResource(R.string.label_or),
+                         style = MaterialTheme.typography.bodySmall, color = Stone500)
+                }
+
+                if (!emailFormVisible) {
+                    TextButton(onClick = { showEmailForm = true }) {
+                        Text(stringResource(R.string.action_sign_in_with_email),
+                             style = MaterialTheme.typography.bodySmall, color = Stone500)
+                    }
+                }
+
+                if (emailFormVisible) {
                 OutlinedTextField(
                     value = email, onValueChange = { email = it },
                     label = { Text(stringResource(R.string.field_email)) },
@@ -118,6 +158,7 @@ fun LoginScreen(
                 TextButton(onClick = { onForgotPassword(email.trim()) }) {
                     Text(stringResource(R.string.action_forgot_password),
                         style = MaterialTheme.typography.bodySmall, color = Stone500)
+                }
                 }
                 TextButton(onClick = onNavigateRegister) {
                     Text(stringResource(R.string.action_register))

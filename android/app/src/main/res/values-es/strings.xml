@@ -384,4 +384,8 @@
     <string name="diagnostics_test_report_failed">No ha salido. El informe de errores no funciona en esta versión.</string>
     <string name="diagnostics_reporting_off">El informe de errores está desactivado en esta versión.</string>
 
+    <!-- Sign in with Google -->
+    <string name="action_continue_with_google">Continuar con Google</string>
+    <string name="label_or">o</string>
+    <string name="action_sign_in_with_email">Iniciar sesión con un correo electrónico</string>
 </resources>
