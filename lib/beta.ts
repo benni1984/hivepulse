@@ -20,7 +20,7 @@ export interface BetaLinks {
 }
 
 export const BETA: BetaLinks = {
-  android: '',
+  android: 'https://play.google.com/apps/testing/com.hivepulse.app',
   ios: '',
   email: 'hivepulse@multihead.de',
 };
