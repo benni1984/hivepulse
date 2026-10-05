@@ -22,6 +22,7 @@ from passlib.context import CryptContext
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
+from app.utils.scales import varroa_level_from_count
 from app.models import (
     Base, User, Apiary, Hive, Inspection, QrBatch, QrToken,
     HornetCatch, HornetNest, HornetSighting, HornetTrap, HornetTrapCatch,
@@ -285,6 +286,133 @@ def seed_hornet_tracker(db: Session):
 # Main
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Store screenshot accounts
+# ---------------------------------------------------------------------------
+#
+# The demo account cannot be photographed for a store listing: the staging E2E suite signs
+# in as demo and leaves its apiaries behind, so the list reads "e2e-apiary-1790951543272"
+# seven times over. These accounts exist only to be photographed. Nothing else signs in as
+# them, so nothing else writes to them.
+#
+# One per store language, because a German apiary name in the Spanish listing is the same
+# mistake as an English interface there. The data is fixed rather than random: the same run
+# must produce the same pictures, or every capture quietly changes the listing.
+
+SCREENSHOT_PASSWORD = "demo1234"  # staging-only, same class as the demo account
+
+SCREENSHOT_ACCOUNTS = {
+    "de": {
+        "name": "Imkerei Sonnenhang",
+        "hive": "Volk",
+        "apiaries": ["Hausgarten", "Streuobstwiese", "Waldrand"],
+        "notes": ["Volk in guter Verfassung", "Weisel gesehen, schönes Brutnest",
+                  "Honigraum aufgesetzt", "Futterreserven reichen"],
+    },
+    "en": {
+        "name": "Sunnyside Apiaries",
+        "hive": "Colony",
+        "apiaries": ["Home Garden", "Old Orchard", "Woodland Edge"],
+        "notes": ["Colony in good shape", "Queen seen, solid brood pattern",
+                  "Added a honey super", "Stores look sufficient"],
+    },
+    "fr": {
+        "name": "Rucher du Coteau",
+        "hive": "Ruche",
+        "apiaries": ["Jardin", "Vieux verger", "Lisière du bois"],
+        "notes": ["Colonie en bonne forme", "Reine vue, beau couvain",
+                  "Hausse posée", "Réserves suffisantes"],
+    },
+    "es": {
+        "name": "Colmenar Solana",
+        "hive": "Colmena",
+        "apiaries": ["Huerto", "Olivar viejo", "Linde del bosque"],
+        "notes": ["Colonia en buena forma", "Reina vista, buena puesta",
+                  "Alza colocada", "Reservas suficientes"],
+    },
+}
+
+# Six visits across a season, newest first. A listing should show a well-kept colony, so the
+# varroa count falls after a treatment and the mood settles — the demo data showed six
+# "aggressive / high varroa" rows in a row, which reads like a warning, not an advertisement.
+SCREENSHOT_VISITS = [
+    # days_ago, brood, honey, varroa, mood,       queen_seen
+    (6,         8,     6,      1,      "calm",     True),
+    (20,        7,     5,      2,      "calm",     True),
+    (34,        7,     4,      3,      "calm",     False),
+    (48,        6,     3,      6,      "nervous",  True),
+    (62,        5,     2,      9,      "nervous",  False),
+    (76,        4,     1,      4,      "calm",     True),
+]
+
+
+def seed_screenshot_account(db: Session, language: str) -> User:
+    spec = SCREENSHOT_ACCOUNTS[language]
+    user = upsert_user(db, f"screenshots-{language}@apiscan.app", spec["name"],
+                       SCREENSHOT_PASSWORD, is_supporter=True)
+    db.flush()
+
+    for index, apiary_name in enumerate(spec["apiaries"]):
+        lat, lon, city = LOCATIONS[index]
+        # Deliberately not public: these colonies are props and must not move the community
+        # map, the heatmap or the member statistics.
+        apiary = ensure_apiary(db, user, apiary_name, lat, lon, city, is_public=False)
+        db.flush()
+
+        for number in range(1, 4 if index == 0 else 3):
+            hive = ensure_hive(db, apiary, user, f"{spec['hive']} {number}",
+                               HIVE_TYPES[number % len(HIVE_TYPES)])
+            db.flush()
+            seed_screenshot_visits(db, hive, spec["notes"])
+
+    # One batch worth photographing. ensure_hive creates a batch of a single code per hive,
+    # which makes the QR screen a list of ones.
+    batch = db.query(QrBatch).filter_by(user_id=user.id, count=12).first()
+    if batch is None:
+        batch = QrBatch(id=_uuid(), user_id=user.id, count=12)
+        db.add(batch)
+        db.flush()
+        for _ in range(12):
+            db.add(QrToken(token=secrets.token_hex(8), batch_id=batch.id, user_id=user.id))
+        print(f"    created a QR batch of 12 for {language}")
+
+    return user
+
+
+def seed_screenshot_visits(db: Session, hive: Hive, notes: list):
+    """Rewrite the visits rather than skipping them when some already exist.
+
+    These are props, so the list above is the authority: when it changes — a varroa level
+    added, a mood softened — the next seed must carry that through. The ordinary demo data
+    is left alone; only these accounts are rewritten, and the row count stays the same, so
+    reseeding still changes nothing that anybody can see.
+    """
+    existing = db.query(Inspection).filter_by(hive_id=hive.id).all()
+    for inspection in existing:
+        db.delete(inspection)
+    db.flush()
+
+    for position, (days_ago, brood, honey, varroa, mood, queen_seen) in enumerate(SCREENSHOT_VISITS):
+        db.add(Inspection(
+            id=_uuid(), hive_id=hive.id,
+            date=_date_ago(days_ago),
+            queen_seen=queen_seen,
+            # The SICAMM colour for a queen of this season; a different colour per hive would
+            # look like a yard whose queens were all bought in different years.
+            queen_color="blue" if queen_seen else None,
+            brood_frames=brood,
+            honey_frames=honey,
+            varroa_count=varroa,
+            # The router derives this from the count when an inspection comes through the
+            # API; this script writes straight to the database and has to do it itself, or
+            # the hive list shows no varroa reading at all. Same helper, so the two agree.
+            varroa_level=varroa_level_from_count(varroa),
+            mood=mood,
+            notes=notes[position % len(notes)] if position < 3 else None,
+            created_at=_ago(days_ago),
+        ))
+
+
 def main():
     print("=== HivePulse Staging Seed ===\n")
 
@@ -325,6 +453,11 @@ def main():
                 hive = ensure_hive(db, apiary, owner, f"Volk {j + 1}", random.choice(HIVE_TYPES))
                 seed_inspections(db, hive, count=random.randint(5, 8), varroa_range=varroa_range)
 
+        # --- Store screenshot accounts (one per listing language) ---
+        print("\nStore screenshot accounts:")
+        for language in SCREENSHOT_ACCOUNTS:
+            seed_screenshot_account(db, language)
+
         # --- Hornet tracker ---
         print("\nHornet tracker:")
         seed_hornet_tracker(db)
@@ -334,6 +467,8 @@ def main():
     print("\n=== Seeding complete ===")
     print("  demo@apiscan.app  / demo1234  (supporter)")
     print("  admin@apiscan.app / admin1234 (admin + supporter)")
+    for language in SCREENSHOT_ACCOUNTS:
+        print(f"  screenshots-{language}@apiscan.app / {SCREENSHOT_PASSWORD} (store screenshots)")
 
 
 if __name__ == "__main__":

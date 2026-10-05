@@ -84,6 +84,9 @@ Source of truth for all endpoints, shapes, and enums: `docs/api-contract.md`. Up
 - Production: `hivepulse.multihead.de` (CNAME → Vercel)
 - Demo: `demo@apiscan.app` / `demo1234` (supporter)
 - Admin: `admin@apiscan.app` / `admin1234` (admin + supporter)
+- Store screenshots: `screenshots-{de,en,fr,es}@apiscan.app` / `demo1234` — curated,
+  non-public data in each listing language. Do not point tests at them; the E2E suite
+  uses the demo account and leaves apiaries behind, which is why these exist.
 - Seed: GitHub → Actions → "Seed Staging" → Run workflow
 
 ## Git & PR Workflow

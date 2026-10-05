@@ -61,8 +61,15 @@ jobs:
         env:
           SCREENSHOT_LANG: ${{ matrix.language }}
           SCREENSHOT_DIR: store-screenshots
-          DEMO_EMAIL: ${{ secrets.STAGING_DEMO_EMAIL }}
-          DEMO_PASSWORD: ${{ secrets.STAGING_DEMO_PASSWORD }}
+          # Not the demo account: the staging E2E suite signs in as demo and leaves its
+          # apiaries behind, so its list reads "e2e-apiary-1790951543272" seven times over.
+          # These accounts are seeded for this purpose and nothing else writes to them.
+          DEMO_EMAIL: screenshots-${{ matrix.language }}@apiscan.app
+          # Not a secret and deliberately not STAGING_DEMO_PASSWORD: these accounts are
+          # created by the seed with this literal, and pointing at a secret that may have
+          # been rotated made all four languages fail with "login failed" while the account
+          # itself was fine. The value lives in seed_staging.py; a test keeps the two equal.
+          DEMO_PASSWORD: demo1234
         with:
           # API 34: per-app languages need Android 13 or newer, and the help-page capture
           # already runs reliably on this image.

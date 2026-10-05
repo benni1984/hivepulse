@@ -96,6 +96,23 @@ def main() -> int:
     if status == 200:
         names = [t.get("track") for t in tracks.get("tracks", [])]
         print("tracks visible:", ", ".join(n for n in names if n) or "(none yet)")
+
+        # Which version actually sits where. Play's API does not expose whether a release is
+        # still in review — only the console shows that — but it does say what Google holds
+        # on each track, which answers "did the upload really arrive" on its own.
+        print("\nreleases per track:")
+        for track in tracks.get("tracks", []):
+            releases = track.get("releases") or []
+            if not releases:
+                print(f"  {track.get('track')}: nothing")
+                continue
+            for release in releases:
+                codes = ", ".join(str(c) for c in release.get("versionCodes", [])) or "no bundle"
+                name = release.get("name") or "unnamed"
+                fraction = release.get("userFraction")
+                rollout = f", rolled out to {fraction:.0%}" if fraction else ""
+                print(f"  {track.get('track')}: {name} (code {codes}) "
+                      f"— {release.get('status', 'unknown')}{rollout}")
     else:
         print(f"::warning::could not read the tracks ({status}) — release permission may be missing")
 
