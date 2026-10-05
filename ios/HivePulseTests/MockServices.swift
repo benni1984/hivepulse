@@ -76,6 +76,7 @@ final class MockAuthService: AuthServiceProtocol {
         lastSocialName = name
         return try await socialResult.get()
     }
+    func signInWithGoogle(idToken: String) async throws -> TokenResponse { try socialResult.get() }
     func signInProviders() async throws -> SignInProviders { try providersResult.get() }
     func register(email: String, password: String, name: String, locale: String) async throws -> TokenResponse { try registerResult.get() }
     func logout(refreshToken: String) async throws {}

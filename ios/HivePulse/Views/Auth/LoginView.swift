@@ -20,7 +20,9 @@ struct LoginView: View {
     @State private var showEmailForm = false
     /// Tucked away only when there is something better on offer. With no provider the form
     /// is the only way in, and hiding it behind a tap would be absurd.
-    private var emailFormVisible: Bool { showEmailForm || !authVM.appleSignInAvailable }
+    private var emailFormVisible: Bool {
+        showEmailForm || !(authVM.appleSignInAvailable || authVM.googleSignInAvailable)
+    }
 
     var body: some View {
         NavigationStack {
@@ -65,7 +67,14 @@ struct LoginView: View {
             if authVM.appleSignInAvailable {
                 AppleSignInButton()
                     .padding(.top, 22)
+            }
 
+            if authVM.googleSignInAvailable {
+                GoogleSignInButton()
+                    .padding(.top, authVM.appleSignInAvailable ? 10 : 22)
+            }
+
+            if authVM.appleSignInAvailable || authVM.googleSignInAvailable {
                 HStack(spacing: 10) {
                     Rectangle().fill(Color.hpStone200).frame(height: 1)
                     Text(NSLocalizedString("label.or", comment: ""))

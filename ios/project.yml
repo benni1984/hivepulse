@@ -19,6 +19,11 @@ packages:
   Sentry:
     url: https://github.com/getsentry/sentry-cocoa
     from: 8.44.0
+  # Pinned to 8.x deliberately: 10.x is recent enough that its API is not something to
+  # guess at, and the call we make here has been stable across 7 and 8.
+  GoogleSignIn:
+    url: https://github.com/google/GoogleSignIn-iOS
+    from: 8.0.0
 
 targets:
   HivePulse:
@@ -28,6 +33,8 @@ targets:
     dependencies:
       - package: Sentry
         product: Sentry
+      - package: GoogleSignIn
+        product: GoogleSignIn
     sources:
       - path: HivePulse
         excludes:

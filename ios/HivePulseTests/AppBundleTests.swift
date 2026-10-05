@@ -50,4 +50,19 @@ final class AppBundleTests: XCTestCase {
     func test_displayName_isHivePulse() {
         XCTAssertEqual(info["CFBundleDisplayName"] as? String, "HivePulse")
     }
+
+    func test_theGoogleUrlSchemeMatchesTheClientId() throws {
+        // Google hands the browser back to the app through this scheme. A mismatch makes
+        // the sheet open and never return — with nothing in any log to explain it.
+        let clientId = try XCTUnwrap(
+            Bundle.main.object(forInfoDictionaryKey: "GIDClientID") as? String
+        )
+        let schemes = (Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [[String: Any]])?
+            .compactMap { ($0["CFBundleURLSchemes"] as? [String])?.first } ?? []
+
+        let expected = "com.googleusercontent.apps." + clientId
+            .replacingOccurrences(of: ".apps.googleusercontent.com", with: "")
+        XCTAssertTrue(schemes.contains(expected), "expected \(expected), found \(schemes)")
+    }
+
 }

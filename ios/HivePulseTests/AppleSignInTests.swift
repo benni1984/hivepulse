@@ -106,4 +106,53 @@ final class AppleSignInTests: XCTestCase {
         XCTAssertNil(AppleSignInButton.displayName(from: nil))
         XCTAssertNil(AppleSignInButton.displayName(from: PersonNameComponents()))
     }
+
+    // MARK: - Google, for the sake of one account across two phones
+
+    func test_aGoogleSignInAuthenticates() async {
+        let (viewModel, service) = makeViewModel()
+        service.socialResult = .success(tokenResponse())
+
+        await viewModel.signInWithGoogle(identityToken: "g.token")
+
+        XCTAssertTrue(viewModel.isAuthenticated)
+        XCTAssertNil(viewModel.errorMessage)
+    }
+
+    func test_aRefusedGoogleTokenSaysSo() async {
+        let (viewModel, service) = makeViewModel()
+        service.socialResult = .failure(APIError.unauthorized)
+
+        await viewModel.signInWithGoogle(identityToken: "forged")
+
+        XCTAssertFalse(viewModel.isAuthenticated)
+        XCTAssertNotNil(viewModel.errorMessage)
+        XCTAssertFalse(viewModel.isLoading)
+    }
+
+    func test_bothButtonsFollowWhatTheServerAccepts() async {
+        let (viewModel, service) = makeViewModel()
+        service.providersResult = .success(SignInProviders(
+            google: SignInProvider(clientId: "web-id"),
+            apple: SignInProvider(clientId: "com.hivepulse.app")
+        ))
+
+        await viewModel.loadSignInProviders()
+
+        XCTAssertTrue(viewModel.appleSignInAvailable)
+        XCTAssertTrue(viewModel.googleSignInAvailable)
+    }
+
+    func test_onlyTheProviderTheServerAcceptsIsOffered() async {
+        let (viewModel, service) = makeViewModel()
+        service.providersResult = .success(
+            SignInProviders(google: nil, apple: SignInProvider(clientId: "com.hivepulse.app"))
+        )
+
+        await viewModel.loadSignInProviders()
+
+        XCTAssertTrue(viewModel.appleSignInAvailable)
+        XCTAssertFalse(viewModel.googleSignInAvailable)
+    }
+
 }

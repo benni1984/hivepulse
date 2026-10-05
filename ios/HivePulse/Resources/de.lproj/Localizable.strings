@@ -423,3 +423,7 @@
 "label.or" = "oder";
 "action.signInWithEmail" = "Stattdessen mit E-Mail-Adresse anmelden";
 "error.appleSignIn" = "Apple hat keine Anmeldung übergeben. Bitte versuche es erneut.";
+
+/* Sign in with Google */
+"action.continueWithGoogle" = "Weiter mit Google";
+"error.googleSignIn" = "Google hat keine Anmeldung übergeben. Bitte versuche es erneut.";
