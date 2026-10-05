@@ -5,7 +5,7 @@
 - Run tests: `pytest` (from `backend/`)
 - Database: SQLite for dev, PostgreSQL (Neon) for staging/production
 - ORM: SQLAlchemy + Alembic migrations in `backend/alembic/versions/`
-- Latest migration: `010_add_reminder_email_enabled.py`
+- Latest migration: `013_social_sign_in.py`
 
 ## Push notifications
 

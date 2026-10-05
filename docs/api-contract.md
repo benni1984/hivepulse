@@ -79,6 +79,8 @@ All auth endpoints are **public** (no token required).
 |--------|------|-------------|
 | POST | `/auth/register` | Create account |
 | POST | `/auth/login` | Obtain token pair |
+| POST | `/auth/social` | Sign in with an Apple or Google identity token |
+| GET | `/auth/providers` | Which sign-in providers this server accepts |
 | POST | `/auth/refresh` | Refresh access token |
 | POST | `/auth/logout` | Invalidate refresh token |
 | POST | `/auth/forgot-password` | Request a password-reset email |
@@ -116,6 +118,73 @@ All auth endpoints are **public** (no token required).
 ```
 
 **Response 200** — same shape as register.
+
+### POST `/auth/social`
+
+Signs in with an identity token issued by Apple or Google. Creates the account on first use,
+so there is no separate registration step.
+
+**Request**
+```json
+{
+  "provider": "apple" | "google",
+  "id_token": "string",
+  "name": "Ada Lovelace"
+}
+```
+
+`name` is optional and only used when the account is created. Apple sends a name exactly
+once — in the authorization response of the very first sign-in, never in the token itself —
+so the client has to pass it on or it is lost for good. Google carries the name in the token
+and clients may omit the field.
+
+**Response 200** — same shape as register.
+
+**Errors**
+
+| Code | Meaning |
+|------|---------|
+| 401 `INVALID_IDENTITY_TOKEN` | Signature, issuer, audience or expiry did not check out |
+| 401 `EMAIL_NOT_VERIFIED` | The provider did not vouch for the address |
+| 503 `SOCIAL_SIGN_IN_UNCONFIGURED` | The server has no client IDs for this provider |
+
+**How an account is found**
+
+The provider's subject identifier (`sub`) is the key, not the email address: an Apple user
+can hide their address behind a relay, and addresses change hands. The `sub` never changes
+for the same person and app.
+
+When a `sub` arrives that is unknown but the verified email matches an existing account, the
+two are linked and the user keeps their hives. The address must be verified by the provider,
+or anybody who can register an unverified address at either provider could walk into a
+stranger's account.
+
+**What the server must be told**
+
+`GOOGLE_CLIENT_IDS` and `APPLE_CLIENT_IDS` (comma-separated) list the audiences a token may
+carry — one per platform. A token whose `aud` is not on the list is refused, which is what
+stops a token minted for an unrelated app from working here.
+
+### GET `/auth/providers`
+
+Public. Tells a client which providers are configured and under which client ID, so that
+nothing has to carry a copy of it.
+
+**Response 200**
+```json
+{
+  "google": { "client_id": "1057...apps.googleusercontent.com" },
+  "apple": { "client_id": "com.hivepulse.app" }
+}
+```
+
+A provider the server cannot verify tokens for is `null`, and the client hides its button.
+That way the buttons appear everywhere the moment the server is configured, with no client
+release — and a button can never offer a sign-in the server would reject.
+
+Client IDs are public by design: Google's sits in the markup of every page showing its
+button, Apple's is the bundle identifier. The client *secret* takes no part in this flow and
+is never sent anywhere.
 
 ### POST `/auth/refresh`
 

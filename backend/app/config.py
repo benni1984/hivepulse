@@ -21,6 +21,11 @@ class Settings(BaseSettings):
     apns_private_key_p8: str = ""
     apns_bundle_id: str = "com.hivepulse.app"
     apns_sandbox: bool = False
+    # Social sign-in. Comma-separated audiences — one client ID per platform. A token whose
+    # "aud" is not on the list is refused, which is what stops a token minted for an
+    # unrelated app by the same provider from working here. Empty means the provider is off.
+    google_client_ids: str = ""
+    apple_client_ids: str = ""
     resend_api_key: str = ""        # Resend API key — reset emails logged to stdout when empty
     app_base_url: str = "https://hivepulse.multihead.de"  # used to build password-reset links
     # Error reporting — see docs/crash-reporting-setup.md. Inert while empty.

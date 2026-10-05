@@ -39,6 +39,15 @@ class RegisterRequest(BaseModel):
     locale: str = Field(default="en", pattern="^(en|fr|de|es)$")
 
 
+class SocialSignInRequest(BaseModel):
+    provider: str = Field(pattern="^(apple|google)$")
+    id_token: str = Field(min_length=1)
+    # Apple sends the name once, in the first authorization response and never in the token,
+    # so the client passes it on or it is lost for good. Only used when creating an account.
+    name: Optional[str] = Field(default=None, max_length=200)
+    locale: str = Field(default="en", pattern="^(en|fr|de|es)$")
+
+
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
