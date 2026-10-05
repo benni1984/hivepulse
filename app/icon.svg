@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="44" height="44">
+  <!--
+    The tab icon. Deliberately not the header logo: at 16 pixels the hairline outline, the
+    bee's flight path and the thin cell strokes collapse into grey mush. What survives that
+    size is the amber hexagon and three solid cells, which is also what somebody recognises
+    in a row of twenty tabs.
+  -->
+  <polygon points="22,2 39.12,12 39.12,32 22,42 4.88,32 4.88,12" fill="#f59e0b"/>
+  <polygon points="22,10 27.2,13 27.2,19 22,22 16.8,19 16.8,13" fill="#ffffff" fill-opacity="0.92"/>
+  <polygon points="16.3,19.6 21.5,22.6 21.5,28.6 16.3,31.6 11.1,28.6 11.1,22.6" fill="#ffffff" fill-opacity="0.92"/>
+  <polygon points="27.7,19.6 32.9,22.6 32.9,28.6 27.7,31.6 22.5,28.6 22.5,22.6" fill="#ffffff" fill-opacity="0.92"/>
+</svg>
