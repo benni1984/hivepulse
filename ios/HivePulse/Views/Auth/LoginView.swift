@@ -17,6 +17,10 @@ struct LoginView: View {
     @State private var password = ""
     @State private var showRegister = false
     @State private var showForgotPassword = false
+    @State private var showEmailForm = false
+    /// Tucked away only when there is something better on offer. With no provider the form
+    /// is the only way in, and hiding it behind a tap would be absurd.
+    private var emailFormVisible: Bool { showEmailForm || !authVM.appleSignInAvailable }
 
     var body: some View {
         NavigationStack {
@@ -50,41 +54,69 @@ struct LoginView: View {
                 .multilineTextAlignment(.center)
                 .padding(.top, 4)
 
-            VStack(spacing: 12) {
-                TextField(NSLocalizedString("field.email", comment: ""), text: $email)
-                    .keyboardType(.emailAddress)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-                    .hpInputField()
-
-                SecureField(NSLocalizedString("field.password", comment: ""), text: $password)
-                    .hpInputField()
-            }
-            .padding(.top, 22)
 
             if let error = authVM.errorMessage {
                 ErrorBanner(message: error) { authVM.errorMessage = nil }
                     .padding(.top, 12)
             }
 
-            Button {
-                Task { await authVM.login(email: email, password: password) }
-            } label: {
-                HStack(spacing: 8) {
-                    if authVM.isLoading { ProgressView().tint(Color.hpStone900) }
-                    Text(NSLocalizedString("action.login", comment: ""))
-                }
-            }
-            .buttonStyle(HPPrimaryButtonStyle())
-            .disabled(authVM.isLoading || email.isEmpty || password.isEmpty)
-            .padding(.top, 16)
 
-            Button(NSLocalizedString("action.forgotPassword", comment: "")) {
-                showForgotPassword = true
+
+            if authVM.appleSignInAvailable {
+                AppleSignInButton()
+                    .padding(.top, 22)
+
+                HStack(spacing: 10) {
+                    Rectangle().fill(Color.hpStone200).frame(height: 1)
+                    Text(NSLocalizedString("label.or", comment: ""))
+                        .font(.dmSans(13, relativeTo: .footnote))
+                        .foregroundColor(.hpStone500)
+                    Rectangle().fill(Color.hpStone200).frame(height: 1)
+                }
+                .padding(.top, 16)
             }
-            .font(.dmSans(14, relativeTo: .subheadline))
-            .foregroundColor(.hpStone500)
-            .padding(.top, 12)
+
+            if !emailFormVisible {
+                Button(NSLocalizedString("action.signInWithEmail", comment: "")) {
+                    showEmailForm = true
+                }
+                .font(.dmSans(14, relativeTo: .subheadline))
+                .foregroundColor(.hpStone500)
+                .underline()
+                .accessibilityIdentifier("emailSignInToggle")
+                .padding(.top, 14)
+            }
+
+            if emailFormVisible {
+                VStack(spacing: 12) {
+                    TextField(NSLocalizedString("field.email", comment: ""), text: $email)
+                        .keyboardType(.emailAddress)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .hpInputField()
+
+                    SecureField(NSLocalizedString("field.password", comment: ""), text: $password)
+                        .hpInputField()
+                }
+                .padding(.top, 22)
+                Button {
+                    Task { await authVM.login(email: email, password: password) }
+                } label: {
+                    HStack(spacing: 8) {
+                        if authVM.isLoading { ProgressView().tint(Color.hpStone900) }
+                        Text(NSLocalizedString("action.login", comment: ""))
+                    }
+                }
+                .buttonStyle(HPPrimaryButtonStyle())
+                .disabled(authVM.isLoading || email.isEmpty || password.isEmpty)
+                .padding(.top, 16)
+                Button(NSLocalizedString("action.forgotPassword", comment: "")) {
+                    showForgotPassword = true
+                }
+                .font(.dmSans(14, relativeTo: .subheadline))
+                .foregroundColor(.hpStone500)
+                .padding(.top, 12)
+            }
 
             Button(NSLocalizedString("action.register", comment: "")) {
                 showRegister = true
@@ -98,5 +130,6 @@ struct LoginView: View {
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).stroke(Color.hpStone200, lineWidth: 1))
         .shadow(color: Color.black.opacity(0.06), radius: 16, x: 0, y: 6)
+        .task { await authVM.loadSignInProviders() }
     }
 }

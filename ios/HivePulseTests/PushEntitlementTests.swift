@@ -24,6 +24,18 @@ final class PushEntitlementTests: XCTestCase {
         )
     }
 
+    func test_theAppIsAllowedToOfferSignInWithApple() throws {
+        // Same silent failure as push: without the entitlement the button is drawn, tapped,
+        // and then does nothing anybody can explain from the outside.
+        let url = iosRoot.appendingPathComponent("HivePulse/HivePulse.entitlements")
+        let data = try Data(contentsOf: url)
+        let plist = try PropertyListSerialization.propertyList(from: data, format: nil)
+        let entitlements = try XCTUnwrap(plist as? [String: Any])
+
+        let scopes = entitlements["com.apple.developer.applesignin"] as? [String]
+        XCTAssertEqual(scopes, ["Default"])
+    }
+
     func test_theBuildActuallyUsesThatFile() throws {
         // An entitlements file nothing points at is decoration.
         let project = try String(contentsOf: iosRoot.appendingPathComponent("project.yml"), encoding: .utf8)

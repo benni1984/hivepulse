@@ -15,5 +15,15 @@
 <dict>
 	<key>aps-environment</key>
 	<string>production</string>
+	<!--
+	  Sign in with Apple. Like the push entitlement above, this one only works once the
+	  capability is enabled for the App ID: a profile that does not carry it fails signing.
+	  It was enabled on 2026-10-05, and the TestFlight workflow regenerates the profile on
+	  every run (fastlane sigh --force), so the next build picks it up by itself.
+	-->
+	<key>com.apple.developer.applesignin</key>
+	<array>
+		<string>Default</string>
+	</array>
 </dict>
 </plist>

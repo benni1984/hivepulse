@@ -418,3 +418,8 @@
 "diagnostics.sent" = "Angekommen. Kennung: %@";
 "diagnostics.failed" = "Nicht hinausgegangen. Die Absturzmeldung funktioniert in dieser Version nicht.";
 "diagnostics.off" = "Die Absturzmeldung ist in dieser Version abgeschaltet.";
+
+/* Sign in with Apple */
+"label.or" = "oder";
+"action.signInWithEmail" = "Stattdessen mit E-Mail-Adresse anmelden";
+"error.appleSignIn" = "Apple hat keine Anmeldung übergeben. Bitte versuche es erneut.";
