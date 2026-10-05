@@ -1149,6 +1149,14 @@ tr:last-child td { border-bottom: none; }
 /* Google renders its own button into this slot and insists on its own styling, so the only
    job here is to centre it and give it the same width as the form above. */
 .dash-auth-social-button { display: flex; justify-content: center; }
+/* The way in for people without an Apple or Google account. Visible and reachable, but
+   deliberately quieter than the two buttons above it. */
+.dash-auth-email-toggle {
+  display: block; width: 100%; padding: 10px; margin-top: 4px;
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: 14px; font-family: inherit; text-decoration: underline;
+}
+.dash-auth-email-toggle:hover { color: var(--text); }
 
 .dash-auth-link { text-align: center; margin-top: 16px; font-size: 14px; color: var(--muted); }
 .dash-auth-link a { color: var(--green-ink); text-decoration: none; font-weight: 600; }

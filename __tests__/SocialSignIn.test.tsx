@@ -49,14 +49,47 @@ describe('SocialSignIn', () => {
     expect(container.querySelector('.dash-auth-social')).toBeNull();
   });
 
-  it('shows the divider once a provider is configured', async () => {
+  it('tells the page a provider is available', async () => {
+    const onAvailable = vi.fn();
     vi.mocked(api.getSignInProviders).mockResolvedValue({
       google: { client_id: 'web-id' }, apple: null,
     });
 
-    renderButton();
+    render(
+      <NextIntlClientProvider locale="en" messages={messages}>
+        <SocialSignIn onSignedIn={vi.fn()} onAvailable={onAvailable} />
+      </NextIntlClientProvider>,
+    );
 
-    expect(await screen.findByText('or')).toBeInTheDocument();
+    // The page decides from this whether the email form may be tucked behind a toggle.
+    await waitFor(() => expect(onAvailable).toHaveBeenCalledWith(true));
+  });
+
+  it('tells the page when there is none, so the email form stays in plain sight', async () => {
+    const onAvailable = vi.fn();
+    vi.mocked(api.getSignInProviders).mockResolvedValue({ google: null, apple: null });
+
+    render(
+      <NextIntlClientProvider locale="en" messages={messages}>
+        <SocialSignIn onSignedIn={vi.fn()} onAvailable={onAvailable} />
+      </NextIntlClientProvider>,
+    );
+
+    await waitFor(() => expect(onAvailable).toHaveBeenCalledWith(false));
+  });
+
+  it('says there is none when the server cannot be asked at all', async () => {
+    const onAvailable = vi.fn();
+    vi.mocked(api.getSignInProviders).mockRejectedValue(new Error('offline'));
+
+    render(
+      <NextIntlClientProvider locale="en" messages={messages}>
+        <SocialSignIn onSignedIn={vi.fn()} onAvailable={onAvailable} />
+      </NextIntlClientProvider>,
+    );
+
+    // Silence here would hide the password form behind a toggle that leads nowhere.
+    await waitFor(() => expect(onAvailable).toHaveBeenCalledWith(false));
   });
 
   it('hands Google the client id the server named, never one of its own', async () => {

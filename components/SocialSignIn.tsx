@@ -10,7 +10,9 @@ import { getSignInProviders, socialSignIn } from '@/lib/api';
  * a sign-in that would be refused on arrival — and the buttons appear the moment the server
  * is configured, without a release here.
  */
-export default function SocialSignIn({ onSignedIn }: { onSignedIn: () => void }) {
+export default function SocialSignIn(
+  { onSignedIn, onAvailable }: { onSignedIn: () => void; onAvailable?: (available: boolean) => void },
+) {
   const t = useTranslations('dash');
   const [clientId, setClientId] = useState<string | null>(null);
   const [error, setError] = useState('');
@@ -20,12 +22,16 @@ export default function SocialSignIn({ onSignedIn }: { onSignedIn: () => void })
     let cancelled = false;
     getSignInProviders()
       .then(providers => {
-        if (!cancelled) setClientId(providers.google?.client_id ?? null);
+        if (cancelled) return;
+        setClientId(providers.google?.client_id ?? null);
+        // The page needs this to decide whether the email form may be tucked away: with no
+        // provider at all, hiding the only way in behind a click would be absurd.
+        onAvailable?.(providers.google != null);
       })
       // A server that cannot be asked simply shows no button; the password form is still there.
-      .catch(() => {});
+      .catch(() => onAvailable?.(false));
     return () => { cancelled = true; };
-  }, []);
+  }, [onAvailable]);
 
   useEffect(() => {
     if (!clientId || !buttonSlot.current) return;
@@ -81,7 +87,6 @@ export default function SocialSignIn({ onSignedIn }: { onSignedIn: () => void })
 
   return (
     <div className="dash-auth-social">
-      <div className="dash-auth-divider"><span>{t('login.or')}</span></div>
       <div ref={buttonSlot} className="dash-auth-social-button" />
       {error && <p className="dash-auth-error">{error}</p>}
     </div>

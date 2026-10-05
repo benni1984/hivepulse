@@ -7,6 +7,13 @@ test('login page renders and rejects wrong credentials', async ({ page }) => {
   await page.goto('/dashboard/login');
   await expect(page.locator('h1')).toContainText('Log in');
 
+  // Sign-in with Apple or Google now comes first, and the email form sits behind this
+  // toggle whenever a provider is configured. Conditional on purpose: the toggle is absent
+  // when none is, and a test that insisted on it would fail for the wrong reason.
+  const emailToggle = page.getByTestId('email-signin-toggle');
+  if (await emailToggle.isVisible().catch(() => false)) {
+    await emailToggle.click();
+  }
   await page.locator('input[type="email"]').fill('nobody@nowhere.invalid');
   await page.locator('input[type="password"]').fill('wrongpassword');
   await page.locator('button.dash-submit-btn').click();

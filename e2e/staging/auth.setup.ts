@@ -17,6 +17,13 @@ setup('authenticate as demo user', async ({ page, request }) => {
   fs.mkdirSync(path.dirname(AUTH_FILE), { recursive: true });
 
   await page.goto('/dashboard/login');
+  // Sign-in with Apple or Google now comes first, and the email form sits behind this
+  // toggle whenever a provider is configured. Conditional on purpose: the toggle is absent
+  // when none is, and a test that insisted on it would fail for the wrong reason.
+  const emailToggle = page.getByTestId('email-signin-toggle');
+  if (await emailToggle.isVisible().catch(() => false)) {
+    await emailToggle.click();
+  }
   await page.locator('input[type="email"]').fill(email);
   await page.locator('input[type="password"]').fill(password);
   await page.locator('button.dash-submit-btn').click();
