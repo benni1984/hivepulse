@@ -13,6 +13,14 @@ interface ApiService {
     @POST("auth/login")
     suspend fun login(@Body body: LoginRequest): TokenResponse
 
+    @POST("auth/social")
+    suspend fun signInWithGoogle(@Body body: SocialSignInRequest): TokenResponse
+
+    /** Which sign-ins the server accepts. Asked rather than assumed, so a button is never
+     *  offered for something that would be refused on arrival. */
+    @GET("auth/providers")
+    suspend fun signInProviders(): SignInProviders
+
     @POST("auth/refresh")
     suspend fun refresh(@Body body: RefreshRequest): AccessTokenResponse
 
