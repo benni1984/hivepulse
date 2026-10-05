@@ -106,6 +106,13 @@ fun strengthLabelRes(value: Int): Int = when (value) {
 }
 
 /** Word for a stored varroa level (0–3). */
+/** The stored value is what the API speaks; this is what the beekeeper reads. */
+fun moodLabelRes(mood: String): Int = when (mood) {
+    "calm"     -> R.string.mood_calm
+    "nervous"  -> R.string.mood_nervous
+    else       -> R.string.mood_aggressive
+}
+
 fun varroaLabelRes(level: Int): Int = when (level) {
     0 -> R.string.varroa_level_0
     1 -> R.string.varroa_level_1

@@ -15,7 +15,10 @@ struct InspectionDetailView: View {
                     InfoRow(label: NSLocalizedString("field.queenSeen", comment: ""), value: seen ? NSLocalizedString("label.yes", comment: "") : NSLocalizedString("label.no", comment: ""))
                 }
                 if let color = inspection.queenColor {
-                    InfoRow(label: NSLocalizedString("field.queenColor", comment: ""), value: color.capitalized)
+                    // Both keys have existed in all four languages since the hive types were
+                    // fixed; only these two rows never looked them up.
+                    InfoRow(label: NSLocalizedString("field.queenColor", comment: ""),
+                            value: NSLocalizedString("queenColor.\(color)", comment: ""))
                 }
             }
 
@@ -25,7 +28,7 @@ struct InspectionDetailView: View {
             }
 
             Section(NSLocalizedString("section.colony", comment: "")) {
-                if let v = inspection.mood       { InfoRow(label: NSLocalizedString("field.mood", comment: ""), value: v.capitalized) }
+                if let v = inspection.mood       { InfoRow(label: NSLocalizedString("field.mood", comment: ""), value: NSLocalizedString("mood.\(v)", comment: "")) }
                 if let v = inspection.populationStrength { InfoRow(label: NSLocalizedString("field.populationStrength", comment: ""), value: InspectionScale.strengthLabel(v)) }
                 if let v = inspection.swarmCellsSeen { InfoRow(label: NSLocalizedString("field.swarmCellsSeen", comment: ""), value: v ? NSLocalizedString("label.yes", comment: "") : NSLocalizedString("label.no", comment: "")) }
             }
