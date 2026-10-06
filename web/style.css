@@ -1447,6 +1447,24 @@ tr:last-child td { border-bottom: none; }
 .dash-inline-form .dash-form-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
 .dash-cancel-btn { min-height: 44px; background: #fff; border: 1px solid var(--border); color: var(--body-text); cursor: pointer; padding: 10px 18px; border-radius: 9px; font-size: 15px; font-weight: 500; font-family: inherit; }
 .dash-cancel-btn:hover { background: #f7f6f4; }
+
+/* Sharing (invitations). Looks like the inline forms but has classes of its own: it sits on the same page
+   as the edit and create forms, and a selector for "the" form's button must find exactly one. */
+.dash-share-form { background: var(--page); border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin-bottom: 24px; }
+.dash-share-form .dash-form-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.dash-share-btn {
+  min-height: 44px;
+  background: linear-gradient(180deg, #166534, #14532d);
+  color: #fff; border: 1px solid #14532d;
+  border-radius: 9px; padding: 11px 18px; font-size: 15px; font-weight: 600; font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 1px 0 var(--green-tint);
+  transition: background .15s;
+}
+.dash-share-btn:hover { background: #14532d; }
+.dash-share-btn:disabled { opacity: .6; cursor: not-allowed; }
+.dash-share-cancel { min-height: 44px; background: #fff; border: 1px solid var(--border); color: var(--body-text); cursor: pointer; padding: 10px 18px; border-radius: 9px; font-size: 15px; font-weight: 500; font-family: inherit; }
+.dash-share-cancel:hover { background: #f7f6f4; }
 .dash-inline-checkbox { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; cursor: pointer; font-size: 15px; color: var(--text); }
 .dash-inline-checkbox input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--green-ink); cursor: pointer; }
 .dash-danger-zone { border: 1px solid var(--red-border); background: var(--red-wash); border-radius: 12px; padding: 20px; margin-top: 24px; }

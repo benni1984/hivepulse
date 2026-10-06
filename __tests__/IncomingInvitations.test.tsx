@@ -30,6 +30,18 @@ const hiveInvite = {
   apiary_name: 'Garden', created_at: '2026-01-02T00:00:00Z',
 };
 
+describe('IncomingInvitations next to the dashboard\'s own forms', () => {
+  it('uses classes of its own, so "the form button" on the dashboard stays one', async () => {
+    mockGetIncoming.mockResolvedValue([apiaryInvite]);
+    const { container } = render(<IncomingInvitations />);
+    await waitFor(() => screen.getByText('invitations.accept'));
+
+    expect(container.querySelector('.dash-inline-form')).toBeNull();
+    expect(container.querySelector('.dash-submit-btn')).toBeNull();
+    expect(container.querySelector('.dash-cancel-btn')).toBeNull();
+  });
+});
+
 describe('IncomingInvitations', () => {
   beforeEach(() => {
     mockGetIncoming.mockReset();
