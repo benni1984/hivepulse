@@ -4,6 +4,13 @@ Ready to paste into the Google Play Console and App Store Connect. Character lim
 enforced by both consoles, so the counts below are the ones that matter; every text here is
 within them.
 
+**Uploading.** The App Store texts below are not typed in by hand: Actions → "App Store
+Metadata" reads them from this file and sends them to App Store Connect through the API. It
+starts as a dry run, checks Apple's length limits first, never submits for review, and can
+upload the screenshots from an "iOS Store Screenshots" run. Edit the text here, not in the
+console, or the next upload overwrites it. `scripts/build_appstore_metadata.py` is the parser:
+it relies on the `**en**` blocks and the tables keeping their current shape.
+
 Both stores list a language separately. Fill the four below and leave the rest to Play's
 automatic translation — or rather, do not: an automatically translated listing reads like
 one, and beekeepers notice.
