@@ -1,0 +1,145 @@
+name: App Store Metadata
+
+# Puts the App Store listing texts, and optionally the screenshots, into App Store Connect, so
+# they are not typed in by hand in four languages.
+#
+# The texts come from docs/store-listing.md and nowhere else. scripts/build_appstore_metadata.py
+# turns them into the folder layout fastlane's `deliver` uploads and checks Apple's length limits
+# first, so a text that is too long fails here, before anything is sent.
+#
+# It never submits for review and never releases. The version is left as a draft in App Store
+# Connect for a person to look at and send off.
+#
+# Starts as a dry run: it builds and checks the files and attaches them to the run as an
+# artifact, and sends nothing. Untick "dry_run" to upload.
+#
+# Uses the same App Store Connect API key as TestFlight (secrets APP_STORE_CONNECT_KEY_ID,
+# APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_API_KEY_P8).
+#
+# Not covered, and done once by hand in App Store Connect: the App Privacy answers, which
+# Apple does not offer through the API, the age rating, the review notes and the demo account.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Only build and check the files; send nothing to Apple.'
+        required: true
+        default: true
+        type: boolean
+      app_version:
+        description: 'App Store version the texts belong to. Created when it does not exist yet.'
+        required: true
+        default: '1.0.0'
+        type: string
+      include_release_notes:
+        description: 'Also send "What''s New". Apple rejects it on the very first version.'
+        required: true
+        default: false
+        type: boolean
+      screenshots_run_id:
+        description: 'Run ID of an "iOS Store Screenshots" run whose screenshots to upload. Empty leaves them alone.'
+        required: false
+        default: ''
+        type: string
+
+concurrency:
+  group: app-store-metadata
+  cancel-in-progress: false
+
+jobs:
+  metadata:
+    name: App Store metadata
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      DRY_RUN: ${{ inputs.dry_run }}
+      APP_VERSION: ${{ inputs.app_version }}
+      SHOTS_RUN: ${{ inputs.screenshots_run_id }}
+      ASC_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.APP_STORE_CONNECT_API_KEY_P8 }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and check the texts
+        run: |
+          python3 scripts/build_appstore_metadata.py --out build/appstore \
+            ${{ inputs.include_release_notes && '--release-notes' || '' }} | tee build/summary.txt || exit 1
+          {
+            echo '### App Store texts'
+            echo '```'
+            cat build/summary.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+        shell: bash
+
+      - name: Fetch the screenshots
+        if: env.SHOTS_RUN != ''
+        run: |
+          declare -A FOLDER=([en]=en-US [de]=de-DE [fr]=fr-FR [es]=es-ES)
+          for lang in en de fr es; do
+            dir="build/appstore/screenshots/${FOLDER[$lang]}"
+            mkdir -p "$dir"
+            gh run download "$SHOTS_RUN" --repo "$GITHUB_REPOSITORY" \
+              --name "app-store-screenshots-$lang" --dir "$dir"
+            count=$(find "$dir" -name '*.png' | wc -l)
+            echo "$lang: $count screenshots"
+            test "$count" -ge 1 || { echo "::error::no screenshots for $lang in run $SHOTS_RUN"; exit 1; }
+          done
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-store-metadata
+          path: build/appstore
+          retention-days: 14
+
+      - name: Dry run ends here
+        if: env.DRY_RUN == 'true'
+        run: echo "Dry run: the files are attached to this run, nothing was sent to Apple."
+
+      - name: Check the App Store Connect secrets
+        if: env.DRY_RUN != 'true'
+        run: |
+          for name in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8; do
+            if [ -z "${!name}" ]; then
+              echo "::error::The App Store Connect secrets are not all set (see the header of testflight.yml)."
+              exit 1
+            fi
+          done
+
+      - uses: ruby/setup-ruby@v1
+        if: env.DRY_RUN != 'true'
+        with:
+          ruby-version: '3.3'
+
+      - name: Install fastlane
+        if: env.DRY_RUN != 'true'
+        run: gem install fastlane --no-document
+
+      - name: Send to App Store Connect
+        if: env.DRY_RUN != 'true'
+        run: |
+          KEY_JSON="$RUNNER_TEMP/asc-key.json"
+          python3 -c 'import json,os; print(json.dumps({"key_id": os.environ["ASC_KEY_ID"], "issuer_id": os.environ["ASC_ISSUER_ID"], "key": os.environ["ASC_KEY_P8"], "in_house": False}))' > "$KEY_JSON"
+          chmod 600 "$KEY_JSON"
+          trap 'rm -f "$KEY_JSON"' EXIT
+
+          if [ -n "$SHOTS_RUN" ]; then SKIP_SHOTS=false; else SKIP_SHOTS=true; fi
+          mkdir -p build/appstore/screenshots
+
+          fastlane deliver \
+            --api_key_path "$KEY_JSON" \
+            --app_identifier com.hivepulse.app \
+            --app_version "$APP_VERSION" \
+            --metadata_path build/appstore/metadata \
+            --screenshots_path build/appstore/screenshots \
+            --skip_binary_upload true \
+            --skip_screenshots "$SKIP_SHOTS" \
+            --overwrite_screenshots true \
+            --force true \
+            --submit_for_review false \
+            --automatic_release false \
+            --run_precheck_before_submit false

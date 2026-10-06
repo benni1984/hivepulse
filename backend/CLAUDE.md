@@ -5,7 +5,7 @@
 - Run tests: `pytest` (from `backend/`)
 - Database: SQLite for dev, PostgreSQL (Neon) for staging/production
 - ORM: SQLAlchemy + Alembic migrations in `backend/alembic/versions/`
-- Latest migration: `013_social_sign_in.py`
+- Latest migration: `014_apple_refresh_token.py`
 
 ## Push notifications
 
