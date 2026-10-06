@@ -26,6 +26,20 @@ const pending = {
   collaborator_name: null, created_at: '2026-01-03T00:00:00Z', accepted_at: null,
 };
 
+describe('SharingPanel next to the page\'s own forms', () => {
+  it('uses classes of its own, so "the form button" on the apiary and hive pages is still just one', async () => {
+    mockGetShares.mockResolvedValue([]);
+    const { container } = render(<SharingPanel type="apiary" id="a-1" />);
+    await waitFor(() => screen.getByText('sharing.empty'));
+
+    // The end-to-end suite finds the edit and create forms by these two selectors; a second match
+    // makes it fail with a strict-mode violation.
+    expect(container.querySelector('.dash-inline-form')).toBeNull();
+    expect(container.querySelector('.dash-submit-btn')).toBeNull();
+    expect(container.querySelector('.dash-cancel-btn')).toBeNull();
+  });
+});
+
 describe('SharingPanel', () => {
   beforeEach(() => {
     mockGetShares.mockReset();

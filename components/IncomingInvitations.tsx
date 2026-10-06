@@ -68,7 +68,7 @@ export default function IncomingInvitations({ onChange }: { onChange?: () => voi
         <div className={message.type === 'ok' ? 'dash-success-banner' : 'dash-error-banner'}>{message.text}</div>
       )}
       {invitations.map(invitation => (
-        <div key={invitation.id} className="dash-inline-form" style={{ marginBottom: 8 }}>
+        <div key={invitation.id} className="dash-share-form" style={{ marginBottom: 8 }}>
           <p>
             {invitation.target.type === 'apiary'
               ? t('invitations.textApiary', { owner: invitation.owner_name, name: invitation.target.name })
@@ -79,10 +79,10 @@ export default function IncomingInvitations({ onChange }: { onChange?: () => voi
                 })}
           </p>
           <div className="dash-form-actions">
-            <button className="dash-submit-btn" onClick={() => respond(invitation, true)}>
+            <button className="dash-share-btn" onClick={() => respond(invitation, true)}>
               {t('invitations.accept')}
             </button>
-            <button className="dash-cancel-btn" onClick={() => respond(invitation, false)}>
+            <button className="dash-share-cancel" onClick={() => respond(invitation, false)}>
               {t('invitations.decline')}
             </button>
           </div>

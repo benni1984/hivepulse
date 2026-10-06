@@ -89,7 +89,7 @@ export default function SharingPanel({ type, id }: { type: 'apiary' | 'hive'; id
         </div>
       )}
 
-      <form className="dash-inline-form" onSubmit={handleInvite} style={{ marginTop: 16 }}>
+      <form className="dash-share-form" onSubmit={handleInvite} style={{ marginTop: 16 }}>
         <div className="dash-form-group">
           <label htmlFor={`share-email-${id}`}>{t('sharing.emailLabel')}</label>
           <input
@@ -101,7 +101,7 @@ export default function SharingPanel({ type, id }: { type: 'apiary' | 'hive'; id
           />
         </div>
         <div className="dash-form-actions">
-          <button className="dash-submit-btn" type="submit" disabled={inviting || !email.trim()}>
+          <button className="dash-share-btn" type="submit" disabled={inviting || !email.trim()}>
             {inviting ? '…' : t('sharing.invite')}
           </button>
         </div>
