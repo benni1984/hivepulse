@@ -98,7 +98,7 @@ jobs:
 
       - name: Dry run ends here
         if: env.DRY_RUN == 'true'
-        run: echo "Dry run: the files are attached to this run, nothing was sent to Apple."
+        run: echo "Dry run - the files are attached to this run, nothing was sent to Apple."
 
       - name: Check the App Store Connect secrets
         if: env.DRY_RUN != 'true'
