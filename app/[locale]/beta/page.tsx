@@ -56,6 +56,17 @@ export default async function BetaPage({
           ) : (
             <p>{t('notOpenYet')}</p>
           )}
+          {BETA.android && (
+            // Google lets only listed accounts into a closed test: anybody else opens the link
+            // and meets "App not available". Saying so here is kinder than letting visitors find
+            // out, and it is what actually works — the first testers were all added by hand.
+            <p className="beta-note" data-testid="android-invitation-note">
+              {t('androidNote')}{' '}
+              <a href={`mailto:${BETA.email}?subject=${encodeURIComponent(t('androidNoteSubject'))}`}>
+                {BETA.email}
+              </a>
+            </p>
+          )}
           <p className="beta-note">{t('joinNote')}</p>
         </section>
 

@@ -1046,6 +1046,8 @@
     "feedbackSubject": "HivePulse test feedback",
     "feedbackHint": "Useful in a report: which phone, what you did, what you expected instead. A photo of the screen says more than a description. If the app closed itself, it has already sent a crash report — you do not have to describe it.",
     "dataTitle": "What happens with your data",
-    "dataBody": "The same as for everybody else: your apiaries are private unless you put them on the public map yourself, nothing is sold or passed on, and there is no advertising. Test builds carry crash reporting, which sends the place in the code and the kind of device — never your notes, your password or your address. You can delete your account and everything in it yourself at any time."
+    "dataBody": "The same as for everybody else: your apiaries are private unless you put them on the public map yourself, nothing is sold or passed on, and there is no advertising. Test builds carry crash reporting, which sends the place in the code and the kind of device — never your notes, your password or your address. You can delete your account and everything in it yourself at any time.",
+    "androidNote": "On Android, Google only lets in accounts we have registered beforehand — without an entry the link says “App not available”. Send us your Google account address at",
+    "androidNoteSubject": "HivePulse Android test: please add me"
   }
 }
