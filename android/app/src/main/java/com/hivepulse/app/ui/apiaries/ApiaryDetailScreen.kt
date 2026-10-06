@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -20,6 +21,8 @@ import androidx.lifecycle.viewModelScope
 import com.hivepulse.app.R
 import com.hivepulse.app.data.api.ApiaryOut
 import com.hivepulse.app.data.api.HiveOut
+import com.hivepulse.app.data.api.canEdit
+import com.hivepulse.app.data.api.isOwner
 import com.hivepulse.app.data.repository.ApiaryRepository
 import com.hivepulse.app.data.repository.HiveRepository
 import com.hivepulse.app.ui.common.ErrorBanner
@@ -92,6 +95,7 @@ fun ApiaryDetailScreen(
     onHiveClick: (String) -> Unit,
     onBack: () -> Unit,
     onFieldsClick: () -> Unit = {},
+    onShareClick: () -> Unit = {},
     vm: ApiaryDetailViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
@@ -102,13 +106,22 @@ fun ApiaryDetailScreen(
             title = { Text(state.apiaryName) },
             navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } },
             actions = {
-                if (state.apiary != null) {
+                // Inviting stays with the owner.
+                if (state.apiary?.isOwner == true) {
+                    IconButton(onClick = onShareClick, modifier = Modifier.testTag("shareApiaryButton")) {
+                        Icon(Icons.Default.Group, contentDescription = stringResource(R.string.sharing_title))
+                    }
+                }
+                // Somebody who has single hives of it cannot edit the apiary around them.
+                if (state.apiary?.canEdit == true) {
                     IconButton(onClick = { showEdit = true }) {
                         Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.action_edit_apiary))
                     }
                 }
-                IconButton(onClick = onFieldsClick) {
-                    Icon(Icons.Default.Tune, contentDescription = stringResource(R.string.fielddefs_apiary_title))
+                if (state.apiary?.canEdit != false) {
+                    IconButton(onClick = onFieldsClick) {
+                        Icon(Icons.Default.Tune, contentDescription = stringResource(R.string.fielddefs_apiary_title))
+                    }
                 }
             }
         )
@@ -125,7 +138,12 @@ fun ApiaryDetailScreen(
                     }
                 } else {
                     items(state.hives) { hive ->
-                        HiveListItem(hive, onClick = { onHiveClick(hive.id) }, onDelete = { vm.deleteHive(hive.id) })
+                        // Only the owner deletes: the server would refuse anybody else.
+                        HiveListItem(
+                            hive,
+                            onClick = { onHiveClick(hive.id) },
+                            onDelete = if (hive.isOwner) ({ vm.deleteHive(hive.id) }) else null,
+                        )
                         HorizontalDivider()
                     }
                 }

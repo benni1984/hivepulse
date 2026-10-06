@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import dynamic from 'next/dynamic';
 import DashboardShell from '@/components/DashboardShell';
+import SharingPanel from '@/components/SharingPanel';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getHive, getHiveStats, getInspections, updateHive, deleteHive, createInspection, updateInspection, deleteInspection, getUserFieldDefs, getApiaryFieldDefs, exportHiveInspections, type Hive, type HiveStats, type Inspection, type InspectionInput, type FieldDefinition } from '@/lib/api';
 
@@ -444,7 +445,14 @@ export default function HivePage() {
                   <tbody>
                     {inspections.map(ins => (
                       <tr key={ins.id}>
-                        <td>{new Date(ins.date).toLocaleDateString()}</td>
+                        <td>
+                          {new Date(ins.date).toLocaleDateString()}
+                          {ins.created_by_name && (
+                            <div style={{ fontSize: '.75rem', color: 'var(--muted)' }}>
+                              {t('hive.recordedBy', { name: ins.created_by_name })}
+                            </div>
+                          )}
+                        </td>
                         <td>{ins.varroa_level != null ? t(`hive.varroaLevel${ins.varroa_level}` as never) : '—'}</td>
                         <td>{ins.mood ?? '—'}</td>
                         <td>{ins.queen_seen == null ? '—' : ins.queen_seen ? t('hive.yes') : t('hive.no')}</td>
@@ -551,8 +559,11 @@ export default function HivePage() {
             </div>
           )}
 
+          {/* ── Sharing and deleting stay with the owner ────────────── */}
+          {(hive.access ?? 'owner') === 'owner' && <SharingPanel type="hive" id={id} />}
+
           {/* ── Delete hive ──────────────────────────────────────────── */}
-          <div className="dash-danger-zone">
+          {(hive.access ?? 'owner') === 'owner' && <div className="dash-danger-zone">
             <h3>{t('hive.dangerTitle')}</h3>
             {deleteMessage && <div className="dash-error-banner">{deleteMessage}</div>}
             {deleteStage === 'idle' ? (
@@ -583,7 +594,7 @@ export default function HivePage() {
                 </div>
               </>
             )}
-          </div>
+          </div>}
         </>
       )}
     </DashboardShell>

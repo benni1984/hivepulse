@@ -254,12 +254,24 @@ struct ApiaryOut: Codable, Identifiable {
     let createdAt: Date
     /// Shown on the public map and counted in community statistics. Optional so older payloads still decode.
     var isPublic: Bool? = nil
+    /// owner, shared or partial (see "Sharing" in the API contract). Optional so older payloads still decode.
+    var access: String? = nil
+    /// Whose apiary it is, when it is not the caller's.
+    var ownerName: String? = nil
     enum CodingKeys: String, CodingKey {
-        case id, name, description, latitude, longitude, address
+        case id, name, description, latitude, longitude, address, access
         case hiveCount = "hive_count"
         case createdAt = "created_at"
         case isPublic = "is_public"
+        case ownerName = "owner_name"
     }
+}
+
+extension ApiaryOut {
+    /// A payload without the field comes from a server that only ever returned the caller's own apiaries.
+    var isOwner: Bool { access == nil || access == "owner" }
+    /// Somebody who was given single hives can work on those, but not on the apiary around them.
+    var canEdit: Bool { access != "partial" }
 }
 
 struct ApiaryCreate: Encodable {
@@ -299,6 +311,66 @@ struct QrBatchOut: Codable, Identifiable {
     }
 }
 
+extension HiveOut {
+    var isOwner: Bool { access == nil || access == "owner" }
+}
+
+// MARK: - Sharing
+
+struct ShareTarget: Codable {
+    /// "apiary" or "hive"
+    let type: String
+    let id: String
+    let name: String
+}
+
+struct ShareOut: Codable, Identifiable {
+    let id: String
+    let email: String
+    /// "pending" or "accepted"
+    let status: String
+    let target: ShareTarget
+    let collaboratorName: String?
+    let createdAt: Date
+    let acceptedAt: Date?
+    enum CodingKeys: String, CodingKey {
+        case id, email, status, target
+        case collaboratorName = "collaborator_name"
+        case createdAt = "created_at"
+        case acceptedAt = "accepted_at"
+    }
+}
+
+struct IncomingShareOut: Codable, Identifiable {
+    let id: String
+    let ownerName: String
+    let target: ShareTarget
+    /// Set when the target is a hive, so the invitation can say where it sits.
+    let apiaryName: String?
+    let createdAt: Date
+    enum CodingKeys: String, CodingKey {
+        case id, target
+        case ownerName = "owner_name"
+        case apiaryName = "apiary_name"
+        case createdAt = "created_at"
+    }
+}
+
+struct ShareTokenRequest: Encodable {
+    let token: String
+}
+
+struct ShareCreateRequest: Encodable {
+    let email: String
+    let apiaryId: String?
+    let hiveId: String?
+    enum CodingKeys: String, CodingKey {
+        case email
+        case apiaryId = "apiary_id"
+        case hiveId = "hive_id"
+    }
+}
+
 struct QrBatchSummary: Codable, Identifiable {
     let id: String
     let count: Int
@@ -330,8 +402,10 @@ struct HiveOut: Codable, Identifiable {
     let initializedAt: Date
     let lastInspectionAt: Date?
     let createdAt: Date
+    /// owner or shared. Optional so older payloads still decode.
+    var access: String? = nil
     enum CodingKeys: String, CodingKey {
-        case id, name, latitude, longitude, notes
+        case id, name, latitude, longitude, notes, access
         case qrToken        = "qr_token"
         case apiaryId       = "apiary_id"
         case hiveType       = "hive_type"
@@ -417,8 +491,11 @@ struct InspectionOut: Codable, Identifiable {
     /// Set for inspections an app recorded offline; see api-contract.md.
     let clientId: String?
     let createdAt: Date
+    /// Who recorded it. Empty for records made before sharing existed.
+    var createdByName: String? = nil
     enum CodingKeys: String, CodingKey {
         case id, date, notes
+        case createdByName    = "created_by_name"
         case hiveId           = "hive_id"
         case clientId         = "client_id"
         case queenSeen        = "queen_seen"

@@ -6,9 +6,9 @@ from typing import List, Optional
 from fastapi import APIRouter, Header, HTTPException, Query
 from fastapi.responses import Response
 
+from app.access import apiary_or_404, hive_or_404
 from app.deps import CurrentUser, DB
-from app.i18n import error
-from app.models import Apiary, Hive, Inspection
+from app.models import Inspection
 from app.schemas import InspectionOut
 
 router = APIRouter(tags=["export"])
@@ -40,20 +40,6 @@ def _inspections_to_csv(rows: List[dict]) -> str:
     return buf.getvalue()
 
 
-def _get_hive_or_404(hive_id: str, user_id: str, db: DB, lang):
-    hive = db.get(Hive, hive_id)
-    if not hive or hive.user_id != user_id:
-        raise HTTPException(404, detail=error("HIVE_NOT_FOUND", lang))
-    return hive
-
-
-def _get_apiary_or_404(apiary_id: str, user_id: str, db: DB, lang):
-    apiary = db.get(Apiary, apiary_id)
-    if not apiary or apiary.user_id != user_id:
-        raise HTTPException(404, detail=error("APIARY_NOT_FOUND", lang))
-    return apiary
-
-
 @router.get("/hives/{hive_id}/inspections/export")
 def export_hive_inspections(
     hive_id: str,
@@ -62,7 +48,7 @@ def export_hive_inspections(
     format: str = Query("json", pattern="^(json|csv)$"),
     accept_language: Optional[str] = Header(default=None),
 ):
-    _get_hive_or_404(hive_id, current_user.id, db, accept_language)
+    hive_or_404(db, current_user, hive_id, accept_language)
     inspections = (
         db.query(Inspection)
         .filter(Inspection.hive_id == hive_id)
@@ -94,8 +80,10 @@ def export_apiary_inspections(
     format: str = Query("json", pattern="^(json|csv)$"),
     accept_language: Optional[str] = Header(default=None),
 ):
-    apiary = _get_apiary_or_404(apiary_id, current_user.id, db, accept_language)
-    hive_ids = [h.id for h in apiary.hives]
+    apiary, _, scope = apiary_or_404(db, current_user, apiary_id, accept_language)
+    # Somebody who has single hives of this apiary shared gets the records of those hives only.
+    hives = scope.hives_in(apiary)
+    hive_ids = [h.id for h in hives]
     if not hive_ids:
         inspections = []
     else:
@@ -109,7 +97,7 @@ def export_apiary_inspections(
     rows = [InspectionOut.model_validate(i).model_dump(mode="json") for i in inspections]
 
     if format == "csv":
-        hive_name_map = {h.id: h.name for h in apiary.hives}
+        hive_name_map = {h.id: h.name for h in hives}
         for row in rows:
             row["hive_name"] = hive_name_map.get(row["hive_id"], "")
 

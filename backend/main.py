@@ -7,7 +7,7 @@ from app.config import settings
 from app.monitoring import init_monitoring
 from app.database import Base, SessionLocal, engine
 from app.routers import auth, users, field_definitions, apiaries, qr_batches, hives, inspections, stats, public, export
-from app.routers import admin, hornets, notifications
+from app.routers import admin, hornets, notifications, shares
 
 
 @asynccontextmanager
@@ -71,6 +71,7 @@ app.include_router(apiaries.router, prefix=PREFIX)
 app.include_router(qr_batches.router, prefix=PREFIX)
 app.include_router(hives.router, prefix=PREFIX)
 app.include_router(inspections.router, prefix=PREFIX)
+app.include_router(shares.router, prefix=PREFIX)
 app.include_router(stats.router, prefix=PREFIX)
 app.include_router(public.router, prefix=PREFIX)
 app.include_router(export.router, prefix=PREFIX)

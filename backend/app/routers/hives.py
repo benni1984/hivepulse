@@ -7,23 +7,19 @@ from fastapi.responses import StreamingResponse
 
 from app.utils.qr import make_qr_png
 
+from app.access import PARTIAL, Scope, apiary_or_404, hive_or_404, remove_shares
 from app.deps import CurrentUser, DB
 from app.i18n import error
-from app.models import Apiary, Hive, QrBatch, QrToken
+from app.models import Hive, QrBatch, QrToken
 from app.schemas import HiveCreate, HiveInitialize, HiveOut, HiveUpdate, PaginatedResponse, QrScanUnlinked
 
 router = APIRouter(tags=["hives"])
 
 
-def _get_hive_or_404(hive_id: str, user_id: str, db: DB, lang):
-    hive = db.get(Hive, hive_id)
-    if not hive or hive.user_id != user_id:
-        raise HTTPException(404, detail=error("HIVE_NOT_FOUND", lang))
-    return hive
-
-
-def _hive_out(hive: Hive) -> HiveOut:
-    return HiveOut.model_validate(hive)
+def _hive_out(hive: Hive, access: str) -> HiveOut:
+    out = HiveOut.model_validate(hive)
+    out.access = access
+    return out
 
 
 @router.get("/hives/by-qr/{token}", response_model=Union[HiveOut, QrScanUnlinked])
@@ -34,11 +30,19 @@ def resolve_qr(
     accept_language: Optional[str] = Header(default=None),
 ):
     qr = db.get(QrToken, token)
-    if not qr or qr.user_id != current_user.id:
+    if not qr:
         raise HTTPException(404, detail=error("QR_TOKEN_NOT_FOUND", accept_language))
     if qr.hive is None:
+        # A code attached to nothing can only be used by whoever printed it.
+        if qr.user_id != current_user.id:
+            raise HTTPException(404, detail=error("QR_TOKEN_NOT_FOUND", accept_language))
         return QrScanUnlinked(token=token)
-    return _hive_out(qr.hive)
+    # A code on a hive resolves for everybody who may work on that hive, so a collaborator can
+    # scan the owner's sticker.
+    access = Scope(db, current_user).hive_access(qr.hive)
+    if access is None:
+        raise HTTPException(404, detail=error("QR_TOKEN_NOT_FOUND", accept_language))
+    return _hive_out(qr.hive, access)
 
 
 @router.get("/apiaries/{apiary_id}/hives", response_model=PaginatedResponse)
@@ -50,14 +54,15 @@ def list_hives(
     per_page: int = Query(20, ge=1, le=100),
     accept_language: Optional[str] = Header(default=None),
 ):
-    apiary = db.get(Apiary, apiary_id)
-    if not apiary or apiary.user_id != current_user.id:
-        raise HTTPException(404, detail=error("APIARY_NOT_FOUND", accept_language))
+    _, access, scope = apiary_or_404(db, current_user, apiary_id, accept_language)
     q = db.query(Hive).filter(Hive.apiary_id == apiary_id)
+    if access == PARTIAL:
+        # Only some hives of this apiary were shared; the others are not this person's to see.
+        q = q.filter(Hive.id.in_(scope.shared_hive_ids))
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return PaginatedResponse(
-        items=[_hive_out(h) for h in items],
+        items=[_hive_out(h, scope.hive_access(h)) for h in items],
         total=total,
         page=page,
         per_page=per_page,
@@ -73,9 +78,7 @@ def create_hive(
     db: DB,
     accept_language: Optional[str] = Header(default=None),
 ):
-    apiary = db.get(Apiary, apiary_id)
-    if not apiary or apiary.user_id != current_user.id:
-        raise HTTPException(404, detail=error("APIARY_NOT_FOUND", accept_language))
+    _, _, scope = apiary_or_404(db, current_user, apiary_id, accept_language, need="edit")
 
     batch = QrBatch(user_id=current_user.id, count=1)
     db.add(batch)
@@ -97,7 +100,7 @@ def create_hive(
     db.add(hive)
     db.commit()
     db.refresh(hive)
-    return _hive_out(hive)
+    return _hive_out(hive, scope.hive_access(hive))
 
 
 @router.post("/hives/initialize", response_model=HiveOut, status_code=201)
@@ -113,9 +116,7 @@ def initialize_hive(
     if qr.hive is not None:
         raise HTTPException(409, detail=error("QR_TOKEN_ALREADY_LINKED", accept_language))
 
-    apiary = db.get(Apiary, body.apiary_id)
-    if not apiary or apiary.user_id != current_user.id:
-        raise HTTPException(404, detail=error("APIARY_NOT_FOUND", accept_language))
+    _, _, scope = apiary_or_404(db, current_user, body.apiary_id, accept_language, need="edit")
 
     hive = Hive(
         user_id=current_user.id,
@@ -132,7 +133,7 @@ def initialize_hive(
     db.add(hive)
     db.commit()
     db.refresh(hive)
-    return _hive_out(hive)
+    return _hive_out(hive, scope.hive_access(hive))
 
 
 @router.get("/hives/{hive_id}", response_model=HiveOut)
@@ -142,7 +143,8 @@ def get_hive(
     db: DB,
     accept_language: Optional[str] = Header(default=None),
 ):
-    return _hive_out(_get_hive_or_404(hive_id, current_user.id, db, accept_language))
+    hive, access, _ = hive_or_404(db, current_user, hive_id, accept_language)
+    return _hive_out(hive, access)
 
 
 @router.put("/hives/{hive_id}", response_model=HiveOut)
@@ -153,16 +155,17 @@ def update_hive(
     db: DB,
     accept_language: Optional[str] = Header(default=None),
 ):
-    hive = _get_hive_or_404(hive_id, current_user.id, db, accept_language)
-    if body.apiary_id is not None:
-        apiary = db.get(Apiary, body.apiary_id)
-        if not apiary or apiary.user_id != current_user.id:
-            raise HTTPException(404, detail=error("APIARY_NOT_FOUND", accept_language))
+    hive, access, scope = hive_or_404(db, current_user, hive_id, accept_language)
+    if body.apiary_id is not None and body.apiary_id != hive.apiary_id:
+        # Taking a hive out of an apiary is the owner's call: a collaborator could otherwise walk
+        # a hive that was shared with them into an apiary the owner never sees.
+        hive_or_404(db, current_user, hive_id, accept_language, need="owner")
+        apiary_or_404(db, current_user, body.apiary_id, accept_language, need="edit")
     for field, value in body.model_dump(exclude_unset=True).items():
         setattr(hive, field, value)
     db.commit()
     db.refresh(hive)
-    return _hive_out(hive)
+    return _hive_out(hive, scope.hive_access(hive))
 
 
 @router.delete("/hives/{hive_id}", status_code=204)
@@ -172,7 +175,8 @@ def delete_hive(
     db: DB,
     accept_language: Optional[str] = Header(default=None),
 ):
-    hive = _get_hive_or_404(hive_id, current_user.id, db, accept_language)
+    hive, _, _ = hive_or_404(db, current_user, hive_id, accept_language, need="owner")
+    remove_shares(db, hive_id=hive.id)
     db.delete(hive)
     db.commit()
 
@@ -184,6 +188,6 @@ def get_hive_qr(
     db: DB,
     accept_language: Optional[str] = Header(default=None),
 ):
-    hive = _get_hive_or_404(hive_id, current_user.id, db, accept_language)
+    hive, _, _ = hive_or_404(db, current_user, hive_id, accept_language)
     png = make_qr_png(hive.qr_token)
     return StreamingResponse(io.BytesIO(png), media_type="image/png")

@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.hivepulse.app.R
+import com.hivepulse.app.data.api.isOwner
 
 @Composable
 fun ApiaryFormDialog(
@@ -20,6 +21,9 @@ fun ApiaryFormDialog(
     var description by remember { mutableStateOf(initial?.description ?: "") }
     var address     by remember { mutableStateOf(initial?.address ?: "") }
     var isPublic    by remember { mutableStateOf(initial?.isPublic ?: false) }
+    // Whether the apiary appears on the public map is the owner's decision alone: it exposes the
+    // location of something a collaborator was only asked to help look after.
+    val canChangePublic = initial?.isOwner ?: true
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -36,7 +40,7 @@ fun ApiaryFormDialog(
                     label = { Text(stringResource(R.string.field_address)) },
                     singleLine = true, modifier = Modifier.fillMaxWidth())
 
-                Row(
+                if (canChangePublic) Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween

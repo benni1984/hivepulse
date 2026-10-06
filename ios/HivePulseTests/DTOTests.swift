@@ -251,4 +251,96 @@ final class DTOTests: XCTestCase {
         XCTAssertNil(json["authorization_code"])
     }
 
+    // MARK: - Sharing
+
+    private func decoder() -> JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .hivePulseBackend
+        return decoder
+    }
+
+    func test_apiaryOut_decodesWhoItBelongsToAndHowItIsShared() throws {
+        let json = #"{"id":"a","name":"Garden","description":null,"latitude":null,"longitude":null,"address":null,"hive_count":2,"is_public":false,"access":"shared","owner_name":"Alice","created_at":"2026-01-01T00:00:00.123456"}"#
+
+        let apiary = try decoder().decode(ApiaryOut.self, from: Data(json.utf8))
+
+        XCTAssertEqual(apiary.access, "shared")
+        XCTAssertEqual(apiary.ownerName, "Alice")
+        XCTAssertFalse(apiary.isOwner)
+        XCTAssertTrue(apiary.canEdit)
+    }
+
+    func test_anApiaryFromAnOlderServerIsTheCallersOwn() throws {
+        let json = #"{"id":"a","name":"Garden","description":null,"latitude":null,"longitude":null,"address":null,"hive_count":2,"created_at":"2026-01-01T00:00:00.123456"}"#
+
+        let apiary = try decoder().decode(ApiaryOut.self, from: Data(json.utf8))
+
+        XCTAssertNil(apiary.access)
+        XCTAssertTrue(apiary.isOwner)
+        XCTAssertTrue(apiary.canEdit)
+    }
+
+    func test_anApiaryWithOnlySomeHivesSharedCannotBeEdited() throws {
+        let json = #"{"id":"a","name":"Garden","description":null,"latitude":null,"longitude":null,"address":null,"hive_count":1,"access":"partial","owner_name":"Bob","created_at":"2026-01-01T00:00:00.123456"}"#
+
+        let apiary = try decoder().decode(ApiaryOut.self, from: Data(json.utf8))
+
+        XCTAssertFalse(apiary.isOwner)
+        XCTAssertFalse(apiary.canEdit)
+    }
+
+    func test_hiveOut_knowsWhetherItIsTheCallersOwn() throws {
+        let owner = #"{"id":"h","qr_token":"t","apiary_id":"a","name":"H","hive_type":"langstroth","latitude":null,"longitude":null,"acquisition_date":null,"notes":null,"custom_fields":{},"initialized_at":"2026-01-01T00:00:00.123456","last_inspection_at":null,"access":"owner","created_at":"2026-01-01T00:00:00.123456"}"#
+        let shared = owner.replacingOccurrences(of: #""access":"owner""#, with: #""access":"shared""#)
+        let older = owner.replacingOccurrences(of: #""access":"owner","#, with: "")
+
+        XCTAssertTrue(try decoder().decode(HiveOut.self, from: Data(owner.utf8)).isOwner)
+        XCTAssertFalse(try decoder().decode(HiveOut.self, from: Data(shared.utf8)).isOwner)
+        XCTAssertTrue(try decoder().decode(HiveOut.self, from: Data(older.utf8)).isOwner)
+    }
+
+    func test_inspectionOut_decodesWhoRecordedIt() throws {
+        let json = #"{"id":"i","hive_id":"h","date":"2026-05-01","custom_fields":{},"created_by_name":"Bob","created_at":"2026-05-01T10:00:00.123456"}"#
+
+        let inspection = try decoder().decode(InspectionOut.self, from: Data(json.utf8))
+
+        XCTAssertEqual(inspection.createdByName, "Bob")
+    }
+
+    func test_shareOut_decodesACollaboratorAndAnOpenInvitation() throws {
+        let json = #"[{"id":"s-1","email":"bob@example.com","status":"accepted","target":{"type":"apiary","id":"a","name":"Garden"},"collaborator_name":"Bob","created_at":"2026-01-01T00:00:00.123456","accepted_at":"2026-01-02T00:00:00.123456"},{"id":"s-2","email":"carol@example.com","status":"pending","target":{"type":"hive","id":"h","name":"Hive 1"},"collaborator_name":null,"created_at":"2026-01-03T00:00:00.123456","accepted_at":null}]"#
+
+        let shares = try decoder().decode([ShareOut].self, from: Data(json.utf8))
+
+        XCTAssertEqual(shares[0].collaboratorName, "Bob")
+        XCTAssertNotNil(shares[0].acceptedAt)
+        XCTAssertEqual(shares[1].status, "pending")
+        XCTAssertNil(shares[1].collaboratorName)
+        XCTAssertEqual(shares[1].target.type, "hive")
+    }
+
+    func test_incomingShareOut_decodesWhereAHiveSits() throws {
+        let json = #"{"id":"s-1","owner_name":"Alice","target":{"type":"hive","id":"h","name":"Hive 1"},"apiary_name":"Garden","created_at":"2026-01-01T00:00:00.123456"}"#
+
+        let invitation = try decoder().decode(IncomingShareOut.self, from: Data(json.utf8))
+
+        XCTAssertEqual(invitation.ownerName, "Alice")
+        XCTAssertEqual(invitation.apiaryName, "Garden")
+    }
+
+    func test_shareCreateRequest_sendsExactlyOneTarget() throws {
+        let hive = try JSONSerialization.jsonObject(
+            with: JSONEncoder().encode(ShareCreateRequest(email: "bob@example.com", apiaryId: nil, hiveId: "h-1"))
+        ) as? [String: Any]
+        let apiary = try JSONSerialization.jsonObject(
+            with: JSONEncoder().encode(ShareCreateRequest(email: "bob@example.com", apiaryId: "a-1", hiveId: nil))
+        ) as? [String: Any]
+
+        XCTAssertEqual(hive?["hive_id"] as? String, "h-1")
+        XCTAssertNil(hive?["apiary_id"])
+        XCTAssertEqual(apiary?["apiary_id"] as? String, "a-1")
+        XCTAssertNil(apiary?["hive_id"])
+        XCTAssertEqual(apiary?["email"] as? String, "bob@example.com")
+    }
+
 }

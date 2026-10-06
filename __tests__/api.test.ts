@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { login, register, logout, getMe, updateMe, deleteMe, getApiaries, createApiary, updateApiary, deleteApiary, createHive, updateHive, deleteHive, getHive, clearTokens, createInspection, updateInspection, deleteInspection, getQrBatches, createQrBatch, getQrBatch, downloadQrBatchPdf, getPublicStats, exportHiveInspections, exportApiaryInspections, getReminderSettings, updateReminderSettings, registerPushToken, forgotPassword, resetPassword, socialSignIn, deleteQrBatch } from '@/lib/api';
+import { login, register, logout, getMe, updateMe, deleteMe, getApiaries, createApiary, updateApiary, deleteApiary, createHive, updateHive, deleteHive, getHive, clearTokens, createInspection, updateInspection, deleteInspection, getQrBatches, createQrBatch, getQrBatch, downloadQrBatchPdf, getPublicStats, exportHiveInspections, exportApiaryInspections, getReminderSettings, updateReminderSettings, registerPushToken, forgotPassword, resetPassword, socialSignIn, deleteQrBatch, createShare, getShares, getIncomingShares, acceptShare, declineShare, deleteShare, acceptShareByToken } from '@/lib/api';
 
 const mockUser = { id: '1', email: 'a@b.com', name: 'Test', locale: 'en', created_at: '2024-01-01' };
 const mockTokens = { access_token: 'access-123', refresh_token: 'refresh-456', user: mockUser };
@@ -80,6 +80,71 @@ describe('deleteQrBatch', () => {
   it('fails on any other error', async () => {
     vi.mocked(fetch).mockResolvedValueOnce(ok({}, 500));
     await expect(deleteQrBatch('b-1')).rejects.toThrow('Delete failed');
+  });
+});
+
+describe('sharing', () => {
+  const call = (n = 0) => vi.mocked(fetch).mock.calls[n] as [string, RequestInit | undefined];
+
+  it('createShare posts the address and exactly one target', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ id: 's-1' }, 201));
+    await createShare('bob@example.com', { hive_id: 'h-1' });
+
+    expect(call()[0]).toContain('/shares');
+    expect(call()[1]?.method).toBe('POST');
+    expect(JSON.parse(call()[1]?.body as string)).toEqual({ email: 'bob@example.com', hive_id: 'h-1' });
+  });
+
+  it('createShare surfaces the server\'s reason', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ detail: { code: 'SHARE_ALREADY_EXISTS', message: 'Already invited.' } }, 409));
+    await expect(createShare('bob@example.com', { apiary_id: 'a-1' })).rejects.toThrow('Already invited.');
+  });
+
+  it('getShares asks for the apiary or the hive', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok([])).mockResolvedValueOnce(ok([]));
+    await getShares({ apiary_id: 'a-1' });
+    await getShares({ hive_id: 'h-1' });
+
+    expect(call(0)[0]).toContain('/shares?apiary_id=a-1');
+    expect(call(1)[0]).toContain('/shares?hive_id=h-1');
+  });
+
+  it('getIncomingShares reads the open invitations', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok([{ id: 's-1' }]));
+    expect(await getIncomingShares()).toEqual([{ id: 's-1' }]);
+    expect(call()[0]).toContain('/shares/incoming');
+  });
+
+  it('accept, decline and delete use their own routes', async () => {
+    vi.mocked(fetch).mockResolvedValue(new Response(null, { status: 204 }));
+    await acceptShare('s-1');
+    await declineShare('s-2');
+    await deleteShare('s-3');
+
+    expect(call(0)[0]).toContain('/shares/s-1/accept');
+    expect(call(1)[0]).toContain('/shares/s-2/decline');
+    expect(call(2)[0]).toContain('/shares/s-3');
+    expect(call(2)[1]?.method).toBe('DELETE');
+  });
+
+  it('a failed answer is an error, not silence', async () => {
+    vi.mocked(fetch).mockResolvedValue(ok({}, 404));
+    await expect(acceptShare('x')).rejects.toThrow();
+    await expect(declineShare('x')).rejects.toThrow();
+    await expect(deleteShare('x')).rejects.toThrow();
+  });
+
+  it('acceptShareByToken sends the token and returns what it became', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ id: 's-1', owner_name: 'Alice' }));
+    const result = await acceptShareByToken('tok');
+
+    expect(JSON.parse(call()[1]?.body as string)).toEqual({ token: 'tok' });
+    expect(result.owner_name).toBe('Alice');
+  });
+
+  it('acceptShareByToken surfaces the server\'s reason for a dead link', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ detail: { code: 'SHARE_TOKEN_INVALID', message: 'Link is dead.' } }, 404));
+    await expect(acceptShareByToken('old')).rejects.toThrow('Link is dead.');
   });
 });
 

@@ -122,6 +122,31 @@ interface ApiService {
     @DELETE("qr-batches/{id}")
     suspend fun deleteQrBatch(@Path("id") id: String): Response<Unit>
 
+    // Sharing
+    @GET("shares")
+    suspend fun listShares(
+        @Query("apiary_id") apiaryId: String? = null,
+        @Query("hive_id") hiveId: String? = null,
+    ): List<ShareOut>
+
+    @POST("shares")
+    suspend fun createShare(@Body body: ShareCreateRequest): ShareOut
+
+    @GET("shares/incoming")
+    suspend fun incomingShares(): List<IncomingShareOut>
+
+    @POST("shares/accept-by-token")
+    suspend fun acceptShareByToken(@Body body: ShareTokenRequest): IncomingShareOut
+
+    @POST("shares/{id}/accept")
+    suspend fun acceptShare(@Path("id") id: String): Response<Unit>
+
+    @POST("shares/{id}/decline")
+    suspend fun declineShare(@Path("id") id: String): Response<Unit>
+
+    @DELETE("shares/{id}")
+    suspend fun deleteShare(@Path("id") id: String): Response<Unit>
+
     @Streaming
     @GET("qr-batches/{id}/pdf")
     suspend fun downloadQrBatchPdf(@Path("id") id: String): ResponseBody

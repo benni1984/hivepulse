@@ -342,6 +342,56 @@ export async function deleteQrBatch(id: string): Promise<void> {
   if (!res.ok) throw new Error('Delete failed');
 }
 
+// -- Sharing -------------------------------------------------------------------------------
+
+export async function createShare(email: string, target: { apiary_id: string } | { hive_id: string }): Promise<Share> {
+  const res = await apiFetch('/shares', { method: 'POST', body: JSON.stringify({ email, ...target }) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(extractDetail(err, 'Invitation failed'));
+  }
+  return res.json();
+}
+
+export async function getShares(target: { apiary_id: string } | { hive_id: string }): Promise<Share[]> {
+  const query = 'apiary_id' in target ? `apiary_id=${target.apiary_id}` : `hive_id=${target.hive_id}`;
+  const res = await apiFetch(`/shares?${query}`);
+  if (!res.ok) throw new Error('Failed to load collaborators');
+  return res.json();
+}
+
+export async function getIncomingShares(): Promise<IncomingShare[]> {
+  const res = await apiFetch('/shares/incoming');
+  if (!res.ok) throw new Error('Failed to load invitations');
+  return res.json();
+}
+
+export async function acceptShare(id: string): Promise<void> {
+  const res = await apiFetch(`/shares/${id}/accept`, { method: 'POST' });
+  if (!res.ok) throw new Error('Accept failed');
+}
+
+export async function declineShare(id: string): Promise<void> {
+  const res = await apiFetch(`/shares/${id}/decline`, { method: 'POST' });
+  if (!res.ok) throw new Error('Decline failed');
+}
+
+/** The owner revokes or withdraws, or a collaborator leaves. */
+export async function deleteShare(id: string): Promise<void> {
+  const res = await apiFetch(`/shares/${id}`, { method: 'DELETE' });
+  if (!res.ok) throw new Error('Delete failed');
+}
+
+/** For an invitation that went to an address without an account: the token comes from the email. */
+export async function acceptShareByToken(token: string): Promise<IncomingShare> {
+  const res = await apiFetch('/shares/accept-by-token', { method: 'POST', body: JSON.stringify({ token }) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(extractDetail(err, 'Invitation failed'));
+  }
+  return res.json();
+}
+
 export async function getQrBatch(id: string): Promise<QrBatchOut> {
   const res = await apiFetch(`/qr-batches/${id}`);
   if (!res.ok) throw new Error('Failed to get QR batch');
@@ -471,12 +521,31 @@ export interface PublicStats {
   apiaries: PublicApiary[];
 }
 export interface User { id: string; email: string; name: string; locale: string; created_at: string; is_admin: boolean; is_supporter: boolean; /** false for an account made through Apple or Google */ has_password?: boolean; }
-export interface Apiary { id: string; name: string; hive_count: number; is_public: boolean; description?: string; address?: string; latitude?: number; longitude?: number; created_at: string; }
-export interface Hive { id: string; name: string; hive_type: string; apiary_id: string; last_inspection_at?: string; notes?: string; acquisition_date?: string; }
+/** owner: made by the caller; shared: the whole apiary was shared; partial: only some hives were. */
+export type ApiaryAccess = 'owner' | 'shared' | 'partial';
+export interface Apiary {
+  id: string; name: string; hive_count: number; is_public: boolean; description?: string; address?: string;
+  latitude?: number; longitude?: number; created_at: string;
+  /** Missing on an older server, which only ever returned the caller's own apiaries. */
+  access?: ApiaryAccess; owner_name?: string | null;
+}
+export interface Hive {
+  id: string; name: string; hive_type: string; apiary_id: string; last_inspection_at?: string; notes?: string;
+  acquisition_date?: string; access?: 'owner' | 'shared';
+}
 export interface Inspection {
   id: string; date: string; varroa_level?: number | null; varroa_count?: number | null; mood?: string;
   queen_seen?: boolean; brood_frames?: number; honey_frames?: number;
   custom_fields?: Record<string, unknown>;
+  created_by_name?: string | null;
+}
+export interface ShareTarget { type: 'apiary' | 'hive'; id: string; name: string; }
+export interface Share {
+  id: string; email: string; status: 'pending' | 'accepted'; target: ShareTarget;
+  collaborator_name: string | null; created_at: string; accepted_at: string | null;
+}
+export interface IncomingShare {
+  id: string; owner_name: string; target: ShareTarget; apiary_name: string | null; created_at: string;
 }
 export interface InspectionInput {
   date: string;

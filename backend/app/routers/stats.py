@@ -4,6 +4,7 @@ from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, Header, HTTPException, Query
 
+from app.access import Scope, apiary_or_404, hive_or_404
 from app.deps import CurrentSupporter, CurrentUser, DB
 from app.i18n import error
 from app.models import Apiary, FieldDefinition, Hive, Inspection
@@ -122,9 +123,7 @@ def hive_stats(
     to_date: Optional[date] = Query(default=None, alias="to"),
     accept_language: Optional[str] = Header(default=None),
 ):
-    hive = db.get(Hive, hive_id)
-    if not hive or hive.user_id != current_user.id:
-        raise HTTPException(404, detail=error("HIVE_NOT_FOUND", accept_language))
+    hive, _, _ = hive_or_404(db, current_user, hive_id, accept_language)
     period = _resolve_period(preset, from_date, to_date)
     return _build_hive_stats(hive, period, db)
 
@@ -139,15 +138,15 @@ def apiary_stats(
     to_date: Optional[date] = Query(default=None, alias="to"),
     accept_language: Optional[str] = Header(default=None),
 ):
-    apiary = db.get(Apiary, apiary_id)
-    if not apiary or apiary.user_id != current_user.id:
-        raise HTTPException(404, detail=error("APIARY_NOT_FOUND", accept_language))
+    apiary, _, scope = apiary_or_404(db, current_user, apiary_id, accept_language)
+    # A collaborator on single hives sees the figures of those hives, not of the whole apiary.
+    hives = scope.hives_in(apiary)
 
     period = _resolve_period(preset, from_date, to_date)
     today = date.today()
     cutoff_30d = today - timedelta(days=30)
 
-    all_inspections = [i for h in apiary.hives for i in _filter_inspections(h.inspections, period)]
+    all_inspections = [i for h in hives for i in _filter_inspections(h.inspections, period)]
 
     varroa_vals = [i.varroa_level for i in all_inspections if i.varroa_level is not None]
     brood_vals = [i.brood_frames for i in all_inspections if i.brood_frames is not None]
@@ -159,14 +158,14 @@ def apiary_stats(
             mood_dist[i.mood] += 1
 
     hives_inspected = sum(
-        1 for h in apiary.hives
+        1 for h in hives
         if any(i.date >= cutoff_30d for i in h.inspections)
     )
 
     swarm_alerts = sum(1 for i in all_inspections if i.swarm_cells_seen)
 
     per_hive = []
-    for h in apiary.hives:
+    for h in hives:
         filtered = _filter_inspections(h.inspections, period)
         last_date = max((i.date for i in h.inspections), default=None) if h.inspections else None
         avg_varroa = None
@@ -184,10 +183,10 @@ def apiary_stats(
     return ApiaryStats(
         apiary_id=apiary_id,
         period=period,
-        hive_count=len(apiary.hives),
+        hive_count=len(hives),
         inspections_total=len(all_inspections),
         hives_inspected_last_30d=hives_inspected,
-        hives_not_inspected_30d=len(apiary.hives) - hives_inspected,
+        hives_not_inspected_30d=len(hives) - hives_inspected,
         average_varroa=round(sum(varroa_vals) / len(varroa_vals), 2) if varroa_vals else None,
         average_brood_frames=round(sum(brood_vals) / len(brood_vals), 2) if brood_vals else None,
         average_honey_frames=round(sum(honey_vals) / len(honey_vals), 2) if honey_vals else None,
@@ -206,21 +205,24 @@ def overview_stats(
     to_date: Optional[date] = Query(default=None, alias="to"),
 ):
     period = _resolve_period(preset, from_date, to_date)
-    apiaries = db.query(Apiary).filter(Apiary.user_id == current_user.id).all()
+    scope = Scope(db, current_user)
+    apiaries = db.query(Apiary).filter(scope.apiary_filter()).all()
+    # Everything the caller can see counts, including what other beekeepers shared with them.
+    hives_of = {a.id: scope.hives_in(a) for a in apiaries}
 
-    total_hives = sum(len(a.hives) for a in apiaries)
+    total_hives = sum(len(hives_of[a.id]) for a in apiaries)
     total_inspections = sum(
         len(_filter_inspections(h.inspections, period))
-        for a in apiaries for h in a.hives
+        for a in apiaries for h in hives_of[a.id]
     )
 
     per_apiary = [
         ApiaryStatsSummary(
             apiary_id=a.id,
             apiary_name=a.name,
-            hive_count=len(a.hives),
+            hive_count=len(hives_of[a.id]),
             inspections_total=sum(
-                len(_filter_inspections(h.inspections, period)) for h in a.hives
+                len(_filter_inspections(h.inspections, period)) for h in hives_of[a.id]
             ),
         )
         for a in apiaries

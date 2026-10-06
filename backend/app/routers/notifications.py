@@ -17,6 +17,7 @@ from fastapi import APIRouter, HTTPException, Request
 
 from typing import Optional
 
+from app.access import Scope
 from app.config import settings
 from app.notifications_i18n import reminder_email, reminder_push
 from app.utils.push import PushResult, send_apns, send_fcm
@@ -83,8 +84,12 @@ def _send_reminder_email(to_email: str, overdue_count: int, locale: Optional[str
         logger.error("Failed to send reminder email: %s", exc)
 
 
-def _get_overdue_hive_count(user_id: str, interval_days: int, db) -> int:
-    """Count hives owned by user that have not been inspected within interval_days."""
+def _get_overdue_hive_count(user: User, interval_days: int, db) -> int:
+    """Count hives the user can work on that have not been inspected within interval_days.
+
+    That includes hives other beekeepers shared with them, so two people on the same hive both
+    get the reminder.
+    """
     from sqlalchemy import func, select
 
     cutoff = datetime.now(timezone.utc) - timedelta(days=interval_days)
@@ -96,12 +101,8 @@ def _get_overdue_hive_count(user_id: str, interval_days: int, db) -> int:
         .subquery()
     )
 
-    # Select of hive IDs belonging to this user
-    user_hive_sel = (
-        select(Hive.id)
-        .join(Apiary, Hive.apiary_id == Apiary.id)
-        .where(Apiary.user_id == user_id)
-    )
+    # Select of hive IDs the user can work on
+    user_hive_sel = select(Hive.id).where(Scope(db, user).hive_filter())
 
     # Hives with no inspection at all
     never_inspected = (
@@ -173,7 +174,7 @@ def send_reminders(request: Request, db: DB) -> ReminderSendResult:
             skipped_no_channel += 1
             continue
 
-        overdue = _get_overdue_hive_count(user.id, user.reminder_interval_days, db)
+        overdue = _get_overdue_hive_count(user, user.reminder_interval_days, db)
         if overdue > 0:
             # Independent channels -- a user with both a push token and
             # reminder_email_enabled gets both, not one-or-the-other.

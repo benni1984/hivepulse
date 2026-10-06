@@ -74,6 +74,13 @@ struct HiveDetailView: View {
         .hpScreenBackground()
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
+                if hive.isOwner {
+                    NavigationLink(destination: SharingView(target: .hive(hive.id), isHive: true)) {
+                        Image(systemName: "person.2")
+                    }
+                    .accessibilityLabel(NSLocalizedString("sharing.title", comment: ""))
+                    .accessibilityIdentifier("shareHiveButton")
+                }
                 Button { showEdit = true } label: { Image(systemName: "pencil") }
                     .accessibilityLabel(NSLocalizedString("screen.editHive", comment: ""))
                     .accessibilityIdentifier("editHiveButton")
@@ -130,6 +137,10 @@ private struct InspectionRow: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 8) {
                 Text(inspection.date).font(.dmSans(16, weight: .bold, relativeTo: .headline))
+                if let author = inspection.createdByName {
+                    Text(String(format: NSLocalizedString("label.recordedBy", comment: ""), author))
+                        .font(.caption).foregroundColor(.secondary)
+                }
                 if inspection.isPending {
                     Label(NSLocalizedString("offline.pendingUpload", comment: ""), systemImage: "icloud.and.arrow.up")
                         .font(.caption)

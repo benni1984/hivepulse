@@ -431,3 +431,30 @@
 /* Deleting a QR batch */
 "confirm.deleteBatch.title" = "Delete this QR batch?";
 "confirm.deleteBatch.message" = "All its codes are deleted with it. Codes that are not in use cannot be recovered.";
+
+/* Sharing apiaries and hives */
+"sharing.title" = "Work together";
+"sharing.emailLabel" = "Email address of the person";
+"sharing.invite" = "Invite";
+"sharing.inviteSent" = "Invitation sent.";
+"sharing.empty" = "Nobody invited yet.";
+"sharing.pending" = "Waiting for a reply";
+"sharing.accepted" = "Works with you";
+"sharing.revoke" = "Remove";
+"sharing.withdraw" = "Withdraw";
+"sharing.confirmRevoke" = "Remove this person? They lose access; what they recorded stays.";
+"sharing.confirmWithdraw" = "Withdraw this invitation?";
+"sharing.introApiary" = "Invite another beekeeper to look after this apiary with you. They see every hive in it and can record inspections.";
+"sharing.introHive" = "Invite another beekeeper to look after this hive with you. They see this hive only, not the others in the apiary.";
+"invitation.apiary" = "%1$@ invites you to work on the apiary %2$@ together.";
+"invitation.hive" = "%1$@ invites you to work on the hive %2$@ in %3$@ together.";
+"invitation.accept" = "Accept";
+"invitation.decline" = "Decline";
+"label.sharedBy" = "Shared by %@";
+"label.partialBy" = "Some hives shared by %@";
+"label.recordedBy" = "recorded by %@";
+"invitation.redeemTitle" = "Redeem an invitation link";
+"invitation.redeemMessage" = "Paste the link from the invitation email. This is for invitations sent to an address that had no HivePulse account yet.";
+"invitation.redeemField" = "Link or code";
+"invitation.redeemButton" = "Redeem";
+"invitation.invalidLink" = "That does not look like an invitation link.";

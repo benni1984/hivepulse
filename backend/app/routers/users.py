@@ -5,7 +5,7 @@ from passlib.context import CryptContext
 
 from app.deps import CurrentUser, DB
 from app.i18n import error
-from app.models import Hive, Inspection
+from app.utils.accounts import delete_account
 from app.utils import apple_auth
 from app.schemas import (
     PushTokenRegister,
@@ -51,18 +51,12 @@ def update_me(
 
 @router.delete("/me", status_code=204)
 def delete_me(current_user: CurrentUser, db: DB):
-    user_id = current_user.id
     if current_user.apple_refresh_token and current_user.apple_token_client_id:
         # Apple requires the token to be revoked when the account goes. Best effort: an
         # unreachable Apple must not keep somebody from deleting their own data.
         apple_auth.revoke(current_user.apple_refresh_token, current_user.apple_token_client_id)
-    # Delete in FK order: inspections → hives → user (cascade handles rest)
-    db.query(Inspection).filter(
-        Inspection.hive_id.in_(db.query(Hive.id).filter(Hive.user_id == user_id))
-    ).delete(synchronize_session=False)
-    db.query(Hive).filter(Hive.user_id == user_id).delete(synchronize_session=False)
-    db.delete(current_user)
-    db.commit()
+    # What was shared with others is handed over to them first; the rest goes.
+    delete_account(db, current_user)
 
 
 # ---------------------------------------------------------------------------

@@ -27,6 +27,13 @@ struct ApiaryFormView: View {
         return false
     }
 
+    /// Whether the apiary appears on the public map is the owner's decision alone: it exposes the
+    /// location of something a collaborator was only asked to help look after.
+    private var canChangePublic: Bool {
+        if case .edit(let apiary) = mode { return apiary.isOwner }
+        return true
+    }
+
     var body: some View {
         NavigationStack {
             Form {
@@ -55,11 +62,13 @@ struct ApiaryFormView: View {
                     .disabled(isLocating)
                 }
 
-                Section {
-                    Toggle(NSLocalizedString("field.showOnPublicMap", comment: ""), isOn: $isPublic)
-                        .accessibilityIdentifier("apiaryPublicToggle")
-                } footer: {
-                    Text(NSLocalizedString("field.showOnPublicMapHint", comment: ""))
+                if canChangePublic {
+                    Section {
+                        Toggle(NSLocalizedString("field.showOnPublicMap", comment: ""), isOn: $isPublic)
+                            .accessibilityIdentifier("apiaryPublicToggle")
+                    } footer: {
+                        Text(NSLocalizedString("field.showOnPublicMapHint", comment: ""))
+                    }
                 }
 
                 if let err = errorMessage {

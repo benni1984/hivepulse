@@ -1,18 +1,21 @@
 from typing import Optional
 from fastapi import APIRouter, Header, HTTPException
+from app.access import apiary_or_404
 from app.deps import CurrentUser, DB
 from app.i18n import error
-from app.models import Apiary, FieldDefinition
+from app.models import FieldDefinition
 from app.schemas import FieldDefinitionCreate, FieldDefinitionOut, FieldDefinitionUpdate
 
 router = APIRouter(tags=["field-definitions"])
 
 
-def _get_apiary_or_404(apiary_id: str, user_id: str, db: DB, lang):
-    apiary = db.get(Apiary, apiary_id)
-    if not apiary or apiary.user_id != user_id:
-        raise HTTPException(404, detail=error("APIARY_NOT_FOUND", lang))
-    return apiary
+def _get_apiary_fd_or_404(fd_id: str, apiary_id: str, db: DB, lang):
+    """An apiary's own field belongs to the apiary, not to whoever happened to create it, so
+    everybody who may edit the apiary may edit its fields."""
+    fd = db.get(FieldDefinition, fd_id)
+    if not fd or fd.scope != "apiary" or fd.apiary_id != apiary_id:
+        raise HTTPException(404, detail=error("FIELD_DEFINITION_NOT_FOUND", lang))
+    return fd
 
 
 def _get_fd_or_404(fd_id: str, user_id: str, db: DB, lang):
@@ -87,7 +90,7 @@ def list_apiary_field_definitions(
     db: DB,
     accept_language: Optional[str] = Header(default=None),
 ):
-    _get_apiary_or_404(apiary_id, current_user.id, db, accept_language)
+    apiary_or_404(db, current_user, apiary_id, accept_language)
     return db.query(FieldDefinition).filter(
         FieldDefinition.apiary_id == apiary_id,
         FieldDefinition.scope == "apiary",
@@ -102,7 +105,7 @@ def create_apiary_field_definition(
     db: DB,
     accept_language: Optional[str] = Header(default=None),
 ):
-    _get_apiary_or_404(apiary_id, current_user.id, db, accept_language)
+    apiary_or_404(db, current_user, apiary_id, accept_language, need="edit")
     fd = FieldDefinition(
         user_id=current_user.id,
         scope="apiary",
@@ -124,8 +127,8 @@ def update_apiary_field_definition(
     db: DB,
     accept_language: Optional[str] = Header(default=None),
 ):
-    _get_apiary_or_404(apiary_id, current_user.id, db, accept_language)
-    fd = _get_fd_or_404(fd_id, current_user.id, db, accept_language)
+    apiary_or_404(db, current_user, apiary_id, accept_language, need="edit")
+    fd = _get_apiary_fd_or_404(fd_id, apiary_id, db, accept_language)
     for field, value in body.model_dump(exclude_unset=True).items():
         setattr(fd, field, value)
     db.commit()
@@ -141,7 +144,7 @@ def delete_apiary_field_definition(
     db: DB,
     accept_language: Optional[str] = Header(default=None),
 ):
-    _get_apiary_or_404(apiary_id, current_user.id, db, accept_language)
-    fd = _get_fd_or_404(fd_id, current_user.id, db, accept_language)
+    apiary_or_404(db, current_user, apiary_id, accept_language, need="edit")
+    fd = _get_apiary_fd_or_404(fd_id, apiary_id, db, accept_language)
     db.delete(fd)
     db.commit()

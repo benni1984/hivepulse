@@ -9,6 +9,7 @@ from app.deps import CurrentAdmin, DB
 from app.config import settings
 from app.monitoring import send_self_test
 from app.models import Apiary, Hive, Inspection, RefreshToken, User, HornetSighting
+from app.utils.accounts import delete_account
 from app.schemas import (
     AdminApiaryOut, AdminPlatformStats, AdminUserDetail, AdminTokenOut,
     AdminTokenStats, HealthSummary, HornetSightingStatusUpdate, InactiveUserOut,
@@ -331,14 +332,8 @@ def delete_user(user_id: str, admin: CurrentAdmin, db: DB):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail={"code": "CANNOT_DELETE_SELF", "message": "Admins cannot delete their own account."},
         )
-    # Delete in FK dependency order so the ORM cascade on User works cleanly.
-    # Inspections → Hives must go before User cascade deletes QrTokens (referenced by Hive.qr_token).
-    db.query(Inspection).filter(
-        Inspection.hive_id.in_(db.query(Hive.id).filter(Hive.user_id == user_id))
-    ).delete(synchronize_session=False)
-    db.query(Hive).filter(Hive.user_id == user_id).delete(synchronize_session=False)
-    db.delete(user)
-    db.commit()
+    # Hands over what the user shared with others, then deletes the rest in FK order.
+    delete_account(db, user)
 
 
 # ---------------------------------------------------------------------------

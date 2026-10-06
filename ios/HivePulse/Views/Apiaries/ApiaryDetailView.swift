@@ -46,6 +46,7 @@ struct ApiaryDetailView: View {
                             NavigationLink(destination: HiveDetailView(hive: hive, apiaryId: apiary.id)) {
                                 HiveRow(hive: hive)
                             }
+                            .deleteDisabled(!hive.isOwner)
                         }
                         .onDelete { indices in
                             Task {
@@ -60,16 +61,26 @@ struct ApiaryDetailView: View {
         .hpScreenBackground()
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
-                NavigationLink(destination: FieldDefinitionsView(apiaryId: apiary.id)) {
-                    Image(systemName: "slider.horizontal.3")
+                if apiary.isOwner {
+                    NavigationLink(destination: SharingView(target: .apiary(apiary.id), isHive: false)) {
+                        Image(systemName: "person.2")
+                    }
+                    .accessibilityLabel(NSLocalizedString("sharing.title", comment: ""))
+                    .accessibilityIdentifier("shareApiaryButton")
                 }
-                .accessibilityLabel(NSLocalizedString("fielddefs.apiaryTitle", comment: ""))
-                .accessibilityIdentifier("apiaryFieldsButton")
-                Button { showEdit = true } label: {
-                    Image(systemName: "pencil")
+                // Somebody who has single hives of it cannot edit the apiary around them.
+                if apiary.canEdit {
+                    NavigationLink(destination: FieldDefinitionsView(apiaryId: apiary.id)) {
+                        Image(systemName: "slider.horizontal.3")
+                    }
+                    .accessibilityLabel(NSLocalizedString("fielddefs.apiaryTitle", comment: ""))
+                    .accessibilityIdentifier("apiaryFieldsButton")
+                    Button { showEdit = true } label: {
+                        Image(systemName: "pencil")
+                    }
+                    .accessibilityLabel(NSLocalizedString("action.editApiary", comment: ""))
+                    .accessibilityIdentifier("editApiaryButton")
                 }
-                .accessibilityLabel(NSLocalizedString("action.editApiary", comment: ""))
-                .accessibilityIdentifier("editApiaryButton")
             }
         }
         .task { await hiveVM.load(apiaryId: apiary.id) }

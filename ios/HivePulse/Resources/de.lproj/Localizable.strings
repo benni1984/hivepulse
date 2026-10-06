@@ -431,3 +431,30 @@
 /* Deleting a QR batch */
 "confirm.deleteBatch.title" = "Diesen QR-Stapel löschen?";
 "confirm.deleteBatch.message" = "Alle Codes darin werden mitgelöscht. Nicht benutzte Codes lassen sich nicht wiederherstellen.";
+
+/* Sharing apiaries and hives */
+"sharing.title" = "Zusammenarbeiten";
+"sharing.emailLabel" = "E-Mail-Adresse der Person";
+"sharing.invite" = "Einladen";
+"sharing.inviteSent" = "Einladung verschickt.";
+"sharing.empty" = "Noch niemand eingeladen.";
+"sharing.pending" = "Wartet auf Antwort";
+"sharing.accepted" = "Arbeitet mit";
+"sharing.revoke" = "Entfernen";
+"sharing.withdraw" = "Zurückziehen";
+"sharing.confirmRevoke" = "Diese Person entfernen? Sie verliert den Zugriff, was sie erfasst hat, bleibt.";
+"sharing.confirmWithdraw" = "Diese Einladung zurückziehen?";
+"sharing.introApiary" = "Lade einen anderen Imker ein, diesen Bienenstand mit dir zu betreuen. Er sieht alle Völker darin und kann Kontrollen erfassen.";
+"sharing.introHive" = "Lade einen anderen Imker ein, dieses Volk mit dir zu betreuen. Er sieht nur dieses Volk, nicht die anderen im Bienenstand.";
+"invitation.apiary" = "%1$@ lädt dich ein, den Bienenstand %2$@ gemeinsam zu betreuen.";
+"invitation.hive" = "%1$@ lädt dich ein, das Volk %2$@ in %3$@ gemeinsam zu betreuen.";
+"invitation.accept" = "Annehmen";
+"invitation.decline" = "Ablehnen";
+"label.sharedBy" = "Geteilt von %@";
+"label.partialBy" = "Einzelne Völker geteilt von %@";
+"label.recordedBy" = "erfasst von %@";
+"invitation.redeemTitle" = "Einladungslink einlösen";
+"invitation.redeemMessage" = "Füge den Link aus der Einladungs-E-Mail ein. Das ist für Einladungen an eine Adresse, die noch kein HivePulse-Konto hatte.";
+"invitation.redeemField" = "Link oder Code";
+"invitation.redeemButton" = "Einlösen";
+"invitation.invalidLink" = "Das sieht nicht nach einem Einladungslink aus.";

@@ -562,7 +562,9 @@
       "cancel": "Abbrechen",
       "createBtn": "Bienenstand anlegen",
       "createSuccess": "Bienenstand erstellt.",
-      "errorGeneric": "Etwas ist schiefgelaufen."
+      "errorGeneric": "Etwas ist schiefgelaufen.",
+      "sharedBy": "Geteilt von {name}",
+      "partialBy": "Einzelne Völker geteilt von {name}"
     },
     "apiary": {
       "hives": "Völker",
@@ -593,7 +595,9 @@
       "noId": "Keine Bienenstand-ID angegeben.",
       "notFound": "Bienenstand nicht gefunden.",
       "loadError": "Bienenstand-Daten konnten nicht geladen werden.",
-      "backToMap": "Zurück zur Karte"
+      "backToMap": "Zurück zur Karte",
+      "sharedNote": "Dieser Bienenstand gehört {name}. Du kannst Kontrollen erfassen und Völker bearbeiten.",
+      "partialNote": "{name} hat einzelne Völker dieses Bienenstands mit dir geteilt."
     },
     "hive": {
       "inspections": "Kontrollen",
@@ -646,7 +650,8 @@
       "varroaLevel0": "Keine",
       "varroaLevel1": "Schwach",
       "varroaLevel2": "Mittel",
-      "varroaLevel3": "Stark"
+      "varroaLevel3": "Stark",
+      "recordedBy": "erfasst von {name}"
     },
     "fieldDefs": {
       "title": "Eigene Felder",
@@ -735,6 +740,30 @@
       "code": "Zugangscode",
       "totalCaught": "Gesamt gefangen",
       "lastCatch": "Letzter Fang"
+    },
+    "sharing": {
+      "title": "Zusammenarbeiten",
+      "introApiary": "Lade einen anderen Imker ein, diesen Bienenstand mit dir zu betreuen. Er sieht alle Völker darin und kann Kontrollen erfassen.",
+      "introHive": "Lade einen anderen Imker ein, dieses Volk mit dir zu betreuen. Er sieht nur dieses Volk, nicht die anderen im Bienenstand.",
+      "emailLabel": "E-Mail-Adresse der Person",
+      "invite": "Einladen",
+      "inviteSent": "Einladung verschickt.",
+      "empty": "Noch niemand eingeladen.",
+      "pending": "Wartet auf Antwort",
+      "accepted": "Arbeitet mit",
+      "revoke": "Entfernen",
+      "withdraw": "Zurückziehen",
+      "confirmRevoke": "Diese Person entfernen? Sie verliert den Zugriff, was sie erfasst hat, bleibt.",
+      "confirmWithdraw": "Diese Einladung zurückziehen?",
+      "errorGeneric": "Das hat nicht geklappt. Bitte versuche es erneut."
+    },
+    "invitations": {
+      "textApiary": "{owner} lädt dich ein, den Bienenstand {name} gemeinsam zu betreuen.",
+      "textHive": "{owner} lädt dich ein, das Volk {name} in {apiary} gemeinsam zu betreuen.",
+      "accept": "Annehmen",
+      "decline": "Ablehnen",
+      "accepted": "{name} kannst du jetzt auch bearbeiten.",
+      "errorGeneric": "Das hat nicht geklappt. Vielleicht ist die Einladung nicht mehr gültig."
     }
   },
   "hiveTypes": {

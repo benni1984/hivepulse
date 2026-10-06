@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -19,6 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hivepulse.app.R
 import com.hivepulse.app.data.api.ApiaryOut
+import com.hivepulse.app.data.api.isOwner
+import com.hivepulse.app.ui.sharing.InvitationsViewModel
+import com.hivepulse.app.ui.sharing.invitationItems
 import com.hivepulse.app.ui.common.ErrorBanner
 import com.hivepulse.app.ui.common.LoadingScreen
 import com.hivepulse.app.ui.theme.Amber500
@@ -31,16 +35,24 @@ fun ApiaryListScreen(
     onScanClick: () -> Unit,
     onBatchClick: () -> Unit,
     onStatsClick: () -> Unit = {},
-    vm: ApiaryViewModel = hiltViewModel()
+    vm: ApiaryViewModel = hiltViewModel(),
+    invitationsVm: InvitationsViewModel = hiltViewModel(),
 ) {
     val state by vm.state.collectAsState()
+    val invitations by invitationsVm.state.collectAsState()
     var showCreate by remember { mutableStateOf(false) }
+    var showRedeem by remember { mutableStateOf(false) }
+    // Coming back from another screen is when an invitation may have arrived.
+    LaunchedEffect(Unit) { invitationsVm.load() }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.screen_apiaries), style = MaterialTheme.typography.titleLarge) },
                 actions = {
+                    IconButton(onClick = { showRedeem = true }, modifier = Modifier.testTag("redeemInvitationButton")) {
+                        Icon(Icons.Default.MarkEmailRead, contentDescription = stringResource(R.string.invitation_redeem_title))
+                    }
                     IconButton(onClick = onStatsClick)    { Icon(Icons.Default.BarChart,     contentDescription = stringResource(R.string.screen_stats_overview)) }
                     IconButton(onClick = onBatchClick)    { Icon(Icons.Default.Print,        contentDescription = stringResource(R.string.tab_print)) }
                     IconButton(onClick = onScanClick)     { Icon(Icons.Default.QrCodeScanner, contentDescription = stringResource(R.string.tab_scan)) }
@@ -62,7 +74,7 @@ fun ApiaryListScreen(
         Box(Modifier.padding(padding)) {
             when {
                 state.isLoading && state.apiaries.isEmpty() -> LoadingScreen()
-                state.apiaries.isEmpty() -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                state.apiaries.isEmpty() && invitations.invitations.isEmpty() -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Icon(Icons.Default.Hive, contentDescription = null, Modifier.size(48.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         Text(stringResource(R.string.empty_apiaries_title), style = MaterialTheme.typography.titleMedium)
@@ -75,12 +87,51 @@ fun ApiaryListScreen(
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     state.error?.let { item { ErrorBanner(it) { vm.clearError() } } }
+                    invitations.error?.let { item { ErrorBanner(it) { invitationsVm.clearError() } } }
+                    if (invitations.linkInvalid) {
+                        item { ErrorBanner(stringResource(R.string.invitation_invalid_link)) { invitationsVm.clearError() } }
+                    }
+                    invitationItems(
+                        invitations.invitations,
+                        onAccept  = { invitation -> invitationsVm.accept(invitation) { vm.load() } },
+                        onDecline = { invitation -> invitationsVm.decline(invitation) },
+                    )
                     items(state.apiaries) { apiary ->
                         ApiaryCard(apiary, onClick = { onApiaryClick(apiary.id) }, onDelete = { vm.delete(apiary.id) })
                     }
                 }
             }
         }
+    }
+
+    if (showRedeem) {
+        var pasted by remember { mutableStateOf("") }
+        AlertDialog(
+            onDismissRequest = { showRedeem = false },
+            title = { Text(stringResource(R.string.invitation_redeem_title)) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(stringResource(R.string.invitation_redeem_message))
+                    OutlinedTextField(
+                        value = pasted,
+                        onValueChange = { pasted = it },
+                        label = { Text(stringResource(R.string.invitation_redeem_field)) },
+                        modifier = Modifier.fillMaxWidth().testTag("redeemField"),
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        invitationsVm.redeem(pasted) { vm.load(); invitationsVm.load() }
+                        showRedeem = false
+                    },
+                    enabled = pasted.isNotBlank(),
+                    modifier = Modifier.testTag("redeemConfirm"),
+                ) { Text(stringResource(R.string.invitation_redeem_button)) }
+            },
+            dismissButton = { TextButton(onClick = { showRedeem = false }) { Text(stringResource(R.string.action_cancel)) } },
+        )
     }
 
     if (showCreate) {
@@ -131,9 +182,22 @@ private fun ApiaryCard(apiary: ApiaryOut, onClick: () -> Unit, onDelete: () -> U
                         Text("· $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
+                if (!apiary.isOwner && apiary.ownerName != null) {
+                    Text(
+                        stringResource(
+                            if (apiary.access == "partial") R.string.label_partial_by else R.string.label_shared_by,
+                            apiary.ownerName,
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Amber500,
+                    )
+                }
             }
-            IconButton(onClick = { showDeleteConfirm = true }, modifier = Modifier.size(48.dp)) {
-                Icon(Icons.Default.Delete, null, tint = MaterialTheme.colorScheme.error)
+            // Only the owner deletes: the server would refuse anybody else.
+            if (apiary.isOwner) {
+                IconButton(onClick = { showDeleteConfirm = true }, modifier = Modifier.size(48.dp)) {
+                    Icon(Icons.Default.Delete, null, tint = MaterialTheme.colorScheme.error)
+                }
             }
         }
     }

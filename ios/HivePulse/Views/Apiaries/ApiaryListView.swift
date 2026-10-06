@@ -2,13 +2,16 @@ import SwiftUI
 
 struct ApiaryListView: View {
     @EnvironmentObject var apiaryVM: ApiaryViewModel
+    @StateObject private var invitationsVM = InvitationsViewModel()
     @State private var showCreate = false
+    @State private var showRedeem = false
+    @State private var pastedLink = ""
 
     var body: some View {
         Group {
             if apiaryVM.isLoading && apiaryVM.apiaries.isEmpty {
                 ProgressView()
-            } else if apiaryVM.apiaries.isEmpty {
+            } else if apiaryVM.apiaries.isEmpty && invitationsVM.invitations.isEmpty {
                 if #available(iOS 17, *) {
                     ContentUnavailableView(
                         NSLocalizedString("empty.apiaries.title", comment: ""),
@@ -25,10 +28,17 @@ struct ApiaryListView: View {
                 }
             } else {
                 List {
+                    if !invitationsVM.invitations.isEmpty {
+                        Section {
+                            InvitationsSection(vm: invitationsVM) { await apiaryVM.load() }
+                        }
+                    }
                     ForEach(apiaryVM.apiaries) { apiary in
                         NavigationLink(destination: ApiaryDetailView(apiary: apiary)) {
                             ApiaryRow(apiary: apiary)
                         }
+                        // Only the owner deletes: the server would refuse anybody else.
+                        .deleteDisabled(!apiary.isOwner)
                     }
                     .onDelete { indices in
                         Task {
@@ -70,15 +80,48 @@ struct ApiaryListView: View {
                 }
                 .accessibilityLabel(NSLocalizedString("screen.qrBatches", comment: ""))
                 .accessibilityIdentifier("qrBatchesButton")
+                Button { showRedeem = true } label: { Image(systemName: "envelope.open") }
+                    .accessibilityLabel(NSLocalizedString("invitation.redeemTitle", comment: ""))
+                    .accessibilityIdentifier("redeemInvitationButton")
                 Button { showCreate = true } label: { Image(systemName: "plus") }
             }
         }
-        .refreshable { await apiaryVM.load() }
+        .task { await invitationsVM.load() }
+        .refreshable {
+            await apiaryVM.load()
+            await invitationsVM.load()
+        }
         .sheet(isPresented: $showCreate) {
             ApiaryFormView(mode: .create) { name, desc, lat, lon, addr, isPublic in
                 try await apiaryVM.create(name: name, description: desc, latitude: lat, longitude: lon, address: addr, isPublic: isPublic)
                 showCreate = false
             }
+        }
+        .alert(NSLocalizedString("invitation.redeemTitle", comment: ""), isPresented: $showRedeem) {
+            TextField(NSLocalizedString("invitation.redeemField", comment: ""), text: $pastedLink)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+            Button(NSLocalizedString("invitation.redeemButton", comment: "")) {
+                let pasted = pastedLink
+                pastedLink = ""
+                Task {
+                    if await invitationsVM.redeem(pasted) {
+                        await apiaryVM.load()
+                        await invitationsVM.load()
+                    }
+                }
+            }
+            Button(NSLocalizedString("action.cancel", comment: ""), role: .cancel) { pastedLink = "" }
+        } message: {
+            Text(NSLocalizedString("invitation.redeemMessage", comment: ""))
+        }
+        .alert(NSLocalizedString("alert.error", comment: ""), isPresented: Binding(
+            get: { invitationsVM.errorMessage != nil },
+            set: { if !$0 { invitationsVM.errorMessage = nil } }
+        )) {
+            Button("OK", role: .cancel) { invitationsVM.errorMessage = nil }
+        } message: {
+            Text(invitationsVM.errorMessage ?? "")
         }
         .alert(NSLocalizedString("alert.error", comment: ""), isPresented: Binding(
             get: { apiaryVM.errorMessage != nil },
@@ -115,6 +158,11 @@ private struct ApiaryRow: View {
                 }
                 .font(.dmSans(14, relativeTo: .subheadline))
                 .foregroundColor(.hpStone500)
+                if !apiary.isOwner, let owner = apiary.ownerName {
+                    Text(String(format: NSLocalizedString(apiary.access == "partial" ? "label.partialBy" : "label.sharedBy", comment: ""), owner))
+                        .font(.dmSans(13, relativeTo: .caption))
+                        .foregroundColor(.hpAmberDark)
+                }
             }
         }
         .padding(.vertical, 6)

@@ -109,6 +109,36 @@ MESSAGES = {
         "de": "Diese Charge enthält Codes, die Bienenstöcken zugeordnet sind, und kann nicht gelöscht werden.",
         "es": "Este lote contiene códigos asociados a colmenas y no se puede eliminar.",
     },
+    "OWNER_ONLY": {
+        "en": "Only the owner can do this.",
+        "fr": "Seul le propriétaire peut faire cela.",
+        "de": "Das kann nur der Besitzer.",
+        "es": "Solo el propietario puede hacer esto.",
+    },
+    "SHARE_NOT_FOUND": {
+        "en": "This invitation does not exist.",
+        "fr": "Cette invitation n'existe pas.",
+        "de": "Diese Einladung gibt es nicht.",
+        "es": "Esta invitación no existe.",
+    },
+    "SHARE_TOKEN_INVALID": {
+        "en": "This invitation link is no longer valid.",
+        "fr": "Ce lien d'invitation n'est plus valide.",
+        "de": "Dieser Einladungslink ist nicht mehr gültig.",
+        "es": "Este enlace de invitación ya no es válido.",
+    },
+    "SHARE_ALREADY_EXISTS": {
+        "en": "This address has already been invited or already has access.",
+        "fr": "Cette adresse a déjà été invitée ou a déjà accès.",
+        "de": "Diese Adresse wurde bereits eingeladen oder hat schon Zugriff.",
+        "es": "Esta dirección ya ha sido invitada o ya tiene acceso.",
+    },
+    "SHARE_WITH_SELF": {
+        "en": "You cannot invite yourself.",
+        "fr": "Vous ne pouvez pas vous inviter vous-même.",
+        "de": "Du kannst dich nicht selbst einladen.",
+        "es": "No puedes invitarte a ti mismo.",
+    },
     "EMAIL_ALREADY_REGISTERED": {
         "en": "This email address is already registered.",
         "fr": "Cette adresse email est déjà enregistrée.",
