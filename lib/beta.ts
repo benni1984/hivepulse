@@ -21,7 +21,7 @@ export interface BetaLinks {
 
 export const BETA: BetaLinks = {
   android: 'https://play.google.com/apps/testing/com.hivepulse.app',
-  ios: '',
+  ios: 'https://testflight.apple.com/join/zpTayMSE',
   email: 'hivepulse@multihead.de',
 };
 
