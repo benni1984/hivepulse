@@ -4,6 +4,7 @@ protocol QrBatchServiceProtocol {
     func list(page: Int) async throws -> PaginatedResponse<QrBatchSummary>
     func get(_ id: String) async throws -> QrBatchOut
     func create(count: Int) async throws -> QrBatchOut
+    func delete(_ id: String) async throws
     func pdfData(batchId: String) async throws -> Data
 }
 
@@ -24,6 +25,11 @@ struct QrBatchService: QrBatchServiceProtocol {
 
     func create(count: Int) async throws -> QrBatchOut {
         try await client.post("qr-batches", body: QrBatchCreate(count: count))
+    }
+
+    /// Fails with a conflict while one of the batch's codes is attached to a hive.
+    func delete(_ id: String) async throws {
+        try await client.delete("qr-batches/" + id)
     }
 
     /// Printable A4 PDF, fetched with the Authorization header (the endpoint rejects anonymous requests).

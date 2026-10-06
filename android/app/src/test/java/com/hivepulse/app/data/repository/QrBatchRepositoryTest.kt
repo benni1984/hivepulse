@@ -47,6 +47,41 @@ class QrBatchRepositoryTest {
         coVerify { api.createQrBatch(QrBatchCreate(10)) }
     }
 
+    @Test
+    fun `delete succeeds when the server accepts it`() = runTest {
+        coEvery { api.deleteQrBatch("b1") } returns retrofit2.Response.success(Unit)
+
+        repo.delete("b1")
+
+        coVerify { api.deleteQrBatch("b1") }
+    }
+
+    @Test
+    fun `delete throws in_use on 409`() = runTest {
+        val response = mockk<retrofit2.Response<Unit>> {
+            every { isSuccessful } returns false
+            every { code() } returns 409
+        }
+        coEvery { api.deleteQrBatch("b1") } returns response
+
+        val ex = runCatching { repo.delete("b1") }.exceptionOrNull()
+
+        assertEquals("in_use", ex?.message)
+    }
+
+    @Test
+    fun `delete reports any other failure with its code`() = runTest {
+        val response = mockk<retrofit2.Response<Unit>> {
+            every { isSuccessful } returns false
+            every { code() } returns 500
+        }
+        coEvery { api.deleteQrBatch("b1") } returns response
+
+        val ex = runCatching { repo.delete("b1") }.exceptionOrNull()
+
+        assertEquals("delete_failed_500", ex?.message)
+    }
+
     private fun batchSummary(id: String) = QrBatchSummary(id, 5, "2024-01-01", 0)
     private fun batchOut(id: String)     = QrBatchOut(id, 5, "2024-01-01", emptyList())
 }

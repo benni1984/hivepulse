@@ -703,7 +703,11 @@
       "downloadPdf": "Download PDF",
       "tokens": "QR Codes",
       "linkedBadge": "Linked",
-      "unlinkedBadge": "Unlinked"
+      "unlinkedBadge": "Unlinked",
+      "delete": "Delete",
+      "confirmDelete": "Delete this batch and all its codes? Unused codes cannot be recovered.",
+      "deleteSuccess": "Batch deleted.",
+      "errorInUse": "This batch has codes attached to hives and cannot be deleted."
     },
     "community": {
       "title": "Community Dashboard",

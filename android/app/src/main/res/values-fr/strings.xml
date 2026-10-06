@@ -421,4 +421,7 @@
     <string name="action_continue_with_google">Continuer avec Google</string>
     <string name="label_or">ou</string>
     <string name="action_sign_in_with_email">Se connecter avec une adresse e-mail</string>
+    <string name="dialog_delete_qr_batch_title">Supprimer ce lot de QR codes ?</string>
+    <string name="dialog_delete_qr_batch_message">Tous ses codes sont supprimés avec lui. Les codes inutilisés ne peuvent pas être récupérés.</string>
+    <string name="error_qr_batch_in_use">Ce lot contient des codes associés à des ruches et ne peut pas être supprimé.</string>
 </resources>

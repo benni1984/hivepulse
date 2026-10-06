@@ -48,7 +48,9 @@ data class QRBatchListState(
     val batches: List<QrBatchSummary> = emptyList(),
     val isLoading: Boolean = false,
     val isCreating: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    /** The server refused a delete because a code of the batch is on a hive; the screen words it. */
+    val batchInUse: Boolean = false
 )
 
 @HiltViewModel
@@ -77,7 +79,26 @@ class QRBatchListViewModel @Inject constructor(private val repo: QrBatchReposito
             .onFailure { e -> _state.update { it.copy(isCreating = false, error = e.message) } }
     }
 
-    fun clearError() = _state.update { it.copy(error = null) }
+    /** A code on a hive is how that hive is found again, so such a batch stays; offer delete only where it can work. */
+    fun canDelete(batch: QrBatchSummary) = batch.linkedCount == 0
+
+    fun delete(batch: QrBatchSummary) {
+        if (!canDelete(batch)) return
+        _state.update { it.copy(error = null, batchInUse = false) }
+        viewModelScope.launch {
+            runCatching { repo.delete(batch.id) }
+                .onSuccess {
+                    _state.update { s -> s.copy(batches = s.batches.filterNot { it.id == batch.id }) }
+                }
+                .onFailure { e ->
+                    _state.update {
+                        if (e.message == "in_use") it.copy(batchInUse = true) else it.copy(error = e.message)
+                    }
+                }
+        }
+    }
+
+    fun clearError() = _state.update { it.copy(error = null, batchInUse = false) }
 }
 
 // ── QR Batch Detail ───────────────────────────────────────────────────────────

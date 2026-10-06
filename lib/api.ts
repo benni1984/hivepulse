@@ -335,6 +335,13 @@ export async function createQrBatch(count: number): Promise<QrBatchOut> {
   return res.json();
 }
 
+export async function deleteQrBatch(id: string): Promise<void> {
+  const res = await apiFetch(`/qr-batches/${id}`, { method: 'DELETE' });
+  // A code on a hive is how that hive is found again by scanning it, so the server keeps the batch.
+  if (res.status === 409) throw new Error('in_use');
+  if (!res.ok) throw new Error('Delete failed');
+}
+
 export async function getQrBatch(id: string): Promise<QrBatchOut> {
   const res = await apiFetch(`/qr-batches/${id}`);
   if (!res.ok) throw new Error('Failed to get QR batch');

@@ -2,19 +2,16 @@ import SwiftUI
 import QuickLook
 
 struct QRBatchListView: View {
-    @State private var batches: [QrBatchSummary] = []
-    @State private var isLoading = false
-    @State private var errorMessage: String?
+    @StateObject private var vm = QRBatchListViewModel()
+    @State private var batchToDelete: QrBatchSummary?
     @State private var showCreate = false
     @State private var newCount = 5
 
-    private let service = QrBatchService()
-
     var body: some View {
         Group {
-            if isLoading && batches.isEmpty {
+            if vm.isLoading && vm.batches.isEmpty {
                 ProgressView()
-            } else if batches.isEmpty {
+            } else if vm.batches.isEmpty {
                 if #available(iOS 17, *) {
                     ContentUnavailableView(
                         NSLocalizedString("empty.batches.title", comment: ""),
@@ -30,7 +27,7 @@ struct QRBatchListView: View {
                     .padding()
                 }
             } else {
-                List(batches) { batch in
+                List(vm.batches) { batch in
                     NavigationLink(destination: QRBatchDetailView(batchId: batch.id)) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(batch.createdAt, style: .date).font(.headline)
@@ -38,6 +35,17 @@ struct QRBatchListView: View {
                                 .font(.subheadline).foregroundColor(.secondary)
                         }
                         .padding(.vertical, 4)
+                    }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        // Only where the server would accept it: a code on a hive keeps its batch.
+                        if vm.canDelete(batch) {
+                            Button(role: .destructive) {
+                                batchToDelete = batch
+                            } label: {
+                                Label(NSLocalizedString("action.delete", comment: ""), systemImage: "trash")
+                            }
+                            .accessibilityIdentifier("deleteBatchButton")
+                        }
                     }
                 }
             }
@@ -49,36 +57,41 @@ struct QRBatchListView: View {
                 Button { showCreate = true } label: { Image(systemName: "plus") }
             }
         }
-        .task { await load() }
-        .refreshable { await load() }
+        .task { await vm.load() }
+        .refreshable { await vm.load() }
         .alert(NSLocalizedString("action.newBatch", comment: ""), isPresented: $showCreate) {
             TextField(NSLocalizedString("field.count", comment: ""), value: $newCount, format: .number)
                 .keyboardType(.numberPad)
             Button(NSLocalizedString("action.generate", comment: "")) {
-                Task { await createBatch() }
+                Task { await vm.create(count: newCount) }
             }
             Button(NSLocalizedString("action.cancel", comment: ""), role: .cancel) {}
         } message: {
             Text(NSLocalizedString("alert.batchCountHint", comment: ""))
         }
-    }
-
-    private func load() async {
-        isLoading = true
-        do {
-            batches = try await service.list().items
-        } catch {
-            errorMessage = error.localizedDescription
+        .confirmationDialog(
+            NSLocalizedString("confirm.deleteBatch.title", comment: ""),
+            isPresented: Binding(
+                get: { batchToDelete != nil },
+                set: { if !$0 { batchToDelete = nil } }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button(NSLocalizedString("action.delete", comment: ""), role: .destructive) {
+                if let batch = batchToDelete { Task { await vm.delete(batch) } }
+                batchToDelete = nil
+            }
+            Button(NSLocalizedString("action.cancel", comment: ""), role: .cancel) { batchToDelete = nil }
+        } message: {
+            Text(NSLocalizedString("confirm.deleteBatch.message", comment: ""))
         }
-        isLoading = false
-    }
-
-    private func createBatch() async {
-        do {
-            _ = try await service.create(count: max(1, min(50, newCount)))
-            await load()
-        } catch {
-            errorMessage = error.localizedDescription
+        .alert(NSLocalizedString("alert.error", comment: ""), isPresented: Binding(
+            get: { vm.errorMessage != nil },
+            set: { if !$0 { vm.errorMessage = nil } }
+        )) {
+            Button("OK", role: .cancel) { vm.errorMessage = nil }
+        } message: {
+            Text(vm.errorMessage ?? "")
         }
     }
 }

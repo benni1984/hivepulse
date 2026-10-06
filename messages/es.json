@@ -703,7 +703,11 @@
       "downloadPdf": "Descargar PDF",
       "tokens": "Códigos QR",
       "linkedBadge": "Vinculado",
-      "unlinkedBadge": "Sin vincular"
+      "unlinkedBadge": "Sin vincular",
+      "delete": "Eliminar",
+      "confirmDelete": "¿Eliminar este lote y todos sus códigos? Los códigos sin usar no se pueden recuperar.",
+      "deleteSuccess": "Lote eliminado.",
+      "errorInUse": "Este lote contiene códigos asociados a colmenas y no se puede eliminar."
     },
     "community": {
       "title": "Panel de comunidad",

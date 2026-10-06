@@ -6,9 +6,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,6 +28,7 @@ fun QRBatchListScreen(
 ) {
     val state by vm.state.collectAsState()
     var showCreate by remember { mutableStateOf(false) }
+    var batchToDelete by remember { mutableStateOf<QrBatchSummary?>(null) }
 
     Scaffold(
         topBar = {
@@ -48,6 +51,9 @@ fun QRBatchListScreen(
                 contentPadding = PaddingValues(bottom = 88.dp),
             ) {
                 state.error?.let { item { ErrorBanner(it) { vm.clearError() } } }
+                if (state.batchInUse) {
+                    item { ErrorBanner(stringResource(R.string.error_qr_batch_in_use)) { vm.clearError() } }
+                }
                 if (state.batches.isEmpty()) {
                     item {
                         Box(Modifier.fillMaxWidth().padding(32.dp), contentAlignment = androidx.compose.ui.Alignment.Center) {
@@ -56,12 +62,33 @@ fun QRBatchListScreen(
                     }
                 } else {
                     items(state.batches) { batch ->
-                        QrBatchListItem(batch, onClick = { onBatchClick(batch.id) })
+                        QrBatchListItem(
+                            batch,
+                            onClick  = { onBatchClick(batch.id) },
+                            onDelete = if (vm.canDelete(batch)) ({ batchToDelete = batch }) else null,
+                        )
                         HorizontalDivider()
                     }
                 }
             }
         }
+    }
+
+    batchToDelete?.let { batch ->
+        AlertDialog(
+            onDismissRequest = { batchToDelete = null },
+            title = { Text(stringResource(R.string.dialog_delete_qr_batch_title)) },
+            text = { Text(stringResource(R.string.dialog_delete_qr_batch_message)) },
+            confirmButton = {
+                TextButton(
+                    onClick = { vm.delete(batch); batchToDelete = null },
+                    modifier = Modifier.testTag("confirmDeleteBatch"),
+                ) { Text(stringResource(R.string.action_delete)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { batchToDelete = null }) { Text(stringResource(R.string.action_cancel)) }
+            },
+        )
     }
 
     if (showCreate) {
@@ -74,7 +101,7 @@ fun QRBatchListScreen(
 }
 
 @Composable
-private fun QrBatchListItem(batch: QrBatchSummary, onClick: () -> Unit) {
+private fun QrBatchListItem(batch: QrBatchSummary, onClick: () -> Unit, onDelete: (() -> Unit)?) {
     ListItem(
         headlineContent  = { Text(stringResource(R.string.label_batch_id, batch.id.take(8))) },
         supportingContent = {
@@ -83,6 +110,13 @@ private fun QrBatchListItem(batch: QrBatchSummary, onClick: () -> Unit) {
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+        },
+        trailingContent = onDelete?.let { delete ->
+            {
+                IconButton(onClick = delete, modifier = Modifier.testTag("deleteBatchButton")) {
+                    Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.action_delete))
+                }
+            }
         },
         modifier = Modifier.clickable(onClick = onClick)
     )

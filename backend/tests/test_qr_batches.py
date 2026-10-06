@@ -77,3 +77,50 @@ def test_batch_detail_and_pdf_isolated_across_users(auth_client, auth_client2):
 
     assert auth_client2.get(f"/api/v1/qr-batches/{batch_id}").status_code == 404
     assert auth_client2.get(f"/api/v1/qr-batches/{batch_id}/pdf").status_code == 404
+
+
+def test_delete_batch_removes_it_and_its_codes(auth_client, db_session):
+    from app.models import QrToken
+    batch = auth_client.post("/api/v1/qr-batches", json={"count": 3}).json()
+
+    r = auth_client.delete(f"/api/v1/qr-batches/{batch['id']}")
+
+    assert r.status_code == 204
+    assert auth_client.get(f"/api/v1/qr-batches/{batch['id']}").status_code == 404
+    assert auth_client.get("/api/v1/qr-batches").json()["total"] == 0
+    assert db_session.query(QrToken).count() == 0
+
+
+def test_delete_batch_refused_while_a_code_is_on_a_hive(auth_client):
+    apiary = auth_client.post("/api/v1/apiaries", json={"name": "G"}).json()
+    batch = auth_client.post("/api/v1/qr-batches", json={"count": 3}).json()
+    auth_client.post("/api/v1/hives/initialize", json={
+        "qr_token": batch["tokens"][0]["token"], "apiary_id": apiary["id"],
+        "name": "H1", "hive_type": "langstroth",
+    })
+
+    r = auth_client.delete(f"/api/v1/qr-batches/{batch['id']}")
+
+    assert r.status_code == 409
+    assert r.json()["detail"]["code"] == "QR_BATCH_IN_USE"
+    # Nothing was removed: the unused codes are still there.
+    assert len(auth_client.get(f"/api/v1/qr-batches/{batch['id']}").json()["tokens"]) == 3
+
+
+def test_delete_batch_works_once_the_hive_is_gone(auth_client):
+    apiary = auth_client.post("/api/v1/apiaries", json={"name": "G"}).json()
+    batch = auth_client.post("/api/v1/qr-batches", json={"count": 2}).json()
+    hive = auth_client.post("/api/v1/hives/initialize", json={
+        "qr_token": batch["tokens"][0]["token"], "apiary_id": apiary["id"],
+        "name": "H1", "hive_type": "langstroth",
+    }).json()
+    auth_client.delete(f"/api/v1/hives/{hive['id']}")
+
+    assert auth_client.delete(f"/api/v1/qr-batches/{batch['id']}").status_code == 204
+
+
+def test_delete_batch_of_another_user_is_not_found(auth_client, auth_client2):
+    batch = auth_client.post("/api/v1/qr-batches", json={"count": 1}).json()
+
+    assert auth_client2.delete(f"/api/v1/qr-batches/{batch['id']}").status_code == 404
+    assert auth_client.get(f"/api/v1/qr-batches/{batch['id']}").status_code == 200

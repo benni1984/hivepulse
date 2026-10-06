@@ -388,4 +388,7 @@
     <string name="action_continue_with_google">Continuar con Google</string>
     <string name="label_or">o</string>
     <string name="action_sign_in_with_email">Iniciar sesión con un correo electrónico</string>
+    <string name="dialog_delete_qr_batch_title">¿Eliminar este lote de códigos QR?</string>
+    <string name="dialog_delete_qr_batch_message">Se eliminan también todos sus códigos. Los códigos sin usar no se pueden recuperar.</string>
+    <string name="error_qr_batch_in_use">Este lote contiene códigos asociados a colmenas y no se puede eliminar.</string>
 </resources>

@@ -421,4 +421,7 @@
     <string name="action_continue_with_google">Weiter mit Google</string>
     <string name="label_or">oder</string>
     <string name="action_sign_in_with_email">Stattdessen mit E-Mail-Adresse anmelden</string>
+    <string name="dialog_delete_qr_batch_title">Diesen QR-Batch löschen?</string>
+    <string name="dialog_delete_qr_batch_message">Alle Codes darin werden mitgelöscht. Nicht benutzte Codes lassen sich nicht wiederherstellen.</string>
+    <string name="error_qr_batch_in_use">Dieser Batch enthält Codes, die Völkern zugeordnet sind, und kann nicht gelöscht werden.</string>
 </resources>

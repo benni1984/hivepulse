@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
-import { getQrBatches, createQrBatch, type QrBatchSummary } from '@/lib/api';
+import { getQrBatches, createQrBatch, deleteQrBatch, type QrBatchSummary } from '@/lib/api';
 
 export default function QrBatchesPage() {
   const t = useTranslations('dash');
@@ -38,6 +38,19 @@ export default function QrBatchesPage() {
       setMessage({ type: 'err', text: err instanceof Error ? err.message : t('qrBatches.errorGeneric') });
     } finally {
       setCreating(false);
+    }
+  }
+
+  async function handleDelete(id: string) {
+    if (!window.confirm(t('qrBatches.confirmDelete'))) return;
+    setMessage(null);
+    try {
+      await deleteQrBatch(id);
+      setBatches(prev => prev.filter(b => b.id !== id));
+      setMessage({ type: 'ok', text: t('qrBatches.deleteSuccess') });
+    } catch (err) {
+      const inUse = err instanceof Error && err.message === 'in_use';
+      setMessage({ type: 'err', text: t(inUse ? 'qrBatches.errorInUse' : 'qrBatches.errorGeneric') });
     }
   }
 
@@ -111,6 +124,16 @@ export default function QrBatchesPage() {
                     <Link href={`/dashboard/qr-batches/${b.id}`} className="dash-row-btn">
                       {t('qrBatches.view')}
                     </Link>
+                    {/* A batch with a code on a hive would be refused, so the button is not offered. */}
+                    {b.linked_count === 0 && (
+                      <button
+                        className="dash-row-btn dash-row-btn-danger"
+                        style={{ marginLeft: 8 }}
+                        onClick={() => handleDelete(b.id)}
+                      >
+                        {t('qrBatches.delete')}
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
