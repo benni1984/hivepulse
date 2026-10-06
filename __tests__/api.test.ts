@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { login, register, logout, getMe, updateMe, deleteMe, getApiaries, createApiary, updateApiary, deleteApiary, createHive, updateHive, deleteHive, getHive, clearTokens, createInspection, updateInspection, deleteInspection, getQrBatches, createQrBatch, getQrBatch, downloadQrBatchPdf, getPublicStats, exportHiveInspections, exportApiaryInspections, getReminderSettings, updateReminderSettings, registerPushToken, forgotPassword, resetPassword, socialSignIn } from '@/lib/api';
+import { login, register, logout, getMe, updateMe, deleteMe, getApiaries, createApiary, updateApiary, deleteApiary, createHive, updateHive, deleteHive, getHive, clearTokens, createInspection, updateInspection, deleteInspection, getQrBatches, createQrBatch, getQrBatch, downloadQrBatchPdf, getPublicStats, exportHiveInspections, exportApiaryInspections, getReminderSettings, updateReminderSettings, registerPushToken, forgotPassword, resetPassword, socialSignIn, deleteQrBatch } from '@/lib/api';
 
 const mockUser = { id: '1', email: 'a@b.com', name: 'Test', locale: 'en', created_at: '2024-01-01' };
 const mockTokens = { access_token: 'access-123', refresh_token: 'refresh-456', user: mockUser };
@@ -61,6 +61,25 @@ describe('socialSignIn', () => {
     await socialSignIn('google', 'id.token');
     const body = JSON.parse(vi.mocked(fetch).mock.calls[0][1]!.body as string);
     expect(body).toEqual({ provider: 'google', id_token: 'id.token' });
+  });
+});
+
+describe('deleteQrBatch', () => {
+  it('succeeds on 204', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(new Response(null, { status: 204 }));
+    await expect(deleteQrBatch('b-1')).resolves.toBeUndefined();
+    expect(vi.mocked(fetch).mock.calls[0][0]).toContain('/qr-batches/b-1');
+    expect(vi.mocked(fetch).mock.calls[0][1]?.method).toBe('DELETE');
+  });
+
+  it('reports a batch that is in use as in_use', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ detail: { code: 'QR_BATCH_IN_USE' } }, 409));
+    await expect(deleteQrBatch('b-1')).rejects.toThrow('in_use');
+  });
+
+  it('fails on any other error', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({}, 500));
+    await expect(deleteQrBatch('b-1')).rejects.toThrow('Delete failed');
   });
 });
 

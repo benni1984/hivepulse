@@ -703,7 +703,11 @@
       "downloadPdf": "Télécharger le PDF",
       "tokens": "Codes QR",
       "linkedBadge": "Associé",
-      "unlinkedBadge": "Non associé"
+      "unlinkedBadge": "Non associé",
+      "delete": "Supprimer",
+      "confirmDelete": "Supprimer ce lot et tous ses codes ? Les codes inutilisés ne peuvent pas être récupérés.",
+      "deleteSuccess": "Lot supprimé.",
+      "errorInUse": "Ce lot contient des codes associés à des ruches et ne peut pas être supprimé."
     },
     "community": {
       "title": "Tableau de bord communautaire",

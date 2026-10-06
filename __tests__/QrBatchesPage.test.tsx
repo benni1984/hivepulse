@@ -5,6 +5,7 @@ import QrBatchesPage from '@/app/[locale]/dashboard/qr-batches/page';
 
 const mockGetQrBatches = vi.hoisted(() => vi.fn());
 const mockCreateQrBatch = vi.hoisted(() => vi.fn());
+const mockDeleteQrBatch = vi.hoisted(() => vi.fn());
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
@@ -27,6 +28,7 @@ vi.mock('@/hooks/useDashboardAuth', () => ({
 vi.mock('@/lib/api', () => ({
   getQrBatches: mockGetQrBatches,
   createQrBatch: mockCreateQrBatch,
+  deleteQrBatch: mockDeleteQrBatch,
 }));
 
 const paginated = <T,>(items: T[]) => ({ items, total: items.length, page: 1, per_page: 20, pages: 1 });
@@ -38,6 +40,8 @@ describe('QrBatchesPage', () => {
   beforeEach(() => {
     mockGetQrBatches.mockClear();
     mockCreateQrBatch.mockClear();
+    mockDeleteQrBatch.mockReset();
+    vi.restoreAllMocks();
   });
 
   it('shows page title', async () => {
@@ -108,5 +112,70 @@ describe('QrBatchesPage', () => {
     fireEvent.click(screen.getByText('qrBatches.new'));
     fireEvent.submit(screen.getByText('qrBatches.createBtn').closest('form')!);
     await waitFor(() => screen.getByText('Server error'));
+  });
+
+  describe('deleting a batch', () => {
+    const unused = { id: 'b-unused', count: 4, created_at: '2024-06-02T10:00:00Z', linked_count: 0 };
+
+    it('offers delete only for a batch without codes on hives', async () => {
+      mockGetQrBatches.mockResolvedValue(paginated([batch1, unused]));
+      render(<QrBatchesPage />);
+      await waitFor(() => screen.getByText('4'));
+
+      // batch1 has 3 codes on hives and would be refused by the server.
+      expect(screen.getAllByText('qrBatches.delete')).toHaveLength(1);
+    });
+
+    it('deletes after the confirmation and removes the row', async () => {
+      vi.spyOn(window, 'confirm').mockReturnValue(true);
+      mockDeleteQrBatch.mockResolvedValue(undefined);
+      mockGetQrBatches.mockResolvedValue(paginated([unused]));
+      render(<QrBatchesPage />);
+      await waitFor(() => screen.getByText('qrBatches.delete'));
+
+      fireEvent.click(screen.getByText('qrBatches.delete'));
+
+      await waitFor(() => expect(mockDeleteQrBatch).toHaveBeenCalledWith('b-unused'));
+      await waitFor(() => screen.getByText('qrBatches.deleteSuccess'));
+      expect(screen.queryByText('qrBatches.delete')).toBeNull();
+    });
+
+    it('does nothing when the confirmation is declined', async () => {
+      vi.spyOn(window, 'confirm').mockReturnValue(false);
+      mockGetQrBatches.mockResolvedValue(paginated([unused]));
+      render(<QrBatchesPage />);
+      await waitFor(() => screen.getByText('qrBatches.delete'));
+
+      fireEvent.click(screen.getByText('qrBatches.delete'));
+
+      expect(mockDeleteQrBatch).not.toHaveBeenCalled();
+      expect(screen.getByText('qrBatches.delete')).toBeDefined();
+    });
+
+    it('says why when the server refuses because a code is in use', async () => {
+      vi.spyOn(window, 'confirm').mockReturnValue(true);
+      mockDeleteQrBatch.mockRejectedValue(new Error('in_use'));
+      mockGetQrBatches.mockResolvedValue(paginated([unused]));
+      render(<QrBatchesPage />);
+      await waitFor(() => screen.getByText('qrBatches.delete'));
+
+      fireEvent.click(screen.getByText('qrBatches.delete'));
+
+      await waitFor(() => screen.getByText('qrBatches.errorInUse'));
+      // Still listed: it was not deleted.
+      expect(screen.getByText('qrBatches.delete')).toBeDefined();
+    });
+
+    it('shows a general error when the delete fails otherwise', async () => {
+      vi.spyOn(window, 'confirm').mockReturnValue(true);
+      mockDeleteQrBatch.mockRejectedValue(new Error('Delete failed'));
+      mockGetQrBatches.mockResolvedValue(paginated([unused]));
+      render(<QrBatchesPage />);
+      await waitFor(() => screen.getByText('qrBatches.delete'));
+
+      fireEvent.click(screen.getByText('qrBatches.delete'));
+
+      await waitFor(() => screen.getByText('qrBatches.errorGeneric'));
+    });
   });
 });

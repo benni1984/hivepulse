@@ -703,7 +703,11 @@
       "downloadPdf": "PDF herunterladen",
       "tokens": "QR-Codes",
       "linkedBadge": "Verknüpft",
-      "unlinkedBadge": "Unverknüpft"
+      "unlinkedBadge": "Unverknüpft",
+      "delete": "Löschen",
+      "confirmDelete": "Diesen Batch mit allen Codes löschen? Nicht benutzte Codes lassen sich nicht wiederherstellen.",
+      "deleteSuccess": "Batch gelöscht.",
+      "errorInUse": "Dieser Batch enthält Codes, die Bienenstöcken zugeordnet sind, und kann nicht gelöscht werden."
     },
     "community": {
       "title": "Community-Dashboard",
