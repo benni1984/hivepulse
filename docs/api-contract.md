@@ -851,6 +851,7 @@ Exactly one of `apiary_id` and `hive_id`. **201** with a [Share](#share-object).
 |-------|---------|
 | 422 | Neither or both of `apiary_id` and `hive_id` |
 | 404 `APIARY_NOT_FOUND` / `HIVE_NOT_FOUND` | Not the caller's to share |
+| 403 `OWNER_ONLY` | The caller can see it as a collaborator but does not own it |
 | 400 `SHARE_WITH_SELF` | The address belongs to the caller |
 | 409 `SHARE_ALREADY_EXISTS` | That address already has this invitation or access |
 
