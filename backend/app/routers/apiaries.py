@@ -4,7 +4,7 @@ from typing import Optional
 from fastapi import APIRouter, Header, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from app.access import OWNER, Scope, apiary_or_404, remove_shares
+from app.access import OWNER, PARTIAL, Scope, apiary_or_404, remove_shares
 from app.deps import CurrentUser, DB
 from app.i18n import error
 from app.models import Apiary
@@ -48,13 +48,16 @@ def _maybe_geocode(apiary: Apiary, db: Session) -> None:
 
 def _to_out(apiary: Apiary, scope: Scope) -> ApiaryOut:
     access = scope.apiary_access(apiary)
+    # Seen only through single shared hives, an apiary shows its name and nothing else: the
+    # address and the notes belong to the owner, and the contract promises the name.
+    partial = access == PARTIAL
     return ApiaryOut(
         id=apiary.id,
         name=apiary.name,
-        description=apiary.description,
-        latitude=apiary.latitude,
-        longitude=apiary.longitude,
-        address=apiary.address,
+        description=None if partial else apiary.description,
+        latitude=None if partial else apiary.latitude,
+        longitude=None if partial else apiary.longitude,
+        address=None if partial else apiary.address,
         # Somebody who only has one hive of it shared must not learn how many others there are.
         hive_count=len(scope.hives_in(apiary)),
         is_public=apiary.is_public,

@@ -135,6 +135,9 @@ interface ApiService {
     @GET("shares/incoming")
     suspend fun incomingShares(): List<IncomingShareOut>
 
+    @POST("shares/accept-by-token")
+    suspend fun acceptShareByToken(@Body body: ShareTokenRequest): IncomingShareOut
+
     @POST("shares/{id}/accept")
     suspend fun acceptShare(@Path("id") id: String): Response<Unit>
 

@@ -453,3 +453,8 @@
 "label.sharedBy" = "Partagé par %@";
 "label.partialBy" = "Quelques ruches partagées par %@";
 "label.recordedBy" = "saisi par %@";
+"invitation.redeemTitle" = "Utiliser un lien d’invitation";
+"invitation.redeemMessage" = "Collez le lien de l’e-mail d’invitation. C’est pour les invitations envoyées à une adresse qui n’avait pas encore de compte HivePulse.";
+"invitation.redeemField" = "Lien ou code";
+"invitation.redeemButton" = "Utiliser";
+"invitation.invalidLink" = "Cela ne ressemble pas à un lien d’invitation.";

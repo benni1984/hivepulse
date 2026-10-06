@@ -4,6 +4,7 @@ import com.hivepulse.app.data.api.ApiService
 import com.hivepulse.app.data.api.IncomingShareOut
 import com.hivepulse.app.data.api.ShareCreateRequest
 import com.hivepulse.app.data.api.ShareOut
+import com.hivepulse.app.data.api.ShareTokenRequest
 import com.hivepulse.app.data.api.serverMessage
 import retrofit2.HttpException
 import retrofit2.Response
@@ -43,6 +44,9 @@ class SharingRepository @Inject constructor(private val api: ApiService) {
     suspend fun incoming(): List<IncomingShareOut> = guarded { api.incomingShares() }
 
     suspend fun accept(id: String) = guardedEmpty { api.acceptShare(id) }
+
+    /** For an invitation that went to an address without an account: the token comes from the email's link. */
+    suspend fun acceptByToken(token: String): IncomingShareOut = guarded { api.acceptShareByToken(ShareTokenRequest(token)) }
 
     suspend fun decline(id: String) = guardedEmpty { api.declineShare(id) }
 

@@ -356,6 +356,10 @@ struct IncomingShareOut: Codable, Identifiable {
     }
 }
 
+struct ShareTokenRequest: Encodable {
+    let token: String
+}
+
 struct ShareCreateRequest: Encodable {
     let email: String
     let apiaryId: String?

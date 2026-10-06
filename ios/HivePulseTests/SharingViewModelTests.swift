@@ -8,6 +8,8 @@ private final class MockSharingService: SharingServiceProtocol {
     var acceptError: Error?
     var declineError: Error?
     var removeError: Error?
+    var tokenResult: Result<IncomingShareOut, Error> = .success(makeInvitation(id: "s-token"))
+    private(set) var redeemedTokens: [String] = []
 
     private(set) var invitedEmails: [String] = []
     private(set) var accepted: [String] = []
@@ -31,6 +33,11 @@ private final class MockSharingService: SharingServiceProtocol {
     func decline(_ id: String) async throws {
         if let declineError { throw declineError }
         declined.append(id)
+    }
+
+    func acceptByToken(_ token: String) async throws -> IncomingShareOut {
+        redeemedTokens.append(token)
+        return try tokenResult.get()
     }
 
     func remove(_ id: String) async throws {
@@ -229,6 +236,49 @@ final class InvitationsViewModelTests: XCTestCase {
 
         XCTAssertEqual(service.declined, ["s-1"])
         XCTAssertTrue(vm.invitations.isEmpty)
+    }
+
+    private let aToken = "q7Zk2m-XfT9wRb3LpN8sVd1Ye5HcUa0JgIoW4tK6xPE"
+
+    func test_redeemAcceptsAPastedLinkAndReportsTrue() async {
+        let vm = InvitationsViewModel(service: service)
+
+        let redeemed = await vm.redeem("Hi! https://hivepulse.multihead.de/de/dashboard/invitations?token=\(aToken)")
+
+        XCTAssertTrue(redeemed)
+        XCTAssertEqual(service.redeemedTokens, [aToken])
+        XCTAssertNil(vm.errorMessage)
+    }
+
+    func test_redeemAcceptsABareToken() async {
+        let vm = InvitationsViewModel(service: service)
+
+        let redeemed = await vm.redeem("  \(aToken)  ")
+
+        XCTAssertTrue(redeemed)
+        XCTAssertEqual(service.redeemedTokens, [aToken])
+    }
+
+    func test_somethingThatIsNoLinkNeverReachesTheServer() async {
+        let vm = InvitationsViewModel(service: service)
+
+        for junk in ["", "hello", "https://example.com/?token=short"] {
+            let redeemed = await vm.redeem(junk)
+            XCTAssertFalse(redeemed, junk)
+        }
+
+        XCTAssertTrue(service.redeemedTokens.isEmpty)
+        XCTAssertNotNil(vm.errorMessage)
+    }
+
+    func test_aDeadLinkShowsTheServersReason() async {
+        service.tokenResult = .failure(APIError.notFound("This invitation link is no longer valid."))
+        let vm = InvitationsViewModel(service: service)
+
+        let redeemed = await vm.redeem(aToken)
+
+        XCTAssertFalse(redeemed)
+        XCTAssertEqual(vm.errorMessage, "This invitation link is no longer valid.")
     }
 
     func test_aRefusedDeclineKeepsTheInvitation() async {

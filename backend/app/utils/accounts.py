@@ -71,10 +71,8 @@ def hand_over_shared(db: Session, user: User) -> None:
 
     # A hive shared on its own goes to its collaborator, in a new apiary of theirs that carries
     # the old apiary's name, because a hive cannot exist without one.
-    own_hive_ids = (
-        db.query(Hive.id).filter(
-            or_(Hive.user_id == uid, Hive.apiary_id.in_(db.query(Apiary.id).filter(Apiary.user_id == uid)))
-        )
+    own_hive_ids = db.query(Hive.id).filter(
+        Hive.apiary_id.in_(db.query(Apiary.id).filter(Apiary.user_id == uid))
     )
     for hive in db.query(Hive).filter(Hive.id.in_(own_hive_ids)).all():
         shares = _first_accepted(db, hive_id=hive.id)
@@ -90,10 +88,14 @@ def hand_over_shared(db: Session, user: User) -> None:
         for other in shares[1:]:
             other.owner_id = heir
 
-    # Hives the user added to somebody else's apiary stay with that apiary's owner.
+    # Hives the user added to somebody else's apiary stay with that apiary's owner, and so do
+    # the invitations the user made for them.
     for hive in db.query(Hive).filter(Hive.user_id == uid).all():
         if hive.apiary.user_id != uid:
             heirs.give_hive(hive, hive.apiary.user_id)
+            db.query(Share).filter(Share.hive_id == hive.id).update(
+                {Share.owner_id: hive.apiary.user_id}, synchronize_session=False
+            )
 
     # What the user recorded on other people's hives stays; only the name goes.
     db.query(Inspection).filter(Inspection.created_by_id == uid).update(
@@ -112,9 +114,8 @@ def delete_account(db: Session, user: User) -> None:
         synchronize_session=False
     )
 
-    owned_apiaries = db.query(Apiary.id).filter(Apiary.user_id == uid)
     leaving_hives = db.query(Hive.id).filter(
-        or_(Hive.user_id == uid, Hive.apiary_id.in_(owned_apiaries))
+        Hive.apiary_id.in_(db.query(Apiary.id).filter(Apiary.user_id == uid))
     )
     # Delete in FK order: inspections → hives → user (the cascade handles the rest).
     db.query(Inspection).filter(Inspection.hive_id.in_(leaving_hives)).delete(synchronize_session=False)

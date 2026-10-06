@@ -444,4 +444,9 @@
     <string name="label_shared_by">Geteilt von %1$s</string>
     <string name="label_partial_by">Einzelne Völker geteilt von %1$s</string>
     <string name="label_recorded_by">erfasst von %1$s</string>
+    <string name="invitation_redeem_title">Einladungslink einlösen</string>
+    <string name="invitation_redeem_message">Füge den Link aus der Einladungs-E-Mail ein. Das ist für Einladungen an eine Adresse, die noch kein HivePulse-Konto hatte.</string>
+    <string name="invitation_redeem_field">Link oder Code</string>
+    <string name="invitation_redeem_button">Einlösen</string>
+    <string name="invitation_invalid_link">Das sieht nicht nach einem Einladungslink aus.</string>
 </resources>

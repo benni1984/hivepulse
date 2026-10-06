@@ -70,8 +70,10 @@ class Scope:
         return None
 
     def hive_access(self, hive: Hive) -> Optional[str]:
-        # The apiary's owner owns every hive in it, including one a collaborator added.
-        if hive.user_id == self.user.id or hive.apiary.user_id == self.user.id:
+        # Whose hive it is follows the apiary it stands in, never who created the record: a
+        # collaborator who added a hive to somebody else's apiary does not own it, and loses
+        # sight of it with the rest when the apiary is no longer shared with them.
+        if hive.apiary.user_id == self.user.id:
             return OWNER
         if hive.id in self.shared_hive_ids or hive.apiary_id in self.shared_apiary_ids:
             return SHARED
@@ -88,7 +90,6 @@ class Scope:
 
     def hive_filter(self):
         return or_(
-            Hive.user_id == self.user.id,
             Hive.apiary_id.in_(select(Apiary.id).where(Apiary.user_id == self.user.id)),
             Hive.apiary_id.in_(self.shared_apiary_ids),
             Hive.id.in_(self.shared_hive_ids),

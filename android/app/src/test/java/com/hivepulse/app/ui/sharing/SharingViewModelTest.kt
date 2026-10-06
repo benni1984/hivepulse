@@ -232,6 +232,68 @@ class InvitationsViewModelTest {
         assertTrue(vm.state.value.invitations.isEmpty())
     }
 
+    private val aToken = "q7Zk2m-XfT9wRb3LpN8sVd1Ye5HcUa0JgIoW4tK6xPE"
+
+    @Test
+    fun `redeem accepts a pasted link and tells the caller to reload`() = runTest {
+        coEvery { repo.incoming() } returns emptyList()
+        coEvery { repo.acceptByToken(aToken) } returns invitation("s-token")
+        val vm = InvitationsViewModel(repo)
+        var reloaded = false
+
+        vm.redeem("Hi! https://hivepulse.multihead.de/de/dashboard/invitations?token=$aToken") { reloaded = true }
+
+        assertTrue(reloaded)
+        assertNull(vm.state.value.error)
+        assertFalse(vm.state.value.linkInvalid)
+    }
+
+    @Test
+    fun `redeem accepts a bare token`() = runTest {
+        coEvery { repo.incoming() } returns emptyList()
+        coEvery { repo.acceptByToken(aToken) } returns invitation("s-token")
+        val vm = InvitationsViewModel(repo)
+
+        vm.redeem("  $aToken  ")
+
+        coVerify { repo.acceptByToken(aToken) }
+    }
+
+    @Test
+    fun `something that is no link never reaches the server`() = runTest {
+        coEvery { repo.incoming() } returns emptyList()
+        val vm = InvitationsViewModel(repo)
+
+        listOf("", "hello", "https://example.com/?token=short").forEach { vm.redeem(it) }
+
+        coVerify(exactly = 0) { repo.acceptByToken(any()) }
+        assertTrue(vm.state.value.linkInvalid)
+    }
+
+    @Test
+    fun `a dead link shows the servers reason and does not reload`() = runTest {
+        coEvery { repo.incoming() } returns emptyList()
+        coEvery { repo.acceptByToken(any()) } throws RuntimeException("This invitation link is no longer valid.")
+        val vm = InvitationsViewModel(repo)
+        var reloaded = false
+
+        vm.redeem(aToken) { reloaded = true }
+
+        assertFalse(reloaded)
+        assertEquals("This invitation link is no longer valid.", vm.state.value.error)
+    }
+
+    @Test
+    fun `clearError also clears the invalid link notice`() = runTest {
+        coEvery { repo.incoming() } returns emptyList()
+        val vm = InvitationsViewModel(repo)
+        vm.redeem("hello")
+
+        vm.clearError()
+
+        assertFalse(vm.state.value.linkInvalid)
+    }
+
     @Test
     fun `a refused decline keeps the invitation`() = runTest {
         coEvery { repo.incoming() } returns listOf(invitation("s1"))

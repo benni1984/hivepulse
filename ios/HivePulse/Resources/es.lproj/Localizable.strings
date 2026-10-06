@@ -453,3 +453,8 @@
 "label.sharedBy" = "Compartido por %@";
 "label.partialBy" = "Algunas colmenas compartidas por %@";
 "label.recordedBy" = "anotado por %@";
+"invitation.redeemTitle" = "Usar un enlace de invitación";
+"invitation.redeemMessage" = "Pega el enlace del correo de invitación. Es para invitaciones enviadas a una dirección que aún no tenía cuenta de HivePulse.";
+"invitation.redeemField" = "Enlace o código";
+"invitation.redeemButton" = "Usar";
+"invitation.invalidLink" = "Eso no parece un enlace de invitación.";

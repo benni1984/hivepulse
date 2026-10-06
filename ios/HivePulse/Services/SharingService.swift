@@ -19,6 +19,8 @@ protocol SharingServiceProtocol {
     func incoming() async throws -> [IncomingShareOut]
     func accept(_ id: String) async throws
     func decline(_ id: String) async throws
+    /// For an invitation that went to an address without an account: the token comes from the email's link.
+    func acceptByToken(_ token: String) async throws -> IncomingShareOut
     /// The owner removes a collaborator or withdraws an invitation, or a collaborator leaves.
     func remove(_ id: String) async throws
 }
@@ -51,6 +53,10 @@ struct SharingService: SharingServiceProtocol {
 
     func decline(_ id: String) async throws {
         try await client.postVoid("shares/" + id + "/decline", body: SharingEmptyBody())
+    }
+
+    func acceptByToken(_ token: String) async throws -> IncomingShareOut {
+        try await client.post("shares/accept-by-token", body: ShareTokenRequest(token: token))
     }
 
     func remove(_ id: String) async throws {

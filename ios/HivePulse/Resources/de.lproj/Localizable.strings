@@ -453,3 +453,8 @@
 "label.sharedBy" = "Geteilt von %@";
 "label.partialBy" = "Einzelne Völker geteilt von %@";
 "label.recordedBy" = "erfasst von %@";
+"invitation.redeemTitle" = "Einladungslink einlösen";
+"invitation.redeemMessage" = "Füge den Link aus der Einladungs-E-Mail ein. Das ist für Einladungen an eine Adresse, die noch kein HivePulse-Konto hatte.";
+"invitation.redeemField" = "Link oder Code";
+"invitation.redeemButton" = "Einlösen";
+"invitation.invalidLink" = "Das sieht nicht nach einem Einladungslink aus.";

@@ -785,13 +785,19 @@ the thing is its **owner** and invites another by email address; the invited per
 
 To share some hives but not all, put them in an apiary of their own and share that.
 
+A hive belongs to whoever owns the apiary it stands in, not to whoever created the record. A
+collaborator who adds a hive to a shared apiary therefore cannot delete it or invite anybody to
+it, and loses sight of it, like everything else in the apiary, once the apiary is no longer
+shared with them. Somebody who sees an apiary only through single shared hives gets its name and
+nothing else: no address, coordinates or description.
+
 ### Access levels
 
 `access` appears on apiaries and hives so a client can show or hide actions:
 
 | Value | On | Meaning |
 |-------|----|---------|
-| `owner` | apiary, hive | Made by the caller (a hive in the caller's apiary counts too). |
+| `owner` | apiary, hive | The caller's own apiary, and every hive standing in it, whoever added the hive. |
 | `shared` | apiary, hive | Shared with the caller as a whole apiary, or the caller holds a share on this hive. |
 | `partial` | apiary | The caller holds shares on some hives in it, not on the apiary. |
 

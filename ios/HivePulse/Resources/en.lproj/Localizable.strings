@@ -453,3 +453,8 @@
 "label.sharedBy" = "Shared by %@";
 "label.partialBy" = "Some hives shared by %@";
 "label.recordedBy" = "recorded by %@";
+"invitation.redeemTitle" = "Redeem an invitation link";
+"invitation.redeemMessage" = "Paste the link from the invitation email. This is for invitations sent to an address that had no HivePulse account yet.";
+"invitation.redeemField" = "Link or code";
+"invitation.redeemButton" = "Redeem";
+"invitation.invalidLink" = "That does not look like an invitation link.";

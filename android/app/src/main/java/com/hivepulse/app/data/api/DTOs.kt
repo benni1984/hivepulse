@@ -141,6 +141,7 @@ data class IncomingShareOut(
     @SerializedName("apiary_name") val apiaryName: String?,
     @SerializedName("created_at")  val createdAt: String,
 )
+data class ShareTokenRequest(val token: String)
 data class ShareCreateRequest(
     val email: String,
     @SerializedName("apiary_id") val apiaryId: String? = null,

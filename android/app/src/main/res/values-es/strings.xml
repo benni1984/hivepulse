@@ -411,4 +411,9 @@
     <string name="label_shared_by">Compartido por %1$s</string>
     <string name="label_partial_by">Algunas colmenas compartidas por %1$s</string>
     <string name="label_recorded_by">anotado por %1$s</string>
+    <string name="invitation_redeem_title">Usar un enlace de invitación</string>
+    <string name="invitation_redeem_message">Pega el enlace del correo de invitación. Es para invitaciones enviadas a una dirección que aún no tenía cuenta de HivePulse.</string>
+    <string name="invitation_redeem_field">Enlace o código</string>
+    <string name="invitation_redeem_button">Usar</string>
+    <string name="invitation_invalid_link">Eso no parece un enlace de invitación.</string>
 </resources>

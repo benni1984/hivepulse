@@ -587,3 +587,72 @@ def test_an_admin_deleting_an_account_hands_over_shared_work_too(world, db_sessi
     assert world.carol.delete(f"{API}/admin/users/{alice_id}").status_code == 204
 
     assert world.bob.get(f"{API}/apiaries/{world.apiary['id']}").json()["access"] == "owner"
+
+
+# -- who owns a hive follows the apiary, not who created the record ---------------------------
+
+def test_a_collaborator_who_revoked_no_longer_sees_the_hives_they_added(world):
+    _share_apiary(world)
+    added = world.bob.post(f"{API}/apiaries/{world.apiary['id']}/hives",
+                           json={"name": "Bob's hive", "hive_type": "langstroth"}).json()
+    share_id = world.alice.get(f"{API}/shares?apiary_id={world.apiary['id']}").json()[0]["id"]
+
+    world.alice.delete(f"{API}/shares/{share_id}")
+
+    assert world.bob.get(f"{API}/hives/{added['id']}").status_code == 404
+    assert world.bob.get(f"{API}/hives/by-qr/{added['qr_token']}").status_code == 404
+    assert world.bob.get(f"{API}/stats/overview?preset=all").json()["hive_count"] == 0
+
+
+def test_a_collaborator_cannot_delete_or_share_a_hive_they_added(world):
+    _share_apiary(world)
+    added = world.bob.post(f"{API}/apiaries/{world.apiary['id']}/hives",
+                           json={"name": "Bob's hive", "hive_type": "langstroth"}).json()
+
+    assert world.bob.delete(f"{API}/hives/{added['id']}").status_code == 403
+    assert _invite(world.bob, "carol@example.com", hive_id=added["id"]).status_code == 403
+    assert world.bob.get(f"{API}/hives/{added['id']}").json()["access"] == "shared"
+
+
+def test_the_apiary_owner_can_delete_a_hive_a_collaborator_added(world):
+    _share_apiary(world)
+    added = world.bob.post(f"{API}/apiaries/{world.apiary['id']}/hives",
+                           json={"name": "Bob's hive", "hive_type": "langstroth"}).json()
+
+    assert world.alice.delete(f"{API}/hives/{added['id']}").status_code == 204
+
+
+def test_a_hive_the_leaver_added_elsewhere_keeps_its_invitations_with_the_apiary_owner(world, db_session):
+    _share_apiary(world)
+    added = world.bob.post(f"{API}/apiaries/{world.apiary['id']}/hives",
+                           json={"name": "Bob's hive", "hive_type": "langstroth"}).json()
+    # Alice invites Carol to Bob's hive; then Bob leaves.
+    _invite(world.alice, "carol@example.com", hive_id=added["id"])
+    _accept_all(world.carol)
+
+    world.bob.delete(f"{API}/users/me")
+
+    shares = world.alice.get(f"{API}/shares?hive_id={added['id']}").json()
+    assert [s["email"] for s in shares] == ["carol@example.com"]
+    assert world.carol.get(f"{API}/hives/{added['id']}").status_code == 200
+
+
+# -- somebody who has single hives only knows the apiary by its name --------------------------
+
+def test_an_apiary_seen_through_one_shared_hive_shows_only_its_name(world):
+    world.alice.put(f"{API}/apiaries/{world.apiary['id']}", json={
+        "description": "private notes", "address": "1 Secret Lane", "latitude": 48.1, "longitude": 11.6,
+    })
+    _share_hive(world, world.h1)
+
+    seen = world.bob.get(f"{API}/apiaries/{world.apiary['id']}").json()
+
+    assert seen["name"] == "Garden" and seen["access"] == "partial"
+    assert (seen["description"], seen["address"], seen["latitude"], seen["longitude"]) == (None, None, None, None)
+
+
+def test_a_collaborator_on_the_whole_apiary_still_sees_its_location(world):
+    world.alice.put(f"{API}/apiaries/{world.apiary['id']}", json={"address": "1 Secret Lane"})
+    _share_apiary(world)
+
+    assert world.bob.get(f"{API}/apiaries/{world.apiary['id']}").json()["address"] == "1 Secret Lane"

@@ -4,6 +4,8 @@ struct ApiaryListView: View {
     @EnvironmentObject var apiaryVM: ApiaryViewModel
     @StateObject private var invitationsVM = InvitationsViewModel()
     @State private var showCreate = false
+    @State private var showRedeem = false
+    @State private var pastedLink = ""
 
     var body: some View {
         Group {
@@ -78,6 +80,9 @@ struct ApiaryListView: View {
                 }
                 .accessibilityLabel(NSLocalizedString("screen.qrBatches", comment: ""))
                 .accessibilityIdentifier("qrBatchesButton")
+                Button { showRedeem = true } label: { Image(systemName: "envelope.open") }
+                    .accessibilityLabel(NSLocalizedString("invitation.redeemTitle", comment: ""))
+                    .accessibilityIdentifier("redeemInvitationButton")
                 Button { showCreate = true } label: { Image(systemName: "plus") }
             }
         }
@@ -91,6 +96,32 @@ struct ApiaryListView: View {
                 try await apiaryVM.create(name: name, description: desc, latitude: lat, longitude: lon, address: addr, isPublic: isPublic)
                 showCreate = false
             }
+        }
+        .alert(NSLocalizedString("invitation.redeemTitle", comment: ""), isPresented: $showRedeem) {
+            TextField(NSLocalizedString("invitation.redeemField", comment: ""), text: $pastedLink)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+            Button(NSLocalizedString("invitation.redeemButton", comment: "")) {
+                let pasted = pastedLink
+                pastedLink = ""
+                Task {
+                    if await invitationsVM.redeem(pasted) {
+                        await apiaryVM.load()
+                        await invitationsVM.load()
+                    }
+                }
+            }
+            Button(NSLocalizedString("action.cancel", comment: ""), role: .cancel) { pastedLink = "" }
+        } message: {
+            Text(NSLocalizedString("invitation.redeemMessage", comment: ""))
+        }
+        .alert(NSLocalizedString("alert.error", comment: ""), isPresented: Binding(
+            get: { invitationsVM.errorMessage != nil },
+            set: { if !$0 { invitationsVM.errorMessage = nil } }
+        )) {
+            Button("OK", role: .cancel) { invitationsVM.errorMessage = nil }
+        } message: {
+            Text(invitationsVM.errorMessage ?? "")
         }
         .alert(NSLocalizedString("alert.error", comment: ""), isPresented: Binding(
             get: { apiaryVM.errorMessage != nil },

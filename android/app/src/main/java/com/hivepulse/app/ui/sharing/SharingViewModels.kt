@@ -89,6 +89,8 @@ class SharingViewModel @Inject constructor(
 data class InvitationsState(
     val invitations: List<IncomingShareOut> = emptyList(),
     val error: String? = null,
+    /** What was pasted is not an invitation link; the screen words it. */
+    val linkInvalid: Boolean = false,
 )
 
 @HiltViewModel
@@ -116,6 +118,24 @@ class InvitationsViewModel @Inject constructor(private val repo: SharingReposito
             .onFailure { e -> _state.update { it.copy(error = e.message) } }
     }
 
+    /**
+     * Takes an invitation from the link in its email (or the bare token); [onRedeemed] runs once the
+     * server accepted it, so the caller can reload what became visible.
+     */
+    fun redeem(pasted: String, onRedeemed: () -> Unit = {}) {
+        _state.update { it.copy(error = null, linkInvalid = false) }
+        val token = InvitationLink.token(pasted)
+        if (token == null) {
+            _state.update { it.copy(linkInvalid = true) }
+            return
+        }
+        viewModelScope.launch {
+            runCatching { repo.acceptByToken(token) }
+                .onSuccess { onRedeemed() }
+                .onFailure { e -> _state.update { it.copy(error = e.message) } }
+        }
+    }
+
     fun decline(invitation: IncomingShareOut) = viewModelScope.launch {
         _state.update { it.copy(error = null) }
         runCatching { repo.decline(invitation.id) }
@@ -123,5 +143,5 @@ class InvitationsViewModel @Inject constructor(private val repo: SharingReposito
             .onFailure { e -> _state.update { it.copy(error = e.message) } }
     }
 
-    fun clearError() = _state.update { it.copy(error = null) }
+    fun clearError() = _state.update { it.copy(error = null, linkInvalid = false) }
 }

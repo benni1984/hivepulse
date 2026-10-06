@@ -96,6 +96,22 @@ final class InvitationsViewModel: ObservableObject {
         }
     }
 
+    /// Takes an invitation from the link in its email (or the bare token). True when the server accepted it.
+    func redeem(_ pasted: String) async -> Bool {
+        errorMessage = nil
+        guard let token = InvitationLink.token(from: pasted) else {
+            errorMessage = NSLocalizedString("invitation.invalidLink", comment: "")
+            return false
+        }
+        do {
+            _ = try await service.acceptByToken(token)
+            return true
+        } catch {
+            errorMessage = error.localizedDescription
+            return false
+        }
+    }
+
     func decline(_ invitation: IncomingShareOut) async {
         errorMessage = nil
         do {

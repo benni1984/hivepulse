@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -40,6 +41,7 @@ fun ApiaryListScreen(
     val state by vm.state.collectAsState()
     val invitations by invitationsVm.state.collectAsState()
     var showCreate by remember { mutableStateOf(false) }
+    var showRedeem by remember { mutableStateOf(false) }
     // Coming back from another screen is when an invitation may have arrived.
     LaunchedEffect(Unit) { invitationsVm.load() }
 
@@ -48,6 +50,9 @@ fun ApiaryListScreen(
             TopAppBar(
                 title = { Text(stringResource(R.string.screen_apiaries), style = MaterialTheme.typography.titleLarge) },
                 actions = {
+                    IconButton(onClick = { showRedeem = true }, modifier = Modifier.testTag("redeemInvitationButton")) {
+                        Icon(Icons.Default.MarkEmailRead, contentDescription = stringResource(R.string.invitation_redeem_title))
+                    }
                     IconButton(onClick = onStatsClick)    { Icon(Icons.Default.BarChart,     contentDescription = stringResource(R.string.screen_stats_overview)) }
                     IconButton(onClick = onBatchClick)    { Icon(Icons.Default.Print,        contentDescription = stringResource(R.string.tab_print)) }
                     IconButton(onClick = onScanClick)     { Icon(Icons.Default.QrCodeScanner, contentDescription = stringResource(R.string.tab_scan)) }
@@ -83,6 +88,9 @@ fun ApiaryListScreen(
                 ) {
                     state.error?.let { item { ErrorBanner(it) { vm.clearError() } } }
                     invitations.error?.let { item { ErrorBanner(it) { invitationsVm.clearError() } } }
+                    if (invitations.linkInvalid) {
+                        item { ErrorBanner(stringResource(R.string.invitation_invalid_link)) { invitationsVm.clearError() } }
+                    }
                     invitationItems(
                         invitations.invitations,
                         onAccept  = { invitation -> invitationsVm.accept(invitation) { vm.load() } },
@@ -94,6 +102,36 @@ fun ApiaryListScreen(
                 }
             }
         }
+    }
+
+    if (showRedeem) {
+        var pasted by remember { mutableStateOf("") }
+        AlertDialog(
+            onDismissRequest = { showRedeem = false },
+            title = { Text(stringResource(R.string.invitation_redeem_title)) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(stringResource(R.string.invitation_redeem_message))
+                    OutlinedTextField(
+                        value = pasted,
+                        onValueChange = { pasted = it },
+                        label = { Text(stringResource(R.string.invitation_redeem_field)) },
+                        modifier = Modifier.fillMaxWidth().testTag("redeemField"),
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        invitationsVm.redeem(pasted) { vm.load(); invitationsVm.load() }
+                        showRedeem = false
+                    },
+                    enabled = pasted.isNotBlank(),
+                    modifier = Modifier.testTag("redeemConfirm"),
+                ) { Text(stringResource(R.string.invitation_redeem_button)) }
+            },
+            dismissButton = { TextButton(onClick = { showRedeem = false }) { Text(stringResource(R.string.action_cancel)) } },
+        )
     }
 
     if (showCreate) {

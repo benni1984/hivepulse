@@ -444,4 +444,9 @@
     <string name="label_shared_by">Partagé par %1$s</string>
     <string name="label_partial_by">Quelques ruches partagées par %1$s</string>
     <string name="label_recorded_by">saisi par %1$s</string>
+    <string name="invitation_redeem_title">Utiliser un lien d’invitation</string>
+    <string name="invitation_redeem_message">Collez le lien de l’e-mail d’invitation. C’est pour les invitations envoyées à une adresse qui n’avait pas encore de compte HivePulse.</string>
+    <string name="invitation_redeem_field">Lien ou code</string>
+    <string name="invitation_redeem_button">Utiliser</string>
+    <string name="invitation_invalid_link">Cela ne ressemble pas à un lien d’invitation.</string>
 </resources>

@@ -446,4 +446,9 @@
     <string name="label_shared_by">Shared by %1$s</string>
     <string name="label_partial_by">Some hives shared by %1$s</string>
     <string name="label_recorded_by">recorded by %1$s</string>
+    <string name="invitation_redeem_title">Redeem an invitation link</string>
+    <string name="invitation_redeem_message">Paste the link from the invitation email. This is for invitations sent to an address that had no HivePulse account yet.</string>
+    <string name="invitation_redeem_field">Link or code</string>
+    <string name="invitation_redeem_button">Redeem</string>
+    <string name="invitation_invalid_link">That does not look like an invitation link.</string>
 </resources>

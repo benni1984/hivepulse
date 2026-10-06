@@ -82,6 +82,28 @@ class SharingRepositoryTest {
     }
 
     @Test
+    fun `acceptByToken sends the token and returns the invitation`() = runTest {
+        val invitation = IncomingShareOut("s1", "Alice", target, null, "2026-01-01T00:00:00")
+        val bodies = mutableListOf<ShareTokenRequest>()
+        coEvery { api.acceptShareByToken(capture(bodies)) } returns invitation
+
+        val result = repo.acceptByToken("the-token")
+
+        assertEquals(invitation, result)
+        assertEquals(ShareTokenRequest("the-token"), bodies.single())
+    }
+
+    @Test
+    fun `a dead token carries the servers own message`() = runTest {
+        coEvery { api.acceptShareByToken(any()) } throws
+            refused(404, """{"detail":{"code":"SHARE_TOKEN_INVALID","message":"Link is dead."}}""")
+
+        val failure = runCatching { repo.acceptByToken("old") }.exceptionOrNull()
+
+        assertEquals("Link is dead.", failure?.message)
+    }
+
+    @Test
     fun `an unsuccessful answer becomes an error with the servers message`() = runTest {
         coEvery { api.acceptShare("s1") } returns Response.error(
             404, """{"detail":{"code":"SHARE_NOT_FOUND","message":"This invitation does not exist."}}"""
