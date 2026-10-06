@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
+import IncomingInvitations from '@/components/IncomingInvitations';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getApiaries, createApiary, type Apiary } from '@/lib/api';
 
@@ -17,12 +18,16 @@ export default function DashboardPage() {
   const [createForm, setCreateForm] = useState({ name: '', description: '', address: '', isPublic: false });
   const [createMessage, setCreateMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
 
-  useEffect(() => {
-    if (!ready) return;
-    getApiaries()
+  function loadApiaries() {
+    return getApiaries()
       .then(data => setApiaries(data.items))
       .catch(() => {})
       .finally(() => setLoading(false));
+  }
+
+  useEffect(() => {
+    if (!ready) return;
+    loadApiaries();
   }, [ready]);
 
   function openCreate() {
@@ -62,6 +67,8 @@ export default function DashboardPage() {
           </button>
         )}
       </div>
+
+      {ready && <IncomingInvitations onChange={loadApiaries} />}
 
       {createMessage && (
         <div className={createMessage.type === 'ok' ? 'dash-success-banner' : 'dash-error-banner'}>
@@ -133,6 +140,11 @@ export default function DashboardPage() {
                   {a.is_public ? t('apiaries.public') : t('apiaries.private')}
                 </span>
               </p>
+              {a.access && a.access !== 'owner' && (
+                <p className="dash-card-meta">
+                  {t(a.access === 'partial' ? 'apiaries.partialBy' : 'apiaries.sharedBy', { name: a.owner_name ?? '' })}
+                </p>
+              )}
             </Link>
           ))}
         </div>

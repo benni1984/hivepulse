@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
+import SharingPanel from '@/components/SharingPanel';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import {
   getApiary, getHives, getApiaryStats, updateApiary, deleteApiary, createHive,
@@ -62,6 +63,12 @@ export default function ApiaryPage() {
   const [editFieldMsg, setEditFieldMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
   const [deleteFieldConfirmId, setDeleteFieldConfirmId] = useState<string | null>(null);
   const [deletingField, setDeletingField] = useState(false);
+
+  // A server that does not know about sharing only ever returns the caller's own apiaries.
+  const access = apiary?.access ?? 'owner';
+  const isOwner = access === 'owner';
+  // Somebody who was given single hives can work on those, but not on the apiary around them.
+  const canEdit = access !== 'partial';
 
   useEffect(() => {
     if (!ready) return;
@@ -225,6 +232,11 @@ export default function ApiaryPage() {
       {!loading && apiary && (
         <>
           <h1 className="dash-page-title">{apiary.name}</h1>
+          {!isOwner && (
+            <p className="dash-card-meta" data-testid="shared-note">
+              {t(access === 'partial' ? 'apiary.partialNote' : 'apiary.sharedNote', { name: apiary.owner_name ?? '' })}
+            </p>
+          )}
           {stats && (
             <div className="dash-stat-row">
               <div className="dash-stat-pill">
@@ -295,7 +307,7 @@ export default function ApiaryPage() {
                   <button className="dash-row-btn" onClick={() => handleExport('json')}>{t('hive.exportJson')}</button>
                 </>
               )}
-              {!showCreateHive && (
+              {!showCreateHive && canEdit && (
                 <button className="dash-new-btn" onClick={openCreateHive}>{t('apiary.newHive')}</button>
               )}
             </span>
@@ -370,7 +382,7 @@ export default function ApiaryPage() {
               {editMessage.text}
             </div>
           )}
-          {!showEdit ? (
+          {!canEdit ? null : !showEdit ? (
             <div style={{ marginTop: 24 }}>
               <button className="dash-admin-btn" onClick={openEdit}>{t('apiary.editBtn')}</button>
             </div>
@@ -403,14 +415,16 @@ export default function ApiaryPage() {
                     onChange={e => setEditForm(f => ({ ...f, address: e.target.value }))}
                   />
                 </div>
-                <label className="dash-inline-checkbox">
-                  <input
-                    type="checkbox"
-                    checked={editForm.isPublic}
-                    onChange={e => setEditForm(f => ({ ...f, isPublic: e.target.checked }))}
-                  />
-                  {t('apiaries.isPublic')}
-                </label>
+                {isOwner && (
+                  <label className="dash-inline-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={editForm.isPublic}
+                      onChange={e => setEditForm(f => ({ ...f, isPublic: e.target.checked }))}
+                    />
+                    {t('apiaries.isPublic')}
+                  </label>
+                )}
                 <div className="dash-form-actions">
                   <button className="dash-submit-btn" type="submit" disabled={saving}>
                     {saving ? '…' : t('apiary.saveBtn')}
@@ -423,8 +437,11 @@ export default function ApiaryPage() {
             </div>
           )}
 
+          {/* ── Sharing and deleting stay with the owner ────────────── */}
+          {isOwner && <SharingPanel type="apiary" id={id} />}
+
           {/* ── Delete apiary ────────────────────────────────────────── */}
-          <div className="dash-danger-zone">
+          {isOwner && <div className="dash-danger-zone">
             <h3>{t('apiary.dangerTitle')}</h3>
             {deleteMessage && (
               <div className="dash-error-banner">{deleteMessage.text}</div>
@@ -457,13 +474,13 @@ export default function ApiaryPage() {
                 </div>
               </>
             )}
-          </div>
+          </div>}
 
           {/* ── Apiary-scoped custom fields ──────────────────────────── */}
           <div style={{ marginTop: 32 }}>
             <div className="dash-page-header">
               <h2 className="dash-section-title" style={{ margin: 0 }}>{t('fieldDefs.apiaryTitle')}</h2>
-              {!showCreateField && (
+              {!showCreateField && canEdit && (
                 <button className="dash-new-btn" onClick={() => { setShowCreateField(true); setCreateFieldMsg(null); }}>
                   {t('fieldDefs.new')}
                 </button>
@@ -587,7 +604,7 @@ export default function ApiaryPage() {
                             <td><span className={`dash-type-badge dash-ftype-${fd.type}`}>{fieldTypeLabel[fd.type]}</span></td>
                             <td>{fd.required ? '✓' : '–'}</td>
                             <td>
-                              <span className="dash-row-actions">
+                              <span className="dash-row-actions" hidden={!canEdit}>
                                 <button className="dash-row-btn" onClick={() => { setEditingFieldId(fd.id); setEditFieldForm({ name: fd.name, options: fd.options.join('\n'), required: fd.required }); setEditFieldMsg(null); }}>{t('hive.inspectionEditBtn')}</button>
                                 <button className="dash-row-btn dash-row-btn-danger" onClick={() => setDeleteFieldConfirmId(fd.id)}>{t('fieldDefs.deleteBtn')}</button>
                               </span>

@@ -562,7 +562,9 @@
       "cancel": "Cancelar",
       "createBtn": "Crear colmenar",
       "createSuccess": "Colmenar creado.",
-      "errorGeneric": "Algo salió mal."
+      "errorGeneric": "Algo salió mal.",
+      "sharedBy": "Compartido por {name}",
+      "partialBy": "Algunas colmenas compartidas por {name}"
     },
     "apiary": {
       "hives": "Colmenas",
@@ -593,7 +595,9 @@
       "noId": "No se ha indicado ningún ID de colmenar.",
       "notFound": "Colmenar no encontrado.",
       "loadError": "No se pudieron cargar los datos del colmenar.",
-      "backToMap": "Volver al mapa"
+      "backToMap": "Volver al mapa",
+      "sharedNote": "Este colmenar pertenece a {name}. Puedes anotar revisiones y editar colmenas.",
+      "partialNote": "{name} ha compartido contigo algunas colmenas de este colmenar."
     },
     "hive": {
       "inspections": "Inspecciones",
@@ -646,7 +650,8 @@
       "varroaLevel0": "Ninguna",
       "varroaLevel1": "Baja",
       "varroaLevel2": "Media",
-      "varroaLevel3": "Alta"
+      "varroaLevel3": "Alta",
+      "recordedBy": "anotado por {name}"
     },
     "fieldDefs": {
       "title": "Campos personalizados",
@@ -735,6 +740,30 @@
       "code": "Código de acceso",
       "totalCaught": "Total capturado",
       "lastCatch": "Última captura"
+    },
+    "sharing": {
+      "title": "Trabajar juntos",
+      "introApiary": "Invita a otro apicultor a cuidar este colmenar contigo. Ve todas las colmenas y puede anotar revisiones.",
+      "introHive": "Invita a otro apicultor a cuidar esta colmena contigo. Solo ve esta colmena, no las demás del colmenar.",
+      "emailLabel": "Correo electrónico de la persona",
+      "invite": "Invitar",
+      "inviteSent": "Invitación enviada.",
+      "empty": "Todavía no has invitado a nadie.",
+      "pending": "Esperando respuesta",
+      "accepted": "Trabaja contigo",
+      "revoke": "Quitar",
+      "withdraw": "Retirar",
+      "confirmRevoke": "¿Quitar a esta persona? Pierde el acceso; lo que anotó se queda.",
+      "confirmWithdraw": "¿Retirar esta invitación?",
+      "errorGeneric": "No ha funcionado. Inténtalo de nuevo."
+    },
+    "invitations": {
+      "textApiary": "{owner} te invita a cuidar juntos el colmenar {name}.",
+      "textHive": "{owner} te invita a cuidar juntos la colmena {name} en {apiary}.",
+      "accept": "Aceptar",
+      "decline": "Rechazar",
+      "accepted": "Ahora también puedes trabajar en {name}.",
+      "errorGeneric": "No ha funcionado. Puede que la invitación ya no sea válida."
     }
   },
   "hiveTypes": {

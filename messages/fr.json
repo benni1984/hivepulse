@@ -562,7 +562,9 @@
       "cancel": "Annuler",
       "createBtn": "Créer le rucher",
       "createSuccess": "Rucher créé.",
-      "errorGeneric": "Une erreur est survenue."
+      "errorGeneric": "Une erreur est survenue.",
+      "sharedBy": "Partagé par {name}",
+      "partialBy": "Quelques ruches partagées par {name}"
     },
     "apiary": {
       "hives": "Ruches",
@@ -593,7 +595,9 @@
       "noId": "Aucun identifiant de rucher fourni.",
       "notFound": "Rucher introuvable.",
       "loadError": "Impossible de charger les données du rucher.",
-      "backToMap": "Retour à la carte"
+      "backToMap": "Retour à la carte",
+      "sharedNote": "Ce rucher appartient à {name}. Vous pouvez saisir des visites et modifier les ruches.",
+      "partialNote": "{name} a partagé quelques ruches de ce rucher avec vous."
     },
     "hive": {
       "inspections": "Inspections",
@@ -646,7 +650,8 @@
       "varroaLevel0": "Aucune",
       "varroaLevel1": "Faible",
       "varroaLevel2": "Moyenne",
-      "varroaLevel3": "Élevée"
+      "varroaLevel3": "Élevée",
+      "recordedBy": "saisi par {name}"
     },
     "fieldDefs": {
       "title": "Champs personnalisés",
@@ -735,6 +740,30 @@
       "code": "Code d'accès",
       "totalCaught": "Total capturé",
       "lastCatch": "Dernière capture"
+    },
+    "sharing": {
+      "title": "Travailler ensemble",
+      "introApiary": "Invitez un autre apiculteur à s’occuper de ce rucher avec vous. Il voit toutes les ruches et peut saisir des visites.",
+      "introHive": "Invitez un autre apiculteur à s’occuper de cette ruche avec vous. Il ne voit que cette ruche, pas les autres du rucher.",
+      "emailLabel": "Adresse e-mail de la personne",
+      "invite": "Inviter",
+      "inviteSent": "Invitation envoyée.",
+      "empty": "Personne n’est encore invité.",
+      "pending": "En attente de réponse",
+      "accepted": "Travaille avec vous",
+      "revoke": "Retirer",
+      "withdraw": "Annuler",
+      "confirmRevoke": "Retirer cette personne ? Elle perd l’accès ; ce qu’elle a saisi reste.",
+      "confirmWithdraw": "Annuler cette invitation ?",
+      "errorGeneric": "Cela n’a pas fonctionné. Veuillez réessayer."
+    },
+    "invitations": {
+      "textApiary": "{owner} vous invite à vous occuper ensemble du rucher {name}.",
+      "textHive": "{owner} vous invite à vous occuper ensemble de la ruche {name} dans {apiary}.",
+      "accept": "Accepter",
+      "decline": "Refuser",
+      "accepted": "Vous pouvez maintenant aussi travailler sur {name}.",
+      "errorGeneric": "Cela n’a pas fonctionné. L’invitation n’est peut-être plus valide."
     }
   },
   "hiveTypes": {

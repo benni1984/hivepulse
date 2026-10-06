@@ -562,7 +562,9 @@
       "cancel": "Cancel",
       "createBtn": "Create Apiary",
       "createSuccess": "Apiary created.",
-      "errorGeneric": "Something went wrong."
+      "errorGeneric": "Something went wrong.",
+      "sharedBy": "Shared by {name}",
+      "partialBy": "Some hives shared by {name}"
     },
     "apiary": {
       "hives": "Hives",
@@ -593,7 +595,9 @@
       "noId": "No apiary ID provided.",
       "notFound": "Apiary not found.",
       "loadError": "Could not load apiary data.",
-      "backToMap": "Back to map"
+      "backToMap": "Back to map",
+      "sharedNote": "This apiary belongs to {name}. You can record inspections and edit hives.",
+      "partialNote": "{name} shared some hives of this apiary with you."
     },
     "hive": {
       "inspections": "Inspections",
@@ -646,7 +650,8 @@
       "varroaLevel0": "None",
       "varroaLevel1": "Low",
       "varroaLevel2": "Medium",
-      "varroaLevel3": "High"
+      "varroaLevel3": "High",
+      "recordedBy": "recorded by {name}"
     },
     "fieldDefs": {
       "title": "Custom Fields",
@@ -735,6 +740,30 @@
       "code": "Access Code",
       "totalCaught": "Total Caught",
       "lastCatch": "Last Catch"
+    },
+    "sharing": {
+      "title": "Work together",
+      "introApiary": "Invite another beekeeper to look after this apiary with you. They see every hive in it and can record inspections.",
+      "introHive": "Invite another beekeeper to look after this hive with you. They see this hive only, not the others in the apiary.",
+      "emailLabel": "Email address of the person",
+      "invite": "Invite",
+      "inviteSent": "Invitation sent.",
+      "empty": "Nobody invited yet.",
+      "pending": "Waiting for a reply",
+      "accepted": "Works with you",
+      "revoke": "Remove",
+      "withdraw": "Withdraw",
+      "confirmRevoke": "Remove this person? They lose access; what they recorded stays.",
+      "confirmWithdraw": "Withdraw this invitation?",
+      "errorGeneric": "That did not work. Please try again."
+    },
+    "invitations": {
+      "textApiary": "{owner} invites you to work on the apiary {name} together.",
+      "textHive": "{owner} invites you to work on the hive {name} in {apiary} together.",
+      "accept": "Accept",
+      "decline": "Decline",
+      "accepted": "{name} is now yours to work on too.",
+      "errorGeneric": "That did not work. The invitation may no longer be valid."
     }
   },
   "hiveTypes": {
