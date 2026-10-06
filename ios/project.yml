@@ -59,6 +59,12 @@ targets:
           # Filled by the TestFlight workflow from the SENTRY_DSN_IOS secret; empty here
           # so a local build and a build from source report nothing.
           SENTRY_DSN: ""
+          # The App Store profile, handed in by the TestFlight workflow as APP_PROFILE_NAME.
+          # It has to be set here, on this target, and not as a global build setting on the
+          # command line: a global PROVISIONING_PROFILE_SPECIFIER also reaches the resource
+          # bundles of every Swift package, and Xcode refuses those ("does not support
+          # provisioning profiles"). GoogleSignIn brought six of them and broke the archive.
+          PROVISIONING_PROFILE_SPECIFIER: "$(APP_PROFILE_NAME)"
 
   HivePulseTests:
     type: bundle.unit-test
