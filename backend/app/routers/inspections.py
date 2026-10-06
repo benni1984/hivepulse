@@ -3,6 +3,7 @@ from typing import Optional
 
 from fastapi import Response, APIRouter, Header, HTTPException, Query
 
+from app.access import Scope, hive_or_404
 from app.deps import CurrentUser, DB
 from app.i18n import error
 from app.models import Hive, Inspection
@@ -12,19 +13,13 @@ from app.utils.scales import varroa_level_from_count
 router = APIRouter(tags=["inspections"])
 
 
-def _get_hive_or_404(hive_id: str, user_id: str, db: DB, lang):
-    hive = db.get(Hive, hive_id)
-    if not hive or hive.user_id != user_id:
-        raise HTTPException(404, detail=error("HIVE_NOT_FOUND", lang))
-    return hive
-
-
-def _get_inspection_or_404(inspection_id: str, user_id: str, db: DB, lang):
+def _get_inspection_or_404(inspection_id: str, user, db: DB, lang):
+    """Anybody who may work on the hive may work on its inspections, whoever recorded them."""
     insp = db.get(Inspection, inspection_id)
     if not insp:
         raise HTTPException(404, detail=error("INSPECTION_NOT_FOUND", lang))
     hive = db.get(Hive, insp.hive_id)
-    if not hive or hive.user_id != user_id:
+    if not hive or Scope(db, user).hive_access(hive) is None:
         raise HTTPException(404, detail=error("INSPECTION_NOT_FOUND", lang))
     return insp
 
@@ -38,7 +33,7 @@ def list_inspections(
     per_page: int = Query(20, ge=1, le=100),
     accept_language: Optional[str] = Header(default=None),
 ):
-    _get_hive_or_404(hive_id, current_user.id, db, accept_language)
+    hive_or_404(db, current_user, hive_id, accept_language)
     q = db.query(Inspection).filter(Inspection.hive_id == hive_id).order_by(Inspection.date.desc())
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
@@ -60,7 +55,7 @@ def create_inspection(
     response: Response,
     accept_language: Optional[str] = Header(default=None),
 ):
-    _get_hive_or_404(hive_id, current_user.id, db, accept_language)
+    hive_or_404(db, current_user, hive_id, accept_language)
     data = body.model_dump()
 
     # An app that recorded this visit without a connection retries with the same
@@ -79,7 +74,7 @@ def create_inspection(
     # Older app builds still send a mite count; keep the level in step for them.
     if data.get("varroa_level") is None and data.get("varroa_count") is not None:
         data["varroa_level"] = varroa_level_from_count(data["varroa_count"])
-    insp = Inspection(hive_id=hive_id, **data)
+    insp = Inspection(hive_id=hive_id, created_by_id=current_user.id, **data)
     db.add(insp)
     db.commit()
     db.refresh(insp)
@@ -94,7 +89,7 @@ def get_inspection(
     accept_language: Optional[str] = Header(default=None),
 ):
     return InspectionOut.model_validate(
-        _get_inspection_or_404(inspection_id, current_user.id, db, accept_language)
+        _get_inspection_or_404(inspection_id, current_user, db, accept_language)
     )
 
 
@@ -106,7 +101,7 @@ def update_inspection(
     db: DB,
     accept_language: Optional[str] = Header(default=None),
 ):
-    insp = _get_inspection_or_404(inspection_id, current_user.id, db, accept_language)
+    insp = _get_inspection_or_404(inspection_id, current_user, db, accept_language)
     changes = body.model_dump(exclude_unset=True)
     if "varroa_count" in changes and "varroa_level" not in changes:
         changes["varroa_level"] = varroa_level_from_count(changes["varroa_count"])
@@ -124,6 +119,6 @@ def delete_inspection(
     db: DB,
     accept_language: Optional[str] = Header(default=None),
 ):
-    insp = _get_inspection_or_404(inspection_id, current_user.id, db, accept_language)
+    insp = _get_inspection_or_404(inspection_id, current_user, db, accept_language)
     db.delete(insp)
     db.commit()

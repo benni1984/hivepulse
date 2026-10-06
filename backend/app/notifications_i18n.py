@@ -91,6 +91,30 @@ TEMPLATES: dict[str, dict[str, str]] = {
         "fr": "<p>Si vous n'êtes pas à l'origine de cette demande, ignorez simplement cet e-mail.</p>",
         "es": "<p>Si no has solicitado esto, puedes ignorar este correo sin problema.</p>",
     },
+    "invite.email.subject": {
+        "en": "{owner} invites you to work together on HivePulse",
+        "de": "{owner} lädt dich ein, gemeinsam in HivePulse zu arbeiten",
+        "fr": "{owner} vous invite à travailler ensemble sur HivePulse",
+        "es": "{owner} te invita a trabajar juntos en HivePulse",
+    },
+    "invite.email.intro": {
+        "en": "<p><b>{owner}</b> would like to work with you on <b>{target}</b> in HivePulse.</p>",
+        "de": "<p><b>{owner}</b> möchte mit dir gemeinsam an <b>{target}</b> in HivePulse arbeiten.</p>",
+        "fr": "<p><b>{owner}</b> aimerait travailler avec vous sur <b>{target}</b> dans HivePulse.</p>",
+        "es": "<p><b>{owner}</b> quiere trabajar contigo en <b>{target}</b> en HivePulse.</p>",
+    },
+    "invite.email.cta": {
+        "en": "<p><a href='{url}'>Accept the invitation</a></p>",
+        "de": "<p><a href='{url}'>Einladung annehmen</a></p>",
+        "fr": "<p><a href='{url}'>Accepter l'invitation</a></p>",
+        "es": "<p><a href='{url}'>Aceptar la invitación</a></p>",
+    },
+    "invite.email.ignore": {
+        "en": "<p>If you do not know {owner}, you can ignore this email. Nothing happens until you accept.</p>",
+        "de": "<p>Wenn du {owner} nicht kennst, kannst du diese E-Mail ignorieren. Es passiert nichts, solange du nicht zusagst.</p>",
+        "fr": "<p>Si vous ne connaissez pas {owner}, ignorez cet e-mail. Rien ne se passe tant que vous n'acceptez pas.</p>",
+        "es": "<p>Si no conoces a {owner}, puedes ignorar este correo. No pasa nada hasta que aceptes.</p>",
+    }
 }
 
 
@@ -147,3 +171,19 @@ def reset_email(reset_url: str, minutes: int, locale: Optional[str] = None,
         + render("reset.email.ignore", locale)
     )
     return render("reset.email.subject", locale), body
+
+
+def invitation_email(owner: str, target: str, url: str, locale: Optional[str] = None) -> tuple[str, str]:
+    """The mail that invites somebody to work on an apiary or a hive.
+
+    The names are chosen by users and go into HTML, so they are escaped. The link carries the
+    one-time token and is the only way an address without an account can take the invitation.
+    """
+    owner_html = html.escape(owner)
+    target_html = html.escape(target)
+    body = (
+        render("invite.email.intro", locale, owner=owner_html, target=target_html)
+        + render("invite.email.cta", locale, url=url)
+        + render("invite.email.ignore", locale, owner=owner_html)
+    )
+    return render("invite.email.subject", locale, owner=owner), body

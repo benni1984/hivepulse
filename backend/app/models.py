@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime, date
 
 from sqlalchemy import (
-    Boolean, Column, Date, DateTime, Float, ForeignKey,
+    Boolean, CheckConstraint, Column, Date, DateTime, Float, ForeignKey,
     Integer, String, Text, JSON, UniqueConstraint, Enum as SAEnum
 )
 from sqlalchemy.orm import relationship
@@ -216,12 +216,52 @@ class Inspection(Base):
     # Set by apps that record offline: the same value is reused for every retry, so a
     # second POST returns the stored inspection instead of creating a duplicate.
     client_id = Column(String(64), nullable=True, index=True)
+    # Who recorded it, so two people on one hive can see who did what. Empty for records that
+    # predate sharing, and when the author's account is gone.
+    created_by_id = Column(String, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     hive = relationship("Hive", back_populates="inspections")
+    created_by = relationship("User", foreign_keys=[created_by_id])
+
+    @property
+    def created_by_name(self):
+        return self.created_by.name if self.created_by else None
 
     __table_args__ = (
         UniqueConstraint("hive_id", "client_id", name="uq_inspection_hive_client_id"),
+    )
+
+
+class Share(Base):
+    """One beekeeper letting another work on an apiary, or on a single hive.
+
+    The invitation is addressed to an email address. When an account with that address exists
+    it is bound to it straight away (`grantee_user_id`); when none does, only the address and
+    a token (kept as a hash, the plain value goes into the invitation email) are stored, and
+    the invitation is bound to whoever redeems the token.
+    """
+    __tablename__ = "shares"
+
+    id = Column(String, primary_key=True, default=_uuid)
+    owner_id = Column(String, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    grantee_email = Column(String, nullable=False, index=True)  # lower-case
+    grantee_user_id = Column(String, ForeignKey("users.id", ondelete="CASCADE"), nullable=True, index=True)
+    # Exactly one of the two: a whole apiary, or one hive.
+    apiary_id = Column(String, ForeignKey("apiaries.id", ondelete="CASCADE"), nullable=True, index=True)
+    hive_id = Column(String, ForeignKey("hives.id", ondelete="CASCADE"), nullable=True, index=True)
+    status = Column(String, nullable=False, default="pending")  # pending | accepted
+    token_hash = Column(String, unique=True, nullable=True, index=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    accepted_at = Column(DateTime, nullable=True)
+
+    owner = relationship("User", foreign_keys=[owner_id])
+    grantee = relationship("User", foreign_keys=[grantee_user_id])
+    apiary = relationship("Apiary", foreign_keys=[apiary_id])
+    hive = relationship("Hive", foreign_keys=[hive_id])
+
+    __table_args__ = (
+        CheckConstraint("(apiary_id IS NULL) <> (hive_id IS NULL)", name="ck_share_one_target"),
     )
 
 

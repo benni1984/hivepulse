@@ -319,6 +319,10 @@ class ApiaryOut(BaseModel):
     address: Optional[str]
     hive_count: int
     is_public: bool
+    # owner | shared | partial, see "Sharing" in the API contract. owner_name is empty for the
+    # caller's own apiaries.
+    access: str = "owner"
+    owner_name: Optional[str] = None
     created_at: datetime
 
     model_config = {"from_attributes": True}
@@ -404,6 +408,7 @@ class HiveOut(BaseModel):
     custom_fields: Dict[str, Any]
     initialized_at: datetime
     last_inspection_at: Optional[datetime]
+    access: str = "owner"
     created_at: datetime
 
     model_config = {"from_attributes": True}
@@ -484,9 +489,54 @@ class InspectionOut(BaseModel):
     notes: Optional[str]
     custom_fields: Dict[str, Any]
     client_id: Optional[str] = None
+    created_by_name: Optional[str] = None
     created_at: datetime
 
     model_config = {"from_attributes": True}
+
+
+# ---------------------------------------------------------------------------
+# Sharing
+# ---------------------------------------------------------------------------
+
+class ShareCreate(BaseModel):
+    email: EmailStr
+    apiary_id: Optional[str] = None
+    hive_id: Optional[str] = None
+
+    @model_validator(mode="after")
+    def exactly_one_target(self):
+        if bool(self.apiary_id) == bool(self.hive_id):
+            raise ValueError("give exactly one of apiary_id and hive_id")
+        return self
+
+
+class ShareTarget(BaseModel):
+    type: str
+    id: str
+    name: str
+
+
+class ShareOut(BaseModel):
+    id: str
+    email: str
+    status: str
+    target: ShareTarget
+    collaborator_name: Optional[str] = None
+    created_at: datetime
+    accepted_at: Optional[datetime] = None
+
+
+class IncomingShareOut(BaseModel):
+    id: str
+    owner_name: str
+    target: ShareTarget
+    apiary_name: Optional[str] = None
+    created_at: datetime
+
+
+class ShareTokenRequest(BaseModel):
+    token: str = Field(min_length=1, max_length=200)
 
 
 # ---------------------------------------------------------------------------

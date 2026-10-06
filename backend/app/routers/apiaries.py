@@ -4,6 +4,7 @@ from typing import Optional
 from fastapi import APIRouter, Header, HTTPException, Query
 from sqlalchemy.orm import Session
 
+from app.access import OWNER, Scope, apiary_or_404, remove_shares
 from app.deps import CurrentUser, DB
 from app.i18n import error
 from app.models import Apiary
@@ -45,14 +46,8 @@ def _maybe_geocode(apiary: Apiary, db: Session) -> None:
     db.refresh(apiary)
 
 
-def _get_or_404(apiary_id: str, user_id: str, db: DB, lang):
-    apiary = db.get(Apiary, apiary_id)
-    if not apiary or apiary.user_id != user_id:
-        raise HTTPException(404, detail=error("APIARY_NOT_FOUND", lang))
-    return apiary
-
-
-def _to_out(apiary: Apiary) -> ApiaryOut:
+def _to_out(apiary: Apiary, scope: Scope) -> ApiaryOut:
+    access = scope.apiary_access(apiary)
     return ApiaryOut(
         id=apiary.id,
         name=apiary.name,
@@ -60,8 +55,11 @@ def _to_out(apiary: Apiary) -> ApiaryOut:
         latitude=apiary.latitude,
         longitude=apiary.longitude,
         address=apiary.address,
-        hive_count=len(apiary.hives),
+        # Somebody who only has one hive of it shared must not learn how many others there are.
+        hive_count=len(scope.hives_in(apiary)),
         is_public=apiary.is_public,
+        access=access,
+        owner_name=None if access == OWNER else apiary.user.name,
         created_at=apiary.created_at,
     )
 
@@ -73,11 +71,12 @@ def list_apiaries(
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
 ):
-    q = db.query(Apiary).filter(Apiary.user_id == current_user.id)
+    scope = Scope(db, current_user)
+    q = db.query(Apiary).filter(scope.apiary_filter())
     total = q.count()
     items = q.offset((page - 1) * per_page).limit(per_page).all()
     return PaginatedResponse(
-        items=[_to_out(a) for a in items],
+        items=[_to_out(a, scope) for a in items],
         total=total,
         page=page,
         per_page=per_page,
@@ -92,7 +91,7 @@ def create_apiary(body: ApiaryCreate, current_user: CurrentUser, db: DB):
     db.commit()
     db.refresh(apiary)
     _maybe_geocode(apiary, db)
-    return _to_out(apiary)
+    return _to_out(apiary, Scope(db, current_user))
 
 
 @router.get("/{apiary_id}", response_model=ApiaryOut)
@@ -102,7 +101,8 @@ def get_apiary(
     db: DB,
     accept_language: Optional[str] = Header(default=None),
 ):
-    return _to_out(_get_or_404(apiary_id, current_user.id, db, accept_language))
+    apiary, _, scope = apiary_or_404(db, current_user, apiary_id, accept_language)
+    return _to_out(apiary, scope)
 
 
 @router.put("/{apiary_id}", response_model=ApiaryOut)
@@ -113,13 +113,18 @@ def update_apiary(
     db: DB,
     accept_language: Optional[str] = Header(default=None),
 ):
-    apiary = _get_or_404(apiary_id, current_user.id, db, accept_language)
-    for field, value in body.model_dump(exclude_unset=True).items():
+    apiary, access, scope = apiary_or_404(db, current_user, apiary_id, accept_language, need="edit")
+    changes = body.model_dump(exclude_unset=True)
+    # Whether the apiary appears on the public map is the owner's decision alone: it exposes
+    # the location of something a collaborator was only asked to help look after.
+    if access != OWNER and changes.get("is_public", apiary.is_public) != apiary.is_public:
+        raise HTTPException(403, detail=error("OWNER_ONLY", accept_language))
+    for field, value in changes.items():
         setattr(apiary, field, value)
     db.commit()
     db.refresh(apiary)
     _maybe_geocode(apiary, db)
-    return _to_out(apiary)
+    return _to_out(apiary, scope)
 
 
 @router.delete("/{apiary_id}", status_code=204)
@@ -129,8 +134,9 @@ def delete_apiary(
     db: DB,
     accept_language: Optional[str] = Header(default=None),
 ):
-    apiary = _get_or_404(apiary_id, current_user.id, db, accept_language)
+    apiary, _, _ = apiary_or_404(db, current_user, apiary_id, accept_language, need="owner")
     if apiary.hives:
         raise HTTPException(409, detail=error("APIARY_HAS_HIVES", accept_language))
+    remove_shares(db, apiary_id=apiary.id)
     db.delete(apiary)
     db.commit()
