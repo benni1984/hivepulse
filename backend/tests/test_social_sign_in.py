@@ -273,3 +273,68 @@ def test_providers_needs_no_sign_in_of_its_own(client, monkeypatch):
     monkeypatch.setattr(settings, "google_client_ids", "web-id")
     # It is read by the login screen, which by definition has no token yet.
     assert client.get("/api/v1/auth/providers").status_code == 200
+
+
+# ── An account without a password must not meet a screen that assumes one ─────
+
+def _social_user(client, pem, sub="pw-less-1", email="pwless2@example.com"):
+    body = _sign_in(client, _token(pem, sub=sub, email=email)).json()
+    return {"Authorization": f"Bearer {body['access_token']}"}
+
+
+def test_the_user_says_whether_there_is_a_password_to_change(client, signing):
+    pem, _, _ = signing
+    headers = _social_user(client, pem)
+
+    me = client.get("/api/v1/users/me", headers=headers).json()
+
+    # The clients hide "Change password" from this.
+    assert me["has_password"] is False
+
+
+def test_an_account_with_a_password_says_so(client):
+    client.post("/api/v1/auth/register", json={
+        "email": "withpw@example.com", "password": "password123", "name": "Mit",
+    })
+    token = client.post("/api/v1/auth/login", json={
+        "email": "withpw@example.com", "password": "password123",
+    }).json()["access_token"]
+
+    me = client.get("/api/v1/users/me", headers={"Authorization": f"Bearer {token}"}).json()
+
+    assert me["has_password"] is True
+
+
+def test_changing_the_password_of_such_an_account_is_refused_not_a_500(client, signing):
+    """Verifying against a missing hash raises, so this used to be a server error that every
+    tester who found the Settings screen would have hit."""
+    pem, _, _ = signing
+    headers = _social_user(client, pem, sub="pw-less-2", email="pwless3@example.com")
+
+    r = client.put("/api/v1/users/me", headers=headers,
+                   json={"current_password": "whatever", "password": "newpassword123"})
+
+    assert r.status_code == 400
+    assert r.json()["detail"]["code"] == "NO_PASSWORD_SET"
+
+
+def test_the_refusal_is_in_the_readers_language(client, signing):
+    pem, _, _ = signing
+    headers = _social_user(client, pem, sub="pw-less-3", email="pwless4@example.com")
+    headers["Accept-Language"] = "de"
+
+    r = client.put("/api/v1/users/me", headers=headers,
+                   json={"current_password": "x", "password": "newpassword123"})
+
+    assert "Apple oder Google" in r.json()["detail"]["message"]
+
+
+def test_a_name_can_still_be_changed_without_a_password(client, signing):
+    pem, _, _ = signing
+    headers = _social_user(client, pem, sub="pw-less-4", email="pwless5@example.com")
+
+    r = client.put("/api/v1/users/me", headers=headers, json={"name": "Neuer Name"})
+
+    # Only the password path is closed, not the profile.
+    assert r.status_code == 200
+    assert r.json()["name"] == "Neuer Name"

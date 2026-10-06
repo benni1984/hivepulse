@@ -460,7 +460,7 @@ export interface PublicStats {
   avg_inspection_interval_days: number | null;
   apiaries: PublicApiary[];
 }
-export interface User { id: string; email: string; name: string; locale: string; created_at: string; is_admin: boolean; is_supporter: boolean; }
+export interface User { id: string; email: string; name: string; locale: string; created_at: string; is_admin: boolean; is_supporter: boolean; /** false for an account made through Apple or Google */ has_password?: boolean; }
 export interface Apiary { id: string; name: string; hive_count: number; is_public: boolean; description?: string; address?: string; latitude?: number; longitude?: number; created_at: string; }
 export interface Hive { id: string; name: string; hive_type: string; apiary_id: string; last_inspection_at?: string; notes?: string; acquisition_date?: string; }
 export interface Inspection {

@@ -87,32 +87,36 @@ struct SettingsView: View {
             }
 
             // MARK: - Change Password
-            Section(NSLocalizedString("section.changePassword", comment: "")) {
-                SecureField(NSLocalizedString("field.currentPassword", comment: ""), text: $currentPassword)
-                SecureField(NSLocalizedString("field.newPassword", comment: ""), text: $newPassword)
-                    .accessibilityIdentifier("newPasswordField")
-                SecureField(NSLocalizedString("field.confirmPassword", comment: ""), text: $confirmPassword)
-                    .accessibilityIdentifier("confirmPasswordField")
+            // An account made through Apple or Google has no password, so there is nothing to
+            // change, and asking the server to would only be refused.
+            if authVM.currentUser?.canChangePassword ?? true {
+                Section(NSLocalizedString("section.changePassword", comment: "")) {
+                    SecureField(NSLocalizedString("field.currentPassword", comment: ""), text: $currentPassword)
+                    SecureField(NSLocalizedString("field.newPassword", comment: ""), text: $newPassword)
+                        .accessibilityIdentifier("newPasswordField")
+                    SecureField(NSLocalizedString("field.confirmPassword", comment: ""), text: $confirmPassword)
+                        .accessibilityIdentifier("confirmPasswordField")
 
-                if let err = passwordError {
-                    Text(err).foregroundColor(.red).font(.caption)
-                }
-                if passwordSuccess {
-                    Text(NSLocalizedString("alert.passwordChanged", comment: ""))
-                        .foregroundColor(.green).font(.caption)
-                }
-            }
-
-            Section {
-                Button {
-                    Task { await doChangePassword() }
-                } label: {
-                    HStack {
-                        if isChangingPassword { ProgressView() }
-                        Text(NSLocalizedString("action.changePassword", comment: ""))
+                    if let err = passwordError {
+                        Text(err).foregroundColor(.red).font(.caption)
+                    }
+                    if passwordSuccess {
+                        Text(NSLocalizedString("alert.passwordChanged", comment: ""))
+                            .foregroundColor(.green).font(.caption)
                     }
                 }
-                .disabled(isChangingPassword || currentPassword.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty)
+
+                Section {
+                    Button {
+                        Task { await doChangePassword() }
+                    } label: {
+                        HStack {
+                            if isChangingPassword { ProgressView() }
+                            Text(NSLocalizedString("action.changePassword", comment: ""))
+                        }
+                    }
+                    .disabled(isChangingPassword || currentPassword.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty)
+                }
             }
 
             // MARK: - Inspection Reminders

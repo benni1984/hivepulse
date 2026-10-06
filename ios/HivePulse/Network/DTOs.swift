@@ -128,11 +128,17 @@ struct UserOut: Codable, Identifiable {
     let createdAt: Date
     let isAdmin: Bool
     let isSupporter: Bool
+    /// False for an account made through Apple or Google, which never had a password.
+    /// Optional with a default so older responses and the memberwise initialiser still work.
+    var hasPassword: Bool? = nil
+    /// Settings shows "Change password" only where there is something to change.
+    var canChangePassword: Bool { hasPassword ?? true }
     enum CodingKeys: String, CodingKey {
         case id, email, name, locale
         case createdAt   = "created_at"
         case isAdmin     = "is_admin"
         case isSupporter = "is_supporter"
+        case hasPassword = "has_password"
     }
 }
 

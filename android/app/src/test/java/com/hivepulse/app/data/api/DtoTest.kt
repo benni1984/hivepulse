@@ -102,4 +102,37 @@ class DtoTest {
         acquisitionDate = null, notes = null, customFields = emptyMap(),
         initializedAt = "2024-01-01", lastInspectionAt = null, createdAt = "2024-01-01"
     )
+
+    @Test
+    fun `an account without a password cannot change one`() {
+        val user = Gson().fromJson(
+            """{"id":"u","email":"a@b.de","name":"A","locale":"de","created_at":"2026-01-01T00:00:00","has_password":false}""",
+            UserOut::class.java,
+        )
+
+        assertFalse(user.canChangePassword)
+    }
+
+    @Test
+    fun `a response without the field reads as having a password`() {
+        // Gson ignores Kotlin defaults, so a missing field must not turn into "no password":
+        // that would hide the section from everybody whenever the server did not say.
+        val user = Gson().fromJson(
+            """{"id":"u","email":"a@b.de","name":"A","locale":"de","created_at":"2026-01-01T00:00:00"}""",
+            UserOut::class.java,
+        )
+
+        assertTrue(user.canChangePassword)
+    }
+
+    @Test
+    fun `an account with a password can change it`() {
+        val user = Gson().fromJson(
+            """{"id":"u","email":"a@b.de","name":"A","locale":"de","created_at":"2026-01-01T00:00:00","has_password":true}""",
+            UserOut::class.java,
+        )
+
+        assertTrue(user.canChangePassword)
+    }
+
 }

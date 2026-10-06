@@ -1,7 +1,10 @@
-from fastapi import APIRouter, HTTPException
+from typing import Optional
+
+from fastapi import APIRouter, Header, HTTPException
 from passlib.context import CryptContext
 
 from app.deps import CurrentUser, DB
+from app.i18n import error
 from app.models import Hive, Inspection
 from app.schemas import (
     PushTokenRegister,
@@ -21,12 +24,22 @@ def get_me(current_user: CurrentUser):
 
 
 @router.put("/me", response_model=UserOut)
-def update_me(body: UserUpdate, current_user: CurrentUser, db: DB):
+def update_me(
+    body: UserUpdate,
+    current_user: CurrentUser,
+    db: DB,
+    accept_language: Optional[str] = Header(default=None),
+):
     if body.name is not None:
         current_user.name = body.name
     if body.locale is not None:
         current_user.locale = body.locale
     if body.password is not None:
+        if current_user.hashed_password is None:
+            # Verifying against nothing raises instead of returning False, which used to turn
+            # this into a 500. An account made through Apple or Google has no password to
+            # change; it sets one through the emailed reset link, which proves the mailbox.
+            raise HTTPException(400, detail=error("NO_PASSWORD_SET", accept_language))
         if not _pwd.verify(body.current_password, current_user.hashed_password):
             raise HTTPException(400, detail="Current password is incorrect")
         current_user.hashed_password = _pwd.hash(body.password)

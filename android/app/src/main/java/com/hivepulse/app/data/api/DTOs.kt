@@ -33,8 +33,15 @@ data class UserOut(
     val locale: String,
     @SerializedName("created_at")  val createdAt: String,
     @SerializedName("is_admin")    val isAdmin: Boolean = false,
-    @SerializedName("is_supporter") val isSupporter: Boolean = false
-)
+    @SerializedName("is_supporter") val isSupporter: Boolean = false,
+    /** False for an account made through Apple or Google, which never had a password. Nullable
+     *  because Gson ignores Kotlin defaults: a response without the field must not read as
+     *  "no password". */
+    @SerializedName("has_password") val hasPassword: Boolean? = null,
+) {
+    /** Settings shows "Change password" only where there is something to change. */
+    val canChangePassword: Boolean get() = hasPassword != false
+}
 data class UserUpdateRequest(val name: String?, val locale: String?)
 data class PasswordChangeRequest(
     val password: String,

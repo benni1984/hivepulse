@@ -84,6 +84,8 @@ class UserOut(BaseModel):
     locale: str
     is_admin: bool
     is_supporter: bool
+    # Derived from the stored hash, never from a column of its own.
+    has_password: bool = True
     created_at: datetime
 
     model_config = {"from_attributes": True}
