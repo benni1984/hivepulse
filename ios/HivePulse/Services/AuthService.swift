@@ -3,7 +3,7 @@ import Foundation
 protocol AuthServiceProtocol {
     func register(email: String, password: String, name: String, locale: String) async throws -> TokenResponse
     func login(email: String, password: String) async throws -> TokenResponse
-    func signInWithApple(idToken: String, name: String?) async throws -> TokenResponse
+    func signInWithApple(idToken: String, name: String?, authorizationCode: String?) async throws -> TokenResponse
     func signInWithGoogle(idToken: String) async throws -> TokenResponse
     func signInProviders() async throws -> SignInProviders
     func logout(refreshToken: String) async throws
@@ -29,8 +29,9 @@ struct AuthService: AuthServiceProtocol {
         return try await client.postNoAuth("auth/login", body: body)
     }
 
-    func signInWithApple(idToken: String, name: String?) async throws -> TokenResponse {
-        let body = SocialSignInRequest(provider: "apple", idToken: idToken, name: name)
+    func signInWithApple(idToken: String, name: String?, authorizationCode: String?) async throws -> TokenResponse {
+        let body = SocialSignInRequest(provider: "apple", idToken: idToken, name: name,
+                                       authorizationCode: authorizationCode)
         return try await client.postNoAuth("auth/social", body: body)
     }
 

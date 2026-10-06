@@ -25,6 +25,11 @@ class User(Base):
     # address, which Apple will happily hide behind a relay.
     apple_sub = Column(String, nullable=True, unique=True, index=True)
     google_sub = Column(String, nullable=True, unique=True, index=True)
+    # What Apple needs back when the account is deleted. The client ID is stored with it
+    # because a token is bound to the app that obtained it: bundle ID on the iPhone, Services
+    # ID in the browser. Never sent to a client.
+    apple_refresh_token = Column(String, nullable=True)
+    apple_token_client_id = Column(String, nullable=True)
     name = Column(String, nullable=False)
     locale = Column(SAEnum("en", "fr", "de", "es", name="locale_enum"), default="en")
     is_admin = Column(Boolean, default=False, nullable=False)

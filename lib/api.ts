@@ -138,11 +138,14 @@ export async function socialSignIn(
   provider: 'google' | 'apple',
   idToken: string,
   name?: string,
+  authorizationCode?: string,
 ): Promise<User> {
   const res = await fetch(`${BASE}/auth/social`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ provider, id_token: idToken, name }),
+    body: JSON.stringify({
+      provider, id_token: idToken, name, authorization_code: authorizationCode,
+    }),
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));

@@ -72,8 +72,10 @@ final class MockAuthService: AuthServiceProtocol {
     var socialResult: Result<TokenResponse, Error> = .failure(APIError.unauthorized)
     var providersResult: Result<SignInProviders, Error> = .success(SignInProviders(google: nil, apple: nil))
     private(set) var lastSocialName: String?
-    func signInWithApple(idToken: String, name: String?) async throws -> TokenResponse {
+    private(set) var lastAuthorizationCode: String?
+    func signInWithApple(idToken: String, name: String?, authorizationCode: String?) async throws -> TokenResponse {
         lastSocialName = name
+        lastAuthorizationCode = authorizationCode
         return try await socialResult.get()
     }
     func signInWithGoogle(idToken: String) async throws -> TokenResponse { try socialResult.get() }

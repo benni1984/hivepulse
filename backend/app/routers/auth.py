@@ -20,7 +20,7 @@ from app.schemas import (
     RefreshRequest, RegisterRequest, TokenResponse, UserOut,
     CISetupRequest, ForgotPasswordRequest, ResetPasswordRequest, SocialSignInRequest,
 )
-from app.utils import social_identity
+from app.utils import apple_auth, social_identity
 
 # A bcrypt hash of an unguessable placeholder — used to run a real bcrypt
 # verify (and burn the same ~100ms) even when the email doesn't exist, so
@@ -155,6 +155,14 @@ def social_sign_in(
             **{f"{identity.provider}_sub": identity.subject},
         )
         db.add(user)
+
+    if identity.provider == "apple" and body.authorization_code and identity.audience:
+        # Kept so the token can be handed back to Apple when the account is deleted. A failed
+        # exchange costs only that: the person is signed in either way.
+        refresh_token = apple_auth.exchange_code(body.authorization_code, identity.audience)
+        if refresh_token:
+            user.apple_refresh_token = refresh_token
+            user.apple_token_client_id = identity.audience
 
     db.commit()
     db.refresh(user)

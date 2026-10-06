@@ -69,11 +69,15 @@ struct SocialSignInRequest: Encodable {
     /// Apple sends the name once, in the very first authorization and never in the token, so
     /// it travels with this request or it is lost for good.
     let name: String?
+    /// Apple's one-time code from the same authorization. The server trades it for a token it
+    /// can hand back to Apple when the account is deleted, which Apple requires.
+    var authorizationCode: String? = nil
 
     enum CodingKeys: String, CodingKey {
         case provider
         case idToken = "id_token"
         case name
+        case authorizationCode = "authorization_code"
     }
 }
 

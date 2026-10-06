@@ -59,6 +59,26 @@ final class AppleSignInTests: XCTestCase {
         XCTAssertEqual(service.lastSocialName, "Grete Imkerin")
     }
 
+    func test_theAuthorizationCodeIsPassedOnSoTheServerCanRevokeTheTokenLater() async {
+        let (viewModel, service) = makeViewModel()
+        service.socialResult = .success(tokenResponse())
+
+        await viewModel.signInWithApple(identityToken: "a.token", fullName: nil,
+                                        authorizationCode: "one-time")
+
+        XCTAssertEqual(service.lastAuthorizationCode, "one-time")
+    }
+
+    func test_aSignInWithoutACodeStillWorks() async {
+        let (viewModel, service) = makeViewModel()
+        service.socialResult = .success(tokenResponse())
+
+        await viewModel.signInWithApple(identityToken: "a.token", fullName: nil)
+
+        XCTAssertTrue(viewModel.isAuthenticated)
+        XCTAssertNil(service.lastAuthorizationCode)
+    }
+
     func test_aRefusedTokenLeavesTheUserSignedOutAndSaysSo() async {
         let (viewModel, service) = makeViewModel()
         service.socialResult = .failure(APIError.unauthorized)

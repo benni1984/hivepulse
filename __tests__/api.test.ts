@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { login, register, logout, getMe, updateMe, deleteMe, getApiaries, createApiary, updateApiary, deleteApiary, createHive, updateHive, deleteHive, getHive, clearTokens, createInspection, updateInspection, deleteInspection, getQrBatches, createQrBatch, getQrBatch, downloadQrBatchPdf, getPublicStats, exportHiveInspections, exportApiaryInspections, getReminderSettings, updateReminderSettings, registerPushToken, forgotPassword, resetPassword } from '@/lib/api';
+import { login, register, logout, getMe, updateMe, deleteMe, getApiaries, createApiary, updateApiary, deleteApiary, createHive, updateHive, deleteHive, getHive, clearTokens, createInspection, updateInspection, deleteInspection, getQrBatches, createQrBatch, getQrBatch, downloadQrBatchPdf, getPublicStats, exportHiveInspections, exportApiaryInspections, getReminderSettings, updateReminderSettings, registerPushToken, forgotPassword, resetPassword, socialSignIn } from '@/lib/api';
 
 const mockUser = { id: '1', email: 'a@b.com', name: 'Test', locale: 'en', created_at: '2024-01-01' };
 const mockTokens = { access_token: 'access-123', refresh_token: 'refresh-456', user: mockUser };
@@ -43,6 +43,24 @@ describe('register', () => {
   it('throws with server message on failure', async () => {
     vi.mocked(fetch).mockResolvedValueOnce(ok({ detail: 'Email already registered' }, 422));
     await expect(register('Test', 'a@b.com', 'pass')).rejects.toThrow('Email already registered');
+  });
+});
+
+describe('socialSignIn', () => {
+  it('sends the Apple one-time code along, which is what lets the server revoke the token later', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok(mockTokens));
+    await socialSignIn('apple', 'id.token', 'Ada', 'one-time-code');
+    const body = JSON.parse(vi.mocked(fetch).mock.calls[0][1]!.body as string);
+    expect(body).toEqual({
+      provider: 'apple', id_token: 'id.token', name: 'Ada', authorization_code: 'one-time-code',
+    });
+  });
+
+  it('leaves the code out for Google', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok(mockTokens));
+    await socialSignIn('google', 'id.token');
+    const body = JSON.parse(vi.mocked(fetch).mock.calls[0][1]!.body as string);
+    expect(body).toEqual({ provider: 'google', id_token: 'id.token' });
   });
 });
 

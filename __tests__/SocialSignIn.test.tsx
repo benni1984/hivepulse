@@ -204,7 +204,7 @@ describe('SocialSignIn', () => {
 
     it('opens Apple with the client id the server named', async () => {
       const signIn = vi.fn().mockResolvedValue({
-        authorization: { id_token: 'apple.token' }, user: undefined,
+        authorization: { id_token: 'apple.token', code: 'apple-code' }, user: undefined,
       });
       const init = fakeAppleScript(signIn);
       vi.mocked(api.getSignInProviders).mockResolvedValue({
@@ -222,7 +222,7 @@ describe('SocialSignIn', () => {
 
     it('passes the name on, because Apple sends it only once', async () => {
       const signIn = vi.fn().mockResolvedValue({
-        authorization: { id_token: 'apple.token' },
+        authorization: { id_token: 'apple.token', code: 'apple-code' },
         user: { name: { firstName: 'Ada', lastName: 'Imkerin' } },
       });
       fakeAppleScript(signIn);
@@ -235,12 +235,12 @@ describe('SocialSignIn', () => {
       fireEvent.click(await screen.findByText('Continue with Apple'));
 
       await waitFor(() =>
-        expect(api.socialSignIn).toHaveBeenCalledWith('apple', 'apple.token', 'Ada Imkerin'));
+        expect(api.socialSignIn).toHaveBeenCalledWith('apple', 'apple.token', 'Ada Imkerin', 'apple-code'));
     });
 
     it('sends no name at all when Apple sends none', async () => {
       const signIn = vi.fn().mockResolvedValue({
-        authorization: { id_token: 'apple.token' }, user: undefined,
+        authorization: { id_token: 'apple.token', code: 'apple-code' }, user: undefined,
       });
       fakeAppleScript(signIn);
       vi.mocked(api.getSignInProviders).mockResolvedValue({
@@ -254,7 +254,7 @@ describe('SocialSignIn', () => {
       // undefined, not "": every sign-in after the first carries no name, and an empty
       // string would overwrite a perfectly good one.
       await waitFor(() =>
-        expect(api.socialSignIn).toHaveBeenCalledWith('apple', 'apple.token', undefined));
+        expect(api.socialSignIn).toHaveBeenCalledWith('apple', 'apple.token', undefined, 'apple-code'));
     });
 
     it('says nothing when somebody closes the Apple window', async () => {
