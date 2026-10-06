@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.messaging.FirebaseMessaging
 import com.hivepulse.app.BuildConfig
 import com.hivepulse.app.R
+import com.hivepulse.app.data.local.AppLanguage
 import com.hivepulse.app.monitoring.CrashReporting
 import com.hivepulse.app.ui.common.NumberStepper
 import com.hivepulse.app.ui.common.ToggleButtonGroup
@@ -288,8 +289,16 @@ fun SettingsScreen(
                     ToggleButtonGroup(
                         label    = "",
                         options  = localeLabels,
-                        selected = locales.indexOf(user.locale).takeIf { it >= 0 },
-                        onSelect = { idx -> idx?.let { vm.updateLocale(locales[it]) } },
+                        // What the interface is in right now, not what the server has on file: the two
+                        // differ on a phone set to another language than the account.
+                        selected = locales.indexOf(AppLanguage.current(context) ?: user.locale).takeIf { it >= 0 },
+                        onSelect = { idx ->
+                            idx?.let {
+                                // The server writes emails in this language; the app shows it.
+                                vm.updateLocale(locales[it])
+                                AppLanguage.apply(context, locales[it])
+                            }
+                        },
                     )
 
                     // An account made through Apple or Google has no password, so there is nothing to
