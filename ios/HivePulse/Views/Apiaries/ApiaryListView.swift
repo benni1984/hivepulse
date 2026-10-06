@@ -2,13 +2,14 @@ import SwiftUI
 
 struct ApiaryListView: View {
     @EnvironmentObject var apiaryVM: ApiaryViewModel
+    @StateObject private var invitationsVM = InvitationsViewModel()
     @State private var showCreate = false
 
     var body: some View {
         Group {
             if apiaryVM.isLoading && apiaryVM.apiaries.isEmpty {
                 ProgressView()
-            } else if apiaryVM.apiaries.isEmpty {
+            } else if apiaryVM.apiaries.isEmpty && invitationsVM.invitations.isEmpty {
                 if #available(iOS 17, *) {
                     ContentUnavailableView(
                         NSLocalizedString("empty.apiaries.title", comment: ""),
@@ -25,10 +26,17 @@ struct ApiaryListView: View {
                 }
             } else {
                 List {
+                    if !invitationsVM.invitations.isEmpty {
+                        Section {
+                            InvitationsSection(vm: invitationsVM) { await apiaryVM.load() }
+                        }
+                    }
                     ForEach(apiaryVM.apiaries) { apiary in
                         NavigationLink(destination: ApiaryDetailView(apiary: apiary)) {
                             ApiaryRow(apiary: apiary)
                         }
+                        // Only the owner deletes: the server would refuse anybody else.
+                        .deleteDisabled(!apiary.isOwner)
                     }
                     .onDelete { indices in
                         Task {
@@ -73,7 +81,11 @@ struct ApiaryListView: View {
                 Button { showCreate = true } label: { Image(systemName: "plus") }
             }
         }
-        .refreshable { await apiaryVM.load() }
+        .task { await invitationsVM.load() }
+        .refreshable {
+            await apiaryVM.load()
+            await invitationsVM.load()
+        }
         .sheet(isPresented: $showCreate) {
             ApiaryFormView(mode: .create) { name, desc, lat, lon, addr, isPublic in
                 try await apiaryVM.create(name: name, description: desc, latitude: lat, longitude: lon, address: addr, isPublic: isPublic)
@@ -115,6 +127,11 @@ private struct ApiaryRow: View {
                 }
                 .font(.dmSans(14, relativeTo: .subheadline))
                 .foregroundColor(.hpStone500)
+                if !apiary.isOwner, let owner = apiary.ownerName {
+                    Text(String(format: NSLocalizedString(apiary.access == "partial" ? "label.partialBy" : "label.sharedBy", comment: ""), owner))
+                        .font(.dmSans(13, relativeTo: .caption))
+                        .foregroundColor(.hpAmberDark)
+                }
             }
         }
         .padding(.vertical, 6)

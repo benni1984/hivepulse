@@ -431,3 +431,25 @@
 /* Deleting a QR batch */
 "confirm.deleteBatch.title" = "¿Eliminar este lote de códigos QR?";
 "confirm.deleteBatch.message" = "Se eliminan también todos sus códigos. Los códigos sin usar no se pueden recuperar.";
+
+/* Sharing apiaries and hives */
+"sharing.title" = "Trabajar juntos";
+"sharing.emailLabel" = "Correo electrónico de la persona";
+"sharing.invite" = "Invitar";
+"sharing.inviteSent" = "Invitación enviada.";
+"sharing.empty" = "Todavía no has invitado a nadie.";
+"sharing.pending" = "Esperando respuesta";
+"sharing.accepted" = "Trabaja contigo";
+"sharing.revoke" = "Quitar";
+"sharing.withdraw" = "Retirar";
+"sharing.confirmRevoke" = "¿Quitar a esta persona? Pierde el acceso; lo que anotó se queda.";
+"sharing.confirmWithdraw" = "¿Retirar esta invitación?";
+"sharing.introApiary" = "Invita a otro apicultor a cuidar este colmenar contigo. Ve todas las colmenas y puede anotar revisiones.";
+"sharing.introHive" = "Invita a otro apicultor a cuidar esta colmena contigo. Solo ve esta colmena, no las demás del colmenar.";
+"invitation.apiary" = "%1$@ te invita a cuidar juntos el colmenar %2$@.";
+"invitation.hive" = "%1$@ te invita a cuidar juntos la colmena %2$@ en %3$@.";
+"invitation.accept" = "Aceptar";
+"invitation.decline" = "Rechazar";
+"label.sharedBy" = "Compartido por %@";
+"label.partialBy" = "Algunas colmenas compartidas por %@";
+"label.recordedBy" = "anotado por %@";

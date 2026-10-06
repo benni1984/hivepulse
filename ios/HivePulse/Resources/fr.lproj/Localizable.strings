@@ -431,3 +431,25 @@
 /* Deleting a QR batch */
 "confirm.deleteBatch.title" = "Supprimer ce lot de QR codes ?";
 "confirm.deleteBatch.message" = "Tous ses codes sont supprimés avec lui. Les codes inutilisés ne peuvent pas être récupérés.";
+
+/* Sharing apiaries and hives */
+"sharing.title" = "Travailler ensemble";
+"sharing.emailLabel" = "Adresse e-mail de la personne";
+"sharing.invite" = "Inviter";
+"sharing.inviteSent" = "Invitation envoyée.";
+"sharing.empty" = "Personne n’est encore invité.";
+"sharing.pending" = "En attente de réponse";
+"sharing.accepted" = "Travaille avec vous";
+"sharing.revoke" = "Retirer";
+"sharing.withdraw" = "Annuler";
+"sharing.confirmRevoke" = "Retirer cette personne ? Elle perd l’accès ; ce qu’elle a saisi reste.";
+"sharing.confirmWithdraw" = "Annuler cette invitation ?";
+"sharing.introApiary" = "Invitez un autre apiculteur à s’occuper de ce rucher avec vous. Il voit toutes les ruches et peut saisir des visites.";
+"sharing.introHive" = "Invitez un autre apiculteur à s’occuper de cette ruche avec vous. Il ne voit que cette ruche, pas les autres du rucher.";
+"invitation.apiary" = "%1$@ vous invite à vous occuper ensemble du rucher %2$@.";
+"invitation.hive" = "%1$@ vous invite à vous occuper ensemble de la ruche %2$@ dans %3$@.";
+"invitation.accept" = "Accepter";
+"invitation.decline" = "Refuser";
+"label.sharedBy" = "Partagé par %@";
+"label.partialBy" = "Quelques ruches partagées par %@";
+"label.recordedBy" = "saisi par %@";
