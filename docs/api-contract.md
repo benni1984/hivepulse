@@ -17,12 +17,13 @@ All endpoints require `Authorization: Bearer <access_token>` unless marked **pub
 7. [QR Batches](#qr-batches)
 8. [Hives](#hives)
 9. [Inspections](#inspections)
-10. [Stats](#stats)
-11. [Public Dashboard](#public-dashboard)
-12. [Hornet Tracker](#hornet-tracker)
-13. [Admin](#admin)
-14. [Object Reference](#object-reference)
-15. [Error Codes](#error-codes)
+10. [Sharing](#sharing)
+11. [Stats](#stats)
+12. [Public Dashboard](#public-dashboard)
+13. [Hornet Tracker](#hornet-tracker)
+14. [Admin](#admin)
+15. [Object Reference](#object-reference)
+16. [Error Codes](#error-codes)
 
 ---
 
@@ -299,6 +300,9 @@ of the mailbox, instead of through an access token that may have been lifted.
 
 Deletes the account, its apiaries, hives and inspections. **204**, no body.
 
+What the account shared with others is not deleted with it: see
+[When an owner deletes their account](#when-an-owner-deletes-their-account).
+
 If the account was signed in through Apple with an `authorization_code` (see
 `POST /auth/social`), the server first revokes the stored Apple token, as Apple requires.
 That call is best effort: when Apple is unreachable or refuses, the account is deleted anyway,
@@ -465,9 +469,14 @@ An apiary is a named location. Hives belong to exactly one apiary.
   "address": "string | null",
   "hive_count": 3,
   "is_public": false,
+  "access": "owner | shared | partial",
+  "owner_name": "string | null",
   "created_at": "datetime"
 }
 ```
+
+`access` and `owner_name` are explained under [Sharing](#sharing): `owner_name` is `null` for the
+caller's own apiaries, and `hive_count` counts only the hives the caller can see.
 
 `is_public` controls whether this apiary appears on the public map. Defaults to `false` (opt-in). Apiaries with `is_public = false` are invisible to the public endpoints even if they have GPS coordinates.
 
@@ -595,6 +604,7 @@ HTTP 404, error code `QR_TOKEN_NOT_FOUND`.
   },
   "initialized_at": "datetime",
   "last_inspection_at": "datetime | null",
+  "access": "owner | shared",
   "created_at": "datetime"
 }
 ```
@@ -691,9 +701,14 @@ All fields optional.
   "custom_fields": {
     "<field_definition_id>": "value"
   },
+  "created_by_name": "string | null",
   "created_at": "datetime"
 }
 ```
+
+`created_by_name` is who recorded the inspection, so that two people working on one hive can see
+who did what. `null` for records made before sharing existed, or whose author has deleted their
+account.
 
 ### Rating scales
 
@@ -752,6 +767,178 @@ already stored the first attempt would otherwise create a duplicate.
 - Omitting `client_id` keeps the old behaviour — every POST creates an inspection.
 - `client_id` is echoed in `InspectionOut` so a client can match a queued entry to the
   stored one; it is at most 64 characters.
+
+---
+
+## Sharing
+
+Two beekeepers can work on the same apiary, or on single hives, together. The person who made
+the thing is its **owner** and invites another by email address; the invited person is a
+**collaborator** once they accept.
+
+### What can be shared
+
+| Target | Collaborator gets |
+|--------|-------------------|
+| An **apiary** | The apiary and **every hive in it**, including hives added later. |
+| A single **hive** | That hive only. The apiary shows up in their list under its name so they can find their way, but they see none of its other hives, cannot edit the apiary and cannot add hives to it. |
+
+To share some hives but not all, put them in an apiary of their own and share that.
+
+### Access levels
+
+`access` appears on apiaries and hives so a client can show or hide actions:
+
+| Value | On | Meaning |
+|-------|----|---------|
+| `owner` | apiary, hive | Made by the caller (a hive in the caller's apiary counts too). |
+| `shared` | apiary, hive | Shared with the caller as a whole apiary, or the caller holds a share on this hive. |
+| `partial` | apiary | The caller holds shares on some hives in it, not on the apiary. |
+
+### Who may do what
+
+All collaborators are equal: they can look and they can change. What stays with the owner is
+whatever cannot be taken back or concerns people outside the apiary.
+
+| Action | Owner | Collaborator (`shared`) | Collaborator (`partial`) |
+|--------|:-----:|:-----------------------:|:------------------------:|
+| See apiary, hives, inspections, stats, export | yes | yes | only the shared hives |
+| Record, edit and delete inspections | yes | yes | on the shared hives |
+| Edit a hive | yes | yes | on the shared hives |
+| Add hives to the apiary | yes | yes | no |
+| Edit the apiary (name, address, notes) | yes | yes | no |
+| Edit the apiary's custom fields | yes | yes | no |
+| Change `is_public` (the public map) | yes | **no** | no |
+| Delete a hive or the apiary | yes | **no** | no |
+| Invite, list and revoke collaborators | yes | no | no |
+| Leave | | yes | yes |
+
+A refused action answers **403 `OWNER_ONLY`**. Anything the caller cannot see at all answers
+404, as it always did, so that the existence of other people's apiaries is not revealed.
+
+Custom fields: an apiary's own fields are shared with its collaborators. A user's personal
+fields (`scope: "user"`) are not; a collaborator sees the values stored under them as
+unlabelled data and does not get the owner's personal form fields.
+
+QR codes: scanning a code that is attached to a hive the caller can access resolves to that
+hive. A code that is attached to nothing can only be used by whoever printed it.
+
+### Invitations
+
+An invitation goes to an email address and is **pending** until the invited person accepts.
+
+* If an account with that address exists, the invitation is bound to it at once and shows up
+  under `GET /shares/incoming`.
+* If none exists, the invitation is kept for the address and an email with a link
+  (`/dashboard/invitations?token=…`) is sent. Whoever opens the link and signs in or registers
+  can accept it with `POST /shares/accept-by-token`. The token proves control of the mailbox,
+  which a password registration does not, so an address cannot be claimed merely by
+  registering it first.
+* In both cases an email tells the person about it, and the answer to the owner is identical,
+  so the endpoint cannot be used to find out which addresses have an account.
+
+### POST `/shares`
+
+Owner only.
+
+```json
+{ "email": "partner@example.com", "apiary_id": "uuid" }
+```
+
+Exactly one of `apiary_id` and `hive_id`. **201** with a [Share](#share-object).
+
+| Error | Meaning |
+|-------|---------|
+| 422 | Neither or both of `apiary_id` and `hive_id` |
+| 404 `APIARY_NOT_FOUND` / `HIVE_NOT_FOUND` | Not the caller's to share |
+| 400 `SHARE_WITH_SELF` | The address belongs to the caller |
+| 409 `SHARE_ALREADY_EXISTS` | That address already has this invitation or access |
+
+Limited to 20 invitations per hour per user.
+
+### GET `/shares?apiary_id=…` or `?hive_id=…`
+
+Owner only. The collaborators and open invitations for one target, newest first. Array of
+[Share](#share-object).
+
+### GET `/shares/incoming`
+
+The caller's open invitations. Array of [IncomingShare](#incomingshare-object). Accepted shares
+are not listed here: they are simply there, in the apiary and hive lists, with
+`access: "shared"`.
+
+### POST `/shares/{id}/accept` and `/shares/{id}/decline`
+
+For the invited person. Accept makes the target visible to them; decline deletes the
+invitation. **204**. 404 `SHARE_NOT_FOUND` for an invitation that is not theirs.
+
+### POST `/shares/accept-by-token`
+
+```json
+{ "token": "string" }
+```
+
+For an invitation sent to an address that had no account when it was made. Binds it to the
+caller and accepts it. **200** with the [IncomingShare](#incomingshare-object) it became.
+**404 `SHARE_TOKEN_INVALID`** for an unknown, used or revoked token. A token works once.
+
+### DELETE `/shares/{id}`
+
+The owner revokes a collaborator or withdraws an invitation, or a collaborator leaves. **204**.
+Nothing the collaborator recorded is removed: inspections stay with the hive.
+
+### Share object
+
+```json
+{
+  "id": "uuid",
+  "email": "partner@example.com",
+  "status": "pending | accepted",
+  "target": { "type": "apiary | hive", "id": "uuid", "name": "string" },
+  "collaborator_name": "string | null",
+  "created_at": "datetime",
+  "accepted_at": "datetime | null"
+}
+```
+
+`collaborator_name` is only set once the invitation is accepted. The invitation token is never
+part of any response.
+
+### IncomingShare object
+
+```json
+{
+  "id": "uuid",
+  "owner_name": "string",
+  "target": { "type": "apiary | hive", "id": "uuid", "name": "string" },
+  "apiary_name": "string | null",
+  "created_at": "datetime"
+}
+```
+
+`apiary_name` is set when the target is a hive, so the invitation can say where it sits.
+
+### Effect on the other endpoints
+
+* `GET /apiaries` lists owned, shared and `partial` apiaries. Apiary objects carry `access`,
+  and `owner_name` when the caller is not the owner. `hive_count` counts only the hives the
+  caller can see.
+* `GET /apiaries/{id}/hives` returns the hives the caller can see.
+* Hive objects carry `access` (`owner` | `shared`).
+* Inspection objects carry `created_by_name`: who recorded it, `null` for records made before
+  sharing existed or whose author deleted their account.
+* Stats, overview stats and exports cover everything the caller can see.
+* Inspection reminders count and notify for every hive the caller can see, so two beekeepers
+  on the same hive both get the reminder.
+* `PUT /apiaries/{id}` answers 403 `OWNER_ONLY` when a collaborator changes `is_public`.
+
+### When an owner deletes their account
+
+What others work on does not disappear with it. For every apiary the owner shared, ownership
+passes to the collaborator who accepted first. A hive shared on its own passes to its
+collaborator, in a new apiary of theirs with the old apiary's name. Everything the owner did
+not share is deleted as before. The collaborators' open invitations to the leaving owner's
+other things are removed.
 
 ---
 
@@ -1709,6 +1896,12 @@ Permanently deletes the user and all their apiaries, hives, and inspections.
 | `QR_TOKEN_NOT_FOUND` | 404 | Token does not exist in any batch |
 | `QR_TOKEN_ALREADY_LINKED` | 409 | Token is already assigned to a hive |
 | `APIARY_HAS_HIVES` | 409 | Cannot delete apiary while hives exist |
+| `QR_BATCH_IN_USE` | 409 | A code of the batch is attached to a hive |
+| `OWNER_ONLY` | 403 | Visible to the caller as a collaborator, but only the owner may do this |
+| `SHARE_NOT_FOUND` | 404 | Invitation or share that is not the caller's |
+| `SHARE_TOKEN_INVALID` | 404 | Unknown, used or revoked invitation token |
+| `SHARE_ALREADY_EXISTS` | 409 | That address already has this invitation or access |
+| `SHARE_WITH_SELF` | 400 | The address belongs to the caller |
 | `EMAIL_ALREADY_REGISTERED` | 409 | — |
 | `VALIDATION_ERROR` | 422 | Request body failed validation (details in `error.fields`) |
 | `QR_BATCH_LIMIT_EXCEEDED` | 422 | Requested count > 50 |
