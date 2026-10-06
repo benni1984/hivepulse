@@ -139,10 +139,25 @@ final class MockQrBatchService: QrBatchServiceProtocol {
     var pdfResult: Result<Data, Error> = .success(Data("%PDF-1.4".utf8))
     var pdfDelayNanoseconds: UInt64 = 0
     private(set) var pdfCallCount = 0
+    var listItems: [QrBatchSummary] = []
+    var listError: Error? = nil
+    var deleteError: Error? = nil
+    private(set) var deletedIds: [String] = []
+    private(set) var createdCounts: [Int] = []
 
-    func list(page: Int) async throws -> PaginatedResponse<QrBatchSummary> { makePage([], perPage: 20) }
+    func list(page: Int) async throws -> PaginatedResponse<QrBatchSummary> {
+        if let listError { throw listError }
+        return makePage(listItems, perPage: 20)
+    }
     func get(_ id: String) async throws -> QrBatchOut { try getResult.get() }
-    func create(count: Int) async throws -> QrBatchOut { makeQrBatch() }
+    func create(count: Int) async throws -> QrBatchOut {
+        createdCounts.append(count)
+        return makeQrBatch()
+    }
+    func delete(_ id: String) async throws {
+        if let deleteError { throw deleteError }
+        deletedIds.append(id)
+    }
     func pdfData(batchId: String) async throws -> Data {
         pdfCallCount += 1
         if pdfDelayNanoseconds > 0 { try await Task.sleep(nanoseconds: pdfDelayNanoseconds) }

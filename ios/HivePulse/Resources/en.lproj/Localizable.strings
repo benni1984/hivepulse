@@ -427,3 +427,7 @@
 /* Sign in with Google */
 "action.continueWithGoogle" = "Continue with Google";
 "error.googleSignIn" = "Google did not hand over a sign-in. Please try again.";
+
+/* Deleting a QR batch */
+"confirm.deleteBatch.title" = "Delete this QR batch?";
+"confirm.deleteBatch.message" = "All its codes are deleted with it. Codes that are not in use cannot be recovered.";

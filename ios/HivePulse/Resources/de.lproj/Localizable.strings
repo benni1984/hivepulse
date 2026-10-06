@@ -427,3 +427,7 @@
 /* Sign in with Google */
 "action.continueWithGoogle" = "Weiter mit Google";
 "error.googleSignIn" = "Google hat keine Anmeldung übergeben. Bitte versuche es erneut.";
+
+/* Deleting a QR batch */
+"confirm.deleteBatch.title" = "Diesen QR-Stapel löschen?";
+"confirm.deleteBatch.message" = "Alle Codes darin werden mitgelöscht. Nicht benutzte Codes lassen sich nicht wiederherstellen.";

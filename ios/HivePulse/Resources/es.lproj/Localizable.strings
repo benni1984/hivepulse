@@ -427,3 +427,7 @@
 /* Sign in with Google */
 "action.continueWithGoogle" = "Continuar con Google";
 "error.googleSignIn" = "Google no ha entregado ningún inicio de sesión. Inténtalo de nuevo.";
+
+/* Deleting a QR batch */
+"confirm.deleteBatch.title" = "¿Eliminar este lote de códigos QR?";
+"confirm.deleteBatch.message" = "Se eliminan también todos sus códigos. Los códigos sin usar no se pueden recuperar.";
