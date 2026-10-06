@@ -125,6 +125,83 @@ class QRViewModelTest {
     }
 
     @Test
+    fun `a batch with a code on a hive cannot be deleted`() = runTest {
+        coEvery { batchRepo.list() } returns emptyList()
+        val vm = QRBatchListViewModel(batchRepo)
+
+        assertFalse(vm.canDelete(QrBatchSummary("b1", 5, "2024-01-01", 2)))
+        assertTrue(vm.canDelete(QrBatchSummary("b2", 5, "2024-01-01", 0)))
+    }
+
+    @Test
+    fun `delete removes the batch from the list`() = runTest {
+        val unused = QrBatchSummary("b1", 5, "2024-01-01", 0)
+        val inUse  = QrBatchSummary("b2", 5, "2024-01-01", 3)
+        coEvery { batchRepo.list() } returns listOf(unused, inUse)
+        coEvery { batchRepo.delete("b1") } just Runs
+        val vm = QRBatchListViewModel(batchRepo)
+
+        vm.delete(unused)
+
+        assertEquals(listOf("b2"), vm.state.value.batches.map { it.id })
+        assertNull(vm.state.value.error)
+        assertFalse(vm.state.value.batchInUse)
+    }
+
+    @Test
+    fun `delete never asks the server about a batch in use`() = runTest {
+        val inUse = QrBatchSummary("b1", 5, "2024-01-01", 1)
+        coEvery { batchRepo.list() } returns listOf(inUse)
+        val vm = QRBatchListViewModel(batchRepo)
+
+        vm.delete(inUse)
+
+        coVerify(exactly = 0) { batchRepo.delete(any()) }
+        assertEquals(1, vm.state.value.batches.size)
+    }
+
+    @Test
+    fun `a refusal from the server keeps the batch and sets batchInUse`() = runTest {
+        val unused = QrBatchSummary("b1", 5, "2024-01-01", 0)
+        coEvery { batchRepo.list() } returns listOf(unused)
+        coEvery { batchRepo.delete("b1") } throws RuntimeException("in_use")
+        val vm = QRBatchListViewModel(batchRepo)
+
+        vm.delete(unused)
+
+        assertEquals(1, vm.state.value.batches.size)
+        assertTrue(vm.state.value.batchInUse)
+        assertNull(vm.state.value.error)
+    }
+
+    @Test
+    fun `any other delete failure becomes the error and keeps the batch`() = runTest {
+        val unused = QrBatchSummary("b1", 5, "2024-01-01", 0)
+        coEvery { batchRepo.list() } returns listOf(unused)
+        coEvery { batchRepo.delete("b1") } throws RuntimeException("delete_failed_500")
+        val vm = QRBatchListViewModel(batchRepo)
+
+        vm.delete(unused)
+
+        assertEquals("delete_failed_500", vm.state.value.error)
+        assertFalse(vm.state.value.batchInUse)
+        assertEquals(1, vm.state.value.batches.size)
+    }
+
+    @Test
+    fun `clearError also clears batchInUse`() = runTest {
+        val unused = QrBatchSummary("b1", 5, "2024-01-01", 0)
+        coEvery { batchRepo.list() } returns listOf(unused)
+        coEvery { batchRepo.delete("b1") } throws RuntimeException("in_use")
+        val vm = QRBatchListViewModel(batchRepo)
+        vm.delete(unused)
+
+        vm.clearError()
+
+        assertFalse(vm.state.value.batchInUse)
+    }
+
+    @Test
     fun `QRBatchListViewModel clearError removes error from state`() = runTest {
         coEvery { batchRepo.list() } throws RuntimeException("err")
         val vm = QRBatchListViewModel(batchRepo)

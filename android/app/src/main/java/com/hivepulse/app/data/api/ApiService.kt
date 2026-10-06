@@ -119,6 +119,9 @@ interface ApiService {
     @POST("qr-batches")
     suspend fun createQrBatch(@Body body: QrBatchCreate): QrBatchOut
 
+    @DELETE("qr-batches/{id}")
+    suspend fun deleteQrBatch(@Path("id") id: String): Response<Unit>
+
     @Streaming
     @GET("qr-batches/{id}/pdf")
     suspend fun downloadQrBatchPdf(@Path("id") id: String): ResponseBody
