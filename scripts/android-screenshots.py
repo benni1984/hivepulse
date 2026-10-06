@@ -232,8 +232,30 @@ def skip_guided_tour_if_shown(timeout=15):
         time.sleep(1)
 
 
+EMAIL_TOGGLE = "Sign in with an email address instead"
+
+
+def reveal_email_form(timeout=12):
+    """Open the email form when the login screen tucks it behind a link.
+
+    With Google sign-in on offer the form sits behind "Sign in with an email address
+    instead", so waiting for "Sign In" timed out and failed every run of this job. The link
+    only appears once the app has asked the server which providers it accepts, so poll for it
+    for a while; when there is no provider the form is already open and nothing is tapped.
+    """
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        dump = get_ui_dump()
+        if EMAIL_TOGGLE in dump:
+            tap_node(dump, text=EMAIL_TOGGLE)
+            time.sleep(1)
+            return
+        time.sleep(1)
+
+
 def login():
     print("Logging in…", flush=True)
+    reveal_email_form()
     wait_for("Sign In", timeout=30)
     time.sleep(1.5)  # let fields finish rendering
 
