@@ -43,7 +43,9 @@ fun LoginScreen(
     val scope = rememberCoroutineScope()
     // Tucked away only when there is something better on offer. With no provider the form is
     // the only way in, and hiding it behind a tap would be absurd.
-    val emailFormVisible = showEmailForm || state.googleClientId == null
+    // Only once the server has answered: before that the form must not appear, or it shows for
+    // an instant and folds away when a provider turns up.
+    val emailFormVisible = showEmailForm || (state.providersLoaded && state.googleClientId == null)
 
     LaunchedEffect(Unit) { vm.loadSignInProviders() }
     LaunchedEffect(state.success) { if (state.success) onLoginSuccess() }
@@ -103,7 +105,7 @@ fun LoginScreen(
                          style = MaterialTheme.typography.bodySmall, color = Stone500)
                 }
 
-                if (!emailFormVisible) {
+                if (state.providersLoaded && state.googleClientId != null && !showEmailForm) {
                     TextButton(onClick = { showEmailForm = true }) {
                         Text(stringResource(R.string.action_sign_in_with_email),
                              style = MaterialTheme.typography.bodySmall, color = Stone500)

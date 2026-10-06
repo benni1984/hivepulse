@@ -77,7 +77,12 @@ final class MockAuthService: AuthServiceProtocol {
         return try await socialResult.get()
     }
     func signInWithGoogle(idToken: String) async throws -> TokenResponse { try socialResult.get() }
-    func signInProviders() async throws -> SignInProviders { try providersResult.get() }
+    /// How long the provider lookup takes, for the test of the wait that bounds it.
+    var providersDelayNanos: UInt64 = 0
+    func signInProviders() async throws -> SignInProviders {
+        if providersDelayNanos > 0 { try await Task.sleep(nanoseconds: providersDelayNanos) }
+        return try providersResult.get()
+    }
     func register(email: String, password: String, name: String, locale: String) async throws -> TokenResponse { try registerResult.get() }
     func logout(refreshToken: String) async throws {}
     func getMe() async throws -> UserOut { try getMeResult.get() }

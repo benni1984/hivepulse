@@ -60,14 +60,24 @@ class LoginScreenTest {
     @get:Rule(order = 2)
     val composeRule = createAndroidComposeRule<MainActivity>()
 
+
+    /** The form appears once the app has heard from the server which sign-ins it offers. */
+    private fun awaitEmailForm() {
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithText("Email").fetchSemanticsNodes().isNotEmpty()
+        }
+    }
+
     @Test
     fun loginScreen_displaysEmailAndPasswordFields() {
+        awaitEmailForm()
         composeRule.onNodeWithText("Email").assertIsDisplayed()
         composeRule.onNodeWithText("Password").assertIsDisplayed()
     }
 
     @Test
     fun loginScreen_signInButtonDisabledWhenFieldsEmpty() {
+        awaitEmailForm()
         composeRule.onNodeWithText("Sign In").assertIsNotEnabled()
     }
 
@@ -86,6 +96,7 @@ class LoginScreenTest {
         // UndeclaredThrowableException, which would make e.message null in the ViewModel.
         coEvery { apiService.login(any()) } throws RuntimeException("Invalid credentials")
 
+        awaitEmailForm()
         composeRule.onNodeWithText("Email").performTextReplacement("test@example.com")
         composeRule.onNodeWithText("Password").performTextReplacement("wrongpassword")
         Espresso.closeSoftKeyboard()
@@ -108,6 +119,7 @@ class LoginScreenTest {
         coEvery { apiService.login(any()) } returns TokenResponse("access-token", "refresh-token", user)
         coEvery { apiService.listApiaries(any(), any()) } returns PaginatedResponse(emptyList(), 0, 1, 1)
 
+        awaitEmailForm()
         composeRule.onNodeWithText("Email").performTextReplacement("test@example.com")
         composeRule.onNodeWithText("Password").performTextReplacement("Demo1234!")
         Espresso.closeSoftKeyboard()
