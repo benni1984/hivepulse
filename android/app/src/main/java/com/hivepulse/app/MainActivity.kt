@@ -1,5 +1,6 @@
 package com.hivepulse.app
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.hivepulse.app.data.local.AppLanguage
 import com.hivepulse.app.data.local.TokenStore
 import com.hivepulse.app.ui.navigation.HivePulseNavGraph
 import com.hivepulse.app.ui.navigation.Routes
@@ -31,6 +33,11 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject lateinit var tokenStore: TokenStore
+
+    // Android 12 and older have no language per app; there it is applied here.
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(AppLanguage.wrap(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
