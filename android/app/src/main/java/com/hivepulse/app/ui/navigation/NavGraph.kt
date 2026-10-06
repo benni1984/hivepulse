@@ -47,6 +47,7 @@ object Routes {
     const val HORNET_HOME        = "hornet_home"
     const val MEMBERS            = "members"
     const val FIELD_DEFINITIONS  = "field_definitions?apiaryId={apiaryId}"
+    const val SHARING            = "sharing/{type}/{id}"
     const val GUIDED_TOUR        = "guided_tour?fromSettings={fromSettings}"
 }
 
@@ -116,7 +117,8 @@ fun HivePulseNavGraph(
                 apiaryId = back.arguments!!.getString("apiaryId")!!,
                 onHiveClick = { id -> navController.navigate("hive_detail/$id") },
                 onBack      = { navController.popBackStack() },
-                onFieldsClick = { navController.navigate("field_definitions?apiaryId=${back.arguments!!.getString("apiaryId")}") }
+                onFieldsClick = { navController.navigate("field_definitions?apiaryId=${back.arguments!!.getString("apiaryId")}") },
+                onShareClick  = { navController.navigate("sharing/apiary/${back.arguments!!.getString("apiaryId")}") }
             )
         }
         composable(Routes.HIVE_DETAIL,
@@ -127,8 +129,16 @@ fun HivePulseNavGraph(
                 onAddInspection   = { hiveId -> navController.navigate("inspection_form/$hiveId?inspectionId=") },
                 onStatsClick      = { hiveId -> navController.navigate("hive_stats/$hiveId") },
                 onQrClick         = { hiveId -> navController.navigate("hive_qr/$hiveId") },
+                onShareClick      = { hiveId -> navController.navigate("sharing/hive/$hiveId") },
                 onBack            = { navController.popBackStack() }
             )
+        }
+        composable(Routes.SHARING,
+            arguments = listOf(
+                navArgument("type") { type = NavType.StringType },
+                navArgument("id") { type = NavType.StringType },
+            )) {
+            com.hivepulse.app.ui.sharing.SharingScreen(onBack = { navController.popBackStack() })
         }
         composable(Routes.HIVE_QR,
             arguments = listOf(navArgument("hiveId") { type = NavType.StringType })) { back ->

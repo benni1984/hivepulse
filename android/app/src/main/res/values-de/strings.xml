@@ -424,4 +424,24 @@
     <string name="dialog_delete_qr_batch_title">Diesen QR-Batch löschen?</string>
     <string name="dialog_delete_qr_batch_message">Alle Codes darin werden mitgelöscht. Nicht benutzte Codes lassen sich nicht wiederherstellen.</string>
     <string name="error_qr_batch_in_use">Dieser Batch enthält Codes, die Völkern zugeordnet sind, und kann nicht gelöscht werden.</string>
+    <string name="sharing_title">Zusammenarbeiten</string>
+    <string name="sharing_intro_apiary">Lade einen anderen Imker ein, diesen Bienenstand mit dir zu betreuen. Er sieht alle Völker darin und kann Kontrollen erfassen.</string>
+    <string name="sharing_intro_hive">Lade einen anderen Imker ein, dieses Volk mit dir zu betreuen. Er sieht nur dieses Volk, nicht die anderen im Bienenstand.</string>
+    <string name="sharing_email_label">E-Mail-Adresse der Person</string>
+    <string name="sharing_invite">Einladen</string>
+    <string name="sharing_invite_sent">Einladung verschickt.</string>
+    <string name="sharing_empty">Noch niemand eingeladen.</string>
+    <string name="sharing_pending">Wartet auf Antwort</string>
+    <string name="sharing_accepted">Arbeitet mit</string>
+    <string name="sharing_revoke">Entfernen</string>
+    <string name="sharing_withdraw">Zurückziehen</string>
+    <string name="sharing_confirm_revoke">Diese Person entfernen? Sie verliert den Zugriff, was sie erfasst hat, bleibt.</string>
+    <string name="sharing_confirm_withdraw">Diese Einladung zurückziehen?</string>
+    <string name="invitation_apiary">%1$s lädt dich ein, den Bienenstand %2$s gemeinsam zu betreuen.</string>
+    <string name="invitation_hive">%1$s lädt dich ein, das Volk %2$s in %3$s gemeinsam zu betreuen.</string>
+    <string name="invitation_accept">Annehmen</string>
+    <string name="invitation_decline">Ablehnen</string>
+    <string name="label_shared_by">Geteilt von %1$s</string>
+    <string name="label_partial_by">Einzelne Völker geteilt von %1$s</string>
+    <string name="label_recorded_by">erfasst von %1$s</string>
 </resources>

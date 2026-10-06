@@ -102,8 +102,16 @@ data class ApiaryOut(
     val address: String?,
     @SerializedName("hive_count") val hiveCount: Int,
     @SerializedName("is_public") val isPublic: Boolean = false,
-    @SerializedName("created_at") val createdAt: String
+    @SerializedName("created_at") val createdAt: String,
+    /** owner, shared or partial. Null from a server that only ever returned the caller's own apiaries. */
+    val access: String? = null,
+    /** Whose apiary it is, when it is not the caller's. */
+    @SerializedName("owner_name") val ownerName: String? = null,
 )
+val ApiaryOut.isOwner: Boolean get() = access == null || access == "owner"
+/** Somebody who was given single hives can work on those, but not on the apiary around them. */
+val ApiaryOut.canEdit: Boolean get() = access != "partial"
+
 data class ApiaryCreate(
     val name: String,
     val description: String?,
@@ -111,6 +119,32 @@ data class ApiaryCreate(
     val longitude: Double?,
     val address: String?,
     @SerializedName("is_public") val isPublic: Boolean = false,
+)
+
+// MARK: - Sharing
+data class ShareTargetOut(val type: String, val id: String, val name: String)
+data class ShareOut(
+    val id: String,
+    val email: String,
+    /** "pending" or "accepted" */
+    val status: String,
+    val target: ShareTargetOut,
+    @SerializedName("collaborator_name") val collaboratorName: String?,
+    @SerializedName("created_at")        val createdAt: String,
+    @SerializedName("accepted_at")       val acceptedAt: String?,
+)
+data class IncomingShareOut(
+    val id: String,
+    @SerializedName("owner_name")  val ownerName: String,
+    val target: ShareTargetOut,
+    /** Set when the target is a hive, so the invitation can say where it sits. */
+    @SerializedName("apiary_name") val apiaryName: String?,
+    @SerializedName("created_at")  val createdAt: String,
+)
+data class ShareCreateRequest(
+    val email: String,
+    @SerializedName("apiary_id") val apiaryId: String? = null,
+    @SerializedName("hive_id")   val hiveId: String? = null,
 )
 
 // MARK: - QR Batches
@@ -145,8 +179,11 @@ data class HiveOut(
     @SerializedName("custom_fields")      val customFields: Map<String, Any?>,
     @SerializedName("initialized_at")     val initializedAt: String,
     @SerializedName("last_inspection_at") val lastInspectionAt: String?,
-    @SerializedName("created_at")         val createdAt: String
+    @SerializedName("created_at")         val createdAt: String,
+    /** owner or shared. Null from a server that does not know sharing. */
+    val access: String? = null,
 )
+val HiveOut.isOwner: Boolean get() = access == null || access == "owner"
 data class HiveInitializeRequest(
     @SerializedName("qr_token")          val qrToken: String,
     @SerializedName("apiary_id")         val apiaryId: String,
@@ -198,7 +235,9 @@ data class InspectionOut(
     val notes: String?,
     @SerializedName("custom_fields")       val customFields: Map<String, Any?>,
     @SerializedName("client_id")           val clientId: String? = null,
-    @SerializedName("created_at")          val createdAt: String
+    @SerializedName("created_at")          val createdAt: String,
+    /** Who recorded it. Empty for records made before sharing existed. */
+    @SerializedName("created_by_name")     val createdByName: String? = null,
 )
 data class InspectionCreateRequest(
     val date: String,

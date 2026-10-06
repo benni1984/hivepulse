@@ -13,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -26,6 +27,7 @@ import com.hivepulse.app.R
 import com.hivepulse.app.data.api.HiveOut
 import com.hivepulse.app.data.api.HiveUpdateRequest
 import com.hivepulse.app.data.api.InspectionOut
+import com.hivepulse.app.data.api.isOwner
 import com.hivepulse.app.data.repository.HiveRepository
 import com.hivepulse.app.data.repository.isPending
 import com.hivepulse.app.data.repository.InspectionRepository
@@ -102,6 +104,7 @@ fun HiveDetailScreen(
     onStatsClick: (String) -> Unit,
     onQrClick: (String) -> Unit,
     onBack: () -> Unit,
+    onShareClick: (String) -> Unit = {},
     vm: HiveDetailViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
@@ -131,6 +134,12 @@ fun HiveDetailScreen(
                 title = { Text(state.hive?.name ?: "", style = MaterialTheme.typography.titleLarge) },
                 navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } },
                 actions = {
+                    // Inviting stays with the owner.
+                    if (state.hive?.isOwner == true) {
+                        IconButton(onClick = { onShareClick(hiveId) }, modifier = Modifier.testTag("shareHiveButton")) {
+                            Icon(Icons.Default.Group, contentDescription = stringResource(R.string.sharing_title))
+                        }
+                    }
                     IconButton(onClick = { showEdit = true }, enabled = state.hive != null) {
                         Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.title_edit_hive))
                     }
@@ -249,6 +258,13 @@ fun InspectionListItem(insp: InspectionOut, onClick: () -> Unit, onDelete: (() -
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(insp.date, style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold))
+                    insp.createdByName?.let {
+                        Text(
+                            stringResource(R.string.label_recorded_by, it),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
                     if (insp.isPending()) {
                         // Recorded at the apiary without a connection — it is stored on the
                         // device and goes up by itself once there is a network again.

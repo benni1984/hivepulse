@@ -424,4 +424,24 @@
     <string name="dialog_delete_qr_batch_title">Supprimer ce lot de QR codes ?</string>
     <string name="dialog_delete_qr_batch_message">Tous ses codes sont supprimés avec lui. Les codes inutilisés ne peuvent pas être récupérés.</string>
     <string name="error_qr_batch_in_use">Ce lot contient des codes associés à des ruches et ne peut pas être supprimé.</string>
+    <string name="sharing_title">Travailler ensemble</string>
+    <string name="sharing_intro_apiary">Invitez un autre apiculteur à s’occuper de ce rucher avec vous. Il voit toutes les ruches et peut saisir des visites.</string>
+    <string name="sharing_intro_hive">Invitez un autre apiculteur à s’occuper de cette ruche avec vous. Il ne voit que cette ruche, pas les autres du rucher.</string>
+    <string name="sharing_email_label">Adresse e-mail de la personne</string>
+    <string name="sharing_invite">Inviter</string>
+    <string name="sharing_invite_sent">Invitation envoyée.</string>
+    <string name="sharing_empty">Personne n’est encore invité.</string>
+    <string name="sharing_pending">En attente de réponse</string>
+    <string name="sharing_accepted">Travaille avec vous</string>
+    <string name="sharing_revoke">Retirer</string>
+    <string name="sharing_withdraw">Annuler</string>
+    <string name="sharing_confirm_revoke">Retirer cette personne ? Elle perd l’accès ; ce qu’elle a saisi reste.</string>
+    <string name="sharing_confirm_withdraw">Annuler cette invitation ?</string>
+    <string name="invitation_apiary">%1$s vous invite à vous occuper ensemble du rucher %2$s.</string>
+    <string name="invitation_hive">%1$s vous invite à vous occuper ensemble de la ruche %2$s dans %3$s.</string>
+    <string name="invitation_accept">Accepter</string>
+    <string name="invitation_decline">Refuser</string>
+    <string name="label_shared_by">Partagé par %1$s</string>
+    <string name="label_partial_by">Quelques ruches partagées par %1$s</string>
+    <string name="label_recorded_by">saisi par %1$s</string>
 </resources>

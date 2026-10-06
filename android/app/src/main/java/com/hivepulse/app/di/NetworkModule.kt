@@ -30,10 +30,12 @@ object NetworkModule {
     fun provideOkHttpClient(tokenStore: TokenStore, apiService: Lazy<ApiService>): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor { chain ->
-                val req = tokenStore.accessToken
-                    ?.let { chain.request().newBuilder().header("Authorization", "Bearer $it").build() }
-                    ?: chain.request()
-                chain.proceed(req)
+                // The server words its error messages in the language it is asked for, and a
+                // message such as "this address was already invited" is shown to the user as it is.
+                val builder = chain.request().newBuilder()
+                    .header("Accept-Language", java.util.Locale.getDefault().language)
+                tokenStore.accessToken?.let { builder.header("Authorization", "Bearer $it") }
+                chain.proceed(builder.build())
             }
             .authenticator(object : Authenticator {
                 override fun authenticate(route: Route?, response: Response): Request? {
