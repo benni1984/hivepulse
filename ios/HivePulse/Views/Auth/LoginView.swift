@@ -20,8 +20,12 @@ struct LoginView: View {
     @State private var showEmailForm = false
     /// Tucked away only when there is something better on offer. With no provider the form
     /// is the only way in, and hiding it behind a tap would be absurd.
+    private var providerOnOffer: Bool { authVM.appleSignInAvailable || authVM.googleSignInAvailable }
+
+    /// Only once the server has answered: before that the form must not appear, or it shows for
+    /// an instant and folds away when a provider turns up.
     private var emailFormVisible: Bool {
-        showEmailForm || !(authVM.appleSignInAvailable || authVM.googleSignInAvailable)
+        showEmailForm || (authVM.providersLoaded && !providerOnOffer)
     }
 
     var body: some View {
@@ -85,7 +89,7 @@ struct LoginView: View {
                 .padding(.top, 16)
             }
 
-            if !emailFormVisible {
+            if authVM.providersLoaded && providerOnOffer && !showEmailForm {
                 Button(NSLocalizedString("action.signInWithEmail", comment: "")) {
                     showEmailForm = true
                 }

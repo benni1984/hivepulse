@@ -3,6 +3,7 @@ package com.hivepulse.app.ui.auth
 import com.hivepulse.app.data.repository.AuthRepository
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
 import org.junit.After
@@ -84,6 +85,49 @@ class GoogleSignInViewModelTest {
 
         assertEquals("Google could not be reached", vm.state.value.error)
         assertFalse(vm.state.value.isLoading)
+    }
+
+
+    @Test
+    fun `before the server has answered the providers count as not yet known`() {
+        // "Not yet known" must not look like "none": the email form used to appear at once and
+        // fold away behind its link the moment a provider turned up, a flicker at every start.
+        assertFalse(vm.state.value.providersLoaded)
+        assertNull(vm.state.value.googleClientId)
+    }
+
+    @Test
+    fun `an answer with a provider marks the lookup as done`() = runTest {
+        coEvery { repo.googleClientId() } returns "web-id.apps.googleusercontent.com"
+
+        vm.loadSignInProviders()
+
+        assertTrue(vm.state.value.providersLoaded)
+        assertEquals("web-id.apps.googleusercontent.com", vm.state.value.googleClientId)
+    }
+
+    @Test
+    fun `an answer without a provider also marks it done, so the form can appear`() = runTest {
+        coEvery { repo.googleClientId() } returns null
+
+        vm.loadSignInProviders()
+
+        assertTrue(vm.state.value.providersLoaded)
+        assertNull(vm.state.value.googleClientId)
+    }
+
+    @Test
+    fun `a server that never answers stops blocking the form after a few seconds`() = runTest {
+        coEvery { repo.googleClientId() } coAnswers { delay(60_000); "never-seen" }
+
+        vm.loadSignInProviders()
+        assertFalse("still waiting", vm.state.value.providersLoaded)
+
+        advanceTimeBy(PROVIDER_WAIT_MS + 100)
+
+        // Hiding the only way in behind a server that hangs would lock people out.
+        assertTrue(vm.state.value.providersLoaded)
+        assertNull(vm.state.value.googleClientId)
     }
 
     private fun makeUser() = com.hivepulse.app.data.api.UserOut(

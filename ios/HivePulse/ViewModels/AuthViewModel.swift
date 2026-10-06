@@ -17,6 +17,10 @@ final class AuthViewModel: ObservableObject {
     /// on Android must reach the same account here. Without it, hiding their address behind
     /// Apple's relay would hand them a second, empty one.
     @Published var googleSignInAvailable = false
+    /// False until the server has answered, or the wait ran out. "Not yet known" must not look
+    /// like "none": the email form used to appear at once and fold away behind its link the
+    /// moment a provider turned up, which showed as a flicker at every start.
+    @Published var providersLoaded = false
 
     private let service: any AuthServiceProtocol
     private let onboarding: OnboardingStore
@@ -88,10 +92,24 @@ final class AuthViewModel: ObservableObject {
 
     /// Asks the server which sign-ins it accepts. Failure is silence: the password form is
     /// still there, and a button that cannot work is worse than no button.
-    func loadSignInProviders() async {
-        let providers = try? await service.signInProviders()
+    ///
+    /// Bounded, because the login form waits for this: a server that never answers must not
+    /// leave the only way in hidden. Whichever finishes first wins, the answer or the clock.
+    func loadSignInProviders(timeout: UInt64 = 4_000_000_000) async {
+        let service = self.service
+        let providers: SignInProviders? = await withTaskGroup(of: SignInProviders?.self) { group in
+            group.addTask { try? await service.signInProviders() }
+            group.addTask {
+                try? await Task.sleep(nanoseconds: timeout)
+                return nil
+            }
+            let first = await group.next() ?? nil
+            group.cancelAll()
+            return first
+        }
         appleSignInAvailable = providers?.apple != nil
         googleSignInAvailable = providers?.google != nil
+        providersLoaded = true
     }
 
     func logout() async {

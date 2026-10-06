@@ -10,6 +10,9 @@ final class ForgotPasswordUITests: XCTestCase {
         app = XCUIApplication()
         app.launchArguments = ["-resetKeychain", "-mockServer"]
         app.launch()
+        // The form appears once the app has heard from the server which sign-ins it offers,
+        // so it is no longer there at launch. Waiting here, once, instead of in every test.
+        XCTAssertTrue(app.textFields["Email"].waitForExistence(timeout: 10))
     }
 
     override func tearDown() {

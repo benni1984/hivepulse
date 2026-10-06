@@ -121,6 +121,65 @@ final class AppleSignInTests: XCTestCase {
         XCTAssertNil(AppleSignInButton.displayName(from: PersonNameComponents()))
     }
 
+    // MARK: - "Not yet known" is not "none"
+
+    func test_beforeTheServerAnswersTheProvidersAreNotYetKnown() {
+        let (viewModel, _) = makeViewModel()
+
+        // The email form used to appear at once and fold away the moment a provider turned up:
+        // a flicker at every start.
+        XCTAssertFalse(viewModel.providersLoaded)
+    }
+
+    func test_anAnswerWithAProviderMarksTheLookupDone() async {
+        let (viewModel, service) = makeViewModel()
+        service.providersResult = .success(
+            SignInProviders(google: nil, apple: SignInProvider(clientId: "com.hivepulse.app"))
+        )
+
+        await viewModel.loadSignInProviders()
+
+        XCTAssertTrue(viewModel.providersLoaded)
+        XCTAssertTrue(viewModel.appleSignInAvailable)
+    }
+
+    func test_anAnswerWithoutAProviderAlsoMarksItDoneSoTheFormCanAppear() async {
+        let (viewModel, service) = makeViewModel()
+        service.providersResult = .success(SignInProviders(google: nil, apple: nil))
+
+        await viewModel.loadSignInProviders()
+
+        XCTAssertTrue(viewModel.providersLoaded)
+        XCTAssertFalse(viewModel.appleSignInAvailable)
+    }
+
+    func test_aFailedLookupAlsoMarksItDone() async {
+        let (viewModel, service) = makeViewModel()
+        service.providersResult = .failure(APIError.unauthorized)
+
+        await viewModel.loadSignInProviders()
+
+        // A server that cannot be asked must not hide the only way in.
+        XCTAssertTrue(viewModel.providersLoaded)
+        XCTAssertFalse(viewModel.appleSignInAvailable)
+    }
+
+    func test_aServerThatNeverAnswersStopsBlockingTheFormAfterTheWait() async {
+        let (viewModel, service) = makeViewModel()
+        service.providersDelayNanos = 5_000_000_000   // five seconds, against a wait of 50 ms
+        service.providersResult = .success(
+            SignInProviders(google: nil, apple: SignInProvider(clientId: "com.hivepulse.app"))
+        )
+
+        let started = Date()
+        await viewModel.loadSignInProviders(timeout: 50_000_000)
+
+        XCTAssertTrue(viewModel.providersLoaded)
+        // The slow answer must not have been waited for, and must not have been used.
+        XCTAssertLessThan(Date().timeIntervalSince(started), 2)
+        XCTAssertFalse(viewModel.appleSignInAvailable)
+    }
+
     // MARK: - Google, for the sake of one account across two phones
 
     func test_aGoogleSignInAuthenticates() async {
