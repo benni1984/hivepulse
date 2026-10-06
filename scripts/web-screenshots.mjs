@@ -60,6 +60,11 @@ const ctx  = await browser.newContext({ viewport: { width: 1280, height: 800 } }
 const page = await ctx.newPage();
 
 await goto(page, `${BASE}/en/dashboard/login`);
+// Sign-in with Apple or Google comes first; the email form sits behind a toggle once the
+// server reports a provider. With no provider there is no toggle, so only click if present.
+const emailToggle = page.getByTestId('email-signin-toggle');
+await emailToggle.or(page.locator('input[type=email]')).first().waitFor({ timeout: 15_000 });
+if (await emailToggle.isVisible()) await emailToggle.click();
 await page.fill('input[type=email]', EMAIL);
 await page.fill('input[type=password]', PASS);
 await Promise.all([
