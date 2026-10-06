@@ -103,6 +103,12 @@ MESSAGES = {
         "de": "Ein Bienenstand mit Bienenstöcken kann nicht gelöscht werden.",
         "es": "No se puede eliminar un colmenar que aún contiene colmenas.",
     },
+    "QR_BATCH_IN_USE": {
+        "en": "This batch contains codes that are attached to hives and cannot be deleted.",
+        "fr": "Ce lot contient des codes associés à des ruches et ne peut pas être supprimé.",
+        "de": "Diese Charge enthält Codes, die Bienenstöcken zugeordnet sind, und kann nicht gelöscht werden.",
+        "es": "Este lote contiene códigos asociados a colmenas y no se puede eliminar.",
+    },
     "EMAIL_ALREADY_REGISTERED": {
         "en": "This email address is already registered.",
         "fr": "Cette adresse email est déjà enregistrée.",

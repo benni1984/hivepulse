@@ -498,6 +498,17 @@ QR codes are generated in advance ("pre-printed"), before any hive exists. Each 
 | POST | `/qr-batches` | Generate a new batch |
 | GET | `/qr-batches/{id}` | Get batch with all tokens |
 | GET | `/qr-batches/{id}/pdf` | Download printable PDF (`application/pdf`) |
+| DELETE | `/qr-batches/{id}` | Delete a batch none of whose codes is attached to a hive |
+
+### DELETE `/qr-batches/{id}`
+
+**204**, no body. Deletes the batch and all its codes.
+
+**409 `QR_BATCH_IN_USE`** when at least one code of the batch is attached to a hive: scanning
+that sticker is how the hive is found again, so the batch stays until the hives are gone. The
+`linked_count` of the batch summary says in advance whether deleting can succeed, which lets a
+client hide or disable the action instead of offering one that is going to be refused.
+**404 `QR_BATCH_NOT_FOUND`** for a batch that is not the caller's.
 
 ### POST `/qr-batches` — Request body
 

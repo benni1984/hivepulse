@@ -69,6 +69,23 @@ def get_batch(
     return _batch_to_out(batch)
 
 
+@router.delete("/{batch_id}", status_code=204)
+def delete_batch(
+    batch_id: str,
+    current_user: CurrentUser,
+    db: DB,
+    accept_language: Optional[str] = Header(default=None),
+):
+    batch = _get_or_404(batch_id, current_user.id, db, accept_language)
+    # A code stuck on a hive is how somebody finds that hive again by scanning it. Deleting
+    # the batch would either orphan the hive or take the sticker's meaning with it, so a batch
+    # goes only once none of its codes is in use.
+    if any(token.hive is not None for token in batch.tokens):
+        raise HTTPException(409, detail=error("QR_BATCH_IN_USE", accept_language))
+    db.delete(batch)
+    db.commit()
+
+
 @router.get("/{batch_id}/pdf")
 def get_batch_pdf(
     batch_id: str,
