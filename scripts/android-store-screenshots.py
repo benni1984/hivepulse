@@ -137,7 +137,33 @@ def wait_for_label(key: str, timeout: int = 30) -> str:
     raise TimeoutError(f"{key} ({S(key)!r}) never appeared within {timeout}s")
 
 
+def reveal_email_form(timeout=12):
+    """Open the email form when the login screen tucks it behind a link.
+
+    Same reason as in android-screenshots.py: with Google sign-in on offer, the form sits
+    behind "Sign in with an email address instead", in the language under capture.
+    """
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        dump = A.get_ui_dump()
+        toggle = label_in(dump, "action_sign_in_with_email")
+        if toggle:
+            A.tap_node(dump, text=toggle)
+            time.sleep(1)
+            return
+        time.sleep(1)
+
+
 def login():
+    # The login screen shows either the form or, when a provider is on offer, the link that
+    # opens it; either one means the app is up.
+    deadline = time.time() + 60
+    while time.time() < deadline:
+        dump = A.get_ui_dump()
+        if label_in(dump, "action_login") or label_in(dump, "action_sign_in_with_email"):
+            break
+        time.sleep(1)
+    reveal_email_form()
     wait_for_label("action_login", timeout=60)
     time.sleep(1.5)
 
@@ -337,7 +363,8 @@ def install_in_language():
         A.shell("am", "start", "-n", A.MAIN_ACTIVITY)
         deadline = time.time() + 60
         while time.time() < deadline:
-            if label_in(A.get_ui_dump(), "action_login"):
+            dump = A.get_ui_dump()
+            if label_in(dump, "action_login") or label_in(dump, "action_sign_in_with_email"):
                 return
             time.sleep(2)
         print(f"  no login screen {attempt * 60}s after launch — starting the app again", flush=True)
