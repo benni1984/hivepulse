@@ -38,7 +38,11 @@ struct AppleSignInButton: View {
             return
         }
         let name = Self.displayName(from: credential.fullName)
-        Task { await authVM.signInWithApple(identityToken: token, fullName: name) }
+        let code = credential.authorizationCode.flatMap { String(data: $0, encoding: .utf8) }
+        Task {
+            await authVM.signInWithApple(identityToken: token, fullName: name,
+                                         authorizationCode: code)
+        }
     }
 
     /// Apple hands the name over in pieces, and only during the very first authorization for

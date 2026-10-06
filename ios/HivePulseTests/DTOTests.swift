@@ -234,4 +234,21 @@ final class DTOTests: XCTestCase {
         XCTAssertTrue(user.canChangePassword)
     }
 
+    func test_socialSignInRequest_sendsTheAuthorizationCodeUnderItsServerName() throws {
+        let data = try JSONEncoder().encode(SocialSignInRequest(
+            provider: "apple", idToken: "t", name: nil, authorizationCode: "one-time"))
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+
+        XCTAssertEqual(json["authorization_code"] as? String, "one-time")
+        XCTAssertEqual(json["id_token"] as? String, "t")
+    }
+
+    func test_socialSignInRequest_leavesTheCodeOutWhenThereIsNone() throws {
+        let data = try JSONEncoder().encode(SocialSignInRequest(
+            provider: "google", idToken: "t", name: nil))
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+
+        XCTAssertNil(json["authorization_code"])
+    }
+
 }

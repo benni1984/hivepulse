@@ -63,11 +63,16 @@ final class AuthViewModel: ObservableObject {
     /// `fullName` arrives only on the very first authorization for this app — never again,
     /// and never inside the token. Passing it on is the only chance to learn what to call
     /// somebody.
-    func signInWithApple(identityToken: String, fullName: String?) async {
+    ///
+    /// `authorizationCode` is Apple's one-time code from the same authorization. The server
+    /// keeps the token it buys with it, so it can revoke it when the account is deleted.
+    func signInWithApple(identityToken: String, fullName: String?,
+                         authorizationCode: String? = nil) async {
         isLoading = true
         errorMessage = nil
         do {
-            let resp = try await service.signInWithApple(idToken: identityToken, name: fullName)
+            let resp = try await service.signInWithApple(
+                idToken: identityToken, name: fullName, authorizationCode: authorizationCode)
             store(resp)
         } catch {
             errorMessage = error.localizedDescription
