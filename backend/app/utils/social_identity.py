@@ -51,6 +51,8 @@ class SocialIdentity:
     email: Optional[str]
     email_verified: bool
     name: Optional[str]
+    # The one of our client IDs the token was issued for.
+    audience: Optional[str] = None
 
 
 def _audiences(provider: str) -> list[str]:
@@ -94,8 +96,10 @@ def _claims(token: str, url: str, audiences: list[str], issuer) -> dict:
     # same key. The audience is the only thing that says it was meant for us.
     claimed = claims.get("aud")
     claimed = [claimed] if isinstance(claimed, str) else list(claimed or [])
-    if not any(one in audiences for one in claimed):
+    matched = next((one for one in claimed if one in audiences), None)
+    if matched is None:
         raise IdentityError(f"audience {claimed} is not one of ours")
+    claims["_matched_audience"] = matched
     return claims
 
 
@@ -130,4 +134,5 @@ def verify(provider: str, id_token: str) -> SocialIdentity:
         email=claims.get("email"),
         email_verified=email_verified,
         name=name,
+        audience=claims["_matched_audience"],
     )

@@ -21,6 +21,7 @@ SENSITIVE_KEYS = {
     "authorization", "cookie", "set-cookie", "x-cron-secret", "cron_secret", "password",
     "current_password", "new_password", "access_token", "refresh_token", "token",
     "secret_key", "resend_api_key", "firebase_service_account_json", "apns_private_key_p8",
+    "apple_private_key", "apple_refresh_token",
 }
 
 

@@ -46,6 +46,9 @@ class SocialSignInRequest(BaseModel):
     # so the client passes it on or it is lost for good. Only used when creating an account.
     name: Optional[str] = Field(default=None, max_length=200)
     locale: str = Field(default="en", pattern="^(en|fr|de|es)$")
+    # Apple's one-time code from the same authorization. Lets the server obtain a token it
+    # can hand back when the account is deleted, which Apple requires.
+    authorization_code: Optional[str] = Field(default=None, max_length=2000)
 
 
 class LoginRequest(BaseModel):

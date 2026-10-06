@@ -26,6 +26,11 @@ class Settings(BaseSettings):
     # unrelated app by the same provider from working here. Empty means the provider is off.
     google_client_ids: str = ""
     apple_client_ids: str = ""
+    # Sign in with Apple, server side: the key that signs our requests to Apple. Needed to
+    # revoke a user's tokens when their account is deleted. Inert while empty.
+    apple_team_id: str = ""
+    apple_key_id: str = ""
+    apple_private_key: str = ""
     resend_api_key: str = ""        # Resend API key — reset emails logged to stdout when empty
     app_base_url: str = "https://hivepulse.multihead.de"  # used to build password-reset links
     # Error reporting — see docs/crash-reporting-setup.md. Inert while empty.

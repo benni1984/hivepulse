@@ -129,7 +129,8 @@ so there is no separate registration step.
 {
   "provider": "apple" | "google",
   "id_token": "string",
-  "name": "Ada Lovelace"
+  "name": "Ada Lovelace",
+  "authorization_code": "string"
 }
 ```
 
@@ -137,6 +138,12 @@ so there is no separate registration step.
 once — in the authorization response of the very first sign-in, never in the token itself —
 so the client has to pass it on or it is lost for good. Google carries the name in the token
 and clients may omit the field.
+
+`authorization_code` is optional and only read for `provider: "apple"`. It is the one-time
+code from the same Apple authorization as the `id_token`. The server trades it for a refresh
+token and keeps it, so that it can revoke the token when the account is deleted, which Apple
+requires of every app that offers Sign in with Apple. A failed exchange never fails the
+sign-in. The token is never returned to a client.
 
 **Response 200** — same shape as register.
 
@@ -251,6 +258,7 @@ Sets a new password. The token is the value from the reset link. On success all 
 |--------|------|-------------|
 | GET | `/users/me` | Get own profile |
 | PUT | `/users/me` | Update profile |
+| DELETE | `/users/me` | Delete the account and everything in it |
 
 ### User object
 
@@ -286,6 +294,15 @@ Changing the password needs `current_password`. An account without a password ha
 check against, so asking to change it is refused with **400 `NO_PASSWORD_SET`** rather than
 failing: such an account sets a password through `/auth/forgot-password`, which proves control
 of the mailbox, instead of through an access token that may have been lifted.
+
+### DELETE `/users/me`
+
+Deletes the account, its apiaries, hives and inspections. **204**, no body.
+
+If the account was signed in through Apple with an `authorization_code` (see
+`POST /auth/social`), the server first revokes the stored Apple token, as Apple requires.
+That call is best effort: when Apple is unreachable or refuses, the account is deleted anyway,
+because nobody's right to delete their own data may depend on a third party answering.
 
 ### GET `/users/me/reminder`
 
