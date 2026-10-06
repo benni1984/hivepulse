@@ -108,7 +108,9 @@ export default function SocialSignIn(
       // The name arrives on the very first sign-in only, and never inside the token.
       const name = [response.user?.name?.firstName, response.user?.name?.lastName]
         .filter(Boolean).join(' ') || undefined;
-      await socialSignIn('apple', response.authorization.id_token, name);
+      // The one-time code lets the server revoke Apple's token when the account is deleted.
+      await socialSignIn('apple', response.authorization.id_token, name,
+        response.authorization.code);
       onSignedIn();
     } catch (failure) {
       // Closing Apple's window is a decision, not a failure worth a banner.
@@ -169,7 +171,7 @@ interface AppleIdentity {
   auth: {
     init(options: Record<string, unknown>): void;
     signIn(): Promise<{
-      authorization: { id_token: string };
+      authorization: { id_token: string; code?: string };
       user?: { name?: { firstName?: string; lastName?: string } };
     }>;
   };
