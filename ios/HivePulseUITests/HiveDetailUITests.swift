@@ -51,7 +51,9 @@ final class HiveDetailUITests: XCTestCase {
         move.tap()
 
         XCTAssertTrue(app.navigationBars["Move hives"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.buttons["Hive Alpha"].exists, "the hive being looked at is listed")
+        let row = app.buttons["Hive Alpha"]
+        XCTAssertTrue(row.waitForExistence(timeout: 5), "the hive being looked at is listed")
+        XCTAssertTrue(row.isSelected, "and it is ticked from the start")
         // One hive is ticked from the start, so the button names a count of one.
         XCTAssertTrue(app.buttons["moveSubmit"].exists)
     }

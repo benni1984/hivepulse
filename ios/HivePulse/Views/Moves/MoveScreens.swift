@@ -37,9 +37,12 @@ struct MoveHivesView: View {
                             HStack {
                                 Image(systemName: vm.selected.contains(hive.id) ? "checkmark.circle.fill" : "circle")
                                     .foregroundColor(vm.selected.contains(hive.id) ? .hpAmberDark : .secondary)
+                                    .accessibilityHidden(true)
                                 Text(hive.name).foregroundColor(.primary)
                             }
                         }
+                        // Named by the hive alone; the tick is the "selected" state, not part of the name.
+                        .accessibilityAddTraits(vm.selected.contains(hive.id) ? .isSelected : [])
                     }
                 } header: {
                     Text(NSLocalizedString("moves.selectHives", comment: ""))
