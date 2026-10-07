@@ -106,6 +106,7 @@ fun HiveDetailScreen(
     onBack: () -> Unit,
     onShareClick: (String) -> Unit = {},
     onMovesClick: (String) -> Unit = {},
+    onTreatmentsClick: (String) -> Unit = {},
     vm: HiveDetailViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
@@ -143,6 +144,9 @@ fun HiveDetailScreen(
                     }
                     IconButton(onClick = { showEdit = true }, enabled = state.hive != null) {
                         Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.title_edit_hive))
+                    }
+                    IconButton(onClick = { onTreatmentsClick(hiveId) }, modifier = Modifier.testTag("hiveTreatmentsButton")) {
+                        Icon(Icons.Default.Medication, contentDescription = stringResource(R.string.treatments_title))
                     }
                     IconButton(onClick = { onMovesClick(hiveId) }, modifier = Modifier.testTag("hiveMovesButton")) {
                         Icon(Icons.Default.History, contentDescription = stringResource(R.string.moves_history_title))

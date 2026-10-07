@@ -97,6 +97,7 @@ fun ApiaryDetailScreen(
     onFieldsClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onMoveClick: () -> Unit = {},
+    onTreatmentsClick: () -> Unit = {},
     vm: ApiaryDetailViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
@@ -113,6 +114,12 @@ fun ApiaryDetailScreen(
                 if (state.apiary?.isOwner == true && state.hives.isNotEmpty()) {
                     IconButton(onClick = onMoveClick, modifier = Modifier.testTag("moveHivesButton")) {
                         Icon(Icons.Default.SwapHoriz, contentDescription = stringResource(R.string.moves_title))
+                    }
+                }
+                // Planning a treatment for all hives of the apiary is for those who may work on the apiary itself.
+                if (state.apiary?.canEdit == true) {
+                    IconButton(onClick = onTreatmentsClick, modifier = Modifier.testTag("apiaryTreatmentsButton")) {
+                        Icon(Icons.Default.Medication, contentDescription = stringResource(R.string.treatments_title))
                     }
                 }
                 // Inviting stays with the owner.

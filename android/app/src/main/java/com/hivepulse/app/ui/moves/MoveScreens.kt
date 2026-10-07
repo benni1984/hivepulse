@@ -215,7 +215,7 @@ private fun TargetRow(label: String, selected: Boolean, modifier: Modifier = Mod
 /** A date chosen from a calendar; the value is the server's day format, YYYY-MM-DD. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun DateField(
+internal fun DateField(
     label: String,
     value: String?,
     onChange: (String?) -> Unit,

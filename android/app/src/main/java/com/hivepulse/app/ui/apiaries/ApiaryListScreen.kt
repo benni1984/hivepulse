@@ -21,6 +21,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hivepulse.app.R
 import com.hivepulse.app.data.api.ApiaryOut
 import com.hivepulse.app.data.api.isOwner
+import com.hivepulse.app.ui.home.HomeSummaryViewModel
+import com.hivepulse.app.ui.home.homeSummaryItems
 import com.hivepulse.app.ui.sharing.InvitationsViewModel
 import com.hivepulse.app.ui.sharing.invitationItems
 import com.hivepulse.app.ui.common.ErrorBanner
@@ -36,15 +38,18 @@ fun ApiaryListScreen(
     onBatchClick: () -> Unit,
     onStatsClick: () -> Unit = {},
     onMovesClick: () -> Unit = {},
+    onHiveClick: (String) -> Unit = {},
     vm: ApiaryViewModel = hiltViewModel(),
     invitationsVm: InvitationsViewModel = hiltViewModel(),
+    homeVm: HomeSummaryViewModel = hiltViewModel(),
 ) {
     val state by vm.state.collectAsState()
+    val home by homeVm.state.collectAsState()
     val invitations by invitationsVm.state.collectAsState()
     var showCreate by remember { mutableStateOf(false) }
     var showRedeem by remember { mutableStateOf(false) }
     // Coming back from another screen is when an invitation may have arrived.
-    LaunchedEffect(Unit) { invitationsVm.load() }
+    LaunchedEffect(Unit) { invitationsVm.load(); homeVm.load() }
 
     Scaffold(
         topBar = {
@@ -99,6 +104,12 @@ fun ApiaryListScreen(
                         invitations.invitations,
                         onAccept  = { invitation -> invitationsVm.accept(invitation) { vm.load() } },
                         onDecline = { invitation -> invitationsVm.decline(invitation) },
+                    )
+                    homeSummaryItems(
+                        home,
+                        onHiveClick = onHiveClick,
+                        onMarkDone = { treatment -> homeVm.markDone(treatment) },
+                        onDismissError = { homeVm.clearError() },
                     )
                     items(state.apiaries) { apiary ->
                         ApiaryCard(apiary, onClick = { onApiaryClick(apiary.id) }, onDelete = { vm.delete(apiary.id) })
