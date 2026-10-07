@@ -132,6 +132,10 @@ extension View {
         self
             // Leaves room under the button for the last row.
             .contentMargins(.bottom, 88, for: .scrollContent)
+            // While a screen loads, its content is just a small spinner, and an overlay lines up with
+            // the view it is on: the button sat next to the spinner in the middle of the screen.
+            // Giving the view the whole area first keeps the button in the corner at every moment.
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay(alignment: .bottomTrailing) {
                 if isVisible {
                 Button(action: action) {
