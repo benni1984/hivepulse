@@ -53,7 +53,7 @@ TEMPLATES: dict[str, dict[str, str]] = {
         "en": "<p>{hives} in your apiaries are due for inspection.</p>",
         "de": "<p>{hives} in deinen Bienenständen warten auf eine Durchsicht.</p>",
         "fr": "<p>{hives} de vos ruchers attendent une visite.</p>",
-        "es": "<p>{hives} de tus colmenares esperan una inspección.</p>",
+        "es": "<p>{hives} de tus colmenares esperan una revisión.</p>",
     },
     "reminder.email.cta": {
         "en": "<p><a href='{url}'>Open HivePulse</a></p>",

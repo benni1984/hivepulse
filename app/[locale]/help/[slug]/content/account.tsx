@@ -117,6 +117,16 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
           Your data is preserved — logging out does not delete anything.
         </p>
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Signing in with Apple or Google</h2>
+        <p>
+          You can sign in with your Apple or Google account instead of a password: Apple on the iPhone and the website, Google on Android, the iPhone and the website. If the e-mail address is the same, you land in the account you already had, with all your hives. HivePulse only receives your name and address from them, never a password.
+        </p>
+        <p>
+          An account made this way has no password, so <em>Change password</em> is not shown for it. The e-mail form stays available as a quiet link under the buttons.
+        </p>
+      </section>
     </>
   );
 }

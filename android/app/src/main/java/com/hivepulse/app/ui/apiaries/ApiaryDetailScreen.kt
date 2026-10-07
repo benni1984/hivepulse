@@ -96,31 +96,47 @@ fun ApiaryDetailScreen(
     onBack: () -> Unit,
     onFieldsClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
+    onMoveClick: () -> Unit = {},
+    onTreatmentsClick: () -> Unit = {},
     vm: ApiaryDetailViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
     var showEdit by remember { mutableStateOf(false) }
+    // Coming back from the move screen: the hives that left must be gone from this list.
+    LaunchedEffect(apiaryId) { vm.load() }
 
     Scaffold(topBar = {
         TopAppBar(
             title = { Text(state.apiaryName) },
             navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } },
             actions = {
+                // Taking hives to where something is in bloom is the owner's to do.
+                if (state.apiary?.isOwner == true && state.hives.isNotEmpty()) {
+                    IconButton(onClick = onMoveClick, modifier = Modifier.testTag("moveHivesButton")) {
+                        Icon(Icons.Default.SwapHoriz, contentDescription = stringResource(R.string.moves_title))
+                    }
+                }
                 // Inviting stays with the owner.
                 if (state.apiary?.isOwner == true) {
                     IconButton(onClick = onShareClick, modifier = Modifier.testTag("shareApiaryButton")) {
                         Icon(Icons.Default.Group, contentDescription = stringResource(R.string.sharing_title))
                     }
                 }
-                // Somebody who has single hives of it cannot edit the apiary around them.
+                // Somebody who has single hives of it cannot work on the apiary around them: no treatment for all
+                // of its hives, no fields, no editing. Same order as the iPhone's toolbar.
                 if (state.apiary?.canEdit == true) {
-                    IconButton(onClick = { showEdit = true }) {
-                        Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.action_edit_apiary))
+                    IconButton(onClick = onTreatmentsClick, modifier = Modifier.testTag("apiaryTreatmentsButton")) {
+                        Icon(Icons.Default.Medication, contentDescription = stringResource(R.string.treatments_title))
                     }
                 }
                 if (state.apiary?.canEdit != false) {
                     IconButton(onClick = onFieldsClick) {
                         Icon(Icons.Default.Tune, contentDescription = stringResource(R.string.fielddefs_apiary_title))
+                    }
+                }
+                if (state.apiary?.canEdit == true) {
+                    IconButton(onClick = { showEdit = true }) {
+                        Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.action_edit_apiary))
                     }
                 }
             }

@@ -6,7 +6,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
       <section className="help-section">
         <h2 className="help-section-title">Was sind Volksstatistiken?</h2>
         <p>
-          Volksstatistiken verwandeln Ihre Inspektionshistorie in Diagramme und Zusammenfassungszahlen, sodass Sie
+          Volksstatistiken verwandeln Ihre Kontrollhistorie in Diagramme und Zusammenfassungszahlen, sodass Sie
           Trends erkennen können, die Sie beim Überprüfen einzelner Einträge übersehen würden. Statistiken sind auf dem Volk-
           Detailbildschirm auf allen Plattformen verfügbar.
         </p>
@@ -28,7 +28,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-chart-line" style={{ marginRight: 6, color: '#f59e0b' }} />Varroa-Zählungstrend</div>
             <div className="help-stat-card-desc">
-              Ein Liniendiagramm Ihrer Varroazählungen im Zeitverlauf. Die x-Achse ist das Inspektionsdatum; die y-Achse
+              Ein Liniendiagramm Ihrer Varroazählungen im Zeitverlauf. Die x-Achse ist das Kontrolldatum; die y-Achse
               sind Milben pro 100 Bienen. Achten Sie auf die Steigung: eine steigende Linie bedeutet, dass die Milbenlast wächst
               und bald eine Behandlung erforderlich sein könnte.
             </div>
@@ -39,7 +39,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-face-smile" style={{ marginRight: 6, color: '#22c55e' }} />Stimmungsverteilung</div>
             <div className="help-stat-card-desc">
-              Ein Donut-Diagramm, das den Anteil Ruhiger, Nervöser und Aggressiver Inspektionen zeigt.
+              Ein Donut-Diagramm, das den Anteil Ruhiger, Nervöser und Aggressiver Kontrollen zeigt.
               Anhaltende Nervosität oder Aggression kann auf Weisellosigkeit, Krankheit oder genetische Probleme hindeuten,
               die einen Umweiselung erfordern.
             </div>
@@ -50,7 +50,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-crown" style={{ marginRight: 6, color: '#eab308' }} />Königinnensichtungsrate</div>
             <div className="help-stat-card-desc">
-              Prozentsatz der Inspektionen, bei denen Sie die Königin visuell bestätigt haben. Eine dauerhaft niedrige
+              Prozentsatz der Kontrollen, bei denen Sie die Königin visuell bestätigt haben. Eine dauerhaft niedrige
               Rate kann bedeuten, dass die Königin schwer zu finden ist (normal bei dunklen Königinnen) oder dass das Volk
               weisellos geworden ist.
             </div>
@@ -59,7 +59,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-egg" style={{ marginRight: 6, color: '#8b5cf6' }} />Brutwaben</div>
             <div className="help-stat-card-desc">
-              Durchschnittliche Anzahl der pro Inspektion im ausgewählten Zeitraum aufgezeichneten Brutwaben.
+              Durchschnittliche Anzahl der pro Kontrolle im ausgewählten Zeitraum aufgezeichneten Brutwaben.
               Verfolgt das Volkswachstum über die Saison — Sie erwarten einen Anstieg ab dem Frühling, einen Höhepunkt im
               Frühsommer und dann einen Rückgang zum Herbst hin.
             </div>
@@ -69,21 +69,21 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-clock" style={{ marginRight: 6, color: '#64748b' }} />Schwarmzell-Ereignisse</div>
             <div className="help-stat-card-desc">
-              Anzahl der Inspektionen, bei denen Schwarmzellen gemeldet wurden. Eine hohe Anzahl weist auf ein
+              Anzahl der Kontrollen, bei denen Schwarmzellen gemeldet wurden. Eine hohe Anzahl weist auf ein
               schwarmfreudiges Volk hin, das von Schwarmverhinderungsmaßnahmen profitieren könnte (Teilen, mehr Raum bieten).
             </div>
           </div>
 
           <div className="help-stat-card">
-            <div className="help-stat-card-name"><i className="fas fa-calendar" style={{ marginRight: 6, color: '#0ea5e9' }} />Inspektionen pro Zeitraum</div>
+            <div className="help-stat-card-name"><i className="fas fa-calendar" style={{ marginRight: 6, color: '#0ea5e9' }} />Kontrollen pro Zeitraum</div>
             <div className="help-stat-card-desc">
-              Gesamtanzahl der im ausgewählten Zeitraum protokollierten Inspektionen. Konsistente Inspektionshäufigkeit
+              Gesamtanzahl der im ausgewählten Zeitraum protokollierten Kontrollen. Konsistente Kontrollhäufigkeit
               (alle 7–14 Tage in der Hauptsaison) liefert die zuverlässigsten Trenddaten.
             </div>
           </div>
         </div>
 
-        <Screenshot src="/docs/screenshots/hive-stats-overview.png" caption="Varroa-Trendliniendiagramm mit Inspektionsdaten auf der x-Achse" />
+        <Screenshot src="/docs/screenshots/hive-stats-overview.png" caption="Varroa-Trendliniendiagramm mit Kontrolldaten auf der x-Achse" />
       </section>
 
       <section className="help-section">
@@ -115,7 +115,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
         <h2 className="help-section-title">Tipps für bessere Statistiken</h2>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Statistiken verbessern sich erheblich mit konsistenten Daten. Selbst wenn Sie bei jedem Besuch nur Varroazählung und Stimmung aufzeichnen, erhalten Sie nach vier oder fünf Inspektionen aussagekräftige Trendlinien.</p>
+          <p>Statistiken verbessern sich erheblich mit konsistenten Daten. Selbst wenn Sie bei jedem Besuch nur Varroazählung und Stimmung aufzeichnen, erhalten Sie nach vier oder fünf Kontrollen aussagekräftige Trendlinien.</p>
         </div>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />

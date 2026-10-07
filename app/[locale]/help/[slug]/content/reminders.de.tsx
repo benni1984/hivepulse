@@ -4,17 +4,17 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
   return (
     <>
       <section className="help-section">
-        <h2 className="help-section-title">Was sind Inspektionserinnerungen?</h2>
+        <h2 className="help-section-title">Was sind Kontrollerinnerungen?</h2>
         <p>
-          Inspektionserinnerungen benachrichtigen Sie, wenn ein Volk basierend auf Ihrem gewählten
-          Intervall überfällig für einen Besuch ist. Konsistente Inspektionen sind die Grundlage guter Varroa-Behandlung —
+          Kontrollerinnerungen benachrichtigen Sie, wenn ein Volk basierend auf Ihrem gewählten
+          Intervall überfällig für einen Besuch ist. Konsistente Kontrollen sind die Grundlage guter Varroa-Behandlung —
           Erinnerungen helfen Ihnen, auch in vollen Wochen im Zeitplan zu bleiben.
         </p>
         <div className="help-callout info">
           <i className="fas fa-info-circle" />
           <p><strong>Push-Benachrichtigungen kommen bald.</strong> Sie können Ihre Einstellungen jetzt vornehmen und sie werden gespeichert. Benachrichtigungen beginnen, sobald die Push-Infrastruktur aktiviert wird.</p>
         </div>
-        <Screenshot src="/docs/screenshots/android-settings-reminders.png" caption="Inspektionserinnerungs-Abschnitt in den Einstellungen mit Schalter und Intervall-Stepper" />
+        <Screenshot src="/docs/screenshots/android-settings-reminders.png" caption="Kontrollerinnerungs-Abschnitt in den Einstellungen mit Schalter und Intervall-Stepper" />
       </section>
 
       <section className="help-section">
@@ -30,7 +30,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
           <li>
             <span className="help-step-num">2</span>
             <div className="help-step-body">
-              <strong>Zu Inspektionserinnerungen scrollen</strong>
+              <strong>Zu Kontrollerinnerungen scrollen</strong>
               <p>Aktivieren Sie den Schalter, um Erinnerungen einzuschalten.</p>
             </div>
           </li>
@@ -38,7 +38,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
             <span className="help-step-num">3</span>
             <div className="help-step-body">
               <strong>Erinnerungsintervall festlegen</strong>
-              <p>Wählen Sie, wie viele Tage nach der letzten Inspektion Sie erinnert werden möchten. Eine häufige Wahl sind 7 Tage in der aktiven Saison.</p>
+              <p>Wählen Sie, wie viele Tage nach der letzten Kontrolle Sie erinnert werden möchten. Eine häufige Wahl sind 7 Tage in der aktiven Saison.</p>
             </div>
           </li>
           <li>
@@ -63,7 +63,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name">Erinnerungsintervall</div>
             <div className="help-stat-card-desc">
-              Anzahl der Tage nach der letzten Inspektion, bevor eine Erinnerung ausgelöst wird.
+              Anzahl der Tage nach der letzten Kontrolle, bevor eine Erinnerung ausgelöst wird.
               Häufige Wahl: 7 Tage (wöchentlich) für aktives Varroa-Management, 14 Tage für
               sanfte Imker, 21–28 Tage für Naturimker.
             </div>
@@ -71,7 +71,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name">Saisonbeginn</div>
             <div className="help-stat-card-desc">
-              Der erste Monat der aktiven Inspektionssaison. Erinnerungen werden vor diesem Monat nicht ausgelöst.
+              Der erste Monat der aktiven Kontrollsaison. Erinnerungen werden vor diesem Monat nicht ausgelöst.
               In Nordeuropa ist dies typischerweise April oder Mai.
             </div>
           </div>

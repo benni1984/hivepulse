@@ -5,6 +5,7 @@ import DashboardPage from '@/app/[locale]/dashboard/page';
 
 const mockGetApiaries = vi.hoisted(() => vi.fn());
 
+vi.mock('@/components/HomeSummary', () => ({ default: () => null }));
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string, params?: Record<string, string>) =>
     params ? `${key}|${Object.values(params).join('|')}` : key,
@@ -37,8 +38,18 @@ vi.mock('@/lib/api', () => ({
 const paginated = <T,>(items: T[]) => ({ items, total: items.length, page: 1, per_page: 100 });
 const own = { id: 'a-1', name: 'Mine', hive_count: 2, is_public: false, access: 'owner', owner_name: null };
 
+describe('the dashboard\'s way to the map of moves', () => {
+  it('links to the map of all moves', async () => {
+    mockGetApiaries.mockResolvedValue(paginated([own]));
+    render(<DashboardPage />);
+
+    await waitFor(() => screen.getByText('Mine'));
+    expect(screen.getByText('moves.openOverview').closest('a')?.getAttribute('href')).toBe('/dashboard/moves');
+  });
+});
+
 describe('the dashboard with shared apiaries', () => {
-  beforeEach(() => mockGetApiaries.mockReset());
+  beforeEach(() => { mockGetApiaries.mockReset(); });
 
   it('says whose a shared apiary is', async () => {
     mockGetApiaries.mockResolvedValue(paginated([

@@ -26,6 +26,13 @@ class Settings(BaseSettings):
     # unrelated app by the same provider from working here. Empty means the provider is off.
     google_client_ids: str = ""
     apple_client_ids: str = ""
+    # An announcement the home summary can show, as a card marked with its label. Off while the title
+    # is empty. No advertising SDK is involved: this is text the server sends.
+    announcement_id: str = ""
+    announcement_label: str = "Ad"
+    announcement_title: str = ""
+    announcement_body: str = ""
+    announcement_url: str = ""
     # Sign in with Apple, server side: the key that signs our requests to Apple. Needed to
     # revoke a user's tokens when their account is deleted. Inert while empty.
     apple_team_id: str = ""

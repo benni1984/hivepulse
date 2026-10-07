@@ -78,7 +78,7 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
         <h2 className="help-section-title">Eliminar tu cuenta</h2>
         <p>
           Eliminar tu cuenta borra permanentemente tu dirección de correo electrónico, nombre de visualización,
-          todos los apiarios, todas las colmenas y todos los registros de inspección. Esta acción <strong>no se puede deshacer</strong>.
+          todos los apiarios, todas las colmenas y todos los registros de revisión. Esta acción <strong>no se puede deshacer</strong>.
         </p>
         <ol className="help-steps">
           <li>
@@ -105,7 +105,7 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
         </ol>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Tus datos de inspección pueden haber contribuido a las estadísticas de la comunidad. Eliminar tu cuenta los excluye de futuros agregados, pero las estadísticas históricas ya calculadas no se recalculan retroactivamente.</p>
+          <p>Tus datos de revisión pueden haber contribuido a las estadísticas de la comunidad. Eliminar tu cuenta los excluye de futuros agregados, pero las estadísticas históricas ya calculadas no se recalculan retroactivamente.</p>
         </div>
       </section>
 
@@ -115,6 +115,16 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
           Toca <strong>Cerrar sesión</strong> en Ajustes (móvil) o en el menú desplegable de la esquina superior derecha (web).
           Tu token de sesión se revoca en el servidor. Serás redirigido a la pantalla de inicio de sesión.
           Tus datos se conservan — cerrar sesión no elimina nada.
+        </p>
+      </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Iniciar sesión con Apple o Google</h2>
+        <p>
+          Puedes iniciar sesión con tu cuenta de Apple o Google en lugar de una contraseña: Apple en el iPhone y en la web, Google en Android, el iPhone y la web. Si el correo es el mismo, entras en la cuenta que ya tenías, con todas tus colmenas. HivePulse solo recibe de ellos tu nombre y tu dirección, nunca una contraseña.
+        </p>
+        <p>
+          Una cuenta creada así no tiene contraseña, por eso no se muestra <em>Cambiar contraseña</em>. El formulario de correo sigue disponible como un enlace discreto bajo los botones.
         </p>
       </section>
     </>

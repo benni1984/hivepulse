@@ -13,7 +13,8 @@
     "download": "Download Free",
     "back": {
       "map": "← Live Map"
-    }
+    },
+    "releaseNotes": "Release notes"
   },
   "footer": {
     "tagline": "Open-source beekeeping for a healthier planet.",
@@ -256,6 +257,19 @@
       "privacy": "Privacy"
     }
   },
+  "releaseNotes": {
+    "tag": "Release notes",
+    "title": "What is new in HivePulse",
+    "sub": "What has changed, what has been added, and the full list of everything HivePulse can do.",
+    "whatsNew": "What is new",
+    "allFeatures": "All features",
+    "allFeaturesSub": "Everything HivePulse can do today, on the website, the iPhone app and the Android app.",
+    "kinds": {
+      "added": "Added",
+      "changed": "Changed",
+      "fixed": "Fixed"
+    }
+  },
   "contrib": {
     "tag": "Open Source",
     "title": "Help Build HivePulse",
@@ -402,7 +416,8 @@
       "logout": "Log out",
       "members": "Community",
       "openMenu": "Open dashboard menu",
-      "closeMenu": "Close dashboard menu"
+      "closeMenu": "Close dashboard menu",
+      "releaseNotes": "Release notes"
     },
     "overview": {
       "title": "My Statistics",
@@ -764,6 +779,104 @@
       "decline": "Decline",
       "accepted": "{name} is now yours to work on too.",
       "errorGeneric": "That did not work. The invitation may no longer be valid."
+    },
+    "moves": {
+      "title": "Move hives",
+      "intro": "Take hives to where something is in bloom. Pick the hives, the new place, the day and the forage; the move is kept, so you can see where each hive has been.",
+      "selectHives": "Which hives",
+      "backHint": "Where they stood before",
+      "backTo": "Back to {name} ({count})",
+      "selectAll": "All hives",
+      "target": "Move to",
+      "targetChoose": "Choose a place",
+      "targetNew": "A new place",
+      "newName": "Name of the new place",
+      "newAddress": "Address (optional)",
+      "newAddressHint": "With an address, the place shows up on the map.",
+      "date": "Date",
+      "forage": "Forage",
+      "forageNone": "Not specified",
+      "forageOther": "Which forage",
+      "note": "Note (optional)",
+      "submit": "Move ({count})",
+      "cancel": "Cancel",
+      "errorGeneric": "That did not work. Please try again.",
+      "success": "Moved to {name}.",
+      "historyTitle": "Where this hive has stood",
+      "historyEmpty": "This hive has not been moved yet.",
+      "noPosition": "This place has no position, so it is not on the map.",
+      "noPositionAtAll": "None of these places has a position yet, so there is nothing to draw. Give the places an address or a position.",
+      "start": "Where the journey started",
+      "openOverview": "Map of moves",
+      "overviewTitle": "Map of moves",
+      "overviewIntro": "Every move of your hives, with the route of each hive on the map.",
+      "overviewEmpty": "No hive has been moved yet.",
+      "from": "From",
+      "to": "To",
+      "hive": "Hive",
+      "route": "Route",
+      "forageNames": {
+        "acacia": "Acacia",
+        "rapeseed": "Rapeseed",
+        "orchard": "Orchard blossom",
+        "dandelion": "Dandelion",
+        "linden": "Linden",
+        "chestnut": "Chestnut",
+        "fir": "Fir",
+        "heather": "Heather",
+        "sunflower": "Sunflower",
+        "lavender": "Lavender",
+        "other": "Other"
+      }
+    },
+    "home": {
+      "title": "Today at a glance",
+      "outOfSeason": "This is outside your reminder season; the dates are still worked out the same way.",
+      "nextInspection": "Next inspection",
+      "overdue": "{count} overdue",
+      "dueOn": "Due {date}",
+      "dueSoon": "{count} due in the next three days",
+      "dueSince": "due since {date}",
+      "neverInspected": "never inspected",
+      "health": "State of the hives",
+      "healthOk": "{count} fine",
+      "healthWatch": "{count} to watch",
+      "healthAlert": "{count} alert",
+      "healthUnknown": "{count} unknown",
+      "noConcerns": "Nothing needs your attention.",
+      "reasons": {
+        "varroa_high": "high varroa",
+        "swarm_cells": "swarm cells",
+        "aggressive": "aggressive",
+        "varroa_medium": "medium varroa",
+        "nervous": "nervous",
+        "queen_not_seen": "queen not seen"
+      },
+      "treatments": "Upcoming treatments",
+      "treatmentsOverdue": "{count} overdue",
+      "noTreatments": "No treatment is planned in the next 30 days.",
+      "markDone": "Done"
+    },
+    "treatments": {
+      "title": "Treatments",
+      "introHive": "Plan a treatment for this hive. What is due shows on your home screen.",
+      "introApiary": "Plan a treatment for every hive of this apiary. What is due shows on your home screen.",
+      "plan": "Plan a treatment",
+      "product": "Product",
+      "dueOn": "Due on",
+      "note": "Note (optional)",
+      "save": "Save",
+      "cancel": "Cancel",
+      "empty": "Nothing planned.",
+      "overdue": "due since {date}",
+      "dueOnDate": "due {date}",
+      "markDone": "Done",
+      "delete": "Delete",
+      "confirmDelete": "Delete this planned treatment?",
+      "doneTitle": "Done",
+      "doneOn": "done {date}",
+      "reopen": "Reopen",
+      "errorGeneric": "That did not work. Please try again."
     }
   },
   "hiveTypes": {
@@ -869,6 +982,18 @@
       "qr-codes": {
         "title": "QR Codes",
         "desc": "Generate printable QR code batches, attach them to hive boxes, and scan them to open the correct hive instantly."
+      },
+      "sharing": {
+        "title": "Working together",
+        "desc": "Invite another beekeeper by e-mail to work on an apiary or single hives with you, accept an invitation, and see what stays with the owner."
+      },
+      "moving-hives": {
+        "title": "Moving hives",
+        "desc": "Take hives to the bloom: move them between your apiaries, keep the history of where each has stood, and see every journey on a map."
+      },
+      "home-and-treatments": {
+        "title": "Home screen and treatments",
+        "desc": "What is due, how your hives are doing and what is coming up, at a glance, and how to plan treatments for a hive or a whole apiary."
       },
       "custom-fields": {
         "title": "Custom inspection fields",
@@ -1027,7 +1152,9 @@
     "deleteAccountTitle": "Delete your account",
     "deleteAccountDescription": "How to delete your HivePulse account and what exactly is removed.",
     "betaTitle": "Join the test",
-    "betaDescription": "Try HivePulse before it reaches the stores, and help it get there."
+    "betaDescription": "Try HivePulse before it reaches the stores, and help it get there.",
+    "releaseNotesTitle": "Release notes",
+    "releaseNotesDescription": "What has changed and what is new in HivePulse, and the full list of features."
   },
   "imprint": {
     "title": "Legal notice",

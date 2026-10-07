@@ -122,6 +122,13 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
           <p>Each QR token can only be linked to one hive. If you need to reuse a label (e.g. the hive was split), generate a new batch — old tokens remain locked to their original hive.</p>
         </div>
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Delete a QR batch</h2>
+        <p>
+          A batch you no longer need can be deleted from the QR batches list: the trash icon on the website, <em>Delete</em> on the batch in the apps. This only works while no code of the batch is attached to a hive. Scanning the sticker is how a hive is found again, so the batch stays until those hives are gone; the delete button is not offered for it.
+        </p>
+      </section>
     </>
   );
 }

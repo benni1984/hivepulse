@@ -38,6 +38,17 @@ struct HiveDetailView: View {
                 }
             }
 
+            Section {
+                NavigationLink(destination: HiveMovesView(hiveId: hive.id)) {
+                    Label(NSLocalizedString("moves.historyTitle", comment: ""), systemImage: "arrow.left.arrow.right")
+                }
+                .accessibilityIdentifier("hiveMovesLink")
+                NavigationLink(destination: TreatmentsView(target: .hive(hive.id))) {
+                    Label(NSLocalizedString("treatments.title", comment: ""), systemImage: "cross.case")
+                }
+                .accessibilityIdentifier("hiveTreatmentsLink")
+            }
+
             Section(NSLocalizedString("section.inspections", comment: "")) {
                 if inspectionVM.inspections.isEmpty && !inspectionVM.isLoading {
                     Text(NSLocalizedString("empty.inspections", comment: ""))
@@ -87,9 +98,10 @@ struct HiveDetailView: View {
                 Button { showQR = true } label: { Image(systemName: "qrcode") }
                 Button { showStats = true } label: { Image(systemName: "chart.xyaxis.line") }
                     .accessibilityIdentifier("hiveStatsButton")
-                Button { showAddInspection = true } label: { Image(systemName: "plus") }
-                    .accessibilityLabel(NSLocalizedString("action.newInspection", comment: ""))
             }
+        }
+        .hpFloatingButton(NSLocalizedString("action.newInspection", comment: ""), identifier: "newInspectionButton") {
+            showAddInspection = true
         }
         .task { await inspectionVM.load(hiveId: hive.id) }
         .refreshable { await inspectionVM.load(hiveId: hive.id) }

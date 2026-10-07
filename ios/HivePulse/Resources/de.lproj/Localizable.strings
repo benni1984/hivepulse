@@ -1,5 +1,5 @@
 /* Auth */
-"login.subtitle" = "Stockbegehungen protokollieren,\nVölker im Blick behalten.";
+"login.subtitle" = "Kontrollen protokollieren,\nVölker im Blick behalten.";
 "action.login" = "Anmelden";
 "action.register" = "Konto erstellen";
 "action.createAccount" = "Konto erstellen";
@@ -16,17 +16,17 @@
 /* Screens */
 "screen.apiaries" = "Bienenstände";
 "screen.qrCode" = "QR-Code";
-"screen.qrBatches" = "QR-Stapel";
-"screen.batchDetail" = "Stapel";
-"screen.initializeHive" = "Bienenstock einrichten";
+"screen.qrBatches" = "QR-Batches";
+"screen.batchDetail" = "Batch";
+"screen.initializeHive" = "Volk einrichten";
 
 /* Fields */
 "field.email" = "E-Mail";
 "field.password" = "Passwort";
 "field.name" = "Name";
 "field.language" = "Sprache";
-"field.hiveName" = "Stockname";
-"field.hiveType" = "Stocktyp";
+"field.hiveName" = "Name des Volks";
+"field.hiveType" = "Beutentyp";
 "hiveType.langstroth" = "Langstroth";
 "hiveType.dadant" = "Dadant";
 "hiveType.top_bar" = "Oberträgerbeute";
@@ -62,9 +62,9 @@
 "section.location" = "Standort";
 "section.notes" = "Notizen";
 "section.hives" = "Bienenstöcke";
-"section.inspections" = "Begehungen";
+"section.inspections" = "Kontrollen";
 "section.customFields" = "Eigene Felder";
-"section.newHive" = "Neuer Bienenstock";
+"section.newHive" = "Neues Volk";
 "section.date" = "Datum";
 "section.queen" = "Königin";
 "section.frames" = "Waben";
@@ -74,7 +74,7 @@
 "section.weight" = "Gewicht";
 
 /* Labels */
-"label.hives" = "Stöcke";
+"label.hives" = "Völker";
 "label.neverInspected" = "Noch nie besucht";
 "label.queenSeen" = "Königin gesehen";
 "label.yes" = "Ja";
@@ -100,22 +100,22 @@
 "action.useMyLocation" = "Meinen Standort verwenden";
 "action.editApiary" = "Bienenstand bearbeiten";
 "action.newApiary" = "Neuer Bienenstand";
-"action.newInspection" = "Neue Begehung";
-"action.editInspection" = "Begehung bearbeiten";
+"action.newInspection" = "Neue Kontrolle";
+"action.editInspection" = "Kontrolle bearbeiten";
 "action.saveProfile" = "Profil speichern";
 "action.logout" = "Abmelden";
 "action.help" = "Hilfe &amp; Dokumentation";
-"action.newBatch" = "Neuer Stapel";
+"action.newBatch" = "Neuer QR-Batch";
 "action.generate" = "Erstellen";
 "action.downloadPDF" = "PDF drucken";
 
 /* Empty states */
 "empty.apiaries.title" = "Keine Bienenstände";
 "empty.apiaries.description" = "Fügen Sie Ihren ersten Bienenstand hinzu.";
-"empty.hives.title" = "Keine Bienenstöcke";
-"empty.hives.description" = "Scannen Sie einen QR-Code, um den ersten Stock hinzuzufügen.";
-"empty.inspections" = "Noch keine Begehungen.";
-"empty.batches.title" = "Keine QR-Stapel";
+"empty.hives.title" = "Keine Völker";
+"empty.hives.description" = "Scannen Sie einen QR-Code, um das erste Volk hinzuzufügen.";
+"empty.inspections" = "Noch keine Kontrollen.";
+"empty.batches.title" = "Keine QR-Batches";
 "empty.batches.description" = "Erstellen Sie QR-Codes zum Drucken und Aufkleben auf Ihre Bienenstöcke.";
 
 /* Alerts */
@@ -125,7 +125,7 @@
 "alert.batchCountHint" = "Geben Sie die Anzahl der QR-Codes ein (1–50).";
 
 /* Stats */
-"stat.inspections" = "Begehungen";
+"stat.inspections" = "Kontrollen";
 "stat.daysSinceLast" = "Tage seit letzter";
 "stat.queenSeenRate" = "Königin gesehen";
 "stat.swarmAlerts" = "Schwarmmeldungen";
@@ -139,7 +139,7 @@
 "stat.to" = "Bis";
 
 /* Scan */
-"scan.instruction" = "Scannen Sie den QR-Code auf Ihrem Bienenstock, um die Akte zu öffnen oder ihn erstmalig einzurichten.";
+"scan.instruction" = "Scannen Sie den QR-Code auf Ihrem Volk, um die Akte zu öffnen oder es erstmalig einzurichten.";
 
 /* Export */
 "section.export" = "Datenexport";
@@ -200,7 +200,7 @@
 "hornets.traps.hint" = "Keine Anmeldung erforderlich";
 "hornets.traps.new" = "Falle registrieren";
 "hornets.traps.name" = "Fallenname";
-"hornets.traps.namePlaceholder" = "z. B. Gartenfalle beim Bienenstock";
+"hornets.traps.namePlaceholder" = "z. B. Gartenfalle beim Bienenstand";
 "hornets.traps.notes" = "Notizen (optional)";
 "hornets.traps.owner" = "Ihr Name (optional)";
 "hornets.traps.submit" = "Falle registrieren";
@@ -245,7 +245,7 @@
 "admin.stats.apiaries" = "Bienenstände";
 "admin.stats.publicApiaries" = "Öffentliche Bienenstände";
 "admin.stats.hives" = "Bienenstöcke";
-"admin.stats.inspections" = "Begehungen";
+"admin.stats.inspections" = "Kontrollen";
 "admin.stats.sessions" = "Sitzungen";
 "admin.stats.activeSessions" = "Aktive Sitzungen";
 "admin.stats.usersOnline" = "Benutzer online";
@@ -264,7 +264,7 @@
 
 "admin.health.inactive" = "Inaktive Benutzer";
 "admin.health.noVarroa" = "Keine Varroa-Daten";
-"admin.health.zeroHives" = "Stockwerke ohne Begehungen";
+"admin.health.zeroHives" = "Völker ohne Kontrollen";
 
 /* Passwort ändern */
 "section.changePassword" = "Passwort ändern";
@@ -276,9 +276,9 @@
 "alert.passwordTooShort" = "Das Passwort muss mindestens 8 Zeichen lang sein.";
 "alert.passwordChanged" = "Passwort erfolgreich geändert.";
 
-/* Begehungserinnerungen */
-"section.reminders" = "Begehungserinnerungen";
-"reminder.enabled" = "Begehungserinnerungen senden";
+/* Kontrollerinnerungen */
+"section.reminders" = "Kontrollerinnerungen";
+"reminder.enabled" = "Kontrollerinnerungen senden";
 "reminder.intervalFormat" = "Erinnerung alle %d Tage";
 "reminder.seasonStart" = "Saisonbeginn";
 "reminder.seasonEnd" = "Saisonende";
@@ -296,14 +296,14 @@
 "members.stat.avgVarroa" = "Ø Varroa-Zahl";
 "members.stat.goodMood" = "Gute Stimmung";
 "members.stat.avgBrood" = "Ø Bruträhmchen";
-"members.stat.interval" = "Ø Begehungsintervall";
+"members.stat.interval" = "Ø Kontrollintervall";
 "members.becomeSupporter" = "Mehr erfahren & Unterstützer werden";
 
 /* Konto löschen */
 "section.dangerZone" = "Gefahrenbereich";
 "action.deleteAccount" = "Konto löschen";
 "alert.deleteAccountConfirm" = "Konto löschen?";
-"alert.deleteAccountMessage" = "Alle Ihre Daten – Bienenstände, Bienenstöcke und Begehungen – werden dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.";
+"alert.deleteAccountMessage" = "Alle Ihre Daten – Bienenstände, Völker und Kontrollen – werden dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.";
 "alert.deleteAccountAction" = "Dauerhaft löschen";
 
 /* Statistics overview */
@@ -311,26 +311,27 @@
 "overview.period" = "Zeitraum";
 "overview.apiaries" = "Bienenstände";
 "overview.hives" = "Bienenstöcke";
-"overview.inspections" = "Begehungen";
+"overview.inspections" = "Kontrollen";
 "overview.perApiary" = "Nach Bienenstand";
-"overview.noData" = "Keine Begehungen in diesem Zeitraum.";
-"overview.rowFormat" = "%1$d Bienenstöcke · %2$d Begehungen";
+"overview.noData" = "Keine Kontrollen in diesem Zeitraum.";
+"overview.rowFormat" = "%1$d Völker · %2$d Kontrollen";
 
 /* Guided tour */
 "tour.skip" = "Überspringen";
 "tour.next" = "Weiter";
 "tour.getStarted" = "Los geht’s";
+"action.releaseNotes" = "Release Notes";
 "tour.showAgain" = "Tour erneut ansehen";
 "tour.welcome.title" = "Willkommen bei HivePulse";
 "tour.welcome.body" = "Dein Stockbuch für die Hosentasche. Hier ein kurzer Überblick, was HivePulse für dich erledigt.";
-"tour.qr.title" = "Jeder Bienenstock per Scan";
-"tour.qr.body" = "Lege Bienenstände an, klebe einen gedruckten QR-Code auf jeden Bienenstock und scanne ihn, um ihn sofort zu öffnen — ohne am Stand durch Listen zu suchen.";
-"tour.inspections.title" = "Begehungen in Sekunden";
+"tour.qr.title" = "Jedes Volk per Scan";
+"tour.qr.body" = "Lege Bienenstände an, klebe einen gedruckten QR-Code auf jedes Volk und scanne es, um es sofort zu öffnen — ohne am Stand durch Listen zu suchen.";
+"tour.inspections.title" = "Kontrollen in Sekunden";
 "tour.inspections.body" = "Erfasse Königin, Brut, Varroa, Stimmung und mehr mit wenigen Tipps. Eigene Felder ergänzen alles, was du sonst noch festhalten willst.";
 "tour.stats.title" = "Probleme früh erkennen";
-"tour.stats.body" = "Varroa-, Brut- und Gewichtsverläufe je Bienenstock und eine Übersicht über alle Bienenstände zeigen auf einen Blick, welche Völker Aufmerksamkeit brauchen.";
-"tour.reminders.title" = "Keine Begehung mehr vergessen";
-"tour.reminders.body" = "Lege Intervall und Saison fest — HivePulse erinnert dich per Push oder E-Mail, wenn Begehungen fällig sind.";
+"tour.stats.body" = "Varroa-, Brut- und Gewichtsverläufe je Volk und eine Übersicht über alle Bienenstände zeigen auf einen Blick, welche Völker Aufmerksamkeit brauchen.";
+"tour.reminders.title" = "Keine Kontrolle mehr vergessen";
+"tour.reminders.body" = "Lege Intervall und Saison fest — HivePulse erinnert dich per Push oder E-Mail, wenn Kontrollen fällig sind.";
 "tour.hornets.title" = "Schütze deine Region";
 "tour.hornets.body" = "Melde Sichtungen und Nester der Asiatischen Hornisse, verwalte deine Fallen und sieh Gesundheitsdaten der Community für deine Region.";
 
@@ -363,16 +364,16 @@
 
 /* Custom field definitions */
 "fielddefs.title" = "Eigene Felder";
-"fielddefs.subtitle" = "Erweitere deine Beuten- und Kontrollformulare mit eigenen Feldern.";
-"fielddefs.apiaryTitle" = "Standort-Felder";
-"fielddefs.apiarySubtitle" = "Diese Felder gelten nur für Beuten und Kontrollen an diesem Standort.";
+"fielddefs.subtitle" = "Erweitere deine Formulare für Völker und Kontrollen mit eigenen Feldern.";
+"fielddefs.apiaryTitle" = "Bienenstand-Felder";
+"fielddefs.apiarySubtitle" = "Diese Felder gelten nur für Völker und Kontrollen an diesem Bienenstand.";
 "fielddefs.empty" = "Noch keine eigenen Felder.";
 "fielddefs.new" = "Neues Feld";
 "fielddefs.createTitle" = "Neues eigenes Feld";
 "fielddefs.editTitle" = "Feld bearbeiten";
 "fielddefs.name" = "Feldname";
 "fielddefs.target" = "Gilt für";
-"fielddefs.target.hive" = "Beute";
+"fielddefs.target.hive" = "Volk";
 "fielddefs.target.inspection" = "Kontrolle";
 "fielddefs.type" = "Feldtyp";
 "fielddefs.type.text" = "Text";
@@ -407,7 +408,7 @@
 "strength.1" = "Schwach";
 "strength.2" = "Mittel";
 "strength.3" = "Stark";
-"screen.editHive" = "Bienenstock bearbeiten";
+"screen.editHive" = "Volk bearbeiten";
 "offline.pendingUpload" = "Wartet auf Upload";
 "offline.savedLocally" = "Ohne Verbindung erfasst. Wird von selbst hochgeladen, sobald du online bist.";
 
@@ -429,7 +430,7 @@
 "error.googleSignIn" = "Google hat keine Anmeldung übergeben. Bitte versuche es erneut.";
 
 /* Deleting a QR batch */
-"confirm.deleteBatch.title" = "Diesen QR-Stapel löschen?";
+"confirm.deleteBatch.title" = "Diesen QR-Batch löschen?";
 "confirm.deleteBatch.message" = "Alle Codes darin werden mitgelöscht. Nicht benutzte Codes lassen sich nicht wiederherstellen.";
 
 /* Sharing apiaries and hives */
@@ -458,3 +459,83 @@
 "invitation.redeemField" = "Link oder Code";
 "invitation.redeemButton" = "Einlösen";
 "invitation.invalidLink" = "Das sieht nicht nach einem Einladungslink aus.";
+
+/* Moving hives */
+"moves.title" = "Völker verlagern";
+"moves.selectHives" = "Welche Völker";
+"moves.backHint" = "Wo sie vorher standen";
+"moves.backTo" = "Zurück nach %@ (%d)";
+"moves.selectAll" = "Alle oder keine wählen";
+"moves.target" = "Verlagern nach";
+"moves.targetChoose" = "Ort wählen";
+"moves.targetNew" = "Ein neuer Ort";
+"moves.newName" = "Name des neuen Orts";
+"moves.newAddress" = "Adresse (optional)";
+"moves.newAddressHint" = "Mit einer Adresse erscheint der Ort auf der Karte.";
+"moves.date" = "Datum";
+"moves.forage" = "Tracht";
+"moves.forageNone" = "Keine Angabe";
+"moves.forageOther" = "Welche Tracht";
+"moves.note" = "Notiz (optional)";
+"moves.submit" = "Verlagern (%d)";
+"moves.historyTitle" = "Wo dieses Volk gestanden hat";
+"moves.historyEmpty" = "Dieses Volk wurde noch nicht verlagert.";
+"moves.noPosition" = "Dieser Ort hat keine Position, deshalb ist er nicht auf der Karte.";
+"moves.noPositionAtAll" = "Keiner dieser Orte hat bisher eine Position, es gibt also nichts zu zeichnen. Gib den Orten eine Adresse oder eine Position.";
+"moves.overviewTitle" = "Wanderkarte";
+"moves.overviewIntro" = "Alle Verlagerungen deiner Völker, mit dem Weg jedes Volks auf der Karte.";
+"moves.overviewEmpty" = "Es wurde noch kein Volk verlagert.";
+"moves.range" = "Zeitraum";
+"moves.from" = "Von";
+"moves.to" = "Bis";
+"forage.acacia" = "Akazie";
+"forage.rapeseed" = "Raps";
+"forage.orchard" = "Obstblüte";
+"forage.dandelion" = "Löwenzahn";
+"forage.linden" = "Linde";
+"forage.chestnut" = "Kastanie";
+"forage.fir" = "Tanne";
+"forage.heather" = "Heide";
+"forage.sunflower" = "Sonnenblume";
+"forage.lavender" = "Lavendel";
+"forage.other" = "Andere";
+
+/* Home summary and planned treatments */
+"home.title" = "Heute im Überblick";
+"home.outOfSeason" = "Das liegt außerhalb deiner Erinnerungs-Saison; die Termine werden trotzdem gleich berechnet.";
+"home.nextInspection" = "Nächste Kontrolle";
+"home.overdue" = "%d überfällig";
+"home.dueOn" = "Fällig am %@";
+"home.dueSoon" = "%d in den nächsten drei Tagen fällig";
+"home.dueSince" = "fällig seit %@";
+"home.neverInspected" = "noch nie kontrolliert";
+"home.health" = "Zustand der Völker";
+"home.healthOk" = "%d in Ordnung";
+"home.healthWatch" = "%d beobachten";
+"home.healthAlert" = "%d Alarm";
+"home.healthUnknown" = "%d unbekannt";
+"home.noConcerns" = "Nichts braucht deine Aufmerksamkeit.";
+"home.reason.varroa_high" = "hoher Varroabefall";
+"home.reason.swarm_cells" = "Schwarmzellen";
+"home.reason.aggressive" = "aggressiv";
+"home.reason.varroa_medium" = "mittlerer Varroabefall";
+"home.reason.nervous" = "nervös";
+"home.reason.queen_not_seen" = "Königin nicht gesehen";
+"home.treatments" = "Anstehende Behandlungen";
+"home.treatmentsOverdue" = "%d überfällig";
+"home.noTreatments" = "In den nächsten 30 Tagen ist keine Behandlung geplant.";
+"home.markDone" = "Erledigt";
+"treatments.title" = "Behandlungen";
+"treatments.introHive" = "Plane eine Behandlung für dieses Volk. Was fällig ist, steht auf deiner Startseite.";
+"treatments.introApiary" = "Plane eine Behandlung für alle Völker dieses Bienenstands. Was fällig ist, steht auf deiner Startseite.";
+"treatments.plan" = "Behandlung planen";
+"treatments.product" = "Mittel";
+"treatments.dueOn" = "Fällig am";
+"treatments.note" = "Notiz (optional)";
+"treatments.empty" = "Nichts geplant.";
+"treatments.overdue" = "fällig seit %@";
+"treatments.dueOnDate" = "fällig %@";
+"treatments.confirmDelete" = "Diese geplante Behandlung löschen?";
+"treatments.doneTitle" = "Erledigt";
+"treatments.doneOn" = "erledigt %@";
+"treatments.reopen" = "Wieder öffnen";

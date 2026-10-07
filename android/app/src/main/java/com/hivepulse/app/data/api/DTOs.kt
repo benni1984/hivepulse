@@ -121,6 +121,110 @@ data class ApiaryCreate(
     @SerializedName("is_public") val isPublic: Boolean = false,
 )
 
+// MARK: - Moving hives
+data class MovePlaceOut(
+    @SerializedName("apiary_id") val apiaryId: String?,
+    val name: String,
+    val latitude: Double?,
+    val longitude: Double?,
+)
+data class HiveMoveOut(
+    val id: String,
+    @SerializedName("hive_id")         val hiveId: String,
+    @SerializedName("hive_name")       val hiveName: String,
+    /** YYYY-MM-DD */
+    @SerializedName("moved_on")        val movedOn: String,
+    val forage: String?,
+    val note: String?,
+    val from: MovePlaceOut,
+    val to: MovePlaceOut,
+    @SerializedName("created_by_name") val createdByName: String?,
+    @SerializedName("created_at")      val createdAt: String,
+)
+data class NewApiaryForMove(
+    val name: String,
+    val address: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+)
+data class MoveCreateRequest(
+    @SerializedName("hive_ids")      val hiveIds: List<String>,
+    @SerializedName("to_apiary_id")  val toApiaryId: String? = null,
+    @SerializedName("new_apiary")    val newApiary: NewApiaryForMove? = null,
+    @SerializedName("moved_on")      val movedOn: String? = null,
+    val forage: String? = null,
+    val note: String? = null,
+)
+data class MoveResultOut(val moved: Int, val apiary: ApiaryOut, val moves: List<HiveMoveOut>)
+
+// MARK: - Home summary and planned treatments
+data class TreatmentTargetOut(val type: String, val id: String, val name: String)
+data class PlannedTreatmentOut(
+    val id: String,
+    val target: TreatmentTargetOut,
+    @SerializedName("apiary_name")     val apiaryName: String?,
+    val product: String,
+    /** YYYY-MM-DD */
+    @SerializedName("due_on")          val dueOn: String,
+    val note: String?,
+    @SerializedName("done_on")         val doneOn: String?,
+    val overdue: Boolean?,
+    @SerializedName("created_by_name") val createdByName: String?,
+    @SerializedName("created_at")      val createdAt: String?,
+)
+/** Gson ignores Kotlin defaults, so a server that leaves the flag out gives null: that is "not overdue". */
+val PlannedTreatmentOut.isOverdue: Boolean get() = overdue == true
+
+data class TreatmentCreateRequest(
+    @SerializedName("hive_id")   val hiveId: String? = null,
+    @SerializedName("apiary_id") val apiaryId: String? = null,
+    val product: String,
+    @SerializedName("due_on")    val dueOn: String,
+    val note: String? = null,
+)
+data class HomeInspectionOut(
+    @SerializedName("hive_id")            val hiveId: String,
+    @SerializedName("hive_name")          val hiveName: String,
+    @SerializedName("apiary_name")        val apiaryName: String,
+    @SerializedName("last_inspection_on") val lastInspectionOn: String?,
+    @SerializedName("due_on")             val dueOn: String,
+    @SerializedName("overdue_days")       val overdueDays: Int,
+)
+data class HomeInspectionsOut(
+    @SerializedName("interval_days")  val intervalDays: Int,
+    @SerializedName("overdue_count")  val overdueCount: Int,
+    @SerializedName("due_soon_count") val dueSoonCount: Int,
+    val next: List<HomeInspectionOut>,
+)
+data class HomeAttentionOut(
+    @SerializedName("hive_id")     val hiveId: String,
+    @SerializedName("hive_name")   val hiveName: String,
+    @SerializedName("apiary_name") val apiaryName: String,
+    /** "watch" or "alert" */
+    val status: String,
+    val reasons: List<String>,
+)
+data class HomeHealthOut(
+    val ok: Int, val watch: Int, val alert: Int, val unknown: Int,
+    val attention: List<HomeAttentionOut>,
+)
+data class HomeTreatmentsOut(
+    @SerializedName("open_count")    val openCount: Int,
+    @SerializedName("overdue_count") val overdueCount: Int,
+    val upcoming: List<PlannedTreatmentOut>,
+)
+data class HomeAdOut(val id: String, val label: String, val title: String, val body: String, val url: String?)
+data class HomeSummaryOut(
+    val today: String,
+    @SerializedName("in_season")    val inSeason: Boolean,
+    @SerializedName("apiary_count") val apiaryCount: Int,
+    @SerializedName("hive_count")   val hiveCount: Int,
+    val inspections: HomeInspectionsOut,
+    val health: HomeHealthOut,
+    val treatments: HomeTreatmentsOut,
+    val ad: HomeAdOut? = null,
+)
+
 // MARK: - Sharing
 data class ShareTargetOut(val type: String, val id: String, val name: String)
 data class ShareOut(

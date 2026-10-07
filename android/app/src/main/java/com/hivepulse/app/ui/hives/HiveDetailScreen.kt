@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.EventNote
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -105,6 +106,8 @@ fun HiveDetailScreen(
     onQrClick: (String) -> Unit,
     onBack: () -> Unit,
     onShareClick: (String) -> Unit = {},
+    onMovesClick: (String) -> Unit = {},
+    onTreatmentsClick: (String) -> Unit = {},
     vm: HiveDetailViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
@@ -212,6 +215,21 @@ fun HiveDetailScreen(
                     }
                 }
 
+                // Where it has stood and what is planned for it: rows of the page, not toolbar icons (as on the iPhone).
+                item {
+                    Card(
+                        modifier  = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                        shape     = MaterialTheme.shapes.large,
+                        colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                        border    = BorderStroke(1.dp, Stone200),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+                    ) {
+                        LinkRow(Icons.Default.SwapHoriz, stringResource(R.string.moves_history_title), "hiveMovesLink") { onMovesClick(hiveId) }
+                        HorizontalDivider(color = Stone200)
+                        LinkRow(Icons.Default.Medication, stringResource(R.string.treatments_title), "hiveTreatmentsLink") { onTreatmentsClick(hiveId) }
+                    }
+                }
+
                 item { SectionHeader(stringResource(R.string.section_inspections)) }
                 if (state.inspections.isEmpty()) {
                     item {
@@ -230,6 +248,19 @@ fun HiveDetailScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun LinkRow(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, tag: String, onClick: () -> Unit) {
+    Row(
+        Modifier.fillMaxWidth().clickable(onClick = onClick).testTag(tag).heightIn(min = 52.dp).padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Icon(icon, contentDescription = null, tint = Amber500)
+        Text(label, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 

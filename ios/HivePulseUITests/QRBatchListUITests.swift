@@ -26,8 +26,9 @@ final class QRBatchListUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["No QR Batches"].waitForExistence(timeout: 5))
     }
 
-    func test_qrBatchList_hasPlusButtonInToolbar() {
-        XCTAssertTrue(app.navigationBars.buttons["Add"].exists)
+    func test_qrBatchList_hasNewBatchButtonAtTheBottomRight() {
+        XCTAssertTrue(app.buttons["newBatchButton"].exists)
+        XCTAssertFalse(app.navigationBars.buttons["Add"].exists, "no plus in the toolbar any more")
     }
 
     // MARK: - Helper

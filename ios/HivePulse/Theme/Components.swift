@@ -124,6 +124,27 @@ extension View {
             .scrollContentBackground(.hidden)
             .background(Color.hpStone50.ignoresSafeArea())
     }
+
+    /// The amber "create something" button at the bottom right, as on Android (a floating action button with a
+    /// label). Every screen that creates something has this one instead of a plus in the toolbar.
+    func hpFloatingButton(_ title: String, identifier: String, action: @escaping () -> Void) -> some View {
+        self
+            // Leaves room under the button for the last row.
+            .contentMargins(.bottom, 88, for: .scrollContent)
+            .overlay(alignment: .bottomTrailing) {
+                Button(action: action) {
+                    Label(title, systemImage: "plus")
+                        .font(.dmSans(16, weight: .bold, relativeTo: .headline))
+                        .foregroundColor(.hpStone900)
+                        .padding(.horizontal, 20).padding(.vertical, 14)
+                        .background(Color.hpAmber)
+                        .clipShape(Capsule())
+                        .shadow(color: .black.opacity(0.2), radius: 4, y: 2)
+                }
+                .padding(16)
+                .accessibilityIdentifier(identifier)
+            }
+    }
 }
 
 // MARK: - Stat pill

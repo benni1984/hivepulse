@@ -78,7 +78,7 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
         <h2 className="help-section-title">Supprimer votre compte</h2>
         <p>
           Supprimer votre compte supprime définitivement votre adresse e-mail, votre nom d'affichage, tous les ruchers,
-          toutes les ruches et tous les enregistrements d'inspection. Cette action <strong>ne peut pas être annulée</strong>.
+          toutes les ruches et tous les enregistrements de visite. Cette action <strong>ne peut pas être annulée</strong>.
         </p>
         <ol className="help-steps">
           <li>
@@ -105,7 +105,7 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
         </ol>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Vos données d'inspection ont peut-être contribué aux statistiques communautaires. Supprimer votre compte retire vos données des futurs agrégats communautaires, mais les statistiques historiques déjà calculées ne sont pas recalculées rétroactivement.</p>
+          <p>Vos données de visite ont peut-être contribué aux statistiques communautaires. Supprimer votre compte retire vos données des futurs agrégats communautaires, mais les statistiques historiques déjà calculées ne sont pas recalculées rétroactivement.</p>
         </div>
       </section>
 
@@ -115,6 +115,16 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
           Appuyez sur <strong>Se déconnecter</strong> dans les Paramètres (mobile) ou dans le menu déroulant en haut à droite (web).
           Votre jeton de session est révoqué côté serveur. Vous serez redirigé vers l'écran de connexion.
           Vos données sont préservées — se déconnecter ne supprime rien.
+        </p>
+      </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Se connecter avec Apple ou Google</h2>
+        <p>
+          Vous pouvez vous connecter avec votre compte Apple ou Google au lieu d&rsquo;un mot de passe : Apple sur l&rsquo;iPhone et le site, Google sur Android, l&rsquo;iPhone et le site. Si l&rsquo;adresse e-mail est la même, vous arrivez dans le compte que vous aviez déjà, avec toutes vos ruches. HivePulse ne reçoit d&rsquo;eux que votre nom et votre adresse, jamais un mot de passe.
+        </p>
+        <p>
+          Un compte créé ainsi n&rsquo;a pas de mot de passe ; <em>Changer le mot de passe</em> n&rsquo;est donc pas affiché. Le formulaire e-mail reste disponible sous forme de lien discret sous les boutons.
         </p>
       </section>
     </>

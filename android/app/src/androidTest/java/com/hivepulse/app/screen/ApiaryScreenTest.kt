@@ -1,6 +1,9 @@
 package com.hivepulse.app.screen
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.test.onAllNodesWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
@@ -79,6 +82,14 @@ class ApiaryScreenTest {
                 .fetchSemanticsNodes().isNotEmpty()
         }
         composeRule.onNode(hasText("No apiaries yet", substring = true)).assertIsDisplayed()
+    }
+
+    @Test
+    fun scanIsATabOfTheBottomBarAndNotInTheTopBar() {
+        waitForApiaryList()
+        composeRule.onNodeWithTag("scanTab").assertIsDisplayed()
+        // The top bar keeps statistics, QR batches, moves and invitation link, in the iPhone's order.
+        composeRule.onAllNodesWithContentDescription("Scan QR code").assertCountEquals(0)
     }
 
     @Test

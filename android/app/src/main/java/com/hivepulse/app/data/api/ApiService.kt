@@ -122,6 +122,42 @@ interface ApiService {
     @DELETE("qr-batches/{id}")
     suspend fun deleteQrBatch(@Path("id") id: String): Response<Unit>
 
+    // Moving hives
+    @POST("hives/move")
+    suspend fun moveHives(@Body body: MoveCreateRequest): MoveResultOut
+
+    @GET("hives/{id}/moves")
+    suspend fun hiveMoves(@Path("id") id: String): List<HiveMoveOut>
+
+    @GET("hives/moves/overview")
+    suspend fun movesOverview(
+        @Query("from") from: String? = null,
+        @Query("to") to: String? = null,
+    ): List<HiveMoveOut>
+
+    // Home summary and planned treatments
+    @GET("home")
+    suspend fun home(): HomeSummaryOut
+
+    @GET("treatments")
+    suspend fun treatments(
+        @Query("status") status: String? = null,
+        @Query("hive_id") hiveId: String? = null,
+        @Query("apiary_id") apiaryId: String? = null,
+    ): List<PlannedTreatmentOut>
+
+    @POST("treatments")
+    suspend fun createTreatment(@Body body: TreatmentCreateRequest): PlannedTreatmentOut
+
+    @POST("treatments/{id}/done")
+    suspend fun markTreatmentDone(@Path("id") id: String, @Body body: Map<String, String>): PlannedTreatmentOut
+
+    @POST("treatments/{id}/reopen")
+    suspend fun reopenTreatment(@Path("id") id: String): PlannedTreatmentOut
+
+    @DELETE("treatments/{id}")
+    suspend fun deleteTreatment(@Path("id") id: String): Response<Unit>
+
     // Sharing
     @GET("shares")
     suspend fun listShares(

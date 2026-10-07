@@ -12,7 +12,7 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
         </p>
         <p>
           Los colmenares pueden hacerse <strong>públicos</strong>, lo que agrega un pin en el mapa comunitario
-          y contribuye sus datos de inspección anonimizados a las estadísticas de toda la plataforma que
+          y contribuye sus datos de revisión anonimizados a las estadísticas de toda la plataforma que
           todos los apicultores pueden ver en la pantalla de Miembros.
         </p>
         <Screenshot src="/docs/screenshots/dashboard-apiary-list.png" caption="Lista de colmenares en el panel de control web mostrando dos colmenares con recuento de colmenas" />
@@ -69,7 +69,7 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
         </ul>
         <p>
           El formulario incluye nombre, descripción, dirección y el interruptor <strong>Mostrar en el mapa público</strong>.
-          Ese interruptor es lo que coloca el colmenar en el mapa de la comunidad y hace que sus inspecciones cuenten
+          Ese interruptor es lo que coloca el colmenar en el mapa de la comunidad y hace que sus revisiones cuenten
           en las cifras comunitarias; al desactivarlo, vuelve a desaparecer.
         </p>
         <div className="help-callout info">
@@ -84,13 +84,13 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
           <div className="help-stat-card">
             <div className="help-stat-card-name">Privado (predeterminado)</div>
             <div className="help-stat-card-desc">
-              Solo usted puede ver el colmenar, sus colmenas y todos los datos de inspección. Nada se comparte con la comunidad.
+              Solo usted puede ver el colmenar, sus colmenas y todos los datos de revisión. Nada se comparte con la comunidad.
             </div>
           </div>
           <div className="help-stat-card">
             <div className="help-stat-card-name">Público</div>
             <div className="help-stat-card-desc">
-              Un pin aparece en el mapa comunitario en sus coordenadas GPS. Sus datos de inspección
+              Un pin aparece en el mapa comunitario en sus coordenadas GPS. Sus datos de revisión
               contribuyen a las estadísticas de toda la plataforma (solo promedios — los registros individuales nunca se exponen).
               No se publica ninguna información que identifique al usuario.
             </div>
@@ -111,7 +111,7 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
         </p>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Eliminar un colmenar es permanente — todas las colmenas y su historial de inspecciones se perderán. Exporte sus datos primero si necesita una copia.</p>
+          <p>Eliminar un colmenar es permanente — todas las colmenas y su historial de revisiones se perderán. Exporte sus datos primero si necesita una copia.</p>
         </div>
       </section>
     </>

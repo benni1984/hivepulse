@@ -21,6 +21,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hivepulse.app.R
 import com.hivepulse.app.data.api.ApiaryOut
 import com.hivepulse.app.data.api.isOwner
+import com.hivepulse.app.ui.home.HomeSummaryViewModel
+import com.hivepulse.app.ui.home.homeSummaryItems
 import com.hivepulse.app.ui.sharing.InvitationsViewModel
 import com.hivepulse.app.ui.sharing.invitationItems
 import com.hivepulse.app.ui.common.ErrorBanner
@@ -32,30 +34,37 @@ import com.hivepulse.app.ui.theme.Stone200
 @Composable
 fun ApiaryListScreen(
     onApiaryClick: (String) -> Unit,
-    onScanClick: () -> Unit,
     onBatchClick: () -> Unit,
     onStatsClick: () -> Unit = {},
+    onMovesClick: () -> Unit = {},
+    onHiveClick: (String) -> Unit = {},
     vm: ApiaryViewModel = hiltViewModel(),
     invitationsVm: InvitationsViewModel = hiltViewModel(),
+    homeVm: HomeSummaryViewModel = hiltViewModel(),
 ) {
     val state by vm.state.collectAsState()
+    val home by homeVm.state.collectAsState()
     val invitations by invitationsVm.state.collectAsState()
     var showCreate by remember { mutableStateOf(false) }
     var showRedeem by remember { mutableStateOf(false) }
     // Coming back from another screen is when an invitation may have arrived.
-    LaunchedEffect(Unit) { invitationsVm.load() }
+    LaunchedEffect(Unit) { invitationsVm.load(); homeVm.load() }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.screen_apiaries), style = MaterialTheme.typography.titleLarge) },
                 actions = {
+                    // Same order as the iPhone's toolbar: statistics, QR batches, moves map, invitation link.
+                    // Scanning is a tab of the bottom bar on both.
+                    IconButton(onClick = onStatsClick)    { Icon(Icons.Default.BarChart,     contentDescription = stringResource(R.string.screen_stats_overview)) }
+                    IconButton(onClick = onBatchClick)    { Icon(Icons.Default.Print,        contentDescription = stringResource(R.string.tab_print)) }
+                    IconButton(onClick = onMovesClick, modifier = Modifier.testTag("movesOverviewButton")) {
+                        Icon(Icons.Default.Map, contentDescription = stringResource(R.string.moves_overview_title))
+                    }
                     IconButton(onClick = { showRedeem = true }, modifier = Modifier.testTag("redeemInvitationButton")) {
                         Icon(Icons.Default.MarkEmailRead, contentDescription = stringResource(R.string.invitation_redeem_title))
                     }
-                    IconButton(onClick = onStatsClick)    { Icon(Icons.Default.BarChart,     contentDescription = stringResource(R.string.screen_stats_overview)) }
-                    IconButton(onClick = onBatchClick)    { Icon(Icons.Default.Print,        contentDescription = stringResource(R.string.tab_print)) }
-                    IconButton(onClick = onScanClick)     { Icon(Icons.Default.QrCodeScanner, contentDescription = stringResource(R.string.tab_scan)) }
                 }
             )
         },
@@ -95,6 +104,12 @@ fun ApiaryListScreen(
                         invitations.invitations,
                         onAccept  = { invitation -> invitationsVm.accept(invitation) { vm.load() } },
                         onDecline = { invitation -> invitationsVm.decline(invitation) },
+                    )
+                    homeSummaryItems(
+                        home,
+                        onHiveClick = onHiveClick,
+                        onMarkDone = { treatment -> homeVm.markDone(treatment) },
+                        onDismissError = { homeVm.clearError() },
                     )
                     items(state.apiaries) { apiary ->
                         ApiaryCard(apiary, onClick = { onApiaryClick(apiary.id) }, onDelete = { vm.delete(apiary.id) })

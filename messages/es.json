@@ -13,7 +13,8 @@
     "download": "Descargar gratis",
     "back": {
       "map": "← Mapa en vivo"
-    }
+    },
+    "releaseNotes": "Notas de versión"
   },
   "footer": {
     "tagline": "Apicultura de código abierto para un planeta más saludable.",
@@ -32,7 +33,7 @@
     "badge": "Código abierto · Comunidad · Gratuito",
     "title1": "Salvando abejas,",
     "title2": "un escaneo a la vez",
-    "subtitle": "HivePulse convierte a cada apicultor en un científico ciudadano. Registra inspecciones, controla la salud de las colmenas y contribuye a datos globales que ayudan a los investigadores a entender y proteger las poblaciones de abejas.",
+    "subtitle": "HivePulse convierte a cada apicultor en un científico ciudadano. Registra revisiones, controla la salud de las colmenas y contribuye a datos globales que ayudan a los investigadores a entender y proteger las poblaciones de abejas.",
     "apple": {
       "pre": "Descargar en el",
       "store": "App Store"
@@ -49,7 +50,7 @@
     "sub": "Cifras en tiempo real de nuestra red global de apicultores",
     "apiaries": "Colmenares registrados",
     "hives": "Colmenas monitorizadas",
-    "inspections": "Inspecciones registradas",
+    "inspections": "Revisiones registradas",
     "countries": "Países alcanzados"
   },
   "feat": {
@@ -58,7 +59,7 @@
     "sub": "Desde el aficionado hasta la operación comercial, HivePulse crece contigo.",
     "qr": {
       "title": "Escanear QR y empezar",
-      "desc": "Pega un código QR en cada colmena. Escanéalo al llegar y comienza la inspección de inmediato."
+      "desc": "Pega un código QR en cada colmena. Escanéalo al llegar y comienza la revisión de inmediato."
     },
     "track": {
       "title": "Seguimiento inteligente",
@@ -89,7 +90,7 @@
     "li2": "El ácaro varroa es la principal amenaza para las colonias de abejas gestionadas",
     "li3": "Los pesticidas, la pérdida de hábitat y el cambio climático agravan la presión",
     "li4": "Los datos en tiempo real de los apicultores son esenciales para los sistemas de alerta temprana",
-    "callout": "Cuando registras una inspección en HivePulse, no solo gestionas tu colmena — añades un punto de datos a una red global de alerta temprana para la salud de las abejas."
+    "callout": "Cuando registras una revisión en HivePulse, no solo gestionas tu colmena — añades un punto de datos a una red global de alerta temprana para la salud de las abejas."
   },
   "hex1": {
     "label": "de los cultivos con flores dependen de la polinización animal"
@@ -130,16 +131,16 @@
       "desc": "Publicación de las apps iOS y Android en la App Store y Google Play, para instalar HivePulse sin compilar el código fuente."
     },
     "remind": {
-      "title": "Recordatorios de inspección",
-      "desc": "Notificaciones push y correos cuando una colmena lleva demasiado tiempo sin inspección: ya disponible en las apps y en la web."
+      "title": "Recordatorios de revisión",
+      "desc": "Notificaciones push y correos cuando una colmena lleva demasiado tiempo sin revisión: ya disponible en las apps y en la web."
     },
     "export": {
       "title": "Exportación de datos (CSV / JSON)",
-      "desc": "Descarga tu historial completo de inspecciones en CSV o JSON — ya disponible en el panel web."
+      "desc": "Descarga tu historial completo de revisiones en CSV o JSON — ya disponible en el panel web."
     },
     "fields": {
       "title": "Campos personalizados en formularios",
-      "desc": "Define tus propios campos de inspección y úsalos directamente en el panel web — ya disponible."
+      "desc": "Define tus propios campos de revisión y úsalos directamente en el panel web — ya disponible."
     },
     "heat": {
       "title": "Mapas de calor regionales",
@@ -159,7 +160,7 @@
   "price": {
     "free": {
       "tier": "Siempre gratis",
-      "f1": "Colmenas e inspecciones ilimitadas",
+      "f1": "Colmenas e revisiones ilimitadas",
       "f2": "Escaneo QR y generación de lotes",
       "f3": "Estadísticas básicas por colmena",
       "f4": "Contribución a datos comunitarios",
@@ -216,7 +217,7 @@
     "stat": {
       "apiaries": "Colmenares",
       "hives": "Colmenas",
-      "inspections": "Inspecciones"
+      "inspections": "Revisiones"
     },
     "popup": {
       "hiveSingular": "colmena",
@@ -254,6 +255,19 @@
       "design": "Diseño",
       "release": "Lanzamiento",
       "privacy": "Privacidad"
+    }
+  },
+  "releaseNotes": {
+    "tag": "Notas de versión",
+    "title": "Novedades de HivePulse",
+    "sub": "Lo que ha cambiado, lo que se ha añadido y la lista completa de todo lo que HivePulse puede hacer.",
+    "whatsNew": "Novedades",
+    "allFeatures": "Todas las funciones",
+    "allFeaturesSub": "Todo lo que HivePulse puede hacer hoy, en la web, en la app de iPhone y en la app de Android.",
+    "kinds": {
+      "added": "Añadido",
+      "changed": "Cambiado",
+      "fixed": "Corregido"
     }
   },
   "contrib": {
@@ -327,9 +341,9 @@
     "updated": "Última actualización: octubre de 2026",
     "intro": "HivePulse es una aplicación de apicultura de código abierto. Esta política explica qué datos recopilamos, por qué los recopilamos y las opciones que tienes, incluido cómo controlas si tu colmenar aparece en el mapa público.",
     "s1title": "1. Datos que recopilamos",
-    "s1body": "Al registrarte: tu dirección de correo electrónico, nombre de display y idioma preferido. Al usar la app: nombres de colmenares y coordenadas GPS (si las introduces), detalles de colmenas y registros de inspecciones. No recopilamos identificadores de dispositivo, IDs publicitarios ni datos de ubicación precisos sin que tú los introduzcas explícitamente.",
+    "s1body": "Al registrarte: tu dirección de correo electrónico, nombre de display y idioma preferido. Al usar la app: nombres de colmenares y coordenadas GPS (si las introduces), detalles de colmenas y registros de revisiones. No recopilamos identificadores de dispositivo, IDs publicitarios ni datos de ubicación precisos sin que tú los introduzcas explícitamente.",
     "s2title": "2. Mapa público — opt-in",
-    "s2body": "El mapa público muestra marcadores anónimos para visualizar la actividad apícola global. La participación es estrictamente voluntaria (opt-in). Por defecto, cada colmenar que creas es privado. Puedes activar 'Mostrar en el mapa público' por colmenar en los ajustes de la app en cualquier momento. Cuando está activado, el marcador muestra el nombre de tu colmenar, coordenadas GPS y número de colmenas. Nunca se comparte públicamente ninguna identidad ni dato de inspección.",
+    "s2body": "El mapa público muestra marcadores anónimos para visualizar la actividad apícola global. La participación es estrictamente voluntaria (opt-in). Por defecto, cada colmenar que creas es privado. Puedes activar 'Mostrar en el mapa público' por colmenar en los ajustes de la app en cualquier momento. Cuando está activado, el marcador muestra el nombre de tu colmenar, coordenadas GPS y número de colmenas. Nunca se comparte públicamente ninguna identidad ni dato de revisión.",
     "s3title": "3. Cómo usamos tus datos",
     "s3body": "Tus datos se usan únicamente para el funcionamiento de la app y, solo si aceptas, para mostrar tu marcador en el mapa público y contribuir a las estadísticas globales. No vendemos, intercambiamos ni alquilamos datos personales. No los usamos para publicidad.",
     "s4title": "4. Proveedores de servicios",
@@ -402,7 +416,8 @@
       "logout": "Cerrar sesión",
       "members": "Comunidad",
       "openMenu": "Abrir menú del panel",
-      "closeMenu": "Cerrar menú del panel"
+      "closeMenu": "Cerrar menú del panel",
+      "releaseNotes": "Notas de versión"
     },
     "overview": {
       "title": "Mis estadísticas",
@@ -413,10 +428,10 @@
       "presetAll": "Todo el tiempo",
       "apiaries": "Colmenares",
       "hives": "Colmenas",
-      "inspections": "Inspecciones",
+      "inspections": "Revisiones",
       "perApiary": "Por colmenar",
       "apiary": "Colmenar",
-      "noData": "Sin inspecciones en este período."
+      "noData": "Sin revisiones en este período."
     },
     "profile": {
       "title": "Perfil",
@@ -437,13 +452,13 @@
       "badgeSupporter": "Supporter",
       "memberSince": "Miembro desde",
       "dangerTitle": "Zona de peligro",
-      "dangerDesc": "Elimina permanentemente tu cuenta y todos los datos asociados — colmenares, colmenas, inspecciones. Esta acción no se puede deshacer.",
+      "dangerDesc": "Elimina permanentemente tu cuenta y todos los datos asociados — colmenares, colmenas, revisiones. Esta acción no se puede deshacer.",
       "deleteAccount": "Eliminar mi cuenta",
       "deleteConfirm": "¿Estás seguro? Todos tus datos se eliminarán permanentemente.",
       "deleteConfirmBtn": "Sí, eliminar mi cuenta",
       "deleteCancel": "Cancelar",
-      "reminderTitle": "Recordatorios de inspección",
-      "reminderEnabled": "Enviar recordatorios de inspección",
+      "reminderTitle": "Recordatorios de revisión",
+      "reminderEnabled": "Enviar recordatorios de revisión",
       "reminderInterval": "Recordarme cada",
       "reminderIntervalUnit": "días",
       "reminderSeasonStart": "Inicio de temporada (mes)",
@@ -483,7 +498,7 @@
         "totalApiaries": "Colmenares totales",
         "publicApiaries": "Colmenares públicos",
         "totalHives": "Colmenas totales",
-        "totalInspections": "Inspecciones totales",
+        "totalInspections": "Revisiones totales",
         "activeUsers": "Usuarios activos (30d)",
         "activeSessions": "Sesiones activas",
         "preset": "Período"
@@ -498,7 +513,7 @@
         "joined": "Registrado",
         "apiaries": "Colmenares",
         "hives": "Colmenas",
-        "inspections": "Inspecciones",
+        "inspections": "Revisiones",
         "supporter": "Supporter",
         "actions": "Acciones",
         "makeSupporter": "Hacer Supporter",
@@ -522,11 +537,11 @@
       "health": {
         "title": "Calidad de datos",
         "inactiveUsers": "Usuarios inactivos",
-        "zeroHives": "Colmenas sin inspecciones",
+        "zeroHives": "Colmenas sin revisiones",
         "noVarroa": "Datos de varroa faltantes",
-        "inactiveDesc": "Registrado hace > 30 días, sin inspecciones",
+        "inactiveDesc": "Registrado hace > 30 días, sin revisiones",
         "zeroDesc": "Inicializado pero nunca inspeccionado",
-        "noVarroaDesc": "Inspecciones sin recuento de varroa",
+        "noVarroaDesc": "Revisiones sin recuento de varroa",
         "email": "Email",
         "joined": "Registrado",
         "apiaries": "Colmenares",
@@ -568,7 +583,7 @@
     },
     "apiary": {
       "hives": "Colmenas",
-      "inspections": "Inspecciones",
+      "inspections": "Revisiones",
       "avgVarroa": "Varroa prom.",
       "noHives": "Aún no hay colmenas en este colmenar.",
       "newHive": "Nueva colmena",
@@ -588,7 +603,7 @@
       "errorGeneric": "Algo salió mal.",
       "moodTitle": "Distribución del comportamiento",
       "noMoodData": "Aún no hay datos de comportamiento.",
-      "lastInspection": "Última inspección",
+      "lastInspection": "Última revisión",
       "colName": "Nombre",
       "colType": "Tipo",
       "never": "Nunca",
@@ -600,10 +615,10 @@
       "partialNote": "{name} ha compartido contigo algunas colmenas de este colmenar."
     },
     "hive": {
-      "inspections": "Inspecciones",
+      "inspections": "Revisiones",
       "varroaTrend": "Tendencia varroa (12 meses)",
       "noTrend": "Aún no hay datos de varroa.",
-      "noInspections": "Aún no hay inspecciones.",
+      "noInspections": "Aún no hay revisiones.",
       "date": "Fecha",
       "varroa": "Varroa",
       "mood": "Comportamiento",
@@ -620,20 +635,20 @@
       "saveSuccess": "Colmena guardada.",
       "dangerTitle": "Zona de peligro",
       "deleteBtn": "Eliminar colmena",
-      "deleteConfirmText": "Esto eliminará permanentemente la colmena y todas sus inspecciones.",
+      "deleteConfirmText": "Esto eliminará permanentemente la colmena y todas sus revisiones.",
       "deleteConfirmBtn": "Confirmar eliminación",
       "deleteSuccess": "Colmena eliminada.",
       "errorGeneric": "Algo salió mal.",
-      "newInspectionBtn": "Nueva inspección",
-      "addInspectionTitle": "Registrar inspección",
-      "editInspectionTitle": "Editar inspección",
-      "inspectionSaveBtn": "Guardar inspección",
-      "inspectionUpdateBtn": "Actualizar inspección",
-      "inspectionSaveSuccess": "Inspección registrada.",
-      "inspectionUpdateSuccess": "Inspección actualizada.",
+      "newInspectionBtn": "Nueva revisión",
+      "addInspectionTitle": "Registrar revisión",
+      "editInspectionTitle": "Editar revisión",
+      "inspectionSaveBtn": "Guardar revisión",
+      "inspectionUpdateBtn": "Actualizar revisión",
+      "inspectionSaveSuccess": "Revisión registrada.",
+      "inspectionUpdateSuccess": "Revisión actualizada.",
       "inspectionEditBtn": "Editar",
       "inspectionDeleteBtn": "Eliminar",
-      "inspectionConfirmDeleteText": "¿Eliminar esta inspección?",
+      "inspectionConfirmDeleteText": "¿Eliminar esta revisión?",
       "inspectionConfirmDeleteBtn": "Confirmar",
       "inspectionLoadMore": "Cargar más",
       "inspectionLoadingMore": "Cargando…",
@@ -655,7 +670,7 @@
     },
     "fieldDefs": {
       "title": "Campos personalizados",
-      "subtitle": "Amplía tus formularios de colmenas e inspecciones con campos personalizados.",
+      "subtitle": "Amplía tus formularios de colmenas e revisiones con campos personalizados.",
       "empty": "No hay campos personalizados todavía.",
       "new": "Nuevo campo",
       "createTitle": "Nuevo campo personalizado",
@@ -663,7 +678,7 @@
       "name": "Nombre del campo",
       "target": "Se aplica a",
       "targetHive": "Colmena",
-      "targetInspection": "Inspección",
+      "targetInspection": "Revisión",
       "type": "Tipo de campo",
       "typeText": "Texto",
       "typeNumber": "Número",
@@ -687,7 +702,7 @@
       "colRequired": "Obligatorio",
       "colActions": "Acciones",
       "apiaryTitle": "Campos del apiario",
-      "apiarySubtitle": "Estos campos sólo se aplican a colmenas e inspecciones de este apiario."
+      "apiarySubtitle": "Estos campos sólo se aplican a colmenas e revisiones de este apiario."
     },
     "qrBatches": {
       "title": "Lotes de códigos QR",
@@ -721,7 +736,7 @@
       "avgVarroa": "Varroa prom. (global)",
       "goodMood": "Colmenas: buen ánimo",
       "avgBrood": "Marcos de cría prom.",
-      "interval": "Intervalo de inspección prom.",
+      "interval": "Intervalo de revisión prom.",
       "moodChart": "Ánimo de las colmenas",
       "cityChart": "Colmenas por ciudad (Top 15)",
       "sizeChart": "Tamaño de colmenares",
@@ -764,6 +779,104 @@
       "decline": "Rechazar",
       "accepted": "Ahora también puedes trabajar en {name}.",
       "errorGeneric": "No ha funcionado. Puede que la invitación ya no sea válida."
+    },
+    "moves": {
+      "title": "Trasladar colmenas",
+      "intro": "Lleva colmenas adonde algo está en flor. Elige las colmenas, el nuevo lugar, el día y la floración; el traslado queda guardado, así ves dónde ha estado cada colmena.",
+      "selectHives": "Qué colmenas",
+      "backHint": "Dónde estaban antes",
+      "backTo": "Volver a {name} ({count})",
+      "selectAll": "Todas las colmenas",
+      "target": "Trasladar a",
+      "targetChoose": "Elegir un lugar",
+      "targetNew": "Un lugar nuevo",
+      "newName": "Nombre del lugar nuevo",
+      "newAddress": "Dirección (opcional)",
+      "newAddressHint": "Con una dirección, el lugar aparece en el mapa.",
+      "date": "Fecha",
+      "forage": "Floración",
+      "forageNone": "Sin indicar",
+      "forageOther": "Qué floración",
+      "note": "Nota (opcional)",
+      "submit": "Trasladar ({count})",
+      "cancel": "Cancelar",
+      "errorGeneric": "No ha funcionado. Inténtalo de nuevo.",
+      "success": "Trasladadas a {name}.",
+      "historyTitle": "Dónde ha estado esta colmena",
+      "historyEmpty": "Esta colmena todavía no se ha trasladado.",
+      "noPosition": "Este lugar no tiene posición, por eso no está en el mapa.",
+      "noPositionAtAll": "Ninguno de estos lugares tiene aún una posición, así que no hay nada que dibujar. Dales una dirección o una posición.",
+      "start": "Aquí empezó el viaje",
+      "openOverview": "Mapa de traslados",
+      "overviewTitle": "Mapa de traslados",
+      "overviewIntro": "Todos los traslados de tus colmenas, con el recorrido de cada una en el mapa.",
+      "overviewEmpty": "Ninguna colmena se ha trasladado todavía.",
+      "from": "Desde",
+      "to": "Hasta",
+      "hive": "Colmena",
+      "route": "Recorrido",
+      "forageNames": {
+        "acacia": "Acacia",
+        "rapeseed": "Colza",
+        "orchard": "Frutales en flor",
+        "dandelion": "Diente de león",
+        "linden": "Tilo",
+        "chestnut": "Castaño",
+        "fir": "Abeto",
+        "heather": "Brezo",
+        "sunflower": "Girasol",
+        "lavender": "Lavanda",
+        "other": "Otra"
+      }
+    },
+    "home": {
+      "title": "Hoy de un vistazo",
+      "outOfSeason": "Esto queda fuera de tu temporada de recordatorios; las fechas se calculan igualmente.",
+      "nextInspection": "Próxima revisión",
+      "overdue": "{count} atrasadas",
+      "dueOn": "Toca el {date}",
+      "dueSoon": "{count} en los próximos tres días",
+      "dueSince": "toca desde el {date}",
+      "neverInspected": "nunca revisada",
+      "health": "Estado de las colmenas",
+      "healthOk": "{count} bien",
+      "healthWatch": "{count} a vigilar",
+      "healthAlert": "{count} alerta",
+      "healthUnknown": "{count} desconocidas",
+      "noConcerns": "Nada requiere tu atención.",
+      "reasons": {
+        "varroa_high": "varroa alta",
+        "swarm_cells": "celdas de enjambre",
+        "aggressive": "agresiva",
+        "varroa_medium": "varroa media",
+        "nervous": "nerviosa",
+        "queen_not_seen": "reina no vista"
+      },
+      "treatments": "Próximos tratamientos",
+      "treatmentsOverdue": "{count} atrasados",
+      "noTreatments": "No hay tratamientos previstos en los próximos 30 días.",
+      "markDone": "Hecho"
+    },
+    "treatments": {
+      "title": "Tratamientos",
+      "introHive": "Planifica un tratamiento para esta colmena. Lo que toca aparece en tu pantalla de inicio.",
+      "introApiary": "Planifica un tratamiento para todas las colmenas de este colmenar. Lo que toca aparece en tu pantalla de inicio.",
+      "plan": "Planificar un tratamiento",
+      "product": "Producto",
+      "dueOn": "Para el",
+      "note": "Nota (opcional)",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "empty": "Nada planificado.",
+      "overdue": "toca desde el {date}",
+      "dueOnDate": "para el {date}",
+      "markDone": "Hecho",
+      "delete": "Eliminar",
+      "confirmDelete": "¿Eliminar este tratamiento planificado?",
+      "doneTitle": "Hechos",
+      "doneOn": "hecho el {date}",
+      "reopen": "Reabrir",
+      "errorGeneric": "No ha funcionado. Inténtalo de nuevo."
     }
   },
   "hiveTypes": {
@@ -805,7 +918,7 @@
     },
     "b1": {
       "title": "Panel de salud global",
-      "desc": "Índice de varroa en tiempo real, distribución del comportamiento y frecuencia de inspección en todas las regiones."
+      "desc": "Índice de varroa en tiempo real, distribución del comportamiento y frecuencia de revisión en todas las regiones."
     },
     "b2": {
       "title": "Gráficos de tendencias estacionales",
@@ -813,7 +926,7 @@
     },
     "b3": {
       "title": "Exportación completa de datos",
-      "desc": "Descarga tu historial completo de inspecciones en CSV o JSON — previsto para la próxima versión mayor."
+      "desc": "Descarga tu historial completo de revisiones en CSV o JSON — previsto para la próxima versión mayor."
     },
     "b4": {
       "title": "Mapas de calor regionales",
@@ -831,7 +944,7 @@
       "avgVarroa": "Varroa prom. (global)",
       "goodMood": "Colmenas: Buen humor",
       "avgBrood": "Marcos de cría prom.",
-      "interval": "Intervalo de inspección prom."
+      "interval": "Intervalo de revisión prom."
     },
     "coming": {
       "tag": "Ya disponible",
@@ -848,7 +961,7 @@
     "groups": {
       "Getting started": "Primeros pasos",
       "Managing your apiary": "Gestionar su colmenar",
-      "Inspections & data": "Inspecciones & datos",
+      "Inspections & data": "Revisiones & datos",
       "Statistics": "Estadísticas",
       "Community & hornets": "Comunidad & avispones",
       "Account & settings": "Cuenta & ajustes"
@@ -870,25 +983,37 @@
         "title": "Códigos QR",
         "desc": "Generar lotes de códigos QR imprimibles, pegarlos en las colmenas y escanearlos para abrir la colmena correcta al instante."
       },
+      "sharing": {
+        "title": "Trabajar juntos",
+        "desc": "Invita por correo a otro apicultor a trabajar contigo en un colmenar o en colmenas sueltas, acepta una invitación y descubre qué queda con el propietario."
+      },
+      "moving-hives": {
+        "title": "Trasladar colmenas",
+        "desc": "Lleva las colmenas a la floración: trasládalas entre tus colmenares, conserva el historial de dónde ha estado cada una y mira cada recorrido en un mapa."
+      },
+      "home-and-treatments": {
+        "title": "Inicio y tratamientos",
+        "desc": "Lo que toca, cómo están tus colmenas y lo que viene, de un vistazo, y cómo planificar tratamientos para una colmena o un colmenar entero."
+      },
       "custom-fields": {
-        "title": "Campos de inspección personalizados",
-        "desc": "Ampliar el formulario de inspección integrado con sus propios campos — texto, números, casillas, desplegables — para toda su cuenta o un colmenar específico."
+        "title": "Campos de revisión personalizados",
+        "desc": "Ampliar el formulario de revisión integrado con sus propios campos — texto, números, casillas, desplegables — para toda su cuenta o un colmenar específico."
       },
       "inspections": {
-        "title": "Registrar una inspección",
+        "title": "Registrar una revisión",
         "desc": "Registre cada visita a una colmena: recuento de varroa, humor de la colonia, avistamiento de la reina, cuadros de cría, cuadros de miel, peso, tratamientos y más."
       },
       "data-export": {
         "title": "Exportar sus datos",
-        "desc": "Descargue todos los registros de inspección de un colmenar en JSON o CSV para compartirlos con su veterinario, investigador o autoridad apícola nacional."
+        "desc": "Descargue todos los registros de revisión de un colmenar en JSON o CSV para compartirlos con su veterinario, investigador o autoridad apícola nacional."
       },
       "hive-stats": {
         "title": "Estadísticas de la colmena",
-        "desc": "Entienda la salud de su colmena a lo largo del tiempo con gráficos de tendencia de varroa, distribución del humor, tasa de avistamiento de la reina y frecuencia de inspección."
+        "desc": "Entienda la salud de su colmena a lo largo del tiempo con gráficos de tendencia de varroa, distribución del humor, tasa de avistamiento de la reina y frecuencia de revisión."
       },
       "community-stats": {
         "title": "Estadísticas comunitarias (Miembros)",
-        "desc": "Compare su colmenar con la comunidad HivePulse — recuentos medios de varroa, tasas de buen humor, cuadros de cría e intervalos de inspección de todos los colmenares públicos."
+        "desc": "Compare su colmenar con la comunidad HivePulse — recuentos medios de varroa, tasas de buen humor, cuadros de cría e intervalos de revisión de todos los colmenares públicos."
       },
       "hornet-tracker": {
         "title": "Rastreador de avispones",
@@ -899,8 +1024,8 @@
         "desc": "Registrar una trampa física con nombre, registrar capturas diarias usando su código de acceso de 8 caracteres y buscar trampas cerca de su ubicación."
       },
       "reminders": {
-        "title": "Recordatorios de inspección",
-        "desc": "Establezca un intervalo de recordatorio y una ventana de temporada para que HivePulse le avise cuando una colmena tiene una inspección pendiente."
+        "title": "Recordatorios de revisión",
+        "desc": "Establezca un intervalo de recordatorio y una ventana de temporada para que HivePulse le avise cuando una colmena tiene una revisión pendiente."
       },
       "account": {
         "title": "Cuenta & perfil",
@@ -1018,16 +1143,18 @@
   },
   "meta": {
     "siteTitle": "HivePulse — protejamos juntos a los polinizadores",
-    "siteDescription": "La app apícola que convierte cada inspección en datos mundiales para la protección de las abejas. Gratis para iPhone y Android.",
+    "siteDescription": "La app apícola que convierte cada revisión en datos mundiales para la protección de las abejas. Gratis para iPhone y Android.",
     "helpTitle": "Ayuda y documentación",
-    "helpDescription": "Guías de todas las partes de HivePulse: colmenares, colmenas, inspecciones, códigos QR, estadísticas y rastreador de avispones.",
+    "helpDescription": "Guías de todas las partes de HivePulse: colmenares, colmenas, revisiones, códigos QR, estadísticas y rastreador de avispones.",
     "helpSuffix": "Ayuda de HivePulse",
     "imprintTitle": "Aviso legal",
     "imprintDescription": "Quién gestiona HivePulse y cómo contactar.",
     "deleteAccountTitle": "Eliminar la cuenta",
     "deleteAccountDescription": "Cómo eliminar tu cuenta de HivePulse y qué se borra exactamente.",
     "betaTitle": "Unirse a la prueba",
-    "betaDescription": "Prueba HivePulse antes de que llegue a las tiendas y ayuda a que llegue."
+    "betaDescription": "Prueba HivePulse antes de que llegue a las tiendas y ayuda a que llegue.",
+    "releaseNotesTitle": "Notas de versión",
+    "releaseNotesDescription": "Lo que ha cambiado y lo nuevo en HivePulse, y la lista completa de funciones."
   },
   "imprint": {
     "title": "Aviso legal",

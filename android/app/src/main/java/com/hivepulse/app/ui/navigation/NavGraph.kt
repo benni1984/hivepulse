@@ -48,6 +48,10 @@ object Routes {
     const val MEMBERS            = "members"
     const val FIELD_DEFINITIONS  = "field_definitions?apiaryId={apiaryId}"
     const val SHARING            = "sharing/{type}/{id}"
+    const val MOVE_HIVES         = "move_hives/{apiaryId}"
+    const val HIVE_MOVES         = "hive_moves/{hiveId}"
+    const val MOVES_OVERVIEW     = "moves_overview"
+    const val TREATMENTS         = "treatments/{type}/{id}"
     const val GUIDED_TOUR        = "guided_tour?fromSettings={fromSettings}"
 }
 
@@ -100,9 +104,10 @@ fun HivePulseNavGraph(
         composable(Routes.APIARY_LIST) {
             ApiaryListScreen(
                 onApiaryClick = { id -> navController.navigate("apiary_detail/$id") },
-                onScanClick   = { navController.navigate(Routes.QR_SCAN) },
                 onBatchClick  = { navController.navigate(Routes.QR_BATCH_LIST) },
-                onStatsClick    = { navController.navigate(Routes.STATS_OVERVIEW) }
+                onStatsClick    = { navController.navigate(Routes.STATS_OVERVIEW) },
+                onMovesClick    = { navController.navigate(Routes.MOVES_OVERVIEW) },
+                onHiveClick     = { id -> navController.navigate("hive_detail/$id") }
             )
         }
         composable(Routes.STATS_OVERVIEW) {
@@ -118,7 +123,9 @@ fun HivePulseNavGraph(
                 onHiveClick = { id -> navController.navigate("hive_detail/$id") },
                 onBack      = { navController.popBackStack() },
                 onFieldsClick = { navController.navigate("field_definitions?apiaryId=${back.arguments!!.getString("apiaryId")}") },
-                onShareClick  = { navController.navigate("sharing/apiary/${back.arguments!!.getString("apiaryId")}") }
+                onShareClick  = { navController.navigate("sharing/apiary/${back.arguments!!.getString("apiaryId")}") },
+                onMoveClick   = { navController.navigate("move_hives/${back.arguments!!.getString("apiaryId")}") },
+                onTreatmentsClick = { navController.navigate("treatments/apiary/${back.arguments!!.getString("apiaryId")}") }
             )
         }
         composable(Routes.HIVE_DETAIL,
@@ -130,8 +137,32 @@ fun HivePulseNavGraph(
                 onStatsClick      = { hiveId -> navController.navigate("hive_stats/$hiveId") },
                 onQrClick         = { hiveId -> navController.navigate("hive_qr/$hiveId") },
                 onShareClick      = { hiveId -> navController.navigate("sharing/hive/$hiveId") },
+                onMovesClick      = { hiveId -> navController.navigate("hive_moves/$hiveId") },
+                onTreatmentsClick = { hiveId -> navController.navigate("treatments/hive/$hiveId") },
                 onBack            = { navController.popBackStack() }
             )
+        }
+        composable(Routes.MOVE_HIVES,
+            arguments = listOf(navArgument("apiaryId") { type = NavType.StringType })) {
+            com.hivepulse.app.ui.moves.MoveHivesScreen(
+                onBack = { navController.popBackStack() },
+                // Back to the apiary, whose hive list no longer holds the hives that left.
+                onMoved = { navController.popBackStack() },
+            )
+        }
+        composable(Routes.HIVE_MOVES,
+            arguments = listOf(navArgument("hiveId") { type = NavType.StringType })) {
+            com.hivepulse.app.ui.moves.HiveMovesScreen(onBack = { navController.popBackStack() })
+        }
+        composable(Routes.TREATMENTS,
+            arguments = listOf(
+                navArgument("type") { type = NavType.StringType },
+                navArgument("id") { type = NavType.StringType },
+            )) {
+            com.hivepulse.app.ui.home.TreatmentsScreen(onBack = { navController.popBackStack() })
+        }
+        composable(Routes.MOVES_OVERVIEW) {
+            com.hivepulse.app.ui.moves.MovesOverviewScreen(onBack = { navController.popBackStack() })
         }
         composable(Routes.SHARING,
             arguments = listOf(

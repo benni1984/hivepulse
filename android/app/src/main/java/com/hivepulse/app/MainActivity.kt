@@ -10,11 +10,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Hive
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -50,6 +52,7 @@ class MainActivity : ComponentActivity() {
                 val isHornetSection  = currentRoute.startsWith("hornet")
                 val isMembersSection = currentRoute == Routes.MEMBERS
                 val isSettingsSection = currentRoute == Routes.SETTINGS
+                val isScanSection    = currentRoute == Routes.QR_SCAN
                 val isGuidedTour     = currentRoute.startsWith("guided_tour")
 
                 Scaffold(
@@ -66,7 +69,7 @@ class MainActivity : ComponentActivity() {
                                 unselectedTextColor = Color(0xB3FFFFFF),
                             )
                             NavigationBarItem(
-                                selected = !isHornetSection && !isMembersSection && !isSettingsSection,
+                                selected = !isHornetSection && !isMembersSection && !isSettingsSection && !isScanSection,
                                 onClick  = {
                                     val dest = if (tokenStore.isLoggedIn) Routes.APIARY_LIST else Routes.LOGIN
                                     navController.navigate(dest) {
@@ -75,8 +78,22 @@ class MainActivity : ComponentActivity() {
                                     }
                                 },
                                 icon   = { Icon(Icons.Default.Hive, contentDescription = null) },
-                                label  = { Text("HivePulse") },
+                                label  = { Text(stringResource(R.string.tab_apiaries)) },
                                 colors = itemColors,
+                            )
+                            // Same order as the iPhone's tab bar: apiaries, scan, hornets, members, settings.
+                            NavigationBarItem(
+                                selected = isScanSection,
+                                onClick  = {
+                                    navController.navigate(Routes.QR_SCAN) {
+                                        launchSingleTop = true
+                                        popUpTo(navController.graph.startDestinationId) { saveState = true }
+                                    }
+                                },
+                                icon   = { Icon(Icons.Default.QrCodeScanner, contentDescription = null) },
+                                label  = { Text(stringResource(R.string.tab_scan_short)) },
+                                colors = itemColors,
+                                modifier = Modifier.testTag("scanTab"),
                             )
                             NavigationBarItem(
                                 selected = isHornetSection,

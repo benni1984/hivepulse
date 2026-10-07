@@ -1,5 +1,5 @@
 /* Auth */
-"login.subtitle" = "Enregistrez vos inspections,\nsuivez vos colonies.";
+"login.subtitle" = "Enregistrez vos visites,\nsuivez vos colonies.";
 "action.login" = "Se connecter";
 "action.register" = "Créer un compte";
 "action.createAccount" = "Créer un compte";
@@ -62,7 +62,7 @@
 "section.location" = "Localisation";
 "section.notes" = "Notes";
 "section.hives" = "Ruches";
-"section.inspections" = "Inspections";
+"section.inspections" = "Visites";
 "section.customFields" = "Champs personnalisés";
 "section.newHive" = "Nouvelle ruche";
 "section.date" = "Date";
@@ -100,8 +100,8 @@
 "action.useMyLocation" = "Utiliser ma position";
 "action.editApiary" = "Modifier le rucher";
 "action.newApiary" = "Nouveau rucher";
-"action.newInspection" = "Nouvelle inspection";
-"action.editInspection" = "Modifier l'inspection";
+"action.newInspection" = "Nouvelle visite";
+"action.editInspection" = "Modifier la visite";
 "action.saveProfile" = "Enregistrer le profil";
 "action.logout" = "Se déconnecter";
 "action.help" = "Aide &amp; Documentation";
@@ -114,7 +114,7 @@
 "empty.apiaries.description" = "Ajoutez votre premier rucher pour commencer.";
 "empty.hives.title" = "Aucune ruche";
 "empty.hives.description" = "Scannez un code QR pour ajouter votre première ruche.";
-"empty.inspections" = "Aucune inspection pour l'instant.";
+"empty.inspections" = "Aucune visite pour l'instant.";
 "empty.batches.title" = "Aucun lot QR";
 "empty.batches.description" = "Générez un lot de codes QR à imprimer et coller sur vos ruches.";
 
@@ -125,7 +125,7 @@
 "alert.batchCountHint" = "Saisissez le nombre de codes QR à générer (1–50).";
 
 /* Stats */
-"stat.inspections" = "Inspections";
+"stat.inspections" = "Visites";
 "stat.daysSinceLast" = "Jours depuis la dernière";
 "stat.queenSeenRate" = "Reine vue";
 "stat.swarmAlerts" = "Alertes essaimage";
@@ -245,7 +245,7 @@
 "admin.stats.apiaries" = "Ruchers";
 "admin.stats.publicApiaries" = "Ruchers publics";
 "admin.stats.hives" = "Ruches";
-"admin.stats.inspections" = "Inspections";
+"admin.stats.inspections" = "Visites";
 "admin.stats.sessions" = "Sessions";
 "admin.stats.activeSessions" = "Sessions actives";
 "admin.stats.usersOnline" = "Utilisateurs en ligne";
@@ -264,7 +264,7 @@
 
 "admin.health.inactive" = "Utilisateurs inactifs";
 "admin.health.noVarroa" = "Pas de données varroa";
-"admin.health.zeroHives" = "Ruches sans inspection";
+"admin.health.zeroHives" = "Ruches sans visite";
 
 /* Changement de mot de passe */
 "section.changePassword" = "Changer le mot de passe";
@@ -303,7 +303,7 @@
 "section.dangerZone" = "Zone dangereuse";
 "action.deleteAccount" = "Supprimer le compte";
 "alert.deleteAccountConfirm" = "Supprimer votre compte ?";
-"alert.deleteAccountMessage" = "Toutes vos données — ruchers, ruches et inspections — seront définitivement supprimées. Cette action est irréversible.";
+"alert.deleteAccountMessage" = "Toutes vos données — ruchers, ruches et visites — seront définitivement supprimées. Cette action est irréversible.";
 "alert.deleteAccountAction" = "Supprimer définitivement";
 
 /* Statistics overview */
@@ -311,25 +311,26 @@
 "overview.period" = "Période";
 "overview.apiaries" = "Ruchers";
 "overview.hives" = "Ruches";
-"overview.inspections" = "Inspections";
+"overview.inspections" = "Visites";
 "overview.perApiary" = "Par rucher";
-"overview.noData" = "Aucune inspection sur cette période.";
-"overview.rowFormat" = "%1$d ruches · %2$d inspections";
+"overview.noData" = "Aucune visite sur cette période.";
+"overview.rowFormat" = "%1$d ruches · %2$d visites";
 
 /* Guided tour */
 "tour.skip" = "Passer";
 "tour.next" = "Suivant";
 "tour.getStarted" = "C’est parti";
+"action.releaseNotes" = "Notes de version";
 "tour.showAgain" = "Revoir la visite guidée";
 "tour.welcome.title" = "Bienvenue sur HivePulse";
 "tour.welcome.body" = "Votre carnet de ruches dans la poche. Voici un aperçu rapide de ce que HivePulse fait pour vous.";
 "tour.qr.title" = "Chaque ruche en un scan";
 "tour.qr.body" = "Créez vos ruchers, collez un QR code imprimé sur chaque ruche et scannez-le pour l’ouvrir aussitôt — sans chercher dans des listes au rucher.";
-"tour.inspections.title" = "Des inspections en quelques secondes";
+"tour.inspections.title" = "Des visites en quelques secondes";
 "tour.inspections.body" = "Notez reine, couvain, varroa, humeur et plus encore en quelques gestes. Les champs personnalisés couvrent tout le reste.";
 "tour.stats.title" = "Repérez les problèmes tôt";
 "tour.stats.body" = "Les évolutions du varroa, du couvain et du poids par ruche et une vue d’ensemble de tous vos ruchers montrent d’un coup d’œil quelles colonies ont besoin d’attention.";
-"tour.reminders.title" = "Ne manquez plus aucune inspection";
+"tour.reminders.title" = "Ne manquez plus aucune visite";
 "tour.reminders.body" = "Définissez l’intervalle et la saison — HivePulse vous rappelle par notification push ou e-mail quand des ruches sont à inspecter.";
 "tour.hornets.title" = "Protégez votre région";
 "tour.hornets.body" = "Signalez les observations et les nids de frelons asiatiques, gérez vos pièges et consultez les données de santé de la communauté pour votre région.";
@@ -458,3 +459,83 @@
 "invitation.redeemField" = "Lien ou code";
 "invitation.redeemButton" = "Utiliser";
 "invitation.invalidLink" = "Cela ne ressemble pas à un lien d’invitation.";
+
+/* Moving hives */
+"moves.title" = "Déplacer des ruches";
+"moves.selectHives" = "Quelles ruches";
+"moves.backHint" = "Où elles étaient avant";
+"moves.backTo" = "Retour à %@ (%d)";
+"moves.selectAll" = "Tout ou rien sélectionner";
+"moves.target" = "Déplacer vers";
+"moves.targetChoose" = "Choisir un lieu";
+"moves.targetNew" = "Un nouveau lieu";
+"moves.newName" = "Nom du nouveau lieu";
+"moves.newAddress" = "Adresse (facultatif)";
+"moves.newAddressHint" = "Avec une adresse, le lieu apparaît sur la carte.";
+"moves.date" = "Date";
+"moves.forage" = "Miellée";
+"moves.forageNone" = "Non précisée";
+"moves.forageOther" = "Quelle miellée";
+"moves.note" = "Note (facultatif)";
+"moves.submit" = "Déplacer (%d)";
+"moves.historyTitle" = "Où cette ruche a été";
+"moves.historyEmpty" = "Cette ruche n’a pas encore été déplacée.";
+"moves.noPosition" = "Ce lieu n’a pas de position, il n’est donc pas sur la carte.";
+"moves.noPositionAtAll" = "Aucun de ces lieux n’a encore de position, il n’y a donc rien à tracer. Donnez une adresse ou une position aux lieux.";
+"moves.overviewTitle" = "Carte des déplacements";
+"moves.overviewIntro" = "Tous les déplacements de vos ruches, avec le parcours de chaque ruche sur la carte.";
+"moves.overviewEmpty" = "Aucune ruche n’a encore été déplacée.";
+"moves.range" = "Période";
+"moves.from" = "Du";
+"moves.to" = "Au";
+"forage.acacia" = "Acacia";
+"forage.rapeseed" = "Colza";
+"forage.orchard" = "Fleurs de verger";
+"forage.dandelion" = "Pissenlit";
+"forage.linden" = "Tilleul";
+"forage.chestnut" = "Châtaignier";
+"forage.fir" = "Sapin";
+"forage.heather" = "Bruyère";
+"forage.sunflower" = "Tournesol";
+"forage.lavender" = "Lavande";
+"forage.other" = "Autre";
+
+/* Home summary and planned treatments */
+"home.title" = "Aujourd’hui en un coup d’œil";
+"home.outOfSeason" = "C’est en dehors de votre saison de rappels ; les dates sont calculées de la même façon.";
+"home.nextInspection" = "Prochaine visite";
+"home.overdue" = "%d en retard";
+"home.dueOn" = "Prévue le %@";
+"home.dueSoon" = "%d à faire dans les trois prochains jours";
+"home.dueSince" = "prévue depuis le %@";
+"home.neverInspected" = "jamais visitée";
+"home.health" = "État des ruches";
+"home.healthOk" = "%d en ordre";
+"home.healthWatch" = "%d à surveiller";
+"home.healthAlert" = "%d alerte";
+"home.healthUnknown" = "%d inconnues";
+"home.noConcerns" = "Rien ne demande votre attention.";
+"home.reason.varroa_high" = "varroa élevé";
+"home.reason.swarm_cells" = "cellules d’essaimage";
+"home.reason.aggressive" = "agressive";
+"home.reason.varroa_medium" = "varroa moyen";
+"home.reason.nervous" = "nerveuse";
+"home.reason.queen_not_seen" = "reine non vue";
+"home.treatments" = "Traitements à venir";
+"home.treatmentsOverdue" = "%d en retard";
+"home.noTreatments" = "Aucun traitement prévu dans les 30 prochains jours.";
+"home.markDone" = "Fait";
+"treatments.title" = "Traitements";
+"treatments.introHive" = "Planifiez un traitement pour cette ruche. Ce qui est à faire apparaît sur votre accueil.";
+"treatments.introApiary" = "Planifiez un traitement pour toutes les ruches de ce rucher. Ce qui est à faire apparaît sur votre accueil.";
+"treatments.plan" = "Planifier un traitement";
+"treatments.product" = "Produit";
+"treatments.dueOn" = "À faire le";
+"treatments.note" = "Note (facultatif)";
+"treatments.empty" = "Rien de prévu.";
+"treatments.overdue" = "prévu depuis le %@";
+"treatments.dueOnDate" = "prévu le %@";
+"treatments.confirmDelete" = "Supprimer ce traitement prévu ?";
+"treatments.doneTitle" = "Fait";
+"treatments.doneOn" = "fait le %@";
+"treatments.reopen" = "Rouvrir";

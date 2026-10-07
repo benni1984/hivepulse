@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.access import OWNER, PARTIAL, Scope, apiary_or_404, remove_shares
 from app.deps import CurrentUser, DB
 from app.i18n import error
-from app.models import Apiary
+from app.models import Apiary, HiveMove, PlannedTreatment
 from app.schemas import ApiaryCreate, ApiaryOut, ApiaryUpdate, PaginatedResponse
 from app.utils.geocoding import forward_geocode, reverse_geocode_city
 
@@ -141,5 +141,11 @@ def delete_apiary(
     if apiary.hives:
         raise HTTPException(409, detail=error("APIARY_HAS_HIVES", accept_language))
     remove_shares(db, apiary_id=apiary.id)
+    db.query(PlannedTreatment).filter(PlannedTreatment.apiary_id == apiary.id).delete(synchronize_session=False)
+    # The history keeps its copy of the name and the position; only the link to the apiary goes.
+    db.query(HiveMove).filter(HiveMove.from_apiary_id == apiary.id).update(
+        {HiveMove.from_apiary_id: None}, synchronize_session=False)
+    db.query(HiveMove).filter(HiveMove.to_apiary_id == apiary.id).update(
+        {HiveMove.to_apiary_id: None}, synchronize_session=False)
     db.delete(apiary)
     db.commit()

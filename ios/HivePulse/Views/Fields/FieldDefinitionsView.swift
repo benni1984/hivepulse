@@ -54,12 +54,8 @@ struct FieldDefinitionsView: View {
         }
         .hpScreenBackground()
         .navigationTitle(NSLocalizedString(isApiaryScope ? "fielddefs.apiaryTitle" : "fielddefs.title", comment: ""))
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button { showCreate = true } label: { Image(systemName: "plus") }
-                    .accessibilityLabel(NSLocalizedString("fielddefs.new", comment: ""))
-                    .accessibilityIdentifier("newFieldButton")
-            }
+        .hpFloatingButton(NSLocalizedString("fielddefs.new", comment: ""), identifier: "newFieldButton") {
+            showCreate = true
         }
         .overlay(alignment: .bottom) {
             if let message = vm.message {

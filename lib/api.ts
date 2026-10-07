@@ -342,6 +342,80 @@ export async function deleteQrBatch(id: string): Promise<void> {
   if (!res.ok) throw new Error('Delete failed');
 }
 
+// -- Home summary and planned treatments ---------------------------------------------------
+
+export async function getHome(): Promise<HomeSummary> {
+  const res = await apiFetch('/home');
+  if (!res.ok) throw new Error('Failed to load the summary');
+  return res.json();
+}
+
+export async function getTreatments(
+  filter: { status?: 'open' | 'done'; hive_id?: string; apiary_id?: string } = {},
+): Promise<PlannedTreatment[]> {
+  const query = new URLSearchParams();
+  if (filter.status) query.set('status', filter.status);
+  if (filter.hive_id) query.set('hive_id', filter.hive_id);
+  if (filter.apiary_id) query.set('apiary_id', filter.apiary_id);
+  const res = await apiFetch(`/treatments${query.size ? `?${query}` : ''}`);
+  if (!res.ok) throw new Error('Failed to load treatments');
+  return res.json();
+}
+
+export async function createTreatment(input: {
+  hive_id?: string; apiary_id?: string; product: string; due_on: string; note?: string;
+}): Promise<PlannedTreatment> {
+  const res = await apiFetch('/treatments', { method: 'POST', body: JSON.stringify(input) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(extractDetail(err, 'Could not plan the treatment'));
+  }
+  return res.json();
+}
+
+export async function markTreatmentDone(id: string, doneOn?: string): Promise<PlannedTreatment> {
+  const res = await apiFetch(`/treatments/${id}/done`, { method: 'POST', body: JSON.stringify(doneOn ? { done_on: doneOn } : {}) });
+  if (!res.ok) throw new Error('Failed to mark the treatment as done');
+  return res.json();
+}
+
+export async function reopenTreatment(id: string): Promise<PlannedTreatment> {
+  const res = await apiFetch(`/treatments/${id}/reopen`, { method: 'POST' });
+  if (!res.ok) throw new Error('Failed to reopen the treatment');
+  return res.json();
+}
+
+export async function deleteTreatment(id: string): Promise<void> {
+  const res = await apiFetch(`/treatments/${id}`, { method: 'DELETE' });
+  if (!res.ok) throw new Error('Delete failed');
+}
+
+// -- Moving hives --------------------------------------------------------------------------
+
+export async function moveHives(input: MoveInput): Promise<MoveResult> {
+  const res = await apiFetch('/hives/move', { method: 'POST', body: JSON.stringify(input) });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(extractDetail(err, 'Move failed'));
+  }
+  return res.json();
+}
+
+export async function getHiveMoves(hiveId: string): Promise<HiveMove[]> {
+  const res = await apiFetch(`/hives/${hiveId}/moves`);
+  if (!res.ok) throw new Error('Failed to load moves');
+  return res.json();
+}
+
+export async function getMovesOverview(range: { from?: string; to?: string } = {}): Promise<HiveMove[]> {
+  const query = new URLSearchParams();
+  if (range.from) query.set('from', range.from);
+  if (range.to) query.set('to', range.to);
+  const res = await apiFetch(`/hives/moves/overview${query.size ? `?${query}` : ''}`);
+  if (!res.ok) throw new Error('Failed to load moves');
+  return res.json();
+}
+
 // -- Sharing -------------------------------------------------------------------------------
 
 export async function createShare(email: string, target: { apiary_id: string } | { hive_id: string }): Promise<Share> {
@@ -539,6 +613,38 @@ export interface Inspection {
   custom_fields?: Record<string, unknown>;
   created_by_name?: string | null;
 }
+export interface TreatmentTarget { type: 'hive' | 'apiary'; id: string; name: string; }
+export interface PlannedTreatment {
+  id: string; target: TreatmentTarget; apiary_name: string | null; product: string; due_on: string;
+  note: string | null; done_on: string | null; overdue: boolean; created_by_name: string | null; created_at: string;
+}
+export interface HomeSummary {
+  today: string; in_season: boolean; apiary_count: number; hive_count: number;
+  inspections: {
+    interval_days: number; overdue_count: number; due_soon_count: number;
+    next: { hive_id: string; hive_name: string; apiary_name: string; last_inspection_on: string | null; due_on: string; overdue_days: number }[];
+  };
+  health: {
+    ok: number; watch: number; alert: number; unknown: number;
+    attention: { hive_id: string; hive_name: string; apiary_name: string; status: 'alert' | 'watch'; reasons: string[] }[];
+  };
+  treatments: { open_count: number; overdue_count: number; upcoming: PlannedTreatment[] };
+  ad: { id: string; label: string; title: string; body: string; url: string | null } | null;
+}
+export interface MovePlace { apiary_id: string | null; name: string; latitude: number | null; longitude: number | null; }
+export interface HiveMove {
+  id: string; hive_id: string; hive_name: string; moved_on: string; forage: string | null; note: string | null;
+  from: MovePlace; to: MovePlace; created_by_name: string | null; created_at: string;
+}
+export interface MoveInput {
+  hive_ids: string[];
+  to_apiary_id?: string;
+  new_apiary?: { name: string; address?: string; latitude?: number; longitude?: number };
+  moved_on?: string;
+  forage?: string;
+  note?: string;
+}
+export interface MoveResult { moved: number; apiary: Apiary; moves: HiveMove[]; }
 export interface ShareTarget { type: 'apiary' | 'hive'; id: string; name: string; }
 export interface Share {
   id: string; email: string; status: 'pending' | 'accepted'; target: ShareTarget;

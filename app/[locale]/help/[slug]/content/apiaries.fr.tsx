@@ -12,7 +12,7 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
         </p>
         <p>
           Les ruchers peuvent être rendus <strong>publics</strong>, ce qui ajoute une épingle sur la carte communautaire
-          et contribue vos données d'inspection anonymisées aux statistiques à l'échelle de la plateforme que
+          et contribue vos données de visite anonymisées aux statistiques à l'échelle de la plateforme que
           tous les apiculteurs peuvent voir sur l'écran Membres.
         </p>
         <Screenshot src="/docs/screenshots/dashboard-apiary-list.png" caption="Liste des ruchers sur le tableau de bord web montrant deux ruchers avec le nombre de ruches" />
@@ -84,13 +84,13 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
           <div className="help-stat-card">
             <div className="help-stat-card-name">Privé (par défaut)</div>
             <div className="help-stat-card-desc">
-              Seul vous pouvez voir le rucher, ses ruches et toutes les données d'inspection. Rien n'est partagé avec la communauté.
+              Seul vous pouvez voir le rucher, ses ruches et toutes les données de visite. Rien n'est partagé avec la communauté.
             </div>
           </div>
           <div className="help-stat-card">
             <div className="help-stat-card-name">Public</div>
             <div className="help-stat-card-desc">
-              Une épingle apparaît sur la carte communautaire à vos coordonnées GPS. Vos données d'inspection
+              Une épingle apparaît sur la carte communautaire à vos coordonnées GPS. Vos données de visite
               contribuent aux statistiques à l'échelle de la plateforme (moyennes uniquement — les enregistrements individuels ne sont jamais exposés).
               Aucune information permettant d'identifier l'utilisateur n'est publiée.
             </div>
@@ -111,7 +111,7 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
         </p>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>La suppression d'un rucher est permanente — toutes les ruches et leur historique d'inspection seront perdus. Exportez vos données d'abord si vous avez besoin d'une copie.</p>
+          <p>La suppression d'un rucher est permanente — toutes les ruches et leur historique de visite seront perdus. Exportez vos données d'abord si vous avez besoin d'une copie.</p>
         </div>
       </section>
     </>

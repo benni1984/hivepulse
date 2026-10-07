@@ -4,18 +4,18 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
   return (
     <>
       <section className="help-section">
-        <h2 className="help-section-title">Qu'est-ce qu'une inspection ?</h2>
+        <h2 className="help-section-title">Qu'est-ce qu'une visite ?</h2>
         <p>
-          Une inspection est une visite unique à une ruche. Chaque fois que vous ouvrez une ruche, vous enregistrez
-          vos observations sous forme de fiche d'inspection : indicateurs de santé, données de population, statut de la reine,
+          Une visite est une visite unique à une ruche. Chaque fois que vous ouvrez une ruche, vous enregistrez
+          vos observations sous forme de fiche de visite : indicateurs de santé, données de population, statut de la reine,
           et tout traitement ou alimentation effectué. Au fil du temps, ces fiches dressent un tableau de
           la santé de la colonie que les graphiques et analyses de tendances peuvent révéler.
         </p>
-        <Screenshot src="/docs/screenshots/android-inspection-form.png" caption="Formulaire d'inspection ouvert sur une ruche, montrant toutes les sections" />
+        <Screenshot src="/docs/screenshots/android-inspection-form.png" caption="Formulaire de visite ouvert sur une ruche, montrant toutes les sections" />
       </section>
 
       <section className="help-section">
-        <h2 className="help-section-title">Enregistrer une inspection</h2>
+        <h2 className="help-section-title">Enregistrer une visite</h2>
         <ol className="help-steps">
           <li>
             <span className="help-step-num">1</span>
@@ -27,8 +27,8 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           <li>
             <span className="help-step-num">2</span>
             <div className="help-step-body">
-              <strong>Appuyer sur Nouvelle inspection</strong>
-              <p>Le formulaire d'inspection s'ouvre. La date est par défaut aujourd'hui mais peut être modifiée (pour les visites passées).</p>
+              <strong>Appuyer sur Nouvelle visite</strong>
+              <p>Le formulaire de visite s'ouvre. La date est par défaut aujourd'hui mais peut être modifiée (pour les visites passées).</p>
             </div>
           </li>
           <li>
@@ -42,15 +42,15 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
             <span className="help-step-num">4</span>
             <div className="help-step-body">
               <strong>Enregistrer</strong>
-              <p>L'inspection est ajoutée à l'historique de la ruche et contribue immédiatement aux graphiques de tendances.</p>
+              <p>La visite est ajoutée à l'historique de la ruche et contribue immédiatement aux graphiques de tendances.</p>
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Enregistrement d'une inspection — les champs date et infestation varroa sont visibles" />
+        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Enregistrement d'une visite — les champs date et infestation varroa sont visibles" />
       </section>
 
       <section className="help-section">
-        <h2 className="help-section-title">Tous les champs d'inspection expliqués</h2>
+        <h2 className="help-section-title">Tous les champs de visite expliqués</h2>
 
         <h3 style={{ fontSize: '.95rem', fontWeight: 700, marginBottom: 12, color: 'var(--text-primary)' }}>Santé de la colonie</h3>
         <div className="help-stat-grid">
@@ -65,7 +65,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           <div className="help-stat-card">
             <div className="help-stat-card-name">Humeur de la colonie</div>
             <div className="help-stat-card-desc">
-              Comment les abeilles se sont comportées pendant l'inspection.
+              Comment les abeilles se sont comportées pendant la visite.
               <br /><strong>Calme</strong> — les abeilles étaient douces, se déplaçaient lentement, peu de piqûres.<br />
               <strong>Nerveuse</strong> — les abeilles étaient agitées, difficiles à travailler.<br />
               <strong>Agressive</strong> — les abeilles attaquaient activement, piqûres multiples.
@@ -75,7 +75,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           <div className="help-stat-card">
             <div className="help-stat-card-name">Reine vue</div>
             <div className="help-stat-card-desc">
-              Cochez ceci si vous avez visuellement confirmé la présence de la reine pendant l'inspection.
+              Cochez ceci si vous avez visuellement confirmé la présence de la reine pendant la visite.
               Si vous voyez des œufs frais mais pas la reine elle-même, laissez décoché — les œufs ne sont qu'une preuve indirecte.
             </div>
           </div>
@@ -157,11 +157,11 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
         <h2 className="help-section-title">Conseils</h2>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Évaluez l'infestation varroa toujours de la même manière (même méthode d'échantillonnage, mêmes seuils) pour que le graphique de tendances soit comparable entre les inspections.</p>
+          <p>Évaluez l'infestation varroa toujours de la même manière (même méthode d'échantillonnage, mêmes seuils) pour que le graphique de tendances soit comparable entre les visites.</p>
         </div>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Même une inspection partielle (juste l'humeur et les cadres de couvain) est précieuse. Des enregistrements partiels cohérents valent mieux que des enregistrements parfaits qui n'arrivent qu'une fois par an.</p>
+          <p>Même une visite partielle (juste l'humeur et les cadres de couvain) est précieuse. Des enregistrements partiels cohérents valent mieux que des enregistrements parfaits qui n'arrivent qu'une fois par an.</p>
         </div>
       </section>
     </>

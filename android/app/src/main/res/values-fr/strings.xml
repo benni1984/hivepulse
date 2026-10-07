@@ -51,6 +51,8 @@
 
     <!-- Tabs / Navigation -->
     <string name="tab_print">Imprimer les QR codes</string>
+    <string name="tab_apiaries">Ruchers</string>
+    <string name="tab_scan_short">Scanner</string>
     <string name="tab_scan">Scanner un QR code</string>
     <string name="tab_settings">Paramètres</string>
 
@@ -255,8 +257,8 @@
     <string name="hornet_traps_back">Retour</string>
 
     <!-- Inspection reminders -->
-    <string name="section_reminders">Rappels d\'inspection</string>
-    <string name="reminder_enabled">Envoyer des rappels d\'inspection</string>
+    <string name="section_reminders">Rappels d\'visite</string>
+    <string name="reminder_enabled">Envoyer des rappels d\'visite</string>
     <string name="reminder_email_enabled">Me notifier aussi par e-mail</string>
     <string name="reminder_email_hint">Les notifications push arrivent dans cette application. Les rappels par e-mail vous parviennent même si vous n\'utilisez que le site web — les deux canaux partagent le même compte, ces réglages s\'appliquent donc partout.</string>
     <string name="reminder_interval_label">Me rappeler tous les</string>
@@ -270,6 +272,7 @@
     <string name="tour_skip">Passer</string>
     <string name="tour_next">Suivant</string>
     <string name="tour_get_started">C\'est parti</string>
+    <string name="action_release_notes">Notes de version</string>
     <string name="action_show_tour">Revoir la visite guidée</string>
     <string name="tour_welcome_title">Bienvenue sur HivePulse</string>
     <string name="tour_welcome_body">Votre carnet de ruches dans la poche. Voici un aperçu rapide de ce que HivePulse fait pour vous.</string>
@@ -449,4 +452,81 @@
     <string name="invitation_redeem_field">Lien ou code</string>
     <string name="invitation_redeem_button">Utiliser</string>
     <string name="invitation_invalid_link">Cela ne ressemble pas à un lien d’invitation.</string>
+    <string name="moves_title">Déplacer des ruches</string>
+    <string name="moves_select_hives">Quelles ruches</string>
+    <string name="moves_back_hint">Où elles étaient avant</string>
+    <string name="moves_back_to">Retour à %1$s (%2$d)</string>
+    <string name="moves_select_all">Tout ou rien sélectionner</string>
+    <string name="moves_target">Déplacer vers</string>
+    <string name="moves_target_new">Un nouveau lieu</string>
+    <string name="moves_new_name">Nom du nouveau lieu</string>
+    <string name="moves_new_address">Adresse (facultatif)</string>
+    <string name="moves_new_address_hint">Avec une adresse, le lieu apparaît sur la carte.</string>
+    <string name="moves_date">Date</string>
+    <string name="moves_date_ok">OK</string>
+    <string name="moves_forage">Miellée</string>
+    <string name="moves_forage_none">Non précisée</string>
+    <string name="moves_forage_other">Quelle miellée</string>
+    <string name="moves_note">Note (facultatif)</string>
+    <string name="moves_submit">Déplacer (%1$d)</string>
+    <string name="moves_history_title">Où cette ruche a été</string>
+    <string name="moves_history_empty">Cette ruche n\’a pas encore été déplacée.</string>
+    <string name="moves_no_position">Ce lieu n\’a pas de position, il n\’est donc pas sur la carte.</string>
+    <string name="moves_no_position_at_all">Aucun de ces lieux n\’a encore de position, il n\’y a donc rien à tracer. Donnez une adresse ou une position aux lieux.</string>
+    <string name="moves_start">Le voyage a commencé ici</string>
+    <string name="moves_overview_title">Carte des déplacements</string>
+    <string name="moves_overview_intro">Tous les déplacements de vos ruches, avec le parcours de chaque ruche sur la carte.</string>
+    <string name="moves_overview_empty">Aucune ruche n\’a encore été déplacée.</string>
+    <string name="moves_from">Du</string>
+    <string name="moves_to">Au</string>
+    <string name="moves_clear">Effacer</string>
+    <string name="forage_acacia">Acacia</string>
+    <string name="forage_rapeseed">Colza</string>
+    <string name="forage_orchard">Fleurs de verger</string>
+    <string name="forage_dandelion">Pissenlit</string>
+    <string name="forage_linden">Tilleul</string>
+    <string name="forage_chestnut">Châtaignier</string>
+    <string name="forage_fir">Sapin</string>
+    <string name="forage_heather">Bruyère</string>
+    <string name="forage_sunflower">Tournesol</string>
+    <string name="forage_lavender">Lavande</string>
+    <string name="forage_other">Autre</string>
+    <!-- Home summary and planned treatments -->
+    <string name="home_out_of_season">C’est en dehors de votre saison de rappels ; les dates sont calculées de la même façon.</string>
+    <string name="home_next_inspection">Prochaine visite</string>
+    <string name="home_overdue">%1$d en retard</string>
+    <string name="home_due_on">Prévue le %1$s</string>
+    <string name="home_due_soon">%1$d à faire dans les trois prochains jours</string>
+    <string name="home_due_since">prévue depuis le %1$s</string>
+    <string name="home_never_inspected">jamais visitée</string>
+    <string name="home_health">État des ruches</string>
+    <string name="home_health_ok">%1$d en ordre</string>
+    <string name="home_health_watch">%1$d à surveiller</string>
+    <string name="home_health_alert">%1$d alerte</string>
+    <string name="home_health_unknown">%1$d inconnues</string>
+    <string name="home_no_concerns">Rien ne demande votre attention.</string>
+    <string name="home_reason_varroa_high">varroa élevé</string>
+    <string name="home_reason_swarm_cells">cellules d’essaimage</string>
+    <string name="home_reason_aggressive">agressive</string>
+    <string name="home_reason_varroa_medium">varroa moyen</string>
+    <string name="home_reason_nervous">nerveuse</string>
+    <string name="home_reason_queen_not_seen">reine non vue</string>
+    <string name="home_treatments">Traitements à venir</string>
+    <string name="home_treatments_overdue">%1$d en retard</string>
+    <string name="home_no_treatments">Aucun traitement prévu dans les 30 prochains jours.</string>
+    <string name="home_mark_done">Fait</string>
+    <string name="treatments_title">Traitements</string>
+    <string name="treatments_intro_hive">Planifiez un traitement pour cette ruche. Ce qui est à faire apparaît sur votre accueil.</string>
+    <string name="treatments_intro_apiary">Planifiez un traitement pour toutes les ruches de ce rucher. Ce qui est à faire apparaît sur votre accueil.</string>
+    <string name="treatments_plan">Planifier un traitement</string>
+    <string name="treatments_product">Produit</string>
+    <string name="treatments_due_on">À faire le</string>
+    <string name="treatments_note">Note (facultatif)</string>
+    <string name="treatments_empty">Rien de prévu.</string>
+    <string name="treatments_overdue">prévu depuis le %1$s</string>
+    <string name="treatments_due_on_date">prévu le %1$s</string>
+    <string name="treatments_confirm_delete">Supprimer ce traitement prévu ?</string>
+    <string name="treatments_done_title">Fait</string>
+    <string name="treatments_done_on">fait le %1$s</string>
+    <string name="treatments_reopen">Rouvrir</string>
 </resources>

@@ -22,6 +22,50 @@ export function newsText(entry: NewsEntry, locale: string): NewsText {
 
 export const NEWS: NewsEntry[] = [
   {
+    date: '2026-10-07',
+    tag: 'feature',
+    text: {
+      en: {
+        title: 'Your Day at a Glance, and Treatments You Can Plan',
+        body: 'The start of the apiary list now tells you what matters: when the next inspection is due (counted from your reminder interval), how your hives are doing — fine, to watch, or alert, with the reason — and which treatments are coming up. You can plan a treatment for a single hive or for all hives of an apiary, with the product and the day, and tick it off when it is done. Once in a while the same spot can carry an announcement from us; there is no advertising network and nothing is tracked. The website has it now; the apps follow with their next versions.',
+      },
+      de: {
+        title: 'Dein Tag im Überblick und Behandlungen, die du planen kannst',
+        body: 'Der Anfang der Bienenstand-Liste zeigt dir jetzt, was wichtig ist: wann die nächste Kontrolle fällig ist (gerechnet aus deinem Erinnerungs-Intervall), wie es deinen Völkern geht — in Ordnung, beobachten oder Alarm, mit dem Grund — und welche Behandlungen anstehen. Du kannst eine Behandlung für ein einzelnes Volk oder für alle Völker eines Bienenstands planen, mit Mittel und Tag, und sie abhaken, wenn sie erledigt ist. Ab und zu kann an derselben Stelle eine Mitteilung von uns stehen; es gibt kein Werbenetzwerk und nichts wird verfolgt. Auf der Webseite gibt es das jetzt, die Apps folgen mit ihren nächsten Versionen.',
+      },
+      fr: {
+        title: 'Votre journée en un coup d’œil, et des traitements à planifier',
+        body: 'Le haut de la liste des ruchers vous dit maintenant ce qui compte : quand la prochaine visite est due (calculée d’après votre intervalle de rappel), comment vont vos ruches — en ordre, à surveiller ou en alerte, avec la raison — et quels traitements approchent. Vous pouvez planifier un traitement pour une seule ruche ou pour toutes les ruches d’un rucher, avec le produit et le jour, et le cocher une fois fait. De temps en temps, cet espace peut porter une annonce de notre part ; il n’y a pas de régie publicitaire et rien n’est suivi. Le site l’offre dès maintenant ; les applications suivent avec leurs prochaines versions.',
+      },
+      es: {
+        title: 'Tu día de un vistazo y tratamientos que puedes planificar',
+        body: 'El inicio de la lista de colmenares ahora te dice lo que importa: cuándo toca la próxima revisión (calculada con tu intervalo de recordatorio), cómo están tus colmenas — bien, a vigilar o en alerta, con el motivo — y qué tratamientos se acercan. Puedes planificar un tratamiento para una sola colmena o para todas las de un colmenar, con el producto y el día, y marcarlo cuando esté hecho. De vez en cuando ese mismo espacio puede llevar un anuncio nuestro; no hay red publicitaria y no se rastrea nada. La web ya lo tiene; las aplicaciones lo reciben con sus próximas versiones.',
+      },
+    },
+  },
+  {
+    date: '2026-10-07',
+    tag: 'feature',
+    text: {
+      en: {
+        title: 'Taking Hives to the Bloom, and Seeing Where They Went',
+        body: 'Migratory beekeepers can now move hives as one action: pick the hives, the new place (an existing apiary or a new one, with an address), the day and the forage, from acacia and rapeseed to fir and heather. Every move is kept. Each hive shows where it has stood, and a map of moves draws the journey of every hive, numbered stop by stop. Only the owner of an apiary can move its hives. When hives shuttle between two places, a shortcut sends them back to where they stood before with one tap. The website has it now; the apps follow with their next versions.',
+      },
+      de: {
+        title: 'Völker zur Blüte bringen und sehen, wo sie waren',
+        body: 'Wanderimker können Völker jetzt in einem Schritt verlagern: Völker wählen, den neuen Ort (ein vorhandener Bienenstand oder ein neuer, mit Adresse), den Tag und die Tracht, von Akazie und Raps bis Tanne und Heide. Jede Verlagerung bleibt gespeichert. Jedes Volk zeigt, wo es gestanden hat, und die Wanderkarte zeichnet den Weg jedes Volks, Station für Station nummeriert. Verlagern darf nur der Besitzer eines Bienenstands. Pendeln Völker zwischen zwei Orten, schickt eine Schnellwahl sie mit einem Tipp zurück dorthin, wo sie vorher standen. Auf der Webseite gibt es das jetzt, die Apps folgen mit ihren nächsten Versionen.',
+      },
+      fr: {
+        title: 'Emmener les ruches à la floraison, et voir où elles sont passées',
+        body: "Les apiculteurs transhumants peuvent désormais déplacer des ruches en une seule action : choisir les ruches, le nouveau lieu (un rucher existant ou un nouveau, avec une adresse), le jour et la miellée, de l'acacia et du colza au sapin et à la bruyère. Chaque déplacement est conservé. Chaque ruche montre où elle a été, et la carte des déplacements trace le parcours de chaque ruche, étape par étape. Seul le propriétaire d'un rucher peut en déplacer les ruches. Quand des ruches font la navette entre deux lieux, un raccourci les renvoie d'un geste là où elles étaient avant. Le site l'offre dès maintenant ; les applications suivent avec leurs prochaines versions.",
+      },
+      es: {
+        title: 'Llevar las colmenas a la floración y ver dónde han estado',
+        body: 'Los apicultores trashumantes ya pueden trasladar colmenas en un solo paso: elegir las colmenas, el nuevo lugar (un colmenar existente o uno nuevo, con dirección), el día y la floración, desde la acacia y la colza hasta el abeto y el brezo. Cada traslado queda guardado. Cada colmena muestra dónde ha estado, y el mapa de traslados dibuja el recorrido de cada una, parada por parada. Solo el propietario de un colmenar puede trasladar sus colmenas. Cuando las colmenas van y vienen entre dos lugares, un atajo las devuelve con un toque a donde estaban antes. La web ya lo tiene; las aplicaciones lo recibirán con sus próximas versiones.',
+      },
+    },
+  },
+  {
     date: '2026-10-06',
     tag: 'feature',
     text: {
@@ -259,7 +303,7 @@ export const NEWS: NewsEntry[] = [
       },
       es: {
         title: 'Palabras en lugar de números al inspeccionar',
-        body: 'Registrar una inspección en la colmena ahora es más rápido. La fuerza de la colonia se elige simplemente entre débil, media o fuerte, y la varroa se anota como ninguna, baja, media o alta en lugar de un recuento de ácaros, tanto en las apps de iOS y Android como en la web. Tus registros anteriores se convirtieron automáticamente. El color de la reina se elige tocando un punto de color. Y por fin puedes editar el nombre, el tipo, la fecha de adquisición y las notas de una colmena directamente en las apps, no solo en la web. Además, las colonias fuertes vuelven a guardarse correctamente en la app de Android.',
+        body: 'Registrar una revisión en la colmena ahora es más rápido. La fuerza de la colonia se elige simplemente entre débil, media o fuerte, y la varroa se anota como ninguna, baja, media o alta en lugar de un recuento de ácaros, tanto en las apps de iOS y Android como en la web. Tus registros anteriores se convirtieron automáticamente. El color de la reina se elige tocando un punto de color. Y por fin puedes editar el nombre, el tipo, la fecha de adquisición y las notas de una colmena directamente en las apps, no solo en la web. Además, las colonias fuertes vuelven a guardarse correctamente en la app de Android.',
       },
     },
   },
@@ -302,8 +346,8 @@ export const NEWS: NewsEntry[] = [
         body: "En saisissant une visite sur iPhone, seuls un plus et un moins s'affichaient pour les cadres de couvain, les cadres de miel et la force de la colonie — le chiffre lui-même manquait, on ne voyait donc pas la valeur choisie. Le chiffre est de retour. Les options d'humeur, de couleur de la reine et de force de la colonie apparaissaient aussi en anglais quelle que soit la langue ; elles sont maintenant traduites en allemand, français, espagnol et anglais dans les deux applications. Le poids de la ruche n'est plus un simple champ de texte : le clavier reste disponible pour les valeurs exactes, avec en plus des boutons plus et moins par pas d'un demi-kilo, pratiques avec des gants. Sur le site, la légende du graphique d'humeur affichait aussi des libellés anglais et suit désormais votre langue.",
       },
       es: {
-        title: 'Números legibles y traducciones correctas en el formulario de inspección',
-        body: 'Al registrar una inspección en el iPhone solo se veían un más y un menos para los cuadros de cría, los cuadros de miel y la fuerza de la colonia: faltaba el número, así que no se veía qué valor se estaba poniendo. El número ha vuelto. Las opciones de estado de ánimo, color de la reina y fuerza de la colonia también aparecían en inglés sin importar el idioma; ahora están traducidas al alemán, francés, español e inglés en ambas apps. El peso de la colmena ya no es un simple cuadro de texto: conserva el teclado para valores exactos y añade botones de más y menos en pasos de medio kilo, cómodos con guantes. En la web, la leyenda del gráfico de ánimo también mostraba etiquetas en inglés y ahora sigue tu idioma.',
+        title: 'Números legibles y traducciones correctas en el formulario de revisión',
+        body: 'Al registrar una revisión en el iPhone solo se veían un más y un menos para los cuadros de cría, los cuadros de miel y la fuerza de la colonia: faltaba el número, así que no se veía qué valor se estaba poniendo. El número ha vuelto. Las opciones de estado de ánimo, color de la reina y fuerza de la colonia también aparecían en inglés sin importar el idioma; ahora están traducidas al alemán, francés, español e inglés en ambas apps. El peso de la colmena ya no es un simple cuadro de texto: conserva el teclado para valores exactos y añade botones de más y menos en pasos de medio kilo, cómodos con guantes. En la web, la leyenda del gráfico de ánimo también mostraba etiquetas en inglés y ahora sigue tu idioma.',
       },
     },
   },
@@ -347,7 +391,7 @@ export const NEWS: NewsEntry[] = [
       },
       es: {
         title: 'Un recorrido guiado para nuevos usuarios en ambas apps',
-        body: 'La primera vez que inicias sesión en la app de iOS o Android, un breve recorrido deslizable te presenta lo que HivePulse puede hacer por ti: códigos QR en cada colmena, inspecciones rápidas, estadísticas, recordatorios y el rastreador de avispones. Puedes saltarlo cuando quieras y volver a verlo desde Ajustes con «Mostrar de nuevo el recorrido».',
+        body: 'La primera vez que inicias sesión en la app de iOS o Android, un breve recorrido deslizable te presenta lo que HivePulse puede hacer por ti: códigos QR en cada colmena, revisiones rápidas, estadísticas, recordatorios y el rastreador de avispones. Puedes saltarlo cuando quieras y volver a verlo desde Ajustes con «Mostrar de nuevo el recorrido».',
       },
     },
   },
@@ -413,7 +457,7 @@ export const NEWS: NewsEntry[] = [
       },
       es: {
         title: 'El resumen de estadísticas y el mapa de salud de la comunidad llegan a Android',
-        body: 'La app de Android tiene ahora la misma página de estadísticas de toda la cuenta que el panel web: colmenares, colmenas e inspecciones de un vistazo, desglosados por colmenar para cualquier periodo. Los colaboradores también tienen el mapa regional de salud en la pestaña Miembros, con las mismas capas de varroa, ánimo, enjambrazón y cría que en la web.',
+        body: 'La app de Android tiene ahora la misma página de estadísticas de toda la cuenta que el panel web: colmenares, colmenas e revisiones de un vistazo, desglosados por colmenar para cualquier periodo. Los colaboradores también tienen el mapa regional de salud en la pestaña Miembros, con las mismas capas de varroa, ánimo, enjambrazón y cría que en la web.',
       },
     },
   },
@@ -478,8 +522,8 @@ export const NEWS: NewsEntry[] = [
         body: "Les notifications push n'atteignaient que les applications iOS et Android, et les apiculteurs utilisant uniquement le site n'étaient jamais prévenus d'une visite en retard. Vous pouvez désormais activer les rappels par e-mail depuis votre page de profil — indépendamment des notifications push, pour activer l'un, l'autre, les deux ou aucun.",
       },
       es: {
-        title: 'Los recordatorios de inspección ya también llegan por correo',
-        body: 'Las notificaciones push solo llegaban a las apps de iOS y Android, así que quien usaba solo la web nunca recibía aviso de una inspección atrasada. Ahora puedes activar los recordatorios por correo desde tu página de perfil, de forma independiente a las notificaciones push: uno, otro, ambos o ninguno.',
+        title: 'Los recordatorios de revisión ya también llegan por correo',
+        body: 'Las notificaciones push solo llegaban a las apps de iOS y Android, así que quien usaba solo la web nunca recibía aviso de una revisión atrasada. Ahora puedes activar los recordatorios por correo desde tu página de perfil, de forma independiente a las notificaciones push: uno, otro, ambos o ninguno.',
       },
     },
   },
@@ -544,8 +588,8 @@ export const NEWS: NewsEntry[] = [
         body: "Chaque apiculteur suit des choses différentes. Les définitions de champs personnalisés vous permettent d'ajouter vos propres données de visite au niveau du rucher ou de chaque ruche, sous forme de texte, nombre, oui/non, date ou liste de choix — désormais disponibles sur le tableau de bord web, iOS et Android.",
       },
       es: {
-        title: 'Campos de inspección personalizados: registra lo que te importa',
-        body: 'Cada apicultor sigue cosas distintas. Las definiciones de campos personalizados te permiten añadir tus propios datos de inspección a nivel de colmenar o de colmena, con campos de texto, número, sí/no, fecha y selección, ya disponibles en el panel web, iOS y Android.',
+        title: 'Campos de revisión personalizados: registra lo que te importa',
+        body: 'Cada apicultor sigue cosas distintas. Las definiciones de campos personalizados te permiten añadir tus propios datos de revisión a nivel de colmenar o de colmena, con campos de texto, número, sí/no, fecha y selección, ya disponibles en el panel web, iOS y Android.',
       },
     },
   },

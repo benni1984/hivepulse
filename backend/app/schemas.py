@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
 
@@ -493,6 +493,175 @@ class InspectionOut(BaseModel):
     created_at: datetime
 
     model_config = {"from_attributes": True}
+
+
+# ---------------------------------------------------------------------------
+# Planned treatments and the home summary
+# ---------------------------------------------------------------------------
+
+class TreatmentCreate(BaseModel):
+    hive_id: Optional[str] = None
+    apiary_id: Optional[str] = None
+    product: str = Field(min_length=1, max_length=200)
+    due_on: date
+    note: Optional[str] = Field(default=None, max_length=2000)
+
+    @model_validator(mode="after")
+    def exactly_one_target(self):
+        if bool(self.hive_id) == bool(self.apiary_id):
+            raise ValueError("give exactly one of hive_id and apiary_id")
+        if not self.product.strip():
+            raise ValueError("product cannot be empty")
+        return self
+
+
+class TreatmentUpdate(BaseModel):
+    product: Optional[str] = Field(default=None, min_length=1, max_length=200)
+    due_on: Optional[date] = None
+    note: Optional[str] = Field(default=None, max_length=2000)
+
+
+class TreatmentDone(BaseModel):
+    done_on: Optional[date] = None
+
+    @model_validator(mode="after")
+    def not_in_the_future(self):
+        if self.done_on is not None and self.done_on > date.today() + timedelta(days=1):
+            raise ValueError("done_on cannot be in the future")
+        return self
+
+
+class TreatmentTarget(BaseModel):
+    type: str
+    id: str
+    name: str
+
+
+class PlannedTreatmentOut(BaseModel):
+    id: str
+    target: TreatmentTarget
+    apiary_name: Optional[str] = None
+    product: str
+    due_on: date
+    note: Optional[str] = None
+    done_on: Optional[date] = None
+    overdue: bool = False
+    created_by_name: Optional[str] = None
+    created_at: datetime
+
+
+class HomeInspection(BaseModel):
+    hive_id: str
+    hive_name: str
+    apiary_name: str
+    last_inspection_on: Optional[date] = None
+    due_on: date
+    overdue_days: int
+
+
+class HomeInspections(BaseModel):
+    interval_days: int
+    overdue_count: int
+    due_soon_count: int
+    next: List[HomeInspection]
+
+
+class HomeAttention(BaseModel):
+    hive_id: str
+    hive_name: str
+    apiary_name: str
+    status: str
+    reasons: List[str]
+
+
+class HomeHealth(BaseModel):
+    ok: int
+    watch: int
+    alert: int
+    unknown: int
+    attention: List[HomeAttention]
+
+
+class HomeTreatments(BaseModel):
+    open_count: int
+    overdue_count: int
+    upcoming: List[PlannedTreatmentOut]
+
+
+class HomeAd(BaseModel):
+    id: str
+    label: str
+    title: str
+    body: str
+    url: Optional[str] = None
+
+
+class HomeOut(BaseModel):
+    today: date
+    in_season: bool
+    apiary_count: int
+    hive_count: int
+    inspections: HomeInspections
+    health: HomeHealth
+    treatments: HomeTreatments
+    ad: Optional[HomeAd] = None
+
+
+# ---------------------------------------------------------------------------
+# Moving hives
+# ---------------------------------------------------------------------------
+
+class NewApiaryForMove(BaseModel):
+    name: str = Field(min_length=1, max_length=200)
+    address: Optional[str] = Field(default=None, max_length=500)
+    latitude: Optional[float] = Field(default=None, ge=-90, le=90)
+    longitude: Optional[float] = Field(default=None, ge=-180, le=180)
+
+
+class MoveCreate(BaseModel):
+    hive_ids: List[str] = Field(min_length=1, max_length=200)
+    to_apiary_id: Optional[str] = None
+    new_apiary: Optional[NewApiaryForMove] = None
+    moved_on: Optional[date] = None
+    forage: Optional[str] = Field(default=None, max_length=100)
+    note: Optional[str] = Field(default=None, max_length=2000)
+
+    @model_validator(mode="after")
+    def one_target_and_no_future(self):
+        if bool(self.to_apiary_id) == bool(self.new_apiary):
+            raise ValueError("give exactly one of to_apiary_id and new_apiary")
+        # A day of slack: somebody east of the server may already be on tomorrow's date.
+        if self.moved_on is not None and self.moved_on > date.today() + timedelta(days=1):
+            raise ValueError("moved_on cannot be in the future")
+        return self
+
+
+class MovePlace(BaseModel):
+    apiary_id: Optional[str] = None
+    name: str
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+
+
+class HiveMoveOut(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    id: str
+    hive_id: str
+    hive_name: str
+    moved_on: date
+    forage: Optional[str] = None
+    note: Optional[str] = None
+    from_: MovePlace = Field(alias="from")
+    to: MovePlace
+    created_by_name: Optional[str] = None
+    created_at: datetime
+
+
+class MoveResult(BaseModel):
+    moved: int
+    apiary: ApiaryOut
+    moves: List[HiveMoveOut]
 
 
 # ---------------------------------------------------------------------------

@@ -6,18 +6,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hivepulse.app.R
 import com.hivepulse.app.data.api.QrBatchSummary
 import com.hivepulse.app.ui.common.ErrorBanner
 import com.hivepulse.app.ui.common.LoadingScreen
+import com.hivepulse.app.ui.theme.Amber500
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,9 +42,15 @@ fun QRBatchListScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { showCreate = true }) {
-                Text("+", style = MaterialTheme.typography.headlineSmall)
-            }
+            val newBatchLabel = stringResource(R.string.action_new_batch)
+            ExtendedFloatingActionButton(
+                onClick        = { showCreate = true },
+                icon           = { Icon(Icons.Default.Add, contentDescription = null) },
+                text           = { Text(newBatchLabel) },
+                containerColor = Amber500,
+                contentColor   = MaterialTheme.colorScheme.onPrimary,
+                modifier       = Modifier.semantics { contentDescription = newBatchLabel },
+            )
         }
     ) { padding ->
         when {

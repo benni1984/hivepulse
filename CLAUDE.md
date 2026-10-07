@@ -64,6 +64,22 @@ Design ground truth: **`hivepulse-redesign/bundle.html`** — open in a browser 
 
 **Before any new UI work** — open `hivepulse-redesign/bundle.html` in a browser and verify colours, spacing, and component patterns. Do not use ad-hoc colours; always use the palette tokens above. Component-specific rules are in `@app/CLAUDE.md` (web) and `@android/CLAUDE.md` (Android).
 
+## Same navigation on Android and iOS — IMPORTANT
+
+The two apps must look and behave alike: same places, same order, same wording. When one changes, change
+the other in the same PR.
+
+- **Bottom tabs, in this order:** Apiaries, Scan, Hornets, Members, Settings.
+- **Apiary list toolbar, in this order:** statistics, QR batches, moves map, invitation link. Creating an apiary
+  is the amber button at the bottom right, not a toolbar icon.
+- **Apiary page toolbar:** move, share, treatments, custom fields, edit. **Hive page toolbar:** share, edit,
+  QR code, statistics; move history and treatments are rows of the page.
+- **Every "create" action is an amber button with a label at the bottom right** (Android
+  `ExtendedFloatingActionButton`, iOS `.hpFloatingButton(...)`): new apiary, new inspection, new QR batch, new
+  custom field. Never a plus in a toolbar.
+- **Settings order:** custom fields, profile (email, name, language), change password, reminders, export, admin,
+  help and tour, diagnostics, log out, danger zone.
+
 ## API Contract
 
 Source of truth for all endpoints, shapes, and enums: `docs/api-contract.md`. Update it first before adding any endpoint.
@@ -189,6 +205,14 @@ python scripts/check_screenshot_freshness.py --update   # after retaking them
 It hashes the views, strings and styles that decide what a screenshot shows and compares
 against `docs/screenshot-manifest.json`. **Run `--update` in the same commit that adds new
 screenshots** — otherwise the notice stays on and starts being ignored.
+
+## Shipping a feature — IMPORTANT
+
+Besides the code and its tests, every user-visible feature gets: a line in `lib/releaseNotes.ts`
+(`RELEASES`, and `FEATURES` when it is new — the page `/release-notes` and the apps' Settings → Release
+notes show it), a help page or a new section in `app/[locale]/help/[slug]/content/` (4 languages), a News
+entry in `lib/news.ts`, and a row in `docs/features.md`. German is Bienenstand / Volk / Kontrolle /
+QR-Batch, French rucher / ruche / visite, Spanish colmenar / colmena / revisión.
 
 ## Implementation Status
 

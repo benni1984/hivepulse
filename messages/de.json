@@ -13,7 +13,8 @@
     "download": "Kostenlos laden",
     "back": {
       "map": "← Live-Karte"
-    }
+    },
+    "releaseNotes": "Release Notes"
   },
   "footer": {
     "tagline": "Open-Source-Imkerei für einen gesünderen Planeten.",
@@ -256,6 +257,19 @@
       "privacy": "Datenschutz"
     }
   },
+  "releaseNotes": {
+    "tag": "Release Notes",
+    "title": "Was ist neu in HivePulse",
+    "sub": "Was sich geändert hat, was dazugekommen ist, und die vollständige Liste von allem, was HivePulse kann.",
+    "whatsNew": "Was ist neu",
+    "allFeatures": "Alle Funktionen",
+    "allFeaturesSub": "Alles, was HivePulse heute kann, auf der Webseite, in der iPhone-App und in der Android-App.",
+    "kinds": {
+      "added": "Neu",
+      "changed": "Geändert",
+      "fixed": "Behoben"
+    }
+  },
   "contrib": {
     "tag": "Open Source",
     "title": "Hilf HivePulse aufzubauen",
@@ -402,7 +416,8 @@
       "logout": "Abmelden",
       "members": "Community",
       "openMenu": "Dashboard-Menü öffnen",
-      "closeMenu": "Dashboard-Menü schließen"
+      "closeMenu": "Dashboard-Menü schließen",
+      "releaseNotes": "Release Notes"
     },
     "overview": {
       "title": "Meine Statistiken",
@@ -413,10 +428,10 @@
       "presetAll": "Gesamte Zeit",
       "apiaries": "Bienenstände",
       "hives": "Völker",
-      "inspections": "Inspektionen",
+      "inspections": "Kontrollen",
       "perApiary": "Nach Bienenstand",
       "apiary": "Bienenstand",
-      "noData": "Keine Inspektionen in diesem Zeitraum."
+      "noData": "Keine Kontrollen in diesem Zeitraum."
     },
     "profile": {
       "title": "Profil",
@@ -442,8 +457,8 @@
       "deleteConfirm": "Bist du sicher? Alle deine Daten werden dauerhaft gelöscht.",
       "deleteConfirmBtn": "Ja, Konto löschen",
       "deleteCancel": "Abbrechen",
-      "reminderTitle": "Inspektionserinnerungen",
-      "reminderEnabled": "Inspektionserinnerungen senden",
+      "reminderTitle": "Kontrollerinnerungen",
+      "reminderEnabled": "Kontrollerinnerungen senden",
       "reminderInterval": "Erinnerung alle",
       "reminderIntervalUnit": "Tage",
       "reminderSeasonStart": "Saisonbeginn (Monat)",
@@ -611,7 +626,7 @@
       "brood": "Bruträhmchen",
       "yes": "Ja",
       "no": "Nein",
-      "hiveType": "Bienenstock-Typ",
+      "hiveType": "Beutentyp",
       "acquisitionDate": "Anschaffungsdatum",
       "notes": "Notizen",
       "editBtn": "Volk bearbeiten",
@@ -721,7 +736,7 @@
       "avgVarroa": "Ø Varroa (global)",
       "goodMood": "Völker: gute Stimmung",
       "avgBrood": "Ø Brutwaben",
-      "interval": "Ø Inspektionsintervall",
+      "interval": "Ø Kontrollintervall",
       "moodChart": "Völkerstimmung",
       "cityChart": "Völker nach Stadt (Top 15)",
       "sizeChart": "Bienenstandgröße",
@@ -764,6 +779,104 @@
       "decline": "Ablehnen",
       "accepted": "{name} kannst du jetzt auch bearbeiten.",
       "errorGeneric": "Das hat nicht geklappt. Vielleicht ist die Einladung nicht mehr gültig."
+    },
+    "moves": {
+      "title": "Völker verlagern",
+      "intro": "Bring Völker dorthin, wo etwas blüht. Wähle die Völker, den neuen Ort, den Tag und die Tracht; die Verlagerung bleibt gespeichert, so siehst du, wo jedes Volk war.",
+      "selectHives": "Welche Völker",
+      "backHint": "Wo sie vorher standen",
+      "backTo": "Zurück nach {name} ({count})",
+      "selectAll": "Alle Völker",
+      "target": "Verlagern nach",
+      "targetChoose": "Ort wählen",
+      "targetNew": "Ein neuer Ort",
+      "newName": "Name des neuen Orts",
+      "newAddress": "Adresse (optional)",
+      "newAddressHint": "Mit einer Adresse erscheint der Ort auf der Karte.",
+      "date": "Datum",
+      "forage": "Tracht",
+      "forageNone": "Keine Angabe",
+      "forageOther": "Welche Tracht",
+      "note": "Notiz (optional)",
+      "submit": "Verlagern ({count})",
+      "cancel": "Abbrechen",
+      "errorGeneric": "Das hat nicht geklappt. Bitte versuche es erneut.",
+      "success": "Nach {name} verlagert.",
+      "historyTitle": "Wo dieses Volk gestanden hat",
+      "historyEmpty": "Dieses Volk wurde noch nicht verlagert.",
+      "noPosition": "Dieser Ort hat keine Position, deshalb ist er nicht auf der Karte.",
+      "noPositionAtAll": "Keiner dieser Orte hat bisher eine Position, es gibt also nichts zu zeichnen. Gib den Orten eine Adresse oder eine Position.",
+      "start": "Hier begann die Wanderung",
+      "openOverview": "Wanderkarte",
+      "overviewTitle": "Wanderkarte",
+      "overviewIntro": "Alle Verlagerungen deiner Völker, mit dem Weg jedes Volks auf der Karte.",
+      "overviewEmpty": "Es wurde noch kein Volk verlagert.",
+      "from": "Von",
+      "to": "Bis",
+      "hive": "Volk",
+      "route": "Weg",
+      "forageNames": {
+        "acacia": "Akazie",
+        "rapeseed": "Raps",
+        "orchard": "Obstblüte",
+        "dandelion": "Löwenzahn",
+        "linden": "Linde",
+        "chestnut": "Kastanie",
+        "fir": "Tanne",
+        "heather": "Heide",
+        "sunflower": "Sonnenblume",
+        "lavender": "Lavendel",
+        "other": "Andere"
+      }
+    },
+    "home": {
+      "title": "Heute im Überblick",
+      "outOfSeason": "Das liegt außerhalb deiner Erinnerungs-Saison; die Termine werden trotzdem gleich berechnet.",
+      "nextInspection": "Nächste Kontrolle",
+      "overdue": "{count} überfällig",
+      "dueOn": "Fällig am {date}",
+      "dueSoon": "{count} in den nächsten drei Tagen fällig",
+      "dueSince": "fällig seit {date}",
+      "neverInspected": "noch nie kontrolliert",
+      "health": "Zustand der Völker",
+      "healthOk": "{count} in Ordnung",
+      "healthWatch": "{count} beobachten",
+      "healthAlert": "{count} Alarm",
+      "healthUnknown": "{count} unbekannt",
+      "noConcerns": "Nichts braucht deine Aufmerksamkeit.",
+      "reasons": {
+        "varroa_high": "hoher Varroabefall",
+        "swarm_cells": "Schwarmzellen",
+        "aggressive": "aggressiv",
+        "varroa_medium": "mittlerer Varroabefall",
+        "nervous": "nervös",
+        "queen_not_seen": "Königin nicht gesehen"
+      },
+      "treatments": "Anstehende Behandlungen",
+      "treatmentsOverdue": "{count} überfällig",
+      "noTreatments": "In den nächsten 30 Tagen ist keine Behandlung geplant.",
+      "markDone": "Erledigt"
+    },
+    "treatments": {
+      "title": "Behandlungen",
+      "introHive": "Plane eine Behandlung für dieses Volk. Was fällig ist, steht auf deiner Startseite.",
+      "introApiary": "Plane eine Behandlung für alle Völker dieses Bienenstands. Was fällig ist, steht auf deiner Startseite.",
+      "plan": "Behandlung planen",
+      "product": "Mittel",
+      "dueOn": "Fällig am",
+      "note": "Notiz (optional)",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "empty": "Nichts geplant.",
+      "overdue": "fällig seit {date}",
+      "dueOnDate": "fällig {date}",
+      "markDone": "Erledigt",
+      "delete": "Löschen",
+      "confirmDelete": "Diese geplante Behandlung löschen?",
+      "doneTitle": "Erledigt",
+      "doneOn": "erledigt {date}",
+      "reopen": "Wieder öffnen",
+      "errorGeneric": "Das hat nicht geklappt. Bitte versuche es erneut."
     }
   },
   "hiveTypes": {
@@ -848,7 +961,7 @@
     "groups": {
       "Getting started": "Erste Schritte",
       "Managing your apiary": "Ihren Bienenstand verwalten",
-      "Inspections & data": "Inspektionen & Daten",
+      "Inspections & data": "Kontrollen & Daten",
       "Statistics": "Statistiken",
       "Community & hornets": "Gemeinschaft & Hornissen",
       "Account & settings": "Konto & Einstellungen"
@@ -870,25 +983,37 @@
         "title": "QR-Codes",
         "desc": "Druckbare QR-Code-Chargen erstellen, an Beutenboxen befestigen und scannen, um sofort das richtige Volk zu öffnen."
       },
+      "sharing": {
+        "title": "Zusammenarbeiten",
+        "desc": "Lade einen anderen Imker per E-Mail ein, mit dir an einem Bienenstand oder an einzelnen Völkern zu arbeiten, nimm eine Einladung an und erfahre, was beim Besitzer bleibt."
+      },
+      "moving-hives": {
+        "title": "Völker verlagern",
+        "desc": "Bring Völker zur Blüte: verlagere sie zwischen deinen Bienenständen, behalte im Blick, wo jedes gestanden hat, und sieh jeden Weg auf einer Karte."
+      },
+      "home-and-treatments": {
+        "title": "Startseite und Behandlungen",
+        "desc": "Was fällig ist, wie es deinen Völkern geht und was ansteht, auf einen Blick, und wie du Behandlungen für ein Volk oder einen ganzen Bienenstand planst."
+      },
       "custom-fields": {
-        "title": "Benutzerdefinierte Inspektionsfelder",
-        "desc": "Das integrierte Inspektionsformular mit eigenen Feldern erweitern — Text, Zahlen, Checkboxen, Dropdown-Listen — für das gesamte Konto oder einen bestimmten Bienenstand."
+        "title": "Benutzerdefinierte Kontrollfelder",
+        "desc": "Das integrierte Kontrollformular mit eigenen Feldern erweitern — Text, Zahlen, Checkboxen, Dropdown-Listen — für das gesamte Konto oder einen bestimmten Bienenstand."
       },
       "inspections": {
-        "title": "Eine Inspektion erfassen",
+        "title": "Eine Kontrolle erfassen",
         "desc": "Jeden Besuch an einem Volk festhalten: Varroa-Zahl, Volksstimmung, Königinnennachweis, Brutwaben, Honigwaben, Gewicht, Behandlungen und mehr."
       },
       "data-export": {
         "title": "Daten exportieren",
-        "desc": "Alle Inspektionsdaten eines Bienenstands als JSON oder CSV herunterladen — für Tierarzt, Forschungseinrichtung oder Imkerverband."
+        "desc": "Alle Kontrolldaten eines Bienenstands als JSON oder CSV herunterladen — für Tierarzt, Forschungseinrichtung oder Imkerverband."
       },
       "hive-stats": {
         "title": "Volksstatistiken",
-        "desc": "Die Volksgesundheit im Zeitverlauf verstehen: Varroa-Trenddiagramme, Stimmungsverteilung, Königinnen-Sichtungsrate, Brutwabenzahl und Inspektionsintervalle."
+        "desc": "Die Volksgesundheit im Zeitverlauf verstehen: Varroa-Trenddiagramme, Stimmungsverteilung, Königinnen-Sichtungsrate, Brutwabenzahl und Kontrollintervalle."
       },
       "community-stats": {
         "title": "Gemeinschaftsstatistiken (Mitglieder)",
-        "desc": "Ihren Bienenstand mit der HivePulse-Gemeinschaft vergleichen — durchschnittliche Varroa-Zahlen, gute-Stimmung-Raten, Brutwabenzahlen und Inspektionsintervalle aller öffentlichen Bienenstände."
+        "desc": "Ihren Bienenstand mit der HivePulse-Gemeinschaft vergleichen — durchschnittliche Varroa-Zahlen, gute-Stimmung-Raten, Brutwabenzahlen und Kontrollintervalle aller öffentlichen Bienenstände."
       },
       "hornet-tracker": {
         "title": "Hornissentracker",
@@ -899,8 +1024,8 @@
         "desc": "Eine benannte physische Falle registrieren, tägliche Fangzahlen mit dem 8-stelligen Zugangscode erfassen und nach Fallen in der Nähe suchen."
       },
       "reminders": {
-        "title": "Inspektionserinnerungen",
-        "desc": "Ein Erinnerungsintervall und ein Saisonfenster festlegen, damit HivePulse Sie benachrichtigt, wenn ein Volk überfällig für eine Inspektion ist."
+        "title": "Kontrollerinnerungen",
+        "desc": "Ein Erinnerungsintervall und ein Saisonfenster festlegen, damit HivePulse Sie benachrichtigt, wenn ein Volk überfällig für eine Kontrolle ist."
       },
       "account": {
         "title": "Konto & Profil",
@@ -1027,7 +1152,9 @@
     "deleteAccountTitle": "Konto löschen",
     "deleteAccountDescription": "Wie du dein HivePulse-Konto löschst und was genau entfernt wird.",
     "betaTitle": "Am Test teilnehmen",
-    "betaDescription": "HivePulse ausprobieren, bevor es in die Stores kommt — und helfen, dass es dort ankommt."
+    "betaDescription": "HivePulse ausprobieren, bevor es in die Stores kommt — und helfen, dass es dort ankommt.",
+    "releaseNotesTitle": "Release Notes",
+    "releaseNotesDescription": "Was sich in HivePulse geändert hat und was neu ist, und die vollständige Funktionsliste."
   },
   "imprint": {
     "title": "Impressum",

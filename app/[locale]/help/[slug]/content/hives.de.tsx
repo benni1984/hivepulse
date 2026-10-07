@@ -7,10 +7,10 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
         <h2 className="help-section-title">Was ist ein Volkseintrag?</h2>
         <p>
           Ein Volkseintrag repräsentiert einen physischen Bienenstock. Er hat einen Namen, einen Typ und ein optionales
-          QR-Code-Etikett. Die gesamte Inspektionshistorie ist dem Volkseintrag zugeordnet, sodass Sie den
+          QR-Code-Etikett. Die gesamte Kontrollhistorie ist dem Volkseintrag zugeordnet, sodass Sie den
           vollständigen Gesundheitstrend dieses Volkes im Laufe der Zeit verfolgen können.
         </p>
-        <Screenshot android="/docs/screenshots/android-hive-detail.png" web="/docs/screenshots/hive-detail-web.png" caption="Volk-Detailbildschirm mit Bienenstock-Typ, letztem Inspektionsdatum und Inspektionsliste" />
+        <Screenshot android="/docs/screenshots/android-hive-detail.png" web="/docs/screenshots/hive-detail-web.png" caption="Volk-Detailbildschirm mit Bienenstock-Typ, letztem Kontrolldatum und Kontrollliste" />
       </section>
 
       <section className="help-section">
@@ -100,12 +100,12 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
         </p>
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li>Bienenstock-Typ und Datum der Hinzufügung</li>
-          <li>Datum der letzten Inspektion</li>
-          <li>Vollständige Inspektionshistorie, neueste zuerst</li>
-          <li>Eine Schaltfläche zum Starten einer neuen Inspektion</li>
-          <li>Im Web: Tabs für Inspektionen, Statistiken und Benutzerdefinierte Felder</li>
+          <li>Datum der letzten Kontrolle</li>
+          <li>Vollständige Kontrollhistorie, neueste zuerst</li>
+          <li>Eine Schaltfläche zum Starten einer neuen Kontrolle</li>
+          <li>Im Web: Tabs für Kontrollen, Statistiken und Benutzerdefinierte Felder</li>
         </ul>
-        <Screenshot src="/docs/screenshots/hive-detail-web.png" caption="Volk-Detailseite im Web mit dem Inspektions-Tab und Volksdaten" />
+        <Screenshot src="/docs/screenshots/hive-detail-web.png" caption="Volk-Detailseite im Web mit dem KontrollTab und Volksdaten" />
       </section>
 
       <section className="help-section">
@@ -116,7 +116,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
         </div>
         <div className="help-callout info">
           <i className="fas fa-info-circle" />
-          <p>Das Löschen eines Volkes entfernt dauerhaft die gesamte Inspektionshistorie dieses Volkes. Exportieren Sie Ihre Daten vor dem Löschen, wenn Sie die Aufzeichnungen behalten möchten.</p>
+          <p>Das Löschen eines Volkes entfernt dauerhaft die gesamte Kontrollhistorie dieses Volkes. Exportieren Sie Ihre Daten vor dem Löschen, wenn Sie die Aufzeichnungen behalten möchten.</p>
         </div>
       </section>
     </>

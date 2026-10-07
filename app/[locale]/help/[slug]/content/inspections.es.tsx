@@ -4,18 +4,18 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
   return (
     <>
       <section className="help-section">
-        <h2 className="help-section-title">¿Qué es una inspección?</h2>
+        <h2 className="help-section-title">¿Qué es una revisión?</h2>
         <p>
-          Una inspección es una única visita a una colmena. Cada vez que abre una colmena, registra
+          Una revisión es una única visita a una colmena. Cada vez que abre una colmena, registra
           lo que observa como un registro de inspección: indicadores de salud, datos de población, estado de la reina,
           y cualquier tratamiento o alimentación que haya aplicado. Con el tiempo, estos registros construyen un cuadro de
           la salud de la colonia que los gráficos y análisis de tendencias pueden revelar.
         </p>
-        <Screenshot src="/docs/screenshots/android-inspection-form.png" caption="Formulario de inspección abierto en una colmena, mostrando todas las secciones" />
+        <Screenshot src="/docs/screenshots/android-inspection-form.png" caption="Formulario de revisión abierto en una colmena, mostrando todas las secciones" />
       </section>
 
       <section className="help-section">
-        <h2 className="help-section-title">Registrar una inspección</h2>
+        <h2 className="help-section-title">Registrar una revisión</h2>
         <ol className="help-steps">
           <li>
             <span className="help-step-num">1</span>
@@ -27,8 +27,8 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           <li>
             <span className="help-step-num">2</span>
             <div className="help-step-body">
-              <strong>Tocar Nueva inspección</strong>
-              <p>El formulario de inspección se abre. La fecha es por defecto hoy pero puede cambiarse (para registrar visitas pasadas).</p>
+              <strong>Tocar Nueva revisión</strong>
+              <p>El formulario de revisión se abre. La fecha es por defecto hoy pero puede cambiarse (para registrar visitas pasadas).</p>
             </div>
           </li>
           <li>
@@ -42,15 +42,15 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
             <span className="help-step-num">4</span>
             <div className="help-step-body">
               <strong>Guardar</strong>
-              <p>La inspección se agrega al historial de la colmena y contribuye inmediatamente a los gráficos de tendencias.</p>
+              <p>La revisión se agrega al historial de la colmena y contribuye inmediatamente a los gráficos de tendencias.</p>
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Guardando una inspección — los campos fecha e infestación de varroa son visibles" />
+        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Guardando una revisión — los campos fecha e infestación de varroa son visibles" />
       </section>
 
       <section className="help-section">
-        <h2 className="help-section-title">Todos los campos de inspección explicados</h2>
+        <h2 className="help-section-title">Todos los campos de revisión explicados</h2>
 
         <h3 style={{ fontSize: '.95rem', fontWeight: 700, marginBottom: 12, color: 'var(--text-primary)' }}>Salud de la colonia</h3>
         <div className="help-stat-grid">
@@ -65,7 +65,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           <div className="help-stat-card">
             <div className="help-stat-card-name">Estado de ánimo de la colonia</div>
             <div className="help-stat-card-desc">
-              Cómo se comportaron las abejas durante la inspección.
+              Cómo se comportaron las abejas durante la revisión.
               <br /><strong>Tranquila</strong> — las abejas eran dóciles, se movían despacio, pocas picaduras.<br />
               <strong>Nerviosa</strong> — las abejas estaban agitadas, difíciles de manejar.<br />
               <strong>Agresiva</strong> — las abejas atacaban activamente, múltiples picaduras.
@@ -75,7 +75,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           <div className="help-stat-card">
             <div className="help-stat-card-name">Reina vista</div>
             <div className="help-stat-card-desc">
-              Marque esto si confirmó visualmente la reina durante la inspección.
+              Marque esto si confirmó visualmente la reina durante la revisión.
               Si ve huevos frescos pero no la reina misma, déjelo sin marcar — los huevos son solo evidencia indirecta.
             </div>
           </div>
@@ -157,11 +157,11 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
         <h2 className="help-section-title">Consejos</h2>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Evalúe la infestación de varroa siempre de la misma forma (mismo método de muestreo, mismos umbrales) para que el gráfico de tendencias sea comparable entre inspecciones.</p>
+          <p>Evalúe la infestación de varroa siempre de la misma forma (mismo método de muestreo, mismos umbrales) para que el gráfico de tendencias sea comparable entre revisiones.</p>
         </div>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Incluso una inspección parcial (solo estado de ánimo y marcos de cría) es valiosa. Los registros parciales consistentes son mejores que los registros perfectos que ocurren una vez al año.</p>
+          <p>Incluso una revisión parcial (solo estado de ánimo y marcos de cría) es valiosa. Los registros parciales consistentes son mejores que los registros perfectos que ocurren una vez al año.</p>
         </div>
       </section>
     </>

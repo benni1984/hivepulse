@@ -19,6 +19,9 @@ import HornetTrackerEn from './content/hornet-tracker';
 import HornetTrapsEn from './content/hornet-traps';
 import RemindersEn from './content/reminders';
 import AccountEn from './content/account';
+import SharingEn from './content/sharing';
+import MovingHivesEn from './content/moving-hives';
+import HomeAndTreatmentsEn from './content/home-and-treatments';
 
 // ── Content imports (German) ────────────────────────────────────
 import GettingStartedDe from './content/getting-started.de';
@@ -34,6 +37,9 @@ import HornetTrackerDe from './content/hornet-tracker.de';
 import HornetTrapsDe from './content/hornet-traps.de';
 import RemindersDe from './content/reminders.de';
 import AccountDe from './content/account.de';
+import SharingDe from './content/sharing.de';
+import MovingHivesDe from './content/moving-hives.de';
+import HomeAndTreatmentsDe from './content/home-and-treatments.de';
 
 // ── Content imports (French) ────────────────────────────────────
 import GettingStartedFr from './content/getting-started.fr';
@@ -49,6 +55,9 @@ import HornetTrackerFr from './content/hornet-tracker.fr';
 import HornetTrapsFr from './content/hornet-traps.fr';
 import RemindersFr from './content/reminders.fr';
 import AccountFr from './content/account.fr';
+import SharingFr from './content/sharing.fr';
+import MovingHivesFr from './content/moving-hives.fr';
+import HomeAndTreatmentsFr from './content/home-and-treatments.fr';
 
 // ── Content imports (Spanish) ───────────────────────────────────
 import GettingStartedEs from './content/getting-started.es';
@@ -64,6 +73,9 @@ import HornetTrackerEs from './content/hornet-tracker.es';
 import HornetTrapsEs from './content/hornet-traps.es';
 import RemindersEs from './content/reminders.es';
 import AccountEs from './content/account.es';
+import SharingEs from './content/sharing.es';
+import MovingHivesEs from './content/moving-hives.es';
+import HomeAndTreatmentsEs from './content/home-and-treatments.es';
 
 type ContentComponent = React.ComponentType<{ Screenshot: typeof HelpScreenshot }>;
 type SlugMap = Record<string, ContentComponent>;
@@ -75,6 +87,7 @@ const CONTENT: Record<string, SlugMap> = {
     'data-export': DataExportEn, 'hive-stats': HiveStatsEn, 'community-stats': CommunityStatsEn,
     'hornet-tracker': HornetTrackerEn, 'hornet-traps': HornetTrapsEn,
     'reminders': RemindersEn, 'account': AccountEn,
+    'sharing': SharingEn, 'moving-hives': MovingHivesEn, 'home-and-treatments': HomeAndTreatmentsEn,
   },
   de: {
     'getting-started': GettingStartedDe, 'apiaries': AviariesDe, 'hives': HivesDe,
@@ -82,6 +95,7 @@ const CONTENT: Record<string, SlugMap> = {
     'data-export': DataExportDe, 'hive-stats': HiveStatsDe, 'community-stats': CommunityStatsDe,
     'hornet-tracker': HornetTrackerDe, 'hornet-traps': HornetTrapsDe,
     'reminders': RemindersDe, 'account': AccountDe,
+    'sharing': SharingDe, 'moving-hives': MovingHivesDe, 'home-and-treatments': HomeAndTreatmentsDe,
   },
   fr: {
     'getting-started': GettingStartedFr, 'apiaries': AviariesFr, 'hives': HivesFr,
@@ -89,6 +103,7 @@ const CONTENT: Record<string, SlugMap> = {
     'data-export': DataExportFr, 'hive-stats': HiveStatsFr, 'community-stats': CommunityStatsFr,
     'hornet-tracker': HornetTrackerFr, 'hornet-traps': HornetTrapsFr,
     'reminders': RemindersFr, 'account': AccountFr,
+    'sharing': SharingFr, 'moving-hives': MovingHivesFr, 'home-and-treatments': HomeAndTreatmentsFr,
   },
   es: {
     'getting-started': GettingStartedEs, 'apiaries': AviariesEs, 'hives': HivesEs,
@@ -96,6 +111,7 @@ const CONTENT: Record<string, SlugMap> = {
     'data-export': DataExportEs, 'hive-stats': HiveStatsEs, 'community-stats': CommunityStatsEs,
     'hornet-tracker': HornetTrackerEs, 'hornet-traps': HornetTrapsEs,
     'reminders': RemindersEs, 'account': AccountEs,
+    'sharing': SharingEs, 'moving-hives': MovingHivesEs, 'home-and-treatments': HomeAndTreatmentsEs,
   },
 };
 

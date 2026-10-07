@@ -17,13 +17,16 @@ All endpoints require `Authorization: Bearer <access_token>` unless marked **pub
 7. [QR Batches](#qr-batches)
 8. [Hives](#hives)
 9. [Inspections](#inspections)
-10. [Sharing](#sharing)
-11. [Stats](#stats)
-12. [Public Dashboard](#public-dashboard)
-13. [Hornet Tracker](#hornet-tracker)
-14. [Admin](#admin)
-15. [Object Reference](#object-reference)
-16. [Error Codes](#error-codes)
+10. [Home Summary](#home-summary)
+11. [Planned Treatments](#planned-treatments)
+12. [Moving Hives](#moving-hives)
+13. [Sharing](#sharing)
+14. [Stats](#stats)
+15. [Public Dashboard](#public-dashboard)
+16. [Hornet Tracker](#hornet-tracker)
+17. [Admin](#admin)
+18. [Object Reference](#object-reference)
+19. [Error Codes](#error-codes)
 
 ---
 
@@ -767,6 +770,227 @@ already stored the first attempt would otherwise create a duplicate.
 - Omitting `client_id` keeps the old behaviour — every POST creates an inspection.
 - `client_id` is echoed in `InspectionOut` so a client can match a queued entry to the
   stored one; it is at most 64 characters.
+
+---
+
+## Home Summary
+
+What a beekeeper wants to know on opening the app: what is due, how the hives are, what is
+coming up. One request, so the three clients show the same thing.
+
+### GET `/home`
+
+Everything the caller can see, including hives other beekeepers shared with them.
+
+```json
+{
+  "today": "2026-10-07",
+  "in_season": true,
+  "apiary_count": 3,
+  "hive_count": 12,
+  "inspections": {
+    "interval_days": 7,
+    "overdue_count": 2,
+    "due_soon_count": 3,
+    "next": [
+      { "hive_id": "uuid", "hive_name": "string", "apiary_name": "string",
+        "last_inspection_on": "2026-09-28 | null", "due_on": "2026-10-05", "overdue_days": 2 }
+    ]
+  },
+  "health": {
+    "ok": 7, "watch": 2, "alert": 1, "unknown": 2,
+    "attention": [
+      { "hive_id": "uuid", "hive_name": "string", "apiary_name": "string",
+        "status": "alert | watch", "reasons": ["varroa_high", "swarm_cells"] }
+    ]
+  },
+  "treatments": {
+    "open_count": 4,
+    "overdue_count": 1,
+    "upcoming": [ <PlannedTreatment> ]
+  },
+  "ad": null
+}
+```
+
+**Inspections.** A hive is due `interval_days` after its last inspection (the day entered on the
+inspection, not the day it was typed in). `interval_days` is the user's reminder interval from
+`/users/me/reminder`, so the reminders and this screen agree. A hive that was never inspected is due
+that many days after it was created. `overdue_count` counts hives due before `today`;
+`due_soon_count` those due within the next three days. `next` is the five hives due soonest,
+overdue ones first. `in_season` says whether `today` lies in the user's reminder season; the lists
+are filled either way, and a client may soften them outside the season.
+
+**Health** is read from each hive's latest inspection:
+
+| Status | When |
+|--------|------|
+| `alert` | varroa level 3, swarm cells seen, or an aggressive mood |
+| `watch` | varroa level 2, a nervous mood, or the queen not seen |
+| `unknown` | never inspected |
+| `ok` | everything else |
+
+`reasons` of an attention entry: `varroa_high`, `swarm_cells`, `aggressive`, `varroa_medium`,
+`nervous`, `queen_not_seen`. `attention` lists up to five hives that are `alert` or `watch`, alerts
+first.
+
+**Treatments.** `open_count` is every planned treatment not yet done, `overdue_count` those due before
+`today`. `upcoming` is up to five open ones due within thirty days, overdue ones first.
+
+**`ad`** is `null` unless the operator switched an announcement on, then
+`{ "id": "string", "label": "string", "title": "string", "body": "string", "url": "string | null" }`.
+Clients show it as a card that carries its `label` (for example "Ad") and say nothing when it is
+`null`. No advertising SDK is involved: it is text the server sends.
+
+---
+
+## Planned Treatments
+
+A treatment that is going to happen: which product, for which hive or apiary, by when. Recording
+a treatment that has happened stays what it was, the `treatment_applied` text of an inspection.
+
+### POST `/treatments`
+
+```json
+{ "hive_id": "uuid", "product": "Formic acid 60%", "due_on": "2026-08-20", "note": "string | null" }
+```
+
+Exactly one of `hive_id` and `apiary_id` (a treatment for all hives of an apiary). `product` up to
+200 characters, `note` up to 2000. **201** with a [PlannedTreatment](#plannedtreatment-object).
+
+Whoever may work on the hive may plan a treatment for it; for an apiary, whoever may edit it (not
+somebody who has only single hives of it).
+
+| Error | Meaning |
+|-------|---------|
+| 404 `HIVE_NOT_FOUND` / `APIARY_NOT_FOUND` | Not visible to the caller |
+| 403 `OWNER_ONLY` | Apiary seen only through single shared hives |
+| 422 | Neither or both targets, or an empty product |
+
+### GET `/treatments`
+
+Optional `status` (`open` | `done`, default `open`), `hive_id`, `apiary_id`. Open ones by due date,
+done ones newest first. Only what the caller can see. Array of
+[PlannedTreatment](#plannedtreatment-object).
+
+### PUT `/treatments/{id}`
+
+Change `product`, `due_on` or `note`. **200** with the treatment. 404 `TREATMENT_NOT_FOUND` when it is
+not visible to the caller.
+
+### POST `/treatments/{id}/done`
+
+```json
+{ "done_on": "2026-08-21" }
+```
+
+`done_on` defaults to today and may not lie in the future. Marking it done again changes the day.
+**200** with the treatment. To undo, `POST /treatments/{id}/reopen`: **200**, `done_on` becomes `null`.
+
+### DELETE `/treatments/{id}`
+
+**204.** Anyone who may plan it may delete it.
+
+### PlannedTreatment object
+
+```json
+{
+  "id": "uuid",
+  "target": { "type": "hive | apiary", "id": "uuid", "name": "string" },
+  "apiary_name": "string | null",
+  "product": "string",
+  "due_on": "2026-08-20",
+  "note": "string | null",
+  "done_on": "date | null",
+  "overdue": false,
+  "created_by_name": "string | null",
+  "created_at": "datetime"
+}
+```
+
+`apiary_name` is set when the target is a hive. `overdue` is true for an open treatment due before
+today. A treatment follows its target: when a hive moves it goes with it, and it is deleted with the
+hive or apiary.
+
+---
+
+## Moving Hives
+
+Migratory beekeepers take their hives to where something is in bloom: acacia in May, fir in
+June, heather in August. Moving hives is a function of its own, not an edit of the hive: it
+moves several hives at once, records when and for which forage, and keeps the history so the
+journey of a hive, and of all hives, can be seen on a map.
+
+A move needs a connection. Unlike an inspection it is not queued while offline.
+
+### POST `/hives/move`
+
+Owner only: every hive must stand in an apiary owned by the caller, and so must the target.
+Nothing is moved unless all of it can be.
+
+```json
+{
+  "hive_ids": ["uuid", "uuid"],
+  "to_apiary_id": "uuid",
+  "new_apiary": { "name": "Schwarzwald Tanne", "address": "Titisee", "latitude": 47.9, "longitude": 8.1 },
+  "moved_on": "2026-06-14",
+  "forage": "fir",
+  "note": "string | null"
+}
+```
+
+* Exactly one of `to_apiary_id` and `new_apiary`. A new apiary is created for the caller; `address`,
+  `latitude` and `longitude` are optional. With an address and no coordinates the server looks the
+  coordinates up, as it does for the public map; when that fails the apiary has no position and its
+  moves appear in lists but not on the map.
+* `hive_ids`: 1 to 200 hives. Hives that already stand in the target are left alone.
+* `moved_on` defaults to today and may not lie in the future (one day of slack for time zones).
+* `forage` is free text up to 100 characters. The clients offer these keys and show them in the
+  user's language; any other text is shown as written: `acacia`, `rapeseed`, `orchard`, `dandelion`,
+  `linden`, `chestnut`, `fir`, `heather`, `sunflower`, `lavender`, `other`.
+* Shares follow the hive: a hive shared on its own stays shared wherever it goes, a hive covered by
+  the share of a whole apiary leaves that share with it when it moves to an apiary that is not shared
+  with the same person.
+
+**Response 201** — `{ "moved": 2, "apiary": <Apiary>, "moves": [<HiveMove>] }`
+
+| Error | Meaning |
+|-------|---------|
+| 404 `HIVE_NOT_FOUND` / `APIARY_NOT_FOUND` | Not visible to the caller |
+| 403 `OWNER_ONLY` | Visible to the caller as a collaborator, but not theirs to move |
+| 400 `NOTHING_TO_MOVE` | Every hive already stands in the target |
+| 422 | Neither or both targets, an empty list, or a date in the future |
+
+### GET `/hives/{id}/moves`
+
+The moves of one hive, newest first, for anybody who can see the hive. Array of
+[HiveMove](#hivemove-object). A hive that never moved has none.
+
+### GET `/hives/moves/overview`
+
+Every move of every hive the caller owns, newest first, for the map of all journeys. Optional
+`from` and `to` (`YYYY-MM-DD`) limit it by the day of the move. Array of [HiveMove](#hivemove-object).
+
+### HiveMove object
+
+```json
+{
+  "id": "uuid",
+  "hive_id": "uuid",
+  "hive_name": "string",
+  "moved_on": "2026-06-14",
+  "forage": "fir | null",
+  "note": "string | null",
+  "from": { "apiary_id": "uuid | null", "name": "Rheinebene", "latitude": 48.1, "longitude": 8.0 },
+  "to":   { "apiary_id": "uuid | null", "name": "Schwarzwald Tanne", "latitude": 47.9, "longitude": 8.1 },
+  "created_by_name": "string | null",
+  "created_at": "datetime"
+}
+```
+
+Name and coordinates of both ends are copied when the move is made, so the history stays true when an
+apiary is renamed, moved or deleted (`apiary_id` is then `null`). The route of a hive on the map is the
+`from` of its oldest move followed by the `to` of each move in order.
 
 ---
 
@@ -1904,6 +2128,8 @@ Permanently deletes the user and all their apiaries, hives, and inspections.
 | `QR_TOKEN_ALREADY_LINKED` | 409 | Token is already assigned to a hive |
 | `APIARY_HAS_HIVES` | 409 | Cannot delete apiary while hives exist |
 | `QR_BATCH_IN_USE` | 409 | A code of the batch is attached to a hive |
+| `TREATMENT_NOT_FOUND` | 404 | Planned treatment that is not visible to the caller |
+| `NOTHING_TO_MOVE` | 400 | Every hive of a move already stands in the target |
 | `OWNER_ONLY` | 403 | Visible to the caller as a collaborator, but only the owner may do this |
 | `SHARE_NOT_FOUND` | 404 | Invitation or share that is not the caller's |
 | `SHARE_TOKEN_INVALID` | 404 | Unknown, used or revoked invitation token |

@@ -109,6 +109,7 @@ export default function DashboardShell({ children, adminOnly = false, memberOnly
             <div className="dash-nav-section" style={{ marginTop: 16 }}>{t('nav.sectionCommunity')}</div>
             {(user.is_supporter || user.is_admin) && nav('/dashboard/members', I.users, t('nav.members'))}
             {nav('/dashboard/profile',         I.user,   t('nav.profile'))}
+            {nav('/release-notes',             I.fields, t('nav.releaseNotes'))}
             {user.is_admin && (
               <>
                 <div className="dash-nav-section">{t('admin.nav.section')}</div>

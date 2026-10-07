@@ -6,7 +6,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
       <section className="help-section">
         <h2 className="help-section-title">Warum exportieren?</h2>
         <p>
-          Ihre Inspektionsdaten gehören Ihnen. Durch den Export erhalten Sie eine lokale Kopie, die Sie mit
+          Ihre Kontrolldaten gehören Ihnen. Durch den Export erhalten Sie eine lokale Kopie, die Sie mit
           Ihrem Tierarzt teilen, bei einer nationalen Imkerbehörde einreichen, in einer Tabellenkalkulation für
           benutzerdefinierte Analysen verwenden oder als Langzeitaufzeichnung unabhängig von HivePulse archivieren können.
         </p>
@@ -27,7 +27,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
           <div className="help-stat-card">
             <div className="help-stat-card-name">CSV</div>
             <div className="help-stat-card-desc">
-              Tabellenkalkulationskompatibel. Jede Inspektion ist eine Zeile. Öffnet sich direkt in Excel, Google
+              Tabellenkalkulationskompatibel. Jede Kontrolle ist eine Zeile. Öffnet sich direkt in Excel, Google
               Tabellen oder Numbers. Benutzerdefinierte Felder sind als zusätzliche Spalten enthalten.
               Am besten für manuelle Analysen oder die Weitergabe an nicht-technische Stakeholder.
             </div>
@@ -49,7 +49,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
             <span className="help-step-num">2</span>
             <div className="help-step-body">
               <strong>Bienenstand auswählen</strong>
-              <p>Wenn Sie mehr als einen Bienenstand haben, wählen Sie, welchen Sie exportieren möchten. Jeder Export umfasst alle Völker und Inspektionen innerhalb dieses Bienenstands.</p>
+              <p>Wenn Sie mehr als einen Bienenstand haben, wählen Sie, welchen Sie exportieren möchten. Jeder Export umfasst alle Völker und Kontrollen innerhalb dieses Bienenstands.</p>
             </div>
           </li>
           <li>
@@ -107,13 +107,13 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
         <h2 className="help-section-title">Was im Export enthalten ist</h2>
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li>Alle Völker im ausgewählten Bienenstand</li>
-          <li>Jede Inspektion für jedes Volk mit allen integrierten Feldern</li>
+          <li>Jede Kontrolle für jedes Volk mit allen integrierten Feldern</li>
           <li>Alle benutzerdefinierten Feldwerte</li>
-          <li>Inspektionsdaten und Erstellungszeitstempel</li>
+          <li>Kontrolldaten und Erstellungszeitstempel</li>
         </ul>
         <div className="help-callout info">
           <i className="fas fa-info-circle" />
-          <p>Exporte enthalten keine Fotos (HivePulse speichert keine Inspektionsfotos). Sie enthalten auch keine QR-Token-Daten oder Charge-Informationen.</p>
+          <p>Exporte enthalten keine Fotos (HivePulse speichert keine Kontrollfotos). Sie enthalten auch keine QR-Token-Daten oder Charge-Informationen.</p>
         </div>
       </section>
     </>

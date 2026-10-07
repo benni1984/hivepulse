@@ -78,7 +78,7 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
         <h2 className="help-section-title">Konto löschen</h2>
         <p>
           Das Löschen Ihres Kontos entfernt dauerhaft Ihre E-Mail-Adresse, den Anzeigenamen, alle Bienenstände,
-          alle Völker und alle Inspektionseinträge. Diese Aktion <strong>kann nicht rückgängig gemacht werden</strong>.
+          alle Völker und alle Kontrolleinträge. Diese Aktion <strong>kann nicht rückgängig gemacht werden</strong>.
         </p>
         <ol className="help-steps">
           <li>
@@ -105,7 +105,7 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
         </ol>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Ihre Inspektionsdaten haben möglicherweise zur Community-Statistik beigetragen. Das Löschen Ihres Kontos entfernt Ihre Daten aus zukünftigen Community-Aggregaten, aber bereits berechnete historische Statistiken werden nicht rückwirkend neu berechnet.</p>
+          <p>Ihre Kontrolldaten haben möglicherweise zur Community-Statistik beigetragen. Das Löschen Ihres Kontos entfernt Ihre Daten aus zukünftigen Community-Aggregaten, aber bereits berechnete historische Statistiken werden nicht rückwirkend neu berechnet.</p>
         </div>
       </section>
 
@@ -115,6 +115,16 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
           Tippen Sie auf <strong>Abmelden</strong> in den Einstellungen (Mobil) oder im Dropdown oben rechts (Web).
           Ihr Sitzungs-Token wird serverseitig widerrufen. Sie werden zum Anmeldebildschirm weitergeleitet.
           Ihre Daten bleiben erhalten — das Abmelden löscht nichts.
+        </p>
+      </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Mit Apple oder Google anmelden</h2>
+        <p>
+          Du kannst dich statt mit Passwort mit deinem Apple- oder Google-Konto anmelden: Apple auf dem iPhone und der Webseite, Google auf Android, dem iPhone und der Webseite. Ist die E-Mail-Adresse dieselbe, landest du in dem Konto, das du schon hattest, mit allen Völkern. HivePulse erhält von ihnen nur deinen Namen und deine Adresse, nie ein Passwort.
+        </p>
+        <p>
+          Ein so angelegtes Konto hat kein Passwort, deshalb wird <em>Passwort ändern</em> dafür nicht angezeigt. Das E-Mail-Formular bleibt als unauffälliger Link unter den Knöpfen erreichbar.
         </p>
       </section>
     </>

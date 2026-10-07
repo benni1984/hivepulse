@@ -24,7 +24,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           <div className="help-stat-card">
             <div className="help-stat-card-name">Conteo varroa promedio</div>
             <div className="help-stat-card-desc">
-              El conteo de varroa promedio (ácaros por 100 abejas) en todas las inspecciones públicas que
+              El conteo de varroa promedio (ácaros por 100 abejas) en todas las revisiones públicas que
               registraron una medición de varroa. Le da un punto de referencia regional: si su conteo es
               consistentemente más alto que el promedio comunitario, su colonia puede necesitar tratamiento antes
               de lo habitual en su área.
@@ -35,7 +35,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           <div className="help-stat-card">
             <div className="help-stat-card-name">% Buen estado de ánimo</div>
             <div className="help-stat-card-desc">
-              Porcentaje de inspecciones en todos los colmenares públicos calificadas como «Tranquila». Una alta
+              Porcentaje de revisiones en todos los colmenares públicos calificadas como «Tranquila». Una alta
               tasa de calma comunitaria sugiere buena genética regional y condiciones de bajo estrés
               (buen forraje, baja presión de plagas). Una tendencia decreciente del buen estado de ánimo puede señalar una temporada difícil
               para las abejas en su región.
@@ -46,7 +46,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           <div className="help-stat-card">
             <div className="help-stat-card-name">Marcos de cría promedio</div>
             <div className="help-stat-card-desc">
-              Número promedio de marcos de cría registrados en todas las inspecciones públicas. En primavera,
+              Número promedio de marcos de cría registrados en todas las revisiones públicas. En primavera,
               este número sube; en otoño baja. Comparar su recuento de marcos de cría con este
               promedio puede revelar si sus colonias se están desarrollando más rápido o más lento que otras
               en la comunidad.
@@ -54,11 +54,11 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           </div>
 
           <div className="help-stat-card">
-            <div className="help-stat-card-name">Intervalo de inspección promedio</div>
+            <div className="help-stat-card-name">Intervalo de revisión promedio</div>
             <div className="help-stat-card-desc">
-              Número promedio de días entre inspecciones consecutivas, promediado por colmena en todos los
+              Número promedio de días entre revisiones consecutivas, promediado por colmena en todos los
               colmenares públicos. Intervalos más cortos significan apicultores más atentos — y más datos
-              para el análisis de tendencias. El promedio comunitario le da una idea de los hábitos de inspección locales.
+              para el análisis de tendencias. El promedio comunitario le da una idea de los hábitos de revisión locales.
             </div>
             <span className="help-stat-card-good">7–14 días en temporada activa</span>
           </div>
@@ -69,7 +69,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
       <section className="help-section">
         <h2 className="help-section-title">Contribuir a las estadísticas comunitarias</h2>
         <p>
-          Sus inspecciones contribuyen a las estadísticas comunitarias automáticamente cuando su colmenar está configurado
+          Sus revisiones contribuyen a las estadísticas comunitarias automáticamente cuando su colmenar está configurado
           como <strong>público</strong>. No se requiere ninguna acción adicional. Los registros individuales
           nunca son visibles para otros usuarios — solo se publican agregados (medias, porcentajes).
         </p>

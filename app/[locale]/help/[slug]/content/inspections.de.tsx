@@ -4,18 +4,18 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
   return (
     <>
       <section className="help-section">
-        <h2 className="help-section-title">Was ist eine Inspektion?</h2>
+        <h2 className="help-section-title">Was ist eine Kontrolle?</h2>
         <p>
-          Eine Inspektion ist ein einzelner Besuch an einem Volk. Jedes Mal, wenn Sie einen Bienenstock öffnen, erfassen Sie
-          Ihre Beobachtungen als Inspektionseintrag: Gesundheitsindikatoren, Populationsdaten, Königinnenstatus
+          Eine Kontrolle ist ein einzelner Besuch an einem Volk. Jedes Mal, wenn Sie einen Bienenstock öffnen, erfassen Sie
+          Ihre Beobachtungen als Kontrolleintrag: Gesundheitsindikatoren, Populationsdaten, Königinnenstatus
           sowie durchgeführte Behandlungen oder Fütterungen. Im Laufe der Zeit zeichnen diese Einträge ein Bild der
           Völkergesundheit, das Diagramme und Trendanalysen sichtbar machen können.
         </p>
-        <Screenshot src="/docs/screenshots/android-inspection-form.png" caption="Geöffnetes Inspektionsformular für ein Volk mit allen Abschnitten" />
+        <Screenshot src="/docs/screenshots/android-inspection-form.png" caption="Geöffnetes Kontrollformular für ein Volk mit allen Abschnitten" />
       </section>
 
       <section className="help-section">
-        <h2 className="help-section-title">Inspektion protokollieren</h2>
+        <h2 className="help-section-title">Kontrolle protokollieren</h2>
         <ol className="help-steps">
           <li>
             <span className="help-step-num">1</span>
@@ -27,8 +27,8 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           <li>
             <span className="help-step-num">2</span>
             <div className="help-step-body">
-              <strong>Auf Neue Inspektion tippen</strong>
-              <p>Das Inspektionsformular öffnet sich. Das Datum ist standardmäßig heute, kann aber geändert werden (für nachträgliche Einträge).</p>
+              <strong>Auf Neue Kontrolle tippen</strong>
+              <p>Das Kontrollformular öffnet sich. Das Datum ist standardmäßig heute, kann aber geändert werden (für nachträgliche Einträge).</p>
             </div>
           </li>
           <li>
@@ -42,15 +42,15 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
             <span className="help-step-num">4</span>
             <div className="help-step-body">
               <strong>Speichern</strong>
-              <p>Die Inspektion wird sofort zur Volkhistorie hinzugefügt und fließt in die Trenddiagramme ein.</p>
+              <p>Die Kontrolle wird sofort zur Volkhistorie hinzugefügt und fließt in die Trenddiagramme ein.</p>
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Inspektion speichern — Datum und Varroa-Befall sind sichtbar" />
+        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Kontrolle speichern — Datum und Varroa-Befall sind sichtbar" />
       </section>
 
       <section className="help-section">
-        <h2 className="help-section-title">Alle Inspektionsfelder erklärt</h2>
+        <h2 className="help-section-title">Alle Kontrollfelder erklärt</h2>
 
         <h3 style={{ fontSize: '.95rem', fontWeight: 700, marginBottom: 12, color: 'var(--text-primary)' }}>Völkergesundheit</h3>
         <div className="help-stat-grid">
@@ -65,7 +65,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           <div className="help-stat-card">
             <div className="help-stat-card-name">Volksstimmung</div>
             <div className="help-stat-card-desc">
-              Wie sich die Bienen während der Inspektion verhielten.
+              Wie sich die Bienen während der Kontrolle verhielten.
               <br /><strong>Ruhig</strong> — Bienen waren sanft, bewegten sich langsam, wenige Stiche.<br />
               <strong>Nervös</strong> — Bienen waren aufgeregt, schwer zu handhaben.<br />
               <strong>Aggressiv</strong> — Bienen griffen aktiv an, mehrere Stiche.
@@ -75,7 +75,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           <div className="help-stat-card">
             <div className="help-stat-card-name">Königin gesehen</div>
             <div className="help-stat-card-desc">
-              Aktivieren Sie dies, wenn Sie die Königin während der Inspektion visuell bestätigt haben.
+              Aktivieren Sie dies, wenn Sie die Königin während der Kontrolle visuell bestätigt haben.
               Wenn Sie frische Eier, aber nicht die Königin selbst sehen, lassen Sie es deaktiviert — Eier sind nur indirekter Hinweis.
             </div>
           </div>
@@ -157,7 +157,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
         <h2 className="help-section-title">Tipps</h2>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Beurteilen Sie den Varroa-Befall immer auf dieselbe Weise (gleiche Probenmethode, gleiche Grenzen), damit das Trenddiagramm über alle Inspektionen hinweg vergleichbar ist.</p>
+          <p>Beurteilen Sie den Varroa-Befall immer auf dieselbe Weise (gleiche Probenmethode, gleiche Grenzen), damit das Trenddiagramm über alle Kontrollen hinweg vergleichbar ist.</p>
         </div>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />

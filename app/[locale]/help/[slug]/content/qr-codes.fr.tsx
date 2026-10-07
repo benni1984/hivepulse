@@ -8,7 +8,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
         <p>
           Quand vous êtes au rucher avec des gants, trouver la bonne ruche dans une application téléphone est lent.
           Une étiquette QR code sur chaque ruche vous permet de scanner-et-ouvrir en moins de deux secondes — l'écran de détail
-          de la bonne ruche s'ouvre instantanément, prêt pour une nouvelle inspection.
+          de la bonne ruche s'ouvre instantanément, prêt pour une nouvelle visite.
         </p>
         <Screenshot android="/docs/screenshots/android-qr-batches.png" web="/docs/screenshots/qr-batch-detail.png" caption="Étiquette QR code sur une ruche, prête à être scannée" />
       </section>
@@ -84,7 +84,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
       </section>
 
       <section className="help-section">
-        <h2 className="help-section-title">Étape 3 — Scanner pour ouvrir pendant les inspections</h2>
+        <h2 className="help-section-title">Étape 3 — Scanner pour ouvrir pendant les visites</h2>
         <ol className="help-steps">
           <li>
             <span className="help-step-num">1</span>
@@ -103,7 +103,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
           <li>
             <span className="help-step-num">3</span>
             <div className="help-step-body">
-              <strong>Appuyer sur Nouvelle inspection</strong>
+              <strong>Appuyer sur Nouvelle visite</strong>
               <p>Vous êtes maintenant sur la bonne ruche, prêt à enregistrer votre visite.</p>
             </div>
           </li>
@@ -121,6 +121,13 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
           <i className="fas fa-info-circle" />
           <p>Chaque jeton QR ne peut être lié qu'à une seule ruche. Si vous devez réutiliser une étiquette (par ex. la ruche a été divisée), générez un nouveau lot — les anciens jetons restent liés à leur ruche d'origine.</p>
         </div>
+      </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Supprimer un lot de QR codes</h2>
+        <p>
+          Un lot dont vous n&rsquo;avez plus besoin peut être supprimé depuis la liste des lots : l&rsquo;icône de corbeille sur le site, <em>Supprimer</em> sur le lot dans les applications. Cela ne marche que tant qu&rsquo;aucun code du lot n&rsquo;est attaché à une ruche. C&rsquo;est en scannant l&rsquo;autocollant qu&rsquo;on retrouve une ruche, le lot reste donc tant que ces ruches existent ; le bouton de suppression n&rsquo;est pas proposé pour lui.
+        </p>
       </section>
     </>
   );

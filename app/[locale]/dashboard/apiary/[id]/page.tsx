@@ -5,6 +5,8 @@ import { useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import SharingPanel from '@/components/SharingPanel';
+import MoveHivesPanel from '@/components/MoveHivesPanel';
+import TreatmentsPanel from '@/components/TreatmentsPanel';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import {
   getApiary, getHives, getApiaryStats, updateApiary, deleteApiary, createHive,
@@ -47,6 +49,7 @@ export default function ApiaryPage() {
   const [deleting, setDeleting] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
 
+  const [showMove, setShowMove] = useState(false);
   const [showCreateHive, setShowCreateHive] = useState(false);
   const [creatingHive, setCreatingHive] = useState(false);
   const [hiveForm, setHiveForm] = useState({ name: '', hive_type: 'langstroth' });
@@ -127,6 +130,16 @@ export default function ApiaryPage() {
       setDeleteStage('idle');
       setDeleting(false);
     }
+  }
+
+  async function handleMoved(result: { moved: number; apiary: { name: string } }) {
+    setShowMove(false);
+    setHiveMessage({ type: 'ok', text: t('moves.success', { name: result.apiary.name }) });
+    // The hives that left are gone from this list and from its figures.
+    const [h, s] = await Promise.all([getHives(id), getApiaryStats(id)]);
+    setHives(h.items);
+    setStats(s);
+    setApiary(prev => (prev ? { ...prev, hive_count: h.items.length } : prev));
   }
 
   function openCreateHive() {
@@ -307,6 +320,9 @@ export default function ApiaryPage() {
                   <button className="dash-row-btn" onClick={() => handleExport('json')}>{t('hive.exportJson')}</button>
                 </>
               )}
+              {isOwner && hives.length > 0 && !showMove && (
+                <button className="dash-row-btn" onClick={() => setShowMove(true)}>{t('moves.title')}</button>
+              )}
               {!showCreateHive && canEdit && (
                 <button className="dash-new-btn" onClick={openCreateHive}>{t('apiary.newHive')}</button>
               )}
@@ -317,6 +333,10 @@ export default function ApiaryPage() {
             <div className={hiveMessage.type === 'ok' ? 'dash-success-banner' : 'dash-error-banner'}>
               {hiveMessage.text}
             </div>
+          )}
+
+          {showMove && (
+            <MoveHivesPanel apiaryId={id} hives={hives} onMoved={handleMoved} onCancel={() => setShowMove(false)} />
           )}
 
           {showCreateHive && (
@@ -436,6 +456,9 @@ export default function ApiaryPage() {
               </form>
             </div>
           )}
+
+          {/* ── Treatments for every hive of the apiary ───────────── */}
+          {canEdit && <TreatmentsPanel type="apiary" id={id} />}
 
           {/* ── Sharing and deleting stay with the owner ────────────── */}
           {isOwner && <SharingPanel type="apiary" id={id} />}
