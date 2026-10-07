@@ -71,7 +71,9 @@ Guide values only; medicines subject to the approvals of the country.
 ## Statistics, data and community
 
 Per-hive charts, overview of all apiaries, community statistics, JSON/CSV export; the hornet tracker with
-reports, community photos, map and named traps. See the help pages `hive-stats`, `community-stats`,
+reports, community photos, map and named traps. Supporters get a regional health map (varroa, mood, swarm, brood)
+in the Members tab, drawn as soft round patches that blend into each other — the same on web, Android and iPhone.
+See the help pages `hive-stats`, `community-stats`,
 `data-export`, `hornet-tracker`, `hornet-traps`.
 
 ## Account

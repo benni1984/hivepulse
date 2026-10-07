@@ -163,4 +163,29 @@ final class CommunityHeatmapTests: XCTestCase {
         vm.select(at: CLLocationCoordinate2D(latitude: 40, longitude: 0))
         XCTAssertNil(vm.selected)
     }
+
+    func test_selectAtCoordinate_betweenOverlappingPatches_picksTheNearerCentre() async {
+        let west = props(varroa: 1, apiaries: 4)
+        let east = props(varroa: 6, apiaries: 2)
+        let heatmap = CommunityHeatmap(type: "FeatureCollection", features: [
+            cell(lat: 51, lon: 9.5, west), cell(lat: 51, lon: 10.0, east),
+        ])
+        let vm = CommunityHeatmapViewModel(service: MockCommunityHeatmapService(result: .success(heatmap)))
+        await vm.load()
+
+        // The shared edge lies at 10.0°; the patches overlap there, and a little either side decides.
+        vm.select(at: CLLocationCoordinate2D(latitude: 51.25, longitude: 9.98))
+        XCTAssertEqual(vm.selected, west)
+        vm.select(at: CLLocationCoordinate2D(latitude: 51.25, longitude: 10.02))
+        XCTAssertEqual(vm.selected, east)
+    }
+
+    func test_selectAtCoordinate_cornerOfCellIsOutsideTheRoundPatch() async {
+        let heatmap = CommunityHeatmap(type: "FeatureCollection", features: [cell(lat: 51, lon: 9.5, props())])
+        let vm = CommunityHeatmapViewModel(service: MockCommunityHeatmapService(result: .success(heatmap)))
+        await vm.load()
+
+        vm.select(at: CLLocationCoordinate2D(latitude: 51.499, longitude: 9.501))
+        XCTAssertNil(vm.selected)
+    }
 }

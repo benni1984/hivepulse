@@ -46,4 +46,17 @@ final class HeatBlobsTests: XCTestCase {
         XCTAssertEqual(scales.first, 1)
         XCTAssertTrue(HeatBlobs.rings.allSatisfy { $0.opacity > 0 && $0.opacity < 0.2 })
     }
+
+    func test_tapTargetIsSmallerThanThePatch_butCoversItsColouredMiddle() {
+        XCTAssertLessThan(HeatBlobs.hitScale, 1)
+        XCTAssertGreaterThan(HeatBlobs.hitScale, HeatBlobs.rings.last!.scale)
+    }
+
+    func test_isHit_middleYes_cornerAndFarAwayNo() throws {
+        let blob = try XCTUnwrap(HeatBlobs.blob(for: cell(minLon: 9.5, minLat: 51, maxLon: 10, maxLat: 51.5)))
+        XCTAssertTrue(blob.isHit(by: CLLocationCoordinate2D(latitude: 51.25, longitude: 9.75)))
+        // The corner of the square cell lies outside the round tap target.
+        XCTAssertFalse(blob.isHit(by: CLLocationCoordinate2D(latitude: 51.499, longitude: 9.501)))
+        XCTAssertFalse(blob.isHit(by: CLLocationCoordinate2D(latitude: 40, longitude: 0)))
+    }
 }

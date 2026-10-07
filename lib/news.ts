@@ -23,6 +23,32 @@ export function newsText(entry: NewsEntry, locale: string): NewsText {
 export const NEWS: NewsEntry[] = [
   {
     date: '2026-10-07',
+    tag: 'design',
+    text: {
+      en: {
+        title: 'A Softer Regional Health Map',
+        body: 'The regional health map in the Members tab no longer shows hard-edged rectangles. Each area is now a soft, round patch of colour that fades out towards its edge and blends into its neighbours, like a real heat map. It looks the same on the website, Android and iPhone, and you tap or hover over the middle of a patch to see the figures behind it.',
+      },
+      de: {
+        title: 'Eine weichere regionale Gesundheitskarte',
+        body: 'Die regionale Gesundheitskarte im Mitglieder-Tab zeigt keine harten Rechtecke mehr. Jedes Gebiet ist jetzt ein weicher, runder Farbfleck, der zum Rand hin ausläuft und in die Nachbarn übergeht, wie bei einer echten Heatmap. Auf der Webseite, Android und iPhone sieht sie gleich aus, und auf die Mitte eines Flecks tippen oder mit der Maus darüberfahren zeigt die Zahlen dahinter.',
+      },
+      fr: {
+        title: 'Une carte régionale de santé plus douce',
+        body: 'La carte régionale de santé de l’onglet Membres n’affiche plus de rectangles aux bords durs. Chaque zone est maintenant une tache de couleur ronde et douce, qui s’estompe vers le bord et se fond dans ses voisines, comme une vraie carte de chaleur. Elle est identique sur le site, Android et iPhone, et il suffit de toucher ou de survoler le centre d’une tache pour voir les chiffres derrière.',
+      },
+      es: {
+        title: 'Un mapa regional de salud más suave',
+        body: 'El mapa regional de salud de la pestaña Miembros ya no muestra rectángulos de bordes duros. Cada zona es ahora una mancha de color redonda y suave que se difumina hacia el borde y se mezcla con las vecinas, como un mapa de calor de verdad. Se ve igual en la web, Android y iPhone, y basta tocar o pasar el cursor sobre el centro de una mancha para ver las cifras que hay detrás.',
+      },
+      pl: {
+        title: 'Łagodniejsza regionalna mapa zdrowia',
+        body: 'Regionalna mapa zdrowia na karcie Członkowie nie pokazuje już ostrych prostokątów. Każdy obszar jest teraz miękką, okrągłą plamą koloru, która zanika ku brzegowi i łączy się z sąsiednimi, jak prawdziwa mapa cieplna. Wygląda tak samo w serwisie, na Androidzie i iPhonie, a dotknięcie środka plamy lub najechanie na nią kursorem pokazuje stojące za nią liczby.',
+      },
+    },
+  },
+  {
+    date: '2026-10-07',
     tag: 'feature',
     text: {
       en: {

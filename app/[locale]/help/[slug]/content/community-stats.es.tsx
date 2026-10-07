@@ -80,6 +80,16 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">El mapa regional de salud</h2>
+        <p>
+          Los Supporters también ven un mapa de la región. Cada zona aparece como una mancha de color redonda y suave que se difumina hacia el borde y se mezcla con las vecinas — verde, ámbar o roja según la vista elegida: <strong>Riesgo de varroa</strong>, <strong>Ánimo de las colonias</strong>, <strong>Presión de enjambrazón</strong> o <strong>Salud de la cría</strong>.
+        </p>
+        <p>
+          Toque o pase el cursor sobre el centro de una mancha para ver en cuántos colmenares y revisiones se basa y los valores medios. El gris significa que aún no hay datos para esa vista. Solo cuentan los colmenares públicos, y el mapa muestra zonas, nunca colmenares individuales.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Convertirse en Supporter</h2>
         <p>
           El desglose comunitario detallado — gráficos de tendencias, desgloses regionales, los colmenares

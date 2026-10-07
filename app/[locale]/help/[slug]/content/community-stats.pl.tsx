@@ -80,6 +80,16 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Regionalna mapa zdrowia</h2>
+        <p>
+          Wspierający widzą też mapę regionu. Każdy obszar jest miękką, okrągłą plamą koloru, która zanika ku brzegowi i łączy się z sąsiednimi — zieloną, bursztynową lub czerwoną, zależnie od wybranego widoku: <strong>Ryzyko Varroa</strong>, <strong>Temperament rodzin</strong>, <strong>Presja rójkowa</strong> lub <strong>Zdrowie czerwiu</strong>.
+        </p>
+        <p>
+          Dotknij środka plamy lub najedź na nią kursorem, aby zobaczyć, na ilu pasiekach i przeglądach się opiera, oraz średnie wartości. Szary kolor oznacza, że dla tego widoku nie ma jeszcze danych. Liczą się tylko pasieki publiczne, a mapa pokazuje obszary, nigdy pojedyncze pasieki.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Zostań wspierającym</h2>
         <p>
           Szczegółowe zestawienie społeczności (wykresy trendów, zestawienia regionalne, najlepsze
