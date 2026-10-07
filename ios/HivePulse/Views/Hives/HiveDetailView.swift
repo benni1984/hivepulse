@@ -98,9 +98,10 @@ struct HiveDetailView: View {
                 Button { showQR = true } label: { Image(systemName: "qrcode") }
                 Button { showStats = true } label: { Image(systemName: "chart.xyaxis.line") }
                     .accessibilityIdentifier("hiveStatsButton")
-                Button { showAddInspection = true } label: { Image(systemName: "plus") }
-                    .accessibilityLabel(NSLocalizedString("action.newInspection", comment: ""))
             }
+        }
+        .hpFloatingButton(NSLocalizedString("action.newInspection", comment: ""), identifier: "newInspectionButton") {
+            showAddInspection = true
         }
         .task { await inspectionVM.load(hiveId: hive.id) }
         .refreshable { await inspectionVM.load(hiveId: hive.id) }

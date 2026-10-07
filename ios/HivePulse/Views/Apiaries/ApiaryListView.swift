@@ -63,20 +63,8 @@ struct ApiaryListView: View {
         }
         .navigationTitle(NSLocalizedString("screen.apiaries", comment: ""))
         .hpScreenBackground()
-        // Leaves room under the button for the last row.
-        .contentMargins(.bottom, 88, for: .scrollContent)
-        .overlay(alignment: .bottomTrailing) {
-            Button { showCreate = true } label: {
-                Label(NSLocalizedString("action.newApiary", comment: ""), systemImage: "plus")
-                    .font(.dmSans(16, weight: .bold, relativeTo: .headline))
-                    .foregroundColor(.hpStone900)
-                    .padding(.horizontal, 20).padding(.vertical, 14)
-                    .background(Color.hpAmber)
-                    .clipShape(Capsule())
-                    .shadow(color: .black.opacity(0.2), radius: 4, y: 2)
-            }
-            .padding(16)
-            .accessibilityIdentifier("newApiaryButton")
+        .hpFloatingButton(NSLocalizedString("action.newApiary", comment: ""), identifier: "newApiaryButton") {
+            showCreate = true
         }
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
