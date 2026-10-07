@@ -11,6 +11,7 @@ Output: public/docs/screenshots/android-*.png
 
 import subprocess
 import sys
+import re
 import time
 import os
 import xml.etree.ElementTree as ET
@@ -134,6 +135,30 @@ def swipe_tap(x, y, duration_ms=200):
     """Deliberate touch-down / touch-up at (x, y) — more reliable than 'input tap' for Compose."""
     shell("input", "swipe", str(x), str(y), str(x), str(y), str(duration_ms))
     time.sleep(0.6)
+
+
+# An apiary card reads "<count> <label_hives>" ("3 hives", "3 Völker", "3 ruches"), in any language. The
+# home summary above the list has clickable rows too (hives that are due, hives to watch), and the first
+# wide clickable on the screen is one of those: it opened a hive instead of the apiary and the walk through
+# the app went wrong from there.
+APIARY_CARD_TEXT = re.compile(r"^\d+ \S+$")
+
+
+def tap_first_apiary():
+    """Tap the first apiary card of the list, whatever sits above it."""
+    root = ET.fromstring(get_ui_dump())
+    for node in root.iter("node"):
+        if node.get("clickable") != "true":
+            continue
+        texts = [child.get("text", "") for child in node.iter("node")]
+        if not any(APIARY_CARD_TEXT.match(t) for t in texts):
+            continue
+        b = _bounds(node)
+        if b:
+            swipe_tap(b[0] + (b[2] - b[0]) // 3, (b[1] + b[3]) // 2)
+            return
+    print("  no apiary card found, falling back to the first list item", flush=True)
+    tap_first_content_item()
 
 
 def tap_first_content_item(min_y=220, max_y_offset=220):
@@ -353,7 +378,7 @@ def navigate_to_hive_detail():
     time.sleep(1.5)
 
     # Step 2: tap first apiary; wait until "My Apiaries" disappears (= left ApiaryListScreen)
-    tap_first_content_item()
+    tap_first_apiary()
     deadline = time.time() + 25
     while time.time() < deadline:
         dump = get_ui_dump()
@@ -568,6 +593,117 @@ def dump_failure_diagnostics(tag):
     except Exception as e:
         print(f"  [diagnostics] UI dump failed: {e}", flush=True)
 
+# ── Extra screens (best effort) ───────────────────────────────────────────────
+
+def tap_desc(description, timeout=15):
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        dump = get_ui_dump()
+        if f'content-desc="{description}"' in dump:
+            tap_node(dump, content_desc=description)
+            return
+        time.sleep(1)
+    raise TimeoutError(f"No element described as {description!r}")
+
+
+def open_first_apiary():
+    back_to_apiaries()
+    tap_first_apiary()
+    deadline = time.time() + 25
+    while time.time() < deadline:
+        if "My Apiaries" not in get_ui_dump():
+            break
+        time.sleep(1)
+    time.sleep(1.5)
+
+
+def capture_home_and_apiary_list():
+    print("Capturing: android-home-summary, android-apiary-list", flush=True)
+    back_to_apiaries()
+    time.sleep(2.5)  # the summary loads after the list
+    screenshot("android-home-summary")
+    screenshot("android-apiary-list")
+
+
+def capture_apiary_screens():
+    print("Capturing: android-hive-list and the apiary tools", flush=True)
+    open_first_apiary()
+    screenshot("android-hive-list")
+    for description, name in (
+        ("Move hives", "android-moves"),
+        ("Work together", "android-sharing"),
+        ("Treatments", "android-treatments"),
+    ):
+        try:
+            tap_desc(description, timeout=8)
+            time.sleep(2.5)
+            screenshot(name)
+            keyevent("KEYCODE_BACK")
+            time.sleep(1.0)
+        except Exception as e:  # an owner-only or empty-apiary tool may be missing; the others still count
+            print(f"  [skip] {name}: {e}", flush=True)
+            for _ in range(2):
+                if "My Apiaries" in get_ui_dump() or "Inspections" in get_ui_dump():
+                    break
+                keyevent("KEYCODE_BACK")
+    back_to_apiaries()
+
+
+def capture_moves_overview():
+    print("Capturing: android-moves-overview", flush=True)
+    back_to_apiaries()
+    tap_desc("Map of moves")
+    time.sleep(4.0)  # the map tiles
+    screenshot("android-moves-overview")
+    keyevent("KEYCODE_BACK")
+
+
+def capture_settings_screens():
+    print("Capturing: android-settings-account, android-settings-reminders", flush=True)
+    back_to_apiaries()
+    tap_node(get_ui_dump(), text="Settings")
+    wait_for("Display Name", timeout=15)
+    time.sleep(1)
+    screenshot("android-settings-account")
+    for _ in range(4):
+        if "Send inspection reminders" in get_ui_dump():
+            break
+        swipe(540, 1800, 540, 700, 600)
+        time.sleep(0.8)
+    time.sleep(0.5)
+    screenshot("android-settings-reminders")
+
+
+def capture_hornets_and_members():
+    print("Capturing: android-hornet-*, android-community-stats", flush=True)
+    tap_node(get_ui_dump(), text="Hornets")
+    wait_for("Report", timeout=15)
+    time.sleep(2.0)
+    screenshot("android-hornet-home")
+    for label, name in (("Report", "android-hornet-report"), ("Community", "android-hornet-community"), ("Traps", "android-hornet-traps")):
+        try:
+            tap_node(get_ui_dump(), text=label)
+            time.sleep(2.5)
+            screenshot(name)
+        except Exception as e:
+            print(f"  [skip] {name}: {e}", flush=True)
+    tap_node(get_ui_dump(), text="Members")
+    time.sleep(3.0)
+    screenshot("android-community-stats")
+
+
+def best_effort(function):
+    try:
+        function()
+    except Exception as e:
+        print(f"  [skipped] {function.__name__}: {e}", flush=True)
+        dump_failure_diagnostics(function.__name__)
+        try:
+            tap_node(get_ui_dump(), text="Apiaries")
+        except Exception:
+            pass
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
@@ -587,6 +723,17 @@ def main():
     capture_inspection_frames()
     capture_hive_edit()
     capture_apiary_edit()
+
+    # The rest is best effort: a screen that cannot be reached is reported in the log and the
+    # diagnostics artifact, and the screenshots above are still delivered.
+    for extra in (
+        capture_home_and_apiary_list,
+        capture_apiary_screens,
+        capture_moves_overview,
+        capture_settings_screens,
+        capture_hornets_and_members,
+    ):
+        best_effort(extra)
 
     print("\nAll Android screenshots captured.", flush=True)
 

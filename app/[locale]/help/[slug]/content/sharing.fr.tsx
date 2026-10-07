@@ -1,6 +1,6 @@
 import type HelpScreenshot from '@/components/HelpScreenshot';
 
-export default function SharingContent(_: { Screenshot: typeof HelpScreenshot }) {
+export default function SharingContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
     <>
       <section className="help-section">
@@ -50,6 +50,7 @@ export default function SharingContent(_: { Screenshot: typeof HelpScreenshot })
             </div>
           </li>
         </ol>
+        <Screenshot android="/docs/screenshots/android-sharing.png" web="/docs/screenshots/sharing-panel.png" caption="Inviter un autre apiculteur par e-mail" />
       </section>
 
       <section className="help-section">

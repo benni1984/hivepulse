@@ -1,6 +1,6 @@
 import type HelpScreenshot from '@/components/HelpScreenshot';
 
-export default function MovingHivesContent(_: { Screenshot: typeof HelpScreenshot }) {
+export default function MovingHivesContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
     <>
       <section className="help-section">
@@ -55,6 +55,7 @@ export default function MovingHivesContent(_: { Screenshot: typeof HelpScreensho
             früheren Ort; du bestätigst nur noch den Tag.
           </p>
         </div>
+        <Screenshot src="/docs/screenshots/android-moves.png" caption="Völker, neuen Ort, Tag und Tracht wählen" />
       </section>
 
       <section className="help-section">
@@ -65,6 +66,7 @@ export default function MovingHivesContent(_: { Screenshot: typeof HelpScreensho
           Menü des Dashboards) zeichnet den Weg jedes Volks, Station für Station nummeriert, und lässt sich auf einen
           Zeitraum eingrenzen.
         </p>
+        <Screenshot android="/docs/screenshots/android-moves-overview.png" web="/docs/screenshots/moves-overview.png" caption="Die Wanderkarte zeichnet den Weg jedes Volks" />
       </section>
 
       <section className="help-section">

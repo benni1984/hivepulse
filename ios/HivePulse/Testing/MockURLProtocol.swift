@@ -110,6 +110,32 @@ extension MockURLProtocol {
         ("apiaries",      200, emptyList),
     ]
 
+    // The day at a glance, for the apiary list (-mockHomeSummary). Not part of the default set: the summary
+    // repeats the apiary and hive names, which would make "Meadow" ambiguous in every other UI test.
+    static let homeSummaryHandlers: [(String, Int, String)] = [
+        ("home", 200, homeJSON),
+    ]
+
+    // The pages behind the newer tools (-mockNewTools): where a hive has stood, treatments, working together.
+    static let newToolsHandlers: [(String, Int, String)] = [
+        ("hives/moves/overview", 200, "[]"),
+        ("hives/h-1/moves",      200, "[]"),   // before "hives/h-1"
+        ("treatments",           200, "[]"),
+        ("shares/incoming",      200, "[]"),
+        ("shares",               200, "[]"),
+    ]
+
+    private static let homeJSON = """
+    {"today":"2026-10-07","in_season":true,"apiary_count":1,"hive_count":1,
+     "inspections":{"interval_days":14,"overdue_count":0,"due_soon_count":1,"next":[
+       {"hive_id":"h-1","hive_name":"Hive Alpha","apiary_name":"Meadow","last_inspection_on":null,"due_on":"2026-10-09","overdue_days":0}]},
+     "health":{"ok":0,"watch":0,"alert":0,"unknown":1,"attention":[]},
+     "treatments":{"open_count":1,"overdue_count":0,"upcoming":[
+       {"id":"t-1","target":{"type":"hive","id":"h-1","name":"Hive Alpha"},"apiary_name":"Meadow","product":"Oxalic acid",
+        "due_on":"2026-10-20","note":null,"done_on":null,"overdue":false,"created_by_name":"Tester","created_at":"2026-10-01T08:00:00.000000"}]},
+     "ad":null}
+    """
+
     // Authenticated with one QR batch ("b-1") whose PDF can be downloaded.
     static let qrBatchHandlers: [(String, Int, String)] = [
         ("hives/by-qr/tok-free", 200, qrUnlinkedJSON),   // before "hives"

@@ -1,6 +1,6 @@
 import type HelpScreenshot from '@/components/HelpScreenshot';
 
-export default function HomeAndTreatmentsContent(_: { Screenshot: typeof HelpScreenshot }) {
+export default function HomeAndTreatmentsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
     <>
       <section className="help-section">
@@ -36,6 +36,7 @@ export default function HomeAndTreatmentsContent(_: { Screenshot: typeof HelpScr
           L&rsquo;intervalle et la saison se règlent dans <em>Paramètres &rarr; Rappels de visites</em>. Hors saison, les dates sont
           calculées de la même façon et une note vous le signale.
         </p>
+        <Screenshot android="/docs/screenshots/android-home-summary.png" web="/docs/screenshots/home-summary.png" caption="L’accueil en haut de la liste des ruchers" />
       </section>
 
       <section className="help-section">
@@ -71,6 +72,7 @@ export default function HomeAndTreatmentsContent(_: { Screenshot: typeof HelpScr
             pour tout le rucher.
           </p>
         </div>
+        <Screenshot android="/docs/screenshots/android-treatments.png" web="/docs/screenshots/treatments-panel.png" caption="Planifier un traitement et le cocher" />
       </section>
     </>
   );

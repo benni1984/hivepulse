@@ -11,6 +11,16 @@ name: Android Store Screenshots
 
 on:
   workflow_dispatch:
+  # Called by "Update help page screenshots" when the interface changed, so the store sets are
+  # retaken automatically too. Their pictures stay workflow artifacts (store listings are uploaded
+  # by hand); the iPhone help images are cut from the English set.
+  workflow_call:
+    inputs:
+      ref:
+        description: 'Commit to photograph (the one the screenshot manifest describes)'
+        required: false
+        type: string
+        default: ''
 
 jobs:
   capture:
@@ -27,6 +37,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
 
       - uses: actions/setup-java@v4
         with:

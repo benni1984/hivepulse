@@ -188,23 +188,30 @@ same ground in the component suites.
 Page titles and descriptions come from the `meta` namespace via `generateMetadata` — never
 add a static English `metadata` export.
 
-## Screenshots
+## Screenshots — they update themselves
 
-Store screenshots live nowhere in the repo — they are produced on demand and uploaded by
-hand. **Actions → "iOS Store Screenshots"** captures the App Store set in all four languages
-(`ScreenshotUITests` once per language, labels looked up through the app's own `.strings`).
-Help-page screenshots are in `public/docs/screenshots/`.
+Help-page screenshots (web, Android, iPhone) and the store sets (Play, App Store; four languages each)
+are retaken **automatically** when the interface changes. Nobody has to remember.
 
-Both go stale silently, so CI has an always-on **Screenshot freshness** job:
-
-```bash
-python scripts/check_screenshot_freshness.py            # notice when the UI moved on
-python scripts/check_screenshot_freshness.py --update   # after retaking them
-```
-
-It hashes the views, strings and styles that decide what a screenshot shows and compares
-against `docs/screenshot-manifest.json`. **Run `--update` in the same commit that adds new
-screenshots** — otherwise the notice stays on and starts being ignored.
+- `scripts/check_screenshot_freshness.py` hashes the views, strings and styles each platform's pictures show
+  and compares against `docs/screenshot-manifest.json`. The always-on **Screenshot freshness** CI job only
+  reports; it never blocks a merge.
+- After every green CI on `main`, **Update help page screenshots** (`update-help-screenshots.yml`) asks
+  `--list-stale` which of web, Android and iPhone went stale and retakes only those: Playwright against
+  staging (`scripts/web-screenshots.mjs`), the emulator (`scripts/android-screenshots.py`), the simulator
+  (`ScreenshotUITests`, via the App Store workflow; `scripts/pick_ios_help_screenshots.py` cuts the
+  iPhone help images from the English set). It opens one PR (`chore/auto-screenshots`) with the new images
+  and the updated manifest. Merge it; that is what clears the notice.
+- The store sets are artifacts of that run (Actions → the run → `play-screenshots-*`,
+  `app-store-screenshots-*`); the listings are still uploaded by hand.
+- Run it on demand: Actions → Update help page screenshots → platform `all` (or one platform).
+- A help page references `android-<name>.png` and `<web name>.png`; the iPhone tab appears by itself when
+  `ios-<name>.png` exists, and a picture that does not exist yet is left out, so a new screenshot can be
+  referenced before the workflow has produced it.
+- The scripts drive the real UI by its wording. Changing a label, an icon description or the order of the
+  first screen can break a capture: `backend/tests/test_screenshot_scripts.py` and
+  `test_screenshot_workflow.py` guard the wording and the wiring. New screens are captured best effort in
+  the Android and web scripts, so one that cannot be reached does not cost the others.
 
 ## Shipping a feature — IMPORTANT
 

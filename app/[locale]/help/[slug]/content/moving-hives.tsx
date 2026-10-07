@@ -1,6 +1,6 @@
 import type HelpScreenshot from '@/components/HelpScreenshot';
 
-export default function MovingHivesContent(_: { Screenshot: typeof HelpScreenshot }) {
+export default function MovingHivesContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
     <>
       <section className="help-section">
@@ -55,6 +55,7 @@ export default function MovingHivesContent(_: { Screenshot: typeof HelpScreensho
             place; you only confirm the day.
           </p>
         </div>
+        <Screenshot src="/docs/screenshots/android-moves.png" caption="Choose the hives, the new place, the day and the forage" />
       </section>
 
       <section className="help-section">
@@ -64,6 +65,7 @@ export default function MovingHivesContent(_: { Screenshot: typeof HelpScreensho
           <em> Map of moves</em> (the map icon in the apiary list toolbar, or in the dashboard menu on the website) draws the journey of
           every hive, numbered stop by stop, and can be narrowed to a period.
         </p>
+        <Screenshot android="/docs/screenshots/android-moves-overview.png" web="/docs/screenshots/moves-overview.png" caption="The map of moves draws the journey of every hive" />
       </section>
 
       <section className="help-section">

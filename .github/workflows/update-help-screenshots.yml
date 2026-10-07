@@ -1,21 +1,29 @@
 name: Update help page screenshots
 
-# Trigger manually (choose platform) OR automatically after CI/CD succeeds on main.
-# Web screenshots run against staging so they always reflect the latest deploy.
-# Android screenshots build from the current commit.
-# iOS screenshots are manual-only until the iOS app redesign is complete.
+# Retakes the screenshots on every platform, by itself, whenever the interface changed.
+#
+#   1. plan           scripts/check_screenshot_freshness.py says which of web, Android and iPhone no
+#                     longer match the views, strings and styles their pictures were taken from.
+#   2. capture        only those platforms are photographed:
+#                       web      Playwright against staging            → help images
+#                       Android  emulator + adb                        → help images, and the Play sets
+#                       iPhone   ScreenshotUITests on a simulator      → help images, and the App Store sets
+#   3. commit         one pull request with the new help images and the manifest that records what they
+#                     were taken from — so the "stale" notice goes away when it is merged.
+#
+# Runs after every green CI on main (it costs nothing when nothing changed) and on demand. The store sets
+# (four languages each) stay workflow artifacts: the store listings are uploaded by hand.
 
 on:
   workflow_dispatch:
     inputs:
       platform:
-        description: 'Which platform(s) to capture'
+        description: 'What to retake: whatever is stale, everything, or one platform'
         required: false
-        default: 'all'
+        default: 'stale'
         type: choice
-        options: [all, web, android, ios]
+        options: [stale, all, web, android, ios]
 
-  # Auto-run after a successful CI/CD pipeline on main
   workflow_run:
     workflows: ['CI']
     types: [completed]
@@ -29,29 +37,77 @@ permissions:
   contents: write
   pull-requests: write
 
-# ── Helpers ────────────────────────────────────────────────────────────────────
 env:
   STAGING_URL: https://apiscan-staging.vercel.app
   DEMO_EMAIL: demo@apiscan.app
   DEMO_PASSWORD: demo1234
 
-# ── Jobs ───────────────────────────────────────────────────────────────────────
-
 jobs:
 
   # --------------------------------------------------------------------------
-  # 1. Web screenshots  (ubuntu · Playwright against staging)
+  # 1. What went stale
+  # --------------------------------------------------------------------------
+  plan:
+    name: What needs new screenshots
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    outputs:
+      web: ${{ steps.pick.outputs.web }}
+      android: ${{ steps.pick.outputs.android }}
+      ios: ${{ steps.pick.outputs.ios }}
+      ref: ${{ steps.pick.outputs.ref }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The commit CI just tested, so the pictures and the manifest describe the same thing.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Which sets no longer match the interface
+        id: stale
+        run: python scripts/check_screenshot_freshness.py --list-stale
+
+      - name: Decide
+        id: pick
+        env:
+          PLATFORM: ${{ inputs.platform || 'stale' }}
+          STALE_web: ${{ steps.stale.outputs.web }}
+          STALE_android: ${{ steps.stale.outputs.android }}
+          STALE_ios: ${{ steps.stale.outputs.ios }}
+        run: |
+          {
+            echo "### Screenshots"
+            echo ""
+            echo "Requested: \`$PLATFORM\`"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
+          for platform in web android ios; do
+            case "$PLATFORM" in
+              all)   value=true ;;
+              stale) eval "value=\${STALE_$platform}" ;;
+              *)     if [ "$PLATFORM" = "$platform" ]; then value=true; else value=false; fi ;;
+            esac
+            echo "$platform=$value" >> "$GITHUB_OUTPUT"
+            echo "- $platform: $value" >> "$GITHUB_STEP_SUMMARY"
+          done
+          echo "ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  # --------------------------------------------------------------------------
+  # 2a. Web  (Playwright against staging)
   # --------------------------------------------------------------------------
   web:
     name: Web screenshots
+    needs: plan
+    if: needs.plan.outputs.web == 'true'
     runs-on: ubuntu-latest
-    # Run on workflow_dispatch (all or web) OR on post-CI auto-run
-    if: |
-      github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' ||
-      github.event_name == 'workflow_dispatch' && (inputs.platform == 'all' || inputs.platform == 'web')
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.plan.outputs.ref }}
 
       - uses: actions/setup-node@v4
         with:
@@ -79,18 +135,19 @@ jobs:
           if-no-files-found: warn
 
   # --------------------------------------------------------------------------
-  # 2. Android screenshots  (ubuntu · android-emulator-runner · ADB/Python)
+  # 2b. Android help images  (emulator + adb)
   # --------------------------------------------------------------------------
   android:
     name: Android screenshots
+    needs: plan
+    if: needs.plan.outputs.android == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    if: |
-      github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' ||
-      github.event_name == 'workflow_dispatch' && (inputs.platform == 'all' || inputs.platform == 'android')
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.plan.outputs.ref }}
 
       - uses: actions/setup-java@v4
         with:
@@ -146,68 +203,37 @@ jobs:
           if-no-files-found: ignore
 
   # --------------------------------------------------------------------------
-  # 3. iOS screenshots  (macos · xcrun simctl)
-  # NOTE: Only runs when explicitly requested. The iOS navigation script
-  #       (scripts/ios-screenshots.sh) needs to be implemented once the iOS
-  #       app redesign is complete (issue #73 + full UI overhaul).
+  # 2c. The store sets, four languages each (artifacts for the listings). The iPhone help images
+  #     are cut from the English App Store set, so there is one simulator run, not two.
   # --------------------------------------------------------------------------
-  ios:
-    name: iOS screenshots
-    runs-on: macos-15
-    if: |
-      github.event_name == 'workflow_dispatch' && (inputs.platform == 'ios')
+  store-android:
+    name: Play store screenshots
+    needs: plan
+    if: needs.plan.outputs.android == 'true'
+    uses: ./.github/workflows/android-store-screenshots.yml
+    with:
+      ref: ${{ needs.plan.outputs.ref }}
 
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
-
-      - name: Boot iPhone 16 simulator
-        run: |
-          UDID=$(xcrun simctl create "Screenshots" "iPhone 16" "iOS-18-2")
-          xcrun simctl boot "$UDID"
-          echo "SIM_UDID=$UDID" >> $GITHUB_ENV
-
-      - name: Build and install iOS app
-        run: |
-          cd ios
-          xcodebuild \
-            -project HivePulse.xcodeproj \
-            -scheme HivePulse \
-            -destination "platform=iOS Simulator,id=$SIM_UDID" \
-            -configuration Debug \
-            build \
-            ONLY_ACTIVE_ARCH=YES
-          # Install the built app
-          APP=$(find ~/Library/Developer/Xcode/DerivedData -name "HivePulse.app" -type d | head -1)
-          xcrun simctl install "$SIM_UDID" "$APP"
-
-      - name: Capture iOS screenshots
-        run: bash scripts/ios-screenshots.sh "$SIM_UDID"
-        env:
-          DEMO_EMAIL: ${{ env.DEMO_EMAIL }}
-          DEMO_PASSWORD: ${{ env.DEMO_PASSWORD }}
-
-      - name: Upload iOS screenshots artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ios-screenshots
-          path: public/docs/screenshots/ios-*.png
-          retention-days: 1
-          if-no-files-found: warn
+  store-ios:
+    name: App Store screenshots
+    needs: plan
+    if: needs.plan.outputs.ios == 'true'
+    uses: ./.github/workflows/ios-store-screenshots.yml
+    with:
+      ref: ${{ needs.plan.outputs.ref }}
 
   # --------------------------------------------------------------------------
-  # 4. Commit all screenshots back to the repo
+  # 3. One pull request with the new pictures and the manifest
   # --------------------------------------------------------------------------
   commit:
     name: Commit screenshots
-    runs-on: ubuntu-latest
-    needs: [web, android]
-    # Run even if one platform job was skipped, as long as at least one succeeded
+    needs: [plan, web, android, store-ios]
+    # Whatever succeeded is committed; a platform that failed stays stale and is retried next time.
     if: |
-      always() &&
-      (needs.web.result == 'success' || needs.android.result == 'success')
+      always() && needs.plan.result == 'success' &&
+      (needs.web.result == 'success' || needs.android.result == 'success' || needs.store-ios.result == 'success')
+
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -217,20 +243,36 @@ jobs:
           # GitHub's anti-recursion rule blocks GITHUB_TOKEN-authored pushes
           # from firing other workflows' pull_request events.
           token: ${{ secrets.SCREENSHOT_PAT }}
+          ref: ${{ needs.plan.outputs.ref }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
       - name: Download web screenshots
+        if: needs.web.result == 'success'
         uses: actions/download-artifact@v4
         with:
           name: web-screenshots
           path: public/docs/screenshots
-        continue-on-error: true
 
       - name: Download Android screenshots
+        if: needs.android.result == 'success'
         uses: actions/download-artifact@v4
         with:
           name: android-screenshots
           path: public/docs/screenshots
-        continue-on-error: true
+
+      - name: Download the English App Store set
+        if: needs.store-ios.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: all-screenshots-en
+          path: ios-screenshots
+
+      - name: Cut the iPhone help images from it
+        if: needs.store-ios.result == 'success'
+        run: python3 scripts/pick_ios_help_screenshots.py ios-screenshots public/docs/screenshots
 
       # The status-bar clock and counters like "Days since last inspection" change every run,
       # so without this the workflow would open a pull request (and deploy) every day.
@@ -239,14 +281,32 @@ jobs:
           python3 -m pip install --quiet pillow
           python3 scripts/drop_insignificant_screenshots.py public/docs/screenshots
 
+      # What was retaken is recorded as matching the interface; what failed or was not due stays as it was.
+      - name: Record what the pictures were taken from
+        env:
+          WEB: ${{ needs.web.result }}
+          ANDROID: ${{ needs.android.result }}
+          IOS: ${{ needs.store-ios.result }}
+        run: |
+          args=""
+          [ "$WEB" = "success" ] && args="$args --platform web"
+          [ "$ANDROID" = "success" ] && args="$args --platform android"
+          [ "$IOS" = "success" ] && args="$args --platform ios"
+          python3 scripts/check_screenshot_freshness.py --update $args
+
       - name: Commit and open PR for updated screenshots
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.SCREENSHOT_PAT }}
+          base: main
           commit-message: 'chore(screenshots): auto-update help page screenshots [skip ci]'
           branch: chore/auto-screenshots
           delete-branch: true
           title: 'chore(screenshots): auto-update help page screenshots'
-          body: 'Automated screenshot update triggered by CI.'
+          body: |
+            Retaken automatically because the interface changed: web ${{ needs.web.result }}, Android ${{ needs.android.result }}, iPhone ${{ needs.store-ios.result }}.
+
+            The store sets (Play and App Store, four languages each) are artifacts of the run:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           committer: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
           author: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'

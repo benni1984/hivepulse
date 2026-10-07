@@ -51,7 +51,7 @@ Key values — already seeded in `ui/theme/Color.kt` and `ui/theme/Theme.kt`:
 
 ## Help Page Screenshots — IMPORTANT
 
-After any visible UI change (screen layout, colours, new fields), retake the affected Android screenshots and update the `src` props in `app/[locale]/help/[slug]/content/*.tsx` for all 4 locales.
+After a visible UI change the screenshots are retaken **by the "Update help page screenshots" workflow** (see the root `CLAUDE.md`, "Screenshots"); `scripts/android-screenshots.py` drives the app by its wording, so keep it in step when a label or the first screen changes. By hand, only for a new screen that is not captured yet: add it to the script (best effort), then reference it in the help pages for all 4 locales.
 
 Capture via emulator (AVD: `Pixel_9_API_35`, logged in as `demo@apiscan.app` / `demo1234`):
 ```bash

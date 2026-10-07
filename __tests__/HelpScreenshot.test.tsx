@@ -53,4 +53,13 @@ describe('HelpScreenshot', () => {
     fireEvent.click(container.querySelector('.help-screenshot--thumb')!);
     expect(container.querySelector('.help-lightbox')).toBeNull();
   });
+
+  it('leaves out a picture the screenshot workflow has not produced yet', () => {
+    const { container } = render(<HelpScreenshot caption="Not there yet" src="/docs/screenshots/new-screen.png" />);
+
+    fireEvent.error(container.querySelector('img')!);
+
+    expect(container.querySelector('figure')).toBeNull();
+    expect(screen.queryByText('Not there yet')).toBeNull();
+  });
 });

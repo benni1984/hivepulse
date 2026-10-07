@@ -1,6 +1,6 @@
 import type HelpScreenshot from '@/components/HelpScreenshot';
 
-export default function HomeAndTreatmentsContent(_: { Screenshot: typeof HelpScreenshot }) {
+export default function HomeAndTreatmentsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
     <>
       <section className="help-section">
@@ -34,6 +34,7 @@ export default function HomeAndTreatmentsContent(_: { Screenshot: typeof HelpScr
           El intervalo y la temporada se ajustan en <em>Ajustes &rarr; Recordatorios de revisión</em>. Fuera de temporada las
           fechas se calculan igual y una nota te lo indica.
         </p>
+        <Screenshot android="/docs/screenshots/android-home-summary.png" web="/docs/screenshots/home-summary.png" caption="El inicio al principio de la lista de colmenares" />
       </section>
 
       <section className="help-section">
@@ -68,6 +69,7 @@ export default function HomeAndTreatmentsContent(_: { Screenshot: typeof HelpScr
             aplicado</em>). Quien recibió colmenas sueltas puede planificar para esas colmenas, no para todo el colmenar.
           </p>
         </div>
+        <Screenshot android="/docs/screenshots/android-treatments.png" web="/docs/screenshots/treatments-panel.png" caption="Planificar un tratamiento y marcarlo" />
       </section>
     </>
   );

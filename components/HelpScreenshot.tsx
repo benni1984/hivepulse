@@ -12,19 +12,22 @@ interface Props {
 
 export default function HelpScreenshot({ caption, src, alt, android, web }: Props) {
   const [open, setOpen] = useState(false);
+  // A picture the screenshot workflow has not produced yet is left out rather than shown broken.
+  const [missing, setMissing] = useState(false);
 
   if (android && web) {
     return <HelpScreenshotTabs android={android} web={web} caption={caption} alt={alt} />;
   }
 
   const imgSrc = src ?? android ?? web;
+  if (missing) return null;
 
   return (
     <>
       <figure className="help-screenshot help-screenshot--thumb" onClick={() => imgSrc && setOpen(true)}>
         {imgSrc ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={imgSrc} alt={alt ?? caption} />
+          <img src={imgSrc} alt={alt ?? caption} onError={() => setMissing(true)} />
         ) : (
           <div className="help-screenshot-inner">
             <i className="fas fa-image" />

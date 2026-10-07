@@ -1,6 +1,6 @@
 import type HelpScreenshot from '@/components/HelpScreenshot';
 
-export default function MovingHivesContent(_: { Screenshot: typeof HelpScreenshot }) {
+export default function MovingHivesContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
     <>
       <section className="help-section">
@@ -55,6 +55,7 @@ export default function MovingHivesContent(_: { Screenshot: typeof HelpScreensho
             anterior; solo confirmas el día.
           </p>
         </div>
+        <Screenshot src="/docs/screenshots/android-moves.png" caption="Elige las colmenas, el nuevo lugar, el día y la flora" />
       </section>
 
       <section className="help-section">
@@ -64,6 +65,7 @@ export default function MovingHivesContent(_: { Screenshot: typeof HelpScreensho
           traslados. El <em>Mapa de traslados</em> (el icono de mapa en la barra de la lista de colmenares, o en el menú del
           panel en la web) dibuja el recorrido de cada colmena, numerado parada a parada, y se puede acotar a un periodo.
         </p>
+        <Screenshot android="/docs/screenshots/android-moves-overview.png" web="/docs/screenshots/moves-overview.png" caption="El mapa de traslados dibuja el recorrido de cada colmena" />
       </section>
 
       <section className="help-section">

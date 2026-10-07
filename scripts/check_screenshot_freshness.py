@@ -9,6 +9,13 @@ and compares that against the hash recorded when the screenshots were last captu
 
     python scripts/check_screenshot_freshness.py            # report, exit 0 or 1
     python scripts/check_screenshot_freshness.py --update   # after capturing: record the state
+    python scripts/check_screenshot_freshness.py --list-stale
+                                                            # which sets to retake, for the pipeline
+    python scripts/check_screenshot_freshness.py --update --platform ios
+                                                            # record only what was retaken
+
+The "Update screenshots" workflow runs --list-stale after every green CI on main, retakes the sets it names
+(web, Android, iPhone) and records them with --update --platform in the same pull request.
 
 In CI it prints GitHub warning annotations and never fails the build: a stale screenshot is
 worth a notice, not a blocked merge. Pass --strict to make it fail.
@@ -103,10 +110,38 @@ def write_manifest(data: dict) -> None:
     MANIFEST.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
-def update() -> int:
+def stale_platforms() -> list[str]:
+    """The platforms whose screenshots no longer match the interface. A platform that was never
+    recorded counts as stale: nothing says its pictures are current."""
     data = load_manifest()
+    stale = []
     for platform in WATCHED:
+        recorded = data.get(platform)
+        combined, _ = fingerprint(platform)
+        if not recorded or combined != recorded["fingerprint"]:
+            stale.append(platform)
+    return stale
+
+
+def list_stale() -> int:
+    stale = stale_platforms()
+    print(" ".join(stale))
+    output = os.environ.get("GITHUB_OUTPUT")
+    if output:
+        with open(output, "a", encoding="utf-8") as handle:
+            handle.write(f"stale={' '.join(stale)}\n")
+            for platform in WATCHED:
+                handle.write(f"{platform}={'true' if platform in stale else 'false'}\n")
+    return 0
+
+
+def update(platforms: list[str] | None = None) -> int:
+    data = load_manifest()
+    for platform in platforms or list(WATCHED):
         combined, files = fingerprint(platform)
+        if data.get(platform, {}).get("fingerprint") == combined:
+            print(f"{platform}: unchanged, {combined[:12]}")
+            continue
         data[platform] = {
             "captured": date.today().isoformat(),
             "fingerprint": combined,
@@ -145,8 +180,8 @@ def check(strict: bool) -> int:
         stale.append(platform)
         message = (
             f"{platform}: the interface changed since the screenshots were taken on "
-            f"{recorded['captured']} — {len(changed)} file(s). Consider retaking "
-            f"{PURPOSE[platform]}."
+            f"{recorded['captured']} — {len(changed)} file(s). After the merge the "
+            f"\"Update help page screenshots\" workflow retakes them ({PURPOSE[platform]})."
         )
         print(("::warning::" if in_ci else "WARNING: ") + message)
         for name in changed[:8]:
@@ -169,7 +204,7 @@ def check(strict: bool) -> int:
     if strict:
         print(f"\n{len(stale)} screenshot set(s) are stale and --strict was given.")
         return 1
-    print("\nA notice, not a failure. Retake what is listed, then run with --update.")
+    print("\nA notice, not a failure. The screenshot workflow retakes what is listed after the merge.")
     return 0
 
 
@@ -177,8 +212,15 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--update", action="store_true", help="record the current state")
     parser.add_argument("--strict", action="store_true", help="exit 1 when something is stale")
+    parser.add_argument("--list-stale", action="store_true", help="print the stale platforms")
+    parser.add_argument(
+        "--platform", action="append", choices=sorted(WATCHED),
+        help="with --update: record only this platform (repeatable)",
+    )
     args = parser.parse_args()
-    return update() if args.update else check(args.strict)
+    if args.list_stale:
+        return list_stale()
+    return update(args.platform) if args.update else check(args.strict)
 
 
 if __name__ == "__main__":
