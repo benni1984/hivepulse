@@ -75,8 +75,8 @@ the other in the same PR.
 - **Apiary page toolbar:** move, share, treatments, custom fields, edit. **Hive page toolbar:** share, edit,
   QR code, statistics; move history and treatments are rows of the page.
 - **Every "create" action is an amber button with a label at the bottom right** (Android
-  `ExtendedFloatingActionButton`, iOS `.hpFloatingButton(...)`): new apiary, new inspection, new QR batch, new
-  custom field. Never a plus in a toolbar.
+  `ExtendedFloatingActionButton`, iOS `.hpFloatingButton(...)`): new apiary, new hive, new inspection, new QR
+  batch, new custom field. Never a plus in a toolbar.
 - **Settings order:** custom fields, profile (email, name, language), change password, reminders, export, admin,
   help and tour, diagnostics, log out, danger zone.
 

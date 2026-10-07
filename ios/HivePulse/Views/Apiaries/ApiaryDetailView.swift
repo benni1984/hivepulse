@@ -60,6 +60,12 @@ struct ApiaryDetailView: View {
         }
         .navigationTitle(apiary.name)
         .hpScreenBackground()
+        // Making a hive by hand, as the web has it: a sticker is not needed to start. Not for somebody who was
+        // given single hives of this apiary: the server would refuse.
+        .hpFloatingButton(NSLocalizedString("action.newHive", comment: ""), identifier: "newHiveButton",
+                          isVisible: apiary.canEdit) {
+            showAddHive = true
+        }
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 // Taking hives to where something is in bloom is the owner's to do.
@@ -99,6 +105,12 @@ struct ApiaryDetailView: View {
         }
         .task { await hiveVM.load(apiaryId: apiary.id) }
         .refreshable { await hiveVM.load(apiaryId: apiary.id) }
+        .sheet(isPresented: $showAddHive) {
+            HiveEditView { name, hiveType, acquisitionDate, notes in
+                _ = try await hiveVM.create(apiaryId: apiary.id, name: name, hiveType: hiveType,
+                                        acquisitionDate: acquisitionDate, notes: notes)
+            }
+        }
         .sheet(isPresented: $showMove) {
             MoveHivesView(apiaryId: apiary.id, hives: hiveVM.hives) { _ in
                 // The hives that left are gone from this list.

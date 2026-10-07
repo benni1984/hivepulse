@@ -4,6 +4,7 @@ protocol HiveServiceProtocol {
     func listForApiary(_ apiaryId: String, page: Int) async throws -> PaginatedResponse<HiveOut>
     func get(_ id: String) async throws -> HiveOut
     func initialize(request: HiveInitializeRequest) async throws -> HiveOut
+    func create(apiaryId: String, request: HiveCreateRequest) async throws -> HiveOut
     func update(_ id: String, request: HiveUpdateRequest) async throws -> HiveOut
     func delete(_ id: String) async throws
     func resolveQR(token: String) async throws -> QRScanResult
@@ -52,6 +53,10 @@ struct HiveService: HiveServiceProtocol {
 
     func initialize(request: HiveInitializeRequest) async throws -> HiveOut {
         try await client.post("hives/initialize", body: request)
+    }
+
+    func create(apiaryId: String, request: HiveCreateRequest) async throws -> HiveOut {
+        try await client.post("apiaries/\(apiaryId)/hives", body: request)
     }
 
     func update(_ id: String, request: HiveUpdateRequest) async throws -> HiveOut {

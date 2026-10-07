@@ -176,6 +176,13 @@ final class MockHiveService: HiveServiceProtocol {
     func listForApiary(_ apiaryId: String, page: Int) async throws -> PaginatedResponse<HiveOut> { try listResult.get() }
     func get(_ id: String) async throws -> HiveOut { makeHive(id: id) }
     func initialize(request: HiveInitializeRequest) async throws -> HiveOut { makeHive(id: "h-new", name: request.name) }
+    var createError: Error?
+    private(set) var createRequests: [(apiaryId: String, request: HiveCreateRequest)] = []
+    func create(apiaryId: String, request: HiveCreateRequest) async throws -> HiveOut {
+        createRequests.append((apiaryId, request))
+        if let err = createError { throw err }
+        return makeHive(id: "h-created", name: request.name)
+    }
     var lastUpdateRequest: HiveUpdateRequest?
     func update(_ id: String, request: HiveUpdateRequest) async throws -> HiveOut {
         lastUpdateRequest = request

@@ -41,6 +41,7 @@
     <string name="url_help">https://hivepulse.multihead.de/en/help</string>
     <string name="action_new_apiary">New Apiary</string>
     <string name="action_edit_apiary">Edit Apiary</string>
+    <string name="action_new_hive">New Hive</string>
     <string name="action_new_inspection">New Inspection</string>
     <string name="action_edit_inspection">Edit Inspection</string>
     <string name="action_stats">Statistics</string>
@@ -200,7 +201,7 @@
 
     <!-- Empty states -->
     <string name="empty_apiaries_title">No apiaries yet.\nTap + to add your first apiary.</string>
-    <string name="empty_hives_title">No hives in this apiary yet.\nScan a QR code to add one.</string>
+    <string name="empty_hives_title">No hives in this apiary yet.\nTap New Hive, or scan the QR code on a hive.</string>
     <string name="empty_inspections">No inspections recorded yet.</string>
     <string name="empty_qr_batches">No QR batches yet.\nTap + to generate a new batch.</string>
 

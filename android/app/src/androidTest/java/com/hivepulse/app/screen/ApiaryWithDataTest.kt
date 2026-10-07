@@ -8,6 +8,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.hivepulse.app.MainActivity
@@ -69,6 +70,23 @@ class ApiaryWithDataTest {
 
     @get:Rule(order = 2)
     val composeRule = createAndroidComposeRule<MainActivity>()
+
+    @Test
+    fun apiaryDetail_hasANewHiveButtonThatOpensTheForm() {
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithText("Honey Farm").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Honey Farm").performClick()
+
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithContentDescription("New Hive").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithContentDescription("New Hive").performClick()
+
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithTag("hiveEditName").fetchSemanticsNodes().isNotEmpty()
+        }
+    }
 
     private fun waitForApiaryList() {
         composeRule.waitUntil(timeoutMillis = 5_000) {

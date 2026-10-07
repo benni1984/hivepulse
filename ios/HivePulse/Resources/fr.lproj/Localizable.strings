@@ -100,6 +100,7 @@
 "action.useMyLocation" = "Utiliser ma position";
 "action.editApiary" = "Modifier le rucher";
 "action.newApiary" = "Nouveau rucher";
+"action.newHive" = "Nouvelle ruche";
 "action.newInspection" = "Nouvelle visite";
 "action.editInspection" = "Modifier la visite";
 "action.saveProfile" = "Enregistrer le profil";
@@ -113,7 +114,7 @@
 "empty.apiaries.title" = "Aucun rucher";
 "empty.apiaries.description" = "Ajoutez votre premier rucher pour commencer.";
 "empty.hives.title" = "Aucune ruche";
-"empty.hives.description" = "Scannez un code QR pour ajouter votre première ruche.";
+"empty.hives.description" = "Touchez « Nouvelle ruche » ou scannez le QR code d’une ruche.";
 "empty.inspections" = "Aucune visite pour l'instant.";
 "empty.batches.title" = "Aucun lot QR";
 "empty.batches.description" = "Générez un lot de codes QR à imprimer et coller sur vos ruches.";

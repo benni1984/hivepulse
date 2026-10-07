@@ -1,8 +1,10 @@
 import SwiftUI
 
-/// Edits a hive's name, type, acquisition date and notes (PUT /hives/{id}).
+/// Edits a hive's name, type, acquisition date and notes (PUT /hives/{id}), or collects them for a new one
+/// (POST /apiaries/{id}/hives) when no hive is given.
 struct HiveEditView: View {
-    let hive: HiveOut
+    let hive: HiveOut?
+    let title: String
     let onSave: (_ name: String, _ hiveType: String, _ acquisitionDate: String?, _ notes: String?) async throws -> Void
 
     @Environment(\.dismiss) private var dismiss
@@ -23,16 +25,18 @@ struct HiveEditView: View {
         return f
     }()
 
-    init(hive: HiveOut,
+    init(hive: HiveOut? = nil,
+         title: String? = nil,
          onSave: @escaping (_ name: String, _ hiveType: String, _ acquisitionDate: String?, _ notes: String?) async throws -> Void) {
         self.hive = hive
+        self.title = title ?? NSLocalizedString(hive == nil ? "section.newHive" : "screen.editHive", comment: "")
         self.onSave = onSave
-        _name = State(initialValue: hive.name)
-        _hiveType = State(initialValue: Self.hiveTypes.contains(hive.hiveType) ? hive.hiveType : "other")
-        let parsed = hive.acquisitionDate.flatMap { Self.dateFormatter.date(from: $0) }
+        _name = State(initialValue: hive?.name ?? "")
+        _hiveType = State(initialValue: hive.map { Self.hiveTypes.contains($0.hiveType) ? $0.hiveType : "other" } ?? "langstroth")
+        let parsed = hive?.acquisitionDate.flatMap { Self.dateFormatter.date(from: $0) }
         _hasAcquisitionDate = State(initialValue: parsed != nil)
         _acquisitionDate = State(initialValue: parsed ?? Date())
-        _notes = State(initialValue: hive.notes ?? "")
+        _notes = State(initialValue: hive?.notes ?? "")
     }
 
     /// Trimmed values in the shape the API expects; nil when the name is blank.
@@ -72,7 +76,7 @@ struct HiveEditView: View {
                     Section { Text(errorMessage).foregroundColor(.hpRed) }
                 }
             }
-            .navigationTitle(NSLocalizedString("screen.editHive", comment: ""))
+            .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -83,6 +87,7 @@ struct HiveEditView: View {
                         Task { await save() }
                     }
                     .disabled(isSaving || name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .accessibilityIdentifier("hiveEditSave")
                 }
             }
         }

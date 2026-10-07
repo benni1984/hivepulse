@@ -100,6 +100,7 @@
 "action.useMyLocation" = "Usar mi ubicación";
 "action.editApiary" = "Editar colmenar";
 "action.newApiary" = "Nuevo colmenar";
+"action.newHive" = "Nueva colmena";
 "action.newInspection" = "Nueva revisión";
 "action.editInspection" = "Editar revisión";
 "action.saveProfile" = "Guardar perfil";
@@ -113,7 +114,7 @@
 "empty.apiaries.title" = "Sin colmenares";
 "empty.apiaries.description" = "Añade tu primer colmenar para empezar.";
 "empty.hives.title" = "Sin colmenas";
-"empty.hives.description" = "Escanea un código QR para añadir tu primera colmena.";
+"empty.hives.description" = "Toca «Nueva colmena» o escanea el código QR de una colmena.";
 "empty.inspections" = "Sin revisiones todavía.";
 "empty.batches.title" = "Sin lotes QR";
 "empty.batches.description" = "Genera un lote de códigos QR para imprimir y pegar en tus colmenas.";

@@ -13,7 +13,7 @@ Platforms: **W** website, **I** iPhone app, **A** Android app.
 | Feature | Where | W | I | A | Contract |
 |---------|-------|:-:|:-:|:-:|----------|
 | Apiaries with name, address or GPS position, description, optional public map entry | Apiary list, apiary page | ✔ | ✔ | ✔ | Apiaries |
-| Hives with type (Langstroth, Dadant, Top Bar, Warré, other), acquisition date, notes | Hive page | ✔ | ✔ | ✔ | Hives |
+| Hives with type (Langstroth, Dadant, Top Bar, Warré, other), acquisition date, notes; made by hand with the amber New Hive button, no sticker needed | Apiary page, hive page | ✔ | ✔ | ✔ | Hives |
 | Custom fields for hives and inspections, for the account or one apiary | Settings → custom fields; apiary toolbar | ✔ | ✔ | ✔ | Field definitions |
 
 ## QR codes

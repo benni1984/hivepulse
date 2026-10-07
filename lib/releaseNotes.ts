@@ -82,6 +82,15 @@ export const RELEASES: Release[] = [
       {
         kind: 'added',
         text: t(
+          'A hive can now be made by hand in both apps: the amber New Hive button on the apiary page, no printed sticker needed. The sticker can still be used to open and set up a hive.',
+          'Ein Volk lässt sich jetzt in beiden Apps von Hand anlegen: der bernsteinfarbene Knopf „Neues Volk“ auf der Seite des Bienenstands, ohne gedruckten Aufkleber. Der Aufkleber lässt sich weiter zum Öffnen und Einrichten nutzen.',
+          'Une ruche peut maintenant être créée à la main dans les deux applications : le bouton ambre « Nouvelle ruche » sur la page du rucher, sans autocollant imprimé. L’autocollant reste utilisable pour ouvrir et configurer une ruche.',
+          'Ahora se puede crear una colmena a mano en ambas apps: el botón ámbar «Nueva colmena» en la página del colmenar, sin pegatina impresa. La pegatina sigue sirviendo para abrir y configurar una colmena.',
+        ),
+      },
+      {
+        kind: 'added',
+        text: t(
           'Delete QR batches that no hive uses.',
           'QR-Batches löschen, die kein Volk benutzt.',
           'Supprimer les lots de QR codes qu’aucune ruche n’utilise.',

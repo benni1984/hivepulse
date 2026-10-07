@@ -207,6 +207,9 @@ interface ApiService {
     @PUT("hives/{id}")
     suspend fun updateHive(@Path("id") id: String, @Body body: HiveUpdateRequest): HiveOut
 
+    @POST("apiaries/{apiaryId}/hives")
+    suspend fun createHive(@Path("apiaryId") apiaryId: String, @Body body: HiveCreateRequest): HiveOut
+
     @DELETE("hives/{id}")
     suspend fun deleteHive(@Path("id") id: String): Response<Unit>
 

@@ -121,6 +121,15 @@ data class ApiaryCreate(
     @SerializedName("is_public") val isPublic: Boolean = false,
 )
 
+// MARK: - A hive made by hand
+/** POST /apiaries/{id}/hives: the server gives the hive a QR code of its own. */
+data class HiveCreateRequest(
+    val name: String,
+    @SerializedName("hive_type")        val hiveType: String,
+    @SerializedName("acquisition_date") val acquisitionDate: String? = null,
+    val notes: String? = null,
+)
+
 // MARK: - Moving hives
 data class MovePlaceOut(
     @SerializedName("apiary_id") val apiaryId: String?,

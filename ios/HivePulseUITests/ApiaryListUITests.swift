@@ -55,6 +55,21 @@ final class ApiaryListUITests: XCTestCase {
         XCTAssertTrue(app.alerts["Error"].waitForExistence(timeout: 5))
     }
 
+    // MARK: - New hive
+
+    func test_apiaryDetail_hasANewHiveButtonThatOpensTheForm() {
+        launch(with: "-mockApiaryWithHive")
+        XCTAssertTrue(app.staticTexts["Meadow"].waitForExistence(timeout: 5))
+        app.staticTexts["Meadow"].tap()
+
+        let newHive = app.buttons["newHiveButton"]
+        XCTAssertTrue(newHive.waitForExistence(timeout: 5))
+        newHive.tap()
+
+        XCTAssertTrue(app.textFields["hiveEditName"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["New Hive"].exists)
+    }
+
     // MARK: - Editing
 
     func test_apiaryDetail_editFormHasPublicMapToggleAndSaves() {

@@ -98,4 +98,34 @@ class HiveRepositoryTest {
         acquisitionDate = null, notes = null, customFields = emptyMap(),
         initializedAt = "2024-01-01", lastInspectionAt = null, createdAt = "2024-01-01"
     )
+
+    private val createdHive = HiveOut(
+        "h-new", "tok", "a1", "Nicole II", "dadant", null, null, null, null, emptyMap(),
+        "2026-01-01T00:00:00", null, "2026-01-01T00:00:00",
+    )
+
+    @Test
+    fun `create posts to the apiary and remembers the hive`() = runTest {
+        val request = HiveCreateRequest("Nicole II", "dadant", "2026-04-01", null)
+        coEvery { api.createHive("a1", request) } returns createdHive
+
+        val hive = repo.create("a1", request)
+
+        assertEquals("h-new", hive.id)
+        coVerify { cache.putHive(createdHive) }
+    }
+
+    @Test
+    fun `create refused carries the servers own message`() = runTest {
+        val refused = retrofit2.HttpException(retrofit2.Response.error<Any>(
+            403,
+            """{"detail":{"code":"OWNER_ONLY","message":"Only the owner can do this."}}"""
+                .toResponseBody("application/json".toMediaType()),
+        ))
+        coEvery { api.createHive(any(), any()) } throws refused
+
+        val error = runCatching { repo.create("a1", HiveCreateRequest("H", "langstroth")) }.exceptionOrNull()
+
+        assertEquals("Only the owner can do this.", error?.message)
+    }
 }

@@ -23,6 +23,28 @@ export function newsText(entry: NewsEntry, locale: string): NewsText {
 export const NEWS: NewsEntry[] = [
   {
     date: '2026-10-07',
+    tag: 'fix',
+    text: {
+      en: {
+        title: 'Add a Hive Without a Sticker, in Both Apps',
+        body: 'On the apiary page of the iPhone and Android apps there was no way to add a hive unless you scanned a printed QR code. Now the amber New Hive button is there, as it is on the website: name, type, date and notes, and the hive exists. The sticker still opens and sets up a hive as before.',
+      },
+      de: {
+        title: 'Ein Volk ohne Aufkleber anlegen, in beiden Apps',
+        body: 'Auf der Seite des Bienenstands gab es in den Apps für iPhone und Android keinen Weg, ein Volk anzulegen, außer einen gedruckten QR-Code zu scannen. Jetzt gibt es den bernsteinfarbenen Knopf „Neues Volk“, wie auf der Webseite: Name, Beutentyp, Datum und Notizen, und das Volk ist da. Der Aufkleber öffnet und richtet ein Volk weiter wie bisher ein.',
+      },
+      fr: {
+        title: 'Ajouter une ruche sans autocollant, dans les deux applications',
+        body: 'Sur la page du rucher des applications iPhone et Android, on ne pouvait ajouter une ruche qu’en scannant un QR code imprimé. Le bouton ambre « Nouvelle ruche » est maintenant là, comme sur le site : nom, type, date et notes, et la ruche existe. L’autocollant ouvre et configure toujours une ruche comme avant.',
+      },
+      es: {
+        title: 'Añadir una colmena sin pegatina, en ambas apps',
+        body: 'En la página del colmenar de las apps de iPhone y Android no había forma de añadir una colmena salvo escaneando un código QR impreso. Ahora está el botón ámbar «Nueva colmena», como en la web: nombre, tipo, fecha y notas, y la colmena existe. La pegatina sigue abriendo y configurando una colmena como antes.',
+      },
+    },
+  },
+  {
+    date: '2026-10-07',
     tag: 'feature',
     text: {
       en: {

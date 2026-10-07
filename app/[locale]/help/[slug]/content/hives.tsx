@@ -119,6 +119,13 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           <p>Deleting a hive permanently removes all inspection history for that colony. Export your data before deleting if you want to keep records.</p>
         </div>
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">In the apps: add a hive by hand</h2>
+        <p>
+          On the apiary page of the iPhone and Android apps tap the amber <em>New Hive</em> button at the bottom right, enter a name, the hive type and, if you like, the day you got it and a note. No printed sticker is needed; the hive gets a QR code of its own that you can print later. A printed sticker still works too: scan it and the app asks for the same details.
+        </p>
+      </section>
     </>
   );
 }

@@ -61,7 +61,7 @@
 "section.details" = "Details";
 "section.location" = "Standort";
 "section.notes" = "Notizen";
-"section.hives" = "Bienenstöcke";
+"section.hives" = "Völker";
 "section.inspections" = "Kontrollen";
 "section.customFields" = "Eigene Felder";
 "section.newHive" = "Neues Volk";
@@ -100,6 +100,7 @@
 "action.useMyLocation" = "Meinen Standort verwenden";
 "action.editApiary" = "Bienenstand bearbeiten";
 "action.newApiary" = "Neuer Bienenstand";
+"action.newHive" = "Neues Volk";
 "action.newInspection" = "Neue Kontrolle";
 "action.editInspection" = "Kontrolle bearbeiten";
 "action.saveProfile" = "Profil speichern";
@@ -113,14 +114,14 @@
 "empty.apiaries.title" = "Keine Bienenstände";
 "empty.apiaries.description" = "Fügen Sie Ihren ersten Bienenstand hinzu.";
 "empty.hives.title" = "Keine Völker";
-"empty.hives.description" = "Scannen Sie einen QR-Code, um das erste Volk hinzuzufügen.";
+"empty.hives.description" = "Tippe auf „Neues Volk“ oder scanne den QR-Code an einem Volk.";
 "empty.inspections" = "Noch keine Kontrollen.";
 "empty.batches.title" = "Keine QR-Batches";
-"empty.batches.description" = "Erstellen Sie QR-Codes zum Drucken und Aufkleben auf Ihre Bienenstöcke.";
+"empty.batches.description" = "Erstellen Sie QR-Codes zum Drucken und Aufkleben auf Ihre Völker.";
 
 /* Alerts */
 "alert.error" = "Fehler";
-"error.apiaryHasHives" = "Bitte alle Bienenstöcke löschen, bevor der Bienenstand gelöscht wird.";
+"error.apiaryHasHives" = "Bitte alle Völker löschen, bevor der Bienenstand gelöscht wird.";
 "alert.logoutConfirm" = "Möchten Sie sich wirklich abmelden?";
 "alert.batchCountHint" = "Geben Sie die Anzahl der QR-Codes ein (1–50).";
 
@@ -244,7 +245,7 @@
 "admin.stats.platform" = "Plattform";
 "admin.stats.apiaries" = "Bienenstände";
 "admin.stats.publicApiaries" = "Öffentliche Bienenstände";
-"admin.stats.hives" = "Bienenstöcke";
+"admin.stats.hives" = "Völker";
 "admin.stats.inspections" = "Kontrollen";
 "admin.stats.sessions" = "Sitzungen";
 "admin.stats.activeSessions" = "Aktive Sitzungen";
@@ -310,7 +311,7 @@
 "screen.statsOverview" = "Meine Statistiken";
 "overview.period" = "Zeitraum";
 "overview.apiaries" = "Bienenstände";
-"overview.hives" = "Bienenstöcke";
+"overview.hives" = "Völker";
 "overview.inspections" = "Kontrollen";
 "overview.perApiary" = "Nach Bienenstand";
 "overview.noData" = "Keine Kontrollen in diesem Zeitraum.";

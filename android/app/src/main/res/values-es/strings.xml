@@ -36,6 +36,7 @@
     <string name="url_help">https://hivepulse.multihead.de/es/help</string>
     <string name="action_new_apiary">Nuevo colmenar</string>
     <string name="action_edit_apiary">Editar colmenar</string>
+    <string name="action_new_hive">Nueva colmena</string>
     <string name="action_new_inspection">Nueva revisión</string>
     <string name="action_edit_inspection">Editar revisión</string>
     <string name="action_stats">Estadísticas</string>
@@ -183,7 +184,7 @@
     <string name="alert_delete_account_message">Todos tus datos — colmenares, colmenas e revisiones — se eliminarán definitivamente. Esta acción no se puede deshacer.</string>
     <string name="alert_delete_account_action">Eliminar definitivamente</string>
     <string name="empty_apiaries_title">Todavía no hay colmenares.\nToca + para añadir el primero.</string>
-    <string name="empty_hives_title">Este colmenar aún no tiene colmenas.\nEscanea un código QR para añadir una.</string>
+    <string name="empty_hives_title">Todavía no hay colmenas en este colmenar.\nToca «Nueva colmena» o escanea el código QR de una colmena.</string>
     <string name="empty_inspections">Todavía no hay revisiones registradas.</string>
     <string name="empty_qr_batches">Todavía no hay lotes de QR.\nToca + para generar uno nuevo.</string>
     <string name="login_subtitle">Inicia sesión para gestionar tus colmenas</string>

@@ -51,6 +51,18 @@ final class HiveViewModel: ObservableObject {
         return hive
     }
 
+    /// A hive made by hand, without a printed sticker: the server attaches a QR code of its own.
+    @discardableResult
+    func create(apiaryId: String, name: String, hiveType: String, acquisitionDate: String?,
+                notes: String?) async throws -> HiveOut {
+        let hive = try await service.create(
+            apiaryId: apiaryId,
+            request: HiveCreateRequest(name: name, hiveType: hiveType, acquisitionDate: acquisitionDate, notes: notes)
+        )
+        hives.append(hive)
+        return hive
+    }
+
     @discardableResult
     func update(_ id: String, name: String, hiveType: String, notes: String?,
                 acquisitionDate: String? = nil) async throws -> HiveOut {

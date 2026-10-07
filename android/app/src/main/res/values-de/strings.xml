@@ -101,6 +101,7 @@
     <string name="action_logout">Abmelden</string>
     <string name="action_new_apiary">Neuer Bienenstand</string>
     <string name="action_edit_apiary">Bienenstand bearbeiten</string>
+    <string name="action_new_hive">Neues Volk</string>
     <string name="action_new_inspection">Neue Kontrolle</string>
     <string name="action_edit_inspection">Kontrolle bearbeiten</string>
     <string name="action_stats">Statistik</string>
@@ -204,7 +205,7 @@
 
     <!-- Empty states -->
     <string name="empty_apiaries_title">Noch keine Bienenstände.\nTippe auf +, um deinen ersten Bienenstand anzulegen.</string>
-    <string name="empty_hives_title">Noch keine Völker an diesem Bienenstand.\nScanne einen QR-Code, um eines hinzuzufügen.</string>
+    <string name="empty_hives_title">Noch keine Völker an diesem Bienenstand.\nTippe auf „Neues Volk“ oder scanne den QR-Code an einem Volk.</string>
     <string name="empty_inspections">Noch keine Kontrollen erfasst.</string>
     <string name="empty_qr_batches">Noch keine QR-Batches.\nTippe auf +, um einen neuen Batch zu generieren.</string>
 

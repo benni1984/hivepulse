@@ -101,6 +101,7 @@
     <string name="action_logout">Se déconnecter</string>
     <string name="action_new_apiary">Nouveau rucher</string>
     <string name="action_edit_apiary">Modifier le rucher</string>
+    <string name="action_new_hive">Nouvelle ruche</string>
     <string name="action_new_inspection">Nouvelle visite</string>
     <string name="action_edit_inspection">Modifier la visite</string>
     <string name="action_stats">Statistiques</string>
@@ -204,7 +205,7 @@
 
     <!-- Empty states -->
     <string name="empty_apiaries_title">Aucun rucher.\nAppuyez sur + pour ajouter votre premier rucher.</string>
-    <string name="empty_hives_title">Aucune ruche dans ce rucher.\nScannez un QR code pour en ajouter une.</string>
+    <string name="empty_hives_title">Aucune ruche dans ce rucher.\nTouchez « Nouvelle ruche » ou scannez le QR code d’une ruche.</string>
     <string name="empty_inspections">Aucune visite enregistrée.</string>
     <string name="empty_qr_batches">Aucun lot QR.\nAppuyez sur + pour générer un nouveau lot.</string>
 

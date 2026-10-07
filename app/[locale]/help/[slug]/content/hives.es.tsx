@@ -119,6 +119,13 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           <p>Eliminar una colmena elimina permanentemente todo el historial de revisiones de esa colonia. Exporte sus datos antes de eliminar si desea conservar los registros.</p>
         </div>
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">En las apps: añadir una colmena a mano</h2>
+        <p>
+          En la página del colmenar de las apps de iPhone y Android, toca el botón ámbar <em>Nueva colmena</em> de abajo a la derecha, escribe un nombre, el tipo de colmena y, si quieres, el día de adquisición y una nota. No hace falta una pegatina impresa; la colmena recibe su propio código QR que puedes imprimir más tarde. Una pegatina impresa sigue funcionando: escanéala y la app pide los mismos datos.
+        </p>
+      </section>
     </>
   );
 }

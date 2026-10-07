@@ -100,6 +100,7 @@
 "action.useMyLocation" = "Use my location";
 "action.editApiary" = "Edit Apiary";
 "action.newApiary" = "New Apiary";
+"action.newHive" = "New Hive";
 "action.newInspection" = "New Inspection";
 "action.editInspection" = "Edit Inspection";
 "action.saveProfile" = "Save Profile";
@@ -113,7 +114,7 @@
 "empty.apiaries.title" = "No Apiaries";
 "empty.apiaries.description" = "Add your first apiary to get started.";
 "empty.hives.title" = "No Hives";
-"empty.hives.description" = "Scan a QR code to add your first hive.";
+"empty.hives.description" = "Tap New Hive, or scan the QR code on a hive.";
 "empty.inspections" = "No inspections yet.";
 "empty.batches.title" = "No QR Batches";
 "empty.batches.description" = "Generate a batch of QR codes to print and stick on your hives.";

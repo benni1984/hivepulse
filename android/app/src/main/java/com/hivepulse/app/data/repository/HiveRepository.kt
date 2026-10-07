@@ -28,6 +28,10 @@ class HiveRepository @Inject constructor(
     suspend fun initialize(request: HiveInitializeRequest): HiveOut =
         api.initializeHive(request)
 
+    /** A hive made by hand, without a printed sticker. A refusal carries the server's own message. */
+    suspend fun create(apiaryId: String, request: HiveCreateRequest): HiveOut =
+        withServerMessage { api.createHive(apiaryId, request) }.also { cache.putHive(it) }
+
     suspend fun update(id: String, request: HiveUpdateRequest): HiveOut =
         api.updateHive(id, request).also { cache.putHive(it) }
 

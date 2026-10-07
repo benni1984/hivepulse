@@ -59,7 +59,7 @@
     "sub": "Vom Hobby-Imker bis zum Profi-Betrieb – HivePulse wächst mit dir und trägt gleichzeitig zum Schutz unseres Planeten bei.",
     "qr": {
       "title": "QR-Code scannen & loslegen",
-      "desc": "Klebe einen QR-Code auf jeden Stock. Beim Ankommen scannen und direkt mit der Kontrolle beginnen – kein Suchen, kein Vertippen."
+      "desc": "Klebe einen QR-Code auf jedes Volk. Beim Ankommen scannen und direkt mit der Kontrolle beginnen – kein Suchen, kein Vertippen."
     },
     "track": {
       "title": "Intelligentes Tracking",
@@ -512,7 +512,7 @@
         "name": "Name",
         "joined": "Beigetreten",
         "apiaries": "Bienenstandorte",
-        "hives": "Bienenstöcke",
+        "hives": "Völker",
         "inspections": "Kontrollen",
         "supporter": "Supporter",
         "actions": "Aktionen",
@@ -727,7 +727,7 @@
       "delete": "Löschen",
       "confirmDelete": "Diesen Batch mit allen Codes löschen? Nicht benutzte Codes lassen sich nicht wiederherstellen.",
       "deleteSuccess": "Batch gelöscht.",
-      "errorInUse": "Dieser Batch enthält Codes, die Bienenstöcken zugeordnet sind, und kann nicht gelöscht werden."
+      "errorInUse": "Dieser Batch enthält Codes, die Völkern zugeordnet sind, und kann nicht gelöscht werden."
     },
     "community": {
       "title": "Community-Dashboard",
@@ -1046,7 +1046,7 @@
     },
     "info": {
       "problem": "Die Bedrohung",
-      "problemText": "Vespa velutina (Asiatische Hornisse) ist ein invasiver Räuber, der Bienenvölker angreift, Stöcke schwächt und die Ernährungssicherheit bedroht. Früherkennung ist entscheidend.",
+      "problemText": "Vespa velutina (Asiatische Hornisse) ist ein invasiver Räuber, der Bienenvölker angreift, Völker schwächt und die Ernährungssicherheit bedroht. Früherkennung ist entscheidend.",
       "whyCatch": "Warum fangen?",
       "whyCatchText": "Das Fangen von Königinnen im Frühjahr verhindert die Gründung neuer Kolonien. Jede gefangene Königin verhindert tausende Arbeiterinnen. Gemeinschaftliches Fangen macht einen echten Unterschied.",
       "reportNest": "Nest melden",
