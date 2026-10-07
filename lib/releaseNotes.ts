@@ -165,6 +165,16 @@ export const RELEASES: Release[] = [
         ),
       },
       {
+        kind: 'changed',
+        text: t(
+          'The regional health map shows each area as a soft, round patch that fades out and blends into its neighbours, instead of hard rectangles. Same on the website, Android and iPhone.',
+          'Die regionale Gesundheitskarte zeigt jedes Gebiet als weichen, runden Fleck, der ausläuft und in die Nachbarn übergeht, statt als harte Rechtecke. Auf der Webseite, Android und iPhone gleich.',
+          'La carte régionale de santé montre chaque zone comme une tache ronde et douce qui s’estompe et se fond dans ses voisines, au lieu de rectangles durs. Pareil sur le site, Android et iPhone.',
+          'El mapa regional de salud muestra cada zona como una mancha redonda y suave que se difumina y se mezcla con las vecinas, en lugar de rectángulos duros. Igual en la web, Android y iPhone.',
+          'Regionalna mapa zdrowia pokazuje każdy obszar jako miękką, okrągłą plamę, która zanika i łączy się z sąsiednimi, zamiast ostrych prostokątów. Tak samo w serwisie, na Androidzie i iPhonie.',
+        ),
+      },
+      {
         kind: 'fixed',
         text: t(
           'The language picker on Android now switches the language of the app at once.',

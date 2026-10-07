@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 import type { CommunityHeatmap, CommunityHeatmapProperties } from '@/lib/api';
+import { BLOB_HIT_SCALE, BLOB_RINGS, blobFor } from '@/lib/heatBlobs';
 
 type Overlay = 'varroa' | 'mood' | 'swarm' | 'brood';
 
@@ -93,17 +94,32 @@ export default function CommunityMap({ data }: { data: CommunityHeatmap }) {
       geoLayerRef.current.remove();
       geoLayerRef.current = null;
     }
-    geoLayerRef.current = L.geoJSON(data, {
-      style: (feature: any) => ({
-        fillColor: cellColor(feature.properties, overlayRef.current),
-        fillOpacity: 0.65,
-        color: '#fff',
-        weight: 0.5,
-      }),
-      onEachFeature: (feature: any, layer: any) => {
-        layer.bindTooltip(tooltipHtml(feature.properties), { sticky: true });
-      },
-    }).addTo(mapRef.current);
+    // Every cell is a soft round patch: a few faint circles of one colour, the smaller ones on top of the bigger ones.
+    const group = L.layerGroup();
+    for (const feature of data.features) {
+      const blob = blobFor(feature.geometry.coordinates[0] ?? []);
+      if (!blob) continue;
+      const fillColor = cellColor(feature.properties, overlayRef.current);
+      for (const ring of BLOB_RINGS) {
+        L.circle([blob.lat, blob.lon], {
+          radius: blob.radius * ring.scale,
+          stroke: false,
+          fillColor,
+          fillOpacity: ring.opacity,
+          interactive: false,
+        }).addTo(group);
+      }
+      // Invisible, but it is what the pointer hits: the tooltip belongs to the whole patch.
+      L.circle([blob.lat, blob.lon], {
+        radius: blob.radius * BLOB_HIT_SCALE,
+        stroke: false,
+        fillColor,
+        fillOpacity: 0,
+      })
+        .bindTooltip(tooltipHtml(feature.properties), { sticky: true })
+        .addTo(group);
+    }
+    geoLayerRef.current = group.addTo(mapRef.current);
   }
 
   useEffect(() => {
