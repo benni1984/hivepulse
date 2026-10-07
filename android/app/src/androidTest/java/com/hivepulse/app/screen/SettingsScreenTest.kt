@@ -71,6 +71,15 @@ class SettingsScreenTest {
     }
 
     @Test
+    fun settings_hasReleaseNotesButtonNextToHelp() {
+        navigateToSettings()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Release notes").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithTag("releaseNotesButton").performScrollTo().assertIsDisplayed()
+    }
+
+    @Test
     fun settings_showsLanguageSection() {
         navigateToSettings()
         composeRule.waitUntil(5_000) {

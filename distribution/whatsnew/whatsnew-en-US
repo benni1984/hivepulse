@@ -1,9 +1,7 @@
 First release of HivePulse.
 
-Scan the QR code on a hive, log the visit, done: brood and honey frames, queen, temperament, varroa, treatments, feed, your own notes. Numbers are large buttons so it works with gloves on.
+Scan the QR code on a hive, log the visit, done: frames, queen, temperament, varroa, treatments, feed, notes. Big buttons, so it works with gloves on. Works without a signal.
 
-Works without a signal: anything recorded offline is stored and sent on by itself later.
-
-Plus statistics per hive and apiary, your own fields, and the hornet tracker.
+New: a home screen with what is due, planned treatments, moving hives to the bloom with a map, and working on an apiary together with another beekeeper.
 
 Tell us what was confusing: hivepulse@multihead.de

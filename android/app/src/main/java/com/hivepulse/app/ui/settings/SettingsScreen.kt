@@ -13,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -561,6 +562,18 @@ fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(stringResource(R.string.action_show_tour))
+                }
+                // What is new, and the full list of features: the same page on every platform.
+                OutlinedButton(
+                    onClick = {
+                        context.startActivity(
+                            android.content.Intent(android.content.Intent.ACTION_VIEW,
+                                android.net.Uri.parse("https://hivepulse.multihead.de/$helpLocale/release-notes"))
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth().testTag("releaseNotesButton")
+                ) {
+                    Text(stringResource(R.string.action_release_notes))
                 }
 
                 // Diagnostics — the version a tester reads out, and proof that crash

@@ -320,6 +320,7 @@
 "tour.skip" = "Überspringen";
 "tour.next" = "Weiter";
 "tour.getStarted" = "Los geht’s";
+"action.releaseNotes" = "Release Notes";
 "tour.showAgain" = "Tour erneut ansehen";
 "tour.welcome.title" = "Willkommen bei HivePulse";
 "tour.welcome.body" = "Dein Stockbuch für die Hosentasche. Hier ein kurzer Überblick, was HivePulse für dich erledigt.";

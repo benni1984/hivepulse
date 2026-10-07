@@ -320,6 +320,7 @@
 "tour.skip" = "Omitir";
 "tour.next" = "Siguiente";
 "tour.getStarted" = "Empezar";
+"action.releaseNotes" = "Notas de versión";
 "tour.showAgain" = "Ver de nuevo la guía";
 "tour.welcome.title" = "Bienvenido a HivePulse";
 "tour.welcome.body" = "Tu cuaderno de colmenas en el bolsillo. Aquí tienes un vistazo rápido a lo que HivePulse hace por ti.";

@@ -366,6 +366,7 @@
     <string name="tour_skip">Skip</string>
     <string name="tour_next">Next</string>
     <string name="tour_get_started">Get started</string>
+    <string name="action_release_notes">Release notes</string>
     <string name="action_show_tour">Show guided tour again</string>
     <string name="tour_welcome_title">Welcome to HivePulse</string>
     <string name="tour_welcome_body">Your hive log in your pocket. Here is a quick look at what HivePulse does for you.</string>

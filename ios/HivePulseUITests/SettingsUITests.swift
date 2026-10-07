@@ -34,6 +34,10 @@ final class SettingsUITests: XCTestCase {
 
     // MARK: - Lower-form elements (scroll required)
 
+    func test_settings_hasReleaseNotesLinkNextToHelp() {
+        XCTAssertTrue(scrollDownUntilVisible(app.buttons["releaseNotesLink"]))
+    }
+
     func test_settings_showsChangePasswordSection() {
         XCTAssertTrue(scrollDownUntilVisible(app.staticTexts["Change Password"]))
     }

@@ -333,6 +333,7 @@
     <string name="tour_skip">Saltar</string>
     <string name="tour_next">Siguiente</string>
     <string name="tour_get_started">Empezar</string>
+    <string name="action_release_notes">Notas de versión</string>
     <string name="action_show_tour">Mostrar de nuevo el recorrido</string>
     <string name="tour_welcome_title">Te damos la bienvenida a HivePulse</string>
     <string name="tour_welcome_body">Tu cuaderno de colmenar en el bolsillo. Aquí tienes un vistazo rápido a lo que HivePulse hace por ti.</string>

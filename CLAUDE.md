@@ -206,6 +206,14 @@ It hashes the views, strings and styles that decide what a screenshot shows and 
 against `docs/screenshot-manifest.json`. **Run `--update` in the same commit that adds new
 screenshots** — otherwise the notice stays on and starts being ignored.
 
+## Shipping a feature — IMPORTANT
+
+Besides the code and its tests, every user-visible feature gets: a line in `lib/releaseNotes.ts`
+(`RELEASES`, and `FEATURES` when it is new — the page `/release-notes` and the apps' Settings → Release
+notes show it), a help page or a new section in `app/[locale]/help/[slug]/content/` (4 languages), a News
+entry in `lib/news.ts`, and a row in `docs/features.md`. German is Bienenstand / Volk / Kontrolle /
+QR-Batch, French rucher / ruche / visite, Spanish colmenar / colmena / revisión.
+
 ## Implementation Status
 
 All components complete across web, Android, and iOS. No open feature gaps.

@@ -320,6 +320,7 @@
 "tour.skip" = "Skip";
 "tour.next" = "Next";
 "tour.getStarted" = "Get started";
+"action.releaseNotes" = "Release notes";
 "tour.showAgain" = "Show guided tour again";
 "tour.welcome.title" = "Welcome to HivePulse";
 "tour.welcome.body" = "Your hive log in your pocket. Here is a quick look at what HivePulse does for you.";

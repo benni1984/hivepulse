@@ -272,6 +272,7 @@
     <string name="tour_skip">Passer</string>
     <string name="tour_next">Suivant</string>
     <string name="tour_get_started">C\'est parti</string>
+    <string name="action_release_notes">Notes de version</string>
     <string name="action_show_tour">Revoir la visite guidée</string>
     <string name="tour_welcome_title">Bienvenue sur HivePulse</string>
     <string name="tour_welcome_body">Votre carnet de ruches dans la poche. Voici un aperçu rapide de ce que HivePulse fait pour vous.</string>
