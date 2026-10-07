@@ -48,6 +48,28 @@ export const NEWS: NewsEntry[] = [
     tag: 'feature',
     text: {
       en: {
+        title: 'The Beekeeping Year: What to Do When, for Your Place',
+        body: 'A new timeline shows what a beekeeper does month by month: feeding with candy in February, the first inspections, swarm control at least every 9 days, drone frames against varroa, when to move for rapeseed, acacia, linden, fir or heather and when to extract each honey, and the preparation for winter. It scrolls endlessly, opens at today and speaks your language. Give your country and postal code and every date moves to your place; you can adjust it by hand. The dates are guide values, not rules, and medicines are only ever as approved in your country. On the website and in both apps.',
+      },
+      de: {
+        title: 'Das Imkerjahr: was wann zu tun ist, für deinen Ort',
+        body: 'Ein neuer Zeitstrahl zeigt, was ein Imker Monat für Monat tut: im Februar mit Futterteig füttern, die ersten Kontrollen, Schwarmkontrolle spätestens alle 9 Tage, Drohnenrahmen gegen Varroa, wann für Raps, Akazie, Linde, Tanne oder Heide zu verlagern und wann jeder Honig zu schleudern ist, und die Vorbereitung auf den Winter. Er scrollt endlos, öffnet sich bei heute und spricht deine Sprache. Gib Land und Postleitzahl an, und jedes Datum verschiebt sich auf deinen Ort; von Hand lässt es sich anpassen. Die Termine sind Richtwerte, keine Vorschriften, und Arzneimittel gibt es nur wie in deinem Land zugelassen. Auf der Webseite und in beiden Apps.',
+      },
+      fr: {
+        title: 'L’année apicole : quoi faire et quand, pour votre lieu',
+        body: 'Une nouvelle frise montre ce qu’un apiculteur fait mois par mois : nourrir au candi en février, les premières visites, le contrôle de l’essaimage au moins tous les 9 jours, les cadres à mâles contre le varroa, quand déplacer pour le colza, l’acacia, le tilleul, le sapin ou la bruyère et quand extraire chaque miel, et la préparation de l’hiver. Elle défile sans fin, s’ouvre à aujourd’hui et parle votre langue. Indiquez votre pays et votre code postal et chaque date se décale pour votre lieu ; vous pouvez l’ajuster à la main. Les dates sont des valeurs indicatives, pas des règles, et les médicaments ne le sont que selon l’autorisation de votre pays. Sur le site et dans les deux applications.',
+      },
+      es: {
+        title: 'El año apícola: qué hacer y cuándo, para tu lugar',
+        body: 'Una nueva línea del tiempo muestra lo que hace un apicultor mes a mes: alimentar con candy en febrero, las primeras revisiones, el control de la enjambrazón como mínimo cada 9 días, los cuadros de zánganos contra la varroa, cuándo trasladar para colza, acacia, tilo, abeto o brezo y cuándo extraer cada miel, y la preparación del invierno. Se desplaza sin fin, se abre en hoy y habla tu idioma. Indica tu país y tu código postal y cada fecha se adapta a tu lugar; puedes ajustarla a mano. Las fechas son valores orientativos, no normas, y los medicamentos solo según la autorización de tu país. En la web y en ambas apps.',
+      },
+    },
+  },
+  {
+    date: '2026-10-07',
+    tag: 'feature',
+    text: {
+      en: {
         title: 'Your Day at a Glance, and Treatments You Can Plan',
         body: 'The start of the apiary list now tells you what matters: when the next inspection is due (counted from your reminder interval), how your hives are doing — fine, to watch, or alert, with the reason — and which treatments are coming up. You can plan a treatment for a single hive or for all hives of an apiary, with the product and the day, and tick it off when it is done. Once in a while the same spot can carry an announcement from us; there is no advertising network and nothing is tracked. The website has it now; the apps follow with their next versions.',
       },

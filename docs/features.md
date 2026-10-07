@@ -42,6 +42,16 @@ Platforms: **W** website, **I** iPhone app, **A** Android app.
 
 The announcement card is text the server sends (`announcement_*` settings); there is no advertising SDK.
 
+## The beekeeping year
+
+| Feature | Where | W | I | A | Contract |
+|---------|-------|:-:|:-:|:-:|----------|
+| Endless timeline of what to do when (feeding, inspections, swarm control, drone frames, moving and extracting per honey, varroa, winter), in four languages | Dashboard menu; calendar icon in the apiary list toolbar | ✔ | ✔ | ✔ | Beekeeping Year |
+| Moved to the beekeeper's place by country and postal code (about 4 days per degree of latitude), adjustable by hand | Profile; Settings → Region | ✔ | ✔ | ✔ | Beekeeping Year |
+
+The content is `backend/app/beekeeping_year.py` (dates for central Germany), the arithmetic `backend/app/season.py`.
+Guide values only; medicines subject to the approvals of the country.
+
 ## Moving hives
 
 | Feature | Where | W | I | A | Contract |

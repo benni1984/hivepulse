@@ -16,7 +16,7 @@ vi.mock('next/link', () => ({
 
 import HelpTopicPage from '@/app/[locale]/help/[slug]/page';
 
-const NEW_TOPICS = ['sharing', 'moving-hives', 'home-and-treatments'] as const;
+const NEW_TOPICS = ['sharing', 'moving-hives', 'home-and-treatments', 'beekeeping-year'] as const;
 const LOCALES = ['en', 'de', 'fr', 'es'] as const;
 const MESSAGES = { en, de, fr, es } as const;
 

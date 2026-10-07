@@ -74,6 +74,14 @@ export const HELP_TOPICS: HelpTopic[] = [
     group: 'Inspections & data',
   },
   {
+    slug: 'beekeeping-year',
+    title: 'Beekeeping year',
+    description: 'What to do when, month by month: feeding, inspections, swarm control, drone frames, moving for honey, extracting and preparing for winter, moved to your own place.',
+    icon: 'fa-calendar-days',
+    platforms: ['web', 'ios', 'android'],
+    group: 'Inspections & data',
+  },
+  {
     slug: 'custom-fields',
     title: 'Custom inspection fields',
     description: 'Extend the built-in inspection form with your own fields — text, numbers, checkboxes, dropdowns — scoped to your account or a specific apiary.',
