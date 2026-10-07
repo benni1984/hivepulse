@@ -30,6 +30,8 @@ data class MoveFormState(
     val hives: List<HiveOut> = emptyList(),
     /** The caller's own other apiaries: not where the hives already are, and not somebody else's. */
     val targets: List<ApiaryOut> = emptyList(),
+    /** Shortcuts back to where the hives stood before; empty until the history is loaded, or without any. */
+    val returns: List<ReturnSuggestion> = emptyList(),
     val selected: Set<String> = emptySet(),
     /** An apiary id, [NEW_PLACE], or empty while nothing is chosen. */
     val target: String = "",
@@ -85,14 +87,26 @@ class MoveHivesViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         val hives = runCatching { hiveRepo.listForApiary(apiaryId) }
         val apiaries = runCatching { apiaryRepo.list() }
+        val targets = apiaries.getOrDefault(emptyList()).filter { a -> a.id != apiaryId && a.isOwner }
+        val hiveList = hives.getOrDefault(emptyList())
         _state.update {
             it.copy(
                 isLoading = false,
-                hives = hives.getOrDefault(emptyList()),
-                targets = apiaries.getOrDefault(emptyList()).filter { a -> a.id != apiaryId && a.isOwner },
+                hives = hiveList,
+                targets = targets,
                 error = (hives.exceptionOrNull() ?: apiaries.exceptionOrNull())?.message,
             )
         }
+        // Only a shortcut: without the history the form works as it did.
+        runCatching { moveRepo.overview(null, null) }.onSuccess { history ->
+            val returns = MoveRoutes.returnSuggestions(history, hiveList.map { h -> h.id }, apiaryId, targets.map { a -> a.id to a.name })
+            _state.update { it.copy(returns = returns) }
+        }
+    }
+
+    /** Picks the hives and the place they came from; the day and forage stay for the beekeeper to confirm. */
+    fun sendBack(suggestion: ReturnSuggestion) = _state.update {
+        it.copy(selected = suggestion.hiveIds.toSet(), target = suggestion.apiaryId)
     }
 
     fun toggle(id: String) = _state.update {

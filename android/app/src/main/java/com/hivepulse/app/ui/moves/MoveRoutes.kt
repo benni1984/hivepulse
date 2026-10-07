@@ -49,7 +49,44 @@ data class MoveRoute(
     val colorIndex: Int,
 )
 
+/** A way back: the place some of the hives stood before they came to this apiary, and which hives those are. */
+data class ReturnSuggestion(val apiaryId: String, val name: String, val hiveIds: List<String>)
+
 object MoveRoutes {
+
+    /**
+     * "Back to where they came from": for the hives standing in [apiaryId], the place each one was taken from
+     * when it came here, grouped by that place. A hive that never moved here, or whose previous place is gone
+     * or not among [places] (not the caller's own), is left out: there is nowhere to send it back to.
+     * The same rule as the website's.
+     */
+    fun returnSuggestions(
+        moves: List<HiveMoveOut>,
+        hiveIds: List<String>,
+        apiaryId: String,
+        places: List<Pair<String, String>>,
+    ): List<ReturnSuggestion> {
+        val here = hiveIds.toSet()
+        val latest = HashMap<String, HiveMoveOut>()
+        for (move in moves) {
+            if (move.hiveId !in here || move.to.apiaryId != apiaryId) continue
+            val seen = latest[move.hiveId]
+            val newer = seen == null || move.movedOn > seen.movedOn ||
+                (move.movedOn == seen.movedOn && move.createdAt > seen.createdAt)
+            if (newer) latest[move.hiveId] = move
+        }
+
+        val names = places.toMap()
+        val byPlace = LinkedHashMap<String, MutableList<String>>()
+        for (hiveId in hiveIds) {
+            val from = latest[hiveId]?.from?.apiaryId ?: continue
+            if (from == apiaryId || from !in names) continue
+            byPlace.getOrPut(from) { mutableListOf() }.add(hiveId)
+        }
+        return byPlace
+            .map { (id, ids) -> ReturnSuggestion(id, names.getValue(id), ids) }
+            .sortedWith(compareByDescending<ReturnSuggestion> { it.hiveIds.size }.thenBy { it.name })
+    }
 
     /**
      * The journeys on the map: per hive, the place it started from followed by every place it was taken

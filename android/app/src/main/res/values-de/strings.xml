@@ -451,6 +451,8 @@
     <string name="invitation_invalid_link">Das sieht nicht nach einem Einladungslink aus.</string>
     <string name="moves_title">Völker verlagern</string>
     <string name="moves_select_hives">Welche Völker</string>
+    <string name="moves_back_hint">Wo sie vorher standen</string>
+    <string name="moves_back_to">Zurück nach %1$s (%2$d)</string>
     <string name="moves_select_all">Alle oder keine wählen</string>
     <string name="moves_target">Verlagern nach</string>
     <string name="moves_target_new">Ein neuer Ort</string>

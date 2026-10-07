@@ -78,6 +78,17 @@ fun MoveHivesScreen(
         ) {
             state.error?.let { item { ErrorBanner(it) { vm.clearError() } } }
 
+            if (state.returns.isNotEmpty()) {
+                item { Text(stringResource(R.string.moves_back_hint), style = MaterialTheme.typography.titleSmall) }
+                items(state.returns, key = { "back-" + it.apiaryId }) { suggestion ->
+                    OutlinedButton(
+                        onClick = { vm.sendBack(suggestion) },
+                        modifier = Modifier.fillMaxWidth().testTag("moveBack-" + suggestion.apiaryId),
+                    ) {
+                        Text(stringResource(R.string.moves_back_to, suggestion.name, suggestion.hiveIds.size))
+                    }
+                }
+            }
             item { Text(stringResource(R.string.moves_select_hives), style = MaterialTheme.typography.titleSmall) }
             item {
                 TextButton(onClick = vm::toggleAll, modifier = Modifier.testTag("moveSelectAll")) {

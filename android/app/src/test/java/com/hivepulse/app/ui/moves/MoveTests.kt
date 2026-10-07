@@ -217,6 +217,7 @@ class MoveHivesViewModelTest {
         coEvery { apiaryRepo.list() } returns listOf(
             apiary("a-home", "Home"), apiary("a-heath", "Heath"), apiary("a-theirs", "Theirs", access = "shared"),
         )
+        coEvery { moveRepo.overview(any(), any()) } returns emptyList()
     }
 
     @After fun tearDown() { Dispatchers.resetMain(); clearAllMocks() }
@@ -430,5 +431,123 @@ class MovesOverviewViewModelTest {
 
         assertEquals("down", vm.state.value.error)
         assertFalse(vm.state.value.isLoading)
+    }
+}
+
+// ── Back to where they came from ─────────────────────────────────────────────────────────────
+
+private fun at(id: String?, name: String) = MovePlaceOut(id, name, null, null)
+
+class ReturnSuggestionTest {
+
+    private val places = listOf("a-home" to "Home", "a-forest" to "Forest", "a-heath" to "Heath")
+
+    /** A move into Heath, from Home unless said otherwise. */
+    private fun intoHeath(
+        id: String, hive: String, movedOn: String = "2026-05-12", createdAt: String = "2026-05-12T08:00:00",
+        from: MovePlaceOut = at("a-home", "Home"),
+    ) = move(id, hive = hive, movedOn = movedOn, createdAt = createdAt, from = from, to = at("a-heath", "Heath"))
+
+    @Test
+    fun `hives go back to their previous place, grouped by that place`() {
+        val moves = listOf(
+            intoHeath("m1", "1"), intoHeath("m2", "2"), intoHeath("m3", "3", from = at("a-forest", "Forest")),
+        )
+
+        val result = MoveRoutes.returnSuggestions(moves, listOf("h-1", "h-2", "h-3"), "a-heath", places)
+
+        assertEquals(
+            listOf(ReturnSuggestion("a-home", "Home", listOf("h-1", "h-2")), ReturnSuggestion("a-forest", "Forest", listOf("h-3"))),
+            result,
+        )
+    }
+
+    @Test
+    fun `the latest move that brought the hive here decides`() {
+        val moves = listOf(
+            intoHeath("old", "1", movedOn = "2026-04-01"),
+            intoHeath("new", "1", movedOn = "2026-06-01", from = at("a-forest", "Forest")),
+        )
+
+        assertEquals(listOf("a-forest"), MoveRoutes.returnSuggestions(moves, listOf("h-1"), "a-heath", places).map { it.apiaryId })
+    }
+
+    @Test
+    fun `two moves of one day are told apart by when they were made`() {
+        val moves = listOf(
+            intoHeath("late", "1", createdAt = "2026-05-12T12:00:00", from = at("a-forest", "Forest")),
+            intoHeath("early", "1", createdAt = "2026-05-12T08:00:00"),
+        )
+
+        assertEquals(listOf("a-forest"), MoveRoutes.returnSuggestions(moves, listOf("h-1"), "a-heath", places).map { it.apiaryId })
+    }
+
+    @Test
+    fun `hives that did not move here or are not here are left out`() {
+        val moves = listOf(intoHeath("m1", "1"), intoHeath("m2", "9"))
+
+        assertEquals(
+            listOf(ReturnSuggestion("a-home", "Home", listOf("h-1"))),
+            MoveRoutes.returnSuggestions(moves, listOf("h-1", "h-2"), "a-heath", places),
+        )
+    }
+
+    @Test
+    fun `a previous place that is gone or not the callers own is left out`() {
+        val gone = intoHeath("m1", "1", from = at(null, "Old place"))
+        val foreign = intoHeath("m2", "2", from = at("a-theirs", "Theirs"))
+
+        assertTrue(MoveRoutes.returnSuggestions(listOf(gone, foreign), listOf("h-1", "h-2"), "a-heath", places).isEmpty())
+    }
+
+    @Test
+    fun `no history offers nothing`() {
+        assertTrue(MoveRoutes.returnSuggestions(emptyList(), listOf("h-1"), "a-heath", places).isEmpty())
+    }
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+class MoveHivesReturnViewModelTest {
+
+    private val hiveRepo = mockk<HiveRepository>()
+    private val apiaryRepo = mockk<ApiaryRepository>()
+    private val moveRepo = mockk<MoveRepository>()
+
+    @Before fun setUp() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        coEvery { hiveRepo.listForApiary("a-heath") } returns listOf(hive("h-1", "Hive 1"), hive("h-2", "Hive 2"))
+        coEvery { apiaryRepo.list() } returns listOf(apiary("a-home", "Home"), apiary("a-heath", "Heath"))
+    }
+
+    @After fun tearDown() { Dispatchers.resetMain(); clearAllMocks() }
+
+    private fun viewModel() = MoveHivesViewModel(SavedStateHandle(mapOf("apiaryId" to "a-heath")), hiveRepo, apiaryRepo, moveRepo)
+
+    @Test
+    fun `the shortcut picks the hives and the place they came from`() = runTest {
+        coEvery { moveRepo.overview(any(), any()) } returns listOf(
+            move("m1", hive = "1", from = at("a-home", "Home"), to = at("a-heath", "Heath")),
+        )
+        val vm = viewModel()
+
+        assertEquals(listOf("Home"), vm.state.value.returns.map { it.name })
+        vm.sendBack(vm.state.value.returns[0])
+
+        assertEquals(setOf("h-1"), vm.state.value.selected)
+        assertEquals("a-home", vm.state.value.target)
+        assertTrue(vm.state.value.canSubmit)
+        assertEquals(listOf("h-1"), vm.state.value.request().hiveIds)
+        assertEquals("a-home", vm.state.value.request().toApiaryId)
+    }
+
+    @Test
+    fun `without a history the form works as before`() = runTest {
+        coEvery { moveRepo.overview(any(), any()) } throws RuntimeException("offline")
+
+        val vm = viewModel()
+
+        assertTrue(vm.state.value.returns.isEmpty())
+        assertEquals(listOf("a-home"), vm.state.value.targets.map { it.id })
+        assertNull(vm.state.value.error)
     }
 }

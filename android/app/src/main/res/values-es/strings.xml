@@ -418,6 +418,8 @@
     <string name="invitation_invalid_link">Eso no parece un enlace de invitación.</string>
     <string name="moves_title">Trasladar colmenas</string>
     <string name="moves_select_hives">Qué colmenas</string>
+    <string name="moves_back_hint">Dónde estaban antes</string>
+    <string name="moves_back_to">Volver a %1$s (%2$d)</string>
     <string name="moves_select_all">Seleccionar todas o ninguna</string>
     <string name="moves_target">Trasladar a</string>
     <string name="moves_target_new">Un lugar nuevo</string>
