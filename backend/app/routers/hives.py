@@ -10,7 +10,7 @@ from app.utils.qr import make_qr_png
 from app.access import PARTIAL, Scope, apiary_or_404, hive_or_404, remove_shares
 from app.deps import CurrentUser, DB
 from app.i18n import error
-from app.models import Hive, QrBatch, QrToken
+from app.models import Hive, PlannedTreatment, QrBatch, QrToken
 from app.schemas import HiveCreate, HiveInitialize, HiveOut, HiveUpdate, PaginatedResponse, QrScanUnlinked
 
 router = APIRouter(tags=["hives"])
@@ -177,6 +177,7 @@ def delete_hive(
 ):
     hive, _, _ = hive_or_404(db, current_user, hive_id, accept_language, need="owner")
     remove_shares(db, hive_id=hive.id)
+    db.query(PlannedTreatment).filter(PlannedTreatment.hive_id == hive.id).delete(synchronize_session=False)
     db.delete(hive)
     db.commit()
 

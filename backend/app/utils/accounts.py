@@ -10,7 +10,9 @@ from __future__ import annotations
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
-from app.models import Apiary, FieldDefinition, Hive, HiveMove, Inspection, QrBatch, QrToken, Share, User
+from app.models import (
+    Apiary, FieldDefinition, Hive, HiveMove, Inspection, PlannedTreatment, QrBatch, QrToken, Share, User,
+)
 
 
 def _first_accepted(db: Session, **target) -> list[Share]:
@@ -104,6 +106,9 @@ def hand_over_shared(db: Session, user: User) -> None:
     db.query(HiveMove).filter(HiveMove.created_by_id == uid).update(
         {HiveMove.created_by_id: None}, synchronize_session=False
     )
+    db.query(PlannedTreatment).filter(PlannedTreatment.created_by_id == uid).update(
+        {PlannedTreatment.created_by_id: None}, synchronize_session=False
+    )
     db.flush()
 
 
@@ -120,6 +125,11 @@ def delete_account(db: Session, user: User) -> None:
     leaving_hives = db.query(Hive.id).filter(
         Hive.apiary_id.in_(db.query(Apiary.id).filter(Apiary.user_id == uid))
     )
+    # Plans for what is leaving go with it; plans for what was handed over stay with their target.
+    db.query(PlannedTreatment).filter(PlannedTreatment.hive_id.in_(leaving_hives)).delete(synchronize_session=False)
+    db.query(PlannedTreatment).filter(
+        PlannedTreatment.apiary_id.in_(db.query(Apiary.id).filter(Apiary.user_id == uid))
+    ).delete(synchronize_session=False)
     # Delete in FK order: inspections and moves → hives → user (the cascade handles the rest).
     db.query(HiveMove).filter(HiveMove.hive_id.in_(leaving_hives)).delete(synchronize_session=False)
     db.query(Inspection).filter(Inspection.hive_id.in_(leaving_hives)).delete(synchronize_session=False)

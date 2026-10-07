@@ -262,6 +262,34 @@ class HiveMove(Base):
     created_by = relationship("User", foreign_keys=[created_by_id])
 
 
+class PlannedTreatment(Base):
+    """A treatment that is going to happen: which product, for which hive or apiary, by when.
+
+    What has already happened stays the `treatment_applied` text of an inspection; this is the plan,
+    and the home summary shows what is due.
+    """
+    __tablename__ = "planned_treatments"
+
+    id = Column(String, primary_key=True, default=_uuid)
+    # Exactly one of the two: one hive, or every hive of an apiary.
+    hive_id = Column(String, ForeignKey("hives.id", ondelete="CASCADE"), nullable=True, index=True)
+    apiary_id = Column(String, ForeignKey("apiaries.id", ondelete="CASCADE"), nullable=True, index=True)
+    product = Column(String(200), nullable=False)
+    due_on = Column(Date, nullable=False, index=True)
+    note = Column(Text, nullable=True)
+    done_on = Column(Date, nullable=True)
+    created_by_id = Column(String, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    hive = relationship("Hive", foreign_keys=[hive_id])
+    apiary = relationship("Apiary", foreign_keys=[apiary_id])
+    created_by = relationship("User", foreign_keys=[created_by_id])
+
+    __table_args__ = (
+        CheckConstraint("(apiary_id IS NULL) <> (hive_id IS NULL)", name="ck_treatment_one_target"),
+    )
+
+
 class Share(Base):
     """One beekeeper letting another work on an apiary, or on a single hive.
 

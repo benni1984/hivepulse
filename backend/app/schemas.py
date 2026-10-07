@@ -496,6 +496,118 @@ class InspectionOut(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# Planned treatments and the home summary
+# ---------------------------------------------------------------------------
+
+class TreatmentCreate(BaseModel):
+    hive_id: Optional[str] = None
+    apiary_id: Optional[str] = None
+    product: str = Field(min_length=1, max_length=200)
+    due_on: date
+    note: Optional[str] = Field(default=None, max_length=2000)
+
+    @model_validator(mode="after")
+    def exactly_one_target(self):
+        if bool(self.hive_id) == bool(self.apiary_id):
+            raise ValueError("give exactly one of hive_id and apiary_id")
+        if not self.product.strip():
+            raise ValueError("product cannot be empty")
+        return self
+
+
+class TreatmentUpdate(BaseModel):
+    product: Optional[str] = Field(default=None, min_length=1, max_length=200)
+    due_on: Optional[date] = None
+    note: Optional[str] = Field(default=None, max_length=2000)
+
+
+class TreatmentDone(BaseModel):
+    done_on: Optional[date] = None
+
+    @model_validator(mode="after")
+    def not_in_the_future(self):
+        if self.done_on is not None and self.done_on > date.today() + timedelta(days=1):
+            raise ValueError("done_on cannot be in the future")
+        return self
+
+
+class TreatmentTarget(BaseModel):
+    type: str
+    id: str
+    name: str
+
+
+class PlannedTreatmentOut(BaseModel):
+    id: str
+    target: TreatmentTarget
+    apiary_name: Optional[str] = None
+    product: str
+    due_on: date
+    note: Optional[str] = None
+    done_on: Optional[date] = None
+    overdue: bool = False
+    created_by_name: Optional[str] = None
+    created_at: datetime
+
+
+class HomeInspection(BaseModel):
+    hive_id: str
+    hive_name: str
+    apiary_name: str
+    last_inspection_on: Optional[date] = None
+    due_on: date
+    overdue_days: int
+
+
+class HomeInspections(BaseModel):
+    interval_days: int
+    overdue_count: int
+    due_soon_count: int
+    next: List[HomeInspection]
+
+
+class HomeAttention(BaseModel):
+    hive_id: str
+    hive_name: str
+    apiary_name: str
+    status: str
+    reasons: List[str]
+
+
+class HomeHealth(BaseModel):
+    ok: int
+    watch: int
+    alert: int
+    unknown: int
+    attention: List[HomeAttention]
+
+
+class HomeTreatments(BaseModel):
+    open_count: int
+    overdue_count: int
+    upcoming: List[PlannedTreatmentOut]
+
+
+class HomeAd(BaseModel):
+    id: str
+    label: str
+    title: str
+    body: str
+    url: Optional[str] = None
+
+
+class HomeOut(BaseModel):
+    today: date
+    in_season: bool
+    apiary_count: int
+    hive_count: int
+    inspections: HomeInspections
+    health: HomeHealth
+    treatments: HomeTreatments
+    ad: Optional[HomeAd] = None
+
+
+# ---------------------------------------------------------------------------
 # Moving hives
 # ---------------------------------------------------------------------------
 

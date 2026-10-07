@@ -109,6 +109,12 @@ MESSAGES = {
         "de": "Diese Charge enthält Codes, die Bienenstöcken zugeordnet sind, und kann nicht gelöscht werden.",
         "es": "Este lote contiene códigos asociados a colmenas y no se puede eliminar.",
     },
+    "TREATMENT_NOT_FOUND": {
+        "en": "This treatment does not exist.",
+        "fr": "Ce traitement n'existe pas.",
+        "de": "Diese Behandlung gibt es nicht.",
+        "es": "Este tratamiento no existe.",
+    },
     "NOTHING_TO_MOVE": {
         "en": "These hives already stand there.",
         "fr": "Ces ruches sont déjà à cet endroit.",
