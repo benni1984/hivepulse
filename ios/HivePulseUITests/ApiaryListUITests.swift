@@ -97,8 +97,10 @@ final class ApiaryListUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Make the hives winter-proof"].waitForExistence(timeout: 5)
                       || app.staticTexts["Swarm control: look for queen cells"].exists)
         // The timeline opens at today, so the region line above it has scrolled out of the list.
-        for _ in 0..<5 where !app.buttons["changeRegionButton"].exists {
-            app.swipeDown()
+        // The row is the first of the list, so swipe until it is back; a parent's accessibility
+        // identifier would also hide the button's own, which is why the row carries none.
+        for _ in 0..<40 where !app.buttons["changeRegionButton"].exists {
+            app.swipeDown(velocity: .fast)
         }
         XCTAssertTrue(app.buttons["changeRegionButton"].waitForExistence(timeout: 5))
     }

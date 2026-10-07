@@ -96,7 +96,6 @@ struct BeekeepingYearView: View {
             .font(.subheadline.weight(.semibold))
             .accessibilityIdentifier("changeRegionButton")
         }
-        .accessibilityIdentifier("calendarRegion")
     }
 
     @ViewBuilder
