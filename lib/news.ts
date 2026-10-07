@@ -26,6 +26,28 @@ export const NEWS: NewsEntry[] = [
     tag: 'feature',
     text: {
       en: {
+        title: 'Your Day at a Glance, and Treatments You Can Plan',
+        body: 'The start of the apiary list now tells you what matters: when the next inspection is due (counted from your reminder interval), how your hives are doing — fine, to watch, or alert, with the reason — and which treatments are coming up. You can plan a treatment for a single hive or for all hives of an apiary, with the product and the day, and tick it off when it is done. Once in a while the same spot can carry an announcement from us; there is no advertising network and nothing is tracked. The website has it now; the apps follow with their next versions.',
+      },
+      de: {
+        title: 'Dein Tag im Überblick und Behandlungen, die du planen kannst',
+        body: 'Der Anfang der Bienenstand-Liste zeigt dir jetzt, was wichtig ist: wann die nächste Kontrolle fällig ist (gerechnet aus deinem Erinnerungs-Intervall), wie es deinen Völkern geht — in Ordnung, beobachten oder Alarm, mit dem Grund — und welche Behandlungen anstehen. Du kannst eine Behandlung für ein einzelnes Volk oder für alle Völker eines Bienenstands planen, mit Mittel und Tag, und sie abhaken, wenn sie erledigt ist. Ab und zu kann an derselben Stelle eine Mitteilung von uns stehen; es gibt kein Werbenetzwerk und nichts wird verfolgt. Auf der Webseite gibt es das jetzt, die Apps folgen mit ihren nächsten Versionen.',
+      },
+      fr: {
+        title: 'Votre journée en un coup d’œil, et des traitements à planifier',
+        body: 'Le haut de la liste des ruchers vous dit maintenant ce qui compte : quand la prochaine visite est due (calculée d’après votre intervalle de rappel), comment vont vos ruches — en ordre, à surveiller ou en alerte, avec la raison — et quels traitements approchent. Vous pouvez planifier un traitement pour une seule ruche ou pour toutes les ruches d’un rucher, avec le produit et le jour, et le cocher une fois fait. De temps en temps, cet espace peut porter une annonce de notre part ; il n’y a pas de régie publicitaire et rien n’est suivi. Le site l’offre dès maintenant ; les applications suivent avec leurs prochaines versions.',
+      },
+      es: {
+        title: 'Tu día de un vistazo y tratamientos que puedes planificar',
+        body: 'El inicio de la lista de colmenares ahora te dice lo que importa: cuándo toca la próxima revisión (calculada con tu intervalo de recordatorio), cómo están tus colmenas — bien, a vigilar o en alerta, con el motivo — y qué tratamientos se acercan. Puedes planificar un tratamiento para una sola colmena o para todas las de un colmenar, con el producto y el día, y marcarlo cuando esté hecho. De vez en cuando ese mismo espacio puede llevar un anuncio nuestro; no hay red publicitaria y no se rastrea nada. La web ya lo tiene; las aplicaciones lo reciben con sus próximas versiones.',
+      },
+    },
+  },
+  {
+    date: '2026-10-07',
+    tag: 'feature',
+    text: {
+      en: {
         title: 'Taking Hives to the Bloom, and Seeing Where They Went',
         body: 'Migratory beekeepers can now move hives as one action: pick the hives, the new place (an existing apiary or a new one, with an address), the day and the forage, from acacia and rapeseed to fir and heather. Every move is kept. Each hive shows where it has stood, and a map of moves draws the journey of every hive, numbered stop by stop. Only the owner of an apiary can move its hives. The website has it now; the apps follow with their next versions.',
       },
