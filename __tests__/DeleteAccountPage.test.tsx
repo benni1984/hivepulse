@@ -11,6 +11,7 @@ import en from '@/messages/en.json';
 import de from '@/messages/de.json';
 import fr from '@/messages/fr.json';
 import es from '@/messages/es.json';
+import pl from '@/messages/pl.json';
 
 describe('DeleteAccountPage', () => {
   it('renders the steps, what goes and what stays', async () => {
@@ -37,14 +38,14 @@ describe('DeleteAccountPage', () => {
 });
 
 describe('the deletion texts', () => {
-  const locales = { en, de, fr, es } as Record<string, { deleteAccount: Record<string, string> }>;
+  const locales = { en, de, fr, es, pl } as Record<string, { deleteAccount: Record<string, string> }>;
   const required = [
     'title', 'intro', 'inAppTitle', 'step1', 'step2', 'step3', 'immediate',
     'removedTitle', 'removed1', 'removed2', 'removed3', 'removed4',
     'keptTitle', 'keptBody', 'retentionTitle', 'retentionBody', 'noAccessTitle', 'noAccessBody',
   ];
 
-  it('exist in all four languages', () => {
+  it('exist in all five languages', () => {
     for (const [name, messages] of Object.entries(locales)) {
       for (const key of required) {
         expect(messages.deleteAccount?.[key], `${name} is missing ${key}`).toBeTruthy();

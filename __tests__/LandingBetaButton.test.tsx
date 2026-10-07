@@ -30,6 +30,7 @@ import en from '@/messages/en.json';
 import de from '@/messages/de.json';
 import fr from '@/messages/fr.json';
 import es from '@/messages/es.json';
+import pl from '@/messages/pl.json';
 
 describe('landing page: beta button in the download section', () => {
   beforeEach(() => {
@@ -68,7 +69,7 @@ describe('landing page: beta button in the download section', () => {
   });
 
   it('has its label in every language', () => {
-    for (const messages of [en, de, fr, es]) {
+    for (const messages of [en, de, fr, es, pl]) {
       expect((messages as { dl: { beta?: string } }).dl.beta).toBeTruthy();
     }
   });

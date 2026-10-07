@@ -925,7 +925,7 @@ A timeline of what a beekeeper does when: feeding with candy in February, the fi
 control at least every nine days, drone frames against varroa, when to move for which honey and when to
 extract it, preparing for winter. The three clients show the same endless timeline.
 
-The content lives on the server (`backend/app/beekeeping_year.py`, four languages) and is written for a
+The content lives on the server (`backend/app/beekeeping_year.py`, five languages) and is written for a
 reference region, central Germany. It is moved earlier or later for the beekeeper's own place. The dates
 are guide values from usual beekeeping practice, not rules: bloom and weather decide, and medicines are
 subject to the approvals of the country. Clients say so under the timeline.

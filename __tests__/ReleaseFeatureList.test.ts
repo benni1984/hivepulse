@@ -17,7 +17,7 @@ function allTexts(): { where: string; text: Localized }[] {
 }
 
 describe('release notes data', () => {
-  it('has every text in all four languages', () => {
+  it('has every text in all five languages', () => {
     for (const { where, text } of allTexts()) {
       for (const locale of LOCALES) {
         expect(text[locale]?.trim(), `${where} is missing ${locale}`).toBeTruthy();
