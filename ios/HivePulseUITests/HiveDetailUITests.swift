@@ -44,8 +44,6 @@ final class HiveDetailUITests: XCTestCase {
     }
 
     func test_hiveDetail_canMoveThisHiveWithItTicked() {
-        navigateToHiveDetail()
-
         let move = app.buttons["moveThisHiveButton"]
         XCTAssertTrue(move.waitForExistence(timeout: 5))
         move.tap()
