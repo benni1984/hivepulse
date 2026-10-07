@@ -128,6 +128,8 @@ data class HiveCreateRequest(
     @SerializedName("hive_type")        val hiveType: String,
     @SerializedName("acquisition_date") val acquisitionDate: String? = null,
     val notes: String? = null,
+)
+
 // MARK: - The beekeeper's year (see "Beekeeping Year" in docs/api-contract.md)
 /** Where the beekeeper keeps bees, and how far that moves the calendar against central Germany. */
 data class RegionOut(

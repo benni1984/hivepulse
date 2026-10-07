@@ -86,6 +86,9 @@ class ApiaryWithDataTest {
         composeRule.waitUntil(timeoutMillis = 5_000) {
             composeRule.onAllNodesWithTag("hiveEditName").fetchSemanticsNodes().isNotEmpty()
         }
+    }
+
+    @Test
     fun apiaryList_opensTheBeekeepingYearWithTheRegionAndTheEntries() {
         val region = com.hivepulse.app.data.api.RegionOut("DE", "69123", 49.4, 8.7, 0, 2, "postal_code", true)
         coEvery { apiService.region() } returns region

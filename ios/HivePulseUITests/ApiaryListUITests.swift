@@ -68,6 +68,8 @@ final class ApiaryListUITests: XCTestCase {
 
         XCTAssertTrue(app.textFields["hiveEditName"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.navigationBars["New Hive"].exists)
+    }
+
     // MARK: - The beekeeper's year
 
     func test_apiaryList_opensTheBeekeepingYearWithTheRegionAndTheEntries() {
