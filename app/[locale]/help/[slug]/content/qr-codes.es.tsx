@@ -122,6 +122,13 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
           <p>Cada token QR solo puede vincularse a una colmena. Si necesita reutilizar una etiqueta (por ejemplo, la colmena se dividió), genere un nuevo lote — los tokens antiguos permanecen vinculados a su colmena original.</p>
         </div>
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Eliminar un lote de QR</h2>
+        <p>
+          Un lote que ya no necesitas se puede eliminar desde la lista de lotes: el icono de papelera en la web, <em>Eliminar</em> en el lote en las apps. Solo funciona mientras ningún código del lote esté unido a una colmena. Escaneando la pegatina se vuelve a encontrar una colmena, así que el lote se queda hasta que esas colmenas ya no existan; el botón de eliminar no se ofrece para él.
+        </p>
+      </section>
     </>
   );
 }

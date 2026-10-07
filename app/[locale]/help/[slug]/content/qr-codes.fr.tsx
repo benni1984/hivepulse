@@ -122,6 +122,13 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
           <p>Chaque jeton QR ne peut être lié qu'à une seule ruche. Si vous devez réutiliser une étiquette (par ex. la ruche a été divisée), générez un nouveau lot — les anciens jetons restent liés à leur ruche d'origine.</p>
         </div>
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Supprimer un lot de QR codes</h2>
+        <p>
+          Un lot dont vous n&rsquo;avez plus besoin peut être supprimé depuis la liste des lots : l&rsquo;icône de corbeille sur le site, <em>Supprimer</em> sur le lot dans les applications. Cela ne marche que tant qu&rsquo;aucun code du lot n&rsquo;est attaché à une ruche. C&rsquo;est en scannant l&rsquo;autocollant qu&rsquo;on retrouve une ruche, le lot reste donc tant que ces ruches existent ; le bouton de suppression n&rsquo;est pas proposé pour lui.
+        </p>
+      </section>
     </>
   );
 }

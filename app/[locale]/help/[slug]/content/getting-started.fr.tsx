@@ -114,10 +114,23 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
         <p>
           À votre première connexion à l'application iPhone ou Android, une courte visite à faire défiler présente
           les QR codes, les visites, les statistiques, les rappels et le suivi des frelons. Passez-la quand vous voulez
-          et relancez-la plus tard depuis <strong>Réglages → Revoir la visite guidée</strong>.
+          et relancez-la plus tard depuis <strong>Paramètres → Revoir la visite guidée</strong>.
         </p>
       </section>
 
+
+      <section className="help-section">
+        <h2 className="help-section-title">S&rsquo;orienter dans les applications</h2>
+        <p>
+          Les applications iPhone et Android sont construites de la même façon.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Onglets en bas :</strong> Ruchers, Scanner, Frelons, Membres, Paramètres.</li>
+          <li><strong>Barre de la liste des ruchers :</strong> statistiques, lots de QR codes, carte des déplacements, lien d&rsquo;invitation.</li>
+          <li><strong>Créer quelque chose</strong> (un rucher, une visite, un lot de QR codes, un champ personnalisé), c&rsquo;est toujours le bouton ambre en bas à droite.</li>
+          <li><strong>Les paramètres</strong> contiennent cette aide, les notes de version avec la liste complète des fonctions et la visite guidée.</li>
+        </ul>
+      </section>
     </>
   );
 }

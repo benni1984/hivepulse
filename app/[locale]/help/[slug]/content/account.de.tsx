@@ -117,6 +117,16 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
           Ihre Daten bleiben erhalten — das Abmelden löscht nichts.
         </p>
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Mit Apple oder Google anmelden</h2>
+        <p>
+          Du kannst dich statt mit Passwort mit deinem Apple- oder Google-Konto anmelden: Apple auf dem iPhone und der Webseite, Google auf Android, dem iPhone und der Webseite. Ist die E-Mail-Adresse dieselbe, landest du in dem Konto, das du schon hattest, mit allen Völkern. HivePulse erhält von ihnen nur deinen Namen und deine Adresse, nie ein Passwort.
+        </p>
+        <p>
+          Ein so angelegtes Konto hat kein Passwort, deshalb wird <em>Passwort ändern</em> dafür nicht angezeigt. Das E-Mail-Formular bleibt als unauffälliger Link unter den Knöpfen erreichbar.
+        </p>
+      </section>
     </>
   );
 }

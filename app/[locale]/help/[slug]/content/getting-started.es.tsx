@@ -118,6 +118,19 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
         </p>
       </section>
 
+
+      <section className="help-section">
+        <h2 className="help-section-title">Orientarse en las apps</h2>
+        <p>
+          Las apps de iPhone y Android están organizadas igual.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Pestañas abajo:</strong> Colmenares, Escanear, Avispas, Miembros, Ajustes.</li>
+          <li><strong>Barra de la lista de colmenares:</strong> estadísticas, lotes de QR, mapa de traslados, enlace de invitación.</li>
+          <li><strong>Crear algo</strong> (un colmenar, una revisión, un lote de QR, un campo propio) es siempre el botón ámbar de abajo a la derecha.</li>
+          <li><strong>Los ajustes</strong> incluyen esta ayuda, las notas de versión con la lista completa de funciones y el recorrido guiado.</li>
+        </ul>
+      </section>
     </>
   );
 }

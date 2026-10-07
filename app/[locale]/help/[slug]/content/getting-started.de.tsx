@@ -118,6 +118,19 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
         </p>
       </section>
 
+
+      <section className="help-section">
+        <h2 className="help-section-title">Sich in den Apps zurechtfinden</h2>
+        <p>
+          Die Apps für iPhone und Android sind gleich aufgebaut.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Reiter unten:</strong> Bienenstände, Scannen, Hornissen, Mitglieder, Einstellungen.</li>
+          <li><strong>Leiste der Bienenstand-Liste:</strong> Statistik, QR-Batches, Wanderkarte, Einladungslink.</li>
+          <li><strong>Etwas anlegen</strong> (einen Bienenstand, eine Kontrolle, einen QR-Batch, ein eigenes Feld) ist immer der bernsteinfarbene Knopf unten rechts.</li>
+          <li><strong>Die Einstellungen</strong> enthalten diese Hilfe, die Release Notes mit der vollständigen Funktionsliste und die geführte Tour.</li>
+        </ul>
+      </section>
     </>
   );
 }

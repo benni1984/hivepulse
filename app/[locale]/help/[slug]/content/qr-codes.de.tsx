@@ -122,6 +122,13 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
           <p>Jedes QR-Token kann nur mit einem Volk verknüpft werden. Wenn Sie ein Etikett wiederverwenden müssen (z. B. das Volk wurde geteilt), generieren Sie eine neue Charge — alte Token bleiben dauerhaft mit ihrem ursprünglichen Volk verbunden.</p>
         </div>
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Einen QR-Batch löschen</h2>
+        <p>
+          Einen QR-Batch, den du nicht mehr brauchst, kannst du in der Liste der QR-Batches löschen: auf der Webseite mit dem Papierkorb-Symbol, in den Apps mit <em>Löschen</em> am Batch. Das geht nur, solange kein Code des Batches an einem Volk hängt. Über den Aufkleber findest du ein Volk wieder, deshalb bleibt der Batch, bis diese Völker nicht mehr da sind; der Löschen-Knopf wird dafür nicht angeboten.
+        </p>
+      </section>
     </>
   );
 }

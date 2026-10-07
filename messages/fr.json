@@ -13,7 +13,8 @@
     "download": "Télécharger gratuitement",
     "back": {
       "map": "← Carte en direct"
-    }
+    },
+    "releaseNotes": "Notes de version"
   },
   "footer": {
     "tagline": "Apiculture open source pour une planète plus saine.",
@@ -256,6 +257,19 @@
       "privacy": "Confidentialité"
     }
   },
+  "releaseNotes": {
+    "tag": "Notes de version",
+    "title": "Quoi de neuf dans HivePulse",
+    "sub": "Ce qui a changé, ce qui a été ajouté, et la liste complète de tout ce que HivePulse sait faire.",
+    "whatsNew": "Quoi de neuf",
+    "allFeatures": "Toutes les fonctions",
+    "allFeaturesSub": "Tout ce que HivePulse sait faire aujourd’hui, sur le site, dans l’application iPhone et dans l’application Android.",
+    "kinds": {
+      "added": "Ajouté",
+      "changed": "Modifié",
+      "fixed": "Corrigé"
+    }
+  },
   "contrib": {
     "tag": "Open Source",
     "title": "Aidez à construire HivePulse",
@@ -402,7 +416,8 @@
       "logout": "Se déconnecter",
       "members": "Communauté",
       "openMenu": "Ouvrir le menu du tableau de bord",
-      "closeMenu": "Fermer le menu du tableau de bord"
+      "closeMenu": "Fermer le menu du tableau de bord",
+      "releaseNotes": "Notes de version"
     },
     "overview": {
       "title": "Mes statistiques",
@@ -968,6 +983,18 @@
         "title": "Codes QR",
         "desc": "Générer des lots de codes QR imprimables, les fixer sur les ruches et les scanner pour ouvrir instantanément la bonne ruche."
       },
+      "sharing": {
+        "title": "Travailler ensemble",
+        "desc": "Invitez un autre apiculteur par e-mail à travailler avec vous sur un rucher ou sur quelques ruches, acceptez une invitation et découvrez ce qui reste au propriétaire."
+      },
+      "moving-hives": {
+        "title": "Déplacer des ruches",
+        "desc": "Emmenez les ruches à la floraison : déplacez-les entre vos ruchers, gardez l’historique de leurs emplacements et voyez chaque parcours sur une carte."
+      },
+      "home-and-treatments": {
+        "title": "Accueil et traitements",
+        "desc": "Ce qui est dû, l’état de vos ruches et ce qui vient, d’un coup d’œil, et comment planifier des traitements pour une ruche ou tout un rucher."
+      },
       "custom-fields": {
         "title": "Champs de visite personnalisés",
         "desc": "Étendre le formulaire de visite avec vos propres champs — texte, nombres, cases à cocher, listes déroulantes — pour votre compte ou un rucher spécifique."
@@ -1125,7 +1152,9 @@
     "deleteAccountTitle": "Supprimer le compte",
     "deleteAccountDescription": "Comment supprimer votre compte HivePulse et ce qui est effacé exactement.",
     "betaTitle": "Participer au test",
-    "betaDescription": "Essayer HivePulse avant son arrivée dans les boutiques, et aider à l'y amener."
+    "betaDescription": "Essayer HivePulse avant son arrivée dans les boutiques, et aider à l'y amener.",
+    "releaseNotesTitle": "Notes de version",
+    "releaseNotesDescription": "Ce qui a changé et ce qui est nouveau dans HivePulse, et la liste complète des fonctions."
   },
   "imprint": {
     "title": "Mentions légales",

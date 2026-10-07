@@ -13,7 +13,8 @@
     "download": "Descargar gratis",
     "back": {
       "map": "← Mapa en vivo"
-    }
+    },
+    "releaseNotes": "Notas de versión"
   },
   "footer": {
     "tagline": "Apicultura de código abierto para un planeta más saludable.",
@@ -256,6 +257,19 @@
       "privacy": "Privacidad"
     }
   },
+  "releaseNotes": {
+    "tag": "Notas de versión",
+    "title": "Novedades de HivePulse",
+    "sub": "Lo que ha cambiado, lo que se ha añadido y la lista completa de todo lo que HivePulse puede hacer.",
+    "whatsNew": "Novedades",
+    "allFeatures": "Todas las funciones",
+    "allFeaturesSub": "Todo lo que HivePulse puede hacer hoy, en la web, en la app de iPhone y en la app de Android.",
+    "kinds": {
+      "added": "Añadido",
+      "changed": "Cambiado",
+      "fixed": "Corregido"
+    }
+  },
   "contrib": {
     "tag": "Código abierto",
     "title": "Ayuda a construir HivePulse",
@@ -402,7 +416,8 @@
       "logout": "Cerrar sesión",
       "members": "Comunidad",
       "openMenu": "Abrir menú del panel",
-      "closeMenu": "Cerrar menú del panel"
+      "closeMenu": "Cerrar menú del panel",
+      "releaseNotes": "Notas de versión"
     },
     "overview": {
       "title": "Mis estadísticas",
@@ -968,6 +983,18 @@
         "title": "Códigos QR",
         "desc": "Generar lotes de códigos QR imprimibles, pegarlos en las colmenas y escanearlos para abrir la colmena correcta al instante."
       },
+      "sharing": {
+        "title": "Trabajar juntos",
+        "desc": "Invita por correo a otro apicultor a trabajar contigo en un colmenar o en colmenas sueltas, acepta una invitación y descubre qué queda con el propietario."
+      },
+      "moving-hives": {
+        "title": "Trasladar colmenas",
+        "desc": "Lleva las colmenas a la floración: trasládalas entre tus colmenares, conserva el historial de dónde ha estado cada una y mira cada recorrido en un mapa."
+      },
+      "home-and-treatments": {
+        "title": "Inicio y tratamientos",
+        "desc": "Lo que toca, cómo están tus colmenas y lo que viene, de un vistazo, y cómo planificar tratamientos para una colmena o un colmenar entero."
+      },
       "custom-fields": {
         "title": "Campos de revisión personalizados",
         "desc": "Ampliar el formulario de revisión integrado con sus propios campos — texto, números, casillas, desplegables — para toda su cuenta o un colmenar específico."
@@ -1125,7 +1152,9 @@
     "deleteAccountTitle": "Eliminar la cuenta",
     "deleteAccountDescription": "Cómo eliminar tu cuenta de HivePulse y qué se borra exactamente.",
     "betaTitle": "Unirse a la prueba",
-    "betaDescription": "Prueba HivePulse antes de que llegue a las tiendas y ayuda a que llegue."
+    "betaDescription": "Prueba HivePulse antes de que llegue a las tiendas y ayuda a que llegue.",
+    "releaseNotesTitle": "Notas de versión",
+    "releaseNotesDescription": "Lo que ha cambiado y lo nuevo en HivePulse, y la lista completa de funciones."
   },
   "imprint": {
     "title": "Aviso legal",

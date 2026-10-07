@@ -117,6 +117,16 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
           Tus datos se conservan — cerrar sesión no elimina nada.
         </p>
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Iniciar sesión con Apple o Google</h2>
+        <p>
+          Puedes iniciar sesión con tu cuenta de Apple o Google en lugar de una contraseña: Apple en el iPhone y en la web, Google en Android, el iPhone y la web. Si el correo es el mismo, entras en la cuenta que ya tenías, con todas tus colmenas. HivePulse solo recibe de ellos tu nombre y tu dirección, nunca una contraseña.
+        </p>
+        <p>
+          Una cuenta creada así no tiene contraseña, por eso no se muestra <em>Cambiar contraseña</em>. El formulario de correo sigue disponible como un enlace discreto bajo los botones.
+        </p>
+      </section>
     </>
   );
 }

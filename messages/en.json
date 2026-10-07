@@ -13,7 +13,8 @@
     "download": "Download Free",
     "back": {
       "map": "← Live Map"
-    }
+    },
+    "releaseNotes": "Release notes"
   },
   "footer": {
     "tagline": "Open-source beekeeping for a healthier planet.",
@@ -256,6 +257,19 @@
       "privacy": "Privacy"
     }
   },
+  "releaseNotes": {
+    "tag": "Release notes",
+    "title": "What is new in HivePulse",
+    "sub": "What has changed, what has been added, and the full list of everything HivePulse can do.",
+    "whatsNew": "What is new",
+    "allFeatures": "All features",
+    "allFeaturesSub": "Everything HivePulse can do today, on the website, the iPhone app and the Android app.",
+    "kinds": {
+      "added": "Added",
+      "changed": "Changed",
+      "fixed": "Fixed"
+    }
+  },
   "contrib": {
     "tag": "Open Source",
     "title": "Help Build HivePulse",
@@ -402,7 +416,8 @@
       "logout": "Log out",
       "members": "Community",
       "openMenu": "Open dashboard menu",
-      "closeMenu": "Close dashboard menu"
+      "closeMenu": "Close dashboard menu",
+      "releaseNotes": "Release notes"
     },
     "overview": {
       "title": "My Statistics",
@@ -968,6 +983,18 @@
         "title": "QR Codes",
         "desc": "Generate printable QR code batches, attach them to hive boxes, and scan them to open the correct hive instantly."
       },
+      "sharing": {
+        "title": "Working together",
+        "desc": "Invite another beekeeper by e-mail to work on an apiary or single hives with you, accept an invitation, and see what stays with the owner."
+      },
+      "moving-hives": {
+        "title": "Moving hives",
+        "desc": "Take hives to the bloom: move them between your apiaries, keep the history of where each has stood, and see every journey on a map."
+      },
+      "home-and-treatments": {
+        "title": "Home screen and treatments",
+        "desc": "What is due, how your hives are doing and what is coming up, at a glance, and how to plan treatments for a hive or a whole apiary."
+      },
       "custom-fields": {
         "title": "Custom inspection fields",
         "desc": "Extend the built-in inspection form with your own fields — text, numbers, checkboxes, dropdowns — scoped to your account or a specific apiary."
@@ -1125,7 +1152,9 @@
     "deleteAccountTitle": "Delete your account",
     "deleteAccountDescription": "How to delete your HivePulse account and what exactly is removed.",
     "betaTitle": "Join the test",
-    "betaDescription": "Try HivePulse before it reaches the stores, and help it get there."
+    "betaDescription": "Try HivePulse before it reaches the stores, and help it get there.",
+    "releaseNotesTitle": "Release notes",
+    "releaseNotesDescription": "What has changed and what is new in HivePulse, and the full list of features."
   },
   "imprint": {
     "title": "Legal notice",

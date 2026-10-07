@@ -36,6 +36,7 @@ export default function Footer() {
               <li><Link href="/map">{tn('map')}</Link></li>
               <li><Link href="/members">{tn('members')}</Link></li>
               <li><Link href="/news">{tn('news')}</Link></li>
+              <li><Link href="/release-notes">{tn('releaseNotes')}</Link></li>
             </ul>
           </div>
           <div className="footer-links">

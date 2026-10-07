@@ -13,7 +13,8 @@
     "download": "Kostenlos laden",
     "back": {
       "map": "← Live-Karte"
-    }
+    },
+    "releaseNotes": "Release Notes"
   },
   "footer": {
     "tagline": "Open-Source-Imkerei für einen gesünderen Planeten.",
@@ -256,6 +257,19 @@
       "privacy": "Datenschutz"
     }
   },
+  "releaseNotes": {
+    "tag": "Release Notes",
+    "title": "Was ist neu in HivePulse",
+    "sub": "Was sich geändert hat, was dazugekommen ist, und die vollständige Liste von allem, was HivePulse kann.",
+    "whatsNew": "Was ist neu",
+    "allFeatures": "Alle Funktionen",
+    "allFeaturesSub": "Alles, was HivePulse heute kann, auf der Webseite, in der iPhone-App und in der Android-App.",
+    "kinds": {
+      "added": "Neu",
+      "changed": "Geändert",
+      "fixed": "Behoben"
+    }
+  },
   "contrib": {
     "tag": "Open Source",
     "title": "Hilf HivePulse aufzubauen",
@@ -402,7 +416,8 @@
       "logout": "Abmelden",
       "members": "Community",
       "openMenu": "Dashboard-Menü öffnen",
-      "closeMenu": "Dashboard-Menü schließen"
+      "closeMenu": "Dashboard-Menü schließen",
+      "releaseNotes": "Release Notes"
     },
     "overview": {
       "title": "Meine Statistiken",
@@ -968,6 +983,18 @@
         "title": "QR-Codes",
         "desc": "Druckbare QR-Code-Chargen erstellen, an Beutenboxen befestigen und scannen, um sofort das richtige Volk zu öffnen."
       },
+      "sharing": {
+        "title": "Zusammenarbeiten",
+        "desc": "Lade einen anderen Imker per E-Mail ein, mit dir an einem Bienenstand oder an einzelnen Völkern zu arbeiten, nimm eine Einladung an und erfahre, was beim Besitzer bleibt."
+      },
+      "moving-hives": {
+        "title": "Völker verlagern",
+        "desc": "Bring Völker zur Blüte: verlagere sie zwischen deinen Bienenständen, behalte im Blick, wo jedes gestanden hat, und sieh jeden Weg auf einer Karte."
+      },
+      "home-and-treatments": {
+        "title": "Startseite und Behandlungen",
+        "desc": "Was fällig ist, wie es deinen Völkern geht und was ansteht, auf einen Blick, und wie du Behandlungen für ein Volk oder einen ganzen Bienenstand planst."
+      },
       "custom-fields": {
         "title": "Benutzerdefinierte Kontrollfelder",
         "desc": "Das integrierte Kontrollformular mit eigenen Feldern erweitern — Text, Zahlen, Checkboxen, Dropdown-Listen — für das gesamte Konto oder einen bestimmten Bienenstand."
@@ -1125,7 +1152,9 @@
     "deleteAccountTitle": "Konto löschen",
     "deleteAccountDescription": "Wie du dein HivePulse-Konto löschst und was genau entfernt wird.",
     "betaTitle": "Am Test teilnehmen",
-    "betaDescription": "HivePulse ausprobieren, bevor es in die Stores kommt — und helfen, dass es dort ankommt."
+    "betaDescription": "HivePulse ausprobieren, bevor es in die Stores kommt — und helfen, dass es dort ankommt.",
+    "releaseNotesTitle": "Release Notes",
+    "releaseNotesDescription": "Was sich in HivePulse geändert hat und was neu ist, und die vollständige Funktionsliste."
   },
   "imprint": {
     "title": "Impressum",

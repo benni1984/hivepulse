@@ -117,6 +117,16 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
           Vos données sont préservées — se déconnecter ne supprime rien.
         </p>
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Se connecter avec Apple ou Google</h2>
+        <p>
+          Vous pouvez vous connecter avec votre compte Apple ou Google au lieu d&rsquo;un mot de passe : Apple sur l&rsquo;iPhone et le site, Google sur Android, l&rsquo;iPhone et le site. Si l&rsquo;adresse e-mail est la même, vous arrivez dans le compte que vous aviez déjà, avec toutes vos ruches. HivePulse ne reçoit d&rsquo;eux que votre nom et votre adresse, jamais un mot de passe.
+        </p>
+        <p>
+          Un compte créé ainsi n&rsquo;a pas de mot de passe ; <em>Changer le mot de passe</em> n&rsquo;est donc pas affiché. Le formulaire e-mail reste disponible sous forme de lien discret sous les boutons.
+        </p>
+      </section>
     </>
   );
 }
