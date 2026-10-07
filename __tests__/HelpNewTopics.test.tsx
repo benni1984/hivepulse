@@ -6,6 +6,7 @@ import en from '@/messages/en.json';
 import de from '@/messages/de.json';
 import fr from '@/messages/fr.json';
 import es from '@/messages/es.json';
+import pl from '@/messages/pl.json';
 
 vi.mock('next-intl/server', () => ({
   getTranslations: async () => (key: string) => key,
@@ -17,8 +18,8 @@ vi.mock('next/link', () => ({
 import HelpTopicPage from '@/app/[locale]/help/[slug]/page';
 
 const NEW_TOPICS = ['sharing', 'moving-hives', 'home-and-treatments', 'beekeeping-year'] as const;
-const LOCALES = ['en', 'de', 'fr', 'es'] as const;
-const MESSAGES = { en, de, fr, es } as const;
+const LOCALES = ['en', 'de', 'fr', 'es', 'pl'] as const;
+const MESSAGES = { en, de, fr, es, pl } as const;
 
 async function headings(locale: string, slug: string): Promise<string[]> {
   const jsx = await HelpTopicPage({ params: Promise.resolve({ locale, slug }) });
@@ -54,7 +55,7 @@ describe('help pages for working together, moving hives and the home screen', ()
         expect(byLocale[locale].length, `${locale}/${slug} has no sections`).toBeGreaterThan(1);
         expect(byLocale[locale].length).toBe(byLocale.en.length);
       }
-      for (const locale of ['de', 'fr', 'es']) {
+      for (const locale of ['de', 'fr', 'es', 'pl']) {
         expect(byLocale[locale], `${locale}/${slug} is a copy of the English page`).not.toEqual(byLocale.en);
       }
     }

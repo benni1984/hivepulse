@@ -85,7 +85,7 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
           <li>Die Termine sind Richtwerte aus der üblichen imkerlichen Praxis, keine Vorschriften: Blüte und Wetter entscheiden.</li>
           <li>Arzneimittel nur wie in deinem Land zugelassen und vorgeschrieben; im Zweifel frag deinen Imkerverband oder das Veterinäramt.</li>
           <li>Der Verdacht auf Faulbrut muss dem Veterinäramt gemeldet werden.</li>
-          <li>Die Texte sind in der Sprache der App: Englisch, Deutsch, Französisch und Spanisch.</li>
+          <li>Die Texte sind in der Sprache der App: Englisch, Deutsch, Französisch, Spanisch und Polnisch.</li>
         </ul>
       </section>
     </>

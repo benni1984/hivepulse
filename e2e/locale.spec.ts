@@ -39,6 +39,11 @@ test('visiting /es serves Spanish content', async ({ page }) => {
   await expect(page.locator('html')).toHaveAttribute('lang', 'es');
 });
 
+test('visiting /pl serves Polish content', async ({ page }) => {
+  await page.goto('/pl');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'pl');
+});
+
 // ── Language switcher ─────────────────────────────────────────────────────────
 
 test('switching language updates URL and page content', async ({ page }) => {

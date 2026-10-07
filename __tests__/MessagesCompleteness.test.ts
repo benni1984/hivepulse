@@ -3,6 +3,7 @@ import en from '@/messages/en.json';
 import de from '@/messages/de.json';
 import fr from '@/messages/fr.json';
 import es from '@/messages/es.json';
+import pl from '@/messages/pl.json';
 
 type Tree = { [key: string]: string | Tree };
 
@@ -16,7 +17,7 @@ function flatten(tree: Tree, prefix = ''): Record<string, string> {
   return out;
 }
 
-const LOCALES = { de, fr, es } as Record<string, Tree>;
+const LOCALES = { de, fr, es, pl } as Record<string, Tree>;
 const english = flatten(en as Tree);
 const PLACEHOLDER = /\{[a-zA-Z0-9_]+\}/g;
 

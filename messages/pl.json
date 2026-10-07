@@ -1,0 +1,1260 @@
+{
+  "nav": {
+    "map": "Mapa na żywo",
+    "hornets": "Tropiciel szerszeni",
+    "news": "Aktualności",
+    "contribute": "Zaangażuj się",
+    "members": "Członkowie",
+    "dashboard": "Moje rodziny",
+    "login": "Zaloguj się",
+    "myAccount": "Moje konto",
+    "logout": "Wyloguj się",
+    "help": "Pomoc",
+    "download": "Pobierz za darmo",
+    "back": {
+      "map": "← Mapa na żywo"
+    },
+    "releaseNotes": "Informacje o wersjach"
+  },
+  "footer": {
+    "tagline": "Pszczelarstwo z otwartym kodem dla zdrowszej planety.",
+    "explore": "Odkrywaj",
+    "community": "Społeczność",
+    "support": "Wesprzyj nas",
+    "legal": "Informacje prawne",
+    "privacy": "Polityka prywatności",
+    "copyright": "© 2025 HivePulse. Udostępniane na licencji MIT.",
+    "made": "Stworzone z 🐝 dla pszczelarzy na całym świecie.",
+    "imprint": "Nota prawna",
+    "deleteAccount": "Usuń konto",
+    "beta": "Dołącz do testów"
+  },
+  "hero": {
+    "badge": "Otwarty kod · Tworzone przez społeczność · Za darmo",
+    "title1": "Ratujemy pszczoły,",
+    "title2": "jedno skanowanie na raz",
+    "subtitle": "HivePulse zamienia każdego pszczelarza w naukowca-obywatela. Zapisuj przeglądy, śledź zdrowie rodzin pszczelich i wnoś wkład w globalne dane, które pomagają badaczom zrozumieć i chronić populacje pszczoły miodnej na całym świecie.",
+    "apple": {
+      "pre": "Pobierz z",
+      "store": "App Store"
+    },
+    "google": {
+      "pre": "Pobierz z",
+      "play": "Google Play"
+    },
+    "scroll": "Przewiń, aby dowiedzieć się więcej",
+    "phoneLabel": "Zrzut ekranu panelu"
+  },
+  "stats": {
+    "title": "Nasza społeczność, właśnie teraz",
+    "sub": "Liczby na żywo z naszej globalnej sieci pszczelarzy",
+    "apiaries": "Zarejestrowane pasieki",
+    "hives": "Monitorowane rodziny pszczele",
+    "inspections": "Zapisane przeglądy",
+    "countries": "Kraje w sieci"
+  },
+  "feat": {
+    "tag": "Aplikacja",
+    "title": "Wszystko, czego potrzebuje pszczelarz",
+    "sub": "Od hobbysty-początkującego po gospodarstwo pasieczne: HivePulse rośnie razem z tobą, a twoje dane rosną razem z planetą.",
+    "qr": {
+      "title": "Skanuj i jedź",
+      "desc": "Przyklej kod QR na każdym ulu. Zeskanuj go na miejscu i przejdź od razu do przeglądu: bez szukania, bez literówek, bez zapomnianych nazw rodzin."
+    },
+    "track": {
+      "title": "Inteligentne śledzenie",
+      "desc": "Śledź w czasie ramki z czerwiem, liczbę roztoczy Varroa, stan matki, zapasy miodu i usposobienie rodziny. Zauważ trendy, zanim staną się problemami."
+    },
+    "global": {
+      "title": "Globalna pula danych",
+      "desc": "Twoje zanonimizowane dane współtworzą globalny obraz zdrowia rodzin pszczelich i trafiają do badaczy zajmujących się masowym ginięciem rodzin i rozprzestrzenianiem chorób."
+    },
+    "trends": {
+      "title": "Analiza trendów",
+      "desc": "Wizualizuj liczbę roztoczy Varroa w kolejnych sezonach, porównuj zdrowie rodzin w swojej pasiece i śledź rozwój rodziny na przejrzystych wykresach."
+    },
+    "batch": {
+      "title": "Partie kodów QR",
+      "desc": "Generuj partie do 50 kodów QR i pobieraj PDF gotowy do wydruku. Idealne do oznaczenia nowej pasieki lub wymiany zgubionych etykiet."
+    },
+    "privacy": {
+      "title": "Twoje dane są prywatne",
+      "desc": "Dokładne lokalizacje i osobiste notatki pozostają prywatne. Udostępniane są tylko zanonimizowane zestawienia, a to ty decydujesz, co widać na publicznej mapie."
+    }
+  },
+  "mission": {
+    "tag": "Dlaczego to ważne",
+    "title": "Jedna trzecia tego, co jemy, zależy od pszczół",
+    "p1": "Pszczoły miodne i dzikie zapylacze zapylają mniej więcej 35 % światowej żywności: owoce, warzywa, orzechy i oleje. Jednak ich populacje maleją od dziesięcioleci, a nauka wciąż próbuje dokładnie zrozumieć dlaczego.",
+    "li1": "Zespół masowego ginięcia rodzin dotyka co roku miliony uli",
+    "li2": "Roztocz Varroa to zagrożenie nr 1 dla gospodarowanych rodzin pszczelich na świecie",
+    "li3": "Pestycydy, utrata siedlisk i zmiana klimatu potęgują presję",
+    "li4": "Dane od pszczelarzy w czasie rzeczywistym są niezbędne dla systemów wczesnego ostrzegania",
+    "callout": "Gdy zapisujesz przegląd w HivePulse, nie tylko prowadzisz swoją rodzinę pszczelą, ale dodajesz punkt danych do globalnej sieci wczesnego ostrzegania o zdrowiu pszczół."
+  },
+  "hex1": {
+    "label": "upraw kwitnących zależy od zapylania przez zwierzęta"
+  },
+  "hex2": {
+    "label": "gatunków owadów zapylających jest zagrożonych wyginięciem"
+  },
+  "hex3": {
+    "label": "roczna wartość globalnych usług zapylania"
+  },
+  "comm": {
+    "tag": "Zbiorowa inteligencja",
+    "title": "Dlaczego dane społeczności zmieniają wszystko",
+    "sub": "Jeden pszczelarz widzi jedną pasiekę. Razem widzimy świat i możemy coś z tym zrobić.",
+    "disease": {
+      "title": "Mapa chorób",
+      "desc": "Wskaż skupiska zarażenia Varroa lub ognisk chorób, zanim się rozprzestrzenią, i umożliw pszczelarzom ukierunkowane działanie w całych regionach."
+    },
+    "seasonal": {
+      "title": "Trendy sezonowe",
+      "desc": "Zestawiaj zdrowie rodzin z pogodą, kalendarzem kwitnienia i lokalnym użytkowaniem terenu, aby ustalić, co powoduje straty rodzin w każdej okolicy."
+    },
+    "research": {
+      "title": "Współpraca z naukowcami",
+      "desc": "Nasz zanonimizowany zbiór danych trafia do badaczy uniwersyteckich i organizacji ochrony przyrody, wspierając recenzowane badania nad zdrowiem zapylaczy."
+    },
+    "policy": {
+      "title": "Zmiana polityki",
+      "desc": "Twarde dane z tysięcy pasiek dają pszczelarzom mocny, oparty na faktach głos w rozmowach o regulacji pestycydów i ochronie siedlisk."
+    }
+  },
+  "road": {
+    "tag": "Co dalej",
+    "title": "W planach",
+    "sub": "Uczciwie mówimy, co już jest, a co planujemy. Oto kierunek, w którym zmierzamy.",
+    "launch": {
+      "title": "Premiera w App Store i Google Play",
+      "desc": "Publikacja aplikacji na iOS i Androida w App Store i Google Play, aby każdy mógł zainstalować HivePulse bez budowania ze źródeł."
+    },
+    "remind": {
+      "title": "Przypomnienia o przeglądach",
+      "desc": "Powiadomienia push i e-maile, gdy rodzina jest spóźniona z przeglądem, już działają w aplikacjach i w sieci."
+    },
+    "export": {
+      "title": "Eksport danych (CSV / JSON)",
+      "desc": "Pobierz pełną historię przeglądów jako CSV lub JSON, już dostępne w panelu internetowym."
+    },
+    "fields": {
+      "title": "Własne pola w formularzach",
+      "desc": "Zdefiniuj własne pola przeglądu, które pojawią się w każdym formularzu przeglądu, już dostępne w panelu internetowym."
+    },
+    "heat": {
+      "title": "Regionalne mapy cieplne",
+      "desc": "Nakładka z ryzykiem Varroa na publicznej mapie na żywo, kolorami oznaczająca nasilenie roztoczy, już dostępna."
+    },
+    "label": {
+      "planned": "Planowane",
+      "progress": "W toku",
+      "shipped": "Gotowe ✓"
+    }
+  },
+  "support": {
+    "tag": "Wesprzyj misję",
+    "title": "Niech ule brzęczą dalej",
+    "sub": "HivePulse jest darmowy. Mały datek pozwala utrzymać serwery, finansuje nowe funkcje i wspiera nasze partnerstwa badawcze. Żaden pszczelarz nie powinien odpaść przez cenę."
+  },
+  "price": {
+    "free": {
+      "tier": "Na zawsze za darmo",
+      "f1": "Nieograniczona liczba rodzin i przeglądów",
+      "f2": "Skanowanie kodów QR i generowanie partii",
+      "f3": "Podstawowe statystyki dla każdej rodziny",
+      "f4": "Wkład w dane społeczności",
+      "f5": "Publiczna mapa na żywo",
+      "f6": "Zaawansowane wykresy i trendy",
+      "f7": "Eksport danych",
+      "f8": "Strefa członków"
+    },
+    "month": "/ miesiąc",
+    "sup": {
+      "tier": "Wspierający",
+      "badge": "Najpopularniejszy",
+      "f1": "Wszystko z wersji darmowej",
+      "f2": "Zaawansowane wykresy trendów (w aplikacji)",
+      "f3": "Strefa członków i statystyki globalne",
+      "f4": "Priorytetowe wsparcie",
+      "f5": "Twoje imię w podziękowaniach w aplikacji",
+      "f6": "Wczesny dostęp do nowych funkcji",
+      "f7": "Eksport danych (CSV / JSON)",
+      "f8": "Regionalne mapy cieplne"
+    },
+    "coming": "Wkrótce",
+    "donate": {
+      "tier": "Jednorazowy datek",
+      "price": "Kwota dowolna",
+      "note": "Każdy datek, niezależnie od wysokości, pomaga HivePulse pozostać niezależnym, wolnym od reklam i darmowym dla pszczelarzy, którzy najbardziej tego potrzebują."
+    }
+  },
+  "btn": {
+    "free": "Pobierz za darmo",
+    "supporter": "Zostań wspierającym",
+    "kofi": "Wesprzyj na Ko-fi",
+    "paypal": "Wpłać przez PayPal"
+  },
+  "dl": {
+    "tag": "Zacznij już dziś",
+    "title": "Pobierz HivePulse, jest za darmo",
+    "sub": "Dostępne na iOS i Androida. Zeskanuj pierwszą rodzinę w mniej niż dwie minuty.",
+    "subSoon": "Wkrótce w App Store i Google Play. Do tego czasu HivePulse działa prosto w przeglądarce.",
+    "soon": "Wkrótce",
+    "beta": "Dołącz do testów beta"
+  },
+  "map": {
+    "hero": {
+      "tag": "Mapa społeczności",
+      "title": "Zobacz każdą rodzinę, którą chronimy",
+      "subtitle": "Przeglądaj pasieki zarejestrowane przez pszczelarzy z całego świata, aktualizowane na bieżąco."
+    },
+    "preview": {
+      "title": "Zobacz naszą społeczność na mapie",
+      "sub": "Przeglądaj pasieki zarejestrowane przez pszczelarzy z całego świata, aktualizowane na bieżąco.",
+      "btn": "Otwórz mapę na żywo →"
+    },
+    "stat": {
+      "apiaries": "Pasieki",
+      "hives": "Rodziny",
+      "inspections": "Przeglądy"
+    },
+    "popup": {
+      "hiveSingular": "rodzina",
+      "hivePlural": "rodz.",
+      "viewDetails": "Zobacz szczegóły →"
+    },
+    "heatmap": {
+      "toggle": "Mapa cieplna Varroa",
+      "low": "Niskie (< 2)",
+      "medium": "Średnie (2–5)",
+      "high": "Wysokie (> 5)"
+    },
+    "features": {
+      "cluster": {
+        "title": "Grupowanie znaczników",
+        "desc": "Pobliskie pasieki łączą się w grupy, które rozwijają się przy przybliżaniu, więc mapa pozostaje czytelna w każdej skali."
+      },
+      "heatmap": {
+        "title": "Przełącznik mapy cieplnej",
+        "desc": "Włącz mapę cieplną Varroa, aby jednym rzutem oka zobaczyć regionalne nasilenie roztoczy, oznaczone kolorami od niskiego do wysokiego."
+      },
+      "fuzzed": {
+        "title": "Rozmyte lokalizacje",
+        "desc": "Dokładne współrzędne rodzin nigdy nie są pokazywane publicznie: pinezki są losowo przesunięte, aby chronić prywatność pszczelarzy."
+      }
+    }
+  },
+  "news": {
+    "tag": "Nowości",
+    "title": "Aktualności i ogłoszenia",
+    "sub": "Nowe funkcje, partnerstwa badawcze, kamienie milowe ochrony przyrody i wszystko, co dzieje się w społeczności HivePulse.",
+    "tags": {
+      "feature": "Funkcja",
+      "fix": "Poprawka",
+      "design": "Wygląd",
+      "release": "Wydanie",
+      "privacy": "Prywatność"
+    }
+  },
+  "releaseNotes": {
+    "tag": "Informacje o wersjach",
+    "title": "Co nowego w HivePulse",
+    "sub": "Co się zmieniło, co doszło i pełna lista wszystkiego, co potrafi HivePulse.",
+    "whatsNew": "Co nowego",
+    "allFeatures": "Wszystkie funkcje",
+    "allFeaturesSub": "Wszystko, co HivePulse potrafi dziś: w serwisie, w aplikacji na iPhone'a i w aplikacji na Androida.",
+    "kinds": {
+      "added": "Dodano",
+      "changed": "Zmieniono",
+      "fixed": "Naprawiono"
+    }
+  },
+  "contrib": {
+    "tag": "Otwarty kod",
+    "title": "Pomóż budować HivePulse",
+    "sub": "HivePulse to projekt open source tworzony przez społeczność pszczelarską i dla niej. Każdy wkład, czy to kod, dokumentacja, tłumaczenie czy opinia, ma znaczenie.",
+    "ways": {
+      "title": "Jak możesz pomóc",
+      "sub": "Nie musisz być programistą. Dla każdego, komu zależy na pszczołach, jest sensowna rola."
+    },
+    "bug": {
+      "title": "Zgłaszaj błędy",
+      "desc": "Coś nie działa? Otwórz zgłoszenie na GitHubie z informacją o urządzeniu, wersji systemu i krokach do odtworzenia.",
+      "link": "Otwórz zgłoszenie na GitHubie →"
+    },
+    "code": {
+      "title": "Dodaj kod",
+      "desc": "Zrób fork repozytorium, utwórz gałąź, otwórz PR. Backend (Python), iOS (Swift), Android (Kotlin): wszystko mile widziane.",
+      "link": "Zobacz repozytorium →"
+    },
+    "docs": {
+      "title": "Ulepsz dokumentację",
+      "desc": "Pomóż poprawić pomoc w aplikacji, kontrakt API, notatki o architekturze albo tę stronę.",
+      "link": "Przejrzyj folder z dokumentacją →"
+    },
+    "spread": {
+      "title": "Powiedz innym",
+      "desc": "Opowiedz o HivePulse w swoim kole pszczelarskim lub społeczności internetowej. Każdy nowy pszczelarz wzmacnia globalny zbiór danych.",
+      "link": "Udostępnij link do pobrania →"
+    },
+    "github": {
+      "title": "🐝 Ul jest na GitHubie",
+      "desc": "HivePulse jest w pełni open source na licencji MIT. Czytaj kod, zgłaszaj problemy, rób forki i ulepszaj go.",
+      "btn": "Zobacz na GitHubie"
+    }
+  },
+  "fr": {
+    "tag": "Integracja z GitHubem",
+    "title": "Zaproponuj funkcję lub zgłoś błąd",
+    "sub": "Wypełnij formularz, a otworzymy dla ciebie wstępnie wypełnione zgłoszenie na GitHubie: jedno kliknięcie, by je wysłać. Do podglądu konto nie jest potrzebne; do wysłania wymagane jest logowanie do GitHuba.",
+    "label": {
+      "title": "Tytuł",
+      "cat": "Kategoria",
+      "platform": "Platforma",
+      "desc": "Opis",
+      "usecase": "Zastosowanie / po co"
+    },
+    "ph": {
+      "title": "Krótki, opisowy tytuł",
+      "desc": "Opisz szczegółowo funkcję lub błąd. Co powinno się stać? Co się dzieje?",
+      "usecase": "Po co ci to? Jak z tego skorzystasz?"
+    },
+    "cat": {
+      "feature": "✨ Nowa funkcja",
+      "enhance": "⚡ Ulepszenie",
+      "bug": "🐛 Zgłoszenie błędu",
+      "idea": "💡 Pomysł / dyskusja"
+    },
+    "platform": {
+      "all": "Wszystkie platformy",
+      "ios": "iOS",
+      "android": "Android",
+      "backend": "Backend / API",
+      "web": "Strona internetowa"
+    },
+    "btn": "Otwórz na GitHubie →",
+    "note": "Nastąpi przekierowanie na GitHuba, gdzie sprawdzisz i wyślesz zgłoszenie."
+  },
+  "privacy": {
+    "title": "Polityka prywatności",
+    "updated": "Ostatnia aktualizacja: październik 2026",
+    "intro": "HivePulse to aplikacja pszczelarska o otwartym kodzie. Ta polityka wyjaśnia, jakie dane zbieramy, dlaczego i jakie masz możliwości, w tym jak kontrolujesz, czy twoja pasieka pojawia się na publicznej mapie.",
+    "s1title": "1. Dane, które zbieramy",
+    "s1body": "Przy rejestracji: adres e-mail, wybrana nazwa wyświetlana i preferowany język. Podczas korzystania z aplikacji: nazwy pasiek i współrzędne GPS (jeśli je wpiszesz), dane rodzin pszczelich oraz zapisywane przeglądy. Nie zbieramy identyfikatorów urządzeń, identyfikatorów reklamowych ani dokładnej lokalizacji, jeśli sam nie wpiszesz współrzędnych w aplikacji. Jeśli ustawisz region dla roku pszczelarskiego: kraj i kod pocztowy, które wpiszesz. Kod pocztowy jest sprawdzany jednorazowo, a zachowywana jest tylko wynikowa pozycja, nigdy adres.",
+    "s2title": "2. Mapa publiczna: tylko za zgodą",
+    "s2body": "Mapa publiczna pokazuje zanonimizowane pinezki pasiek, aby zobrazować pszczelarstwo na świecie. Udział jest ściśle dobrowolny. Domyślnie każda utworzona pasieka jest prywatna: nigdy nie pojawia się na mapie i nigdy nie jest udostępniana przez publiczne API. Opcję „Pokaż na mapie publicznej” możesz w każdej chwili włączyć dla danej pasieki w ustawieniach aplikacji i równie łatwo wyłączyć. Po włączeniu pinezka pokazuje nazwę pasieki, współrzędne GPS i liczbę rodzin. Tożsamość użytkownika ani szczegóły przeglądów nigdy nie są publicznie udostępniane.",
+    "s3title": "3. Jak używamy twoich danych",
+    "s3body": "Twoje dane służą wyłącznie do działania aplikacji (uwierzytelnianie, zapisywanie i wyświetlanie twoich zapisów) oraz, tylko jeśli się na to zgodzisz, do pokazania pinezki twojej pasieki na mapie publicznej i do zliczania w globalnych statystykach (łączna liczba pasiek, rodzin, przeglądów). Nie sprzedajemy, nie wymieniamy ani nie wynajmujemy danych osobowych. Nie używamy ich do reklam.",
+    "s4title": "4. Dostawcy usług",
+    "s4body": "Działanie HivePulse wymaga kilku firm, które przetwarzają dane w naszym imieniu, w każdym przypadku na podstawie umowy powierzenia przetwarzania. Hosting i strona internetowa: Vercel. Baza danych: Neon (serwery w UE). E-maile z resetem hasła: Resend. Raporty o awariach: Sentry (serwery w UE, zob. następną sekcję). Powiadomienia push, tylko jeśli włączysz przypomnienia: Google Firebase dla urządzeń z Androidem i Apple dla iPhone'ów, które otrzymują token urządzenia i treść powiadomienia. Kafelki map pochodzą od Fundacji OpenStreetMap, więc po otwarciu mapy trafia do nich twój adres IP. Czcionki są serwowane z naszych własnych serwerów, więc żadna strona trzecia nic się z nich nie dowiaduje. Zestaw ikon Font Awesome jest nadal ładowany z cdnjs Cloudflare, którego serwery widzą więc twój adres IP; zamierzamy serwować go również sami. Statystyki odwiedzin: Umami Cloud, które według operatora nie używa plików cookie ani identyfikatorów reklamowych i nie przechowuje pełnych adresów IP; rejestruje odsłony, stronę odsyłającą, kraj i typ urządzenia. Podstawą prawną jest nasz uzasadniony interes w sprawdzaniu, czy strona jest w ogóle używana (art. 6 ust. 1 lit. f RODO). Wyszukiwanie kodu pocztowego (i adresu wpisanego dla pasieki): usługa wyszukiwania Nominatim Fundacji OpenStreetMap, która otrzymuje wyłącznie ten kod pocztowy i kraj albo ten adres, a żadnych danych twojego konta.",
+    "s5title": "5. Raporty o awariach",
+    "s5body": "Gdy aplikacja lub serwer napotka nieoczekiwany błąd, raport trafia do Sentry, aby można było go naprawić. Zawiera miejsce w kodzie, wersję i rodzaj urządzenia. Celowo nie zawiera niczego z twoich treści: żadnych notatek z przeglądów, haseł, adresu e-mail, adresu IP, zrzutów ekranu ani zapisu wpisywanego tekstu. Raport identyfikuje twoje konto tylko wewnętrznym numerem. Raporty są przechowywane w UE przez 30 dni. Podstawą prawną jest nasz uzasadniony interes w sprawnej i bezpiecznej aplikacji (art. 6 ust. 1 lit. f RODO).",
+    "s6title": "6. Podstawa prawna (RODO i szwajcarska FADP)",
+    "s6body": "Wobec użytkowników z UE/EOG przetwarzamy dane na podstawie wykonania umowy (art. 6 ust. 1 lit. b RODO) w przypadku podstawowych funkcji aplikacji oraz na podstawie twojej wyraźnej zgody (art. 6 ust. 1 lit. a RODO) w przypadku udziału w mapie publicznej. Zgodę możesz w każdej chwili cofnąć, wyłączając przełącznik „Pokaż na mapie publicznej”. Działamy ze Szwajcarii, więc do tego przetwarzania stosuje się także szwajcarska ustawa o ochronie danych (FADP); gdy oba akty się różnią, stosujemy ten, który daje ci silniejsze prawo.",
+    "s7title": "7. Okres przechowywania",
+    "s7body": "Dane twojego konta są przechowywane, dopóki konto jest aktywne. Możesz zażądać pełnego usunięcia, kontaktując się z nami pod poniższym adresem: usuniemy konto i wszystkie powiązane zapisy w ciągu 30 dni. Zanonimizowanych statystyk zbiorczych (łączne liczby), które zostały już publicznie udostępnione, nie można wycofać.",
+    "s8title": "8. Twoje prawa",
+    "s8body": "Na podstawie RODO masz prawo dostępu do swoich danych osobowych, ich sprostowania, usunięcia i przenoszenia oraz prawo sprzeciwu wobec przetwarzania. Aby skorzystać z tych praw, napisz do nas na hivepulse@multihead.de. Jeśli uważasz, że twoje prawa nie były przestrzegane, możesz złożyć skargę do krajowego organu ochrony danych.",
+    "s9title": "9. Bezpieczeństwo",
+    "s9body": "Hasła są haszowane algorytmem bcrypt i nigdy nie są przechowywane jawnym tekstem. Dostęp do API wymaga podpisanego tokenu JWT. Dane w transmisji są szyfrowane przez TLS. Regularnie przeglądamy praktyki bezpieczeństwa.",
+    "s10title": "10. Kontakt",
+    "s10body": "Pytania o tę politykę lub twoje dane? Napisz na hivepulse@multihead.de. Administratorem jest Benjamin Müller, Sonnhaldenweg 5D, 4450 Sissach, Szwajcaria."
+  },
+  "dash": {
+    "login": {
+      "title": "Zaloguj się do HivePulse",
+      "email": "E-mail",
+      "password": "Hasło",
+      "submit": "Zaloguj się",
+      "noAccount": "Nie masz konta?",
+      "register": "Zarejestruj się",
+      "forgotPassword": "Nie pamiętasz hasła?",
+      "errorGeneric": "Logowanie nie powiodło się. Spróbuj ponownie.",
+      "or": "lub",
+      "withEmail": "Zaloguj się adresem e-mail",
+      "continueWithApple": "Kontynuuj z Apple"
+    },
+    "forgotPassword": {
+      "title": "Zresetuj hasło",
+      "desc": "Podaj swój adres e-mail, a wyślemy ci link do zresetowania hasła.",
+      "submit": "Wyślij link do resetu",
+      "sent": "Jeśli ten adres jest zarejestrowany, wkrótce dostaniesz link do resetu. Sprawdź skrzynkę.",
+      "backToLogin": "Wróć do logowania"
+    },
+    "resetPassword": {
+      "title": "Ustaw nowe hasło",
+      "newPassword": "Nowe hasło",
+      "confirmPassword": "Potwierdź nowe hasło",
+      "submit": "Ustaw nowe hasło",
+      "success": "Hasło zostało zmienione. Przekierowuję do logowania…",
+      "mismatch": "Hasła nie są takie same.",
+      "tooShort": "Hasło musi mieć co najmniej 8 znaków.",
+      "invalidLink": "Ten link do resetu jest nieprawidłowy. Poproś o nowy.",
+      "errorGeneric": "Reset nie powiódł się. Link mógł wygasnąć."
+    },
+    "register": {
+      "title": "Załóż konto",
+      "name": "Imię",
+      "email": "E-mail",
+      "password": "Hasło (min. 8 znaków)",
+      "submit": "Załóż konto",
+      "hasAccount": "Masz już konto?",
+      "login": "Zaloguj się",
+      "errorGeneric": "Rejestracja nie powiodła się. Spróbuj ponownie.",
+      "withEmail": "Załóż konto adresem e-mail",
+      "or": "lub"
+    },
+    "nav": {
+      "sectionBeekeeping": "Pszczelarstwo",
+      "sectionCommunity": "Społeczność",
+      "apiaries": "Moje pasieki",
+      "stats": "Moje statystyki",
+      "qrBatches": "Partie kodów QR",
+      "customFields": "Własne pola",
+      "profile": "Profil",
+      "logout": "Wyloguj się",
+      "members": "Społeczność",
+      "openMenu": "Otwórz menu panelu",
+      "closeMenu": "Zamknij menu panelu",
+      "releaseNotes": "Informacje o wersjach",
+      "calendar": "Rok pszczelarski"
+    },
+    "overview": {
+      "title": "Moje statystyki",
+      "period": "Okres",
+      "preset30d": "Ostatnie 30 dni",
+      "preset90d": "Ostatnie 90 dni",
+      "preset365d": "Ostatni rok",
+      "presetAll": "Cały czas",
+      "apiaries": "Pasieki",
+      "hives": "Rodziny",
+      "inspections": "Przeglądy",
+      "perApiary": "Według pasieki",
+      "apiary": "Pasieka",
+      "noData": "Brak przeglądów w tym okresie."
+    },
+    "profile": {
+      "title": "Profil",
+      "editTitle": "Edytuj profil",
+      "passwordTitle": "Zmień hasło",
+      "name": "Imię",
+      "language": "Język",
+      "currentPassword": "Obecne hasło",
+      "newPassword": "Nowe hasło (min. 8 znaków)",
+      "confirmPassword": "Potwierdź nowe hasło",
+      "saveProfile": "Zapisz profil",
+      "savePassword": "Zmień hasło",
+      "profileSaved": "Profil zapisany.",
+      "passwordSaved": "Hasło zostało zmienione.",
+      "passwordMismatch": "Nowe hasła nie są takie same.",
+      "errorGeneric": "Coś poszło nie tak. Spróbuj ponownie.",
+      "badgeAdmin": "Administrator",
+      "badgeSupporter": "Wspierający",
+      "memberSince": "Członek od",
+      "dangerTitle": "Strefa zagrożenia",
+      "dangerDesc": "Trwale usuwa twoje konto i wszystkie powiązane dane: pasieki, rodziny, przeglądy. Tego nie można cofnąć.",
+      "deleteAccount": "Usuń moje konto",
+      "deleteConfirm": "Czy na pewno? Wszystkie twoje dane zostaną trwale usunięte.",
+      "deleteConfirmBtn": "Tak, usuń moje konto",
+      "deleteCancel": "Anuluj",
+      "reminderTitle": "Przypomnienia o przeglądach",
+      "reminderEnabled": "Wysyłaj przypomnienia o przeglądach",
+      "reminderInterval": "Przypominaj co",
+      "reminderIntervalUnit": "dni",
+      "reminderSeasonStart": "Początek sezonu (miesiąc)",
+      "reminderSeasonEnd": "Koniec sezonu (miesiąc)",
+      "reminderEmailEnabled": "Powiadamiaj mnie też e-mailem",
+      "reminderEmailHint": "Powiadomienia push wymagają aplikacji na iOS lub Androida. Przypomnienia e-mail działają, nawet jeśli korzystasz tylko z serwisu, a oba kanały dzielą to samo konto, więc ustawienia tutaj obowiązują wszędzie.",
+      "reminderSave": "Zapisz ustawienia przypomnień",
+      "reminderSaved": "Ustawienia przypomnień zapisane.",
+      "month": {
+        "1": "styczeń",
+        "2": "luty",
+        "3": "marzec",
+        "4": "kwiecień",
+        "5": "maj",
+        "6": "czerwiec",
+        "7": "lipiec",
+        "8": "sierpień",
+        "9": "wrzesień",
+        "10": "październik",
+        "11": "listopad",
+        "12": "grudzień"
+      },
+      "regionTitle": "Region dla roku pszczelarskiego",
+      "regionIntro": "Kraj i kod pocztowy przesuwają rok pszczelarski na twoje miejsce: na południu kwitnienie zaczyna się wcześniej, na północy później. Zapisywana jest tylko pozycja, nie adres.",
+      "regionCountry": "Kraj",
+      "regionCountryNone": "— nie ustawiono —",
+      "regionPostal": "Kod pocztowy",
+      "regionAdjust": "Korekta ręczna (dni)",
+      "regionAdjustHint": "Dodatnia wartość oznacza później, ujemna wcześniej: dla górskiej doliny lub osłoniętego ogrodu. Od −28 do 28.",
+      "regionSave": "Zapisz region",
+      "regionSaved": "Region zapisany.",
+      "regionError": "Nie udało się zapisać regionu.",
+      "regionNotLocated": "Nie znaleziono tego kodu pocztowego, więc terminy opierają się na twojej pierwszej pasiece albo na środkowych Niemczech."
+    },
+    "admin": {
+      "nav": {
+        "section": "Administrator",
+        "stats": "Statystyki platformy",
+        "users": "Użytkownicy",
+        "map": "Mapa",
+        "health": "Kondycja danych"
+      },
+      "stats": {
+        "title": "Statystyki platformy",
+        "totalUsers": "Wszyscy użytkownicy",
+        "newUsers": "Nowi użytkownicy",
+        "supporters": "Wspierający",
+        "totalApiaries": "Wszystkie pasieki",
+        "publicApiaries": "Pasieki publiczne",
+        "totalHives": "Wszystkie rodziny",
+        "totalInspections": "Wszystkie przeglądy",
+        "activeUsers": "Aktywni użytkownicy (30 dni)",
+        "activeSessions": "Aktywne sesje",
+        "preset": "Okres"
+      },
+      "users": {
+        "title": "Zarządzanie użytkownikami",
+        "search": "Szukaj po adresie e-mail…",
+        "all": "Wszyscy",
+        "supportersOnly": "Tylko wspierający",
+        "email": "E-mail",
+        "name": "Imię",
+        "joined": "Dołączył(a)",
+        "apiaries": "Pasieki",
+        "hives": "Rodziny",
+        "inspections": "Przeglądy",
+        "supporter": "Wspierający",
+        "actions": "Działania",
+        "makeSupporter": "Nadaj status wspierającego",
+        "removeSupporter": "Odbierz status wspierającego",
+        "revokeSessions": "Unieważnij sesje",
+        "delete": "Usuń",
+        "confirmDelete": "Usunąć tego użytkownika i wszystkie jego dane? Tego nie można cofnąć.",
+        "confirmRevoke": "Unieważnić wszystkie sesje tego użytkownika?"
+      },
+      "map": {
+        "title": "Moderacja mapy",
+        "all": "Wszystkie pasieki publiczne",
+        "flagged": "Oznaczone",
+        "name": "Pasieka",
+        "owner": "Właściciel",
+        "hives": "Rodziny",
+        "setPrivate": "Ustaw jako prywatną",
+        "noFlagged": "Brak oznaczonych pasiek.",
+        "noPublic": "Brak pasiek publicznych."
+      },
+      "health": {
+        "title": "Kondycja danych",
+        "inactiveUsers": "Nieaktywni użytkownicy",
+        "zeroHives": "Rodziny bez przeglądów",
+        "noVarroa": "Brak danych o Varroa",
+        "inactiveDesc": "Zarejestrowani ponad 30 dni temu, bez przeglądów",
+        "zeroDesc": "Założone, ale nigdy nie przeglądane",
+        "noVarroaDesc": "Przeglądy bez liczby roztoczy Varroa",
+        "email": "E-mail",
+        "joined": "Dołączył(a)",
+        "apiaries": "Pasieki",
+        "hive": "Rodzina",
+        "apiary": "Pasieka",
+        "missing": "Brakująca liczba",
+        "noData": "Nie znaleziono problemów.",
+        "crashTitle": "Raportowanie awarii",
+        "crashDesc": "Wysyła celowy błąd do systemu raportowania awarii, żebyś mógł zobaczyć, czy raporty naprawdę dochodzą, zamiast dowiedzieć się tego przy prawdziwej awarii.",
+        "crashButton": "Wyślij testowy błąd",
+        "crashSending": "Wysyłanie…",
+        "crashSent": "Wysłano jako zdarzenie {id} w środowisku {environment}. Powinno pojawić się w Sentry w ciągu minuty; potem oznacz je tam jako rozwiązane.",
+        "crashOff": "Nie skonfigurowano raportowania awarii, więc nic nie wysłano.",
+        "crashFailed": "Nie udało się uruchomić testu.",
+        "crashDiagnosis": "Szczegół techniczny: klucz ma {settingsChars} znaków w konfiguracji i {envChars} w środowisku procesu. Dwa zera oznaczają, że platforma hostingowa nigdy nie przekazała go serwerowi.",
+        "defaultSigningKey": "Ostrzeżenie: ten serwer podpisuje logowania publicznym kluczem domyślnym z kodu źródłowego. Każdy, kto go zna, może sfałszować token dla dowolnego konta. Ustaw prawdziwy SECRET_KEY w środowisku hostingu.",
+        "pushAndroidMissing": "Push dla Androida nie jest skonfigurowany: przypomnienia nigdy nie dotrą do telefonu z Androidem. Wymaga FIREBASE_PROJECT_ID i FIREBASE_SERVICE_ACCOUNT_JSON w środowisku hostingu.",
+        "pushIosMissing": "Push dla iPhone'a nie jest skonfigurowany: przypomnienia nigdy nie dotrą do iPhone'a. Wymaga APNS_KEY_ID, APNS_TEAM_ID i APNS_PRIVATE_KEY_P8 w środowisku hostingu."
+      }
+    },
+    "apiaries": {
+      "title": "Moje pasieki",
+      "empty": "Nie ma jeszcze żadnych pasiek.",
+      "hives": "rodz.",
+      "public": "Publiczna",
+      "private": "Prywatna",
+      "new": "Nowa pasieka",
+      "createTitle": "Utwórz nową pasiekę",
+      "name": "Nazwa",
+      "description": "Opis",
+      "address": "Adres",
+      "isPublic": "Pokaż na mapie publicznej",
+      "cancel": "Anuluj",
+      "createBtn": "Utwórz pasiekę",
+      "createSuccess": "Pasieka utworzona.",
+      "errorGeneric": "Coś poszło nie tak.",
+      "sharedBy": "Udostępnia: {name}",
+      "partialBy": "Część rodzin udostępnia: {name}"
+    },
+    "apiary": {
+      "hives": "Rodziny",
+      "inspections": "Przeglądy",
+      "avgVarroa": "Śr. Varroa",
+      "noHives": "W tej pasiece nie ma jeszcze rodzin.",
+      "newHive": "Nowa rodzina",
+      "createHiveTitle": "Dodaj nową rodzinę",
+      "createHiveBtn": "Dodaj rodzinę",
+      "createHiveSuccess": "Rodzina dodana.",
+      "editBtn": "Edytuj pasiekę",
+      "editTitle": "Edytuj pasiekę",
+      "saveBtn": "Zapisz zmiany",
+      "saveSuccess": "Pasieka zapisana.",
+      "dangerTitle": "Strefa zagrożenia",
+      "deleteBtn": "Usuń pasiekę",
+      "deleteConfirmText": "Tego nie można cofnąć.",
+      "deleteConfirmBtn": "Potwierdź usunięcie",
+      "deleteSuccess": "Pasieka usunięta.",
+      "deleteHasHives": "Nie można usunąć: w tej pasiece nadal są rodziny. Najpierw usuń wszystkie rodziny.",
+      "errorGeneric": "Coś poszło nie tak.",
+      "moodTitle": "Rozkład temperamentu",
+      "noMoodData": "Brak jeszcze danych o temperamencie.",
+      "lastInspection": "Ostatni przegląd",
+      "colName": "Nazwa",
+      "colType": "Typ",
+      "never": "Nigdy",
+      "noId": "Nie podano identyfikatora pasieki.",
+      "notFound": "Nie znaleziono pasieki.",
+      "loadError": "Nie udało się wczytać danych pasieki.",
+      "backToMap": "Wróć do mapy",
+      "sharedNote": "Ta pasieka należy do: {name}. Możesz zapisywać przeglądy i edytować rodziny.",
+      "partialNote": "{name} udostępnia ci część rodzin z tej pasieki."
+    },
+    "hive": {
+      "inspections": "Przeglądy",
+      "varroaTrend": "Przebieg Varroa (12 miesięcy)",
+      "noTrend": "Brak jeszcze danych o Varroa.",
+      "noInspections": "Nie ma jeszcze przeglądów.",
+      "date": "Data",
+      "varroa": "Varroa",
+      "mood": "Temperament",
+      "queen": "Matka widziana",
+      "brood": "Ramki z czerwiem",
+      "yes": "Tak",
+      "no": "Nie",
+      "hiveType": "Typ ula",
+      "acquisitionDate": "Data nabycia",
+      "notes": "Notatki",
+      "editBtn": "Edytuj rodzinę",
+      "editTitle": "Edytuj rodzinę",
+      "saveBtn": "Zapisz zmiany",
+      "saveSuccess": "Rodzina zapisana.",
+      "dangerTitle": "Strefa zagrożenia",
+      "deleteBtn": "Usuń rodzinę",
+      "deleteConfirmText": "Trwale usunie rodzinę i wszystkie jej przeglądy.",
+      "deleteConfirmBtn": "Potwierdź usunięcie",
+      "deleteSuccess": "Rodzina usunięta.",
+      "errorGeneric": "Coś poszło nie tak.",
+      "newInspectionBtn": "Nowy przegląd",
+      "addInspectionTitle": "Zapisz przegląd",
+      "editInspectionTitle": "Edytuj przegląd",
+      "inspectionSaveBtn": "Zapisz przegląd",
+      "inspectionUpdateBtn": "Zaktualizuj przegląd",
+      "inspectionSaveSuccess": "Przegląd zapisany.",
+      "inspectionUpdateSuccess": "Przegląd zaktualizowany.",
+      "inspectionEditBtn": "Edytuj",
+      "inspectionDeleteBtn": "Usuń",
+      "inspectionConfirmDeleteText": "Usunąć ten przegląd?",
+      "inspectionConfirmDeleteBtn": "Potwierdź",
+      "inspectionLoadMore": "Pokaż więcej",
+      "inspectionLoadingMore": "Wczytywanie…",
+      "inspectionShowing": "Pokazano {shown} z {total}",
+      "exportCsv": "Eksportuj CSV",
+      "exportJson": "Eksportuj JSON",
+      "actions": "Działania",
+      "moodCalm": "Spokojna",
+      "moodNervous": "Nerwowa",
+      "moodAggressive": "Agresywna",
+      "queenNotRecorded": "Nie zapisano",
+      "moodTitle": "Rozkład temperamentu",
+      "noMoodData": "Brak jeszcze danych o temperamencie.",
+      "varroaLevel0": "Brak",
+      "varroaLevel1": "Niskie",
+      "varroaLevel2": "Średnie",
+      "varroaLevel3": "Wysokie",
+      "recordedBy": "zapisał(a): {name}"
+    },
+    "fieldDefs": {
+      "title": "Własne pola",
+      "subtitle": "Rozszerz formularze rodzin i przeglądów o własne pola.",
+      "empty": "Nie ma jeszcze własnych pól.",
+      "new": "Nowe pole",
+      "createTitle": "Nowe własne pole",
+      "editTitle": "Edytuj pole",
+      "name": "Nazwa pola",
+      "target": "Dotyczy",
+      "targetHive": "Rodzina",
+      "targetInspection": "Przegląd",
+      "type": "Typ pola",
+      "typeText": "Tekst",
+      "typeNumber": "Liczba",
+      "typeBoolean": "Tak / Nie",
+      "typeDate": "Data",
+      "typeSelect": "Wybór",
+      "options": "Opcje (po jednej w wierszu)",
+      "required": "Wymagane",
+      "createBtn": "Utwórz pole",
+      "saveBtn": "Zapisz zmiany",
+      "cancel": "Anuluj",
+      "createSuccess": "Pole utworzone.",
+      "saveSuccess": "Pole zapisane.",
+      "deleteBtn": "Usuń",
+      "deleteConfirmText": "Usunąć to pole? Dane korzystające z tego pola zostaną utracone.",
+      "deleteConfirmBtn": "Potwierdź",
+      "errorGeneric": "Coś poszło nie tak.",
+      "colName": "Nazwa",
+      "colTarget": "Dotyczy",
+      "colType": "Typ",
+      "colRequired": "Wymagane",
+      "colActions": "Działania",
+      "apiaryTitle": "Pola przypisane do pasieki",
+      "apiarySubtitle": "Te pola dotyczą tylko rodzin i przeglądów w tej pasiece."
+    },
+    "qrBatches": {
+      "title": "Partie kodów QR",
+      "empty": "Nie ma jeszcze partii kodów QR.",
+      "new": "Nowa partia",
+      "createTitle": "Wygeneruj partię kodów QR",
+      "count": "Liczba kodów (1–50)",
+      "createBtn": "Generuj",
+      "cancel": "Anuluj",
+      "createSuccess": "Partia utworzona.",
+      "errorGeneric": "Coś poszło nie tak.",
+      "date": "Utworzono",
+      "total": "Kody",
+      "linked": "Przypisane",
+      "view": "Zobacz",
+      "detailTitle": "Partia kodów QR",
+      "backToList": "← Wszystkie partie",
+      "downloadPdf": "Pobierz PDF",
+      "tokens": "Kody QR",
+      "linkedBadge": "Przypisany",
+      "unlinkedBadge": "Nieprzypisany",
+      "delete": "Usuń",
+      "confirmDelete": "Usunąć tę partię i wszystkie jej kody? Nieużywanych kodów nie da się odzyskać.",
+      "deleteSuccess": "Partia usunięta.",
+      "errorInUse": "Ta partia zawiera kody przypisane do rodzin i nie można jej usunąć."
+    },
+    "community": {
+      "title": "Panel społeczności",
+      "snapshot": "Globalne zestawienie",
+      "health": "Średnie zdrowia",
+      "avgVarroa": "Śr. Varroa (globalnie)",
+      "goodMood": "Rodziny: dobry temperament",
+      "avgBrood": "Śr. liczba ramek z czerwiem",
+      "interval": "Śr. odstęp między przeglądami",
+      "moodChart": "Rozkład temperamentu rodzin",
+      "cityChart": "Rodziny według miast (top 15)",
+      "sizeChart": "Rozkład wielkości pasiek",
+      "apiaryTable": "Pasieki publiczne",
+      "city": "Miasto",
+      "other": "Inne / nieznane",
+      "noData": "Brak danych społeczności.",
+      "mapSection": "Regionalna mapa zdrowia"
+    },
+    "traps": {
+      "myTitle": "Moje pułapki na szerszenie",
+      "myEmpty": "Nie masz jeszcze zarejestrowanych pułapek.",
+      "register": "Zarejestruj pułapkę",
+      "manage": "Zarządzaj",
+      "name": "Nazwa",
+      "code": "Kod dostępu",
+      "totalCaught": "Złapano łącznie",
+      "lastCatch": "Ostatni połów"
+    },
+    "sharing": {
+      "title": "Pracujcie razem",
+      "introApiary": "Zaproś innego pszczelarza, aby opiekował się tą pasieką razem z tobą. Widzi wszystkie rodziny w niej i może zapisywać przeglądy.",
+      "introHive": "Zaproś innego pszczelarza, aby opiekował się tą rodziną razem z tobą. Widzi tylko tę rodzinę, nie pozostałe w pasiece.",
+      "emailLabel": "Adres e-mail tej osoby",
+      "invite": "Zaproś",
+      "inviteSent": "Zaproszenie wysłane.",
+      "empty": "Nikogo jeszcze nie zaproszono.",
+      "pending": "Czeka na odpowiedź",
+      "accepted": "Pracuje z tobą",
+      "revoke": "Usuń",
+      "withdraw": "Wycofaj",
+      "confirmRevoke": "Usunąć tę osobę? Traci dostęp; to, co zapisała, zostaje.",
+      "confirmWithdraw": "Wycofać to zaproszenie?",
+      "errorGeneric": "To się nie udało. Spróbuj ponownie."
+    },
+    "invitations": {
+      "textApiary": "{owner} zaprasza cię do wspólnej pracy nad pasieką {name}.",
+      "textHive": "{owner} zaprasza cię do wspólnej pracy nad rodziną {name} w pasiece {apiary}.",
+      "accept": "Przyjmij",
+      "decline": "Odrzuć",
+      "accepted": "Możesz teraz pracować także nad: {name}.",
+      "errorGeneric": "To się nie udało. Zaproszenie mogło stracić ważność."
+    },
+    "moves": {
+      "title": "Przewieź rodziny",
+      "intro": "Zabierz rodziny tam, gdzie coś kwitnie. Wybierz rodziny, nowe miejsce, dzień i pożytek; przeniesienie jest zapamiętywane, więc widać, gdzie każda rodzina stała.",
+      "selectHives": "Które rodziny",
+      "backHint": "Gdzie stały wcześniej",
+      "backTo": "Z powrotem do: {name} ({count})",
+      "selectAll": "Wszystkie rodziny",
+      "target": "Przenieś do",
+      "targetChoose": "Wybierz miejsce",
+      "targetNew": "Nowe miejsce",
+      "newName": "Nazwa nowego miejsca",
+      "newAddress": "Adres (opcjonalnie)",
+      "newAddressHint": "Z adresem miejsce pojawi się na mapie.",
+      "date": "Data",
+      "forage": "Pożytek",
+      "forageNone": "Nie podano",
+      "forageOther": "Jaki pożytek",
+      "note": "Notatka (opcjonalnie)",
+      "submit": "Przenieś ({count})",
+      "cancel": "Anuluj",
+      "errorGeneric": "To się nie udało. Spróbuj ponownie.",
+      "success": "Przeniesiono do: {name}.",
+      "historyTitle": "Gdzie ta rodzina stała",
+      "historyEmpty": "Ta rodzina nie była jeszcze przenoszona.",
+      "noPosition": "To miejsce nie ma pozycji, więc nie ma go na mapie.",
+      "noPositionAtAll": "Żadne z tych miejsc nie ma jeszcze pozycji, więc nie ma czego narysować. Podaj miejscom adres lub pozycję.",
+      "start": "Gdzie zaczęła się podróż",
+      "openOverview": "Mapa przeniesień",
+      "overviewTitle": "Mapa przeniesień",
+      "overviewIntro": "Każde przeniesienie twoich rodzin, z trasą każdej rodziny na mapie.",
+      "overviewEmpty": "Żadna rodzina nie była jeszcze przenoszona.",
+      "from": "Z",
+      "to": "Do",
+      "hive": "Rodzina",
+      "route": "Trasa",
+      "forageNames": {
+        "acacia": "Robinia akacjowa",
+        "rapeseed": "Rzepak",
+        "orchard": "Kwiat sadów",
+        "dandelion": "Mlecz",
+        "linden": "Lipa",
+        "chestnut": "Kasztan",
+        "fir": "Jodła",
+        "heather": "Wrzos",
+        "sunflower": "Słonecznik",
+        "lavender": "Lawenda",
+        "other": "Inny"
+      }
+    },
+    "calendar": {
+      "title": "Rok pszczelarski",
+      "intro": "Co robić i kiedy, miesiąc po miesiącu, dla twojego miejsca. Przewijaj w górę i w dół: rok się powtarza.",
+      "loading": "Wczytywanie",
+      "loadError": "Nie udało się wczytać kalendarza.",
+      "loadingEarlier": "Wczytywanie wcześniejszych…",
+      "loadingLater": "Wczytywanie późniejszych…",
+      "today": "Dziś, {date}",
+      "now": "Teraz",
+      "interval": "Najpóźniej co {days} dn.",
+      "regionNone": "Terminy dla środkowych Niemiec. Ustaw region, aby przesunąć je na swoje miejsce.",
+      "regionFromApiary": "twoja pierwsza pasieka",
+      "regionNoShift": "{place}: te same terminy co w środkowych Niemczech",
+      "regionLater": "{place}: o {days} dn. później niż w środkowych Niemczech",
+      "regionEarlier": "{place}: o {days} dn. wcześniej niż w środkowych Niemczech",
+      "notLocated": "Nie znaleziono tego kodu pocztowego.",
+      "setRegion": "Ustaw region",
+      "changeRegion": "Zmień region",
+      "disclaimer": "Wartości orientacyjne z zasad dobrej praktyki pszczelarskiej, nie przepisy: o terminach decydują kwitnienie i pogoda, a daty przesuwają się wraz z twoim miejscem. Leki tylko takie, jakie są dopuszczone i zalecone w twoim kraju; w razie wątpliwości zapytaj swój związek pszczelarzy lub urząd weterynaryjny.",
+      "categories": {
+        "inspection": "Przegląd",
+        "swarm": "Kontrola rójki",
+        "feeding": "Karmienie",
+        "varroa": "Varroa",
+        "harvest": "Miodobranie",
+        "migration": "Przewóz",
+        "bloom": "Kwitnienie",
+        "care": "Pielęgnacja",
+        "winter": "Zima"
+      }
+    },
+    "home": {
+      "title": "Dziś w skrócie",
+      "outOfSeason": "To jest poza twoim sezonem przypomnień; terminy i tak są liczone tak samo.",
+      "nextInspection": "Następny przegląd",
+      "overdue": "{count} zaległych",
+      "dueOn": "Termin {date}",
+      "dueSoon": "{count} do przeglądu w ciągu trzech dni",
+      "dueSince": "zaległy od {date}",
+      "neverInspected": "nigdy nie przeglądana",
+      "health": "Stan rodzin",
+      "healthOk": "{count} w porządku",
+      "healthWatch": "{count} do obserwacji",
+      "healthAlert": "{count} alarmowych",
+      "healthUnknown": "{count} nieznanych",
+      "noConcerns": "Nic nie wymaga twojej uwagi.",
+      "reasons": {
+        "varroa_high": "wysoka Varroa",
+        "swarm_cells": "mateczniki",
+        "aggressive": "agresywna",
+        "varroa_medium": "średnia Varroa",
+        "nervous": "nerwowa",
+        "queen_not_seen": "matka niewidziana"
+      },
+      "treatments": "Nadchodzące zabiegi",
+      "treatmentsOverdue": "{count} zaległych",
+      "noTreatments": "W ciągu najbliższych 30 dni nie zaplanowano żadnego zabiegu.",
+      "markDone": "Zrobione"
+    },
+    "treatments": {
+      "title": "Zabiegi",
+      "introHive": "Zaplanuj zabieg dla tej rodziny. To, co jest do zrobienia, widać na ekranie głównym.",
+      "introApiary": "Zaplanuj zabieg dla każdej rodziny tej pasieki. To, co jest do zrobienia, widać na ekranie głównym.",
+      "plan": "Zaplanuj zabieg",
+      "product": "Preparat",
+      "dueOn": "Termin",
+      "note": "Notatka (opcjonalnie)",
+      "save": "Zapisz",
+      "cancel": "Anuluj",
+      "empty": "Nic nie zaplanowano.",
+      "overdue": "zaległy od {date}",
+      "dueOnDate": "termin {date}",
+      "markDone": "Zrobione",
+      "delete": "Usuń",
+      "confirmDelete": "Usunąć ten zaplanowany zabieg?",
+      "doneTitle": "Zrobione",
+      "doneOn": "zrobiono {date}",
+      "reopen": "Otwórz ponownie",
+      "errorGeneric": "To się nie udało. Spróbuj ponownie."
+    }
+  },
+  "hiveTypes": {
+    "langstroth": "Langstroth",
+    "dadant": "Dadant",
+    "top_bar": "Ul top-bar",
+    "warre": "Warré",
+    "other": "Inny"
+  },
+  "members": {
+    "tag": "Strefa członków",
+    "title": "Spostrzeżenia społeczności",
+    "sub": "Wspierający odblokowują głębsze statystyki, globalne trendy i dane na poziomie badawczym, które pomagają być lepszym pszczelarzem i pomagają nauce zrozumieć nasze pszczoły.",
+    "snap": {
+      "title": "Globalne zestawienie społeczności",
+      "sub": "Te liczby są dostępne dla wszystkich. Wspierający widzą znacznie więcej."
+    },
+    "teaser": {
+      "title": "Zaawansowane statystyki globalne",
+      "sub": "Tylko dla wspierających: odblokuj w aplikacji",
+      "subUnlocked": "Dane społeczności na żywo: otwórz swój panel",
+      "subMember": "Dane społeczności na żywo: do twojej dyspozycji"
+    },
+    "gate": {
+      "title": "Odblokuj pełny obraz",
+      "unlockedBadge": "Wspierający",
+      "unlockedNote": "Statystyki globalne na żywo pojawią się tu, gdy ruszy panel internetowy. Wszystkie funkcje są teraz dostępne w aplikacji.",
+      "desc": "Wspierający widzą regionalne trendy Varroa, sezonowe krzywe zdrowia rodzin, wskaźniki wymiany matek oraz zestawione dane o pogodzie i kwitnieniu, wszystko w aplikacji HivePulse.",
+      "cta": "Pobierz aplikację",
+      "note": "Po rejestracji przejdź na wersję Wspierającego (2,99 € / miesiąc) w aplikacji.",
+      "loginTitle": "Zaloguj się, aby zobaczyć statystyki na żywo",
+      "loginDesc": "Zaloguj się kontem HivePulse, aby zobaczyć globalne dane społeczności na żywo.",
+      "loginCta": "Zaloguj się",
+      "openDashboard": "Otwórz panel społeczności"
+    },
+    "benefits": {
+      "title": "Co dostają wspierający",
+      "sub": "Każde euro trafia bezpośrednio na utrzymanie niezależności HivePulse i finansowanie partnerstw badawczych."
+    },
+    "b1": {
+      "title": "Globalny panel zdrowia",
+      "desc": "Indeks Varroa, rozkład temperamentu i częstotliwość przeglądów we wszystkich regionach, w czasie rzeczywistym."
+    },
+    "b2": {
+      "title": "Wykresy trendów sezonowych",
+      "desc": "Jak zdrowie rodzin w twoim regionie wypada na tle zeszłego roku? A na tle pszczelarzy oddalonych o 500 km?"
+    },
+    "b3": {
+      "title": "Pełny eksport danych",
+      "desc": "Pobierz pełną historię przeglądów jako CSV lub JSON do własnej analizy."
+    },
+    "b4": {
+      "title": "Regionalne mapy cieplne",
+      "desc": "Mapy skupisk chorób z nakładkami: ryzyko Varroa, temperament rodzin, presja rójkowa i zdrowie czerwiu, widoczne w panelu społeczności."
+    },
+    "b5": {
+      "title": "Portal danych badawczych",
+      "desc": "Dostęp do zanonimizowanego zbioru danych używanego w naszych partnerstwach z uczelniami."
+    },
+    "b6": {
+      "title": "Wczesny dostęp i podziękowania",
+      "desc": "Wypróbuj nowe funkcje jako pierwszy i zobacz swoje imię w aplikacji. Ul pamięta swoich budowniczych."
+    },
+    "stat": {
+      "avgVarroa": "Śr. Varroa (globalnie)",
+      "goodMood": "Rodziny: dobry temperament",
+      "avgBrood": "Śr. liczba ramek z czerwiem",
+      "interval": "Śr. odstęp między przeglądami"
+    },
+    "coming": {
+      "tag": "Już dostępne",
+      "title": "Panel internetowy dla członków",
+      "desc": "Pełny panel internetowy dla członków już działa. Przeglądaj globalne dane o zdrowiu rodzin, trendy temperamentu i pasieki społeczności prosto w przeglądarce.",
+      "btn": "Otwórz panel"
+    }
+  },
+  "helpIndex": {
+    "allTopics": "Wszystkie tematy",
+    "heroTitle": "Pomoc i dokumentacja",
+    "heroDesc": "Przewodniki krok po kroku po każdej funkcji HivePulse: co robi, jak jej używać i co dane oznaczają dla twoich pszczół.",
+    "searchPlaceholder": "Szukaj tematów… (np. Varroa, QR, eksport)",
+    "groups": {
+      "Getting started": "Pierwsze kroki",
+      "Managing your apiary": "Zarządzanie pasieką",
+      "Inspections & data": "Przeglądy i dane",
+      "Statistics": "Statystyki",
+      "Community & hornets": "Społeczność i szerszenie",
+      "Account & settings": "Konto i ustawienia"
+    },
+    "topics": {
+      "getting-started": {
+        "title": "Pierwsze kroki z HivePulse",
+        "desc": "Przegląd HivePulse: co robi, dla kogo jest i jak współpracują aplikacja internetowa, aplikacja na iOS i aplikacja na Androida."
+      },
+      "apiaries": {
+        "title": "Pasieki",
+        "desc": "Twórz pasieki i zarządzaj nimi: nazwanymi miejscami, które grupują twoje rodziny. Ustaw lokalizację GPS, aby pojawić się na mapie społeczności."
+      },
+      "hives": {
+        "title": "Rodziny pszczele",
+        "desc": "Dodawaj rodziny do pasieki, wybierz typ ula (Langstroth, Dadant, Top Bar, Warré) i powiąż kod QR dla szybkiego dostępu w terenie."
+      },
+      "qr-codes": {
+        "title": "Kody QR",
+        "desc": "Generuj partie kodów QR do wydruku, przyklejaj je do uli i skanuj, aby od razu otworzyć właściwą rodzinę."
+      },
+      "sharing": {
+        "title": "Praca razem",
+        "desc": "Zaproś innego pszczelarza e-mailem do wspólnej pracy nad pasieką lub pojedynczymi rodzinami, przyjmij zaproszenie i zobacz, co zostaje przy właścicielu."
+      },
+      "moving-hives": {
+        "title": "Przewożenie rodzin",
+        "desc": "Zabieraj rodziny na pożytek: przenoś je między swoimi pasiekami, zachowuj historię miejsc, w których stały, i oglądaj każdą podróż na mapie."
+      },
+      "home-and-treatments": {
+        "title": "Ekran główny i zabiegi",
+        "desc": "Co jest do zrobienia, jak radzą sobie twoje rodziny i co nadchodzi, w skrócie, oraz jak planować zabiegi dla rodziny lub całej pasieki."
+      },
+      "beekeeping-year": {
+        "title": "Rok pszczelarski",
+        "desc": "Co robić i kiedy, miesiąc po miesiącu: karmienie, przeglądy, kontrola rójki, ramki trutowe, przewóz na pożytek, miodobranie i przygotowanie do zimy, dopasowane do twojego miejsca."
+      },
+      "custom-fields": {
+        "title": "Własne pola przeglądu",
+        "desc": "Rozszerz wbudowany formularz przeglądu o własne pola (tekst, liczby, pola wyboru, listy rozwijane) przypisane do konta lub do konkretnej pasieki."
+      },
+      "inspections": {
+        "title": "Zapisywanie przeglądu",
+        "desc": "Zapisuj każdą wizytę przy rodzinie: liczbę roztoczy Varroa, temperament, obecność matki, ramki z czerwiem, ramki z miodem, wagę, zabiegi i więcej."
+      },
+      "data-export": {
+        "title": "Eksport danych",
+        "desc": "Pobierz wszystkie przeglądy pasieki jako JSON lub CSV, aby przekazać weterynarzowi, badaczowi albo krajowemu organowi pszczelarskiemu."
+      },
+      "hive-stats": {
+        "title": "Statystyki rodziny",
+        "desc": "Poznaj zdrowie rodziny w czasie dzięki wykresom Varroa, rozkładowi temperamentu, odsetkowi widzianych matek, liczbie ramek z czerwiem i odstępom między przeglądami."
+      },
+      "community-stats": {
+        "title": "Statystyki społeczności (dla członków)",
+        "desc": "Porównaj swoją pasiekę ze społecznością HivePulse: średnie liczby Varroa, odsetek dobrego temperamentu, liczby ramek z czerwiem i odstępy między przeglądami we wszystkich pasiekach publicznych."
+      },
+      "hornet-tracker": {
+        "title": "Tropiciel szerszeni",
+        "desc": "Zgłaszaj odłowy szerszenia azjatyckiego i obserwacje gniazd, głosuj nad zdjęciami od społeczności i oglądaj mapę gniazd na żywo."
+      },
+      "hornet-traps": {
+        "title": "Pułapki na szerszenie",
+        "desc": "Zarejestruj nazwaną pułapkę, zapisuj dzienne odłowy za pomocą jej 8-znakowego kodu dostępu i szukaj pułapek w pobliżu."
+      },
+      "reminders": {
+        "title": "Przypomnienia o przeglądach",
+        "desc": "Ustaw odstęp przypomnień i okno sezonu, aby HivePulse powiadamiał cię, gdy rodzina jest spóźniona z przeglądem."
+      },
+      "account": {
+        "title": "Konto i profil",
+        "desc": "Zmień nazwę wyświetlaną i język, zmień hasło oraz trwale usuń konto i wszystkie powiązane dane."
+      }
+    }
+  },
+  "hornets": {
+    "tag": "Nauka obywatelska",
+    "title": "Tropiciel szerszenia azjatyckiego",
+    "subtitle": "Pomóż chronić pszczoły, śledząc Vespa velutina, czyli szerszenia azjatyckiego. Zgłaszaj odłowy i gniazda, rozpoznawaj obserwacje i oglądaj mapę na żywo. Konto nie jest potrzebne.",
+    "stats": {
+      "caught": "Odłowione szerszenie",
+      "nests": "Zgłoszone gniazda",
+      "destroyed": "Zniszczone gniazda",
+      "sightings": "Potwierdzone obserwacje",
+      "traps": "Aktywne pułapki"
+    },
+    "info": {
+      "problem": "Zagrożenie",
+      "problemText": "Vespa velutina (szerszeń azjatycki) to inwazyjny drapieżnik atakujący rodziny pszczele, osłabiający ule i zagrażający bezpieczeństwu żywnościowemu. Wczesne wykrycie jest kluczowe.",
+      "whyCatch": "Po co łowić?",
+      "whyCatchText": "Odławianie matek wiosną zapobiega powstawaniu nowych rodzin szerszeni. Każda złapana matka może zapobiec powstaniu tysięcy robotnic. Wspólne odławianie naprawdę ma znaczenie.",
+      "reportNest": "Zgłoś gniazdo",
+      "reportNestText": "Jeśli zauważysz gniazdo, nie niepokój go. Zgłoś tutaj lokalizację, aby władze mogły bezpiecznie je usunąć. Twoje zgłoszenie ratuje pszczoły."
+    },
+    "map": {
+      "title": "Mapa gniazd",
+      "subtitle": "Wszystkie zgłoszone gniazda, oznaczone kolorami według aktualnego stanu.",
+      "hint": "Zobacz wszystkie zgłoszone gniazda na mapie na żywo",
+      "legend": "Stan gniazda",
+      "noNests": "Nie zgłoszono jeszcze żadnych gniazd. Bądź pierwszy!",
+      "status": {
+        "found": "Znalezione: aktywne",
+        "ordered": "Zlecono zniszczenie",
+        "destroyed": "Zniszczone"
+      }
+    },
+    "report": {
+      "title": "Zgłoś",
+      "catchTab": "Zgłoś odłów",
+      "nestTab": "Zgłoś gniazdo",
+      "catchHint": "Zapisz, ile szerszeni złapano",
+      "count": "Liczba odłowionych",
+      "countError": "Liczba musi mieścić się między 1 a 1000",
+      "latitude": "Szerokość geograficzna",
+      "longitude": "Długość geograficzna",
+      "name": "Twoje imię (opcjonalnie)",
+      "namePlaceholder": "Anonimowo",
+      "notes": "Notatki (opcjonalnie)",
+      "photo": "Zdjęcie (opcjonalnie)",
+      "uploading": "Przesyłanie…",
+      "photoReady": "Zdjęcie przesłane",
+      "uploadError": "Nie udało się przesłać zdjęcia. Spróbuj ponownie.",
+      "locationRequired": "Przy zgłoszeniach gniazd wymagane są szerokość i długość geograficzna.",
+      "submitError": "Wysyłanie nie powiodło się. Spróbuj ponownie.",
+      "submit": "Wyślij",
+      "success": "Dziękujemy! Twoje zgłoszenie zostało wysłane.",
+      "trap": "Zapisz do mojej pułapki (opcjonalnie)",
+      "trapNone": "— Bez pułapki (zgłoszenie anonimowe) —"
+    },
+    "community": {
+      "title": "Rozpoznawanie przez społeczność",
+      "subtitle": "Pomóż rozpoznawać szerszenie azjatyckie na zdjęciach. Zagłosuj „tak”, jeśli rozpoznajesz Vespa velutina, „nie”, jeśli nie.",
+      "hint": "Głosuj nad zdjęciami obserwacji od społeczności",
+      "addPhoto": "Dodaj zdjęcie",
+      "photo": "Zdjęcie",
+      "photoRequired": "Najpierw prześlij zdjęcie.",
+      "description": "Opis (opcjonalnie)",
+      "submitPhoto": "Wyślij zdjęcie",
+      "submitSuccess": "Zdjęcie wysłane! Pojawi się po przesłaniu.",
+      "vote": {
+        "yes": "Vespa velutina",
+        "no": "To nie szerszeń"
+      },
+      "confirmed": "Potwierdzone",
+      "rejected": "Odrzucone",
+      "pending": "Oczekuje",
+      "noSightings": "Nie ma jeszcze zdjęć obserwacji. Wyślij pierwsze!"
+    },
+    "traps": {
+      "title": "Moje pułapki",
+      "subtitle": "Zarejestruj pułapki raz, a potem szybko zapisuj dzienne odłowy za pomocą kodu dostępu lub bliskości GPS.",
+      "hint": "Zarządzaj swoimi pułapkami na szerszenie",
+      "new": "Zarejestruj pułapkę",
+      "name": "Nazwa pułapki",
+      "namePlaceholder": "np. Ogród północ",
+      "notes": "Notatki (opcjonalnie)",
+      "owner": "Twoje imię (opcjonalnie)",
+      "submit": "Zarejestruj pułapkę",
+      "success": "Pułapka zarejestrowana!",
+      "code": "Kod dostępu",
+      "codeCopy": "Kopiuj kod",
+      "codeCopied": "Skopiowano!",
+      "total": "Złapano łącznie",
+      "logCatch": "Zapisz dzisiejszy odłów",
+      "count": "Liczba złapana dziś",
+      "date": "Data",
+      "logSubmit": "Zapisz",
+      "logSuccess": "Odłów zapisany!",
+      "logError": "Nie udało się zapisać odłowu. Spróbuj ponownie.",
+      "searchCode": "Wpisz kod dostępu",
+      "search": "Znajdź pułapkę",
+      "notFound": "Nie znaleziono pułapki. Sprawdź kod i spróbuj ponownie.",
+      "nearby": "Pułapki w pobliżu",
+      "nearbySearching": "Szukam pułapek w pobliżu…",
+      "noNearby": "Nie znaleziono pułapek w promieniu 50 m.",
+      "distanceM": "{m} m stąd",
+      "gps": "Użyj lokalizacji GPS",
+      "gpsError": "Nie udało się ustalić twojej lokalizacji.",
+      "noCatches": "Nie zapisano jeszcze odłowów.",
+      "history": "Historia odłowów",
+      "backToList": "← Wstecz"
+    }
+  },
+  "meta": {
+    "siteTitle": "HivePulse: razem chronimy zapylacze",
+    "siteDescription": "Aplikacja społeczności pszczelarskiej, która zamienia każdy przegląd w globalne dane dla ochrony pszczół. Za darmo na iOS i Androida.",
+    "helpTitle": "Pomoc i dokumentacja",
+    "helpDescription": "Przewodniki po każdej części HivePulse: pasieki, rodziny, przeglądy, kody QR, statystyki i tropiciel szerszeni.",
+    "helpSuffix": "Pomoc HivePulse",
+    "imprintTitle": "Nota prawna",
+    "imprintDescription": "Kto prowadzi HivePulse i jak się z nim skontaktować.",
+    "deleteAccountTitle": "Usuń swoje konto",
+    "deleteAccountDescription": "Jak usunąć konto HivePulse i co dokładnie zostaje usunięte.",
+    "betaTitle": "Dołącz do testów",
+    "betaDescription": "Wypróbuj HivePulse, zanim trafi do sklepów, i pomóż mu tam dotrzeć.",
+    "releaseNotesTitle": "Informacje o wersjach",
+    "releaseNotesDescription": "Co się zmieniło i co nowego w HivePulse oraz pełna lista funkcji."
+  },
+  "imprint": {
+    "title": "Nota prawna",
+    "operator": "Operator",
+    "contact": "Kontakt",
+    "emailLabel": "E-mail",
+    "phoneLabel": "Telefon",
+    "responsible": "Odpowiedzialny za treść",
+    "responsibleBody": "{name}, pod powyższym adresem.",
+    "vat": "Numer identyfikacyjny VAT",
+    "liability": "Odpowiedzialność za linki",
+    "liabilityBody": "Ta strona zawiera linki do zewnętrznych witryn, których treści nie kontrolujemy. Odpowiedzialność za ich treść ponoszą ich operatorzy. W chwili tworzenia linku sprawdziliśmy powiązane strony pod kątem naruszeń prawa; ciągłe monitorowanie bez konkretnych dowodów naruszenia nie jest uzasadnione."
+  },
+  "deleteAccount": {
+    "title": "Usuwanie konta i danych",
+    "intro": "Konto HivePulse możesz usunąć sam, w każdej chwili, bez pytania nikogo o zgodę. Ta strona wyjaśnia jak i co dokładnie znika. Istnieje, bo Google i Apple wymagają, by dało się ją przeczytać bez instalowania aplikacji.",
+    "inAppTitle": "W aplikacji lub w serwisie",
+    "step1": "Otwórz swój profil: w aplikacjach w Ustawieniach, w serwisie w Panel → Profil.",
+    "step2": "Przewiń na dół i wybierz „Usuń konto”.",
+    "step3": "Potwierdź. Nie ma okresu oczekiwania ani dodatkowego e-maila.",
+    "immediate": "Usunięcie następuje natychmiast i nie można go cofnąć. Najpierw wyeksportuj przeglądy, jeśli chcesz je zachować: panel oferuje pobranie CSV dla każdej pasieki.",
+    "removedTitle": "Co zostaje usunięte",
+    "removed1": "Twoje konto: adres e-mail, imię, język i hasło.",
+    "removed2": "Wszystkie twoje pasieki i rodziny, razem z ich kodami QR.",
+    "removed3": "Każdy zapisany przez ciebie przegląd, z notatkami i własnymi polami.",
+    "removed4": "Twoje sesje oraz, jeśli włączono przypomnienia, token urządzenia używany do ich wysyłania.",
+    "keptTitle": "Co zostaje",
+    "keptBody": "Zgłoszenia szerszeni i pułapki na szerszenie zostają. To obserwacje dotyczące środowiska, na których polegają inni pszczelarze, a po usunięciu nie są powiązane z twoim kontem: pułapka zachowuje nazwę i lokalizację, ale nie wskazuje już na osobę. Zbiorcze statystyki społeczności również zostają, bo nie zawierają danych osobowych: liczba rodzin na region, nigdy twoja rodzina.",
+    "retentionTitle": "Jak długo cokolwiek jest przechowywane",
+    "retentionBody": "W działającej bazie danych usunięcie jest natychmiastowe: minutę później nic z twojego konta nie zostaje. Nasz dostawca hostingu przechowuje automatyczne kopie zapasowe bazy do 30 dni; kopię można przywrócić tylko w całości, nigdy dla pojedynczego konta, a po tym okresie dane znikają także stamtąd. Opisane wyżej zgłoszenia szerszeni i pułapki nie mają limitu przechowywania, bo nie odnoszą się już do osoby. Nie przechowujemy osobnych kopii, archiwów ani eksportów.",
+    "noAccessTitle": "Nie masz dostępu do aplikacji?",
+    "noAccessBody": "Jeśli nie możesz się już zalogować, napisz do nas, a usuniemy konto za ciebie w ciągu 30 dni. Użyj adresu, na który zarejestrowano konto, abyśmy wiedzieli, do kogo należy:"
+  },
+  "beta": {
+    "title": "Wypróbuj HivePulse przed wszystkimi",
+    "intro": "HivePulse jest gotowy, ale jeszcze nie ma go w sklepach. Zanim Google pozwoli nowemu deweloperowi opublikować aplikację, dwanaście osób musi ją testować przez dwa tygodnie, więc ta faza nie jest formalnością, tylko bramą. Jeśli masz pszczoły i telefon, możesz pomóc.",
+    "joinTitle": "Dołączanie",
+    "joinAndroid": "Dołącz do testu na Androida",
+    "joinIos": "Dołącz do testu na iPhone'a",
+    "notOpenYet": "Rundy testowe są w przygotowaniu, a linki pojawią się tutaj. Napisz do nas, a dostaniesz je w chwili, gdy będą gotowe.",
+    "joinNote": "Aby wziąć udział, potrzebujesz konta Google dla Androida lub Apple ID dla iPhone'a, tego samego, którego telefon już używa. W aplikacji zakładasz potem konto HivePulse z adresem e-mail i hasłem; zajmuje to minutę i nic nie kosztuje. Możesz odejść w każdej chwili.",
+    "expectTitle": "Na czym to polega",
+    "expect1": "Zainstaluj aplikację i załóż jedną pasiekę z kilkoma rodzinami. Piętnaście minut.",
+    "expect2": "Zapisz wizytę przy następnej okazji przy ulach: tę część warto sprawdzić w terenie, w rękawicach.",
+    "expect3": "Zostań w teście przez dwa tygodnie. Google liczy testerów codziennie, więc wcześniejsze odejście cofa zegar wszystkim.",
+    "expect4": "Powiedz nam, co było niejasne. Jedno zdanie jest bardziej przydatne niż żadne, a „nic się nie zepsuło” to również odpowiedź.",
+    "feedbackTitle": "Zgłaszanie uwag",
+    "feedbackBody": "Bez forum, bez konta, bez systemu zgłoszeń, po prostu napisz na",
+    "feedbackSubject": "Opinia o teście HivePulse",
+    "feedbackHint": "Przydatne w zgłoszeniu: jaki telefon, co zostało zrobione, czego oczekiwano. Zdjęcie ekranu mówi więcej niż opis. Jeśli aplikacja sama się zamknęła, wysłała już raport o awarii, nie musisz go opisywać.",
+    "dataTitle": "Co dzieje się z twoimi danymi",
+    "dataBody": "To samo co u wszystkich: twoje pasieki są prywatne, dopóki sam nie umieścisz ich na mapie publicznej, nic nie jest sprzedawane ani przekazywane dalej i nie ma reklam. Wersje testowe zawierają raportowanie awarii, które wysyła miejsce w kodzie i rodzaj urządzenia, nigdy twoje notatki, hasło ani adres. Możesz w każdej chwili sam usunąć konto i wszystko, co w nim jest.",
+    "androidNote": "Na Androidzie Google wpuszcza tylko konta, które zarejestrowaliśmy wcześniej; bez wpisu link pokazuje „Aplikacja niedostępna”. Wyślij nam adres swojego konta Google na",
+    "androidNoteSubject": "Test HivePulse na Androida: proszę o dodanie"
+  }
+}

@@ -25,7 +25,7 @@ vi.mock('@/i18n/navigation', () => ({
 }));
 
 vi.mock('@/i18n/routing', () => ({
-  routing: { locales: ['en', 'de', 'fr', 'es'] },
+  routing: { locales: ['en', 'de', 'fr', 'es', 'pl'] },
 }));
 
 vi.mock('@/lib/api', () => ({
