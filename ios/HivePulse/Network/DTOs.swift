@@ -356,6 +356,140 @@ struct IncomingShareOut: Codable, Identifiable {
     }
 }
 
+// MARK: - Home summary and planned treatments
+
+struct TreatmentTarget: Codable, Equatable {
+    /// "hive" or "apiary"
+    let type: String
+    let id: String
+    let name: String
+}
+
+struct PlannedTreatmentOut: Codable, Identifiable {
+    let id: String
+    let target: TreatmentTarget
+    let apiaryName: String?
+    let product: String
+    /// "YYYY-MM-DD"
+    let dueOn: String
+    let note: String?
+    let doneOn: String?
+    let overdue: Bool
+    let createdByName: String?
+    let createdAt: Date
+    enum CodingKeys: String, CodingKey {
+        case id, target, product, note, overdue
+        case apiaryName = "apiary_name"
+        case dueOn = "due_on"
+        case doneOn = "done_on"
+        case createdByName = "created_by_name"
+        case createdAt = "created_at"
+    }
+}
+
+struct TreatmentCreateRequest: Encodable {
+    let hiveId: String?
+    let apiaryId: String?
+    let product: String
+    let dueOn: String
+    let note: String?
+    enum CodingKeys: String, CodingKey {
+        case product, note
+        case hiveId = "hive_id"
+        case apiaryId = "apiary_id"
+        case dueOn = "due_on"
+    }
+}
+
+struct HomeInspectionItem: Codable, Equatable {
+    let hiveId: String
+    let hiveName: String
+    let apiaryName: String
+    let lastInspectionOn: String?
+    let dueOn: String
+    let overdueDays: Int
+    enum CodingKeys: String, CodingKey {
+        case hiveId = "hive_id"
+        case hiveName = "hive_name"
+        case apiaryName = "apiary_name"
+        case lastInspectionOn = "last_inspection_on"
+        case dueOn = "due_on"
+        case overdueDays = "overdue_days"
+    }
+}
+
+struct HomeInspections: Codable {
+    let intervalDays: Int
+    let overdueCount: Int
+    let dueSoonCount: Int
+    let next: [HomeInspectionItem]
+    enum CodingKeys: String, CodingKey {
+        case next
+        case intervalDays = "interval_days"
+        case overdueCount = "overdue_count"
+        case dueSoonCount = "due_soon_count"
+    }
+}
+
+struct HomeAttentionItem: Codable, Equatable {
+    let hiveId: String
+    let hiveName: String
+    let apiaryName: String
+    /// "alert" or "watch"
+    let status: String
+    let reasons: [String]
+    enum CodingKeys: String, CodingKey {
+        case status, reasons
+        case hiveId = "hive_id"
+        case hiveName = "hive_name"
+        case apiaryName = "apiary_name"
+    }
+}
+
+struct HomeHealth: Codable {
+    let ok: Int
+    let watch: Int
+    let alert: Int
+    let unknown: Int
+    let attention: [HomeAttentionItem]
+}
+
+struct HomeTreatments: Codable {
+    let openCount: Int
+    let overdueCount: Int
+    let upcoming: [PlannedTreatmentOut]
+    enum CodingKeys: String, CodingKey {
+        case upcoming
+        case openCount = "open_count"
+        case overdueCount = "overdue_count"
+    }
+}
+
+struct HomeAd: Codable, Equatable {
+    let id: String
+    let label: String
+    let title: String
+    let body: String
+    let url: String?
+}
+
+struct HomeSummary: Codable {
+    let today: String
+    let inSeason: Bool
+    let apiaryCount: Int
+    let hiveCount: Int
+    let inspections: HomeInspections
+    let health: HomeHealth
+    let treatments: HomeTreatments
+    let ad: HomeAd?
+    enum CodingKeys: String, CodingKey {
+        case today, inspections, health, treatments, ad
+        case inSeason = "in_season"
+        case apiaryCount = "apiary_count"
+        case hiveCount = "hive_count"
+    }
+}
+
 // MARK: - Moving hives
 
 struct MovePlace: Codable, Equatable {

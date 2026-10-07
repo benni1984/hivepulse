@@ -61,7 +61,7 @@ struct MoveRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             HStack {
-                Text(move.movedOn).font(.dmSans(16, weight: .bold, relativeTo: .headline))
+                Text(DayFormat.string(from: move.movedOn)).font(.dmSans(16, weight: .bold, relativeTo: .headline))
                 if let forage = move.forage {
                     Text(Forage.label(for: forage))
                         .font(.caption)

@@ -3,6 +3,7 @@ import SwiftUI
 struct ApiaryListView: View {
     @EnvironmentObject var apiaryVM: ApiaryViewModel
     @StateObject private var invitationsVM = InvitationsViewModel()
+    @StateObject private var homeVM = HomeSummaryViewModel()
     @State private var showCreate = false
     @State private var showRedeem = false
     @State private var pastedLink = ""
@@ -33,6 +34,7 @@ struct ApiaryListView: View {
                             InvitationsSection(vm: invitationsVM) { await apiaryVM.load() }
                         }
                     }
+                    HomeSummarySections(vm: homeVM)
                     ForEach(apiaryVM.apiaries) { apiary in
                         NavigationLink(destination: ApiaryDetailView(apiary: apiary)) {
                             ApiaryRow(apiary: apiary)
@@ -93,10 +95,14 @@ struct ApiaryListView: View {
                 Button { showCreate = true } label: { Image(systemName: "plus") }
             }
         }
-        .task { await invitationsVM.load() }
+        .task {
+            await invitationsVM.load()
+            await homeVM.load()
+        }
         .refreshable {
             await apiaryVM.load()
             await invitationsVM.load()
+            await homeVM.load()
         }
         .sheet(isPresented: $showCreate) {
             ApiaryFormView(mode: .create) { name, desc, lat, lon, addr, isPublic in

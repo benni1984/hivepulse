@@ -79,6 +79,11 @@ struct ApiaryDetailView: View {
                 }
                 // Somebody who has single hives of it cannot edit the apiary around them.
                 if apiary.canEdit {
+                    NavigationLink(destination: TreatmentsView(target: .apiary(apiary.id))) {
+                        Image(systemName: "cross.case")
+                    }
+                    .accessibilityLabel(NSLocalizedString("treatments.title", comment: ""))
+                    .accessibilityIdentifier("apiaryTreatmentsButton")
                     NavigationLink(destination: FieldDefinitionsView(apiaryId: apiary.id)) {
                         Image(systemName: "slider.horizontal.3")
                     }

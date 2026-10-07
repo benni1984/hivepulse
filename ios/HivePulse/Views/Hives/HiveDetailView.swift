@@ -43,6 +43,10 @@ struct HiveDetailView: View {
                     Label(NSLocalizedString("moves.historyTitle", comment: ""), systemImage: "arrow.left.arrow.right")
                 }
                 .accessibilityIdentifier("hiveMovesLink")
+                NavigationLink(destination: TreatmentsView(target: .hive(hive.id))) {
+                    Label(NSLocalizedString("treatments.title", comment: ""), systemImage: "cross.case")
+                }
+                .accessibilityIdentifier("hiveTreatmentsLink")
             }
 
             Section(NSLocalizedString("section.inspections", comment: "")) {
