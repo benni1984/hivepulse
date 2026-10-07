@@ -35,6 +35,7 @@ fun ApiaryListScreen(
     onScanClick: () -> Unit,
     onBatchClick: () -> Unit,
     onStatsClick: () -> Unit = {},
+    onMovesClick: () -> Unit = {},
     vm: ApiaryViewModel = hiltViewModel(),
     invitationsVm: InvitationsViewModel = hiltViewModel(),
 ) {
@@ -50,6 +51,9 @@ fun ApiaryListScreen(
             TopAppBar(
                 title = { Text(stringResource(R.string.screen_apiaries), style = MaterialTheme.typography.titleLarge) },
                 actions = {
+                    IconButton(onClick = onMovesClick, modifier = Modifier.testTag("movesOverviewButton")) {
+                        Icon(Icons.Default.Map, contentDescription = stringResource(R.string.moves_overview_title))
+                    }
                     IconButton(onClick = { showRedeem = true }, modifier = Modifier.testTag("redeemInvitationButton")) {
                         Icon(Icons.Default.MarkEmailRead, contentDescription = stringResource(R.string.invitation_redeem_title))
                     }

@@ -22,6 +22,14 @@ fun serverMessageFrom(body: String?): String? {
     }.getOrNull()
 }
 
+/** Runs [call]; a refusal comes out as an exception that carries the server's own message. */
+suspend fun <T> withServerMessage(call: suspend () -> T): T =
+    try {
+        call()
+    } catch (e: HttpException) {
+        throw RuntimeException(e.serverMessage() ?: (e.message ?: "HTTP ${e.code()}"), e)
+    }
+
 fun HttpException.serverMessage(): String? =
     serverMessageFrom(runCatching { response()?.errorBody()?.string() }.getOrNull())
 

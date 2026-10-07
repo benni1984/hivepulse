@@ -22,6 +22,28 @@ export function newsText(entry: NewsEntry, locale: string): NewsText {
 
 export const NEWS: NewsEntry[] = [
   {
+    date: '2026-10-07',
+    tag: 'feature',
+    text: {
+      en: {
+        title: 'Taking Hives to the Bloom, and Seeing Where They Went',
+        body: 'Migratory beekeepers can now move hives as one action: pick the hives, the new place (an existing apiary or a new one, with an address), the day and the forage, from acacia and rapeseed to fir and heather. Every move is kept. Each hive shows where it has stood, and a map of moves draws the journey of every hive, numbered stop by stop. Only the owner of an apiary can move its hives. The website has it now; the apps follow with their next versions.',
+      },
+      de: {
+        title: 'Völker zur Blüte bringen und sehen, wo sie waren',
+        body: 'Wanderimker können Völker jetzt in einem Schritt verlagern: Völker wählen, den neuen Ort (ein vorhandener Bienenstand oder ein neuer, mit Adresse), den Tag und die Tracht, von Akazie und Raps bis Tanne und Heide. Jede Verlagerung bleibt gespeichert. Jedes Volk zeigt, wo es gestanden hat, und die Wanderkarte zeichnet den Weg jedes Volks, Station für Station nummeriert. Verlagern darf nur der Besitzer eines Bienenstands. Auf der Webseite gibt es das jetzt, die Apps folgen mit ihren nächsten Versionen.',
+      },
+      fr: {
+        title: 'Emmener les ruches à la floraison, et voir où elles sont passées',
+        body: "Les apiculteurs transhumants peuvent désormais déplacer des ruches en une seule action : choisir les ruches, le nouveau lieu (un rucher existant ou un nouveau, avec une adresse), le jour et la miellée, de l'acacia et du colza au sapin et à la bruyère. Chaque déplacement est conservé. Chaque ruche montre où elle a été, et la carte des déplacements trace le parcours de chaque ruche, étape par étape. Seul le propriétaire d'un rucher peut en déplacer les ruches. Le site l'offre dès maintenant ; les applications suivent avec leurs prochaines versions.",
+      },
+      es: {
+        title: 'Llevar las colmenas a la floración y ver dónde han estado',
+        body: 'Los apicultores trashumantes ya pueden trasladar colmenas en un solo paso: elegir las colmenas, el nuevo lugar (un colmenar existente o uno nuevo, con dirección), el día y la floración, desde la acacia y la colza hasta el abeto y el brezo. Cada traslado queda guardado. Cada colmena muestra dónde ha estado, y el mapa de traslados dibuja el recorrido de cada una, parada por parada. Solo el propietario de un colmenar puede trasladar sus colmenas. La web ya lo tiene; las aplicaciones lo recibirán con sus próximas versiones.',
+      },
+    },
+  },
+  {
     date: '2026-10-06',
     tag: 'feature',
     text: {

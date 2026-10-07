@@ -121,6 +121,42 @@ data class ApiaryCreate(
     @SerializedName("is_public") val isPublic: Boolean = false,
 )
 
+// MARK: - Moving hives
+data class MovePlaceOut(
+    @SerializedName("apiary_id") val apiaryId: String?,
+    val name: String,
+    val latitude: Double?,
+    val longitude: Double?,
+)
+data class HiveMoveOut(
+    val id: String,
+    @SerializedName("hive_id")         val hiveId: String,
+    @SerializedName("hive_name")       val hiveName: String,
+    /** YYYY-MM-DD */
+    @SerializedName("moved_on")        val movedOn: String,
+    val forage: String?,
+    val note: String?,
+    val from: MovePlaceOut,
+    val to: MovePlaceOut,
+    @SerializedName("created_by_name") val createdByName: String?,
+    @SerializedName("created_at")      val createdAt: String,
+)
+data class NewApiaryForMove(
+    val name: String,
+    val address: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+)
+data class MoveCreateRequest(
+    @SerializedName("hive_ids")      val hiveIds: List<String>,
+    @SerializedName("to_apiary_id")  val toApiaryId: String? = null,
+    @SerializedName("new_apiary")    val newApiary: NewApiaryForMove? = null,
+    @SerializedName("moved_on")      val movedOn: String? = null,
+    val forage: String? = null,
+    val note: String? = null,
+)
+data class MoveResultOut(val moved: Int, val apiary: ApiaryOut, val moves: List<HiveMoveOut>)
+
 // MARK: - Sharing
 data class ShareTargetOut(val type: String, val id: String, val name: String)
 data class ShareOut(

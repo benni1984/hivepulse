@@ -122,6 +122,19 @@ interface ApiService {
     @DELETE("qr-batches/{id}")
     suspend fun deleteQrBatch(@Path("id") id: String): Response<Unit>
 
+    // Moving hives
+    @POST("hives/move")
+    suspend fun moveHives(@Body body: MoveCreateRequest): MoveResultOut
+
+    @GET("hives/{id}/moves")
+    suspend fun hiveMoves(@Path("id") id: String): List<HiveMoveOut>
+
+    @GET("hives/moves/overview")
+    suspend fun movesOverview(
+        @Query("from") from: String? = null,
+        @Query("to") to: String? = null,
+    ): List<HiveMoveOut>
+
     // Sharing
     @GET("shares")
     suspend fun listShares(

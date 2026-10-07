@@ -96,16 +96,25 @@ fun ApiaryDetailScreen(
     onBack: () -> Unit,
     onFieldsClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
+    onMoveClick: () -> Unit = {},
     vm: ApiaryDetailViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
     var showEdit by remember { mutableStateOf(false) }
+    // Coming back from the move screen: the hives that left must be gone from this list.
+    LaunchedEffect(apiaryId) { vm.load() }
 
     Scaffold(topBar = {
         TopAppBar(
             title = { Text(state.apiaryName) },
             navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } },
             actions = {
+                // Taking hives to where something is in bloom is the owner's to do.
+                if (state.apiary?.isOwner == true && state.hives.isNotEmpty()) {
+                    IconButton(onClick = onMoveClick, modifier = Modifier.testTag("moveHivesButton")) {
+                        Icon(Icons.Default.SwapHoriz, contentDescription = stringResource(R.string.moves_title))
+                    }
+                }
                 // Inviting stays with the owner.
                 if (state.apiary?.isOwner == true) {
                     IconButton(onClick = onShareClick, modifier = Modifier.testTag("shareApiaryButton")) {
