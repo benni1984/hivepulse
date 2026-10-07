@@ -13,6 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
@@ -20,6 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hivepulse.app.R
 import com.hivepulse.app.data.api.ApiaryOut
+import com.hivepulse.app.data.api.HiveCreateRequest
 import com.hivepulse.app.data.api.HiveOut
 import com.hivepulse.app.data.api.canEdit
 import com.hivepulse.app.data.api.isOwner
@@ -27,6 +30,8 @@ import com.hivepulse.app.data.repository.ApiaryRepository
 import com.hivepulse.app.data.repository.HiveRepository
 import com.hivepulse.app.ui.common.ErrorBanner
 import com.hivepulse.app.ui.common.LoadingScreen
+import com.hivepulse.app.ui.hives.HiveEditDialog
+import com.hivepulse.app.ui.theme.Amber500
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -60,6 +65,23 @@ class ApiaryDetailViewModel @Inject constructor(
             _state.update { it.copy(isLoading = false, apiaryName = apiary.name, apiary = apiary, hives = hives) }
         }.onFailure { e -> _state.update { it.copy(isLoading = false, error = e.message) } }
     }
+
+    /** A hive made by hand; a refusal (the server words it) shows as the banner and keeps the list as it was. */
+    fun createHive(name: String, hiveType: String, acquisitionDate: String?, notes: String?, onDone: () -> Unit = {}) =
+        viewModelScope.launch {
+            if (name.isBlank()) return@launch
+            runCatching {
+                hiveRepo.create(
+                    apiaryId,
+                    HiveCreateRequest(name.trim(), hiveType, acquisitionDate?.trim()?.ifBlank { null }, notes?.trim()?.ifBlank { null }),
+                )
+            }
+                .onSuccess { created ->
+                    _state.update { it.copy(hives = it.hives + created) }
+                    onDone()
+                }
+                .onFailure { e -> _state.update { it.copy(error = e.message ?: e.cause?.message) } }
+        }
 
     fun deleteHive(id: String) = viewModelScope.launch {
         runCatching { hiveRepo.delete(id) }
@@ -102,10 +124,27 @@ fun ApiaryDetailScreen(
 ) {
     val state by vm.state.collectAsState()
     var showEdit by remember { mutableStateOf(false) }
+    var showNewHive by remember { mutableStateOf(false) }
     // Coming back from the move screen: the hives that left must be gone from this list.
     LaunchedEffect(apiaryId) { vm.load() }
 
-    Scaffold(topBar = {
+    Scaffold(
+        floatingActionButton = {
+            // Making a hive by hand, as the web has it: a sticker is not needed to start. Not for somebody who was
+            // given single hives of this apiary: the server would refuse.
+            if (state.apiary?.canEdit != false) {
+                val newHiveLabel = stringResource(R.string.action_new_hive)
+                ExtendedFloatingActionButton(
+                    onClick        = { showNewHive = true },
+                    icon           = { Icon(Icons.Default.Add, contentDescription = null) },
+                    text           = { Text(newHiveLabel) },
+                    containerColor = Amber500,
+                    contentColor   = MaterialTheme.colorScheme.onPrimary,
+                    modifier       = Modifier.semantics { contentDescription = newHiveLabel },
+                )
+            }
+        },
+        topBar = {
         TopAppBar(
             title = { Text(state.apiaryName) },
             navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } },
@@ -144,7 +183,7 @@ fun ApiaryDetailScreen(
     }) { padding ->
         when {
             state.isLoading -> LoadingScreen()
-            else -> LazyColumn(Modifier.padding(padding)) {
+            else -> LazyColumn(Modifier.padding(padding), contentPadding = PaddingValues(bottom = 88.dp)) {
                 state.error?.let { item { ErrorBanner(it) { vm.clearError() } } }
                 if (state.hives.isEmpty()) {
                     item {
@@ -165,6 +204,16 @@ fun ApiaryDetailScreen(
                 }
             }
         }
+    }
+
+    if (showNewHive) {
+        HiveEditDialog(
+            hive = null,
+            onDismiss = { showNewHive = false },
+            onSave = { name, hiveType, acquisitionDate, notes ->
+                vm.createHive(name, hiveType, acquisitionDate, notes) { showNewHive = false }
+            },
+        )
     }
 
     val apiary = state.apiary

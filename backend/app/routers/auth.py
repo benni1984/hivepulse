@@ -21,6 +21,7 @@ from app.schemas import (
     CISetupRequest, ForgotPasswordRequest, ResetPasswordRequest, SocialSignInRequest,
 )
 from app.utils import apple_auth, social_identity
+from app.utils.accounts import bind_invitations
 
 # A bcrypt hash of an unguessable placeholder — used to run a real bcrypt
 # verify (and burn the same ~100ms) even when the email doesn't exist, so
@@ -163,6 +164,12 @@ def social_sign_in(
         if refresh_token:
             user.apple_refresh_token = refresh_token
             user.apple_token_client_id = identity.audience
+
+    if identity.email_verified:
+        # The provider vouches for the mailbox, so invitations sent to it before the account existed
+        # need no link from the email any more.
+        db.flush()
+        bind_invitations(db, user)
 
     db.commit()
     db.refresh(user)

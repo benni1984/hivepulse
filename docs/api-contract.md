@@ -138,6 +138,11 @@ so there is no separate registration step.
 }
 ```
 
+Invitations (see [Invitations](#invitations)) that were made out to the provider's verified address
+before the account existed are attached to the account, so they show up under
+`GET /shares/incoming` like one made to an existing account. They stay pending: nobody joins an
+apiary without accepting.
+
 `name` is optional and only used when the account is created. Apple sends a name exactly
 once — in the authorization response of the very first sign-in, never in the token itself —
 so the client has to pass it on or it is lost for good. Google carries the name in the token
@@ -911,6 +916,70 @@ not visible to the caller.
 `apiary_name` is set when the target is a hive. `overdue` is true for an open treatment due before
 today. A treatment follows its target: when a hive moves it goes with it, and it is deleted with the
 hive or apiary.
+
+---
+
+## Beekeeping Year
+
+A timeline of what a beekeeper does when: feeding with candy in February, the first inspections, swarm
+control at least every nine days, drone frames against varroa, when to move for which honey and when to
+extract it, preparing for winter. The three clients show the same endless timeline.
+
+The content lives on the server (`backend/app/beekeeping_year.py`, four languages) and is written for a
+reference region, central Germany. It is moved earlier or later for the beekeeper's own place. The dates
+are guide values from usual beekeeping practice, not rules: bloom and weather decide, and medicines are
+subject to the approvals of the country. Clients say so under the timeline.
+
+### GET `/users/me/region`, PUT `/users/me/region`
+
+```json
+{
+  "country": "DE",
+  "postal_code": "20095",
+  "latitude": 53.55,
+  "longitude": 9.99,
+  "adjust_days": 0,
+  "shift_days": 15,
+  "source": "postal_code",
+  "located": true
+}
+```
+
+PUT takes any of `country` (two letters, an empty string clears), `postal_code` (an empty string clears) and
+`adjust_days` (-28 to 28). When the country or the postal code changes, the postal code is looked up once
+(Nominatim) and only the position is kept. `source` says where the position comes from: `postal_code`, else
+`apiary` (the first of the caller's apiaries that has a position), else `default` (no position, no shift).
+`located` is `false` when a postal code was given that could not be found; the caller is then on the apiary
+or the default, and a client should say so.
+
+`shift_days` is how far the reference dates move: positive is later. It is about four days per degree of
+latitude and four per five degrees of longitude against Frankfurt (Hopkins' bioclimatic law), capped at 30
+days, plus `adjust_days`. Altitude is not known from a postal code, which is what `adjust_days` is for.
+
+### GET `/calendar`
+
+Query: `from` (date, default the first of this month), `days` (1 to 800, default 120), `lang` (`en`, `de`,
+`fr`, `es`; default `Accept-Language`, then the account's language).
+
+```json
+{
+  "region": { "...": "as above" },
+  "today": "2026-10-07",
+  "start": "2026-10-01",
+  "end": "2027-01-28",
+  "entries": [
+    { "key": "winter-prep", "category": "winter", "title": "string", "body": "string",
+      "start": "2026-10-01", "end": "2026-11-20", "interval_days": null, "honey": null, "active": true }
+  ]
+}
+```
+
+Entries are sorted by start. An entry is repeated for every year the window reaches, so a client builds an
+endless timeline by asking for the next window (`from` = the previous `end` + 1) when the user scrolls, and
+the previous one when they scroll up. `interval_days` is set for a task that repeats within the entry (swarm
+control: 9). `honey` is a forage key (`rapeseed`, `acacia`, `linden`, `chestnut`, `fir`, `heather`,
+`sunflower`, `lavender`) when the entry is about one kind of honey. `category` is one of `inspection`,
+`swarm`, `feeding`, `varroa`, `harvest`, `migration`, `bloom`, `care`, `winter`.
 
 ---
 

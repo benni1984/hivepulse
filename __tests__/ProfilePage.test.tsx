@@ -12,12 +12,16 @@ const mockDeleteMe = vi.hoisted(() => vi.fn());
 const mockGetReminderSettings = vi.hoisted(() => vi.fn());
 const mockUpdateReminderSettings = vi.hoisted(() => vi.fn());
 const mockUseDashboardAuth = vi.hoisted(() => vi.fn());
+const mockGetRegion = vi.hoisted(() => vi.fn());
+const mockUpdateRegion = vi.hoisted(() => vi.fn());
 
 vi.mock('@/lib/api', () => ({
   updateMe: mockUpdateMe,
   deleteMe: mockDeleteMe,
   getReminderSettings: mockGetReminderSettings,
   updateReminderSettings: mockUpdateReminderSettings,
+  getRegion: mockGetRegion,
+  updateRegion: mockUpdateRegion,
 }));
 
 vi.mock('@/hooks/useDashboardAuth', () => ({
@@ -32,6 +36,7 @@ vi.mock('@/i18n/navigation', () => ({
 }));
 
 vi.mock('next-intl', () => ({
+  useLocale: () => 'en',
   useTranslations: () => (key: string) => {
     const map: Record<string, string> = {
       'title': 'Profile',
@@ -102,6 +107,11 @@ const DEFAULT_REMINDERS = {
   push_token_fcm: null,
 };
 
+const DEFAULT_REGION = {
+  country: null, postal_code: null, latitude: null, longitude: null,
+  adjust_days: 0, shift_days: 0, source: 'default', located: true,
+};
+
 describe('ProfilePage — reminder settings', () => {
   beforeEach(() => {
     mockUseDashboardAuth.mockReturnValue({ user: MOCK_USER, loading: false });
@@ -109,6 +119,8 @@ describe('ProfilePage — reminder settings', () => {
     mockUpdateReminderSettings.mockResolvedValue(DEFAULT_REMINDERS);
     mockUpdateMe.mockResolvedValue(MOCK_USER);
     mockDeleteMe.mockResolvedValue(undefined);
+    mockGetRegion.mockResolvedValue(DEFAULT_REGION);
+    mockUpdateRegion.mockResolvedValue(DEFAULT_REGION);
   });
 
   it('renders reminder settings card heading', async () => {
@@ -237,5 +249,75 @@ describe('ProfilePage — accounts without a password', () => {
 
     expect(await screen.findByText('Save Profile')).toBeInTheDocument();
     expect(screen.getByText('Delete My Account')).toBeInTheDocument();
+  });
+});
+
+describe('ProfilePage — region for the beekeeping year', () => {
+  beforeEach(() => {
+    mockUseDashboardAuth.mockReturnValue({ user: MOCK_USER, loading: false });
+    mockGetReminderSettings.mockResolvedValue(DEFAULT_REMINDERS);
+    mockGetRegion.mockResolvedValue(DEFAULT_REGION);
+    mockUpdateRegion.mockReset();
+  });
+
+  it('shows the region card with what is stored', async () => {
+    mockGetRegion.mockResolvedValue({ ...DEFAULT_REGION, country: 'DE', postal_code: '20095', adjust_days: 3, source: 'postal_code' });
+    render(<ProfilePage />);
+
+    await waitFor(() => expect(screen.getByTestId('region-card')).toBeTruthy());
+    expect((screen.getByLabelText('regionCountry') as HTMLSelectElement).value).toBe('DE');
+    expect((screen.getByLabelText('regionPostal') as HTMLInputElement).value).toBe('20095');
+    expect((screen.getByLabelText('regionAdjust') as HTMLInputElement).value).toBe('3');
+  });
+
+  it('offers the countries by their name in the language of the page', async () => {
+    render(<ProfilePage />);
+
+    await waitFor(() => screen.getByTestId('region-card'));
+    expect(screen.getByRole('option', { name: 'Germany' })).toBeTruthy();
+    expect(screen.getByRole('option', { name: 'Austria' })).toBeTruthy();
+  });
+
+  it('saves country, postal code and the adjustment', async () => {
+    mockUpdateRegion.mockResolvedValue({ ...DEFAULT_REGION, country: 'AT', postal_code: '1010', source: 'postal_code' });
+    render(<ProfilePage />);
+    await waitFor(() => screen.getByTestId('region-card'));
+
+    fireEvent.change(screen.getByLabelText('regionCountry'), { target: { value: 'AT' } });
+    fireEvent.change(screen.getByLabelText('regionPostal'), { target: { value: ' 1010 ' } });
+    fireEvent.change(screen.getByLabelText('regionAdjust'), { target: { value: '7' } });
+    fireEvent.click(screen.getByText('regionSave'));
+
+    await waitFor(() => expect(mockUpdateRegion).toHaveBeenCalledWith({ country: 'AT', postal_code: '1010', adjust_days: 7 }));
+    await waitFor(() => expect(screen.getByText('regionSaved')).toBeTruthy());
+  });
+
+  it('says so when the postal code could not be found', async () => {
+    mockUpdateRegion.mockResolvedValue({ ...DEFAULT_REGION, country: 'DE', postal_code: '00000', located: false });
+    render(<ProfilePage />);
+    await waitFor(() => screen.getByTestId('region-card'));
+
+    fireEvent.click(screen.getByText('regionSave'));
+
+    await waitFor(() => expect(screen.getByText('regionNotLocated')).toBeTruthy());
+  });
+
+  it('keeps the adjustment within 28 days', async () => {
+    render(<ProfilePage />);
+    await waitFor(() => screen.getByTestId('region-card'));
+
+    fireEvent.change(screen.getByLabelText('regionAdjust'), { target: { value: '99' } });
+
+    expect((screen.getByLabelText('regionAdjust') as HTMLInputElement).value).toBe('28');
+  });
+
+  it('shows an error when saving fails', async () => {
+    mockUpdateRegion.mockRejectedValue(new Error('boom'));
+    render(<ProfilePage />);
+    await waitFor(() => screen.getByTestId('region-card'));
+
+    fireEvent.click(screen.getByText('regionSave'));
+
+    await waitFor(() => expect(screen.getByText('regionError')).toBeTruthy());
   });
 });

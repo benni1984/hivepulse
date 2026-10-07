@@ -61,7 +61,7 @@ export default function SharingPanel({ type, id }: { type: 'apiary' | 'hive'; id
         <div className={message.type === 'ok' ? 'dash-success-banner' : 'dash-error-banner'}>{message.text}</div>
       )}
 
-      {loading && <div className="spinner" />}
+      {loading && <div className="dash-panel-spinner" />}
       {!loading && shares.length === 0 && <p className="dash-empty">{t('sharing.empty')}</p>}
       {!loading && shares.length > 0 && (
         <div className="dash-profile-card">

@@ -59,7 +59,7 @@
     "sub": "Vom Hobby-Imker bis zum Profi-Betrieb – HivePulse wächst mit dir und trägt gleichzeitig zum Schutz unseres Planeten bei.",
     "qr": {
       "title": "QR-Code scannen & loslegen",
-      "desc": "Klebe einen QR-Code auf jeden Stock. Beim Ankommen scannen und direkt mit der Kontrolle beginnen – kein Suchen, kein Vertippen."
+      "desc": "Klebe einen QR-Code auf jedes Volk. Beim Ankommen scannen und direkt mit der Kontrolle beginnen – kein Suchen, kein Vertippen."
     },
     "track": {
       "title": "Intelligentes Tracking",
@@ -341,13 +341,13 @@
     "updated": "Zuletzt aktualisiert: Oktober 2026",
     "intro": "HivePulse ist eine Open-Source-Imker-App. Diese Datenschutzerklärung erläutert, welche Daten wir erheben, warum wir sie verarbeiten und welche Wahlmöglichkeiten du hast – insbesondere wie du steuerst, ob dein Bienenstand auf der öffentlichen Karte erscheint.",
     "s1title": "1. Erhobene Daten",
-    "s1body": "Bei der Registrierung: deine E-Mail-Adresse, dein Anzeigename und deine bevorzugte Sprache. Bei der App-Nutzung: Bienenstands-Namen und GPS-Koordinaten (wenn du sie eingibst), Völkerdetails und Kontrolldaten. Wir erheben keine Gerätekennungen, Werbe-IDs oder genaue Standortdaten ohne ausdrückliche Eingabe durch dich.",
+    "s1body": "Bei der Registrierung: deine E-Mail-Adresse, dein Anzeigename und deine bevorzugte Sprache. Bei der App-Nutzung: Bienenstands-Namen und GPS-Koordinaten (wenn du sie eingibst), Völkerdetails und Kontrolldaten. Wir erheben keine Gerätekennungen, Werbe-IDs oder genaue Standortdaten ohne ausdrückliche Eingabe durch dich. Wenn du eine Region für das Imkerjahr festlegst: das Land und die Postleitzahl, die du eingibst. Die Postleitzahl wird einmal nachgeschlagen, und nur die daraus gewonnene Position wird behalten, nie eine Adresse.",
     "s2title": "2. Öffentliche Karte – Opt-in",
     "s2body": "Die öffentliche Karte zeigt anonymisierte Bienenstands-Pins, um globale Imkeraktivität sichtbar zu machen. Die Teilnahme ist ausschließlich freiwillig (Opt-in). Standardmäßig ist jeder Bienenstand privat. Du kannst 'Auf öffentlicher Karte anzeigen' pro Bienenstand in den App-Einstellungen jederzeit aktivieren und wieder deaktivieren. Bei Aktivierung werden Name, GPS-Koordinaten und Völkerzahl angezeigt. Keine Identitäts- oder Kontrolldaten werden jemals öffentlich geteilt.",
     "s3title": "3. Verwendung deiner Daten",
     "s3body": "Deine Daten werden ausschließlich für den App-Betrieb verwendet und – nur bei Opt-in – für die öffentliche Karte und globale Statistiken. Wir verkaufen, handeln oder vermieten keine personenbezogenen Daten. Wir verwenden sie nicht für Werbung.",
     "s4title": "4. Dienstleister",
-    "s4body": "Für den Betrieb von HivePulse sind einige Unternehmen beteiligt, die Daten in unserem Auftrag verarbeiten — jeweils auf Grundlage eines Auftragsverarbeitungsvertrags. Hosting und Website: Vercel. Datenbank: Neon (Server in der EU). E-Mails zum Zurücksetzen des Passworts: Resend. Absturzberichte: Sentry (Server in der EU, siehe nächster Abschnitt). Push-Benachrichtigungen, nur wenn du Erinnerungen einschaltest: Google Firebase für Android-Geräte und Apple für iPhones — dorthin gehen ein Gerätetoken und der Text der Benachrichtigung. Die Kartenkacheln stammen von der OpenStreetMap Foundation, deren Server deine IP-Adresse erhalten, wenn du eine Karte öffnest. Die Schriften liefern wir von unseren eigenen Servern aus, dabei erfährt also kein Dritter etwas. Der Symbolsatz Font Awesome wird weiterhin von Cloudflares cdnjs geladen, deren Server dabei deine IP-Adresse sehen; auch das wollen wir künftig selbst ausliefern. Besucherzählung: Umami Cloud — nach Angaben des Anbieters ohne Cookies, ohne Werbekennungen und ohne Speicherung vollständiger IP-Adressen; erfasst werden Seitenaufrufe, die verweisende Seite, das Land und die Art des Geräts. Rechtsgrundlage ist unser berechtigtes Interesse daran, überhaupt zu erfahren, ob die Seite genutzt wird (Art. 6 Abs. 1 lit. f DSGVO).",
+    "s4body": "Für den Betrieb von HivePulse sind einige Unternehmen beteiligt, die Daten in unserem Auftrag verarbeiten — jeweils auf Grundlage eines Auftragsverarbeitungsvertrags. Hosting und Website: Vercel. Datenbank: Neon (Server in der EU). E-Mails zum Zurücksetzen des Passworts: Resend. Absturzberichte: Sentry (Server in der EU, siehe nächster Abschnitt). Push-Benachrichtigungen, nur wenn du Erinnerungen einschaltest: Google Firebase für Android-Geräte und Apple für iPhones — dorthin gehen ein Gerätetoken und der Text der Benachrichtigung. Die Kartenkacheln stammen von der OpenStreetMap Foundation, deren Server deine IP-Adresse erhalten, wenn du eine Karte öffnest. Die Schriften liefern wir von unseren eigenen Servern aus, dabei erfährt also kein Dritter etwas. Der Symbolsatz Font Awesome wird weiterhin von Cloudflares cdnjs geladen, deren Server dabei deine IP-Adresse sehen; auch das wollen wir künftig selbst ausliefern. Besucherzählung: Umami Cloud — nach Angaben des Anbieters ohne Cookies, ohne Werbekennungen und ohne Speicherung vollständiger IP-Adressen; erfasst werden Seitenaufrufe, die verweisende Seite, das Land und die Art des Geräts. Rechtsgrundlage ist unser berechtigtes Interesse daran, überhaupt zu erfahren, ob die Seite genutzt wird (Art. 6 Abs. 1 lit. f DSGVO). Nachschlagen einer Postleitzahl (und einer Adresse, die du für einen Bienenstand eingibst): der Suchdienst Nominatim der OpenStreetMap Foundation, der nur diese Postleitzahl und das Land oder diese Adresse erhält und nichts von deinen Kontodaten.",
     "s5title": "5. Absturzberichte",
     "s5body": "Wenn in der App oder auf dem Server ein unerwarteter Fehler auftritt, geht ein Bericht an Sentry, damit er behoben werden kann. Enthalten sind die Stelle im Code, die Version und die Art des Geräts. Bewusst nicht enthalten sind deine Inhalte: keine Kontroll-Notizen, keine Passwörter, keine E-Mail-Adresse, keine IP-Adresse, keine Bildschirmfotos und keine Aufzeichnung deiner Eingaben. Ein Bericht benennt dein Konto nur über seine interne Nummer. Die Berichte werden in der EU gespeichert und nach 30 Tagen gelöscht. Rechtsgrundlage ist unser berechtigtes Interesse an einer funktionierenden und sicheren Anwendung (Art. 6 Abs. 1 lit. f DSGVO).",
     "s6title": "6. Rechtsgrundlage (DSGVO und schweizerisches DSG)",
@@ -417,7 +417,8 @@
       "members": "Community",
       "openMenu": "Dashboard-Menü öffnen",
       "closeMenu": "Dashboard-Menü schließen",
-      "releaseNotes": "Release Notes"
+      "releaseNotes": "Release Notes",
+      "calendar": "Imkerjahr"
     },
     "overview": {
       "title": "Meine Statistiken",
@@ -480,7 +481,18 @@
         "10": "Oktober",
         "11": "November",
         "12": "Dezember"
-      }
+      },
+      "regionTitle": "Region für das Imkerjahr",
+      "regionIntro": "Land und Postleitzahl verschieben das Imkerjahr auf deinen Ort: Die Blüte kommt im Süden früher und im Norden später. Gespeichert wird nur die Position, nicht die Adresse.",
+      "regionCountry": "Land",
+      "regionCountryNone": "— nicht festgelegt —",
+      "regionPostal": "Postleitzahl",
+      "regionAdjust": "Von Hand anpassen (Tage)",
+      "regionAdjustHint": "Positiv ist später, negativ früher: für ein Bergtal oder einen geschützten Garten. Zwischen −28 und 28.",
+      "regionSave": "Region speichern",
+      "regionSaved": "Region gespeichert.",
+      "regionError": "Die Region konnte nicht gespeichert werden.",
+      "regionNotLocated": "Diese Postleitzahl wurde nicht gefunden, die Termine richten sich deshalb nach deinem ersten Bienenstand oder Mitteldeutschland."
     },
     "admin": {
       "nav": {
@@ -512,7 +524,7 @@
         "name": "Name",
         "joined": "Beigetreten",
         "apiaries": "Bienenstandorte",
-        "hives": "Bienenstöcke",
+        "hives": "Völker",
         "inspections": "Kontrollen",
         "supporter": "Supporter",
         "actions": "Aktionen",
@@ -727,7 +739,7 @@
       "delete": "Löschen",
       "confirmDelete": "Diesen Batch mit allen Codes löschen? Nicht benutzte Codes lassen sich nicht wiederherstellen.",
       "deleteSuccess": "Batch gelöscht.",
-      "errorInUse": "Dieser Batch enthält Codes, die Bienenstöcken zugeordnet sind, und kann nicht gelöscht werden."
+      "errorInUse": "Dieser Batch enthält Codes, die Völkern zugeordnet sind, und kann nicht gelöscht werden."
     },
     "community": {
       "title": "Community-Dashboard",
@@ -827,6 +839,37 @@
         "sunflower": "Sonnenblume",
         "lavender": "Lavendel",
         "other": "Andere"
+      }
+    },
+    "calendar": {
+      "title": "Imkerjahr",
+      "intro": "Was wann zu tun ist, Monat für Monat, für deinen Ort. Nach oben und unten scrollen: Das Jahr wiederholt sich.",
+      "loading": "Lädt",
+      "loadError": "Der Kalender konnte nicht geladen werden.",
+      "loadingEarlier": "Lädt früher …",
+      "loadingLater": "Lädt später …",
+      "today": "Heute, {date}",
+      "now": "Jetzt",
+      "interval": "Spätestens alle {days} Tage",
+      "regionNone": "Termine für Mitteldeutschland. Lege deine Region fest, um sie auf deinen Ort zu verschieben.",
+      "regionFromApiary": "dein erster Bienenstand",
+      "regionNoShift": "{place}: dieselben Termine wie in Mitteldeutschland",
+      "regionLater": "{place}: {days} Tage später als in Mitteldeutschland",
+      "regionEarlier": "{place}: {days} Tage früher als in Mitteldeutschland",
+      "notLocated": "Diese Postleitzahl wurde nicht gefunden.",
+      "setRegion": "Region festlegen",
+      "changeRegion": "Region ändern",
+      "disclaimer": "Richtwerte aus der üblichen imkerlichen Praxis, keine Vorschriften: Blüte und Wetter entscheiden, und die Termine verschieben sich mit deinem Ort. Arzneimittel nur wie in deinem Land zugelassen und vorgeschrieben; im Zweifel frag deinen Imkerverband oder das Veterinäramt.",
+      "categories": {
+        "inspection": "Kontrolle",
+        "swarm": "Schwarmkontrolle",
+        "feeding": "Fütterung",
+        "varroa": "Varroa",
+        "harvest": "Ernte",
+        "migration": "Wanderung",
+        "bloom": "Blüte",
+        "care": "Pflege",
+        "winter": "Winter"
       }
     },
     "home": {
@@ -995,6 +1038,10 @@
         "title": "Startseite und Behandlungen",
         "desc": "Was fällig ist, wie es deinen Völkern geht und was ansteht, auf einen Blick, und wie du Behandlungen für ein Volk oder einen ganzen Bienenstand planst."
       },
+      "beekeeping-year": {
+        "title": "Imkerjahr",
+        "desc": "Was wann zu tun ist, Monat für Monat: Füttern, Kontrollen, Schwarmkontrolle, Drohnenrahmen, Verlagern für Honig, Schleudern und die Vorbereitung auf den Winter, verschoben auf deinen Ort."
+      },
       "custom-fields": {
         "title": "Benutzerdefinierte Kontrollfelder",
         "desc": "Das integrierte Kontrollformular mit eigenen Feldern erweitern — Text, Zahlen, Checkboxen, Dropdown-Listen — für das gesamte Konto oder einen bestimmten Bienenstand."
@@ -1046,7 +1093,7 @@
     },
     "info": {
       "problem": "Die Bedrohung",
-      "problemText": "Vespa velutina (Asiatische Hornisse) ist ein invasiver Räuber, der Bienenvölker angreift, Stöcke schwächt und die Ernährungssicherheit bedroht. Früherkennung ist entscheidend.",
+      "problemText": "Vespa velutina (Asiatische Hornisse) ist ein invasiver Räuber, der Bienenvölker angreift, Völker schwächt und die Ernährungssicherheit bedroht. Früherkennung ist entscheidend.",
       "whyCatch": "Warum fangen?",
       "whyCatchText": "Das Fangen von Königinnen im Frühjahr verhindert die Gründung neuer Kolonien. Jede gefangene Königin verhindert tausende Arbeiterinnen. Gemeinschaftliches Fangen macht einen echten Unterschied.",
       "reportNest": "Nest melden",

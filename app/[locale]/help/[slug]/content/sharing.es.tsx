@@ -62,8 +62,9 @@ export default function SharingContent({ Screenshot }: { Screenshot: typeof Help
           </li>
           <li>
             <strong>Aún no tienes cuenta:</strong> el correo trae un enlace. Ábrelo, regístrate o inicia sesión con esa
-            dirección y acepta. En las apps, toca el icono de sobre en la barra de la lista de colmenares
-            (<em>Usar un enlace de invitación</em>) y pega el enlace.
+            dirección y acepta. Si inicias sesión con Apple o Google, la invitación ya te espera en la lista de
+            colmenares y solo tocas <em>Aceptar</em>. Si te registraste con contraseña en la app, ve al final de la lista de
+            colmenares, toca <em>Usar un enlace de invitación</em> y pega el enlace.
           </li>
         </ul>
       </section>

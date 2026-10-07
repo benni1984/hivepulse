@@ -135,4 +135,14 @@ class DtoTest {
         assertTrue(user.canChangePassword)
     }
 
+
+    @Test
+    fun `a hive made by hand is sent the way the server reads it`() {
+        val json = com.google.gson.Gson().toJson(HiveCreateRequest("H", "top_bar", "2026-04-01", null))
+
+        assertTrue(json.contains("\"hive_type\":\"top_bar\""))
+        assertTrue(json.contains("\"acquisition_date\":\"2026-04-01\""))
+        assertFalse(json.contains("hiveType"))
+        assertFalse("an empty note is left out", json.contains("notes"))
+    }
 }

@@ -62,8 +62,9 @@ export default function SharingContent({ Screenshot }: { Screenshot: typeof Help
           </li>
           <li>
             <strong>You do not have an account yet:</strong> the e-mail contains a link. Open it, register or sign in
-            with that address, and accept. In the apps, tap the envelope icon in the apiary list toolbar
-            (<em>Redeem an invitation link</em>) and paste the link.
+            with that address, and accept. If you sign in with Apple or Google, the invitation is already waiting in your apiary
+            list and you only tap <em>Accept</em>. If you signed up with a password in the app, scroll to the end of the
+            apiary list, tap <em>Redeem an invitation link</em> and paste the link.
           </li>
         </ul>
       </section>

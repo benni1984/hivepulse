@@ -8,24 +8,38 @@ struct ApiaryListView: View {
     @State private var showRedeem = false
     @State private var pastedLink = ""
 
+    /// Invitations to an existing account just show up above the list. A link is only needed for one made to an
+    /// address that had no account and who signed up with a password; the website takes the link by itself.
+    private var redeemInvitationButton: some View {
+        Button { showRedeem = true } label: {
+            Text(NSLocalizedString("invitation.redeemTitle", comment: "")).font(.footnote)
+        }
+        .buttonStyle(.borderless)
+        .frame(maxWidth: .infinity)
+        .accessibilityIdentifier("redeemInvitationButton")
+    }
+
     var body: some View {
         Group {
             if apiaryVM.isLoading && apiaryVM.apiaries.isEmpty {
                 ProgressView()
             } else if apiaryVM.apiaries.isEmpty && invitationsVM.invitations.isEmpty {
-                if #available(iOS 17, *) {
-                    ContentUnavailableView(
-                        NSLocalizedString("empty.apiaries.title", comment: ""),
-                        systemImage: "map",
-                        description: Text(NSLocalizedString("empty.apiaries.description", comment: ""))
-                    )
-                } else {
-                    VStack(spacing: 12) {
-                        Image(systemName: "map").font(.largeTitle).foregroundColor(.secondary)
-                        Text(NSLocalizedString("empty.apiaries.title", comment: "")).font(.headline)
-                        Text(NSLocalizedString("empty.apiaries.description", comment: "")).font(.subheadline).foregroundColor(.secondary)
+                VStack(spacing: 8) {
+                    if #available(iOS 17, *) {
+                        ContentUnavailableView(
+                            NSLocalizedString("empty.apiaries.title", comment: ""),
+                            systemImage: "map",
+                            description: Text(NSLocalizedString("empty.apiaries.description", comment: ""))
+                        )
+                    } else {
+                        VStack(spacing: 12) {
+                            Image(systemName: "map").font(.largeTitle).foregroundColor(.secondary)
+                            Text(NSLocalizedString("empty.apiaries.title", comment: "")).font(.headline)
+                            Text(NSLocalizedString("empty.apiaries.description", comment: "")).font(.subheadline).foregroundColor(.secondary)
+                        }
+                        .padding()
                     }
-                    .padding()
+                    redeemInvitationButton
                 }
             } else {
                 List {
@@ -58,6 +72,8 @@ struct ApiaryListView: View {
                             }
                         }
                     }
+                    Section { redeemInvitationButton }
+                        .listRowBackground(Color.clear)
                 }
             }
         }
@@ -69,7 +85,7 @@ struct ApiaryListView: View {
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 if apiaryVM.isLoading { ProgressView() }
-                // Same order as Android's top bar: statistics, QR batches, moves map, invitation link.
+                // Same order as Android's top bar: statistics, QR batches, moves map, beekeeping year.
                 // Creating an apiary is the amber button at the bottom right, as on Android.
                 NavigationLink {
                     OverviewStatsView()
@@ -94,9 +110,13 @@ struct ApiaryListView: View {
                 }
                 .accessibilityLabel(NSLocalizedString("moves.overviewTitle", comment: ""))
                 .accessibilityIdentifier("movesOverviewButton")
-                Button { showRedeem = true } label: { Image(systemName: "envelope.open") }
-                    .accessibilityLabel(NSLocalizedString("invitation.redeemTitle", comment: ""))
-                    .accessibilityIdentifier("redeemInvitationButton")
+                NavigationLink {
+                    BeekeepingYearView()
+                } label: {
+                    Image(systemName: "calendar")
+                }
+                .accessibilityLabel(NSLocalizedString("calendar.title", comment: ""))
+                .accessibilityIdentifier("beekeepingYearButton")
             }
         }
         .task {

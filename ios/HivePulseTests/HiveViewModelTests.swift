@@ -47,6 +47,40 @@ final class HiveViewModelTests: XCTestCase {
         XCTAssertEqual(vm.hives[0].id, "h-2")
     }
 
+    func test_create_sendsTheNewHiveToTheApiaryAndAppendsIt() async throws {
+        let hive = try await vm.create(apiaryId: "a-1", name: "Nicole II", hiveType: "dadant",
+                                       acquisitionDate: "2026-04-01", notes: "from a swarm")
+
+        XCTAssertEqual(hive.name, "Nicole II")
+        XCTAssertEqual(vm.hives.map(\.name), ["Nicole II"])
+        let sent = try XCTUnwrap(svc.createRequests.first)
+        XCTAssertEqual(sent.apiaryId, "a-1")
+        XCTAssertEqual(sent.request.hiveType, "dadant")
+        XCTAssertEqual(sent.request.acquisitionDate, "2026-04-01")
+        XCTAssertEqual(sent.request.notes, "from a swarm")
+    }
+
+    func test_create_refusedLeavesTheListAlone() async {
+        svc.createError = NSError(domain: "test", code: 403,
+                                  userInfo: [NSLocalizedDescriptionKey: "Only the owner"])
+
+        do {
+            _ = try await vm.create(apiaryId: "a-1", name: "X", hiveType: "langstroth", acquisitionDate: nil, notes: nil)
+            XCTFail("a refusal must be thrown to the form")
+        } catch {
+            XCTAssertEqual(error.localizedDescription, "Only the owner")
+        }
+        XCTAssertTrue(vm.hives.isEmpty)
+    }
+
+    func test_createRequest_isEncodedTheWayTheServerReadsIt() throws {
+        let body = HiveCreateRequest(name: "H", hiveType: "top_bar", acquisitionDate: nil, notes: nil)
+        let json = try XCTUnwrap(String(data: JSONEncoder().encode(body), encoding: .utf8))
+
+        XCTAssertTrue(json.contains("\"hive_type\":\"top_bar\""))
+        XCTAssertFalse(json.contains("hiveType"))
+    }
+
     func test_update_replacesHive() async throws {
         svc.listResult = .success(makePage([makeHive(id: "h-1", name: "Old")]))
         await vm.load(apiaryId: "a-1")

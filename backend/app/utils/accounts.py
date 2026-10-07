@@ -7,12 +7,27 @@ API contract.
 """
 from __future__ import annotations
 
-from sqlalchemy import or_
+from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
 
 from app.models import (
     Apiary, FieldDefinition, Hive, HiveMove, Inspection, PlannedTreatment, QrBatch, QrToken, Share, User,
 )
+
+
+def bind_invitations(db: Session, user: User) -> None:
+    """Hang the invitations made out to the user's address, before they had an account, on the account.
+
+    Only for an address the identity provider vouches for: a password registration proves nothing about
+    the mailbox, which is why those invitations are taken with the token from the mail. The invitation
+    stays pending, so it shows up under the incoming invitations exactly like one made to an existing
+    account, and nobody joins an apiary without saying yes.
+    """
+    db.query(Share).filter(
+        func.lower(Share.grantee_email) == user.email.strip().lower(),
+        Share.grantee_user_id.is_(None),
+        Share.status == "pending",
+    ).update({Share.grantee_user_id: user.id}, synchronize_session=False)
 
 
 def _first_accepted(db: Session, **target) -> list[Share]:

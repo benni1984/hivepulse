@@ -13,7 +13,7 @@ Platforms: **W** website, **I** iPhone app, **A** Android app.
 | Feature | Where | W | I | A | Contract |
 |---------|-------|:-:|:-:|:-:|----------|
 | Apiaries with name, address or GPS position, description, optional public map entry | Apiary list, apiary page | ✔ | ✔ | ✔ | Apiaries |
-| Hives with type (Langstroth, Dadant, Top Bar, Warré, other), acquisition date, notes | Hive page | ✔ | ✔ | ✔ | Hives |
+| Hives with type (Langstroth, Dadant, Top Bar, Warré, other), acquisition date, notes; made by hand with the amber New Hive button, no sticker needed | Apiary page, hive page | ✔ | ✔ | ✔ | Hives |
 | Custom fields for hives and inspections, for the account or one apiary | Settings → custom fields; apiary toolbar | ✔ | ✔ | ✔ | Field definitions |
 
 ## QR codes
@@ -42,6 +42,16 @@ Platforms: **W** website, **I** iPhone app, **A** Android app.
 
 The announcement card is text the server sends (`announcement_*` settings); there is no advertising SDK.
 
+## The beekeeping year
+
+| Feature | Where | W | I | A | Contract |
+|---------|-------|:-:|:-:|:-:|----------|
+| Endless timeline of what to do when (feeding, inspections, swarm control, drone frames, moving and extracting per honey, varroa, winter), in four languages | Dashboard menu; calendar icon in the apiary list toolbar | ✔ | ✔ | ✔ | Beekeeping Year |
+| Moved to the beekeeper's place by country and postal code (about 4 days per degree of latitude), adjustable by hand | Profile; Settings → Region | ✔ | ✔ | ✔ | Beekeeping Year |
+
+The content is `backend/app/beekeeping_year.py` (dates for central Germany), the arithmetic `backend/app/season.py`.
+Guide values only; medicines subject to the approvals of the country.
+
 ## Moving hives
 
 | Feature | Where | W | I | A | Contract |
@@ -55,7 +65,7 @@ The announcement card is text the server sends (`announcement_*` settings); ther
 | Feature | Where | W | I | A | Contract |
 |---------|-------|:-:|:-:|:-:|----------|
 | Invite another beekeeper by e-mail to an apiary or single hives | Apiary or hive → work together | ✔ | ✔ | ✔ | Sharing |
-| Accept in the app, on the website, or through the e-mail link | Top of the apiary list; envelope icon | ✔ | ✔ | ✔ | Sharing |
+| Accept in the app, on the website, or through the e-mail link | Top of the apiary list; end of the list for a link (Apple/Google sign-in needs none) | ✔ | ✔ | ✔ | Sharing |
 | Owner-only: delete, public map, move, invite (`403 OWNER_ONLY`) | | ✔ | ✔ | ✔ | Sharing |
 
 ## Statistics, data and community
@@ -73,8 +83,8 @@ crash reports to an EU-region Sentry; a guided tour.
 ## Navigation (the same on iPhone and Android)
 
 Tabs: Apiaries, Scan, Hornets, Members, Settings. Apiary list toolbar: statistics, QR batches, map of
-moves, invitation link. Every create action is the amber labelled button at the bottom right.
-Settings: custom fields, profile, change password, reminders, export, admin, help and tour, release
+moves, beekeeping year. Every create action is the amber labelled button at the bottom right.
+Settings: custom fields, profile, change password, reminders, region, export, admin, help and tour, release
 notes, diagnostics, log out, danger zone. See `CLAUDE.md`.
 
 ## Wording

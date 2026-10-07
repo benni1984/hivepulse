@@ -1032,7 +1032,10 @@ tr:last-child td { border-bottom: none; }
   color: var(--muted);
 }
 
-.spinner {
+/* The panels on a page (sharing, treatments) use their own class: the E2E suite waits for
+   `.spinner` of the page and fails when a second one is in the DOM. */
+.spinner,
+.dash-panel-spinner {
   width: 32px;
   height: 32px;
   border: 3px solid var(--border);
@@ -1367,6 +1370,11 @@ tr:last-child td { border-bottom: none; }
   border-radius: 9px; font-size: 15px; font-family: inherit; color: var(--text); background: #fff; box-sizing: border-box;
 }
 .dash-profile-select:focus { outline: none; border-color: var(--green-mid-c); box-shadow: 0 0 0 3px var(--green-tint); }
+.dash-region-select {
+  width: 100%; padding: 11px 12px; border: 1px solid var(--field-border);
+  border-radius: 9px; font-size: 15px; font-family: inherit; color: var(--text); background: #fff; box-sizing: border-box;
+}
+.dash-region-select:focus { outline: none; border-color: var(--green-mid-c); box-shadow: 0 0 0 3px var(--green-tint); }
 .dash-success-banner {
   background: var(--green-wash); border: 1px solid var(--green-border); border-radius: 10px;
   color: var(--green-ink); padding: 11px 14px; font-size: 14px; margin-bottom: 16px;
@@ -1767,3 +1775,33 @@ button.hornets-action-card { width: 100%; }
 .rn-kind ul, .rn-group ul { margin: 8px 0 0; padding-left: 20px; line-height: 1.7; color: var(--body-text); }
 .rn-features { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
 .rn-features .news-card { margin: 0; }
+
+/* The beekeeper's year */
+.dash-cal { max-width: 760px; }
+.dash-cal-region { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; background: var(--slate-wash); border: 1px solid var(--slate-border); border-radius: 12px; padding: 12px 16px; margin: 14px 0 22px; font-size: 14px; color: var(--slate-ink); }
+.dash-cal-warn { color: var(--red-mid); font-weight: 600; }
+.dash-cal-list { list-style: none; margin: 0; padding: 0; }
+.dash-cal-edge { min-height: 24px; text-align: center; font-size: 13px; color: var(--body-text); }
+.dash-cal-month { position: sticky; top: 0; z-index: 2; background: var(--page); font-size: 20px; font-weight: 700; letter-spacing: -.02em; color: var(--text); padding: 22px 0 8px; text-transform: capitalize; border-bottom: 1px solid var(--divider); margin-bottom: 12px; }
+.dash-cal-today { display: flex; align-items: center; gap: 10px; margin: 6px 0 14px; color: var(--amber-ink); font-weight: 700; font-size: 13px; }
+.dash-cal-today::before, .dash-cal-today::after { content: ''; flex: 1; height: 2px; background: var(--amber-mid); border-radius: 2px; }
+.dash-cal-entry { background: #fff; border: 1px solid var(--border); border-left: 5px solid var(--slate-mid); border-radius: 12px; padding: 14px 18px; margin-bottom: 12px; }
+.dash-cal-entry h3 { font-size: 16px; font-weight: 700; margin: 8px 0 6px; color: var(--text); }
+.dash-cal-entry p { margin: 0; line-height: 1.6; font-size: 14px; color: var(--body-text); }
+.dash-cal-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.dash-cal-chip { background: var(--slate-tint); color: var(--slate-ink); border-radius: 999px; padding: 2px 10px; font-size: 12px; font-weight: 600; }
+.dash-cal-now { background: var(--amber-mid); color: #fff; }
+.dash-cal-honey { background: var(--amber-tint); color: var(--amber-ink); }
+.dash-cal-every { background: var(--red-tint); color: var(--red-ink); }
+.dash-cal-dates { margin-left: auto; font-size: 12px; color: var(--body-text); }
+.dash-cal-active { box-shadow: 0 0 0 2px var(--amber-border); }
+.dash-cal-cat-inspection, .dash-cal-cat-bloom { border-left-color: var(--green-mid-c); }
+.dash-cal-cat-inspection .dash-cal-chip:first-child, .dash-cal-cat-bloom .dash-cal-chip:first-child { background: var(--green-tint); color: var(--green-ink); }
+.dash-cal-cat-swarm, .dash-cal-cat-varroa { border-left-color: var(--red-mid); }
+.dash-cal-cat-swarm .dash-cal-chip:first-child, .dash-cal-cat-varroa .dash-cal-chip:first-child { background: var(--red-tint); color: var(--red-ink); }
+.dash-cal-cat-feeding, .dash-cal-cat-harvest { border-left-color: var(--amber-mid); }
+.dash-cal-cat-feeding .dash-cal-chip:first-child, .dash-cal-cat-harvest .dash-cal-chip:first-child { background: var(--amber-tint); color: var(--amber-ink); }
+.dash-cal-disclaimer { margin-top: 28px; font-size: 13px; }
+.dash-region-form { display: grid; gap: 12px; }
+.dash-region-form .dash-region-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.dash-region-form .dash-region-row > * { flex: 1 1 180px; }

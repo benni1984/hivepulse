@@ -82,6 +82,33 @@ export const RELEASES: Release[] = [
       {
         kind: 'added',
         text: t(
+          'A hive can now be made by hand in both apps: the amber New Hive button on the apiary page, no printed sticker needed. The sticker can still be used to open and set up a hive.',
+          'Ein Volk lässt sich jetzt in beiden Apps von Hand anlegen: der bernsteinfarbene Knopf „Neues Volk“ auf der Seite des Bienenstands, ohne gedruckten Aufkleber. Der Aufkleber lässt sich weiter zum Öffnen und Einrichten nutzen.',
+          'Une ruche peut maintenant être créée à la main dans les deux applications : le bouton ambre « Nouvelle ruche » sur la page du rucher, sans autocollant imprimé. L’autocollant reste utilisable pour ouvrir et configurer une ruche.',
+          'Ahora se puede crear una colmena a mano en ambas apps: el botón ámbar «Nueva colmena» en la página del colmenar, sin pegatina impresa. La pegatina sigue sirviendo para abrir y configurar una colmena.',
+        ),
+      },
+      {
+        kind: 'added',
+        text: t(
+          'The beekeeping year: an endless timeline of what to do when, month by month. Feeding with candy in February, the first inspections, swarm control at least every 9 days, drone frames against varroa, when to move for which honey and when to extract it, and the preparation for winter. Set your country and postal code and the dates move to your place.',
+          'Das Imkerjahr: ein endloser Zeitstrahl dessen, was wann zu tun ist, Monat für Monat. Im Februar mit Futterteig füttern, die ersten Kontrollen, Schwarmkontrolle spätestens alle 9 Tage, Drohnenrahmen gegen Varroa, wann für welchen Honig zu verlagern und wann er zu schleudern ist, und die Vorbereitung auf den Winter. Lege Land und Postleitzahl fest, und die Termine verschieben sich auf deinen Ort.',
+          'L’année apicole : une frise sans fin de ce qu’il y a à faire et quand, mois par mois. Nourrir au candi en février, les premières visites, le contrôle de l’essaimage au moins tous les 9 jours, les cadres à mâles contre le varroa, quand déplacer pour quel miel et quand l’extraire, et la préparation de l’hiver. Indiquez le pays et le code postal et les dates se décalent pour votre lieu.',
+          'El año apícola: una línea del tiempo interminable de qué hacer y cuándo, mes a mes. Alimentar con candy en febrero, las primeras revisiones, el control de la enjambrazón como mínimo cada 9 días, los cuadros de zánganos contra la varroa, cuándo trasladar para qué miel y cuándo extraerla, y la preparación del invierno. Indica el país y el código postal y las fechas se adaptan a tu lugar.',
+        ),
+      },
+      {
+        kind: 'changed',
+        text: t(
+          'Invitations are simpler: whoever signs in with Apple or Google finds an invitation sent to that address waiting in the apiary list, with no link to paste. The envelope icon is gone from the toolbar; a link from an e-mail is still redeemed at the end of the apiary list.',
+          'Einladungen sind einfacher: Wer sich mit Apple oder Google anmeldet, findet eine an diese Adresse geschickte Einladung schon in der Liste der Bienenstände, ohne einen Link einzufügen. Das Umschlag-Symbol in der Symbolleiste ist weg; ein Link aus einer E-Mail wird weiter am Ende der Liste der Bienenstände eingelöst.',
+          'Les invitations sont plus simples : qui se connecte avec Apple ou Google trouve l’invitation envoyée à cette adresse déjà dans la liste des ruchers, sans lien à coller. L’icône d’enveloppe a quitté la barre ; un lien reçu par e-mail s’utilise toujours à la fin de la liste des ruchers.',
+          'Las invitaciones son más sencillas: quien inicia sesión con Apple o Google encuentra la invitación enviada a esa dirección ya en la lista de colmenares, sin pegar ningún enlace. El icono de sobre ya no está en la barra; un enlace de un correo se sigue usando al final de la lista de colmenares.',
+        ),
+      },
+      {
+        kind: 'added',
+        text: t(
           'Delete QR batches that no hive uses.',
           'QR-Batches löschen, die kein Volk benutzt.',
           'Supprimer les lots de QR codes qu’aucune ruche n’utilise.',
@@ -308,6 +335,24 @@ export const FEATURES: FeatureGroup[] = [
         'Kontrollerinnerungen mit eigenem Intervall und eigener Saison.',
         'Rappels de visites avec votre propre intervalle et votre propre saison.',
         'Recordatorios de revisión con tu propio intervalo y tu propia temporada.',
+      ),
+    ],
+  },
+  {
+    id: 'year',
+    title: t('The beekeeping year', 'Das Imkerjahr', 'L’année apicole', 'El año apícola'),
+    items: [
+      t(
+        'An endless timeline of what to do when: feeding, inspections, swarm control, drone frames, moving and extracting for each kind of honey, varroa treatment and preparing for winter.',
+        'Ein endloser Zeitstrahl dessen, was wann zu tun ist: Füttern, Kontrollen, Schwarmkontrolle, Drohnenrahmen, Verlagern und Schleudern für jede Honigsorte, Varroabehandlung und Vorbereitung auf den Winter.',
+        'Une frise sans fin de ce qu’il y a à faire et quand : nourrissement, visites, contrôle de l’essaimage, cadres à mâles, déplacements et extraction pour chaque miel, traitement contre le varroa et préparation de l’hiver.',
+        'Una línea del tiempo interminable de qué hacer y cuándo: alimentación, revisiones, control de la enjambrazón, cuadros de zánganos, traslados y extracción para cada miel, tratamiento contra la varroa y preparación del invierno.',
+      ),
+      t(
+        'Moved to your place by country and postal code, adjustable by hand, in English, German, French and Spanish.',
+        'Auf deinen Ort verschoben nach Land und Postleitzahl, von Hand anpassbar, auf Deutsch, Englisch, Französisch und Spanisch.',
+        'Décalée pour votre lieu selon le pays et le code postal, ajustable à la main, en allemand, anglais, français et espagnol.',
+        'Adaptada a tu lugar por país y código postal, ajustable a mano, en alemán, inglés, francés y español.',
       ),
     ],
   },

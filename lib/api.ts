@@ -1103,6 +1103,79 @@ export async function updateReminderSettings(
   return res.json();
 }
 
+// ---------------------------------------------------------------------------
+// The beekeeper's year
+// ---------------------------------------------------------------------------
+
+export interface Region {
+  country: string | null;
+  postal_code: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  /** Days added by hand to what the position says. */
+  adjust_days: number;
+  /** Days the calendar is moved against its reference region (central Germany); positive is later. */
+  shift_days: number;
+  /** Where the position comes from: the postal code, the first apiary with a position, or nowhere. */
+  source: 'postal_code' | 'apiary' | 'default';
+  /** False when a postal code was given that could not be found. */
+  located: boolean;
+}
+
+export interface RegionUpdate {
+  /** An empty string clears it. */
+  country?: string;
+  postal_code?: string;
+  adjust_days?: number;
+}
+
+export type CalendarCategory =
+  | 'inspection' | 'swarm' | 'feeding' | 'varroa' | 'harvest' | 'migration' | 'bloom' | 'care' | 'winter';
+
+export interface CalendarEntry {
+  key: string;
+  category: CalendarCategory;
+  title: string;
+  body: string;
+  /** YYYY-MM-DD */
+  start: string;
+  end: string;
+  /** Set when the task repeats during the entry ("at least every 9 days"). */
+  interval_days: number | null;
+  /** A forage key (acacia, rapeseed, ...) when the entry is about one kind of honey. */
+  honey: string | null;
+  /** Whether today lies within the entry. */
+  active: boolean;
+}
+
+export interface CalendarWindow {
+  region: Region;
+  today: string;
+  start: string;
+  end: string;
+  entries: CalendarEntry[];
+}
+
+export async function getRegion(): Promise<Region> {
+  const res = await apiFetch('/users/me/region');
+  if (!res.ok) throw new Error('Failed to load the region');
+  return res.json();
+}
+
+export async function updateRegion(data: RegionUpdate): Promise<Region> {
+  const res = await apiFetch('/users/me/region', { method: 'PUT', body: JSON.stringify(data) });
+  if (!res.ok) throw new Error(extractDetail(await res.json().catch(() => ({})), 'Failed to save the region'));
+  return res.json();
+}
+
+/** One window of the beekeeper's year; the page asks for the next and the previous one as it is scrolled. */
+export async function getCalendar(start: string, days: number, lang: string): Promise<CalendarWindow> {
+  const query = new URLSearchParams({ from: start, days: String(days), lang });
+  const res = await apiFetch(`/calendar?${query}`);
+  if (!res.ok) throw new Error('Failed to load the calendar');
+  return res.json();
+}
+
 /** Register or replace a device push token. */
 export async function registerPushToken(data: PushTokenRegister): Promise<void> {
   const res = await apiFetch('/users/me/push-token', {

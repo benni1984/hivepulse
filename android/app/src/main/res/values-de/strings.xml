@@ -86,6 +86,7 @@
 
     <!-- Actions -->
     <string name="action_save">Speichern</string>
+    <string name="action_done">Fertig</string>
     <string name="action_cancel">Abbrechen</string>
     <string name="action_delete">Löschen</string>
     <string name="action_login">Anmelden</string>
@@ -101,6 +102,7 @@
     <string name="action_logout">Abmelden</string>
     <string name="action_new_apiary">Neuer Bienenstand</string>
     <string name="action_edit_apiary">Bienenstand bearbeiten</string>
+    <string name="action_new_hive">Neues Volk</string>
     <string name="action_new_inspection">Neue Kontrolle</string>
     <string name="action_edit_inspection">Kontrolle bearbeiten</string>
     <string name="action_stats">Statistik</string>
@@ -204,7 +206,7 @@
 
     <!-- Empty states -->
     <string name="empty_apiaries_title">Noch keine Bienenstände.\nTippe auf +, um deinen ersten Bienenstand anzulegen.</string>
-    <string name="empty_hives_title">Noch keine Völker an diesem Bienenstand.\nScanne einen QR-Code, um eines hinzuzufügen.</string>
+    <string name="empty_hives_title">Noch keine Völker an diesem Bienenstand.\nTippe auf „Neues Volk“ oder scanne den QR-Code an einem Volk.</string>
     <string name="empty_inspections">Noch keine Kontrollen erfasst.</string>
     <string name="empty_qr_batches">Noch keine QR-Batches.\nTippe auf +, um einen neuen Batch zu generieren.</string>
 
@@ -529,4 +531,40 @@
     <string name="treatments_done_title">Erledigt</string>
     <string name="treatments_done_on">erledigt %1$s</string>
     <string name="treatments_reopen">Wieder öffnen</string>
+    <!-- The beekeeper's year and its region -->
+    <string name="calendar_title">Imkerjahr</string>
+    <string name="calendar_intro">Was wann zu tun ist, Monat für Monat, für deinen Ort. Nach oben und unten scrollen: Das Jahr wiederholt sich.</string>
+    <string name="calendar_load_error">Der Kalender konnte nicht geladen werden.</string>
+    <string name="calendar_today">Heute, %1$s</string>
+    <string name="calendar_now">Jetzt</string>
+    <string name="calendar_interval">Spätestens alle %1$d Tage</string>
+    <string name="calendar_region_none">Termine für Mitteldeutschland. Lege deine Region fest, um sie auf deinen Ort zu verschieben.</string>
+    <string name="calendar_region_from_apiary">dein erster Bienenstand</string>
+    <string name="calendar_region_no_shift">%1$s: dieselben Termine wie in Mitteldeutschland</string>
+    <string name="calendar_region_later">%1$s: %2$d Tage später als in Mitteldeutschland</string>
+    <string name="calendar_region_earlier">%1$s: %2$d Tage früher als in Mitteldeutschland</string>
+    <string name="calendar_not_located">Diese Postleitzahl wurde nicht gefunden.</string>
+    <string name="calendar_set_region">Region festlegen</string>
+    <string name="calendar_change_region">Region ändern</string>
+    <string name="calendar_disclaimer">Richtwerte aus der üblichen imkerlichen Praxis, keine Vorschriften: Blüte und Wetter entscheiden, und die Termine verschieben sich mit deinem Ort. Arzneimittel nur wie in deinem Land zugelassen und vorgeschrieben; im Zweifel frag deinen Imkerverband oder das Veterinäramt.</string>
+    <string name="calendar_category_inspection">Kontrolle</string>
+    <string name="calendar_category_swarm">Schwarmkontrolle</string>
+    <string name="calendar_category_feeding">Fütterung</string>
+    <string name="calendar_category_varroa">Varroa</string>
+    <string name="calendar_category_harvest">Ernte</string>
+    <string name="calendar_category_migration">Wanderung</string>
+    <string name="calendar_category_bloom">Blüte</string>
+    <string name="calendar_category_care">Pflege</string>
+    <string name="calendar_category_winter">Winter</string>
+    <string name="region_title">Region für das Imkerjahr</string>
+    <string name="region_intro">Land und Postleitzahl verschieben das Imkerjahr auf deinen Ort: Die Blüte kommt im Süden früher und im Norden später. Gespeichert wird nur die Position, nicht die Adresse.</string>
+    <string name="region_country">Land</string>
+    <string name="region_country_none">— nicht festgelegt —</string>
+    <string name="region_postal">Postleitzahl</string>
+    <string name="region_adjust">Von Hand anpassen (Tage)</string>
+    <string name="region_adjust_hint">Positiv ist später, negativ früher: für ein Bergtal oder einen geschützten Garten. Zwischen −28 und 28.</string>
+    <string name="region_save">Region speichern</string>
+    <string name="region_saved">Region gespeichert.</string>
+    <string name="region_error">Die Region konnte nicht gespeichert werden.</string>
+    <string name="region_not_located">Diese Postleitzahl wurde nicht gefunden, die Termine richten sich deshalb nach deinem ersten Bienenstand oder Mitteldeutschland.</string>
 </resources>

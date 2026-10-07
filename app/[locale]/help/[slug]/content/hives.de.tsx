@@ -119,6 +119,13 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           <p>Das Löschen eines Volkes entfernt dauerhaft die gesamte Kontrollhistorie dieses Volkes. Exportieren Sie Ihre Daten vor dem Löschen, wenn Sie die Aufzeichnungen behalten möchten.</p>
         </div>
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">In den Apps: ein Volk von Hand anlegen</h2>
+        <p>
+          Auf der Seite des Bienenstands in den Apps für iPhone und Android tippst du unten rechts auf den bernsteinfarbenen Knopf <em>Neues Volk</em> und gibst einen Namen, den Beutentyp und auf Wunsch den Tag der Anschaffung und eine Notiz ein. Ein gedruckter Aufkleber ist nicht nötig; das Volk bekommt einen eigenen QR-Code, den du später drucken kannst. Ein gedruckter Aufkleber funktioniert weiter: scannen, und die App fragt dieselben Angaben ab.
+        </p>
+      </section>
     </>
   );
 }

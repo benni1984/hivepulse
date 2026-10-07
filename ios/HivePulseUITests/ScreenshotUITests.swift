@@ -227,6 +227,17 @@ final class ScreenshotUITests: XCTestCase {
         snap("26-sharing", app)
     }
 
+    /// The beekeeper's year: what to do when, moved to the beekeeper's place.
+    func test_capture_beekeeping_year() {
+        let app = launch(["-resetKeychain", "-mockApiaryWithHive", "-mockNewTools"])
+        let button = app.buttons["beekeepingYearButton"]
+        XCTAssertTrue(button.waitForExistence(timeout: 10))
+        button.tap()
+        // The list loads, lays itself out and scrolls itself to today a moment after it opens.
+        Thread.sleep(forTimeInterval: 3.0)
+        snap("27-beekeeping-year", app)
+    }
+
     // MARK: - Helpers
 
     /// The language this run captures, from SCREENSHOT_LANG; English when unset.

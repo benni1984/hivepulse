@@ -41,24 +41,24 @@ internal fun hiveTypeLabelRes(value: String): Int = when (value) {
 internal fun isValidAcquisitionDate(value: String): Boolean =
     value.isBlank() || Regex("""\d{4}-\d{2}-\d{2}""").matches(value.trim())
 
-/** Edits a hive's name, type, acquisition date and notes. */
+/** Edits a hive's name, type, acquisition date and notes, or collects them for a new one when no hive is given. */
 @Composable
 fun HiveEditDialog(
-    hive: HiveOut,
+    hive: HiveOut?,
     onDismiss: () -> Unit,
     onSave: (name: String, hiveType: String, acquisitionDate: String?, notes: String?) -> Unit,
 ) {
-    var name by remember { mutableStateOf(hive.name) }
-    var hiveType by remember { mutableStateOf(hive.hiveType.takeIf { it in HIVE_TYPES } ?: "other") }
-    var acquisitionDate by remember { mutableStateOf(hive.acquisitionDate ?: "") }
-    var notes by remember { mutableStateOf(hive.notes ?: "") }
+    var name by remember { mutableStateOf(hive?.name ?: "") }
+    var hiveType by remember { mutableStateOf(hive?.hiveType?.takeIf { it in HIVE_TYPES } ?: if (hive == null) "langstroth" else "other") }
+    var acquisitionDate by remember { mutableStateOf(hive?.acquisitionDate ?: "") }
+    var notes by remember { mutableStateOf(hive?.notes ?: "") }
 
     val dateValid = isValidAcquisitionDate(acquisitionDate)
     val canSave = name.isNotBlank() && dateValid
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.title_edit_hive)) },
+        title = { Text(stringResource(if (hive == null) R.string.action_new_hive else R.string.title_edit_hive)) },
         text = {
             Column(
                 Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),

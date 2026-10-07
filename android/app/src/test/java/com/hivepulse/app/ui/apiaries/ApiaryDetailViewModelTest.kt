@@ -2,6 +2,8 @@ package com.hivepulse.app.ui.apiaries
 
 import androidx.lifecycle.SavedStateHandle
 import com.hivepulse.app.data.api.ApiaryOut
+import com.hivepulse.app.data.api.HiveCreateRequest
+import com.hivepulse.app.data.api.HiveOut
 import com.hivepulse.app.data.repository.ApiaryRepository
 import com.hivepulse.app.data.repository.HiveRepository
 import io.mockk.*
@@ -79,6 +81,53 @@ class ApiaryDetailViewModelTest {
         vm.updateApiary("Meadow", null, null, isPublic = true) { done = true }
         assertEquals("offline", vm.state.value.error)
         assertEquals(stored, vm.state.value.apiary)
+        assertFalse(done)
+    }
+
+    private fun created(name: String) = HiveOut(
+        "h-new", "tok", "a1", name, "dadant", null, null, null, null, emptyMap(),
+        "2026-01-01T00:00:00", null, "2026-01-01T00:00:00",
+    )
+
+    @Test
+    fun `createHive sends the hive to the apiary and puts it in the list`() {
+        val requests = mutableListOf<HiveCreateRequest>()
+        coEvery { hiveRepo.create("a1", capture(requests)) } returns created("Nicole II")
+        var done = false
+
+        vm.createHive("  Nicole II ", "dadant", "2026-04-01", " from a swarm ") { done = true }
+
+        assertEquals(HiveCreateRequest("Nicole II", "dadant", "2026-04-01", "from a swarm"), requests.single())
+        assertEquals(listOf("Nicole II"), vm.state.value.hives.map { it.name })
+        assertTrue(done)
+    }
+
+    @Test
+    fun `createHive leaves out an empty date and note`() {
+        val requests = mutableListOf<HiveCreateRequest>()
+        coEvery { hiveRepo.create("a1", capture(requests)) } returns created("H")
+
+        vm.createHive("H", "langstroth", "", "  ")
+
+        assertEquals(HiveCreateRequest("H", "langstroth", null, null), requests.single())
+    }
+
+    @Test
+    fun `createHive ignores a blank name`() {
+        vm.createHive("  ", "langstroth", null, null)
+
+        coVerify(exactly = 0) { hiveRepo.create(any(), any()) }
+    }
+
+    @Test
+    fun `createHive refused shows the reason and keeps the list`() {
+        coEvery { hiveRepo.create(any(), any()) } throws RuntimeException("Only the owner can do this.")
+        var done = false
+
+        vm.createHive("H", "langstroth", null, null) { done = true }
+
+        assertEquals("Only the owner can do this.", vm.state.value.error)
+        assertTrue(vm.state.value.hives.isEmpty())
         assertFalse(done)
     }
 }

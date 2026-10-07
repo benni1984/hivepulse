@@ -37,7 +37,7 @@ def test_the_names_line_up_with_the_android_images():
     shared = {t.removeprefix("ios-") for targets in picker.HELP_IMAGES.values() for t in targets}
     assert all(t.startswith("ios-") for targets in picker.HELP_IMAGES.values() for t in targets)
     # The screens both platforms show for the newer features carry the same name.
-    for name in ("home-summary", "treatments", "moves", "sharing"):
+    for name in ("home-summary", "treatments", "moves", "sharing", "beekeeping-year"):
         assert name in shared and name in android, f"{name} is not captured on both platforms"
 
 

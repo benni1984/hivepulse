@@ -23,6 +23,8 @@ struct SettingsView: View {
     @State private var showDeleteConfirm = false
     @State private var isDeleting = false
 
+    @StateObject private var regionVM = RegionViewModel()
+
     // Reminder settings
     @State private var reminderEnabled = true
     @State private var reminderIntervalDays = 7
@@ -158,6 +160,9 @@ struct SettingsView: View {
                 .disabled(isSavingReminder)
                 .accessibilityIdentifier("saveReminderButton")
             }
+
+            // MARK: - Region (where the beekeeper's year is moved to)
+            RegionSettingsSections(vm: regionVM)
 
             // MARK: - Export
             if !apiaries.isEmpty {

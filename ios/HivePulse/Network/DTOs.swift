@@ -635,6 +635,19 @@ struct HiveInitializeRequest: Encodable {
     }
 }
 
+/// A hive made by hand in an apiary (POST /apiaries/{id}/hives); the server gives it a QR code of its own.
+struct HiveCreateRequest: Encodable {
+    let name: String
+    let hiveType: String
+    let acquisitionDate: String?
+    let notes: String?
+    enum CodingKeys: String, CodingKey {
+        case name, notes
+        case hiveType = "hive_type"
+        case acquisitionDate = "acquisition_date"
+    }
+}
+
 struct HiveUpdateRequest: Encodable {
     let apiaryId: String?
     let name: String?

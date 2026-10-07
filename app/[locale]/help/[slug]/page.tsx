@@ -22,6 +22,7 @@ import AccountEn from './content/account';
 import SharingEn from './content/sharing';
 import MovingHivesEn from './content/moving-hives';
 import HomeAndTreatmentsEn from './content/home-and-treatments';
+import BeekeepingYearEn from './content/beekeeping-year';
 
 // ── Content imports (German) ────────────────────────────────────
 import GettingStartedDe from './content/getting-started.de';
@@ -40,6 +41,7 @@ import AccountDe from './content/account.de';
 import SharingDe from './content/sharing.de';
 import MovingHivesDe from './content/moving-hives.de';
 import HomeAndTreatmentsDe from './content/home-and-treatments.de';
+import BeekeepingYearDe from './content/beekeeping-year.de';
 
 // ── Content imports (French) ────────────────────────────────────
 import GettingStartedFr from './content/getting-started.fr';
@@ -58,6 +60,7 @@ import AccountFr from './content/account.fr';
 import SharingFr from './content/sharing.fr';
 import MovingHivesFr from './content/moving-hives.fr';
 import HomeAndTreatmentsFr from './content/home-and-treatments.fr';
+import BeekeepingYearFr from './content/beekeeping-year.fr';
 
 // ── Content imports (Spanish) ───────────────────────────────────
 import GettingStartedEs from './content/getting-started.es';
@@ -76,6 +79,7 @@ import AccountEs from './content/account.es';
 import SharingEs from './content/sharing.es';
 import MovingHivesEs from './content/moving-hives.es';
 import HomeAndTreatmentsEs from './content/home-and-treatments.es';
+import BeekeepingYearEs from './content/beekeeping-year.es';
 
 type ContentComponent = React.ComponentType<{ Screenshot: typeof HelpScreenshot }>;
 type SlugMap = Record<string, ContentComponent>;
@@ -87,7 +91,7 @@ const CONTENT: Record<string, SlugMap> = {
     'data-export': DataExportEn, 'hive-stats': HiveStatsEn, 'community-stats': CommunityStatsEn,
     'hornet-tracker': HornetTrackerEn, 'hornet-traps': HornetTrapsEn,
     'reminders': RemindersEn, 'account': AccountEn,
-    'sharing': SharingEn, 'moving-hives': MovingHivesEn, 'home-and-treatments': HomeAndTreatmentsEn,
+    'sharing': SharingEn, 'moving-hives': MovingHivesEn, 'home-and-treatments': HomeAndTreatmentsEn, 'beekeeping-year': BeekeepingYearEn,
   },
   de: {
     'getting-started': GettingStartedDe, 'apiaries': AviariesDe, 'hives': HivesDe,
@@ -95,7 +99,7 @@ const CONTENT: Record<string, SlugMap> = {
     'data-export': DataExportDe, 'hive-stats': HiveStatsDe, 'community-stats': CommunityStatsDe,
     'hornet-tracker': HornetTrackerDe, 'hornet-traps': HornetTrapsDe,
     'reminders': RemindersDe, 'account': AccountDe,
-    'sharing': SharingDe, 'moving-hives': MovingHivesDe, 'home-and-treatments': HomeAndTreatmentsDe,
+    'sharing': SharingDe, 'moving-hives': MovingHivesDe, 'home-and-treatments': HomeAndTreatmentsDe, 'beekeeping-year': BeekeepingYearDe,
   },
   fr: {
     'getting-started': GettingStartedFr, 'apiaries': AviariesFr, 'hives': HivesFr,
@@ -103,7 +107,7 @@ const CONTENT: Record<string, SlugMap> = {
     'data-export': DataExportFr, 'hive-stats': HiveStatsFr, 'community-stats': CommunityStatsFr,
     'hornet-tracker': HornetTrackerFr, 'hornet-traps': HornetTrapsFr,
     'reminders': RemindersFr, 'account': AccountFr,
-    'sharing': SharingFr, 'moving-hives': MovingHivesFr, 'home-and-treatments': HomeAndTreatmentsFr,
+    'sharing': SharingFr, 'moving-hives': MovingHivesFr, 'home-and-treatments': HomeAndTreatmentsFr, 'beekeeping-year': BeekeepingYearFr,
   },
   es: {
     'getting-started': GettingStartedEs, 'apiaries': AviariesEs, 'hives': HivesEs,
@@ -111,7 +115,7 @@ const CONTENT: Record<string, SlugMap> = {
     'data-export': DataExportEs, 'hive-stats': HiveStatsEs, 'community-stats': CommunityStatsEs,
     'hornet-tracker': HornetTrackerEs, 'hornet-traps': HornetTrapsEs,
     'reminders': RemindersEs, 'account': AccountEs,
-    'sharing': SharingEs, 'moving-hives': MovingHivesEs, 'home-and-treatments': HomeAndTreatmentsEs,
+    'sharing': SharingEs, 'moving-hives': MovingHivesEs, 'home-and-treatments': HomeAndTreatmentsEs, 'beekeeping-year': BeekeepingYearEs,
   },
 };
 

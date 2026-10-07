@@ -119,6 +119,13 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
           <p>Supprimer une ruche supprime définitivement tout l'historique de visite de cette colonie. Exportez vos données avant de supprimer si vous souhaitez conserver les enregistrements.</p>
         </div>
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Dans les applications : ajouter une ruche à la main</h2>
+        <p>
+          Sur la page du rucher des applications iPhone et Android, touchez le bouton ambre <em>Nouvelle ruche</em> en bas à droite, saisissez un nom, le type de ruche et, si vous le souhaitez, le jour d’acquisition et une note. Aucun autocollant imprimé n’est nécessaire ; la ruche reçoit son propre QR code que vous pourrez imprimer plus tard. Un autocollant imprimé fonctionne toujours : scannez-le et l’application demande les mêmes informations.
+        </p>
+      </section>
     </>
   );
 }

@@ -5,9 +5,14 @@ import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.hasScrollAction
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.performScrollToIndex
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.hivepulse.app.MainActivity
@@ -69,6 +74,63 @@ class ApiaryWithDataTest {
 
     @get:Rule(order = 2)
     val composeRule = createAndroidComposeRule<MainActivity>()
+
+    @Test
+    fun apiaryDetail_hasANewHiveButtonThatOpensTheForm() {
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithText("Honey Farm").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Honey Farm").performClick()
+
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithContentDescription("New Hive").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithContentDescription("New Hive").performClick()
+
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithTag("hiveEditName").fetchSemanticsNodes().isNotEmpty()
+        }
+    }
+
+    @Test
+    fun apiaryList_opensTheBeekeepingYearWithTheRegionAndTheEntries() {
+        val region = com.hivepulse.app.data.api.RegionOut("DE", "69123", 49.4, 8.7, 0, 2, "postal_code", true)
+        coEvery { apiService.region() } returns region
+        coEvery { apiService.calendar(any(), any(), any()) } returns com.hivepulse.app.data.api.CalendarOut(
+            region, "2026-10-07", "2026-09-01", "2027-01-29",
+            listOf(
+                com.hivepulse.app.data.api.CalendarEntryOut(
+                    "winter-prep", "winter", "Make the hives winter-proof", "Fit the mouse guard.",
+                    "2026-10-01", "2026-11-20", null, null, true,
+                ),
+                com.hivepulse.app.data.api.CalendarEntryOut(
+                    "swarm-control", "swarm", "Swarm control: look for queen cells", "Check weekly.",
+                    "2027-04-22", "2027-07-02", 9, null, false,
+                ),
+            ),
+        )
+        waitForApiaryList()
+
+        composeRule.onNodeWithTag("beekeepingYearButton").performClick()
+
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithText("Make the hives winter-proof").fetchSemanticsNodes().isNotEmpty()
+        }
+        // The list opens at today, so the region line above it has scrolled out of view.
+        composeRule.onNodeWithTag("beekeepingYearList").performScrollToIndex(1)
+        composeRule.onNodeWithTag("calendarRegion").assertIsDisplayed()
+        composeRule.onNodeWithTag("changeRegionButton").assertIsDisplayed()
+    }
+
+    @Test
+    fun apiaryList_redeemsAnInvitationLinkFromTheFooterNotTheToolbar() {
+        waitForApiaryList()
+
+        composeRule.onNode(hasScrollAction()).performScrollToNode(hasTestTag("redeemInvitationButton"))
+        composeRule.onNodeWithTag("redeemInvitationButton").performClick()
+
+        composeRule.onNodeWithTag("redeemField").assertIsDisplayed()
+    }
 
     private fun waitForApiaryList() {
         composeRule.waitUntil(timeoutMillis = 5_000) {

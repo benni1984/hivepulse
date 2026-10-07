@@ -341,13 +341,13 @@
     "updated": "Dernière mise à jour : octobre 2026",
     "intro": "HivePulse est une application d'apiculture open source. Cette politique explique les données que nous collectons, pourquoi nous les utilisons et les choix qui s'offrent à vous, notamment la façon dont vous contrôlez si votre rucher apparaît sur la carte publique.",
     "s1title": "1. Données collectées",
-    "s1body": "Lors de l'inscription : votre adresse e-mail, votre nom d'affichage et votre langue préférée. Lors de l'utilisation de l'app : noms de ruchers et coordonnées GPS (si vous les saisissez), détails des ruches et registres de visites. Nous ne collectons ni identifiants d'appareil, ni identifiants publicitaires, ni données de localisation précises sans que vous les saisissiez explicitement.",
+    "s1body": "Lors de l'inscription : votre adresse e-mail, votre nom d'affichage et votre langue préférée. Lors de l'utilisation de l'app : noms de ruchers et coordonnées GPS (si vous les saisissez), détails des ruches et registres de visites. Nous ne collectons ni identifiants d'appareil, ni identifiants publicitaires, ni données de localisation précises sans que vous les saisissiez explicitement. Si vous indiquez une région pour l’année apicole : le pays et le code postal saisis. Le code postal est recherché une fois et seule la position obtenue est conservée, jamais une adresse.",
     "s2title": "2. Carte publique — opt-in",
     "s2body": "La carte publique affiche des épingles anonymisées pour visualiser l'activité apicole mondiale. La participation est strictement volontaire (opt-in). Par défaut, chaque rucher que vous créez est privé. Vous pouvez activer 'Afficher sur la carte publique' par rucher dans les paramètres de l'app à tout moment. Lorsqu'activé, l'épingle affiche le nom de votre rucher, ses coordonnées GPS et le nombre de ruches. Aucune identité ou donnée de visite n'est jamais partagée publiquement.",
     "s3title": "3. Utilisation de vos données",
     "s3body": "Vos données servent uniquement à faire fonctionner l'app et, uniquement si vous acceptez, à afficher votre épingle sur la carte publique et à contribuer aux statistiques globales. Nous ne vendons, n'échangeons ni ne louons vos données personnelles. Nous ne les utilisons pas à des fins publicitaires.",
     "s4title": "4. Prestataires",
-    "s4body": "L'exploitation de HivePulse implique quelques entreprises qui traitent des données pour notre compte, chacune dans le cadre d'un contrat de sous-traitance. Hébergement et site : Vercel. Base de données : Neon (serveurs dans l'UE). E-mails de réinitialisation du mot de passe : Resend. Rapports de plantage : Sentry (serveurs dans l'UE, voir la section suivante). Notifications push, uniquement si vous activez les rappels : Google Firebase pour les appareils Android et Apple pour les iPhone, qui reçoivent un jeton d'appareil et le texte de la notification. Les fonds de carte proviennent de la OpenStreetMap Foundation, dont les serveurs reçoivent votre adresse IP lorsque vous ouvrez une carte. Les polices sont servies depuis nos propres serveurs, aucun tiers n'en apprend donc quoi que ce soit. Le jeu d'icônes Font Awesome est encore chargé depuis le cdnjs de Cloudflare, dont les serveurs voient alors votre adresse IP ; nous prévoyons de le servir nous-mêmes également. Statistiques de visite : Umami Cloud, qui selon son exploitant n'utilise ni cookies ni identifiants publicitaires et ne conserve pas les adresses IP complètes ; sont enregistrés les pages vues, le site référent, le pays et le type d'appareil. La base légale est notre intérêt légitime à savoir si le site est utilisé (art. 6, § 1, f du RGPD).",
+    "s4body": "L'exploitation de HivePulse implique quelques entreprises qui traitent des données pour notre compte, chacune dans le cadre d'un contrat de sous-traitance. Hébergement et site : Vercel. Base de données : Neon (serveurs dans l'UE). E-mails de réinitialisation du mot de passe : Resend. Rapports de plantage : Sentry (serveurs dans l'UE, voir la section suivante). Notifications push, uniquement si vous activez les rappels : Google Firebase pour les appareils Android et Apple pour les iPhone, qui reçoivent un jeton d'appareil et le texte de la notification. Les fonds de carte proviennent de la OpenStreetMap Foundation, dont les serveurs reçoivent votre adresse IP lorsque vous ouvrez une carte. Les polices sont servies depuis nos propres serveurs, aucun tiers n'en apprend donc quoi que ce soit. Le jeu d'icônes Font Awesome est encore chargé depuis le cdnjs de Cloudflare, dont les serveurs voient alors votre adresse IP ; nous prévoyons de le servir nous-mêmes également. Statistiques de visite : Umami Cloud, qui selon son exploitant n'utilise ni cookies ni identifiants publicitaires et ne conserve pas les adresses IP complètes ; sont enregistrés les pages vues, le site référent, le pays et le type d'appareil. La base légale est notre intérêt légitime à savoir si le site est utilisé (art. 6, § 1, f du RGPD). Recherche d’un code postal (et d’une adresse saisie pour un rucher) : le service de recherche Nominatim de la fondation OpenStreetMap, qui ne reçoit que ce code postal et ce pays ou cette adresse et rien de vos données de compte.",
     "s5title": "5. Rapports de plantage",
     "s5body": "Lorsque l'application ou le serveur rencontre une erreur inattendue, un rapport est envoyé à Sentry afin qu'elle puisse être corrigée. Il contient l'endroit dans le code, la version et le type d'appareil. Il ne contient délibérément aucun de vos contenus : aucune note de visite, aucun mot de passe, aucune adresse e-mail, aucune adresse IP, aucune capture d'écran et aucun enregistrement de ce que vous tapez. Un rapport identifie votre compte uniquement par son numéro interne. Les rapports sont conservés dans l'UE et supprimés au bout de 30 jours. La base légale est notre intérêt légitime à disposer d'une application fonctionnelle et sûre (art. 6, § 1, f du RGPD).",
     "s6title": "6. Base légale (RGPD et LPD suisse)",
@@ -417,7 +417,8 @@
       "members": "Communauté",
       "openMenu": "Ouvrir le menu du tableau de bord",
       "closeMenu": "Fermer le menu du tableau de bord",
-      "releaseNotes": "Notes de version"
+      "releaseNotes": "Notes de version",
+      "calendar": "Année apicole"
     },
     "overview": {
       "title": "Mes statistiques",
@@ -480,7 +481,18 @@
         "10": "Octobre",
         "11": "Novembre",
         "12": "Décembre"
-      }
+      },
+      "regionTitle": "Région pour l’année apicole",
+      "regionIntro": "Le pays et le code postal adaptent l’année apicole à votre lieu : la floraison vient plus tôt dans le sud et plus tard dans le nord. Seule la position est conservée, pas l’adresse.",
+      "regionCountry": "Pays",
+      "regionCountryNone": "— non indiqué —",
+      "regionPostal": "Code postal",
+      "regionAdjust": "Ajuster à la main (jours)",
+      "regionAdjustHint": "Positif veut dire plus tard, négatif plus tôt : pour une vallée de montagne ou un jardin abrité. Entre −28 et 28.",
+      "regionSave": "Enregistrer la région",
+      "regionSaved": "Région enregistrée.",
+      "regionError": "La région n’a pas pu être enregistrée.",
+      "regionNotLocated": "Ce code postal n’a pas été trouvé ; les dates suivent donc votre premier rucher ou le centre de l’Allemagne."
     },
     "admin": {
       "nav": {
@@ -829,6 +841,37 @@
         "other": "Autre"
       }
     },
+    "calendar": {
+      "title": "Année apicole",
+      "intro": "Ce qu’il y a à faire et quand, mois par mois, pour votre lieu. Faites défiler vers le haut et le bas : l’année se répète.",
+      "loading": "Chargement",
+      "loadError": "Le calendrier n’a pas pu être chargé.",
+      "loadingEarlier": "Chargement des mois précédents…",
+      "loadingLater": "Chargement des mois suivants…",
+      "today": "Aujourd’hui, {date}",
+      "now": "Maintenant",
+      "interval": "Au plus tard tous les {days} jours",
+      "regionNone": "Dates pour le centre de l’Allemagne. Indiquez votre région pour les adapter à votre lieu.",
+      "regionFromApiary": "votre premier rucher",
+      "regionNoShift": "{place} : les mêmes dates que dans le centre de l’Allemagne",
+      "regionLater": "{place} : {days} jours plus tard que dans le centre de l’Allemagne",
+      "regionEarlier": "{place} : {days} jours plus tôt que dans le centre de l’Allemagne",
+      "notLocated": "Ce code postal n’a pas été trouvé.",
+      "setRegion": "Indiquer la région",
+      "changeRegion": "Changer la région",
+      "disclaimer": "Valeurs indicatives tirées de la pratique apicole habituelle, pas des règles : la floraison et la météo décident, et les dates se décalent selon votre lieu. Médicaments uniquement selon l’autorisation et les règles de votre pays ; en cas de doute, demandez à votre syndicat apicole ou à la direction départementale de la protection des populations.",
+      "categories": {
+        "inspection": "Visite",
+        "swarm": "Essaimage",
+        "feeding": "Nourrissement",
+        "varroa": "Varroa",
+        "harvest": "Récolte",
+        "migration": "Transhumance",
+        "bloom": "Floraison",
+        "care": "Entretien",
+        "winter": "Hiver"
+      }
+    },
     "home": {
       "title": "Aujourd’hui en un coup d’œil",
       "outOfSeason": "C’est en dehors de votre saison de rappels ; les dates sont calculées de la même façon.",
@@ -994,6 +1037,10 @@
       "home-and-treatments": {
         "title": "Accueil et traitements",
         "desc": "Ce qui est dû, l’état de vos ruches et ce qui vient, d’un coup d’œil, et comment planifier des traitements pour une ruche ou tout un rucher."
+      },
+      "beekeeping-year": {
+        "title": "Année apicole",
+        "desc": "Ce qu’il y a à faire et quand, mois par mois : nourrissement, visites, contrôle de l’essaimage, cadres à mâles, déplacements pour le miel, extraction et préparation de l’hiver, décalés pour votre lieu."
       },
       "custom-fields": {
         "title": "Champs de visite personnalisés",

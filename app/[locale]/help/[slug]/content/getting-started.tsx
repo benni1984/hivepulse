@@ -126,7 +126,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
         </p>
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li><strong>Tabs at the bottom:</strong> Apiaries, Scan, Hornets, Members, Settings.</li>
-          <li><strong>Toolbar of the apiary list:</strong> statistics, QR batches, map of moves, invitation link.</li>
+          <li><strong>Toolbar of the apiary list:</strong> statistics, QR batches, map of moves, beekeeping year.</li>
           <li><strong>Creating something</strong> (an apiary, an inspection, a QR batch, a custom field) is always the amber button at the bottom right.</li>
           <li><strong>Settings</strong> has this help, the release notes with the full list of features, and the guided tour.</li>
         </ul>

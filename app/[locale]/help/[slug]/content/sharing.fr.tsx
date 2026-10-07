@@ -62,8 +62,10 @@ export default function SharingContent({ Screenshot }: { Screenshot: typeof Help
           </li>
           <li>
             <strong>Vous n&rsquo;avez pas encore de compte :</strong> l&rsquo;e-mail contient un lien. Ouvrez-le, inscrivez-vous
-            ou connectez-vous avec cette adresse, puis acceptez. Dans les applications, touchez l&rsquo;icône d&rsquo;enveloppe de
-            la barre de la liste des ruchers (<em>Utiliser un lien d&rsquo;invitation</em>) et collez le lien.
+            ou connectez-vous avec cette adresse, puis acceptez. Si vous vous connectez avec Apple ou Google, l&rsquo;invitation vous attend déjà dans
+            la liste des ruchers : touchez seulement <em>Accepter</em>. Si vous vous êtes inscrit avec un mot de passe dans
+            l&rsquo;application, allez à la fin de la liste des ruchers, touchez <em>Utiliser un lien d&rsquo;invitation</em> et
+            collez le lien.
           </li>
         </ul>
       </section>

@@ -73,7 +73,7 @@ def test_the_extra_screens_use_the_wording_the_app_shows():
     script = (ROOT / "scripts/android-screenshots.py").read_text(encoding="utf-8")
 
     for key in ("moves_title", "sharing_title", "treatments_title", "moves_overview_title",
-                "tab_hornets", "tab_members", "tab_settings", "hornet_tab_report",
+                "tab_hornets", "tab_members", "tab_settings", "calendar_title", "hornet_tab_report",
                 "hornet_tab_community", "hornet_tab_traps", "reminder_enabled"):
         assert f'"{_string(key)}"' in script, f'the script no longer says "{_string(key)}" ({key})'
 

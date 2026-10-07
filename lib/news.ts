@@ -26,6 +26,72 @@ export const NEWS: NewsEntry[] = [
     tag: 'feature',
     text: {
       en: {
+        title: 'Invitations Without Pasting a Link',
+        body: 'If you sign in with Apple or Google, an invitation sent to that address is already waiting in your apiary list. Tap Accept, done. The envelope icon is gone from the apps’ toolbar; a link from an e-mail is still redeemed at the end of the apiary list.',
+      },
+      de: {
+        title: 'Einladungen ohne Link einfügen',
+        body: 'Wenn du dich mit Apple oder Google anmeldest, wartet eine an diese Adresse geschickte Einladung schon in deiner Liste der Bienenstände. Auf Annehmen tippen, fertig. Das Umschlag-Symbol in der Symbolleiste der Apps ist weg; ein Link aus einer E-Mail wird weiter am Ende der Liste der Bienenstände eingelöst.',
+      },
+      fr: {
+        title: 'Des invitations sans lien à coller',
+        body: 'Si vous vous connectez avec Apple ou Google, une invitation envoyée à cette adresse vous attend déjà dans la liste des ruchers. Touchez Accepter, c’est fait. L’icône d’enveloppe a quitté la barre des applications ; un lien reçu par e-mail s’utilise toujours à la fin de la liste des ruchers.',
+      },
+      es: {
+        title: 'Invitaciones sin pegar un enlace',
+        body: 'Si inicias sesión con Apple o Google, una invitación enviada a esa dirección ya te espera en la lista de colmenares. Toca Aceptar y listo. El icono de sobre ya no está en la barra de las apps; un enlace de un correo se sigue usando al final de la lista de colmenares.',
+      },
+    },
+  },
+  {
+    date: '2026-10-07',
+    tag: 'fix',
+    text: {
+      en: {
+        title: 'Add a Hive Without a Sticker, in Both Apps',
+        body: 'On the apiary page of the iPhone and Android apps there was no way to add a hive unless you scanned a printed QR code. Now the amber New Hive button is there, as it is on the website: name, type, date and notes, and the hive exists. The sticker still opens and sets up a hive as before.',
+      },
+      de: {
+        title: 'Ein Volk ohne Aufkleber anlegen, in beiden Apps',
+        body: 'Auf der Seite des Bienenstands gab es in den Apps für iPhone und Android keinen Weg, ein Volk anzulegen, außer einen gedruckten QR-Code zu scannen. Jetzt gibt es den bernsteinfarbenen Knopf „Neues Volk“, wie auf der Webseite: Name, Beutentyp, Datum und Notizen, und das Volk ist da. Der Aufkleber öffnet und richtet ein Volk weiter wie bisher ein.',
+      },
+      fr: {
+        title: 'Ajouter une ruche sans autocollant, dans les deux applications',
+        body: 'Sur la page du rucher des applications iPhone et Android, on ne pouvait ajouter une ruche qu’en scannant un QR code imprimé. Le bouton ambre « Nouvelle ruche » est maintenant là, comme sur le site : nom, type, date et notes, et la ruche existe. L’autocollant ouvre et configure toujours une ruche comme avant.',
+      },
+      es: {
+        title: 'Añadir una colmena sin pegatina, en ambas apps',
+        body: 'En la página del colmenar de las apps de iPhone y Android no había forma de añadir una colmena salvo escaneando un código QR impreso. Ahora está el botón ámbar «Nueva colmena», como en la web: nombre, tipo, fecha y notas, y la colmena existe. La pegatina sigue abriendo y configurando una colmena como antes.',
+      },
+    },
+  },
+  {
+    date: '2026-10-07',
+    tag: 'feature',
+    text: {
+      en: {
+        title: 'The Beekeeping Year: What to Do When, for Your Place',
+        body: 'A new timeline shows what a beekeeper does month by month: feeding with candy in February, the first inspections, swarm control at least every 9 days, drone frames against varroa, when to move for rapeseed, acacia, linden, fir or heather and when to extract each honey, and the preparation for winter. It scrolls endlessly, opens at today and speaks your language. Give your country and postal code and every date moves to your place; you can adjust it by hand. The dates are guide values, not rules, and medicines are only ever as approved in your country. On the website and in both apps.',
+      },
+      de: {
+        title: 'Das Imkerjahr: was wann zu tun ist, für deinen Ort',
+        body: 'Ein neuer Zeitstrahl zeigt, was ein Imker Monat für Monat tut: im Februar mit Futterteig füttern, die ersten Kontrollen, Schwarmkontrolle spätestens alle 9 Tage, Drohnenrahmen gegen Varroa, wann für Raps, Akazie, Linde, Tanne oder Heide zu verlagern und wann jeder Honig zu schleudern ist, und die Vorbereitung auf den Winter. Er scrollt endlos, öffnet sich bei heute und spricht deine Sprache. Gib Land und Postleitzahl an, und jedes Datum verschiebt sich auf deinen Ort; von Hand lässt es sich anpassen. Die Termine sind Richtwerte, keine Vorschriften, und Arzneimittel gibt es nur wie in deinem Land zugelassen. Auf der Webseite und in beiden Apps.',
+      },
+      fr: {
+        title: 'L’année apicole : quoi faire et quand, pour votre lieu',
+        body: 'Une nouvelle frise montre ce qu’un apiculteur fait mois par mois : nourrir au candi en février, les premières visites, le contrôle de l’essaimage au moins tous les 9 jours, les cadres à mâles contre le varroa, quand déplacer pour le colza, l’acacia, le tilleul, le sapin ou la bruyère et quand extraire chaque miel, et la préparation de l’hiver. Elle défile sans fin, s’ouvre à aujourd’hui et parle votre langue. Indiquez votre pays et votre code postal et chaque date se décale pour votre lieu ; vous pouvez l’ajuster à la main. Les dates sont des valeurs indicatives, pas des règles, et les médicaments ne le sont que selon l’autorisation de votre pays. Sur le site et dans les deux applications.',
+      },
+      es: {
+        title: 'El año apícola: qué hacer y cuándo, para tu lugar',
+        body: 'Una nueva línea del tiempo muestra lo que hace un apicultor mes a mes: alimentar con candy en febrero, las primeras revisiones, el control de la enjambrazón como mínimo cada 9 días, los cuadros de zánganos contra la varroa, cuándo trasladar para colza, acacia, tilo, abeto o brezo y cuándo extraer cada miel, y la preparación del invierno. Se desplaza sin fin, se abre en hoy y habla tu idioma. Indica tu país y tu código postal y cada fecha se adapta a tu lugar; puedes ajustarla a mano. Las fechas son valores orientativos, no normas, y los medicamentos solo según la autorización de tu país. En la web y en ambas apps.',
+      },
+    },
+  },
+  {
+    date: '2026-10-07',
+    tag: 'feature',
+    text: {
+      en: {
         title: 'Your Day at a Glance, and Treatments You Can Plan',
         body: 'The start of the apiary list now tells you what matters: when the next inspection is due (counted from your reminder interval), how your hives are doing — fine, to watch, or alert, with the reason — and which treatments are coming up. You can plan a treatment for a single hive or for all hives of an apiary, with the product and the day, and tick it off when it is done. Once in a while the same spot can carry an announcement from us; there is no advertising network and nothing is tracked. The website has it now; the apps follow with their next versions.',
       },

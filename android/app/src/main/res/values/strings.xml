@@ -24,6 +24,7 @@
     <string name="action_save">Save</string>
     <string name="action_change_password">Change Password</string>
     <string name="action_delete_account">Delete Account</string>
+    <string name="action_done">Done</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
     <string name="action_login">Sign In</string>
@@ -41,6 +42,7 @@
     <string name="url_help">https://hivepulse.multihead.de/en/help</string>
     <string name="action_new_apiary">New Apiary</string>
     <string name="action_edit_apiary">Edit Apiary</string>
+    <string name="action_new_hive">New Hive</string>
     <string name="action_new_inspection">New Inspection</string>
     <string name="action_edit_inspection">Edit Inspection</string>
     <string name="action_stats">Statistics</string>
@@ -200,7 +202,7 @@
 
     <!-- Empty states -->
     <string name="empty_apiaries_title">No apiaries yet.\nTap + to add your first apiary.</string>
-    <string name="empty_hives_title">No hives in this apiary yet.\nScan a QR code to add one.</string>
+    <string name="empty_hives_title">No hives in this apiary yet.\nTap New Hive, or scan the QR code on a hive.</string>
     <string name="empty_inspections">No inspections recorded yet.</string>
     <string name="empty_qr_batches">No QR batches yet.\nTap + to generate a new batch.</string>
 
@@ -531,4 +533,40 @@
     <string name="treatments_done_title">Done</string>
     <string name="treatments_done_on">done %1$s</string>
     <string name="treatments_reopen">Reopen</string>
+    <!-- The beekeeper's year and its region -->
+    <string name="calendar_title">Beekeeping year</string>
+    <string name="calendar_intro">What to do when, month by month, for your place. Scroll up and down: the year repeats.</string>
+    <string name="calendar_load_error">The calendar could not be loaded.</string>
+    <string name="calendar_today">Today, %1$s</string>
+    <string name="calendar_now">Now</string>
+    <string name="calendar_interval">Every %1$d days at the latest</string>
+    <string name="calendar_region_none">Dates for central Germany. Set your region to move them to your place.</string>
+    <string name="calendar_region_from_apiary">your first apiary</string>
+    <string name="calendar_region_no_shift">%1$s: the same dates as in central Germany</string>
+    <string name="calendar_region_later">%1$s: %2$d days later than in central Germany</string>
+    <string name="calendar_region_earlier">%1$s: %2$d days earlier than in central Germany</string>
+    <string name="calendar_not_located">That postal code was not found.</string>
+    <string name="calendar_set_region">Set region</string>
+    <string name="calendar_change_region">Change region</string>
+    <string name="calendar_disclaimer">Guide values from usual beekeeping practice, not rules: bloom and weather decide, and the dates move with your place. Medicines only as approved and prescribed in your country; when in doubt, ask your beekeepers’ association or veterinary office.</string>
+    <string name="calendar_category_inspection">Inspection</string>
+    <string name="calendar_category_swarm">Swarm control</string>
+    <string name="calendar_category_feeding">Feeding</string>
+    <string name="calendar_category_varroa">Varroa</string>
+    <string name="calendar_category_harvest">Harvest</string>
+    <string name="calendar_category_migration">Moving</string>
+    <string name="calendar_category_bloom">Bloom</string>
+    <string name="calendar_category_care">Care</string>
+    <string name="calendar_category_winter">Winter</string>
+    <string name="region_title">Region for the beekeeping year</string>
+    <string name="region_intro">Country and postal code move the beekeeping year to your place: the bloom comes earlier in the south and later in the north. Only the position is kept, not the address.</string>
+    <string name="region_country">Country</string>
+    <string name="region_country_none">— not set —</string>
+    <string name="region_postal">Postal code</string>
+    <string name="region_adjust">Adjust by hand (days)</string>
+    <string name="region_adjust_hint">Positive is later, negative earlier: for a mountain valley or a sheltered garden. Between −28 and 28.</string>
+    <string name="region_save">Save region</string>
+    <string name="region_saved">Region saved.</string>
+    <string name="region_error">The region could not be saved.</string>
+    <string name="region_not_located">That postal code was not found, so the dates follow your first apiary or central Germany.</string>
 </resources>
