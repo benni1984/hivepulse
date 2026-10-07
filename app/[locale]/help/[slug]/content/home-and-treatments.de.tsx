@@ -1,6 +1,6 @@
 import type HelpScreenshot from '@/components/HelpScreenshot';
 
-export default function HomeAndTreatmentsContent(_: { Screenshot: typeof HelpScreenshot }) {
+export default function HomeAndTreatmentsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
     <>
       <section className="help-section">
@@ -36,6 +36,7 @@ export default function HomeAndTreatmentsContent(_: { Screenshot: typeof HelpScr
           Intervall und Saison stellst du unter <em>Einstellungen &rarr; Kontrollerinnerungen</em> ein. Außerhalb der
           Saison werden die Termine genauso berechnet, und ein Hinweis sagt es dir.
         </p>
+        <Screenshot android="/docs/screenshots/android-home-summary.png" web="/docs/screenshots/home-summary.png" caption="Die Startseite oben in der Liste der Bienenstände" />
       </section>
 
       <section className="help-section">
@@ -71,6 +72,7 @@ export default function HomeAndTreatmentsContent(_: { Screenshot: typeof HelpScr
             ganzen Bienenstand.
           </p>
         </div>
+        <Screenshot android="/docs/screenshots/android-treatments.png" web="/docs/screenshots/treatments-panel.png" caption="Eine Behandlung planen und abhaken" />
       </section>
     </>
   );

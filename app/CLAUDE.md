@@ -20,7 +20,7 @@ Before writing any new UI (components, pages, modals, cards), open **`hivepulse-
 
 ## Help Page Screenshots — IMPORTANT
 
-Whenever a UI screen visible in the help documentation changes (dashboard, hive detail, inspection form, settings, hornet tracker, QR flow, etc.), the corresponding screenshots in `public/docs/screenshots/` **must be retaken** and the `src` props in `app/[locale]/help/[slug]/content/*.tsx` must be updated for all 4 locales (en, de, fr, es).
+Whenever a UI screen visible in the help documentation changes (dashboard, hive detail, inspection form, settings, hornet tracker, QR flow, etc.), the screenshots in `public/docs/screenshots/` are **retaken automatically** by the "Update help page screenshots" workflow after the next green CI on main (see the root `CLAUDE.md`, "Screenshots"); merge the PR it opens. A **new** screen needs a capture in `scripts/web-screenshots.mjs` / `scripts/android-screenshots.py` and a `<Screenshot>` in the help page for all 4 locales (en, de, fr, es); a picture that does not exist yet is simply not shown.
 
 - Web screenshots: capture via browser at `hivepulse.multihead.de` or localhost
 - Android screenshots: capture via `adb exec-out screencap -p > file.png` from the emulator (Pixel 9 API 35), logged in as `demo@apiscan.app` / `demo1234`

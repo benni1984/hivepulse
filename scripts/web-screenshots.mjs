@@ -47,6 +47,16 @@ async function shotElement(page, name, selector) {
   }
 }
 
+// The newer screens are best effort: one that cannot be reached is reported and skipped, so the
+// screenshots that do work are still delivered (and the pipeline does not fail for a missing panel).
+async function soft(name, action) {
+  try {
+    await action();
+  } catch (error) {
+    console.warn('! skipped', name, '-', String(error.message ?? error).split(/\r?\n/)[0]);
+  }
+}
+
 async function goto(page, url) {
   await page.goto(url);
   await page.waitForLoadState('networkidle');
@@ -77,6 +87,9 @@ await page.waitForTimeout(1_500);
 
 await shot(page, 'dashboard-apiary-list');
 
+// The home summary at the top of the dashboard
+await soft('home-summary', () => shotElement(page, 'home-summary', '[data-testid="home-summary"]'));
+
 // New apiary dialog
 const newApiaryBtn = page.locator('button').filter({ hasText: /new apiary/i }).first();
 if (await newApiaryBtn.count() > 0) {
@@ -94,6 +107,10 @@ if (await apiaryCard.count() > 0) {
   await apiaryCard.click();
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(800);
+
+  // Working together and planned treatments sit at the bottom of the apiary page
+  await soft('sharing-panel', () => shotElement(page, 'sharing-panel', '[data-testid="sharing-panel"]'));
+  await soft('treatments-panel', () => shotElement(page, 'treatments-panel', '[data-testid="treatments-panel"]'));
 
   const newHiveBtn = page.locator('button').filter({ hasText: /new hive/i }).first();
   if (await newHiveBtn.count() > 0) {
@@ -132,6 +149,14 @@ if (await apiaryCard.count() > 0) {
     }
   }
 }
+
+// ── Map of moves ──────────────────────────────────────────────────────────────
+
+await soft('moves-overview', async () => {
+  await goto(page, `${BASE}/en/dashboard/moves`);
+  await page.waitForTimeout(2_500); // the map tiles
+  await shot(page, 'moves-overview');
+});
 
 // ── Stats ─────────────────────────────────────────────────────────────────────
 
@@ -201,6 +226,11 @@ for (const [name, urlPath] of helpPages) {
   await goto(page, `${BASE}${urlPath}`);
   await shot(page, name);
 }
+
+await soft('release-notes', async () => {
+  await goto(page, `${BASE}/en/release-notes`);
+  await shot(page, 'release-notes');
+});
 
 await browser.close();
 console.log('\nAll web screenshots saved to', OUT);

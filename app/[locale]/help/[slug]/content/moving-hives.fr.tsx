@@ -1,6 +1,6 @@
 import type HelpScreenshot from '@/components/HelpScreenshot';
 
-export default function MovingHivesContent(_: { Screenshot: typeof HelpScreenshot }) {
+export default function MovingHivesContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
     <>
       <section className="help-section">
@@ -55,6 +55,7 @@ export default function MovingHivesContent(_: { Screenshot: typeof HelpScreensho
             leur lieu précédent ; vous ne confirmez plus que le jour.
           </p>
         </div>
+        <Screenshot src="/docs/screenshots/android-moves.png" caption="Choisir les ruches, le nouveau lieu, le jour et la miellée" />
       </section>
 
       <section className="help-section">
@@ -65,6 +66,7 @@ export default function MovingHivesContent(_: { Screenshot: typeof HelpScreensho
           le menu du tableau de bord sur le site) dessine le parcours de chaque ruche, numéroté étape par étape, et peut
           être limitée à une période.
         </p>
+        <Screenshot android="/docs/screenshots/android-moves-overview.png" web="/docs/screenshots/moves-overview.png" caption="La carte des déplacements dessine le parcours de chaque ruche" />
       </section>
 
       <section className="help-section">

@@ -225,7 +225,7 @@ def capture_hive_detail():
         back_to_apiaries()
     time.sleep(1.5)
 
-    A.tap_first_content_item()
+    A.tap_first_apiary()
     deadline = time.time() + 25
     while time.time() < deadline:
         if S("screen_apiaries") not in A.get_ui_dump():

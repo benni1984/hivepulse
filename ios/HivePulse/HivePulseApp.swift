@@ -34,7 +34,11 @@ struct HivePulseApp: App {
             KeychainService.shared.clearAll()
             KeychainService.shared.accessToken = "ui-test-token"
             KeychainService.shared.refreshToken = "ui-test-refresh"
-            MockURLProtocol.configure(MockURLProtocol.apiaryWithHiveHandlers)
+            // The extra sets go first: the first matching pattern wins.
+            var handlers = MockURLProtocol.apiaryWithHiveHandlers
+            if args.contains("-mockHomeSummary") { handlers = MockURLProtocol.homeSummaryHandlers + handlers }
+            if args.contains("-mockNewTools") { handlers = MockURLProtocol.newToolsHandlers + handlers }
+            MockURLProtocol.configure(handlers)
             APIClient.shared = .forUITesting()
         } else if args.contains("-mockAuthenticatedSupporter") {
             KeychainService.shared.clearAll()

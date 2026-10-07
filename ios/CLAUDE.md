@@ -68,6 +68,8 @@ Same tokens as web/Android (`hivepulse-redesign/bundle.html`), defined in `HiveP
 
 ## Design screenshots from CI
 
+`ScreenshotUITests` is also what the **Update help page screenshots** workflow photographs for the App Store sets and the iPhone help images (`scripts/pick_ios_help_screenshots.py` maps the numbered names to `ios-<name>.png`). A screen added there must be added to that mapping, with the same name as its Android counterpart.
+
 `HivePulseUITests/ScreenshotUITests` navigates the main screens with mock data and writes PNGs to `$SCREENSHOT_DIR`. The `ios` CI job sets it and uploads them as the **`ios-screenshots`** artifact — download with `gh run download <run-id> -n ios-screenshots` to review the UI without a Mac.
 
 ## CI

@@ -190,6 +190,43 @@ final class ScreenshotUITests: XCTestCase {
         snap("22-hornets", app)
     }
 
+    /// What the apiary list shows first: the day at a glance.
+    func test_capture_home_summary() {
+        let app = launch(["-resetKeychain", "-mockApiaryWithHive", "-mockHomeSummary"])
+        XCTAssertTrue(app.staticTexts[label("home.nextInspection")].waitForExistence(timeout: 10))
+        Thread.sleep(forTimeInterval: 1.0)
+        snap("23-home-summary", app)
+    }
+
+    /// The pages behind the newer tools of a hive: planned treatments, where it has stood, working together.
+    func test_capture_treatments_moves_and_sharing() {
+        let app = launch(["-resetKeychain", "-mockApiaryWithHive", "-mockNewTools"])
+        XCTAssertTrue(app.staticTexts["Meadow"].waitForExistence(timeout: 10))
+        app.staticTexts["Meadow"].tap()
+        XCTAssertTrue(app.staticTexts["Hive Alpha"].waitForExistence(timeout: 10))
+        app.staticTexts["Hive Alpha"].tap()
+
+        let treatments = app.buttons["hiveTreatmentsLink"]
+        XCTAssertTrue(treatments.waitForExistence(timeout: 10))
+        treatments.tap()
+        Thread.sleep(forTimeInterval: 1.5)
+        snap("24-treatments", app)
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+
+        let moves = app.buttons["hiveMovesLink"]
+        XCTAssertTrue(moves.waitForExistence(timeout: 10))
+        moves.tap()
+        Thread.sleep(forTimeInterval: 1.5)
+        snap("25-moves", app)
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+
+        let share = app.buttons["shareHiveButton"]
+        XCTAssertTrue(share.waitForExistence(timeout: 10))
+        share.tap()
+        Thread.sleep(forTimeInterval: 1.5)
+        snap("26-sharing", app)
+    }
+
     // MARK: - Helpers
 
     /// The language this run captures, from SCREENSHOT_LANG; English when unset.

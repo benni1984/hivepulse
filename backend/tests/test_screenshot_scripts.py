@@ -45,3 +45,45 @@ def test_the_store_script_looks_the_link_up_in_every_language():
     for folder in ("values", "values-de", "values-fr", "values-es"):
         text = (ROOT / "android/app/src/main/res" / folder / "strings.xml").read_text(encoding="utf-8")
         assert 'name="action_sign_in_with_email"' in text, f"{folder} has no translation"
+
+
+# ── The walk through the app has to survive new screens ────────────────────────
+
+def test_the_help_script_taps_an_apiary_card_not_just_the_first_wide_row():
+    """The home summary sits above the apiary list and has clickable rows of its own. Tapping the
+    first wide clickable opened a hive, and the walk through the app lost its place."""
+    script = (ROOT / "scripts/android-screenshots.py").read_text(encoding="utf-8")
+
+    assert "def tap_first_apiary" in script
+    body = script[script.index("def navigate_to_hive_detail"):]
+    assert body.index("tap_first_apiary()") < body.index("tap_first_content_item()")
+
+    # The card reads "<count> <label_hives>" in every language of the store listing.
+    pattern = re.search(r'APIARY_CARD_TEXT\s*=\s*re\.compile\(r"([^"]+)"', script).group(1)
+    for folder in ("values", "values-de", "values-fr", "values-es"):
+        tree = ET.parse(ROOT / "android/app/src/main/res" / folder / "strings.xml")
+        label = next("".join(n.itertext()) for n in tree.getroot().findall("string") if n.get("name") == "label_hives")
+        assert re.match(pattern, f"3 {label}"), f"{folder}: the apiary card text '3 {label}' is not recognised"
+    assert not re.match(pattern, "Hive 3")
+    store = (ROOT / "scripts/android-store-screenshots.py").read_text(encoding="utf-8")
+    assert "A.tap_first_apiary()" in store
+
+
+def test_the_extra_screens_use_the_wording_the_app_shows():
+    script = (ROOT / "scripts/android-screenshots.py").read_text(encoding="utf-8")
+
+    for key in ("moves_title", "sharing_title", "treatments_title", "moves_overview_title",
+                "tab_hornets", "tab_members", "tab_settings", "hornet_tab_report",
+                "hornet_tab_community", "hornet_tab_traps", "reminder_enabled"):
+        assert f'"{_string(key)}"' in script, f'the script no longer says "{_string(key)}" ({key})'
+
+
+def test_every_extra_screen_is_best_effort():
+    """A screen that cannot be reached must not cost the ones that can."""
+    script = (ROOT / "scripts/android-screenshots.py").read_text(encoding="utf-8")
+    main = script[script.index("def main():"):]
+
+    for name in ("capture_home_and_apiary_list", "capture_apiary_screens", "capture_moves_overview",
+                 "capture_settings_screens", "capture_hornets_and_members"):
+        assert name in main[main.index("best_effort"):] or name in main.split("for extra in (")[1]
+    assert "best_effort(extra)" in main

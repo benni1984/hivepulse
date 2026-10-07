@@ -1,6 +1,6 @@
 import type HelpScreenshot from '@/components/HelpScreenshot';
 
-export default function HomeAndTreatmentsContent(_: { Screenshot: typeof HelpScreenshot }) {
+export default function HomeAndTreatmentsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
     <>
       <section className="help-section">
@@ -34,6 +34,7 @@ export default function HomeAndTreatmentsContent(_: { Screenshot: typeof HelpScr
           The reminder interval and the season are set under <em>Settings &rarr; Inspection reminders</em>. Outside
           the season the dates are worked out the same way and a note says so.
         </p>
+        <Screenshot android="/docs/screenshots/android-home-summary.png" web="/docs/screenshots/home-summary.png" caption="The home screen at the top of the apiary list" />
       </section>
 
       <section className="help-section">
@@ -68,6 +69,7 @@ export default function HomeAndTreatmentsContent(_: { Screenshot: typeof HelpScr
             applied</em>). Somebody who was given single hives can plan for those hives, not for the whole apiary.
           </p>
         </div>
+        <Screenshot android="/docs/screenshots/android-treatments.png" web="/docs/screenshots/treatments-panel.png" caption="Plan a treatment and tick it off" />
       </section>
     </>
   );
