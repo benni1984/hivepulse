@@ -463,6 +463,7 @@
 
 /* Moving hives */
 "moves.title" = "Move hives";
+"moves.moveHive" = "Move this hive";
 "moves.selectHives" = "Which hives";
 "moves.backHint" = "Where they stood before";
 "moves.backTo" = "Back to %@ (%d)";

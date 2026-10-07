@@ -37,6 +37,9 @@ data class MoveFormState(
     val target: String = "",
     val newName: String = "",
     val newAddress: String = "",
+    /** The phone's position for a new place, when the beekeeper took it. */
+    val latitude: Double? = null,
+    val longitude: Double? = null,
     /** The server's day format, YYYY-MM-DD. */
     val movedOn: String = LocalDate.now().toString(),
     /** A forage key, [OTHER_FORAGE], or empty. */
@@ -62,7 +65,9 @@ data class MoveFormState(
     fun request(): MoveCreateRequest = MoveCreateRequest(
         hiveIds = hives.map { it.id }.filter { it in selected },
         toApiaryId = if (target == NEW_PLACE) null else target,
-        newApiary = if (target == NEW_PLACE) NewApiaryForMove(newName.trim(), newAddress.trim().ifEmpty { null }) else null,
+        newApiary = if (target == NEW_PLACE) {
+            NewApiaryForMove(newName.trim(), newAddress.trim().ifEmpty { null }, latitude, longitude)
+        } else null,
         movedOn = movedOn,
         forage = forageValue,
         note = note.trim().ifEmpty { null },
@@ -78,6 +83,8 @@ class MoveHivesViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val apiaryId = savedState.get<String>("apiaryId")!!
+    /** The hive page opens this form with its own hive ticked. */
+    private val preselected = savedState.get<String>("hiveId")?.takeIf { it.isNotEmpty() }
     private val _state = MutableStateFlow(MoveFormState())
     val state = _state.asStateFlow()
 
@@ -93,6 +100,7 @@ class MoveHivesViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 hives = hiveList,
+                selected = if (it.selected.isEmpty() && preselected != null && hiveList.any { h -> h.id == preselected }) setOf(preselected) else it.selected,
                 targets = targets,
                 error = (hives.exceptionOrNull() ?: apiaries.exceptionOrNull())?.message,
             )
@@ -120,6 +128,7 @@ class MoveHivesViewModel @Inject constructor(
     fun setTarget(value: String) = _state.update { it.copy(target = value) }
     fun setNewName(value: String) = _state.update { it.copy(newName = value) }
     fun setNewAddress(value: String) = _state.update { it.copy(newAddress = value) }
+    fun setPosition(latitude: Double, longitude: Double) = _state.update { it.copy(latitude = latitude, longitude = longitude) }
     fun setMovedOn(value: String) = _state.update { it.copy(movedOn = value) }
     fun setForage(value: String) = _state.update { it.copy(forage = value) }
     fun setOtherForage(value: String) = _state.update { it.copy(otherForage = value) }

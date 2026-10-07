@@ -463,6 +463,7 @@
 
 /* Moving hives */
 "moves.title" = "Déplacer des ruches";
+"moves.moveHive" = "Déplacer cette ruche";
 "moves.selectHives" = "Quelles ruches";
 "moves.backHint" = "Où elles étaient avant";
 "moves.backTo" = "Retour à %@ (%d)";

@@ -422,6 +422,7 @@
     <string name="invitation_redeem_button">Usar</string>
     <string name="invitation_invalid_link">Eso no parece un enlace de invitación.</string>
     <string name="moves_title">Trasladar colmenas</string>
+    <string name="moves_move_hive">Trasladar esta colmena</string>
     <string name="moves_select_hives">Qué colmenas</string>
     <string name="moves_back_hint">Dónde estaban antes</string>
     <string name="moves_back_to">Volver a %1$s (%2$d)</string>

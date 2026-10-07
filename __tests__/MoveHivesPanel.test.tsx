@@ -57,6 +57,46 @@ describe('MoveHivesPanel', () => {
     expect(screen.getByRole('option', { name: 'moves.targetNew' })).toBeInTheDocument();
   });
 
+  it('starts with the given hives ticked', async () => {
+    await open({ selectedIds: ['h-2'] });
+
+    expect((screen.getByLabelText('Hive 2') as HTMLInputElement).checked).toBe(true);
+    expect((screen.getByLabelText('Hive 1') as HTMLInputElement).checked).toBe(false);
+    expect(screen.getByText('moves.submit|1')).toBeInTheDocument();
+  });
+
+  it('takes the position of the phone for a new place', async () => {
+    const getCurrentPosition = vi.fn((ok: (p: unknown) => void) => ok({ coords: { latitude: 47.91234, longitude: 8.10567 } }));
+    Object.defineProperty(navigator, 'geolocation', { value: { getCurrentPosition }, configurable: true });
+    mockMoveHives.mockResolvedValue(result);
+    await open({ selectedIds: ['h-1'] });
+    await waitFor(() => screen.getByRole('option', { name: 'Heath' }));
+
+    fireEvent.change(screen.getByLabelText('moves.target'), { target: { value: '__new__' } });
+    fireEvent.change(screen.getByLabelText('moves.newName'), { target: { value: 'Forest' } });
+    fireEvent.click(screen.getByTestId('move-use-location'));
+
+    expect(screen.getByTestId('move-position').textContent).toBe('moves.locationSet|47.91234|8.10567');
+    fireEvent.click(screen.getByText('moves.submit|1'));
+
+    await waitFor(() => expect(mockMoveHives).toHaveBeenCalledWith(expect.objectContaining({
+      new_apiary: { name: 'Forest', address: undefined, latitude: 47.91234, longitude: 8.10567 },
+    })));
+  });
+
+  it('says so when the position cannot be had', async () => {
+    const getCurrentPosition = vi.fn((_ok: unknown, fail: () => void) => fail());
+    Object.defineProperty(navigator, 'geolocation', { value: { getCurrentPosition }, configurable: true });
+    await open({ selectedIds: ['h-1'] });
+    await waitFor(() => screen.getByRole('option', { name: 'Heath' }));
+
+    fireEvent.change(screen.getByLabelText('moves.target'), { target: { value: '__new__' } });
+    fireEvent.click(screen.getByTestId('move-use-location'));
+
+    expect(await screen.findByText('moves.locationError')).toBeInTheDocument();
+    expect(screen.queryByTestId('move-position')).toBeNull();
+  });
+
   it('cannot be sent before hives and a target are chosen', async () => {
     await open();
 

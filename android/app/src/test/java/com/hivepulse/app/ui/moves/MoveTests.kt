@@ -225,6 +225,46 @@ class MoveHivesViewModelTest {
     private fun viewModel() = MoveHivesViewModel(SavedStateHandle(mapOf("apiaryId" to "a-home")), hiveRepo, apiaryRepo, moveRepo)
 
     @Test
+    fun `the hive of the hive page starts out ticked`() = runTest {
+        val vm = MoveHivesViewModel(SavedStateHandle(mapOf("apiaryId" to "a-home", "hiveId" to "h-2")), hiveRepo, apiaryRepo, moveRepo)
+
+        assertEquals(setOf("h-2"), vm.state.value.selected)
+        vm.setTarget("a-heath")
+        assertTrue(vm.state.value.canSubmit)
+        assertEquals(listOf("h-2"), vm.state.value.request().hiveIds)
+    }
+
+    @Test
+    fun `an unknown hive id ticks nothing`() = runTest {
+        val vm = MoveHivesViewModel(SavedStateHandle(mapOf("apiaryId" to "a-home", "hiveId" to "elsewhere")), hiveRepo, apiaryRepo, moveRepo)
+
+        assertTrue(vm.state.value.selected.isEmpty())
+    }
+
+    @Test
+    fun `the position of the phone goes with a new place`() = runTest {
+        val vm = viewModel()
+        vm.toggle("h-1")
+        vm.setTarget(NEW_PLACE)
+        vm.setNewName("Forest")
+        vm.setPosition(47.91234, 8.10567)
+
+        val new = vm.state.value.request().newApiary
+        assertEquals(47.91234, new?.latitude)
+        assertEquals(8.10567, new?.longitude)
+    }
+
+    @Test
+    fun `a new place without a position sends none`() = runTest {
+        val vm = viewModel()
+        vm.toggle("h-1")
+        vm.setTarget(NEW_PLACE)
+        vm.setNewName("Forest")
+
+        assertNull(vm.state.value.request().newApiary?.latitude)
+    }
+
+    @Test
     fun `the targets are only the callers other apiaries`() = runTest {
         val vm = viewModel()
 

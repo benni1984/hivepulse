@@ -43,6 +43,19 @@ final class HiveDetailUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Hive Alpha"].waitForExistence(timeout: 5))
     }
 
+    func test_hiveDetail_canMoveThisHiveWithItTicked() {
+        navigateToHiveDetail()
+
+        let move = app.buttons["moveThisHiveButton"]
+        XCTAssertTrue(move.waitForExistence(timeout: 5))
+        move.tap()
+
+        XCTAssertTrue(app.navigationBars["Move hives"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Hive Alpha"].exists, "the hive being looked at is listed")
+        // One hive is ticked from the start, so the button names a count of one.
+        XCTAssertTrue(app.buttons["moveSubmit"].exists)
+    }
+
     // MARK: - Helper
 
     private func navigateToHiveDetail() {

@@ -463,6 +463,7 @@
 
 /* Moving hives */
 "moves.title" = "Przewieź rodziny";
+"moves.moveHive" = "Przewieź tę rodzinę";
 "moves.selectHives" = "Które rodziny";
 "moves.backHint" = "Gdzie stały wcześniej";
 "moves.backTo" = "Z powrotem do: %@ (%d)";

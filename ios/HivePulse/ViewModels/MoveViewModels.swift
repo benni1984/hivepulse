@@ -1,4 +1,5 @@
 import Foundation
+import CoreLocation
 
 // MARK: - Taking hives elsewhere
 
@@ -19,6 +20,10 @@ final class MoveHivesViewModel: ObservableObject {
     @Published var target = ""
     @Published var newName = ""
     @Published var newAddress = ""
+    /// The phone's position for a new place, when the beekeeper took it.
+    @Published var latitude: Double?
+    @Published var longitude: Double?
+    @Published var isLocating = false
     @Published var movedOn = Date()
     @Published var forage = ""
     @Published var otherForage = ""
@@ -29,11 +34,13 @@ final class MoveHivesViewModel: ObservableObject {
     private let moveService: any MoveServiceProtocol
     private let apiaryService: any ApiaryServiceProtocol
 
-    init(apiaryId: String, hives: [HiveOut],
+    /// `selected` ticks hives from the start: the hive page opens the form with the hive being looked at.
+    init(apiaryId: String, hives: [HiveOut], selected: Set<String> = [],
          moveService: any MoveServiceProtocol = MoveService(),
          apiaryService: any ApiaryServiceProtocol = ApiaryService()) {
         self.apiaryId = apiaryId
         self.hives = hives
+        self.selected = selected
         self.moveService = moveService
         self.apiaryService = apiaryService
     }
@@ -55,6 +62,16 @@ final class MoveHivesViewModel: ObservableObject {
     func sendBack(_ suggestion: ReturnSuggestion) {
         selected = Set(suggestion.hiveIds)
         target = suggestion.apiaryId
+    }
+
+    /// Takes the position of the phone for the new place; the beekeeper is usually standing there.
+    func useMyLocation() async {
+        isLocating = true
+        defer { isLocating = false }
+        if let location = await OneTimeLocator().locate() {
+            latitude = location.coordinate.latitude
+            longitude = location.coordinate.longitude
+        }
     }
 
     var allSelected: Bool { !hives.isEmpty && selected.count == hives.count }
@@ -86,7 +103,8 @@ final class MoveHivesViewModel: ObservableObject {
             hiveIds: hives.map(\.id).filter { selected.contains($0) },
             toApiaryId: target == Self.newPlace ? nil : target,
             newApiary: target == Self.newPlace
-                ? NewApiaryForMove(name: newName.trimmingCharacters(in: .whitespaces), address: address.isEmpty ? nil : address)
+                ? NewApiaryForMove(name: newName.trimmingCharacters(in: .whitespaces), address: address.isEmpty ? nil : address,
+                                   latitude: latitude, longitude: longitude)
                 : nil,
             movedOn: Self.dayString(movedOn),
             forage: forageValue,

@@ -177,6 +177,41 @@ final class MoveHivesViewModelTests: XCTestCase {
         XCTAssertTrue(vm.canSubmit)
     }
 
+    func test_theGivenHivesStartTicked() {
+        let vm = MoveHivesViewModel(apiaryId: "a-home",
+                                    hives: [makeHive(id: "h-1", name: "Hive 1"), makeHive(id: "h-2", name: "Hive 2")],
+                                    selected: ["h-2"], moveService: service, apiaryService: apiaries)
+
+        XCTAssertEqual(vm.selected, ["h-2"])
+        vm.target = "a-heath"
+        XCTAssertTrue(vm.canSubmit, "one hive is ticked, so only the target is missing")
+        XCTAssertEqual(vm.request().hiveIds, ["h-2"])
+    }
+
+    func test_thePositionOfThePhoneGoesWithANewPlace() {
+        let vm = makeViewModel()
+        vm.toggle("h-1")
+        vm.target = MoveHivesViewModel.newPlace
+        vm.newName = "Forest"
+        vm.latitude = 47.91234
+        vm.longitude = 8.10567
+
+        let new = vm.request().newApiary
+
+        XCTAssertEqual(new?.latitude, 47.91234)
+        XCTAssertEqual(new?.longitude, 8.10567)
+    }
+
+    func test_aNewPlaceWithoutAPositionSendsNone() {
+        let vm = makeViewModel()
+        vm.toggle("h-1")
+        vm.target = MoveHivesViewModel.newPlace
+        vm.newName = "Forest"
+
+        XCTAssertNil(vm.request().newApiary?.latitude)
+        XCTAssertNil(vm.request().newApiary?.longitude)
+    }
+
     func test_aNewPlaceNeedsAName() {
         let vm = makeViewModel()
         vm.toggle("h-1")

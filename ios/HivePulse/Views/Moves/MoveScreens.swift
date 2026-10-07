@@ -7,8 +7,8 @@ struct MoveHivesView: View {
     /// Called once the server took the move, so the apiary can reload its hives.
     let onMoved: (MoveResult) -> Void
 
-    init(apiaryId: String, hives: [HiveOut], onMoved: @escaping (MoveResult) -> Void) {
-        _vm = StateObject(wrappedValue: MoveHivesViewModel(apiaryId: apiaryId, hives: hives))
+    init(apiaryId: String, hives: [HiveOut], selected: Set<String> = [], onMoved: @escaping (MoveResult) -> Void) {
+        _vm = StateObject(wrappedValue: MoveHivesViewModel(apiaryId: apiaryId, hives: hives, selected: selected))
         self.onMoved = onMoved
     }
 
@@ -56,6 +56,20 @@ struct MoveHivesView: View {
                         TextField(NSLocalizedString("moves.newName", comment: ""), text: $vm.newName)
                             .accessibilityIdentifier("moveNewName")
                         TextField(NSLocalizedString("moves.newAddress", comment: ""), text: $vm.newAddress)
+                        if let lat = vm.latitude, let lon = vm.longitude {
+                            Label(String(format: "%.5f, %.5f", lat, lon), systemImage: "location.fill")
+                                .foregroundColor(.green)
+                        }
+                        Button {
+                            Task { await vm.useMyLocation() }
+                        } label: {
+                            HStack {
+                                if vm.isLocating { ProgressView() }
+                                Text(NSLocalizedString("action.useMyLocation", comment: ""))
+                            }
+                        }
+                        .disabled(vm.isLocating)
+                        .accessibilityIdentifier("moveUseLocation")
                     }
                 } footer: {
                     if vm.target == MoveHivesViewModel.newPlace {

@@ -457,6 +457,7 @@
     <string name="invitation_redeem_button">Zrealizuj</string>
     <string name="invitation_invalid_link">To nie wygląda na link z zaproszenia.</string>
     <string name="moves_title">Przewieź rodziny</string>
+    <string name="moves_move_hive">Przewieź tę rodzinę</string>
     <string name="moves_select_hives">Które rodziny</string>
     <string name="moves_back_hint">Gdzie stały wcześniej</string>
     <string name="moves_back_to">Z powrotem do: %1$s (%2$d)</string>
