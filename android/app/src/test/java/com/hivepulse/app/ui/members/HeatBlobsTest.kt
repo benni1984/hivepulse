@@ -83,9 +83,11 @@ class HeatBlobsTest {
     @Test
     fun `a smaller ring draws a smaller circle`() {
         val blob = blobFor(cell(0.0, 0.0, 1.0, 1.0))!!
-        val outer = circlePoints(blob, scale = 1.0)
-        val inner = circlePoints(blob, scale = 0.5)
+        val outer = circlePoints(blob, scale = 1.0, steps = 36)
+        val inner = circlePoints(blob, scale = 0.5, steps = 36)
         assertEquals(outer.size, inner.size)
-        assertTrue(abs(inner[0][0] - blob.lat) < abs(outer[0][0] - blob.lat))
+        // Step 9 of 36 is due north of the centre; step 0 lies due east, at the centre's own latitude.
+        assertTrue(abs(inner[9][0] - blob.lat) < abs(outer[9][0] - blob.lat))
+        assertEquals(abs(outer[9][0] - blob.lat) / 2, abs(inner[9][0] - blob.lat), 1e-9)
     }
 }
