@@ -13,7 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory
  */
 class TranslationCompletenessTest {
 
-    private val locales = listOf("values-de", "values-fr", "values-es")
+    private val locales = listOf("values-de", "values-fr", "values-es", "values-pl")
 
     private fun strings(folder: String): Map<String, String> {
         val file = File("src/main/res/$folder/strings.xml")
@@ -62,6 +62,7 @@ class TranslationCompletenessTest {
         assertEquals("https://hivepulse.multihead.de/de/help", strings("values-de").getValue("url_help"))
         assertEquals("https://hivepulse.multihead.de/fr/help", strings("values-fr").getValue("url_help"))
         assertEquals("https://hivepulse.multihead.de/es/help", strings("values-es").getValue("url_help"))
+        assertEquals("https://hivepulse.multihead.de/pl/help", strings("values-pl").getValue("url_help"))
     }
 
     @Test

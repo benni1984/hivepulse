@@ -143,7 +143,8 @@ class BeekeepingYearArithmeticTest {
     @Test
     fun `the app language is one the server knows`() {
         assertEquals("de", appLanguage(Locale("de", "AT")))
-        assertEquals("en", appLanguage(Locale("pl")))
+        assertEquals("pl", appLanguage(Locale("pl", "PL")))
+        assertEquals("en", appLanguage(Locale("it")))
     }
 }
 

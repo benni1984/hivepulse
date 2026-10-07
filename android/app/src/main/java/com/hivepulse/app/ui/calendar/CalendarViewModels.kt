@@ -15,9 +15,9 @@ import java.time.LocalDate
 import java.util.Locale
 import javax.inject.Inject
 
-/** The language of the app as the server knows it: "de", "fr", "es" or "en". */
+/** The language of the app as the server knows it: "de", "fr", "es", "pl" or "en". */
 fun appLanguage(locale: Locale = Locale.getDefault()): String =
-    locale.language.takeIf { it in listOf("en", "de", "fr", "es") } ?: "en"
+    locale.language.takeIf { it in listOf("en", "de", "fr", "es", "pl") } ?: "en"
 
 // ── The endless timeline ─────────────────────────────────────────────────────────────────────
 

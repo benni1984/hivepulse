@@ -17,7 +17,7 @@ final class HiveTypeLocalizationTests: XCTestCase {
     }
 
     func test_everyHiveType_isTranslatedInEveryLocale() throws {
-        for locale in ["en", "de", "fr", "es"] {
+        for locale in ["en", "de", "fr", "es", "pl"] {
             let b = try bundle(locale)
             for type in hiveTypes {
                 let key = "hiveType.\(type)"
@@ -31,7 +31,7 @@ final class HiveTypeLocalizationTests: XCTestCase {
 
     func test_theDescriptiveOnes_areTranslated_theNamesAreNot() throws {
         // Langstroth, Dadant and Warré are the people who designed those hives.
-        for locale in ["en", "de", "fr", "es"] {
+        for locale in ["en", "de", "fr", "es", "pl"] {
             let b = try bundle(locale)
             XCTAssertEqual(b.localizedString(forKey: "hiveType.langstroth", value: nil, table: nil), "Langstroth")
             XCTAssertEqual(b.localizedString(forKey: "hiveType.dadant", value: nil, table: nil), "Dadant")

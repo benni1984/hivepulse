@@ -21,7 +21,7 @@ import java.util.Locale
  */
 object AppLanguage {
 
-    val supported = listOf("en", "de", "fr", "es")
+    val supported = listOf("en", "de", "fr", "es", "pl")
 
     private const val PREFS = "app_language"
     private const val KEY = "tag"

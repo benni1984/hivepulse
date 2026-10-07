@@ -19,13 +19,19 @@ final class InspectionScaleTests: XCTestCase {
         let keys = InspectionScale.varroaLevels.map { "varroaLevel.\($0)" }
             + InspectionScale.strengthLevels.map { "strength.\($0)" }
             + ["field.varroaLevel", "screen.editHive"]
-        for locale in ["en", "de", "fr", "es"] {
+        for locale in ["en", "de", "fr", "es", "pl"] {
             let b = try bundle(locale)
             for key in keys {
                 XCTAssertNotEqual(b.localizedString(forKey: key, value: "@@missing@@", table: nil), "@@missing@@",
                                   "\(key) is not translated in \(locale)")
             }
         }
+    }
+
+    func test_polishWords() throws {
+        let pl = try bundle("pl")
+        XCTAssertEqual(pl.localizedString(forKey: "varroaLevel.0", value: nil, table: nil), "Brak")
+        XCTAssertEqual(pl.localizedString(forKey: "strength.1", value: nil, table: nil), "Słaba")
     }
 
     func test_germanWords() throws {

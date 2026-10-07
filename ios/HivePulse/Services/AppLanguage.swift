@@ -17,7 +17,7 @@ import ObjectiveC
 /// `-AppleLanguages`, and a profile that says "en" would silently override them.
 enum AppLanguage {
     static let key = "appLanguageOverride"
-    static let supported = ["en", "de", "fr", "es"]
+    static let supported = ["en", "de", "fr", "es", "pl"]
 
     /// Call once at launch, before any view reads a string.
     static func applyStored(defaults: UserDefaults = .standard) {

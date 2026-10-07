@@ -678,7 +678,7 @@
       "varroaLevel1": "Niskie",
       "varroaLevel2": "Średnie",
       "varroaLevel3": "Wysokie",
-      "recordedBy": "zapisał(a): {name}"
+      "recordedBy": "zapisane przez: {name}"
     },
     "fieldDefs": {
       "title": "Własne pola",

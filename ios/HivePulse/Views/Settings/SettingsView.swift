@@ -50,7 +50,7 @@ struct SettingsView: View {
     @State private var testReportId: String?
     @State private var testReportFailed = false
 
-    private let locales = [("en", "English"), ("fr", "Français"), ("de", "Deutsch"), ("es", "Español")]
+    private let locales = [("en", "English"), ("fr", "Français"), ("de", "Deutsch"), ("es", "Español"), ("pl", "Polski")]
     private let apiaryService = ApiaryService()
     private let exportService = ExportService()
 

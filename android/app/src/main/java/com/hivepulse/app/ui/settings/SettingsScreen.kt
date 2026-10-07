@@ -225,8 +225,8 @@ fun SettingsScreen(
         state.user?.let { if (editName.isEmpty()) editName = it.name }
     }
 
-    val locales      = listOf("en", "fr", "de", "es")
-    val localeLabels = listOf("English", "Français", "Deutsch", "Español")
+    val locales      = listOf("en", "fr", "de", "es", "pl")
+    val localeLabels = listOf("English", "Français", "Deutsch", "Español", "Polski")
 
     Scaffold(
         topBar = {

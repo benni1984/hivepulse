@@ -17,7 +17,7 @@ final class InspectionFormLocalizationTests: XCTestCase {
     }
 
     func test_pickerValues_areTranslatedInEveryLocale() throws {
-        for locale in ["en", "de", "fr", "es"] {
+        for locale in ["en", "de", "fr", "es", "pl"] {
             let b = try bundle(locale)
             for key in moods.map({ "mood.\($0)" }) + queenColors.map({ "queenColor.\($0)" }) {
                 let value = b.localizedString(forKey: key, value: "@@missing@@", table: nil)
