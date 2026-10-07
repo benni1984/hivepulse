@@ -43,6 +43,14 @@ class User(Base):
     reminder_email_enabled = Column(Boolean, default=False, nullable=False)
     push_token_apns = Column(String, nullable=True)
     push_token_fcm = Column(String, nullable=True)
+    # Where the beekeeper keeps bees, for the beekeeper's year (see "Beekeeping Year" in the API contract).
+    # The postal code is looked up once; only the position is used afterwards.
+    country = Column(String(2), nullable=True)
+    postal_code = Column(String(20), nullable=True)
+    region_latitude = Column(Float, nullable=True)
+    region_longitude = Column(Float, nullable=True)
+    # Days by hand on top of what the position says: a mountain valley, a sheltered garden.
+    region_adjust_days = Column(Integer, default=0, nullable=False, server_default="0")
 
     @property
     def has_password(self) -> bool:

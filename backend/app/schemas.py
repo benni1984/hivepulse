@@ -122,6 +122,68 @@ class UserUpdate(BaseModel):
         return self
 
 
+# ---------------------------------------------------------------------------
+# The beekeeper's year
+# ---------------------------------------------------------------------------
+
+class RegionOut(BaseModel):
+    country: Optional[str] = None
+    postal_code: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    # Days added by hand to what the position says.
+    adjust_days: int = 0
+    # Days the calendar is moved against its reference region (central Germany); positive is later.
+    shift_days: int = 0
+    # Where the position comes from: "postal_code", "apiary" (the first apiary with a position) or "default".
+    source: str = "default"
+    # False when a postal code was given but could not be found, so the clients can say so.
+    located: bool = True
+
+
+class RegionUpdate(BaseModel):
+    # An empty string clears the field.
+    country: Optional[str] = Field(default=None, max_length=2)
+    postal_code: Optional[str] = Field(default=None, max_length=20)
+    adjust_days: Optional[int] = Field(default=None, ge=-28, le=28)
+
+    @model_validator(mode="after")
+    def clean(self) -> "RegionUpdate":
+        if self.country is not None:
+            country = self.country.strip().upper()
+            if country and not (len(country) == 2 and country.isalpha()):
+                raise ValueError("country must be a two-letter country code")
+            self.country = country
+        if self.postal_code is not None:
+            self.postal_code = " ".join(self.postal_code.split())
+        return self
+
+
+class CalendarEntry(BaseModel):
+    key: str
+    # inspection, swarm, feeding, varroa, harvest, migration, bloom, care or winter
+    category: str
+    title: str
+    body: str
+    start: date
+    end: date
+    # Set when the task repeats during the entry ("at least every 9 days").
+    interval_days: Optional[int] = None
+    # A forage key (acacia, rapeseed, ...) when the entry is about one kind of honey.
+    honey: Optional[str] = None
+    # Whether today lies within the entry.
+    active: bool
+
+
+class CalendarOut(BaseModel):
+    region: RegionOut
+    today: date
+    # The window the entries were asked for, inclusive.
+    start: date
+    end: date
+    entries: List[CalendarEntry]
+
+
 class AdminUserDetail(BaseModel):
     id: str
     email: str

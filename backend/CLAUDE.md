@@ -5,7 +5,7 @@
 - Run tests: `pytest` (from `backend/`)
 - Database: SQLite for dev, PostgreSQL (Neon) for staging/production
 - ORM: SQLAlchemy + Alembic migrations in `backend/alembic/versions/`
-- Latest migration: `017_planned_treatments.py`
+- Latest migration: `018_beekeeping_year_region.py`
 
 ## Push notifications
 
@@ -34,3 +34,4 @@ Apple side are in `docs/push-setup.md`.
 | Hornet Tracker | Catches, nests, sightings, voting | test_hornets.py |
 | Hornet Traps | Named traps, nearby search, daily catches | test_hornets.py |
 | Admin | Stats, token mgmt, user list, sighting moderation | test_admin_*.py |
+| Beekeeping year | GET /calendar, GET/PUT /users/me/region | test_beekeeping_year.py |
