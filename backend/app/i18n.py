@@ -109,6 +109,12 @@ MESSAGES = {
         "de": "Diese Charge enthält Codes, die Bienenstöcken zugeordnet sind, und kann nicht gelöscht werden.",
         "es": "Este lote contiene códigos asociados a colmenas y no se puede eliminar.",
     },
+    "NOTHING_TO_MOVE": {
+        "en": "These hives already stand there.",
+        "fr": "Ces ruches sont déjà à cet endroit.",
+        "de": "Diese Völker stehen schon dort.",
+        "es": "Estas colmenas ya están ahí.",
+    },
     "OWNER_ONLY": {
         "en": "Only the owner can do this.",
         "fr": "Seul le propriétaire peut faire cela.",

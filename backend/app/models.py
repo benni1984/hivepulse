@@ -181,6 +181,7 @@ class Hive(Base):
     apiary = relationship("Apiary", back_populates="hives")
     qr_token_rel = relationship("QrToken", back_populates="hive")
     inspections = relationship("Inspection", back_populates="hive", cascade="all, delete-orphan")
+    moves = relationship("HiveMove", back_populates="hive", cascade="all, delete-orphan")
 
     @property
     def last_inspection_at(self):
@@ -231,6 +232,34 @@ class Inspection(Base):
     __table_args__ = (
         UniqueConstraint("hive_id", "client_id", name="uq_inspection_hive_client_id"),
     )
+
+
+class HiveMove(Base):
+    """One hive taken from one apiary to another, for a reason: the forage it was taken to.
+
+    The names and coordinates of both ends are copied here when the move is made, so the history
+    stays true when an apiary is renamed, shifted or deleted afterwards.
+    """
+    __tablename__ = "hive_moves"
+
+    id = Column(String, primary_key=True, default=_uuid)
+    hive_id = Column(String, ForeignKey("hives.id", ondelete="CASCADE"), nullable=False, index=True)
+    from_apiary_id = Column(String, ForeignKey("apiaries.id", ondelete="SET NULL"), nullable=True)
+    to_apiary_id = Column(String, ForeignKey("apiaries.id", ondelete="SET NULL"), nullable=True)
+    moved_on = Column(Date, nullable=False, index=True)
+    forage = Column(String(100), nullable=True)
+    note = Column(Text, nullable=True)
+    from_name = Column(String, nullable=False)
+    from_latitude = Column(Float, nullable=True)
+    from_longitude = Column(Float, nullable=True)
+    to_name = Column(String, nullable=False)
+    to_latitude = Column(Float, nullable=True)
+    to_longitude = Column(Float, nullable=True)
+    created_by_id = Column(String, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    hive = relationship("Hive", back_populates="moves")
+    created_by = relationship("User", foreign_keys=[created_by_id])
 
 
 class Share(Base):

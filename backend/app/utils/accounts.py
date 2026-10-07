@@ -10,7 +10,7 @@ from __future__ import annotations
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
-from app.models import Apiary, FieldDefinition, Hive, Inspection, QrBatch, QrToken, Share, User
+from app.models import Apiary, FieldDefinition, Hive, HiveMove, Inspection, QrBatch, QrToken, Share, User
 
 
 def _first_accepted(db: Session, **target) -> list[Share]:
@@ -101,6 +101,9 @@ def hand_over_shared(db: Session, user: User) -> None:
     db.query(Inspection).filter(Inspection.created_by_id == uid).update(
         {Inspection.created_by_id: None}, synchronize_session=False
     )
+    db.query(HiveMove).filter(HiveMove.created_by_id == uid).update(
+        {HiveMove.created_by_id: None}, synchronize_session=False
+    )
     db.flush()
 
 
@@ -117,7 +120,8 @@ def delete_account(db: Session, user: User) -> None:
     leaving_hives = db.query(Hive.id).filter(
         Hive.apiary_id.in_(db.query(Apiary.id).filter(Apiary.user_id == uid))
     )
-    # Delete in FK order: inspections → hives → user (the cascade handles the rest).
+    # Delete in FK order: inspections and moves → hives → user (the cascade handles the rest).
+    db.query(HiveMove).filter(HiveMove.hive_id.in_(leaving_hives)).delete(synchronize_session=False)
     db.query(Inspection).filter(Inspection.hive_id.in_(leaving_hives)).delete(synchronize_session=False)
     db.query(Hive).filter(Hive.id.in_(leaving_hives)).delete(synchronize_session=False)
     # Whatever was moved to somebody else must not be deleted through the user's collections.

@@ -17,13 +17,14 @@ All endpoints require `Authorization: Bearer <access_token>` unless marked **pub
 7. [QR Batches](#qr-batches)
 8. [Hives](#hives)
 9. [Inspections](#inspections)
-10. [Sharing](#sharing)
-11. [Stats](#stats)
-12. [Public Dashboard](#public-dashboard)
-13. [Hornet Tracker](#hornet-tracker)
-14. [Admin](#admin)
-15. [Object Reference](#object-reference)
-16. [Error Codes](#error-codes)
+10. [Moving Hives](#moving-hives)
+11. [Sharing](#sharing)
+12. [Stats](#stats)
+13. [Public Dashboard](#public-dashboard)
+14. [Hornet Tracker](#hornet-tracker)
+15. [Admin](#admin)
+16. [Object Reference](#object-reference)
+17. [Error Codes](#error-codes)
 
 ---
 
@@ -767,6 +768,86 @@ already stored the first attempt would otherwise create a duplicate.
 - Omitting `client_id` keeps the old behaviour — every POST creates an inspection.
 - `client_id` is echoed in `InspectionOut` so a client can match a queued entry to the
   stored one; it is at most 64 characters.
+
+---
+
+## Moving Hives
+
+Migratory beekeepers take their hives to where something is in bloom: acacia in May, fir in
+June, heather in August. Moving hives is a function of its own, not an edit of the hive: it
+moves several hives at once, records when and for which forage, and keeps the history so the
+journey of a hive, and of all hives, can be seen on a map.
+
+A move needs a connection. Unlike an inspection it is not queued while offline.
+
+### POST `/hives/move`
+
+Owner only: every hive must stand in an apiary owned by the caller, and so must the target.
+Nothing is moved unless all of it can be.
+
+```json
+{
+  "hive_ids": ["uuid", "uuid"],
+  "to_apiary_id": "uuid",
+  "new_apiary": { "name": "Schwarzwald Tanne", "address": "Titisee", "latitude": 47.9, "longitude": 8.1 },
+  "moved_on": "2026-06-14",
+  "forage": "fir",
+  "note": "string | null"
+}
+```
+
+* Exactly one of `to_apiary_id` and `new_apiary`. A new apiary is created for the caller; `address`,
+  `latitude` and `longitude` are optional. With an address and no coordinates the server looks the
+  coordinates up, as it does for the public map; when that fails the apiary has no position and its
+  moves appear in lists but not on the map.
+* `hive_ids`: 1 to 200 hives. Hives that already stand in the target are left alone.
+* `moved_on` defaults to today and may not lie in the future (one day of slack for time zones).
+* `forage` is free text up to 100 characters. The clients offer these keys and show them in the
+  user's language; any other text is shown as written: `acacia`, `rapeseed`, `orchard`, `dandelion`,
+  `linden`, `chestnut`, `fir`, `heather`, `sunflower`, `lavender`, `other`.
+* Shares follow the hive: a hive shared on its own stays shared wherever it goes, a hive covered by
+  the share of a whole apiary leaves that share with it when it moves to an apiary that is not shared
+  with the same person.
+
+**Response 201** — `{ "moved": 2, "apiary": <Apiary>, "moves": [<HiveMove>] }`
+
+| Error | Meaning |
+|-------|---------|
+| 404 `HIVE_NOT_FOUND` / `APIARY_NOT_FOUND` | Not visible to the caller |
+| 403 `OWNER_ONLY` | Visible to the caller as a collaborator, but not theirs to move |
+| 400 `NOTHING_TO_MOVE` | Every hive already stands in the target |
+| 422 | Neither or both targets, an empty list, or a date in the future |
+
+### GET `/hives/{id}/moves`
+
+The moves of one hive, newest first, for anybody who can see the hive. Array of
+[HiveMove](#hivemove-object). A hive that never moved has none.
+
+### GET `/hives/moves/overview`
+
+Every move of every hive the caller owns, newest first, for the map of all journeys. Optional
+`from` and `to` (`YYYY-MM-DD`) limit it by the day of the move. Array of [HiveMove](#hivemove-object).
+
+### HiveMove object
+
+```json
+{
+  "id": "uuid",
+  "hive_id": "uuid",
+  "hive_name": "string",
+  "moved_on": "2026-06-14",
+  "forage": "fir | null",
+  "note": "string | null",
+  "from": { "apiary_id": "uuid | null", "name": "Rheinebene", "latitude": 48.1, "longitude": 8.0 },
+  "to":   { "apiary_id": "uuid | null", "name": "Schwarzwald Tanne", "latitude": 47.9, "longitude": 8.1 },
+  "created_by_name": "string | null",
+  "created_at": "datetime"
+}
+```
+
+Name and coordinates of both ends are copied when the move is made, so the history stays true when an
+apiary is renamed, moved or deleted (`apiary_id` is then `null`). The route of a hive on the map is the
+`from` of its oldest move followed by the `to` of each move in order.
 
 ---
 
@@ -1904,6 +1985,7 @@ Permanently deletes the user and all their apiaries, hives, and inspections.
 | `QR_TOKEN_ALREADY_LINKED` | 409 | Token is already assigned to a hive |
 | `APIARY_HAS_HIVES` | 409 | Cannot delete apiary while hives exist |
 | `QR_BATCH_IN_USE` | 409 | A code of the batch is attached to a hive |
+| `NOTHING_TO_MOVE` | 400 | Every hive of a move already stands in the target |
 | `OWNER_ONLY` | 403 | Visible to the caller as a collaborator, but only the owner may do this |
 | `SHARE_NOT_FOUND` | 404 | Invitation or share that is not the caller's |
 | `SHARE_TOKEN_INVALID` | 404 | Unknown, used or revoked invitation token |
