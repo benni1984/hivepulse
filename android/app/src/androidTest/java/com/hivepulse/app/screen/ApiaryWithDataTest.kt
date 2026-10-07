@@ -5,6 +5,7 @@ import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
@@ -112,6 +113,8 @@ class ApiaryWithDataTest {
         composeRule.waitUntil(timeoutMillis = 5_000) {
             composeRule.onAllNodesWithText("Make the hives winter-proof").fetchSemanticsNodes().isNotEmpty()
         }
+        // The list opens at today, so the region line above it has scrolled out of view.
+        composeRule.onNodeWithTag("beekeepingYearList").performScrollToIndex(1)
         composeRule.onNodeWithTag("calendarRegion").assertIsDisplayed()
         composeRule.onNodeWithTag("changeRegionButton").assertIsDisplayed()
     }
