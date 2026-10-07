@@ -96,6 +96,10 @@ final class ApiaryListUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Beekeeping year"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["Make the hives winter-proof"].waitForExistence(timeout: 5)
                       || app.staticTexts["Swarm control: look for queen cells"].exists)
+        // The timeline opens at today, so the region line above it has scrolled out of the list.
+        for _ in 0..<5 where !app.buttons["changeRegionButton"].exists {
+            app.swipeDown()
+        }
         XCTAssertTrue(app.buttons["changeRegionButton"].waitForExistence(timeout: 5))
     }
 
