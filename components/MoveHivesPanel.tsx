@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { getApiaries, moveHives, type Apiary, type Hive, type MoveResult } from '@/lib/api';
-import { FORAGE_KEYS } from '@/lib/moves';
+import { getApiaries, getMovesOverview, moveHives, type Apiary, type Hive, type HiveMove, type MoveResult } from '@/lib/api';
+import { FORAGE_KEYS, returnSuggestions } from '@/lib/moves';
 
 const NEW_APIARY = '__new__';
 const OTHER_FORAGE = '__other__';
@@ -28,6 +28,7 @@ export default function MoveHivesPanel({
 }) {
   const t = useTranslations('dash');
   const [targets, setTargets] = useState<Apiary[]>([]);
+  const [history, setHistory] = useState<HiveMove[]>([]);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [target, setTarget] = useState('');
   const [newName, setNewName] = useState('');
@@ -44,6 +45,18 @@ export default function MoveHivesPanel({
       .then(page => setTargets(page.items.filter(a => a.id !== apiaryId && (a.access ?? 'owner') === 'owner')))
       .catch(() => {});
   }, [apiaryId]);
+
+  // Only a shortcut: without the history the form works as it did.
+  useEffect(() => {
+    getMovesOverview().then(setHistory).catch(() => {});
+  }, [apiaryId]);
+
+  const returns = returnSuggestions(history, hives.map(h => h.id), apiaryId, targets);
+
+  function sendBack(place: { apiaryId: string; hiveIds: string[] }) {
+    setSelected(new Set(place.hiveIds));
+    setTarget(place.apiaryId);
+  }
 
   function toggle(id: string) {
     setSelected(prev => {
@@ -86,6 +99,22 @@ export default function MoveHivesPanel({
       <p className="dash-card-meta">{t('moves.intro')}</p>
 
       {error && <div className="dash-error-banner">{error}</div>}
+
+      {returns.length > 0 && (
+        <div className="dash-move-back" data-testid="move-back">
+          <span className="dash-card-meta">{t('moves.backHint')}</span>
+          {returns.map(place => (
+            <button
+              key={place.apiaryId}
+              type="button"
+              className="dash-move-back-btn"
+              onClick={() => sendBack(place)}
+            >
+              {t('moves.backTo', { name: place.name, count: place.hiveIds.length })}
+            </button>
+          ))}
+        </div>
+      )}
 
       <fieldset style={{ border: 0, padding: 0, margin: '0 0 12px' }}>
         <legend className="dash-section-title" style={{ fontSize: 15 }}>{t('moves.selectHives')}</legend>

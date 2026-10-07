@@ -70,3 +70,43 @@ export function buildRoutes(moves: HiveMove[]): Route[] {
 export function hasPositions(routes: Route[]): boolean {
   return routes.some(r => r.points.length > 0);
 }
+
+export interface ReturnSuggestion {
+  /** The place the hives stood before they came here. */
+  apiaryId: string;
+  name: string;
+  hiveIds: string[];
+}
+
+/**
+ * "Back to where they came from": for the hives standing in `apiaryId`, the place each one was taken from
+ * when it came here, grouped by that place. A hive that never moved here, or whose previous place is gone
+ * or not among `places` (not the caller's own), is left out — there is nowhere to send it back to.
+ */
+export function returnSuggestions(
+  moves: HiveMove[],
+  hiveIds: string[],
+  apiaryId: string,
+  places: { id: string; name: string }[],
+): ReturnSuggestion[] {
+  const here = new Set(hiveIds);
+  const latest = new Map<string, HiveMove>();
+  for (const move of moves) {
+    if (!here.has(move.hive_id) || move.to.apiary_id !== apiaryId) continue;
+    const seen = latest.get(move.hive_id);
+    const newer = !seen
+      || move.moved_on > seen.moved_on
+      || (move.moved_on === seen.moved_on && move.created_at > seen.created_at);
+    if (newer) latest.set(move.hive_id, move);
+  }
+
+  const byPlace = new Map<string, string[]>();
+  for (const [hiveId, move] of latest) {
+    const from = move.from.apiary_id;
+    if (!from || from === apiaryId || !places.some(p => p.id === from)) continue;
+    byPlace.set(from, [...(byPlace.get(from) ?? []), hiveId]);
+  }
+  return [...byPlace]
+    .map(([id, ids]) => ({ apiaryId: id, name: places.find(p => p.id === id)!.name, hiveIds: ids }))
+    .sort((a, b) => b.hiveIds.length - a.hiveIds.length || a.name.localeCompare(b.name));
+}

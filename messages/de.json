@@ -769,6 +769,8 @@
       "title": "Völker verlagern",
       "intro": "Bring Völker dorthin, wo etwas blüht. Wähle die Völker, den neuen Ort, den Tag und die Tracht; die Verlagerung bleibt gespeichert, so siehst du, wo jedes Volk war.",
       "selectHives": "Welche Völker",
+      "backHint": "Wo sie vorher standen",
+      "backTo": "Zurück nach {name} ({count})",
       "selectAll": "Alle Völker",
       "target": "Verlagern nach",
       "targetChoose": "Ort wählen",

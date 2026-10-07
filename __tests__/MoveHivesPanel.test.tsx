@@ -4,6 +4,7 @@ import MoveHivesPanel from '@/components/MoveHivesPanel';
 
 const mockGetApiaries = vi.hoisted(() => vi.fn());
 const mockMoveHives = vi.hoisted(() => vi.fn());
+const mockOverview = vi.hoisted(() => vi.fn());
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string, params?: Record<string, string | number>) =>
@@ -13,6 +14,7 @@ vi.mock('next-intl', () => ({
 vi.mock('@/lib/api', () => ({
   getApiaries: mockGetApiaries,
   moveHives: mockMoveHives,
+  getMovesOverview: mockOverview,
 }));
 
 const hives = [
@@ -41,6 +43,8 @@ describe('MoveHivesPanel', () => {
   beforeEach(() => {
     mockGetApiaries.mockReset();
     mockMoveHives.mockReset();
+    mockOverview.mockReset();
+    mockOverview.mockResolvedValue([]);
     mockGetApiaries.mockResolvedValue(apiaries);
   });
 
@@ -56,7 +60,7 @@ describe('MoveHivesPanel', () => {
   it('cannot be sent before hives and a target are chosen', async () => {
     await open();
 
-    const submit = screen.getByText(/^moves\.submit/).closest('button')!;
+    const submit = screen.getByText(/^moves.submit/).closest('button')!;
     expect(submit).toBeDisabled();
 
     fireEvent.click(screen.getByLabelText('Hive 1'));
@@ -103,7 +107,7 @@ describe('MoveHivesPanel', () => {
 
     fireEvent.click(screen.getByLabelText('Hive 1'));
     fireEvent.change(screen.getByLabelText('moves.target'), { target: { value: '__new__' } });
-    const submit = screen.getByText(/^moves\.submit/).closest('button')!;
+    const submit = screen.getByText(/^moves.submit/).closest('button')!;
     expect(submit).toBeDisabled();                       // a new place needs a name
 
     fireEvent.change(screen.getByLabelText('moves.newName'), { target: { value: ' Black Forest ' } });
@@ -171,5 +175,40 @@ describe('MoveHivesPanel', () => {
 
     expect(root.matches('.dash-inline-form')).toBe(false);
     expect(root.querySelector('.dash-inline-form, .dash-submit-btn, .dash-cancel-btn')).toBeNull();
+  });
+
+  it('offers no shortcut without a history', async () => {
+    await open();
+
+    await waitFor(() => screen.getByRole('option', { name: 'Heath' }));
+    expect(screen.queryByTestId('move-back')).toBeNull();
+  });
+
+  it('a shortcut picks the hives and the place they came from, ready to send', async () => {
+    mockOverview.mockResolvedValue([{
+      id: 'm1', hive_id: 'h-1', hive_name: 'Hive 1', moved_on: '2026-05-12', forage: null, note: null,
+      from: { apiary_id: 'a-heath', name: 'Heath', latitude: null, longitude: null },
+      to: { apiary_id: 'a-home', name: 'Home', latitude: null, longitude: null },
+      created_by_name: null, created_at: '2026-05-12T08:00:00',
+    }]);
+    mockMoveHives.mockResolvedValue(result);
+    const { onMoved } = await open();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'moves.backTo|Heath|1' }));
+
+    expect((screen.getByLabelText('Hive 1') as HTMLInputElement).checked).toBe(true);
+    expect((screen.getByLabelText('Hive 2') as HTMLInputElement).checked).toBe(false);
+    expect((screen.getByLabelText('moves.target') as HTMLSelectElement).value).toBe('a-heath');
+    fireEvent.click(screen.getByText(/^moves.submit/).closest('button')!);
+    await waitFor(() => expect(onMoved).toHaveBeenCalled());
+    expect(mockMoveHives).toHaveBeenCalledWith(expect.objectContaining({ hive_ids: ['h-1'], to_apiary_id: 'a-heath' }));
+  });
+
+  it('works without the shortcut when the history cannot be loaded', async () => {
+    mockOverview.mockRejectedValue(new Error('offline'));
+    await open();
+
+    await waitFor(() => screen.getByRole('option', { name: 'Heath' }));
+    expect(screen.queryByTestId('move-back')).toBeNull();
   });
 });

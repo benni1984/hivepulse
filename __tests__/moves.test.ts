@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { buildRoutes, hasPositions, isKnownForage, FORAGE_KEYS } from '@/lib/moves';
+import { buildRoutes, hasPositions, isKnownForage, returnSuggestions, FORAGE_KEYS } from '@/lib/moves';
 import type { HiveMove } from '@/lib/api';
 
 function move(overrides: Partial<HiveMove> & { id: string }): HiveMove {
@@ -83,5 +83,65 @@ describe('isKnownForage', () => {
     expect(isKnownForage('Robinie')).toBe(false);
     expect(isKnownForage('')).toBe(false);
     expect(isKnownForage(null)).toBe(false);
+  });
+});
+
+describe('returnSuggestions', () => {
+  const places = [{ id: 'a-home', name: 'Home' }, { id: 'a-forest', name: 'Forest' }, { id: 'a-heath', name: 'Heath' }];
+  const toHeath = (id: string, hive: string, extra: Partial<HiveMove> = {}) =>
+    move({ id, hive_id: hive, hive_name: hive, ...extra });
+
+  it('sends the hives back to the place they came from, grouped by that place', () => {
+    const moves = [
+      toHeath('m1', 'h-1'),
+      toHeath('m2', 'h-2'),
+      toHeath('m3', 'h-3', { from: { apiary_id: 'a-forest', name: 'Forest', latitude: null, longitude: null } }),
+    ];
+
+    const result = returnSuggestions(moves, ['h-1', 'h-2', 'h-3'], 'a-heath', places);
+
+    expect(result).toEqual([
+      { apiaryId: 'a-home', name: 'Home', hiveIds: ['h-1', 'h-2'] },
+      { apiaryId: 'a-forest', name: 'Forest', hiveIds: ['h-3'] },
+    ]);
+  });
+
+  it('uses the latest move that brought the hive here', () => {
+    const moves = [
+      toHeath('old', 'h-1', { moved_on: '2026-04-01' }),
+      toHeath('new', 'h-1', { moved_on: '2026-06-01', from: { apiary_id: 'a-forest', name: 'Forest', latitude: null, longitude: null } }),
+    ];
+
+    expect(returnSuggestions(moves, ['h-1'], 'a-heath', places)).toEqual([
+      { apiaryId: 'a-forest', name: 'Forest', hiveIds: ['h-1'] },
+    ]);
+  });
+
+  it('breaks a tie between two moves of the same day by when they were made', () => {
+    const moves = [
+      toHeath('late', 'h-1', { created_at: '2026-05-12T12:00:00', from: { apiary_id: 'a-forest', name: 'Forest', latitude: null, longitude: null } }),
+      toHeath('early', 'h-1', { created_at: '2026-05-12T08:00:00' }),
+    ];
+
+    expect(returnSuggestions(moves, ['h-1'], 'a-heath', places)[0].apiaryId).toBe('a-forest');
+  });
+
+  it('leaves out hives that did not move here, and hives that are not in this apiary', () => {
+    const moves = [toHeath('m1', 'h-1'), toHeath('m2', 'h-9')];
+
+    expect(returnSuggestions(moves, ['h-1', 'h-2'], 'a-heath', places)).toEqual([
+      { apiaryId: 'a-home', name: 'Home', hiveIds: ['h-1'] },
+    ]);
+  });
+
+  it('leaves out a previous place that is gone or not one of the caller own', () => {
+    const gone = toHeath('m1', 'h-1', { from: { apiary_id: null, name: 'Old place', latitude: null, longitude: null } });
+    const foreign = toHeath('m2', 'h-2', { from: { apiary_id: 'a-theirs', name: 'Theirs', latitude: null, longitude: null } });
+
+    expect(returnSuggestions([gone, foreign], ['h-1', 'h-2'], 'a-heath', places)).toEqual([]);
+  });
+
+  it('offers nothing without any history', () => {
+    expect(returnSuggestions([], ['h-1'], 'a-heath', places)).toEqual([]);
   });
 });

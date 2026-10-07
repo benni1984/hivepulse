@@ -769,6 +769,8 @@
       "title": "Trasladar colmenas",
       "intro": "Lleva colmenas adonde algo está en flor. Elige las colmenas, el nuevo lugar, el día y la floración; el traslado queda guardado, así ves dónde ha estado cada colmena.",
       "selectHives": "Qué colmenas",
+      "backHint": "Dónde estaban antes",
+      "backTo": "Volver a {name} ({count})",
       "selectAll": "Todas las colmenas",
       "target": "Trasladar a",
       "targetChoose": "Elegir un lugar",

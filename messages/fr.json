@@ -769,6 +769,8 @@
       "title": "Déplacer des ruches",
       "intro": "Emmenez des ruches là où quelque chose fleurit. Choisissez les ruches, le nouveau lieu, le jour et la miellée ; le déplacement est conservé, vous voyez où chaque ruche est passée.",
       "selectHives": "Quelles ruches",
+      "backHint": "Où elles étaient avant",
+      "backTo": "Retour à {name} ({count})",
       "selectAll": "Toutes les ruches",
       "target": "Déplacer vers",
       "targetChoose": "Choisir un lieu",

@@ -769,6 +769,8 @@
       "title": "Move hives",
       "intro": "Take hives to where something is in bloom. Pick the hives, the new place, the day and the forage; the move is kept, so you can see where each hive has been.",
       "selectHives": "Which hives",
+      "backHint": "Where they stood before",
+      "backTo": "Back to {name} ({count})",
       "selectAll": "All hives",
       "target": "Move to",
       "targetChoose": "Choose a place",
