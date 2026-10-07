@@ -8,7 +8,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
         <p>
           Quand vous êtes au rucher avec des gants, trouver la bonne ruche dans une application téléphone est lent.
           Une étiquette QR code sur chaque ruche vous permet de scanner-et-ouvrir en moins de deux secondes — l'écran de détail
-          de la bonne ruche s'ouvre instantanément, prêt pour une nouvelle inspection.
+          de la bonne ruche s'ouvre instantanément, prêt pour une nouvelle visite.
         </p>
         <Screenshot android="/docs/screenshots/android-qr-batches.png" web="/docs/screenshots/qr-batch-detail.png" caption="Étiquette QR code sur une ruche, prête à être scannée" />
       </section>
@@ -84,7 +84,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
       </section>
 
       <section className="help-section">
-        <h2 className="help-section-title">Étape 3 — Scanner pour ouvrir pendant les inspections</h2>
+        <h2 className="help-section-title">Étape 3 — Scanner pour ouvrir pendant les visites</h2>
         <ol className="help-steps">
           <li>
             <span className="help-step-num">1</span>
@@ -103,7 +103,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
           <li>
             <span className="help-step-num">3</span>
             <div className="help-step-body">
-              <strong>Appuyer sur Nouvelle inspection</strong>
+              <strong>Appuyer sur Nouvelle visite</strong>
               <p>Vous êtes maintenant sur la bonne ruche, prêt à enregistrer votre visite.</p>
             </div>
           </li>

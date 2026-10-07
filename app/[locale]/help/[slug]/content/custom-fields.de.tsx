@@ -6,13 +6,13 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
       <section className="help-section">
         <h2 className="help-section-title">Was sind benutzerdefinierte Felder?</h2>
         <p>
-          Benutzerdefinierte Felder ermöglichen es Ihnen, dem Inspektionsformular zusätzliche Fragen hinzuzufügen, die nicht im
+          Benutzerdefinierte Felder ermöglichen es Ihnen, dem Kontrollformular zusätzliche Fragen hinzuzufügen, die nicht im
           integrierten Set enthalten sind. Zum Beispiel: ein Kontrollkästchen für „Ableger erstellt", eine Zahl für
           „Vorratswaben" oder eine Auswahlliste für die derzeit blühende Nektarquelle.
         </p>
         <p>
           Felder werden derzeit im <strong>Web-Dashboard</strong> verwaltet und erscheinen auf dem
-          Inspektionsformular auf allen Plattformen.
+          Kontrollformular auf allen Plattformen.
         </p>
         <Screenshot src="/docs/screenshots/custom-fields-list.png" caption="Einstellungsseite für benutzerdefinierte Felder mit einer Liste von Feldern im Benutzerbereich" />
       </section>
@@ -23,14 +23,14 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
           <div className="help-stat-card">
             <div className="help-stat-card-name">Benutzerbereich</div>
             <div className="help-stat-card-desc">
-              Gilt für <strong>jede Inspektion in allen Ihren Bienenständen</strong>. Verwenden Sie dies für Felder,
+              Gilt für <strong>jede Kontrolle in allen Ihren Bienenständen</strong>. Verwenden Sie dies für Felder,
               die für Ihre Praxis immer relevant sind — z. B. „Behandlungsart" oder „Ableger erstellt".
             </div>
           </div>
           <div className="help-stat-card">
             <div className="help-stat-card-name">Bienenstandbereich</div>
             <div className="help-stat-card-desc">
-              Gilt nur für Inspektionen <strong>innerhalb eines bestimmten Bienenstands</strong>. Verwenden Sie dies für Felder,
+              Gilt nur für Kontrollen <strong>innerhalb eines bestimmten Bienenstands</strong>. Verwenden Sie dies für Felder,
               die nur an einem Standort relevant sind — z. B. „Nähe zu Rapsfeld" für einen
               Bienenstand in der Nähe eines Rapsfeldes.
             </div>
@@ -74,7 +74,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
             <span className="help-step-num">2</span>
             <div className="help-step-body">
               <strong>Ziel auswählen</strong>
-              <p><strong>Volk</strong>-Felder erscheinen im Volk-Detailformular. <strong>Inspektions</strong>-Felder erscheinen im Inspektionsformular — dies ist die häufigste Wahl.</p>
+              <p><strong>Volk</strong>-Felder erscheinen im Volk-Detailformular. <strong>Kontroll</strong>-Felder erscheinen im Kontrollformular — dies ist die häufigste Wahl.</p>
             </div>
           </li>
           <li>
@@ -95,7 +95,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
             <span className="help-step-num">5</span>
             <div className="help-step-body">
               <strong>Speichern</strong>
-              <p>Das Feld erscheint sofort im Inspektionsformular für die relevanten Bienenstände.</p>
+              <p>Das Feld erscheint sofort im Kontrollformular für die relevanten Bienenstände.</p>
             </div>
           </li>
         </ol>

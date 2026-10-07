@@ -64,13 +64,13 @@ MESSAGES = {
     "HIVE_NOT_FOUND": {
         "en": "Hive not found.",
         "fr": "Ruche introuvable.",
-        "de": "Bienenstock nicht gefunden.",
+        "de": "Volk nicht gefunden.",
         "es": "Colmena no encontrada.",
     },
     "INSPECTION_NOT_FOUND": {
         "en": "Inspection not found.",
         "fr": "Inspection introuvable.",
-        "de": "Inspektion nicht gefunden.",
+        "de": "Kontrolle nicht gefunden.",
         "es": "Inspección no encontrada.",
     },
     "FIELD_DEFINITION_NOT_FOUND": {
@@ -94,7 +94,7 @@ MESSAGES = {
     "QR_TOKEN_ALREADY_LINKED": {
         "en": "This QR code is already linked to a hive.",
         "fr": "Ce code QR est déjà lié à une ruche.",
-        "de": "Dieser QR-Code ist bereits mit einem Bienenstock verknüpft.",
+        "de": "Dieser QR-Code ist bereits mit einem Volk verknüpft.",
         "es": "Este código QR ya está vinculado a una colmena.",
     },
     "APIARY_HAS_HIVES": {

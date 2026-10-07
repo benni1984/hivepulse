@@ -6,7 +6,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
       <section className="help-section">
         <h2 className="help-section-title">¿Por qué exportar?</h2>
         <p>
-          Sus datos de inspección le pertenecen. Exportar le da una copia local que puede compartir
+          Sus datos de revisión le pertenecen. Exportar le da una copia local que puede compartir
           con su veterinario, enviar a una autoridad apícola nacional, usar en una hoja de cálculo para
           análisis personalizados, o archivar como registro a largo plazo independiente de HivePulse.
         </p>
@@ -27,7 +27,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
           <div className="help-stat-card">
             <div className="help-stat-card-name">CSV</div>
             <div className="help-stat-card-desc">
-              Compatible con hojas de cálculo. Cada inspección es una fila. Se abre directamente en Excel, Google
+              Compatible con hojas de cálculo. Cada revisión es una fila. Se abre directamente en Excel, Google
               Sheets o Numbers. Los campos personalizados se incluyen como columnas adicionales.
               Ideal para análisis manual o compartir con partes interesadas no técnicas.
             </div>
@@ -49,7 +49,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
             <span className="help-step-num">2</span>
             <div className="help-step-body">
               <strong>Seleccionar el colmenar</strong>
-              <p>Si tiene más de un colmenar, elija cuál exportar. Cada exportación cubre todas las colmenas e inspecciones dentro de ese colmenar.</p>
+              <p>Si tiene más de un colmenar, elija cuál exportar. Cada exportación cubre todas las colmenas e revisiones dentro de ese colmenar.</p>
             </div>
           </li>
           <li>
@@ -107,13 +107,13 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
         <h2 className="help-section-title">Qué se incluye en la exportación</h2>
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li>Todas las colmenas en el colmenar seleccionado</li>
-          <li>Cada inspección para cada colmena, con todos los campos integrados</li>
+          <li>Cada revisión para cada colmena, con todos los campos integrados</li>
           <li>Todos los valores de campos personalizados</li>
-          <li>Fechas de inspección y marcas de tiempo de creación</li>
+          <li>Fechas de revisión y marcas de tiempo de creación</li>
         </ul>
         <div className="help-callout info">
           <i className="fas fa-info-circle" />
-          <p>Las exportaciones no incluyen fotos (HivePulse no almacena fotos de inspección). Tampoco incluyen datos de tokens QR o información de lotes.</p>
+          <p>Las exportaciones no incluyen fotos (HivePulse no almacena fotos de revisión). Tampoco incluyen datos de tokens QR o información de lotes.</p>
         </div>
       </section>
     </>

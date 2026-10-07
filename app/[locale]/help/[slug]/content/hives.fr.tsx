@@ -7,10 +7,10 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
         <h2 className="help-section-title">Qu'est-ce qu'une fiche ruche ?</h2>
         <p>
           Une fiche ruche représente une colonie physique. Elle a un nom, un type et une étiquette QR code optionnelle.
-          Tout l'historique d'inspection est attaché à la fiche ruche, vous permettant de visualiser
+          Tout l'historique de visite est attaché à la fiche ruche, vous permettant de visualiser
           la tendance complète de santé de cette colonie au fil du temps.
         </p>
-        <Screenshot android="/docs/screenshots/android-hive-detail.png" web="/docs/screenshots/hive-detail-web.png" caption="Écran de détail de la ruche montrant le type, la date de la dernière inspection et la liste des inspections" />
+        <Screenshot android="/docs/screenshots/android-hive-detail.png" web="/docs/screenshots/hive-detail-web.png" caption="Écran de détail de la ruche montrant le type, la date de la dernière visite et la liste des inspections" />
       </section>
 
       <section className="help-section">
@@ -100,12 +100,12 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
         </p>
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li>Le type de ruche et la date d'ajout</li>
-          <li>La date de la dernière inspection</li>
-          <li>L'historique complet des inspections, la plus récente en premier</li>
-          <li>Un bouton pour démarrer une nouvelle inspection</li>
-          <li>Sur le web : onglets pour les Inspections, les Statistiques et les Champs personnalisés</li>
+          <li>La date de la dernière visite</li>
+          <li>L'historique complet des visites, la plus récente en premier</li>
+          <li>Un bouton pour démarrer une nouvelle visite</li>
+          <li>Sur le web : onglets pour les Visites, les Statistiques et les Champs personnalisés</li>
         </ul>
-        <Screenshot src="/docs/screenshots/hive-detail-web.png" caption="Page de détail de la ruche sur le web montrant l'onglet inspections et les métadonnées de la ruche" />
+        <Screenshot src="/docs/screenshots/hive-detail-web.png" caption="Page de détail de la ruche sur le web montrant l'onglet visites et les métadonnées de la ruche" />
       </section>
 
       <section className="help-section">
@@ -116,7 +116,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
         </div>
         <div className="help-callout info">
           <i className="fas fa-info-circle" />
-          <p>Supprimer une ruche supprime définitivement tout l'historique d'inspection de cette colonie. Exportez vos données avant de supprimer si vous souhaitez conserver les enregistrements.</p>
+          <p>Supprimer une ruche supprime définitivement tout l'historique de visite de cette colonie. Exportez vos données avant de supprimer si vous souhaitez conserver les enregistrements.</p>
         </div>
       </section>
     </>

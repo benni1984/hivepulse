@@ -78,7 +78,7 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
         <h2 className="help-section-title">Eliminar tu cuenta</h2>
         <p>
           Eliminar tu cuenta borra permanentemente tu dirección de correo electrónico, nombre de visualización,
-          todos los apiarios, todas las colmenas y todos los registros de inspección. Esta acción <strong>no se puede deshacer</strong>.
+          todos los apiarios, todas las colmenas y todos los registros de revisión. Esta acción <strong>no se puede deshacer</strong>.
         </p>
         <ol className="help-steps">
           <li>
@@ -105,7 +105,7 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
         </ol>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Tus datos de inspección pueden haber contribuido a las estadísticas de la comunidad. Eliminar tu cuenta los excluye de futuros agregados, pero las estadísticas históricas ya calculadas no se recalculan retroactivamente.</p>
+          <p>Tus datos de revisión pueden haber contribuido a las estadísticas de la comunidad. Eliminar tu cuenta los excluye de futuros agregados, pero las estadísticas históricas ya calculadas no se recalculan retroactivamente.</p>
         </div>
       </section>
 

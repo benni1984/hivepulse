@@ -24,7 +24,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           <div className="help-stat-card">
             <div className="help-stat-card-name">Comptage varroa moyen</div>
             <div className="help-stat-card-desc">
-              Le comptage varroa moyen (acariens pour 100 abeilles) dans toutes les inspections publiques qui
+              Le comptage varroa moyen (acariens pour 100 abeilles) dans toutes les visites publiques qui
               ont enregistré une mesure varroa. Vous donne un référentiel régional : si votre comptage est
               constamment supérieur à la moyenne communautaire, votre colonie pourrait avoir besoin d'un traitement plus tôt
               que la normale dans votre région.
@@ -46,7 +46,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           <div className="help-stat-card">
             <div className="help-stat-card-name">Cadres de couvain moyens</div>
             <div className="help-stat-card-desc">
-              Nombre moyen de cadres de couvain enregistrés dans toutes les inspections publiques. Au printemps,
+              Nombre moyen de cadres de couvain enregistrés dans toutes les visites publiques. Au printemps,
               ce chiffre monte ; en automne il descend. Comparer votre nombre de cadres de couvain à cette
               moyenne peut révéler si vos colonies se développent plus vite ou plus lentement que les autres
               dans la communauté.
@@ -54,11 +54,11 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           </div>
 
           <div className="help-stat-card">
-            <div className="help-stat-card-name">Intervalle d'inspection moyen</div>
+            <div className="help-stat-card-name">Intervalle de visite moyen</div>
             <div className="help-stat-card-desc">
-              Nombre moyen de jours entre inspections consécutives, moyenné par ruche dans tous les
+              Nombre moyen de jours entre visites consécutives, moyenné par ruche dans tous les
               ruchers publics. Des intervalles plus courts signifient des apiculteurs plus attentifs — et plus de données
-              pour l'analyse de tendances. La moyenne communautaire vous donne une idée des habitudes d'inspection locales.
+              pour l'analyse de tendances. La moyenne communautaire vous donne une idée des habitudes de visite locales.
             </div>
             <span className="help-stat-card-good">7–14 jours en saison active</span>
           </div>
@@ -69,7 +69,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
       <section className="help-section">
         <h2 className="help-section-title">Contribuer aux statistiques communautaires</h2>
         <p>
-          Vos inspections contribuent automatiquement aux statistiques communautaires lorsque votre rucher est défini
+          Vos visites contribuent automatiquement aux statistiques communautaires lorsque votre rucher est défini
           comme <strong>public</strong>. Aucune action supplémentaire n'est requise. Les enregistrements individuels ne sont
           jamais visibles par les autres utilisateurs — seuls les agrégats (moyennes, pourcentages) sont publiés.
         </p>

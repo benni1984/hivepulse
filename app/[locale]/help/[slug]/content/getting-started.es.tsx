@@ -6,12 +6,12 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
       <section className="help-section">
         <h2 className="help-section-title">¿Qué es HivePulse?</h2>
         <p>
-          HivePulse es una plataforma de inspección apícola y comunidad para iOS, Android y la web.
+          HivePulse es una plataforma de revisión apícola y comunidad para iOS, Android y la web.
           Le permite registrar cada visita a la colmena — conteos de varroa, estado de ánimo de la colonia, avistamientos de reina, marcos de cría,
           y más — y convierte esos datos en gráficos y análisis de tendencias a lo largo del tiempo.
         </p>
         <p>
-          Cada inspección que registre también contribuye (de forma anónima) a las estadísticas de toda la plataforma
+          Cada revisión que registre también contribuye (de forma anónima) a las estadísticas de toda la plataforma
           que ayudan a la comunidad apícola más amplia a comprender las tendencias de salud de las colonias en las regiones.
         </p>
         <Screenshot src="/docs/screenshots/dashboard-apiary-list.png" caption="Panel de control de HivePulse mostrando la vista general del colmenar y la lista de colmenas" />
@@ -31,7 +31,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
             <div className="help-stat-card-name"><i className="fab fa-apple" style={{ marginRight: 6 }} />Aplicación iOS</div>
             <div className="help-stat-card-desc">
               Aplicación iPhone nativa optimizada para uso en campo. Escanee un código QR en una colmena para abrirla instantáneamente,
-              registrar una inspección y ver estadísticas — todo sin abrir un navegador.
+              registrar una revisión y ver estadísticas — todo sin abrir un navegador.
             </div>
           </div>
           <div className="help-stat-card">
@@ -99,21 +99,21 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           <li>
             <span className="help-step-num">4</span>
             <div className="help-step-body">
-              <strong>Registrar su primera inspección</strong>
-              <p>Escanee el código QR con su teléfono, toque <em>Nueva inspección</em> y rellene lo que observe.</p>
+              <strong>Registrar su primera revisión</strong>
+              <p>Escanee el código QR con su teléfono, toque <em>Nueva revisión</em> y rellene lo que observe.</p>
             </div>
           </li>
         </ol>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Registre las inspecciones de forma consistente — aunque solo anote el conteo de varroa — y HivePulse creará gráficos de tendencias significativos después de algunas visitas.</p>
+          <p>Registre las revisiones de forma consistente — aunque solo anote el conteo de varroa — y HivePulse creará gráficos de tendencias significativos después de algunas visitas.</p>
         </div>
       </section>
       <section className="help-section">
         <h2 className="help-section-title">El recorrido guiado en las apps</h2>
         <p>
           La primera vez que inicias sesión en la app de iPhone o Android, un breve recorrido deslizable presenta
-          los códigos QR, las inspecciones, las estadísticas, los recordatorios y el rastreador de avispones. Puedes
+          los códigos QR, las revisiones, las estadísticas, los recordatorios y el rastreador de avispones. Puedes
           saltarlo cuando quieras y volver a verlo en <strong>Ajustes → Mostrar de nuevo el recorrido</strong>.
         </p>
       </section>

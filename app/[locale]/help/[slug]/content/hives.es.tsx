@@ -7,10 +7,10 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
         <h2 className="help-section-title">¿Qué es un registro de colmena?</h2>
         <p>
           Un registro de colmena representa una colonia física. Tiene un nombre, un tipo y una etiqueta de código QR opcional.
-          Todo el historial de inspecciones está adjunto al registro de colmena, por lo que puede ver
+          Todo el historial de revisiones está adjunto al registro de colmena, por lo que puede ver
           la tendencia completa de salud de esa colonia a lo largo del tiempo.
         </p>
-        <Screenshot android="/docs/screenshots/android-hive-detail.png" web="/docs/screenshots/hive-detail-web.png" caption="Pantalla de detalles de la colmena mostrando el tipo, la fecha de la última inspección y la lista de inspecciones" />
+        <Screenshot android="/docs/screenshots/android-hive-detail.png" web="/docs/screenshots/hive-detail-web.png" caption="Pantalla de detalles de la colmena mostrando el tipo, la fecha de la última revisión y la lista de inspecciones" />
       </section>
 
       <section className="help-section">
@@ -100,12 +100,12 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
         </p>
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li>Tipo de colmena y fecha en que se agregó</li>
-          <li>Fecha de la última inspección</li>
-          <li>Historial completo de inspecciones, la más reciente primero</li>
-          <li>Un botón para iniciar una nueva inspección</li>
-          <li>En la web: pestañas para Inspecciones, Estadísticas y Campos personalizados</li>
+          <li>Fecha de la última revisión</li>
+          <li>Historial completo de revisiones, la más reciente primero</li>
+          <li>Un botón para iniciar una nueva revisión</li>
+          <li>En la web: pestañas para Revisiones, Estadísticas y Campos personalizados</li>
         </ul>
-        <Screenshot src="/docs/screenshots/hive-detail-web.png" caption="Página de detalles de la colmena en la web mostrando la pestaña de inspecciones y metadatos de la colmena" />
+        <Screenshot src="/docs/screenshots/hive-detail-web.png" caption="Página de detalles de la colmena en la web mostrando la pestaña de revisiones y metadatos de la colmena" />
       </section>
 
       <section className="help-section">
@@ -116,7 +116,7 @@ export default function HivesContent({ Screenshot }: { Screenshot: typeof HelpSc
         </div>
         <div className="help-callout info">
           <i className="fas fa-info-circle" />
-          <p>Eliminar una colmena elimina permanentemente todo el historial de inspecciones de esa colonia. Exporte sus datos antes de eliminar si desea conservar los registros.</p>
+          <p>Eliminar una colmena elimina permanentemente todo el historial de revisiones de esa colonia. Exporte sus datos antes de eliminar si desea conservar los registros.</p>
         </div>
       </section>
     </>

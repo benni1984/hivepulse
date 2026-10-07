@@ -303,7 +303,7 @@ export const NEWS: NewsEntry[] = [
       },
       es: {
         title: 'Palabras en lugar de números al inspeccionar',
-        body: 'Registrar una inspección en la colmena ahora es más rápido. La fuerza de la colonia se elige simplemente entre débil, media o fuerte, y la varroa se anota como ninguna, baja, media o alta en lugar de un recuento de ácaros, tanto en las apps de iOS y Android como en la web. Tus registros anteriores se convirtieron automáticamente. El color de la reina se elige tocando un punto de color. Y por fin puedes editar el nombre, el tipo, la fecha de adquisición y las notas de una colmena directamente en las apps, no solo en la web. Además, las colonias fuertes vuelven a guardarse correctamente en la app de Android.',
+        body: 'Registrar una revisión en la colmena ahora es más rápido. La fuerza de la colonia se elige simplemente entre débil, media o fuerte, y la varroa se anota como ninguna, baja, media o alta en lugar de un recuento de ácaros, tanto en las apps de iOS y Android como en la web. Tus registros anteriores se convirtieron automáticamente. El color de la reina se elige tocando un punto de color. Y por fin puedes editar el nombre, el tipo, la fecha de adquisición y las notas de una colmena directamente en las apps, no solo en la web. Además, las colonias fuertes vuelven a guardarse correctamente en la app de Android.',
       },
     },
   },
@@ -346,8 +346,8 @@ export const NEWS: NewsEntry[] = [
         body: "En saisissant une visite sur iPhone, seuls un plus et un moins s'affichaient pour les cadres de couvain, les cadres de miel et la force de la colonie — le chiffre lui-même manquait, on ne voyait donc pas la valeur choisie. Le chiffre est de retour. Les options d'humeur, de couleur de la reine et de force de la colonie apparaissaient aussi en anglais quelle que soit la langue ; elles sont maintenant traduites en allemand, français, espagnol et anglais dans les deux applications. Le poids de la ruche n'est plus un simple champ de texte : le clavier reste disponible pour les valeurs exactes, avec en plus des boutons plus et moins par pas d'un demi-kilo, pratiques avec des gants. Sur le site, la légende du graphique d'humeur affichait aussi des libellés anglais et suit désormais votre langue.",
       },
       es: {
-        title: 'Números legibles y traducciones correctas en el formulario de inspección',
-        body: 'Al registrar una inspección en el iPhone solo se veían un más y un menos para los cuadros de cría, los cuadros de miel y la fuerza de la colonia: faltaba el número, así que no se veía qué valor se estaba poniendo. El número ha vuelto. Las opciones de estado de ánimo, color de la reina y fuerza de la colonia también aparecían en inglés sin importar el idioma; ahora están traducidas al alemán, francés, español e inglés en ambas apps. El peso de la colmena ya no es un simple cuadro de texto: conserva el teclado para valores exactos y añade botones de más y menos en pasos de medio kilo, cómodos con guantes. En la web, la leyenda del gráfico de ánimo también mostraba etiquetas en inglés y ahora sigue tu idioma.',
+        title: 'Números legibles y traducciones correctas en el formulario de revisión',
+        body: 'Al registrar una revisión en el iPhone solo se veían un más y un menos para los cuadros de cría, los cuadros de miel y la fuerza de la colonia: faltaba el número, así que no se veía qué valor se estaba poniendo. El número ha vuelto. Las opciones de estado de ánimo, color de la reina y fuerza de la colonia también aparecían en inglés sin importar el idioma; ahora están traducidas al alemán, francés, español e inglés en ambas apps. El peso de la colmena ya no es un simple cuadro de texto: conserva el teclado para valores exactos y añade botones de más y menos en pasos de medio kilo, cómodos con guantes. En la web, la leyenda del gráfico de ánimo también mostraba etiquetas en inglés y ahora sigue tu idioma.',
       },
     },
   },
@@ -391,7 +391,7 @@ export const NEWS: NewsEntry[] = [
       },
       es: {
         title: 'Un recorrido guiado para nuevos usuarios en ambas apps',
-        body: 'La primera vez que inicias sesión en la app de iOS o Android, un breve recorrido deslizable te presenta lo que HivePulse puede hacer por ti: códigos QR en cada colmena, inspecciones rápidas, estadísticas, recordatorios y el rastreador de avispones. Puedes saltarlo cuando quieras y volver a verlo desde Ajustes con «Mostrar de nuevo el recorrido».',
+        body: 'La primera vez que inicias sesión en la app de iOS o Android, un breve recorrido deslizable te presenta lo que HivePulse puede hacer por ti: códigos QR en cada colmena, revisiones rápidas, estadísticas, recordatorios y el rastreador de avispones. Puedes saltarlo cuando quieras y volver a verlo desde Ajustes con «Mostrar de nuevo el recorrido».',
       },
     },
   },
@@ -457,7 +457,7 @@ export const NEWS: NewsEntry[] = [
       },
       es: {
         title: 'El resumen de estadísticas y el mapa de salud de la comunidad llegan a Android',
-        body: 'La app de Android tiene ahora la misma página de estadísticas de toda la cuenta que el panel web: colmenares, colmenas e inspecciones de un vistazo, desglosados por colmenar para cualquier periodo. Los colaboradores también tienen el mapa regional de salud en la pestaña Miembros, con las mismas capas de varroa, ánimo, enjambrazón y cría que en la web.',
+        body: 'La app de Android tiene ahora la misma página de estadísticas de toda la cuenta que el panel web: colmenares, colmenas e revisiones de un vistazo, desglosados por colmenar para cualquier periodo. Los colaboradores también tienen el mapa regional de salud en la pestaña Miembros, con las mismas capas de varroa, ánimo, enjambrazón y cría que en la web.',
       },
     },
   },
@@ -522,8 +522,8 @@ export const NEWS: NewsEntry[] = [
         body: "Les notifications push n'atteignaient que les applications iOS et Android, et les apiculteurs utilisant uniquement le site n'étaient jamais prévenus d'une visite en retard. Vous pouvez désormais activer les rappels par e-mail depuis votre page de profil — indépendamment des notifications push, pour activer l'un, l'autre, les deux ou aucun.",
       },
       es: {
-        title: 'Los recordatorios de inspección ya también llegan por correo',
-        body: 'Las notificaciones push solo llegaban a las apps de iOS y Android, así que quien usaba solo la web nunca recibía aviso de una inspección atrasada. Ahora puedes activar los recordatorios por correo desde tu página de perfil, de forma independiente a las notificaciones push: uno, otro, ambos o ninguno.',
+        title: 'Los recordatorios de revisión ya también llegan por correo',
+        body: 'Las notificaciones push solo llegaban a las apps de iOS y Android, así que quien usaba solo la web nunca recibía aviso de una revisión atrasada. Ahora puedes activar los recordatorios por correo desde tu página de perfil, de forma independiente a las notificaciones push: uno, otro, ambos o ninguno.',
       },
     },
   },
@@ -588,8 +588,8 @@ export const NEWS: NewsEntry[] = [
         body: "Chaque apiculteur suit des choses différentes. Les définitions de champs personnalisés vous permettent d'ajouter vos propres données de visite au niveau du rucher ou de chaque ruche, sous forme de texte, nombre, oui/non, date ou liste de choix — désormais disponibles sur le tableau de bord web, iOS et Android.",
       },
       es: {
-        title: 'Campos de inspección personalizados: registra lo que te importa',
-        body: 'Cada apicultor sigue cosas distintas. Las definiciones de campos personalizados te permiten añadir tus propios datos de inspección a nivel de colmenar o de colmena, con campos de texto, número, sí/no, fecha y selección, ya disponibles en el panel web, iOS y Android.',
+        title: 'Campos de revisión personalizados: registra lo que te importa',
+        body: 'Cada apicultor sigue cosas distintas. Las definiciones de campos personalizados te permiten añadir tus propios datos de revisión a nivel de colmenar o de colmena, con campos de texto, número, sí/no, fecha y selección, ya disponibles en el panel web, iOS y Android.',
       },
     },
   },

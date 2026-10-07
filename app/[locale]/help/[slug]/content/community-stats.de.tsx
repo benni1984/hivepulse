@@ -24,7 +24,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           <div className="help-stat-card">
             <div className="help-stat-card-name">Durchschn. Varroazählung</div>
             <div className="help-stat-card-desc">
-              Die durchschnittliche Varroazählung (Milben pro 100 Bienen) über alle öffentlichen Inspektionen, bei denen
+              Die durchschnittliche Varroazählung (Milben pro 100 Bienen) über alle öffentlichen Kontrollen, bei denen
               eine Varroamessung aufgezeichnet wurde. Gibt Ihnen einen regionalen Vergleichswert: Wenn Ihre Zählung
               konstant höher als der Community-Durchschnitt ist, könnte Ihr Volk früher als typisch für Ihre Region eine Behandlung benötigen.
             </div>
@@ -34,7 +34,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           <div className="help-stat-card">
             <div className="help-stat-card-name">Gute Stimmung %</div>
             <div className="help-stat-card-desc">
-              Prozentsatz der Inspektionen in allen öffentlichen Bienenständen, die als „Ruhig" bewertet wurden. Eine hohe
+              Prozentsatz der Kontrollen in allen öffentlichen Bienenständen, die als „Ruhig" bewertet wurden. Eine hohe
               Community-Ruhestimmungsrate deutet auf gute regionale Genetik und niedrige Stressbedingungen hin
               (gute Tracht, geringer Schädlingsdruck). Ein fallender Gut-Stimmungs-Trend kann eine schwierige
               Saison für Bienen in Ihrer Region signalisieren.
@@ -45,18 +45,18 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           <div className="help-stat-card">
             <div className="help-stat-card-name">Durchschn. Brutwaben</div>
             <div className="help-stat-card-desc">
-              Durchschnittliche Anzahl der Brutwaben, die über alle öffentlichen Inspektionen aufgezeichnet wurden. Im Frühling steigt
+              Durchschnittliche Anzahl der Brutwaben, die über alle öffentlichen Kontrollen aufgezeichnet wurden. Im Frühling steigt
               diese Zahl; im Herbst fällt sie. Der Vergleich Ihrer Brutwabenanzahl mit diesem Durchschnitt
               kann zeigen, ob sich Ihre Völker schneller oder langsamer entwickeln als andere in der Community.
             </div>
           </div>
 
           <div className="help-stat-card">
-            <div className="help-stat-card-name">Durchschn. Inspektionsintervall</div>
+            <div className="help-stat-card-name">Durchschn. Kontrollintervall</div>
             <div className="help-stat-card-desc">
-              Durchschnittliche Anzahl von Tagen zwischen aufeinanderfolgenden Inspektionen, gemittelt pro Volk über alle
+              Durchschnittliche Anzahl von Tagen zwischen aufeinanderfolgenden Kontrollen, gemittelt pro Volk über alle
               öffentlichen Bienenstände. Kürzere Intervalle bedeuten aufmerksamere Imker — und mehr Daten
-              für Trendanalysen. Der Community-Durchschnitt gibt Ihnen einen Eindruck von lokalen Inspektionsgewohnheiten.
+              für Trendanalysen. Der Community-Durchschnitt gibt Ihnen einen Eindruck von lokalen Kontrollgewohnheiten.
             </div>
             <span className="help-stat-card-good">7–14 Tage in der aktiven Saison</span>
           </div>
@@ -67,7 +67,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
       <section className="help-section">
         <h2 className="help-section-title">Zur Community-Statistik beitragen</h2>
         <p>
-          Ihre Inspektionen tragen automatisch zur Community-Statistik bei, wenn Ihr Bienenstand auf
+          Ihre Kontrollen tragen automatisch zur Community-Statistik bei, wenn Ihr Bienenstand auf
           <strong>öffentlich</strong> gesetzt ist. Keine weitere Aktion erforderlich. Einzelne Einträge sind
           für andere Benutzer nie sichtbar — nur Aggregate (Mittelwerte, Prozentsätze) werden veröffentlicht.
         </p>

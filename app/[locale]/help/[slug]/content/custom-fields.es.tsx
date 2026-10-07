@@ -6,13 +6,13 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
       <section className="help-section">
         <h2 className="help-section-title">¿Qué son los campos personalizados?</h2>
         <p>
-          Los campos personalizados le permiten agregar preguntas adicionales al formulario de inspección que no están en el
+          Los campos personalizados le permiten agregar preguntas adicionales al formulario de revisión que no están en el
           conjunto integrado. Por ejemplo: una casilla para «enjambre artificial realizado», un número para
           «marcos de reservas», o una lista desplegable para la fuente de néctar actualmente en floración.
         </p>
         <p>
           Los campos se gestionan actualmente en el <strong>panel de control web</strong> y aparecen en el
-          formulario de inspección en todas las plataformas.
+          formulario de revisión en todas las plataformas.
         </p>
         <Screenshot src="/docs/screenshots/custom-fields-list.png" caption="Página de configuración de campos personalizados mostrando una lista de campos de ámbito de usuario" />
       </section>
@@ -23,14 +23,14 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
           <div className="help-stat-card">
             <div className="help-stat-card-name">Ámbito de usuario</div>
             <div className="help-stat-card-desc">
-              Se aplica a <strong>cada inspección en todos sus colmenares</strong>. Use para campos
+              Se aplica a <strong>cada revisión en todos sus colmenares</strong>. Use para campos
               que siempre son relevantes para su práctica — p. ej. «tipo de tratamiento» o «enjambre artificial».
             </div>
           </div>
           <div className="help-stat-card">
             <div className="help-stat-card-name">Ámbito de colmenar</div>
             <div className="help-stat-card-desc">
-              Se aplica solo a inspecciones <strong>dentro de un colmenar específico</strong>. Use para campos
+              Se aplica solo a revisiones <strong>dentro de un colmenar específico</strong>. Use para campos
               que solo son relevantes en una ubicación — p. ej. «proximidad a campo de colza» para un
               colmenar cerca de un campo de colza.
             </div>
@@ -74,7 +74,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
             <span className="help-step-num">2</span>
             <div className="help-step-body">
               <strong>Elegir el destino</strong>
-              <p>Los campos de <strong>Colmena</strong> aparecen en el formulario de detalles de la colmena. Los campos de <strong>Inspección</strong> aparecen en el formulario de inspección — esta es la elección más común.</p>
+              <p>Los campos de <strong>Colmena</strong> aparecen en el formulario de detalles de la colmena. Los campos de <strong>Revisión</strong> aparecen en el formulario de revisión — esta es la elección más común.</p>
             </div>
           </li>
           <li>
@@ -95,7 +95,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
             <span className="help-step-num">5</span>
             <div className="help-step-body">
               <strong>Guardar</strong>
-              <p>El campo aparece inmediatamente en el formulario de inspección para los colmenares relevantes.</p>
+              <p>El campo aparece inmediatamente en el formulario de revisión para los colmenares relevantes.</p>
             </div>
           </li>
         </ol>

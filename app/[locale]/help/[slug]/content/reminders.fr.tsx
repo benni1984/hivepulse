@@ -4,17 +4,17 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
   return (
     <>
       <section className="help-section">
-        <h2 className="help-section-title">Que sont les rappels d'inspection ?</h2>
+        <h2 className="help-section-title">Que sont les rappels de visite ?</h2>
         <p>
-          Les rappels d'inspection vous avertissent lorsqu'une ruche est en retard pour une visite selon votre intervalle choisi.
-          Des inspections cohérentes sont la base d'une bonne gestion du varroa —
+          Les rappels de visite vous avertissent lorsqu'une ruche est en retard pour une visite selon votre intervalle choisi.
+          Des visites cohérentes sont la base d'une bonne gestion du varroa —
           les rappels vous aident à respecter le calendrier même pendant les semaines chargées.
         </p>
         <div className="help-callout info">
           <i className="fas fa-info-circle" />
           <p><strong>La livraison push arrive bientôt.</strong> Vous pouvez définir vos préférences maintenant et elles seront sauvegardées. Les notifications commenceront à arriver une fois l'infrastructure push activée.</p>
         </div>
-        <Screenshot src="/docs/screenshots/android-settings-reminders.png" caption="Section Rappels d'inspection dans les Paramètres montrant la bascule et le sélecteur d'intervalle" />
+        <Screenshot src="/docs/screenshots/android-settings-reminders.png" caption="Section Rappels de visite dans les Paramètres montrant la bascule et le sélecteur d'intervalle" />
       </section>
 
       <section className="help-section">
@@ -30,7 +30,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
           <li>
             <span className="help-step-num">2</span>
             <div className="help-step-body">
-              <strong>Faire défiler jusqu'aux Rappels d'inspection</strong>
+              <strong>Faire défiler jusqu'aux Rappels de visite</strong>
               <p>Activez la bascule pour activer les rappels.</p>
             </div>
           </li>
@@ -38,7 +38,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
             <span className="help-step-num">3</span>
             <div className="help-step-body">
               <strong>Définir l'intervalle de rappel</strong>
-              <p>Choisissez combien de jours après la dernière inspection vous souhaitez être rappelé. Un choix courant est 7 jours en saison active.</p>
+              <p>Choisissez combien de jours après la dernière visite vous souhaitez être rappelé. Un choix courant est 7 jours en saison active.</p>
             </div>
           </li>
           <li>
@@ -63,7 +63,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name">Intervalle de rappel</div>
             <div className="help-stat-card-desc">
-              Nombre de jours après la dernière inspection avant qu'un rappel se déclenche.
+              Nombre de jours après la dernière visite avant qu'un rappel se déclenche.
               Choix courants : 7 jours (hebdomadaire) pour la gestion active du varroa, 14 jours pour
               les apiculteurs en intervention légère, 21–28 jours pour les apiculteurs naturels.
             </div>
@@ -71,7 +71,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name">Début de saison</div>
             <div className="help-stat-card-desc">
-              Le premier mois de la saison d'inspection active. Les rappels ne se déclencheront pas avant ce mois.
+              Le premier mois de la saison de visite active. Les rappels ne se déclencheront pas avant ce mois.
               En Europe du Nord, c'est typiquement avril ou mai.
             </div>
           </div>

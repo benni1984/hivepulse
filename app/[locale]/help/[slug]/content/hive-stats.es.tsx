@@ -6,7 +6,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
       <section className="help-section">
         <h2 className="help-section-title">¿Qué son las estadísticas de colmena?</h2>
         <p>
-          Las estadísticas de colmena convierten su historial de inspecciones en gráficos y números resumidos, facilitando
+          Las estadísticas de colmena convierten su historial de revisiones en gráficos y números resumidos, facilitando
           detectar tendencias que pasaría por alto al revisar registros individuales. Las estadísticas están disponibles en la pantalla de
           detalles de la colmena en todas las plataformas.
         </p>
@@ -28,7 +28,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-chart-line" style={{ marginRight: 6, color: '#f59e0b' }} />Tendencia del conteo de varroa</div>
             <div className="help-stat-card-desc">
-              Un gráfico de líneas de sus conteos de varroa a lo largo del tiempo. El eje x es la fecha de inspección; el eje y
+              Un gráfico de líneas de sus conteos de varroa a lo largo del tiempo. El eje x es la fecha de revisión; el eje y
               son ácaros por 100 abejas. Observe la pendiente: una línea ascendente significa que la carga de ácaros está creciendo
               y puede que pronto se necesite tratamiento.
             </div>
@@ -39,7 +39,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-face-smile" style={{ marginRight: 6, color: '#22c55e' }} />Distribución del estado de ánimo</div>
             <div className="help-stat-card-desc">
-              Un gráfico de rosquilla mostrando la proporción de inspecciones Tranquila, Nerviosa y Agresiva.
+              Un gráfico de rosquilla mostrando la proporción de revisiones Tranquila, Nerviosa y Agresiva.
               La nerviosidad o agresividad persistente puede indicar ausencia de reina, enfermedad o problemas genéticos
               que justifican la sustitución de la reina.
             </div>
@@ -50,7 +50,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-crown" style={{ marginRight: 6, color: '#eab308' }} />Tasa de reina vista</div>
             <div className="help-stat-card-desc">
-              Porcentaje de inspecciones en las que confirmó visualmente la reina. Una tasa constantemente baja
+              Porcentaje de revisiones en las que confirmó visualmente la reina. Una tasa constantemente baja
               puede significar que la reina es difícil de ver (normal para reinas oscuras) o que la colonia
               se ha quedado sin reina.
             </div>
@@ -59,7 +59,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-egg" style={{ marginRight: 6, color: '#8b5cf6' }} />Marcos de cría</div>
             <div className="help-stat-card-desc">
-              Número promedio de marcos de cría registrados por inspección en el período seleccionado.
+              Número promedio de marcos de cría registrados por revisión en el período seleccionado.
               Rastrea el crecimiento de la colonia durante la temporada — espere un aumento en primavera, un pico en
               comienzos del verano, luego un declive hacia el otoño.
             </div>
@@ -69,21 +69,21 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-clock" style={{ marginRight: 6, color: '#64748b' }} />Eventos de celdas de enjambre</div>
             <div className="help-stat-card-desc">
-              Número de inspecciones donde se reportaron celdas de enjambre. Un recuento alto indica una
+              Número de revisiones donde se reportaron celdas de enjambre. Un recuento alto indica una
               colonia propensa a enjambrar que podría beneficiarse de manejo preventivo (división, proveer más espacio).
             </div>
           </div>
 
           <div className="help-stat-card">
-            <div className="help-stat-card-name"><i className="fas fa-calendar" style={{ marginRight: 6, color: '#0ea5e9' }} />Inspecciones por período</div>
+            <div className="help-stat-card-name"><i className="fas fa-calendar" style={{ marginRight: 6, color: '#0ea5e9' }} />Revisiones por período</div>
             <div className="help-stat-card-desc">
-              Número total de inspecciones registradas en el período de tiempo seleccionado. Una frecuencia de inspección consistente
+              Número total de revisiones registradas en el período de tiempo seleccionado. Una frecuencia de revisión consistente
               (cada 7–14 días en temporada alta) brinda los datos de tendencias más confiables.
             </div>
           </div>
         </div>
 
-        <Screenshot src="/docs/screenshots/hive-stats-overview.png" caption="Gráfico de líneas de tendencia de varroa con fechas de inspección en el eje x" />
+        <Screenshot src="/docs/screenshots/hive-stats-overview.png" caption="Gráfico de líneas de tendencia de varroa con fechas de revisión en el eje x" />
       </section>
 
       <section className="help-section">
@@ -115,7 +115,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
         <h2 className="help-section-title">Consejos para mejores estadísticas</h2>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Las estadísticas mejoran dramáticamente con datos consistentes. Incluso registrando solo el conteo de varroa y el estado de ánimo en cada visita, obtendrá líneas de tendencia significativas después de cuatro o cinco inspecciones.</p>
+          <p>Las estadísticas mejoran dramáticamente con datos consistentes. Incluso registrando solo el conteo de varroa y el estado de ánimo en cada visita, obtendrá líneas de tendencia significativas después de cuatro o cinco revisiones.</p>
         </div>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />

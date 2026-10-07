@@ -8,7 +8,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
         <p>
           Wenn Sie im Bienenstand Handschuhe tragen, ist es mühsam, das richtige Volk in einer Handy-App zu finden.
           Ein QR-Code-Etikett auf jedem Bienenstock ermöglicht es Ihnen, in unter zwei Sekunden zu scannen und zu öffnen — der korrekte
-          Volk-Detailbildschirm öffnet sich sofort, bereit für eine neue Inspektion.
+          Volk-Detailbildschirm öffnet sich sofort, bereit für eine neue Kontrolle.
         </p>
         <Screenshot android="/docs/screenshots/android-qr-batches.png" web="/docs/screenshots/qr-batch-detail.png" caption="QR-Code-Etikett auf einem Bienenstock, bereit zum Scannen" />
       </section>
@@ -84,7 +84,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
       </section>
 
       <section className="help-section">
-        <h2 className="help-section-title">Schritt 3 — Bei Inspektionen scannen und öffnen</h2>
+        <h2 className="help-section-title">Schritt 3 — Bei Kontrollen scannen und öffnen</h2>
         <ol className="help-steps">
           <li>
             <span className="help-step-num">1</span>
@@ -103,7 +103,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
           <li>
             <span className="help-step-num">3</span>
             <div className="help-step-body">
-              <strong>Auf Neue Inspektion tippen</strong>
+              <strong>Auf Neue Kontrolle tippen</strong>
               <p>Sie befinden sich jetzt beim richtigen Volk und können Ihren Besuch protokollieren.</p>
             </div>
           </li>

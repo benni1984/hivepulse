@@ -6,13 +6,13 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
       <section className="help-section">
         <h2 className="help-section-title">Que sont les champs personnalisés ?</h2>
         <p>
-          Les champs personnalisés vous permettent d'ajouter des questions supplémentaires au formulaire d'inspection qui ne figurent pas dans
+          Les champs personnalisés vous permettent d'ajouter des questions supplémentaires au formulaire de visite qui ne figurent pas dans
           l'ensemble intégré. Par exemple : une case à cocher pour « essaimage artificiel effectué », un nombre pour
           « cadres de réserves », ou une liste déroulante pour la source de nectar actuellement en fleurs.
         </p>
         <p>
           Les champs sont actuellement gérés sur le <strong>tableau de bord web</strong> et apparaissent sur le
-          formulaire d'inspection sur toutes les plateformes.
+          formulaire de visite sur toutes les plateformes.
         </p>
         <Screenshot src="/docs/screenshots/custom-fields-list.png" caption="Page des paramètres des champs personnalisés montrant une liste de champs à portée utilisateur" />
       </section>
@@ -23,14 +23,14 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
           <div className="help-stat-card">
             <div className="help-stat-card-name">Portée utilisateur</div>
             <div className="help-stat-card-desc">
-              S'applique à <strong>chaque inspection dans tous vos ruchers</strong>. À utiliser pour les champs
+              S'applique à <strong>chaque visite dans tous vos ruchers</strong>. À utiliser pour les champs
               toujours pertinents pour votre pratique — ex. « type de traitement » ou « essaimage artificiel ».
             </div>
           </div>
           <div className="help-stat-card">
             <div className="help-stat-card-name">Portée rucher</div>
             <div className="help-stat-card-desc">
-              S'applique uniquement aux inspections <strong>au sein d'un rucher spécifique</strong>. À utiliser pour les champs
+              S'applique uniquement aux visites <strong>au sein d'un rucher spécifique</strong>. À utiliser pour les champs
               pertinents uniquement à un emplacement — ex. « proximité d'un champ de colza » pour un
               rucher près d'un champ de colza.
             </div>
@@ -74,7 +74,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
             <span className="help-step-num">2</span>
             <div className="help-step-body">
               <strong>Choisir la cible</strong>
-              <p>Les champs <strong>Ruche</strong> apparaissent sur le formulaire de détail de la ruche. Les champs <strong>Inspection</strong> apparaissent sur le formulaire d'inspection — c'est le choix le plus courant.</p>
+              <p>Les champs <strong>Ruche</strong> apparaissent sur le formulaire de détail de la ruche. Les champs <strong>Visite</strong> apparaissent sur le formulaire de visite — c'est le choix le plus courant.</p>
             </div>
           </li>
           <li>
@@ -95,7 +95,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
             <span className="help-step-num">5</span>
             <div className="help-step-body">
               <strong>Enregistrer</strong>
-              <p>Le champ apparaît immédiatement sur le formulaire d'inspection pour les ruchers concernés.</p>
+              <p>Le champ apparaît immédiatement sur le formulaire de visite pour les ruchers concernés.</p>
             </div>
           </li>
         </ol>

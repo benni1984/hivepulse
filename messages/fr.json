@@ -32,7 +32,7 @@
     "badge": "Open Source · Communautaire · Gratuit",
     "title1": "Sauvons les abeilles,",
     "title2": "un scan à la fois",
-    "subtitle": "HivePulse fait de chaque apiculteur un scientifique citoyen. Enregistrez les inspections, suivez la santé des ruches et contribuez aux données mondiales qui aident les chercheurs à comprendre et protéger les populations d'abeilles.",
+    "subtitle": "HivePulse fait de chaque apiculteur un scientifique citoyen. Enregistrez les visites, suivez la santé des ruches et contribuez aux données mondiales qui aident les chercheurs à comprendre et protéger les populations d'abeilles.",
     "apple": {
       "pre": "Télécharger sur l'",
       "store": "App Store"
@@ -49,7 +49,7 @@
     "sub": "Chiffres en temps réel depuis notre réseau mondial d'apiculteurs",
     "apiaries": "Ruchers enregistrés",
     "hives": "Ruches surveillées",
-    "inspections": "Inspections enregistrées",
+    "inspections": "Visites enregistrées",
     "countries": "Pays atteints"
   },
   "feat": {
@@ -58,7 +58,7 @@
     "sub": "Du débutant passionné à l'exploitation commerciale, HivePulse évolue avec vous.",
     "qr": {
       "title": "Scannez & partez",
-      "desc": "Collez un QR code sur chaque ruche. Scannez à l'arrivée et commencez l'inspection directement."
+      "desc": "Collez un QR code sur chaque ruche. Scannez à l'arrivée et commencez la visite directement."
     },
     "track": {
       "title": "Suivi intelligent",
@@ -89,7 +89,7 @@
     "li2": "L'acarien varroa est la principale menace pour les colonies d'abeilles gérées",
     "li3": "Pesticides, perte d'habitat et changement climatique aggravent la situation",
     "li4": "Les données en temps réel des apiculteurs sont essentielles pour les systèmes d'alerte précoce",
-    "callout": "Quand vous enregistrez une inspection dans HivePulse, vous ne gérez pas seulement votre ruche — vous ajoutez un point de données à un réseau mondial d'alerte précoce."
+    "callout": "Quand vous enregistrez une visite dans HivePulse, vous ne gérez pas seulement votre ruche — vous ajoutez un point de données à un réseau mondial d'alerte précoce."
   },
   "hex1": {
     "label": "des cultures à fleurs dépendent de la pollinisation animale"
@@ -130,16 +130,16 @@
       "desc": "Publication des applications iOS et Android sur l'App Store et Google Play, pour installer HivePulse sans compiler le code source."
     },
     "remind": {
-      "title": "Rappels d'inspection",
-      "desc": "Notifications push et e-mails quand une ruche est en retard d'inspection – désormais disponibles dans les applications et sur le web."
+      "title": "Rappels de visite",
+      "desc": "Notifications push et e-mails quand une ruche est en retard de visite – désormais disponibles dans les applications et sur le web."
     },
     "export": {
       "title": "Export de données (CSV / JSON)",
-      "desc": "Téléchargez votre historique complet d'inspections en CSV ou JSON — maintenant disponible dans le tableau de bord web."
+      "desc": "Téléchargez votre historique complet de visites en CSV ou JSON — maintenant disponible dans le tableau de bord web."
     },
     "fields": {
       "title": "Champs personnalisés dans les formulaires",
-      "desc": "Définissez vos propres champs d'inspection et utilisez-les directement dans le tableau de bord web — maintenant disponible."
+      "desc": "Définissez vos propres champs de visite et utilisez-les directement dans le tableau de bord web — maintenant disponible."
     },
     "heat": {
       "title": "Cartes thermiques régionales",
@@ -159,7 +159,7 @@
   "price": {
     "free": {
       "tier": "Gratuit pour toujours",
-      "f1": "Ruches & inspections illimitées",
+      "f1": "Ruches & visites illimitées",
       "f2": "Scan QR & génération de lots",
       "f3": "Statistiques de base par ruche",
       "f4": "Contribution aux données communautaires",
@@ -216,7 +216,7 @@
     "stat": {
       "apiaries": "Ruchers",
       "hives": "Ruches",
-      "inspections": "Inspections"
+      "inspections": "Visites"
     },
     "popup": {
       "hiveSingular": "ruche",
@@ -327,9 +327,9 @@
     "updated": "Dernière mise à jour : octobre 2026",
     "intro": "HivePulse est une application d'apiculture open source. Cette politique explique les données que nous collectons, pourquoi nous les utilisons et les choix qui s'offrent à vous, notamment la façon dont vous contrôlez si votre rucher apparaît sur la carte publique.",
     "s1title": "1. Données collectées",
-    "s1body": "Lors de l'inscription : votre adresse e-mail, votre nom d'affichage et votre langue préférée. Lors de l'utilisation de l'app : noms de ruchers et coordonnées GPS (si vous les saisissez), détails des ruches et registres d'inspections. Nous ne collectons ni identifiants d'appareil, ni identifiants publicitaires, ni données de localisation précises sans que vous les saisissiez explicitement.",
+    "s1body": "Lors de l'inscription : votre adresse e-mail, votre nom d'affichage et votre langue préférée. Lors de l'utilisation de l'app : noms de ruchers et coordonnées GPS (si vous les saisissez), détails des ruches et registres de visites. Nous ne collectons ni identifiants d'appareil, ni identifiants publicitaires, ni données de localisation précises sans que vous les saisissiez explicitement.",
     "s2title": "2. Carte publique — opt-in",
-    "s2body": "La carte publique affiche des épingles anonymisées pour visualiser l'activité apicole mondiale. La participation est strictement volontaire (opt-in). Par défaut, chaque rucher que vous créez est privé. Vous pouvez activer 'Afficher sur la carte publique' par rucher dans les paramètres de l'app à tout moment. Lorsqu'activé, l'épingle affiche le nom de votre rucher, ses coordonnées GPS et le nombre de ruches. Aucune identité ou donnée d'inspection n'est jamais partagée publiquement.",
+    "s2body": "La carte publique affiche des épingles anonymisées pour visualiser l'activité apicole mondiale. La participation est strictement volontaire (opt-in). Par défaut, chaque rucher que vous créez est privé. Vous pouvez activer 'Afficher sur la carte publique' par rucher dans les paramètres de l'app à tout moment. Lorsqu'activé, l'épingle affiche le nom de votre rucher, ses coordonnées GPS et le nombre de ruches. Aucune identité ou donnée de visite n'est jamais partagée publiquement.",
     "s3title": "3. Utilisation de vos données",
     "s3body": "Vos données servent uniquement à faire fonctionner l'app et, uniquement si vous acceptez, à afficher votre épingle sur la carte publique et à contribuer aux statistiques globales. Nous ne vendons, n'échangeons ni ne louons vos données personnelles. Nous ne les utilisons pas à des fins publicitaires.",
     "s4title": "4. Prestataires",
@@ -413,10 +413,10 @@
       "presetAll": "Toute la période",
       "apiaries": "Ruchers",
       "hives": "Ruches",
-      "inspections": "Inspections",
+      "inspections": "Visites",
       "perApiary": "Par rucher",
       "apiary": "Rucher",
-      "noData": "Aucune inspection sur cette période."
+      "noData": "Aucune visite sur cette période."
     },
     "profile": {
       "title": "Profil",
@@ -437,13 +437,13 @@
       "badgeSupporter": "Supporteur",
       "memberSince": "Membre depuis",
       "dangerTitle": "Zone de danger",
-      "dangerDesc": "Supprime définitivement votre compte et toutes les données associées — ruchers, ruches, inspections. Cette action est irréversible.",
+      "dangerDesc": "Supprime définitivement votre compte et toutes les données associées — ruchers, ruches, visites. Cette action est irréversible.",
       "deleteAccount": "Supprimer mon compte",
       "deleteConfirm": "Êtes-vous sûr ? Toutes vos données seront définitivement supprimées.",
       "deleteConfirmBtn": "Oui, supprimer mon compte",
       "deleteCancel": "Annuler",
-      "reminderTitle": "Rappels d'inspection",
-      "reminderEnabled": "Envoyer des rappels d'inspection",
+      "reminderTitle": "Rappels de visite",
+      "reminderEnabled": "Envoyer des rappels de visite",
       "reminderInterval": "Me rappeler tous les",
       "reminderIntervalUnit": "jours",
       "reminderSeasonStart": "Début de saison (mois)",
@@ -483,7 +483,7 @@
         "totalApiaries": "Ruchers totaux",
         "publicApiaries": "Ruchers publics",
         "totalHives": "Ruches totales",
-        "totalInspections": "Inspections totales",
+        "totalInspections": "Visites totales",
         "activeUsers": "Utilisateurs actifs (30j)",
         "activeSessions": "Sessions actives",
         "preset": "Période"
@@ -498,7 +498,7 @@
         "joined": "Inscrit",
         "apiaries": "Ruchers",
         "hives": "Ruches",
-        "inspections": "Inspections",
+        "inspections": "Visites",
         "supporter": "Supporter",
         "actions": "Actions",
         "makeSupporter": "Rendre Supporter",
@@ -524,9 +524,9 @@
         "inactiveUsers": "Utilisateurs inactifs",
         "zeroHives": "Ruches non inspectées",
         "noVarroa": "Données varroa manquantes",
-        "inactiveDesc": "Inscrit il y a > 30 jours, aucune inspection",
+        "inactiveDesc": "Inscrit il y a > 30 jours, aucune visite",
         "zeroDesc": "Initialisé mais jamais inspecté",
-        "noVarroaDesc": "Inspections sans comptage varroa",
+        "noVarroaDesc": "Visites sans comptage varroa",
         "email": "E-mail",
         "joined": "Inscrit",
         "apiaries": "Ruchers",
@@ -568,7 +568,7 @@
     },
     "apiary": {
       "hives": "Ruches",
-      "inspections": "Inspections",
+      "inspections": "Visites",
       "avgVarroa": "Varroa moy.",
       "noHives": "Aucune ruche dans ce rucher pour l'instant.",
       "newHive": "Nouvelle ruche",
@@ -588,7 +588,7 @@
       "errorGeneric": "Une erreur est survenue.",
       "moodTitle": "Répartition des humeurs",
       "noMoodData": "Pas encore de données d'humeur.",
-      "lastInspection": "Dernière inspection",
+      "lastInspection": "Dernière visite",
       "colName": "Nom",
       "colType": "Type",
       "never": "Jamais",
@@ -600,10 +600,10 @@
       "partialNote": "{name} a partagé quelques ruches de ce rucher avec vous."
     },
     "hive": {
-      "inspections": "Inspections",
+      "inspections": "Visites",
       "varroaTrend": "Tendance varroa (12 mois)",
       "noTrend": "Pas encore de données varroa.",
-      "noInspections": "Aucune inspection pour l'instant.",
+      "noInspections": "Aucune visite pour l'instant.",
       "date": "Date",
       "varroa": "Varroa",
       "mood": "Humeur",
@@ -620,20 +620,20 @@
       "saveSuccess": "Ruche enregistrée.",
       "dangerTitle": "Zone dangereuse",
       "deleteBtn": "Supprimer la ruche",
-      "deleteConfirmText": "Cela supprimera définitivement la ruche et toutes ses inspections.",
+      "deleteConfirmText": "Cela supprimera définitivement la ruche et toutes ses visites.",
       "deleteConfirmBtn": "Confirmer la suppression",
       "deleteSuccess": "Ruche supprimée.",
       "errorGeneric": "Une erreur est survenue.",
-      "newInspectionBtn": "Nouvelle inspection",
-      "addInspectionTitle": "Enregistrer une inspection",
-      "editInspectionTitle": "Modifier l'inspection",
+      "newInspectionBtn": "Nouvelle visite",
+      "addInspectionTitle": "Enregistrer une visite",
+      "editInspectionTitle": "Modifier la visite",
       "inspectionSaveBtn": "Enregistrer",
       "inspectionUpdateBtn": "Mettre à jour",
-      "inspectionSaveSuccess": "Inspection enregistrée.",
-      "inspectionUpdateSuccess": "Inspection mise à jour.",
+      "inspectionSaveSuccess": "Visite enregistrée.",
+      "inspectionUpdateSuccess": "Visite mise à jour.",
       "inspectionEditBtn": "Modifier",
       "inspectionDeleteBtn": "Supprimer",
-      "inspectionConfirmDeleteText": "Supprimer cette inspection ?",
+      "inspectionConfirmDeleteText": "Supprimer cette visite ?",
       "inspectionConfirmDeleteBtn": "Confirmer",
       "inspectionLoadMore": "Charger plus",
       "inspectionLoadingMore": "Chargement…",
@@ -655,7 +655,7 @@
     },
     "fieldDefs": {
       "title": "Champs personnalisés",
-      "subtitle": "Ajoutez des champs personnalisés à vos formulaires de ruches et d'inspections.",
+      "subtitle": "Ajoutez des champs personnalisés à vos formulaires de ruches et de visites.",
       "empty": "Aucun champ personnalisé pour l'instant.",
       "new": "Nouveau champ",
       "createTitle": "Nouveau champ personnalisé",
@@ -663,7 +663,7 @@
       "name": "Nom du champ",
       "target": "S'applique à",
       "targetHive": "Ruche",
-      "targetInspection": "Inspection",
+      "targetInspection": "Visite",
       "type": "Type de champ",
       "typeText": "Texte",
       "typeNumber": "Nombre",
@@ -687,7 +687,7 @@
       "colRequired": "Obligatoire",
       "colActions": "Actions",
       "apiaryTitle": "Champs du rucher",
-      "apiarySubtitle": "Ces champs s'appliquent uniquement aux ruches et inspections de ce rucher."
+      "apiarySubtitle": "Ces champs s'appliquent uniquement aux ruches et visites de ce rucher."
     },
     "qrBatches": {
       "title": "Lots de codes QR",
@@ -721,7 +721,7 @@
       "avgVarroa": "Varroa moy. (mondial)",
       "goodMood": "Ruches : bonne humeur",
       "avgBrood": "Cadres de couvain moy.",
-      "interval": "Intervalle d'inspection moy.",
+      "interval": "Intervalle de visite moy.",
       "moodChart": "Humeur des ruches",
       "cityChart": "Ruches par ville (Top 15)",
       "sizeChart": "Taille des ruchers",
@@ -903,7 +903,7 @@
     },
     "b1": {
       "title": "Tableau de bord santé mondial",
-      "desc": "Indice varroa en temps réel, distribution du comportement et fréquence d'inspection dans toutes les régions."
+      "desc": "Indice varroa en temps réel, distribution du comportement et fréquence de visite dans toutes les régions."
     },
     "b2": {
       "title": "Graphiques de tendances saisonnières",
@@ -911,7 +911,7 @@
     },
     "b3": {
       "title": "Export complet des données",
-      "desc": "Téléchargez votre historique complet d'inspections en CSV ou JSON."
+      "desc": "Téléchargez votre historique complet de visites en CSV ou JSON."
     },
     "b4": {
       "title": "Cartes thermiques régionales",
@@ -929,7 +929,7 @@
       "avgVarroa": "Varroa moy. (mondial)",
       "goodMood": "Ruches : Bonne humeur",
       "avgBrood": "Cadres de couvain moy.",
-      "interval": "Intervalle d'inspection moy."
+      "interval": "Intervalle de visite moy."
     },
     "coming": {
       "tag": "Maintenant disponible",
@@ -946,7 +946,7 @@
     "groups": {
       "Getting started": "Premiers pas",
       "Managing your apiary": "Gérer votre rucher",
-      "Inspections & data": "Inspections & données",
+      "Inspections & data": "Visites & données",
       "Statistics": "Statistiques",
       "Community & hornets": "Communauté & frelons",
       "Account & settings": "Compte & paramètres"
@@ -969,24 +969,24 @@
         "desc": "Générer des lots de codes QR imprimables, les fixer sur les ruches et les scanner pour ouvrir instantanément la bonne ruche."
       },
       "custom-fields": {
-        "title": "Champs d'inspection personnalisés",
-        "desc": "Étendre le formulaire d'inspection avec vos propres champs — texte, nombres, cases à cocher, listes déroulantes — pour votre compte ou un rucher spécifique."
+        "title": "Champs de visite personnalisés",
+        "desc": "Étendre le formulaire de visite avec vos propres champs — texte, nombres, cases à cocher, listes déroulantes — pour votre compte ou un rucher spécifique."
       },
       "inspections": {
-        "title": "Enregistrer une inspection",
+        "title": "Enregistrer une visite",
         "desc": "Consigner chaque visite d'une ruche : compte varroa, humeur de la colonie, observation de la reine, cadres de couvain, cadres de miel, poids, traitements et plus encore."
       },
       "data-export": {
         "title": "Exporter vos données",
-        "desc": "Télécharger tous les relevés d'inspection d'un rucher en JSON ou CSV pour les partager avec votre vétérinaire, chercheur ou autorité apicole nationale."
+        "desc": "Télécharger tous les relevés de visite d'un rucher en JSON ou CSV pour les partager avec votre vétérinaire, chercheur ou autorité apicole nationale."
       },
       "hive-stats": {
         "title": "Statistiques de la ruche",
-        "desc": "Comprendre la santé de votre ruche dans le temps grâce aux graphiques de tendance varroa, à la distribution de l'humeur, au taux d'observation de la reine et aux intervalles d'inspection."
+        "desc": "Comprendre la santé de votre ruche dans le temps grâce aux graphiques de tendance varroa, à la distribution de l'humeur, au taux d'observation de la reine et aux intervalles de visite."
       },
       "community-stats": {
         "title": "Statistiques communautaires (Membres)",
-        "desc": "Comparer votre rucher à la communauté HivePulse — comptes varroa moyens, taux de bonne humeur, cadres de couvain et intervalles d'inspection de tous les ruchers publics."
+        "desc": "Comparer votre rucher à la communauté HivePulse — comptes varroa moyens, taux de bonne humeur, cadres de couvain et intervalles de visite de tous les ruchers publics."
       },
       "hornet-tracker": {
         "title": "Suivi des frelons",
@@ -997,8 +997,8 @@
         "desc": "Enregistrer un piège physique nommé, saisir les captures journalières avec son code d'accès à 8 caractères et rechercher les pièges à proximité."
       },
       "reminders": {
-        "title": "Rappels d'inspection",
-        "desc": "Définir un intervalle de rappel et une fenêtre saisonnière pour que HivePulse vous notifie quand une ruche est en retard pour une inspection."
+        "title": "Rappels de visite",
+        "desc": "Définir un intervalle de rappel et une fenêtre saisonnière pour que HivePulse vous notifie quand une ruche est en retard pour une visite."
       },
       "account": {
         "title": "Compte & profil",

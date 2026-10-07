@@ -4,10 +4,10 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
   return (
     <>
       <section className="help-section">
-        <h2 className="help-section-title">¿Qué son los recordatorios de inspección?</h2>
+        <h2 className="help-section-title">¿Qué son los recordatorios de revisión?</h2>
         <p>
-          Los recordatorios de inspección te notifican cuando una colmena lleva demasiado tiempo
-          sin una visita según el intervalo que hayas elegido. Las inspecciones regulares son la
+          Los recordatorios de revisión te notifican cuando una colmena lleva demasiado tiempo
+          sin una visita según el intervalo que hayas elegido. Las revisiones regulares son la
           base de un buen manejo de varroa — los recordatorios te ayudan a mantener el ritmo
           incluso en semanas ocupadas.
         </p>
@@ -15,7 +15,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
           <i className="fas fa-info-circle" />
           <p><strong>Las notificaciones push llegarán pronto.</strong> Puedes configurar tus preferencias ahora y se guardarán. Las notificaciones comenzarán a llegar una vez que se active la infraestructura push.</p>
         </div>
-        <Screenshot src="/docs/screenshots/android-settings-reminders.png" caption="Sección de recordatorios de inspección en Ajustes con el interruptor y el selector de intervalo" />
+        <Screenshot src="/docs/screenshots/android-settings-reminders.png" caption="Sección de recordatorios de revisión en Ajustes con el interruptor y el selector de intervalo" />
       </section>
 
       <section className="help-section">
@@ -31,7 +31,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
           <li>
             <span className="help-step-num">2</span>
             <div className="help-step-body">
-              <strong>Desplázate hasta Recordatorios de inspección</strong>
+              <strong>Desplázate hasta Recordatorios de revisión</strong>
               <p>Activa el interruptor para habilitar los recordatorios.</p>
             </div>
           </li>
@@ -39,7 +39,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
             <span className="help-step-num">3</span>
             <div className="help-step-body">
               <strong>Establece el intervalo de recordatorio</strong>
-              <p>Elige cuántos días después de la última inspección quieres recibir un recordatorio. Una elección habitual es 7 días durante la temporada activa.</p>
+              <p>Elige cuántos días después de la última revisión quieres recibir un recordatorio. Una elección habitual es 7 días durante la temporada activa.</p>
             </div>
           </li>
           <li>
@@ -64,7 +64,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name">Intervalo de recordatorio</div>
             <div className="help-stat-card-desc">
-              Número de días después de la inspección más reciente antes de que se active un recordatorio.
+              Número de días después de la revisión más reciente antes de que se active un recordatorio.
               Opciones habituales: 7 días (semanal) para el manejo activo de varroa, 14 días para
               apicultores de mano ligera, 21–28 días para apicultores naturales.
             </div>
@@ -72,7 +72,7 @@ export default function RemindersContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name">Inicio de temporada</div>
             <div className="help-stat-card-desc">
-              El primer mes de la temporada activa de inspección. Los recordatorios no se activarán antes de este mes.
+              El primer mes de la temporada activa de revisión. Los recordatorios no se activarán antes de este mes.
               En Europa del Norte suele ser abril o mayo.
             </div>
           </div>

@@ -6,12 +6,12 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
       <section className="help-section">
         <h2 className="help-section-title">Was ist HivePulse?</h2>
         <p>
-          HivePulse ist eine Imkerei-Inspektions- und Community-Plattform für iOS, Android und das Web.
+          HivePulse ist eine Imkerei-Kontroll und Community-Plattform für iOS, Android und das Web.
           Sie können jeden Bienenstockbesuch dokumentieren — Varroazählung, Volksstimmung, Königinnensichtungen,
           Brutwaben und mehr — und diese Daten in Diagramme und Trendanalysen über Zeit umwandeln.
         </p>
         <p>
-          Jede Inspektion, die Sie aufzeichnen, trägt (anonym) zur plattformweiten Statistik bei,
+          Jede Kontrolle, die Sie aufzeichnen, trägt (anonym) zur plattformweiten Statistik bei,
           die der breiteren Imker-Gemeinschaft hilft, regionale Trends zur Völkergesundheit zu verstehen.
         </p>
         <Screenshot src="/docs/screenshots/dashboard-apiary-list.png" caption="HivePulse-Dashboard mit Übersicht des Bienenstands und Völkerliste" />
@@ -31,7 +31,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
             <div className="help-stat-card-name"><i className="fab fa-apple" style={{ marginRight: 6 }} />iOS-App</div>
             <div className="help-stat-card-desc">
               Native iPhone-App für den Feldeinsatz optimiert. Scannen Sie den QR-Code auf einem Bienenstock,
-              um ihn sofort zu öffnen, eine Inspektion zu protokollieren und Völkerstatistiken anzuzeigen — ohne Browser.
+              um ihn sofort zu öffnen, eine Kontrolle zu protokollieren und Völkerstatistiken anzuzeigen — ohne Browser.
             </div>
           </div>
           <div className="help-stat-card">
@@ -99,14 +99,14 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           <li>
             <span className="help-step-num">4</span>
             <div className="help-step-body">
-              <strong>Erste Inspektion protokollieren</strong>
-              <p>Scannen Sie den QR-Code mit Ihrem Handy, tippen Sie auf <em>Neue Inspektion</em> und tragen Sie Ihre Beobachtungen ein.</p>
+              <strong>Erste Kontrolle protokollieren</strong>
+              <p>Scannen Sie den QR-Code mit Ihrem Handy, tippen Sie auf <em>Neue Kontrolle</em> und tragen Sie Ihre Beobachtungen ein.</p>
             </div>
           </li>
         </ol>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Protokollieren Sie Inspektionen regelmäßig — auch wenn Sie nur die Varroazählung notieren — und HivePulse erstellt nach einigen Besuchen aussagekräftige Trenddiagramme.</p>
+          <p>Protokollieren Sie Kontrollen regelmäßig — auch wenn Sie nur die Varroazählung notieren — und HivePulse erstellt nach einigen Besuchen aussagekräftige Trenddiagramme.</p>
         </div>
       </section>
       <section className="help-section">

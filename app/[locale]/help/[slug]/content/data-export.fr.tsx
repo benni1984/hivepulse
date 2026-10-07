@@ -6,7 +6,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
       <section className="help-section">
         <h2 className="help-section-title">Pourquoi exporter ?</h2>
         <p>
-          Vos données d'inspection vous appartiennent. L'exportation vous donne une copie locale que vous pouvez partager
+          Vos données de visite vous appartiennent. L'exportation vous donne une copie locale que vous pouvez partager
           avec votre vétérinaire, soumettre à une autorité apicole nationale, utiliser dans un tableur pour
           une analyse personnalisée, ou archiver comme enregistrement à long terme indépendant de HivePulse.
         </p>
@@ -27,7 +27,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
           <div className="help-stat-card">
             <div className="help-stat-card-name">CSV</div>
             <div className="help-stat-card-desc">
-              Compatible avec les tableurs. Chaque inspection est une ligne. S'ouvre directement dans Excel, Google
+              Compatible avec les tableurs. Chaque visite est une ligne. S'ouvre directement dans Excel, Google
               Sheets ou Numbers. Les champs personnalisés sont inclus comme colonnes supplémentaires.
               Idéal pour l'analyse manuelle ou le partage avec des parties prenantes non techniques.
             </div>
@@ -49,7 +49,7 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
             <span className="help-step-num">2</span>
             <div className="help-step-body">
               <strong>Sélectionner le rucher</strong>
-              <p>Si vous avez plusieurs ruchers, choisissez lequel exporter. Chaque export couvre toutes les ruches et inspections de ce rucher.</p>
+              <p>Si vous avez plusieurs ruchers, choisissez lequel exporter. Chaque export couvre toutes les ruches et visites de ce rucher.</p>
             </div>
           </li>
           <li>
@@ -107,13 +107,13 @@ export default function DataExportContent({ Screenshot }: { Screenshot: typeof H
         <h2 className="help-section-title">Ce qui est inclus dans l'export</h2>
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li>Toutes les ruches du rucher sélectionné</li>
-          <li>Chaque inspection pour chaque ruche, avec tous les champs intégrés</li>
+          <li>Chaque visite pour chaque ruche, avec tous les champs intégrés</li>
           <li>Toutes les valeurs des champs personnalisés</li>
-          <li>Les dates d'inspection et les horodatages de création</li>
+          <li>Les dates de visite et les horodatages de création</li>
         </ul>
         <div className="help-callout info">
           <i className="fas fa-info-circle" />
-          <p>Les exports n'incluent pas les photos (HivePulse ne stocke pas les photos d'inspection). Ils n'incluent pas non plus les données des jetons QR ou les informations sur les lots.</p>
+          <p>Les exports n'incluent pas les photos (HivePulse ne stocke pas les photos de visite). Ils n'incluent pas non plus les données des jetons QR ou les informations sur les lots.</p>
         </div>
       </section>
     </>

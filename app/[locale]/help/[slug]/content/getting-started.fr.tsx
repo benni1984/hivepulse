@@ -6,12 +6,12 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
       <section className="help-section">
         <h2 className="help-section-title">Qu'est-ce que HivePulse ?</h2>
         <p>
-          HivePulse est une plateforme d'inspection apicole et communautaire pour iOS, Android et le web.
+          HivePulse est une plateforme de visite apicole et communautaire pour iOS, Android et le web.
           Elle vous permet de consigner chaque visite de ruche — comptages varroa, humeur de la colonie, observations de la reine, cadres de couvain,
           et plus encore — et transforme ces données en graphiques et analyses de tendances au fil du temps.
         </p>
         <p>
-          Chaque inspection que vous enregistrez contribue également (anonymement) aux statistiques à l'échelle de la plateforme
+          Chaque visite que vous enregistrez contribue également (anonymement) aux statistiques à l'échelle de la plateforme
           qui aident la communauté apicole à comprendre les tendances de santé des colonies dans les régions.
         </p>
         <Screenshot src="/docs/screenshots/dashboard-apiary-list.png" caption="Tableau de bord HivePulse affichant une vue d'ensemble du rucher et la liste des ruches" />
@@ -31,7 +31,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
             <div className="help-stat-card-name"><i className="fab fa-apple" style={{ marginRight: 6 }} />Application iOS</div>
             <div className="help-stat-card-desc">
               Application iPhone native optimisée pour une utilisation sur le terrain. Scannez un QR code sur une ruche pour l'ouvrir instantanément,
-              enregistrer une inspection et consulter les statistiques — sans ouvrir un navigateur.
+              enregistrer une visite et consulter les statistiques — sans ouvrir un navigateur.
             </div>
           </div>
           <div className="help-stat-card">
@@ -99,14 +99,14 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           <li>
             <span className="help-step-num">4</span>
             <div className="help-step-body">
-              <strong>Enregistrer votre première inspection</strong>
-              <p>Scannez le QR code avec votre téléphone, appuyez sur <em>Nouvelle inspection</em> et notez ce que vous observez.</p>
+              <strong>Enregistrer votre première visite</strong>
+              <p>Scannez le QR code avec votre téléphone, appuyez sur <em>Nouvelle visite</em> et notez ce que vous observez.</p>
             </div>
           </li>
         </ol>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Enregistrez les inspections régulièrement — même si vous ne notez que le comptage varroa — et HivePulse créera des graphiques de tendances significatifs après quelques visites.</p>
+          <p>Enregistrez les visites régulièrement — même si vous ne notez que le comptage varroa — et HivePulse créera des graphiques de tendances significatifs après quelques visites.</p>
         </div>
       </section>
       <section className="help-section">

@@ -78,7 +78,7 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
         <h2 className="help-section-title">Supprimer votre compte</h2>
         <p>
           Supprimer votre compte supprime définitivement votre adresse e-mail, votre nom d'affichage, tous les ruchers,
-          toutes les ruches et tous les enregistrements d'inspection. Cette action <strong>ne peut pas être annulée</strong>.
+          toutes les ruches et tous les enregistrements de visite. Cette action <strong>ne peut pas être annulée</strong>.
         </p>
         <ol className="help-steps">
           <li>
@@ -105,7 +105,7 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
         </ol>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Vos données d'inspection ont peut-être contribué aux statistiques communautaires. Supprimer votre compte retire vos données des futurs agrégats communautaires, mais les statistiques historiques déjà calculées ne sont pas recalculées rétroactivement.</p>
+          <p>Vos données de visite ont peut-être contribué aux statistiques communautaires. Supprimer votre compte retire vos données des futurs agrégats communautaires, mais les statistiques historiques déjà calculées ne sont pas recalculées rétroactivement.</p>
         </div>
       </section>
 

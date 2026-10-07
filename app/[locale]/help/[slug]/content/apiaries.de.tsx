@@ -12,7 +12,7 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
         </p>
         <p>
           Bienenstände können <strong>öffentlich</strong> gemacht werden, wodurch eine Kartennadel auf der Community-Karte
-          erscheint und Ihre anonymisierten Inspektionsdaten zur plattformweiten Statistik beitragen, die
+          erscheint und Ihre anonymisierten Kontrolldaten zur plattformweiten Statistik beitragen, die
           alle Imker auf dem Mitglieder-Bildschirm sehen können.
         </p>
         <Screenshot src="/docs/screenshots/dashboard-apiary-list.png" caption="Bienenstandliste im Web-Dashboard mit zwei Bienenständen und Völkeranzahl" />
@@ -84,13 +84,13 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
           <div className="help-stat-card">
             <div className="help-stat-card-name">Privat (Standard)</div>
             <div className="help-stat-card-desc">
-              Nur Sie können den Bienenstand, seine Völker und alle Inspektionsdaten sehen. Nichts wird mit der Community geteilt.
+              Nur Sie können den Bienenstand, seine Völker und alle Kontrolldaten sehen. Nichts wird mit der Community geteilt.
             </div>
           </div>
           <div className="help-stat-card">
             <div className="help-stat-card-name">Öffentlich</div>
             <div className="help-stat-card-desc">
-              Eine Kartennadel erscheint auf der Community-Karte an Ihren GPS-Koordinaten. Ihre Inspektionsdaten
+              Eine Kartennadel erscheint auf der Community-Karte an Ihren GPS-Koordinaten. Ihre Kontrolldaten
               fließen in die plattformweite Statistik ein (nur Durchschnittswerte — einzelne Datensätze werden nie veröffentlicht).
               Es werden keine personenbezogenen Daten veröffentlicht.
             </div>
@@ -111,7 +111,7 @@ export default function AviariesContent({ Screenshot }: { Screenshot: typeof Hel
         </p>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Das Löschen eines Bienenstands ist dauerhaft — alle Völker und ihre Inspektionshistorie gehen verloren. Exportieren Sie Ihre Daten zuerst, wenn Sie eine Kopie benötigen.</p>
+          <p>Das Löschen eines Bienenstands ist dauerhaft — alle Völker und ihre Kontrollhistorie gehen verloren. Exportieren Sie Ihre Daten zuerst, wenn Sie eine Kopie benötigen.</p>
         </div>
       </section>
     </>

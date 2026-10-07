@@ -257,8 +257,8 @@
     <string name="hornet_traps_back">Retour</string>
 
     <!-- Inspection reminders -->
-    <string name="section_reminders">Rappels d\'inspection</string>
-    <string name="reminder_enabled">Envoyer des rappels d\'inspection</string>
+    <string name="section_reminders">Rappels d\'visite</string>
+    <string name="reminder_enabled">Envoyer des rappels d\'visite</string>
     <string name="reminder_email_enabled">Me notifier aussi par e-mail</string>
     <string name="reminder_email_hint">Les notifications push arrivent dans cette application. Les rappels par e-mail vous parviennent même si vous n\'utilisez que le site web — les deux canaux partagent le même compte, ces réglages s\'appliquent donc partout.</string>
     <string name="reminder_interval_label">Me rappeler tous les</string>

@@ -413,10 +413,10 @@
       "presetAll": "Gesamte Zeit",
       "apiaries": "Bienenstände",
       "hives": "Völker",
-      "inspections": "Inspektionen",
+      "inspections": "Kontrollen",
       "perApiary": "Nach Bienenstand",
       "apiary": "Bienenstand",
-      "noData": "Keine Inspektionen in diesem Zeitraum."
+      "noData": "Keine Kontrollen in diesem Zeitraum."
     },
     "profile": {
       "title": "Profil",
@@ -442,8 +442,8 @@
       "deleteConfirm": "Bist du sicher? Alle deine Daten werden dauerhaft gelöscht.",
       "deleteConfirmBtn": "Ja, Konto löschen",
       "deleteCancel": "Abbrechen",
-      "reminderTitle": "Inspektionserinnerungen",
-      "reminderEnabled": "Inspektionserinnerungen senden",
+      "reminderTitle": "Kontrollerinnerungen",
+      "reminderEnabled": "Kontrollerinnerungen senden",
       "reminderInterval": "Erinnerung alle",
       "reminderIntervalUnit": "Tage",
       "reminderSeasonStart": "Saisonbeginn (Monat)",
@@ -611,7 +611,7 @@
       "brood": "Bruträhmchen",
       "yes": "Ja",
       "no": "Nein",
-      "hiveType": "Bienenstock-Typ",
+      "hiveType": "Beutentyp",
       "acquisitionDate": "Anschaffungsdatum",
       "notes": "Notizen",
       "editBtn": "Volk bearbeiten",
@@ -721,7 +721,7 @@
       "avgVarroa": "Ø Varroa (global)",
       "goodMood": "Völker: gute Stimmung",
       "avgBrood": "Ø Brutwaben",
-      "interval": "Ø Inspektionsintervall",
+      "interval": "Ø Kontrollintervall",
       "moodChart": "Völkerstimmung",
       "cityChart": "Völker nach Stadt (Top 15)",
       "sizeChart": "Bienenstandgröße",
@@ -946,7 +946,7 @@
     "groups": {
       "Getting started": "Erste Schritte",
       "Managing your apiary": "Ihren Bienenstand verwalten",
-      "Inspections & data": "Inspektionen & Daten",
+      "Inspections & data": "Kontrollen & Daten",
       "Statistics": "Statistiken",
       "Community & hornets": "Gemeinschaft & Hornissen",
       "Account & settings": "Konto & Einstellungen"
@@ -969,24 +969,24 @@
         "desc": "Druckbare QR-Code-Chargen erstellen, an Beutenboxen befestigen und scannen, um sofort das richtige Volk zu öffnen."
       },
       "custom-fields": {
-        "title": "Benutzerdefinierte Inspektionsfelder",
-        "desc": "Das integrierte Inspektionsformular mit eigenen Feldern erweitern — Text, Zahlen, Checkboxen, Dropdown-Listen — für das gesamte Konto oder einen bestimmten Bienenstand."
+        "title": "Benutzerdefinierte Kontrollfelder",
+        "desc": "Das integrierte Kontrollformular mit eigenen Feldern erweitern — Text, Zahlen, Checkboxen, Dropdown-Listen — für das gesamte Konto oder einen bestimmten Bienenstand."
       },
       "inspections": {
-        "title": "Eine Inspektion erfassen",
+        "title": "Eine Kontrolle erfassen",
         "desc": "Jeden Besuch an einem Volk festhalten: Varroa-Zahl, Volksstimmung, Königinnennachweis, Brutwaben, Honigwaben, Gewicht, Behandlungen und mehr."
       },
       "data-export": {
         "title": "Daten exportieren",
-        "desc": "Alle Inspektionsdaten eines Bienenstands als JSON oder CSV herunterladen — für Tierarzt, Forschungseinrichtung oder Imkerverband."
+        "desc": "Alle Kontrolldaten eines Bienenstands als JSON oder CSV herunterladen — für Tierarzt, Forschungseinrichtung oder Imkerverband."
       },
       "hive-stats": {
         "title": "Volksstatistiken",
-        "desc": "Die Volksgesundheit im Zeitverlauf verstehen: Varroa-Trenddiagramme, Stimmungsverteilung, Königinnen-Sichtungsrate, Brutwabenzahl und Inspektionsintervalle."
+        "desc": "Die Volksgesundheit im Zeitverlauf verstehen: Varroa-Trenddiagramme, Stimmungsverteilung, Königinnen-Sichtungsrate, Brutwabenzahl und Kontrollintervalle."
       },
       "community-stats": {
         "title": "Gemeinschaftsstatistiken (Mitglieder)",
-        "desc": "Ihren Bienenstand mit der HivePulse-Gemeinschaft vergleichen — durchschnittliche Varroa-Zahlen, gute-Stimmung-Raten, Brutwabenzahlen und Inspektionsintervalle aller öffentlichen Bienenstände."
+        "desc": "Ihren Bienenstand mit der HivePulse-Gemeinschaft vergleichen — durchschnittliche Varroa-Zahlen, gute-Stimmung-Raten, Brutwabenzahlen und Kontrollintervalle aller öffentlichen Bienenstände."
       },
       "hornet-tracker": {
         "title": "Hornissentracker",
@@ -997,8 +997,8 @@
         "desc": "Eine benannte physische Falle registrieren, tägliche Fangzahlen mit dem 8-stelligen Zugangscode erfassen und nach Fallen in der Nähe suchen."
       },
       "reminders": {
-        "title": "Inspektionserinnerungen",
-        "desc": "Ein Erinnerungsintervall und ein Saisonfenster festlegen, damit HivePulse Sie benachrichtigt, wenn ein Volk überfällig für eine Inspektion ist."
+        "title": "Kontrollerinnerungen",
+        "desc": "Ein Erinnerungsintervall und ein Saisonfenster festlegen, damit HivePulse Sie benachrichtigt, wenn ein Volk überfällig für eine Kontrolle ist."
       },
       "account": {
         "title": "Konto & Profil",

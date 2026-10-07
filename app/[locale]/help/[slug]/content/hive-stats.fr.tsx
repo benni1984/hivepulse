@@ -6,7 +6,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
       <section className="help-section">
         <h2 className="help-section-title">Que sont les statistiques de ruche ?</h2>
         <p>
-          Les statistiques de ruche transforment votre historique d'inspection en graphiques et chiffres résumés, facilitant
+          Les statistiques de ruche transforment votre historique de visite en graphiques et chiffres résumés, facilitant
           la détection de tendances que vous manqueriez en examinant des enregistrements individuels. Les statistiques sont disponibles sur l'écran de
           détail de la ruche sur toutes les plateformes.
         </p>
@@ -28,7 +28,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-chart-line" style={{ marginRight: 6, color: '#f59e0b' }} />Tendance du comptage varroa</div>
             <div className="help-stat-card-desc">
-              Un graphique en courbes de vos comptages varroa au fil du temps. L'axe x est la date d'inspection ; l'axe y
+              Un graphique en courbes de vos comptages varroa au fil du temps. L'axe x est la date de visite ; l'axe y
               est les acariens pour 100 abeilles. Regardez la pente : une ligne montante signifie que la charge en acariens augmente
               et qu'un traitement pourrait être nécessaire prochainement.
             </div>
@@ -59,7 +59,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-egg" style={{ marginRight: 6, color: '#8b5cf6' }} />Cadres de couvain</div>
             <div className="help-stat-card-desc">
-              Nombre moyen de cadres de couvain enregistrés par inspection dans la période sélectionnée.
+              Nombre moyen de cadres de couvain enregistrés par visite dans la période sélectionnée.
               Suit la croissance de la colonie au cours de la saison — vous attendez une hausse au printemps, un pic en
               début d'été, puis un déclin en automne.
             </div>
@@ -75,15 +75,15 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           </div>
 
           <div className="help-stat-card">
-            <div className="help-stat-card-name"><i className="fas fa-calendar" style={{ marginRight: 6, color: '#0ea5e9' }} />Inspections par période</div>
+            <div className="help-stat-card-name"><i className="fas fa-calendar" style={{ marginRight: 6, color: '#0ea5e9' }} />Visites par période</div>
             <div className="help-stat-card-desc">
-              Nombre total d'inspections enregistrées dans la période sélectionnée. Une fréquence d'inspection cohérente
+              Nombre total d'inspections enregistrées dans la période sélectionnée. Une fréquence de visite cohérente
               (tous les 7–14 jours en pleine saison) donne les données de tendances les plus fiables.
             </div>
           </div>
         </div>
 
-        <Screenshot src="/docs/screenshots/hive-stats-overview.png" caption="Graphique en courbes de tendance varroa avec les dates d'inspection sur l'axe x" />
+        <Screenshot src="/docs/screenshots/hive-stats-overview.png" caption="Graphique en courbes de tendance varroa avec les dates de visite sur l'axe x" />
       </section>
 
       <section className="help-section">
@@ -115,7 +115,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
         <h2 className="help-section-title">Conseils pour de meilleures statistiques</h2>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Les statistiques s'améliorent considérablement avec des données cohérentes. Même en enregistrant juste le comptage varroa et l'humeur à chaque visite, vous obtenez des courbes de tendances significatives après quatre ou cinq inspections.</p>
+          <p>Les statistiques s'améliorent considérablement avec des données cohérentes. Même en enregistrant juste le comptage varroa et l'humeur à chaque visite, vous obtenez des courbes de tendances significatives après quatre ou cinq visites.</p>
         </div>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />

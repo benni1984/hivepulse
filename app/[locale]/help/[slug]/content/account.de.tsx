@@ -78,7 +78,7 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
         <h2 className="help-section-title">Konto löschen</h2>
         <p>
           Das Löschen Ihres Kontos entfernt dauerhaft Ihre E-Mail-Adresse, den Anzeigenamen, alle Bienenstände,
-          alle Völker und alle Inspektionseinträge. Diese Aktion <strong>kann nicht rückgängig gemacht werden</strong>.
+          alle Völker und alle Kontrolleinträge. Diese Aktion <strong>kann nicht rückgängig gemacht werden</strong>.
         </p>
         <ol className="help-steps">
           <li>
@@ -105,7 +105,7 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
         </ol>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Ihre Inspektionsdaten haben möglicherweise zur Community-Statistik beigetragen. Das Löschen Ihres Kontos entfernt Ihre Daten aus zukünftigen Community-Aggregaten, aber bereits berechnete historische Statistiken werden nicht rückwirkend neu berechnet.</p>
+          <p>Ihre Kontrolldaten haben möglicherweise zur Community-Statistik beigetragen. Das Löschen Ihres Kontos entfernt Ihre Daten aus zukünftigen Community-Aggregaten, aber bereits berechnete historische Statistiken werden nicht rückwirkend neu berechnet.</p>
         </div>
       </section>
 

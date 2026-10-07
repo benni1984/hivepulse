@@ -8,7 +8,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
         <p>
           Cuando está en el colmenar con guantes, encontrar la colmena correcta en una aplicación de teléfono es lento.
           Una etiqueta de código QR en cada colmena le permite escanear y abrir en menos de dos segundos — la pantalla de detalles
-          de la colmena correcta se abre instantáneamente, lista para una nueva inspección.
+          de la colmena correcta se abre instantáneamente, lista para una nueva revisión.
         </p>
         <Screenshot android="/docs/screenshots/android-qr-batches.png" web="/docs/screenshots/qr-batch-detail.png" caption="Etiqueta de código QR en una colmena, lista para ser escaneada" />
       </section>
@@ -84,7 +84,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
       </section>
 
       <section className="help-section">
-        <h2 className="help-section-title">Paso 3 — Escanear para abrir durante las inspecciones</h2>
+        <h2 className="help-section-title">Paso 3 — Escanear para abrir durante las revisiones</h2>
         <ol className="help-steps">
           <li>
             <span className="help-step-num">1</span>
@@ -103,7 +103,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
           <li>
             <span className="help-step-num">3</span>
             <div className="help-step-body">
-              <strong>Tocar Nueva inspección</strong>
+              <strong>Tocar Nueva revisión</strong>
               <p>Ahora está en la colmena correcta, listo para registrar su visita.</p>
             </div>
           </li>
