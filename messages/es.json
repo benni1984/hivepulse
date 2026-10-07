@@ -417,7 +417,8 @@
       "members": "Comunidad",
       "openMenu": "Abrir menú del panel",
       "closeMenu": "Cerrar menú del panel",
-      "releaseNotes": "Notas de versión"
+      "releaseNotes": "Notas de versión",
+      "calendar": "Año apícola"
     },
     "overview": {
       "title": "Mis estadísticas",
@@ -480,7 +481,18 @@
         "10": "Octubre",
         "11": "Noviembre",
         "12": "Diciembre"
-      }
+      },
+      "regionTitle": "Región para el año apícola",
+      "regionIntro": "El país y el código postal adaptan el año apícola a tu lugar: la floración llega antes en el sur y más tarde en el norte. Solo se guarda la posición, no la dirección.",
+      "regionCountry": "País",
+      "regionCountryNone": "— sin indicar —",
+      "regionPostal": "Código postal",
+      "regionAdjust": "Ajustar a mano (días)",
+      "regionAdjustHint": "Positivo es más tarde, negativo antes: para un valle de montaña o un jardín resguardado. Entre −28 y 28.",
+      "regionSave": "Guardar la región",
+      "regionSaved": "Región guardada.",
+      "regionError": "No se pudo guardar la región.",
+      "regionNotLocated": "No se encontró ese código postal, así que las fechas siguen tu primer colmenar o el centro de Alemania."
     },
     "admin": {
       "nav": {
@@ -827,6 +839,37 @@
         "sunflower": "Girasol",
         "lavender": "Lavanda",
         "other": "Otra"
+      }
+    },
+    "calendar": {
+      "title": "Año apícola",
+      "intro": "Qué hacer y cuándo, mes a mes, para tu lugar. Desplázate hacia arriba y hacia abajo: el año se repite.",
+      "loading": "Cargando",
+      "loadError": "No se pudo cargar el calendario.",
+      "loadingEarlier": "Cargando antes…",
+      "loadingLater": "Cargando después…",
+      "today": "Hoy, {date}",
+      "now": "Ahora",
+      "interval": "Como máximo cada {days} días",
+      "regionNone": "Fechas para el centro de Alemania. Indica tu región para adaptarlas a tu lugar.",
+      "regionFromApiary": "tu primer colmenar",
+      "regionNoShift": "{place}: las mismas fechas que en el centro de Alemania",
+      "regionLater": "{place}: {days} días más tarde que en el centro de Alemania",
+      "regionEarlier": "{place}: {days} días antes que en el centro de Alemania",
+      "notLocated": "No se encontró ese código postal.",
+      "setRegion": "Indicar la región",
+      "changeRegion": "Cambiar la región",
+      "disclaimer": "Valores orientativos de la práctica apícola habitual, no normas: la floración y el tiempo deciden, y las fechas cambian con tu lugar. Medicamentos solo según la autorización y las normas de tu país; en caso de duda, pregunta a tu asociación de apicultores o a la autoridad veterinaria.",
+      "categories": {
+        "inspection": "Revisión",
+        "swarm": "Enjambrazón",
+        "feeding": "Alimentación",
+        "varroa": "Varroa",
+        "harvest": "Cosecha",
+        "migration": "Trashumancia",
+        "bloom": "Floración",
+        "care": "Cuidado",
+        "winter": "Invierno"
       }
     },
     "home": {

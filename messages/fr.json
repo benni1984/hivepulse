@@ -417,7 +417,8 @@
       "members": "Communauté",
       "openMenu": "Ouvrir le menu du tableau de bord",
       "closeMenu": "Fermer le menu du tableau de bord",
-      "releaseNotes": "Notes de version"
+      "releaseNotes": "Notes de version",
+      "calendar": "Année apicole"
     },
     "overview": {
       "title": "Mes statistiques",
@@ -480,7 +481,18 @@
         "10": "Octobre",
         "11": "Novembre",
         "12": "Décembre"
-      }
+      },
+      "regionTitle": "Région pour l’année apicole",
+      "regionIntro": "Le pays et le code postal adaptent l’année apicole à votre lieu : la floraison vient plus tôt dans le sud et plus tard dans le nord. Seule la position est conservée, pas l’adresse.",
+      "regionCountry": "Pays",
+      "regionCountryNone": "— non indiqué —",
+      "regionPostal": "Code postal",
+      "regionAdjust": "Ajuster à la main (jours)",
+      "regionAdjustHint": "Positif veut dire plus tard, négatif plus tôt : pour une vallée de montagne ou un jardin abrité. Entre −28 et 28.",
+      "regionSave": "Enregistrer la région",
+      "regionSaved": "Région enregistrée.",
+      "regionError": "La région n’a pas pu être enregistrée.",
+      "regionNotLocated": "Ce code postal n’a pas été trouvé ; les dates suivent donc votre premier rucher ou le centre de l’Allemagne."
     },
     "admin": {
       "nav": {
@@ -827,6 +839,37 @@
         "sunflower": "Tournesol",
         "lavender": "Lavande",
         "other": "Autre"
+      }
+    },
+    "calendar": {
+      "title": "Année apicole",
+      "intro": "Ce qu’il y a à faire et quand, mois par mois, pour votre lieu. Faites défiler vers le haut et le bas : l’année se répète.",
+      "loading": "Chargement",
+      "loadError": "Le calendrier n’a pas pu être chargé.",
+      "loadingEarlier": "Chargement des mois précédents…",
+      "loadingLater": "Chargement des mois suivants…",
+      "today": "Aujourd’hui, {date}",
+      "now": "Maintenant",
+      "interval": "Au plus tard tous les {days} jours",
+      "regionNone": "Dates pour le centre de l’Allemagne. Indiquez votre région pour les adapter à votre lieu.",
+      "regionFromApiary": "votre premier rucher",
+      "regionNoShift": "{place} : les mêmes dates que dans le centre de l’Allemagne",
+      "regionLater": "{place} : {days} jours plus tard que dans le centre de l’Allemagne",
+      "regionEarlier": "{place} : {days} jours plus tôt que dans le centre de l’Allemagne",
+      "notLocated": "Ce code postal n’a pas été trouvé.",
+      "setRegion": "Indiquer la région",
+      "changeRegion": "Changer la région",
+      "disclaimer": "Valeurs indicatives tirées de la pratique apicole habituelle, pas des règles : la floraison et la météo décident, et les dates se décalent selon votre lieu. Médicaments uniquement selon l’autorisation et les règles de votre pays ; en cas de doute, demandez à votre syndicat apicole ou à la direction départementale de la protection des populations.",
+      "categories": {
+        "inspection": "Visite",
+        "swarm": "Essaimage",
+        "feeding": "Nourrissement",
+        "varroa": "Varroa",
+        "harvest": "Récolte",
+        "migration": "Transhumance",
+        "bloom": "Floraison",
+        "care": "Entretien",
+        "winter": "Hiver"
       }
     },
     "home": {

@@ -417,7 +417,8 @@
       "members": "Community",
       "openMenu": "Open dashboard menu",
       "closeMenu": "Close dashboard menu",
-      "releaseNotes": "Release notes"
+      "releaseNotes": "Release notes",
+      "calendar": "Beekeeping year"
     },
     "overview": {
       "title": "My Statistics",
@@ -480,7 +481,18 @@
         "10": "October",
         "11": "November",
         "12": "December"
-      }
+      },
+      "regionTitle": "Region for the beekeeping year",
+      "regionIntro": "Country and postal code move the beekeeping year to your place: the bloom comes earlier in the south and later in the north. Only the position is kept, not the address.",
+      "regionCountry": "Country",
+      "regionCountryNone": "— not set —",
+      "regionPostal": "Postal code",
+      "regionAdjust": "Adjust by hand (days)",
+      "regionAdjustHint": "Positive is later, negative earlier: for a mountain valley or a sheltered garden. Between −28 and 28.",
+      "regionSave": "Save region",
+      "regionSaved": "Region saved.",
+      "regionError": "The region could not be saved.",
+      "regionNotLocated": "That postal code was not found, so the dates follow your first apiary or central Germany."
     },
     "admin": {
       "nav": {
@@ -827,6 +839,37 @@
         "sunflower": "Sunflower",
         "lavender": "Lavender",
         "other": "Other"
+      }
+    },
+    "calendar": {
+      "title": "Beekeeping year",
+      "intro": "What to do when, month by month, for your place. Scroll up and down: the year repeats.",
+      "loading": "Loading",
+      "loadError": "The calendar could not be loaded.",
+      "loadingEarlier": "Loading earlier…",
+      "loadingLater": "Loading later…",
+      "today": "Today, {date}",
+      "now": "Now",
+      "interval": "Every {days} days at the latest",
+      "regionNone": "Dates for central Germany. Set your region to move them to your place.",
+      "regionFromApiary": "your first apiary",
+      "regionNoShift": "{place}: the same dates as in central Germany",
+      "regionLater": "{place}: {days} days later than in central Germany",
+      "regionEarlier": "{place}: {days} days earlier than in central Germany",
+      "notLocated": "That postal code was not found.",
+      "setRegion": "Set region",
+      "changeRegion": "Change region",
+      "disclaimer": "Guide values from usual beekeeping practice, not rules: bloom and weather decide, and the dates move with your place. Medicines only as approved and prescribed in your country; when in doubt, ask your beekeepers’ association or veterinary office.",
+      "categories": {
+        "inspection": "Inspection",
+        "swarm": "Swarm control",
+        "feeding": "Feeding",
+        "varroa": "Varroa",
+        "harvest": "Harvest",
+        "migration": "Moving",
+        "bloom": "Bloom",
+        "care": "Care",
+        "winter": "Winter"
       }
     },
     "home": {

@@ -1,15 +1,20 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
-import { updateMe, deleteMe, getReminderSettings, updateReminderSettings, ReminderSettings } from '@/lib/api';
+import {
+  updateMe, deleteMe, getReminderSettings, updateReminderSettings, ReminderSettings,
+  getRegion, updateRegion, type Region,
+} from '@/lib/api';
+import { COUNTRY_CODES, countryName } from '@/lib/calendar';
 import { useDashboardAuth } from '@/hooks/useDashboardAuth';
 
 const MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default function ProfilePage() {
   const t = useTranslations('dash.profile');
+  const siteLocale = useLocale();
   const { user, loading } = useDashboardAuth();
   const router = useRouter();
 
@@ -36,6 +41,14 @@ export default function ProfilePage() {
   const [reminderLoaded, setReminderLoaded] = useState(false);
   const [reminderMsg, setReminderMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
   const [reminderSaving, setReminderSaving] = useState(false);
+
+  // ── Region (for the beekeeping year) ────────────────────────────────────
+  const [region, setRegion] = useState<Region | null>(null);
+  const [regionCountry, setRegionCountry] = useState('');
+  const [regionPostal, setRegionPostal] = useState('');
+  const [regionAdjust, setRegionAdjust] = useState(0);
+  const [regionMsg, setRegionMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
+  const [regionSaving, setRegionSaving] = useState(false);
 
   // Initialise profile fields once user loads
   if (!loading && user && name === '' && locale === '') {
@@ -110,6 +123,39 @@ export default function ProfilePage() {
       setReminderMsg({ type: 'err', text: err instanceof Error ? err.message : t('errorGeneric') });
     } finally {
       setReminderSaving(false);
+    }
+  }
+
+  useEffect(() => {
+    if (loading || !user) return;
+    getRegion()
+      .then((r: Region) => {
+        setRegion(r);
+        setRegionCountry(r.country ?? '');
+        setRegionPostal(r.postal_code ?? '');
+        setRegionAdjust(r.adjust_days);
+      })
+      .catch(() => {});
+  }, [loading, user]);
+
+  async function handleRegionSave(e: React.FormEvent) {
+    e.preventDefault();
+    setRegionSaving(true);
+    setRegionMsg(null);
+    try {
+      const saved = await updateRegion({
+        country: regionCountry,
+        postal_code: regionPostal.trim(),
+        adjust_days: regionAdjust,
+      });
+      setRegion(saved);
+      setRegionMsg(saved.located
+        ? { type: 'ok', text: t('regionSaved') }
+        : { type: 'err', text: t('regionNotLocated') });
+    } catch {
+      setRegionMsg({ type: 'err', text: t('regionError') });
+    } finally {
+      setRegionSaving(false);
     }
   }
 
@@ -324,6 +370,62 @@ export default function ProfilePage() {
 
             <button className="dash-submit-btn" type="submit" disabled={reminderSaving} style={{ marginTop: 16 }}>
               {reminderSaving ? '…' : t('reminderSave')}
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* ── Region for the beekeeping year ───────────────────────────── */}
+      {region && (
+        <div className="dash-profile-card" id="region" style={{ marginTop: 24 }} data-testid="region-card">
+          <h2 className="dash-section-title">{t('regionTitle')}</h2>
+          <p className="dash-card-meta">{t('regionIntro')}</p>
+          {regionMsg && (
+            <div className={regionMsg.type === 'ok' ? 'dash-success-banner' : 'dash-error-banner'}>{regionMsg.text}</div>
+          )}
+          <form className="dash-region-form" onSubmit={handleRegionSave}>
+            <div className="dash-region-row">
+              <div className="dash-form-group">
+                <label htmlFor="region-country">{t('regionCountry')}</label>
+                <select
+                  id="region-country"
+                  className="dash-region-select"
+                  value={regionCountry}
+                  onChange={e => setRegionCountry(e.target.value)}
+                >
+                  <option value="">{t('regionCountryNone')}</option>
+                  {[...COUNTRY_CODES]
+                    .map(code => ({ code, name: countryName(code, siteLocale) }))
+                    .sort((a, b) => a.name.localeCompare(b.name, siteLocale))
+                    .map(c => <option key={c.code} value={c.code}>{c.name}</option>)}
+                </select>
+              </div>
+              <div className="dash-form-group">
+                <label htmlFor="region-postal">{t('regionPostal')}</label>
+                <input
+                  id="region-postal"
+                  type="text"
+                  autoComplete="postal-code"
+                  maxLength={20}
+                  value={regionPostal}
+                  onChange={e => setRegionPostal(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="dash-form-group">
+              <label htmlFor="region-adjust">{t('regionAdjust')}</label>
+              <input
+                id="region-adjust"
+                type="number"
+                min={-28}
+                max={28}
+                value={regionAdjust}
+                onChange={e => setRegionAdjust(Math.max(-28, Math.min(28, Number(e.target.value) || 0)))}
+              />
+              <small className="dash-card-meta">{t('regionAdjustHint')}</small>
+            </div>
+            <button className="dash-submit-btn" type="submit" disabled={regionSaving}>
+              {regionSaving ? '…' : t('regionSave')}
             </button>
           </form>
         </div>
