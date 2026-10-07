@@ -34,6 +34,20 @@ enum AppLanguage {
         defaults.set(code, forKey: key)
     }
 
+    /// The language the app speaks right now, for the picker in Settings: the beekeeper's choice, else the phone's
+    /// language when the app has it, else the profile's language. The profile alone is wrong here: it says what
+    /// e-mails are written in, and for somebody who never picked a language it still says English.
+    static func effective(profileLocale: String?, defaults: UserDefaults = .standard,
+                          phoneLanguages: [String] = Bundle.main.preferredLocalizations) -> String {
+        if let chosen = defaults.string(forKey: key), supported.contains(chosen) { return chosen }
+        for tag in phoneLanguages {
+            let code = String(tag.prefix(2)).lowercased()
+            if supported.contains(code) { return code }
+        }
+        if let profile = profileLocale, supported.contains(profile) { return profile }
+        return "en"
+    }
+
     /// Back to following the phone.
     static func reset(defaults: UserDefaults = .standard) {
         apply(nil)

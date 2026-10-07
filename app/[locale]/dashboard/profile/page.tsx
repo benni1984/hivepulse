@@ -53,7 +53,9 @@ export default function ProfilePage() {
   // Initialise profile fields once user loads
   if (!loading && user && name === '' && locale === '') {
     setName(user.name);
-    setLocale(user.locale);
+    // The picker starts on the language the page is in. The account's stored language only says what e-mails
+    // are written in, and for somebody who never picked one it still says English.
+    setLocale(siteLocale);
   }
 
   // Load reminder settings once auth resolves
@@ -78,6 +80,8 @@ export default function ProfilePage() {
     try {
       await updateMe({ name, locale });
       setProfileMsg({ type: 'ok', text: t('profileSaved') });
+      // A new language switches the site, and the beekeeper stays on this page.
+      if (locale !== siteLocale) router.replace('/dashboard/profile', { locale });
     } catch (err) {
       setProfileMsg({ type: 'err', text: err instanceof Error ? err.message : t('errorGeneric') });
     } finally {

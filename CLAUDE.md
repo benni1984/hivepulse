@@ -123,6 +123,8 @@ stored credentials is the only way to tell.
 
 Push branch → open PR immediately → merge once all CI checks are green (no confirmation needed). **Never push directly to main** — branch protection is enforced; bypassing it skips required CI checks.
 
+**Bug reports.** A bug reported on one platform is checked on web, Android **and** iOS before it is fixed, and the fix says what was found on each. Every reported bug gets a GitHub issue in English with the label `closed-test` (the list can be shown to Google as the closed-test feedback), plus `bug` and `ios` / `android` / `web` / `backend`; the fix closes it (`Fixes #n`).
+
 ## CI/CD Pipeline
 
 **Pull request:** tests only. There is no preview deployment — it cost a Vercel deployment

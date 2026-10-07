@@ -552,7 +552,7 @@ fun SettingsScreen(
                 Spacer(Modifier.weight(1f))
 
                 // Help
-                val helpLocale = state.user?.locale ?: "en"
+                val helpLocale = AppLanguage.current(context) ?: state.user?.locale ?: "en"
                 val helpUrl = "https://hivepulse.multihead.de/$helpLocale/help"
                 OutlinedButton(
                     onClick = {

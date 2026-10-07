@@ -22,6 +22,24 @@ final class AppLanguageTests: XCTestCase {
         super.tearDown()
     }
 
+    // MARK: - What the picker shows
+
+    func test_thePickerStartsOnTheChosenLanguage() {
+        AppLanguage.choose("fr", defaults: defaults)
+
+        XCTAssertEqual(AppLanguage.effective(profileLocale: "en", defaults: defaults, phoneLanguages: ["de"]), "fr")
+    }
+
+    func test_withoutAChoiceThePickerFollowsThePhoneNotTheProfile() {
+        // A German phone, and an account that still says English because nobody ever picked a language.
+        XCTAssertEqual(AppLanguage.effective(profileLocale: "en", defaults: defaults, phoneLanguages: ["de-DE", "en-US"]), "de")
+    }
+
+    func test_aPhoneLanguageTheAppDoesNotHaveFallsBackToTheProfile() {
+        XCTAssertEqual(AppLanguage.effective(profileLocale: "es", defaults: defaults, phoneLanguages: ["it-IT"]), "es")
+        XCTAssertEqual(AppLanguage.effective(profileLocale: nil, defaults: defaults, phoneLanguages: ["it-IT"]), "en")
+    }
+
     // MARK: - What is stored
 
     func test_aChoiceIsRemembered() {

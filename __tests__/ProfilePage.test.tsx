@@ -7,6 +7,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import React from 'react';
 
 const mockReplace = vi.hoisted(() => vi.fn());
+const mockSiteLocale = vi.hoisted(() => ({ value: 'en' }));
 const mockUpdateMe = vi.hoisted(() => vi.fn());
 const mockDeleteMe = vi.hoisted(() => vi.fn());
 const mockGetReminderSettings = vi.hoisted(() => vi.fn());
@@ -36,7 +37,7 @@ vi.mock('@/i18n/navigation', () => ({
 }));
 
 vi.mock('next-intl', () => ({
-  useLocale: () => 'en',
+  useLocale: () => mockSiteLocale.value,
   useTranslations: () => (key: string) => {
     const map: Record<string, string> = {
       'title': 'Profile',
@@ -114,6 +115,8 @@ const DEFAULT_REGION = {
 
 describe('ProfilePage — reminder settings', () => {
   beforeEach(() => {
+    mockSiteLocale.value = 'en';
+    mockReplace.mockReset();
     mockUseDashboardAuth.mockReturnValue({ user: MOCK_USER, loading: false });
     mockGetReminderSettings.mockResolvedValue(DEFAULT_REMINDERS);
     mockUpdateReminderSettings.mockResolvedValue(DEFAULT_REMINDERS);
@@ -121,6 +124,36 @@ describe('ProfilePage — reminder settings', () => {
     mockDeleteMe.mockResolvedValue(undefined);
     mockGetRegion.mockResolvedValue(DEFAULT_REGION);
     mockUpdateRegion.mockResolvedValue(DEFAULT_REGION);
+  });
+
+  it('starts the language picker on the language of the page, not the one on file', async () => {
+    mockSiteLocale.value = 'de';
+    render(<ProfilePage />);
+
+    const picker = await screen.findByDisplayValue('Deutsch');
+    expect((picker as HTMLSelectElement).value).toBe('de');
+  });
+
+  it('switches the site to a newly chosen language and stays on the profile page', async () => {
+    render(<ProfilePage />);
+    const picker = (await screen.findByDisplayValue('English')) as HTMLSelectElement;
+
+    fireEvent.change(picker, { target: { value: 'pl' } });
+    fireEvent.click(screen.getByText('Save Profile'));
+
+    await waitFor(() => expect(mockUpdateMe).toHaveBeenCalledWith({ name: 'Test User', locale: 'pl' }));
+    await waitFor(() => expect(mockReplace).toHaveBeenCalledWith('/dashboard/profile', { locale: 'pl' }));
+  });
+
+  it('does not move anywhere when only the name changed', async () => {
+    render(<ProfilePage />);
+    const name = (await screen.findByDisplayValue('Test User')) as HTMLInputElement;
+
+    fireEvent.change(name, { target: { value: 'New Name' } });
+    fireEvent.click(screen.getByText('Save Profile'));
+
+    await waitFor(() => expect(mockUpdateMe).toHaveBeenCalled());
+    expect(mockReplace).not.toHaveBeenCalledWith('/dashboard/profile', expect.anything());
   });
 
   it('renders reminder settings card heading', async () => {

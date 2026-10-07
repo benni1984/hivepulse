@@ -105,7 +105,7 @@
 "action.editInspection" = "Modifier la visite";
 "action.saveProfile" = "Enregistrer le profil";
 "action.logout" = "Se déconnecter";
-"action.help" = "Aide &amp; Documentation";
+"action.help" = "Aide & Documentation";
 "action.newBatch" = "Nouveau lot";
 "action.generate" = "Générer";
 "action.downloadPDF" = "Imprimer PDF";
