@@ -230,12 +230,7 @@ fun SettingsScreen(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.screen_settings)) },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } },
-                actions = {
-                    IconButton(onClick = { showLogout = true }) {
-                        Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = stringResource(R.string.action_logout))
-                    }
-                }
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } }
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -253,6 +248,17 @@ fun SettingsScreen(
                 }
 
                 state.user?.let { user ->
+                    // Custom fields
+                    Text(stringResource(R.string.fielddefs_title), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
+                    OutlinedButton(
+                        onClick  = onCustomFieldsClick,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(Icons.Default.Tune, null, Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text(stringResource(R.string.fielddefs_manage))
+                    }
+
                     // Account info
                     Text(stringResource(R.string.section_account), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
                     OutlinedTextField(
@@ -501,30 +507,6 @@ fun SettingsScreen(
                             Text(stringResource(R.string.reminder_save_button))
                     }
 
-                    // Admin dashboard
-                    if (user.isAdmin) {
-                        Text(stringResource(R.string.section_admin), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
-                        OutlinedButton(
-                            onClick  = onAdminClick,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Icon(Icons.Default.Build, null, Modifier.size(18.dp))
-                            Spacer(Modifier.width(8.dp))
-                            Text(stringResource(R.string.action_admin_dashboard))
-                        }
-                    }
-
-                    // Custom fields
-                    Text(stringResource(R.string.fielddefs_title), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
-                    OutlinedButton(
-                        onClick  = onCustomFieldsClick,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Icon(Icons.Default.Tune, null, Modifier.size(18.dp))
-                        Spacer(Modifier.width(8.dp))
-                        Text(stringResource(R.string.fielddefs_manage))
-                    }
-
                     // Data Export
                     if (state.apiaries.isNotEmpty()) {
                         Text(stringResource(R.string.section_export), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
@@ -541,6 +523,19 @@ fun SettingsScreen(
                                 CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
                             else
                                 Text(stringResource(R.string.action_export_data))
+                        }
+                    }
+
+                    // Admin dashboard
+                    if (user.isAdmin) {
+                        Text(stringResource(R.string.section_admin), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
+                        OutlinedButton(
+                            onClick  = onAdminClick,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Icon(Icons.Default.Build, null, Modifier.size(18.dp))
+                            Spacer(Modifier.width(8.dp))
+                            Text(stringResource(R.string.action_admin_dashboard))
                         }
                     }
                 }
@@ -611,6 +606,17 @@ fun SettingsScreen(
                     )
                 }
 
+                // Log out, above the danger zone as on the iPhone
+                OutlinedButton(
+                    onClick  = { showLogout = true },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors   = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Icon(Icons.AutoMirrored.Filled.ExitToApp, null, Modifier.size(18.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(R.string.action_logout))
+                }
+
                 // Danger Zone
                 Text(stringResource(R.string.section_danger_zone), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.error)
                 OutlinedButton(
@@ -621,16 +627,6 @@ fun SettingsScreen(
                 ) {
                     if (state.isDeleting) CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp, color = MaterialTheme.colorScheme.error)
                     else Text(stringResource(R.string.action_delete_account))
-                }
-
-                OutlinedButton(
-                    onClick  = { showLogout = true },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors   = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
-                ) {
-                    Icon(Icons.AutoMirrored.Filled.ExitToApp, null, Modifier.size(18.dp))
-                    Spacer(Modifier.width(8.dp))
-                    Text(stringResource(R.string.action_logout))
                 }
             }
         }
