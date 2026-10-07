@@ -40,7 +40,43 @@ struct MoveRoute: Identifiable, Equatable {
     var id: String { hiveId }
 }
 
+/// A way back: the place some of the hives stood before they came to this apiary, and which hives those are.
+struct ReturnSuggestion: Equatable, Identifiable {
+    let apiaryId: String
+    let name: String
+    let hiveIds: [String]
+
+    var id: String { apiaryId }
+}
+
 enum MoveRoutes {
+
+    /// "Back to where they came from": for the hives standing in `apiaryId`, the place each one was taken from
+    /// when it came here, grouped by that place. A hive that never moved here, or whose previous place is gone
+    /// or not among `places` (not the caller's own), is left out: there is nowhere to send it back to.
+    /// The same rule as the website's.
+    static func returnSuggestions(moves: [HiveMoveOut], hiveIds: [String], apiaryId: String,
+                                  places: [(id: String, name: String)]) -> [ReturnSuggestion] {
+        let here = Set(hiveIds)
+        var latest: [String: HiveMoveOut] = [:]
+        for move in moves where here.contains(move.hiveId) && move.to.apiaryId == apiaryId {
+            if let seen = latest[move.hiveId] {
+                let newer = move.movedOn > seen.movedOn || (move.movedOn == seen.movedOn && move.createdAt > seen.createdAt)
+                if !newer { continue }
+            }
+            latest[move.hiveId] = move
+        }
+
+        var byPlace: [String: [String]] = [:]
+        for hiveId in hiveIds {
+            guard let from = latest[hiveId]?.from.apiaryId, from != apiaryId,
+                  places.contains(where: { $0.id == from }) else { continue }
+            byPlace[from, default: []].append(hiveId)
+        }
+        return byPlace
+            .map { id, ids in ReturnSuggestion(apiaryId: id, name: places.first { $0.id == id }!.name, hiveIds: ids) }
+            .sorted { $0.hiveIds.count != $1.hiveIds.count ? $0.hiveIds.count > $1.hiveIds.count : $0.name < $1.name }
+    }
 
     /// The journeys on the map: per hive, the place it started from followed by every place it was taken to,
     /// oldest first. A place without coordinates is skipped (the server could not find its address), but the

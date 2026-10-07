@@ -462,6 +462,8 @@
 /* Moving hives */
 "moves.title" = "Move hives";
 "moves.selectHives" = "Which hives";
+"moves.backHint" = "Where they stood before";
+"moves.backTo" = "Back to %@ (%d)";
 "moves.selectAll" = "Select all or none";
 "moves.target" = "Move to";
 "moves.targetChoose" = "Choose a place";

@@ -13,6 +13,8 @@ final class MoveHivesViewModel: ObservableObject {
     let hives: [HiveOut]
 
     @Published var targets: [ApiaryOut] = []
+    /// Shortcuts back to where the hives stood before; empty until the history is loaded, or without any.
+    @Published var returns: [ReturnSuggestion] = []
     @Published var selected: Set<String> = []
     @Published var target = ""
     @Published var newName = ""
@@ -41,6 +43,18 @@ final class MoveHivesViewModel: ObservableObject {
         if let page = try? await apiaryService.list() {
             targets = page.items.filter { $0.id != apiaryId && $0.isOwner }
         }
+        // Only a shortcut: without the history the form works as it did.
+        if let history = try? await moveService.overview(from: nil, to: nil) {
+            returns = MoveRoutes.returnSuggestions(
+                moves: history, hiveIds: hives.map(\.id), apiaryId: apiaryId,
+                places: targets.map { (id: $0.id, name: $0.name) })
+        }
+    }
+
+    /// Picks the hives and the place they came from; the day and forage stay for the beekeeper to confirm.
+    func sendBack(_ suggestion: ReturnSuggestion) {
+        selected = Set(suggestion.hiveIds)
+        target = suggestion.apiaryId
     }
 
     var allSelected: Bool { !hives.isEmpty && selected.count == hives.count }

@@ -462,6 +462,8 @@
 /* Moving hives */
 "moves.title" = "Völker verlagern";
 "moves.selectHives" = "Welche Völker";
+"moves.backHint" = "Wo sie vorher standen";
+"moves.backTo" = "Zurück nach %@ (%d)";
 "moves.selectAll" = "Alle oder keine wählen";
 "moves.target" = "Verlagern nach";
 "moves.targetChoose" = "Ort wählen";

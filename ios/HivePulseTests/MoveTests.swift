@@ -409,3 +409,122 @@ final class MoveDTOTests: XCTestCase {
         XCTAssertNil(json["forage"])
     }
 }
+
+// MARK: - Back to where they came from
+
+private func at(_ id: String, _ name: String) -> MovePlace {
+    MovePlace(apiaryId: id, name: name, latitude: nil, longitude: nil)
+}
+
+final class ReturnSuggestionTests: XCTestCase {
+
+    private let places: [(id: String, name: String)] = [("a-home", "Home"), ("a-forest", "Forest"), ("a-heath", "Heath")]
+
+    /// A move into Heath, from Home unless said otherwise.
+    private func intoHeath(_ id: String, hive: String, movedOn: String = "2026-05-12",
+                           createdAt: Date = Date(timeIntervalSince1970: 1_000), from: MovePlace? = nil) -> HiveMoveOut {
+        makeMove(id: id, hive: hive, movedOn: movedOn, createdAt: createdAt,
+                 from: from ?? at("a-home", "Home"), to: at("a-heath", "Heath"))
+    }
+
+    func test_hivesGoBackToTheirPreviousPlaceGroupedByThatPlace() {
+        let moves = [
+            intoHeath("m1", hive: "1"),
+            intoHeath("m2", hive: "2"),
+            intoHeath("m3", hive: "3", from: at("a-forest", "Forest")),
+        ]
+
+        let result = MoveRoutes.returnSuggestions(moves: moves, hiveIds: ["h-1", "h-2", "h-3"], apiaryId: "a-heath", places: places)
+
+        XCTAssertEqual(result, [
+            ReturnSuggestion(apiaryId: "a-home", name: "Home", hiveIds: ["h-1", "h-2"]),
+            ReturnSuggestion(apiaryId: "a-forest", name: "Forest", hiveIds: ["h-3"]),
+        ])
+    }
+
+    func test_theLatestMoveThatBroughtTheHiveHereDecides() {
+        let moves = [
+            intoHeath("old", hive: "1", movedOn: "2026-04-01"),
+            intoHeath("new", hive: "1", movedOn: "2026-06-01", from: at("a-forest", "Forest")),
+        ]
+
+        let result = MoveRoutes.returnSuggestions(moves: moves, hiveIds: ["h-1"], apiaryId: "a-heath", places: places)
+
+        XCTAssertEqual(result.map(\.apiaryId), ["a-forest"])
+    }
+
+    func test_twoMovesOfOneDayAreToldApartByWhenTheyWereMade() {
+        let moves = [
+            intoHeath("late", hive: "1", createdAt: Date(timeIntervalSince1970: 2_000), from: at("a-forest", "Forest")),
+            intoHeath("early", hive: "1", createdAt: Date(timeIntervalSince1970: 1_000)),
+        ]
+
+        let result = MoveRoutes.returnSuggestions(moves: moves, hiveIds: ["h-1"], apiaryId: "a-heath", places: places)
+
+        XCTAssertEqual(result.map(\.apiaryId), ["a-forest"])
+    }
+
+    func test_hivesThatDidNotMoveHereOrAreNotHereAreLeftOut() {
+        let moves = [intoHeath("m1", hive: "1"), intoHeath("m2", hive: "9")]
+
+        let result = MoveRoutes.returnSuggestions(moves: moves, hiveIds: ["h-1", "h-2"], apiaryId: "a-heath", places: places)
+
+        XCTAssertEqual(result, [ReturnSuggestion(apiaryId: "a-home", name: "Home", hiveIds: ["h-1"])])
+    }
+
+    func test_aPreviousPlaceThatIsGoneOrNotTheCallersOwnIsLeftOut() {
+        let gone = intoHeath("m1", hive: "1", from: MovePlace(apiaryId: nil, name: "Old place", latitude: nil, longitude: nil))
+        let foreign = intoHeath("m2", hive: "2", from: at("a-theirs", "Theirs"))
+
+        XCTAssertTrue(MoveRoutes.returnSuggestions(moves: [gone, foreign], hiveIds: ["h-1", "h-2"],
+                                                   apiaryId: "a-heath", places: places).isEmpty)
+    }
+
+    func test_noHistoryOffersNothing() {
+        XCTAssertTrue(MoveRoutes.returnSuggestions(moves: [], hiveIds: ["h-1"], apiaryId: "a-heath", places: places).isEmpty)
+    }
+}
+
+final class MoveHivesReturnTests: XCTestCase {
+
+    private func makeViewModel(_ service: MockMoveService, _ apiaries: MockApiaryService) -> MoveHivesViewModel {
+        MoveHivesViewModel(apiaryId: "a-heath", hives: [makeHive(id: "h-1", name: "Hive 1"), makeHive(id: "h-2", name: "Hive 2")],
+                           moveService: service, apiaryService: apiaries)
+    }
+
+    private func owned(_ id: String, _ name: String) -> ApiaryOut {
+        ApiaryOut(id: id, name: name, description: nil, latitude: nil, longitude: nil, address: nil,
+                  hiveCount: 0, createdAt: Date(), access: "owner")
+    }
+
+    func test_theShortcutPicksTheHivesAndThePlaceTheyCameFrom() async {
+        let service = MockMoveService()
+        service.overviewResult = .success([makeMove(id: "m1", hive: "1", from: at("a-home", "Home"), to: at("a-heath", "Heath"))])
+        let apiaries = MockApiaryService()
+        apiaries.listResult = .success(makePage([owned("a-home", "Home"), owned("a-heath", "Heath")]))
+        let vm = makeViewModel(service, apiaries)
+
+        await vm.loadTargets()
+        XCTAssertEqual(vm.returns.map(\.name), ["Home"])
+        vm.sendBack(vm.returns[0])
+
+        XCTAssertEqual(vm.selected, ["h-1"])
+        XCTAssertEqual(vm.target, "a-home")
+        XCTAssertTrue(vm.canSubmit)
+        XCTAssertEqual(vm.request().hiveIds, ["h-1"])
+        XCTAssertEqual(vm.request().toApiaryId, "a-home")
+    }
+
+    func test_withoutAHistoryTheFormWorksAsBefore() async {
+        let service = MockMoveService()
+        service.overviewResult = .failure(URLError(.notConnectedToInternet))
+        let apiaries = MockApiaryService()
+        apiaries.listResult = .success(makePage([owned("a-home", "Home"), owned("a-heath", "Heath")]))
+        let vm = makeViewModel(service, apiaries)
+
+        await vm.loadTargets()
+
+        XCTAssertTrue(vm.returns.isEmpty)
+        XCTAssertEqual(vm.targets.map(\.id), ["a-home"])
+    }
+}

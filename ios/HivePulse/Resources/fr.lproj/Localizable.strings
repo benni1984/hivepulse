@@ -462,6 +462,8 @@
 /* Moving hives */
 "moves.title" = "Déplacer des ruches";
 "moves.selectHives" = "Quelles ruches";
+"moves.backHint" = "Où elles étaient avant";
+"moves.backTo" = "Retour à %@ (%d)";
 "moves.selectAll" = "Tout ou rien sélectionner";
 "moves.target" = "Déplacer vers";
 "moves.targetChoose" = "Choisir un lieu";

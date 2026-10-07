@@ -15,6 +15,20 @@ struct MoveHivesView: View {
     var body: some View {
         NavigationStack {
             Form {
+                if !vm.returns.isEmpty {
+                    Section {
+                        ForEach(vm.returns) { suggestion in
+                            Button(String(format: NSLocalizedString("moves.backTo", comment: ""),
+                                          suggestion.name, suggestion.hiveIds.count)) {
+                                vm.sendBack(suggestion)
+                            }
+                            .accessibilityIdentifier("moveBack-" + suggestion.apiaryId)
+                        }
+                    } header: {
+                        Text(NSLocalizedString("moves.backHint", comment: ""))
+                    }
+                }
+
                 Section {
                     Button(NSLocalizedString("moves.selectAll", comment: "")) { vm.toggleAll() }
                         .accessibilityIdentifier("moveSelectAll")

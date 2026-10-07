@@ -462,6 +462,8 @@
 /* Moving hives */
 "moves.title" = "Trasladar colmenas";
 "moves.selectHives" = "Qué colmenas";
+"moves.backHint" = "Dónde estaban antes";
+"moves.backTo" = "Volver a %@ (%d)";
 "moves.selectAll" = "Seleccionar todas o ninguna";
 "moves.target" = "Trasladar a";
 "moves.targetChoose" = "Elegir un lugar";
