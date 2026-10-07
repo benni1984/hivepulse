@@ -67,10 +67,11 @@ class QRBatchListScreenTest {
     @Test
     fun qrBatchList_fabOpensCreateBatchDialog() {
         navigateToQrBatchList()
-        // The amber button carries its label, like the other create buttons; the dialog repeats it as its title.
+        // The amber button carries its label as a content description (its text animates in, so the
+        // text node is not reliably addressable); the dialog it opens has the count field.
         composeRule.onNodeWithContentDescription("New QR Batch").performClick()
         composeRule.waitUntil(5_000) {
-            composeRule.onAllNodesWithText("New QR Batch").fetchSemanticsNodes().size >= 2
+            composeRule.onAllNodes(hasText("Number of QR Codes", substring = true)).fetchSemanticsNodes().isNotEmpty()
         }
         composeRule.onNode(hasText("Number of QR Codes", substring = true)).assertIsDisplayed()
     }
