@@ -51,6 +51,8 @@
 
     <!-- Tabs / Navigation -->
     <string name="tab_print">QR-Codes drucken</string>
+    <string name="tab_apiaries">Bienenstände</string>
+    <string name="tab_scan_short">Scannen</string>
     <string name="tab_scan">QR-Code scannen</string>
     <string name="tab_settings">Einstellungen</string>
 

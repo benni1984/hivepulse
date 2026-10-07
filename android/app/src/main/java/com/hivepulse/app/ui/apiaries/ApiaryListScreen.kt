@@ -34,7 +34,6 @@ import com.hivepulse.app.ui.theme.Stone200
 @Composable
 fun ApiaryListScreen(
     onApiaryClick: (String) -> Unit,
-    onScanClick: () -> Unit,
     onBatchClick: () -> Unit,
     onStatsClick: () -> Unit = {},
     onMovesClick: () -> Unit = {},
@@ -56,15 +55,16 @@ fun ApiaryListScreen(
             TopAppBar(
                 title = { Text(stringResource(R.string.screen_apiaries), style = MaterialTheme.typography.titleLarge) },
                 actions = {
+                    // Same order as the iPhone's toolbar: statistics, QR batches, moves map, invitation link.
+                    // Scanning is a tab of the bottom bar on both.
+                    IconButton(onClick = onStatsClick)    { Icon(Icons.Default.BarChart,     contentDescription = stringResource(R.string.screen_stats_overview)) }
+                    IconButton(onClick = onBatchClick)    { Icon(Icons.Default.Print,        contentDescription = stringResource(R.string.tab_print)) }
                     IconButton(onClick = onMovesClick, modifier = Modifier.testTag("movesOverviewButton")) {
                         Icon(Icons.Default.Map, contentDescription = stringResource(R.string.moves_overview_title))
                     }
                     IconButton(onClick = { showRedeem = true }, modifier = Modifier.testTag("redeemInvitationButton")) {
                         Icon(Icons.Default.MarkEmailRead, contentDescription = stringResource(R.string.invitation_redeem_title))
                     }
-                    IconButton(onClick = onStatsClick)    { Icon(Icons.Default.BarChart,     contentDescription = stringResource(R.string.screen_stats_overview)) }
-                    IconButton(onClick = onBatchClick)    { Icon(Icons.Default.Print,        contentDescription = stringResource(R.string.tab_print)) }
-                    IconButton(onClick = onScanClick)     { Icon(Icons.Default.QrCodeScanner, contentDescription = stringResource(R.string.tab_scan)) }
                 }
             )
         },

@@ -104,7 +104,6 @@ fun HivePulseNavGraph(
         composable(Routes.APIARY_LIST) {
             ApiaryListScreen(
                 onApiaryClick = { id -> navController.navigate("apiary_detail/$id") },
-                onScanClick   = { navController.navigate(Routes.QR_SCAN) },
                 onBatchClick  = { navController.navigate(Routes.QR_BATCH_LIST) },
                 onStatsClick    = { navController.navigate(Routes.STATS_OVERVIEW) },
                 onMovesClick    = { navController.navigate(Routes.MOVES_OVERVIEW) },

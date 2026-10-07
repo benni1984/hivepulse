@@ -12,6 +12,8 @@
     <string name="screen_qr_batches">Lotes de QR</string>
     <string name="screen_hive_qr">Código QR</string>
     <string name="tab_print">Imprimir códigos QR</string>
+    <string name="tab_apiaries">Colmenares</string>
+    <string name="tab_scan_short">Escanear</string>
     <string name="tab_scan">Escanear código QR</string>
     <string name="tab_settings">Ajustes</string>
     <string name="action_save">Guardar</string>

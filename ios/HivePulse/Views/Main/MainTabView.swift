@@ -5,6 +5,7 @@ struct MainTabView: View {
     @StateObject private var apiaryVM = ApiaryViewModel()
 
     var body: some View {
+        // Same order as Android's bottom bar: apiaries, scan, hornets, members, settings.
         TabView {
             NavigationStack {
                 ApiaryListView()
@@ -24,6 +25,15 @@ struct MainTabView: View {
                 Label(NSLocalizedString("tab.scan", comment: ""), systemImage: "qrcode.viewfinder")
             }
 
+            HornetView()
+            .tabItem {
+                Label {
+                    Text(NSLocalizedString("tab.hornets", comment: ""))
+                } icon: {
+                    Image(uiImage: HornetIcon.tabImage)
+                }
+            }
+
             NavigationStack {
                 MembersView()
                     .environmentObject(authVM)
@@ -40,15 +50,6 @@ struct MainTabView: View {
             .tint(.hpAmberDark)
             .tabItem {
                 Label(NSLocalizedString("tab.settings", comment: ""), systemImage: "gear")
-            }
-
-            HornetView()
-            .tabItem {
-                Label {
-                    Text(NSLocalizedString("tab.hornets", comment: ""))
-                } icon: {
-                    Image(uiImage: HornetIcon.tabImage)
-                }
             }
         }
         // Amber selection on the forest-green tab bar (see HivePulseAppearance); DM Sans for all content

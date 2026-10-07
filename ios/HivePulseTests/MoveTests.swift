@@ -485,6 +485,7 @@ final class ReturnSuggestionTests: XCTestCase {
     }
 }
 
+@MainActor
 final class MoveHivesReturnTests: XCTestCase {
 
     private func makeViewModel(_ service: MockMoveService, _ apiaries: MockApiaryService) -> MoveHivesViewModel {

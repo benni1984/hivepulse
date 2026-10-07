@@ -51,6 +51,8 @@
 
     <!-- Tabs / Navigation -->
     <string name="tab_print">Imprimer les QR codes</string>
+    <string name="tab_apiaries">Ruchers</string>
+    <string name="tab_scan_short">Scanner</string>
     <string name="tab_scan">Scanner un QR code</string>
     <string name="tab_settings">Paramètres</string>
 

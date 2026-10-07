@@ -22,10 +22,11 @@ final class ApiaryListUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["No Apiaries"].waitForExistence(timeout: 5))
     }
 
-    func test_apiaryList_hasPlusButtonInToolbar() {
+    func test_apiaryList_hasNewApiaryButtonAtTheBottomRight() {
         launch(with: "-mockAuthenticated")
         XCTAssertTrue(app.navigationBars["Apiaries"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.navigationBars.buttons["Add"].exists)
+        XCTAssertTrue(app.buttons["newApiaryButton"].exists)
+        XCTAssertFalse(app.navigationBars.buttons["Add"].exists, "no plus in the toolbar any more")
     }
 
     // MARK: - With data
