@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import IncomingInvitations from '@/components/IncomingInvitations';
+import HomeSummary from '@/components/HomeSummary';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getApiaries, createApiary, type Apiary } from '@/lib/api';
 
@@ -72,6 +73,7 @@ export default function DashboardPage() {
       </div>
 
       {ready && <IncomingInvitations onChange={loadApiaries} />}
+      {ready && <HomeSummary />}
 
       {createMessage && (
         <div className={createMessage.type === 'ok' ? 'dash-success-banner' : 'dash-error-banner'}>

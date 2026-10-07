@@ -811,6 +811,55 @@
         "lavender": "Lavanda",
         "other": "Otra"
       }
+    },
+    "home": {
+      "title": "Hoy de un vistazo",
+      "outOfSeason": "Esto queda fuera de tu temporada de recordatorios; las fechas se calculan igualmente.",
+      "nextInspection": "Próxima revisión",
+      "overdue": "{count} atrasadas",
+      "dueOn": "Toca el {date}",
+      "dueSoon": "{count} en los próximos tres días",
+      "dueSince": "toca desde el {date}",
+      "neverInspected": "nunca revisada",
+      "health": "Estado de las colmenas",
+      "healthOk": "{count} bien",
+      "healthWatch": "{count} a vigilar",
+      "healthAlert": "{count} alerta",
+      "healthUnknown": "{count} desconocidas",
+      "noConcerns": "Nada requiere tu atención.",
+      "reasons": {
+        "varroa_high": "varroa alta",
+        "swarm_cells": "celdas de enjambre",
+        "aggressive": "agresiva",
+        "varroa_medium": "varroa media",
+        "nervous": "nerviosa",
+        "queen_not_seen": "reina no vista"
+      },
+      "treatments": "Próximos tratamientos",
+      "treatmentsOverdue": "{count} atrasados",
+      "noTreatments": "No hay tratamientos previstos en los próximos 30 días.",
+      "markDone": "Hecho"
+    },
+    "treatments": {
+      "title": "Tratamientos",
+      "introHive": "Planifica un tratamiento para esta colmena. Lo que toca aparece en tu pantalla de inicio.",
+      "introApiary": "Planifica un tratamiento para todas las colmenas de este colmenar. Lo que toca aparece en tu pantalla de inicio.",
+      "plan": "Planificar un tratamiento",
+      "product": "Producto",
+      "dueOn": "Para el",
+      "note": "Nota (opcional)",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "empty": "Nada planificado.",
+      "overdue": "toca desde el {date}",
+      "dueOnDate": "para el {date}",
+      "markDone": "Hecho",
+      "delete": "Eliminar",
+      "confirmDelete": "¿Eliminar este tratamiento planificado?",
+      "doneTitle": "Hechos",
+      "doneOn": "hecho el {date}",
+      "reopen": "Reabrir",
+      "errorGeneric": "No ha funcionado. Inténtalo de nuevo."
     }
   },
   "hiveTypes": {

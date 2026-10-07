@@ -811,6 +811,55 @@
         "lavender": "Lavendel",
         "other": "Andere"
       }
+    },
+    "home": {
+      "title": "Heute im Überblick",
+      "outOfSeason": "Das liegt außerhalb deiner Erinnerungs-Saison; die Termine werden trotzdem gleich berechnet.",
+      "nextInspection": "Nächste Kontrolle",
+      "overdue": "{count} überfällig",
+      "dueOn": "Fällig am {date}",
+      "dueSoon": "{count} in den nächsten drei Tagen fällig",
+      "dueSince": "fällig seit {date}",
+      "neverInspected": "noch nie kontrolliert",
+      "health": "Zustand der Völker",
+      "healthOk": "{count} in Ordnung",
+      "healthWatch": "{count} beobachten",
+      "healthAlert": "{count} Alarm",
+      "healthUnknown": "{count} unbekannt",
+      "noConcerns": "Nichts braucht deine Aufmerksamkeit.",
+      "reasons": {
+        "varroa_high": "hoher Varroabefall",
+        "swarm_cells": "Schwarmzellen",
+        "aggressive": "aggressiv",
+        "varroa_medium": "mittlerer Varroabefall",
+        "nervous": "nervös",
+        "queen_not_seen": "Königin nicht gesehen"
+      },
+      "treatments": "Anstehende Behandlungen",
+      "treatmentsOverdue": "{count} überfällig",
+      "noTreatments": "In den nächsten 30 Tagen ist keine Behandlung geplant.",
+      "markDone": "Erledigt"
+    },
+    "treatments": {
+      "title": "Behandlungen",
+      "introHive": "Plane eine Behandlung für dieses Volk. Was fällig ist, steht auf deiner Startseite.",
+      "introApiary": "Plane eine Behandlung für alle Völker dieses Bienenstands. Was fällig ist, steht auf deiner Startseite.",
+      "plan": "Behandlung planen",
+      "product": "Mittel",
+      "dueOn": "Fällig am",
+      "note": "Notiz (optional)",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "empty": "Nichts geplant.",
+      "overdue": "fällig seit {date}",
+      "dueOnDate": "fällig {date}",
+      "markDone": "Erledigt",
+      "delete": "Löschen",
+      "confirmDelete": "Diese geplante Behandlung löschen?",
+      "doneTitle": "Erledigt",
+      "doneOn": "erledigt {date}",
+      "reopen": "Wieder öffnen",
+      "errorGeneric": "Das hat nicht geklappt. Bitte versuche es erneut."
     }
   },
   "hiveTypes": {

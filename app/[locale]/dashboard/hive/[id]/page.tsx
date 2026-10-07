@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import DashboardShell from '@/components/DashboardShell';
 import SharingPanel from '@/components/SharingPanel';
 import HiveMovesSection from '@/components/HiveMovesSection';
+import TreatmentsPanel from '@/components/TreatmentsPanel';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getHive, getHiveStats, getInspections, updateHive, deleteHive, createInspection, updateInspection, deleteInspection, getUserFieldDefs, getApiaryFieldDefs, exportHiveInspections, type Hive, type HiveStats, type Inspection, type InspectionInput, type FieldDefinition } from '@/lib/api';
 
@@ -559,6 +560,9 @@ export default function HivePage() {
               </form>
             </div>
           )}
+
+          {/* ── Treatments planned for this hive ───────────────────── */}
+          <TreatmentsPanel type="hive" id={id} />
 
           {/* ── Where the hive has stood ───────────────────────────── */}
           <HiveMovesSection hiveId={id} />

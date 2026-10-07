@@ -53,6 +53,7 @@ const mockGetApiaryFieldDefs = vi.hoisted(() => vi.fn());
 // Sharing has its own tests; these pages only need it out of the way.
 vi.mock('@/components/SharingPanel', () => ({ default: () => null }));
 vi.mock('@/components/HiveMovesSection', () => ({ default: () => null }));
+vi.mock('@/components/TreatmentsPanel', () => ({ default: () => null }));
 vi.mock('next-intl', () => ({
   useTranslations: (namespace?: string) => (key: string) =>
     namespace === 'hiveTypes' ? `translated:${key}` : key,

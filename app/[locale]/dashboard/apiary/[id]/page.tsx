@@ -6,6 +6,7 @@ import { Link, useRouter } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import SharingPanel from '@/components/SharingPanel';
 import MoveHivesPanel from '@/components/MoveHivesPanel';
+import TreatmentsPanel from '@/components/TreatmentsPanel';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import {
   getApiary, getHives, getApiaryStats, updateApiary, deleteApiary, createHive,
@@ -455,6 +456,9 @@ export default function ApiaryPage() {
               </form>
             </div>
           )}
+
+          {/* ── Treatments for every hive of the apiary ───────────── */}
+          {canEdit && <TreatmentsPanel type="apiary" id={id} />}
 
           {/* ── Sharing and deleting stay with the owner ────────────── */}
           {isOwner && <SharingPanel type="apiary" id={id} />}

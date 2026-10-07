@@ -7,6 +7,7 @@ import DashboardShell from '@/components/DashboardShell';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getMovesOverview, type HiveMove } from '@/lib/api';
 import { buildRoutes, hasPositions, isKnownForage } from '@/lib/moves';
+import { formatDay } from '@/lib/dates';
 
 const MovesMap = dynamic(() => import('@/components/MovesMap'), { ssr: false });
 
@@ -82,7 +83,7 @@ export default function MovesPage() {
               <tbody>
                 {moves.map(move => (
                   <tr key={move.id}>
-                    <td>{new Date(move.moved_on).toLocaleDateString()}</td>
+                    <td>{formatDay(move.moved_on)}</td>
                     <td><Link href={`/dashboard/hive/${move.hive_id}`}>{move.hive_name}</Link></td>
                     <td>{move.from.name} → {move.to.name}</td>
                     <td>{move.forage ? forageLabel(move.forage) : '—'}</td>

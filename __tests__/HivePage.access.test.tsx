@@ -9,6 +9,7 @@ const mockGetInspections = vi.hoisted(() => vi.fn());
 vi.mock('@/components/SharingPanel', () => ({ default: () => <div data-testid="sharing-panel" /> }));
 
 vi.mock('@/components/HiveMovesSection', () => ({ default: () => null }));
+vi.mock('@/components/TreatmentsPanel', () => ({ default: () => null }));
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string, params?: Record<string, string>) =>
     params ? `${key}|${Object.values(params).join('|')}` : key,

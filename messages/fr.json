@@ -811,6 +811,55 @@
         "lavender": "Lavande",
         "other": "Autre"
       }
+    },
+    "home": {
+      "title": "Aujourd’hui en un coup d’œil",
+      "outOfSeason": "C’est en dehors de votre saison de rappels ; les dates sont calculées de la même façon.",
+      "nextInspection": "Prochaine visite",
+      "overdue": "{count} en retard",
+      "dueOn": "Prévue le {date}",
+      "dueSoon": "{count} à faire dans les trois prochains jours",
+      "dueSince": "prévue depuis le {date}",
+      "neverInspected": "jamais visitée",
+      "health": "État des ruches",
+      "healthOk": "{count} en ordre",
+      "healthWatch": "{count} à surveiller",
+      "healthAlert": "{count} alerte",
+      "healthUnknown": "{count} inconnues",
+      "noConcerns": "Rien ne demande votre attention.",
+      "reasons": {
+        "varroa_high": "varroa élevé",
+        "swarm_cells": "cellules d’essaimage",
+        "aggressive": "agressive",
+        "varroa_medium": "varroa moyen",
+        "nervous": "nerveuse",
+        "queen_not_seen": "reine non vue"
+      },
+      "treatments": "Traitements à venir",
+      "treatmentsOverdue": "{count} en retard",
+      "noTreatments": "Aucun traitement prévu dans les 30 prochains jours.",
+      "markDone": "Fait"
+    },
+    "treatments": {
+      "title": "Traitements",
+      "introHive": "Planifiez un traitement pour cette ruche. Ce qui est à faire apparaît sur votre accueil.",
+      "introApiary": "Planifiez un traitement pour toutes les ruches de ce rucher. Ce qui est à faire apparaît sur votre accueil.",
+      "plan": "Planifier un traitement",
+      "product": "Produit",
+      "dueOn": "À faire le",
+      "note": "Note (facultatif)",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "empty": "Rien de prévu.",
+      "overdue": "prévu depuis le {date}",
+      "dueOnDate": "prévu le {date}",
+      "markDone": "Fait",
+      "delete": "Supprimer",
+      "confirmDelete": "Supprimer ce traitement prévu ?",
+      "doneTitle": "Fait",
+      "doneOn": "fait le {date}",
+      "reopen": "Rouvrir",
+      "errorGeneric": "Cela n’a pas fonctionné. Veuillez réessayer."
     }
   },
   "hiveTypes": {

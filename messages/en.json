@@ -811,6 +811,55 @@
         "lavender": "Lavender",
         "other": "Other"
       }
+    },
+    "home": {
+      "title": "Today at a glance",
+      "outOfSeason": "This is outside your reminder season; the dates are still worked out the same way.",
+      "nextInspection": "Next inspection",
+      "overdue": "{count} overdue",
+      "dueOn": "Due {date}",
+      "dueSoon": "{count} due in the next three days",
+      "dueSince": "due since {date}",
+      "neverInspected": "never inspected",
+      "health": "State of the hives",
+      "healthOk": "{count} fine",
+      "healthWatch": "{count} to watch",
+      "healthAlert": "{count} alert",
+      "healthUnknown": "{count} unknown",
+      "noConcerns": "Nothing needs your attention.",
+      "reasons": {
+        "varroa_high": "high varroa",
+        "swarm_cells": "swarm cells",
+        "aggressive": "aggressive",
+        "varroa_medium": "medium varroa",
+        "nervous": "nervous",
+        "queen_not_seen": "queen not seen"
+      },
+      "treatments": "Upcoming treatments",
+      "treatmentsOverdue": "{count} overdue",
+      "noTreatments": "No treatment is planned in the next 30 days.",
+      "markDone": "Done"
+    },
+    "treatments": {
+      "title": "Treatments",
+      "introHive": "Plan a treatment for this hive. What is due shows on your home screen.",
+      "introApiary": "Plan a treatment for every hive of this apiary. What is due shows on your home screen.",
+      "plan": "Plan a treatment",
+      "product": "Product",
+      "dueOn": "Due on",
+      "note": "Note (optional)",
+      "save": "Save",
+      "cancel": "Cancel",
+      "empty": "Nothing planned.",
+      "overdue": "due since {date}",
+      "dueOnDate": "due {date}",
+      "markDone": "Done",
+      "delete": "Delete",
+      "confirmDelete": "Delete this planned treatment?",
+      "doneTitle": "Done",
+      "doneOn": "done {date}",
+      "reopen": "Reopen",
+      "errorGeneric": "That did not work. Please try again."
     }
   },
   "hiveTypes": {

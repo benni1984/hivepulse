@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 import { getHiveMoves, type HiveMove } from '@/lib/api';
 import { buildRoutes, hasPositions, isKnownForage } from '@/lib/moves';
+import { formatDay } from '@/lib/dates';
 
 const MovesMap = dynamic(() => import('@/components/MovesMap'), { ssr: false });
 
@@ -41,7 +42,7 @@ export default function HiveMovesSection({ hiveId }: { hiveId: string }) {
           <ul className="dash-card-meta" style={{ listStyle: 'none', padding: 0 }}>
             {moves.map(move => (
               <li key={move.id} style={{ marginBottom: 8 }}>
-                <strong>{new Date(move.moved_on).toLocaleDateString()}</strong>
+                <strong>{formatDay(move.moved_on)}</strong>
                 {' · '}
                 {move.from.name} → {move.to.name}
                 {move.forage && <span className="dash-badge dash-badge-public" style={{ marginLeft: 8 }}>{forageLabel(move.forage)}</span>}

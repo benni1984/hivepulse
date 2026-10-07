@@ -8,6 +8,7 @@ const mockGetApiary = vi.hoisted(() => vi.fn());
 vi.mock('@/components/SharingPanel', () => ({ default: () => <div data-testid="sharing-panel" /> }));
 
 vi.mock('@/components/MoveHivesPanel', () => ({ default: () => <div data-testid="move-panel-stub" /> }));
+vi.mock('@/components/TreatmentsPanel', () => ({ default: ({ type }: { type: string }) => <div data-testid={'treatments-' + type} /> }));
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string, params?: Record<string, string>) =>
     params ? `${key}|${Object.values(params).join('|')}` : key,
@@ -72,6 +73,21 @@ describe('what each kind of access sees on an apiary', () => {
     expect(screen.getByTestId('sharing-panel')).toBeInTheDocument();
     expect(screen.getByText('apiary.dangerTitle')).toBeInTheDocument();
     expect(screen.queryByTestId('shared-note')).toBeNull();
+  });
+
+  it('the owner and a collaborator can plan treatments for the apiary, somebody with single hives cannot', async () => {
+    await load({ access: 'owner', owner_name: null });
+    expect(screen.getByTestId('treatments-apiary')).toBeInTheDocument();
+  });
+
+  it('a collaborator plans treatments for the whole apiary too', async () => {
+    await load({ access: 'shared', owner_name: 'Alice' });
+    expect(screen.getByTestId('treatments-apiary')).toBeInTheDocument();
+  });
+
+  it('somebody with single hives shared has no apiary-wide treatments', async () => {
+    await load({ access: 'partial', owner_name: 'Bob' });
+    expect(screen.queryByTestId('treatments-apiary')).toBeNull();
   });
 
   it('only the owner can move hives', async () => {

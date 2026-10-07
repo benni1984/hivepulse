@@ -5,6 +5,7 @@ import DashboardPage from '@/app/[locale]/dashboard/page';
 
 const mockGetApiaries = vi.hoisted(() => vi.fn());
 
+vi.mock('@/components/HomeSummary', () => ({ default: () => null }));
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string, params?: Record<string, string>) =>
     params ? `${key}|${Object.values(params).join('|')}` : key,
