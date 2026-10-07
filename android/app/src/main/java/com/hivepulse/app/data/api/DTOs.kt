@@ -128,6 +128,58 @@ data class HiveCreateRequest(
     @SerializedName("hive_type")        val hiveType: String,
     @SerializedName("acquisition_date") val acquisitionDate: String? = null,
     val notes: String? = null,
+// MARK: - The beekeeper's year (see "Beekeeping Year" in docs/api-contract.md)
+/** Where the beekeeper keeps bees, and how far that moves the calendar against central Germany. */
+data class RegionOut(
+    val country: String?,
+    @SerializedName("postal_code")  val postalCode: String?,
+    val latitude: Double?,
+    val longitude: Double?,
+    /** Days added by hand to what the position says. */
+    @SerializedName("adjust_days")  val adjustDays: Int?,
+    /** Days the dates move against the reference region; positive is later. */
+    @SerializedName("shift_days")   val shiftDays: Int?,
+    /** "postal_code", "apiary" (the first apiary with a position) or "default". */
+    val source: String?,
+    /** False when a postal code was given that could not be found. */
+    val located: Boolean?,
+)
+val RegionOut.shift: Int get() = shiftDays ?: 0
+val RegionOut.isLocated: Boolean get() = located != false
+
+/** An empty string clears a field; a field that is null is left as it is. */
+data class RegionUpdateRequest(
+    val country: String? = null,
+    @SerializedName("postal_code") val postalCode: String? = null,
+    @SerializedName("adjust_days") val adjustDays: Int? = null,
+)
+
+data class CalendarEntryOut(
+    val key: String,
+    /** inspection, swarm, feeding, varroa, harvest, migration, bloom, care or winter */
+    val category: String,
+    val title: String,
+    val body: String,
+    /** YYYY-MM-DD */
+    val start: String,
+    val end: String,
+    /** Set when the task repeats during the entry ("at least every 9 days"). */
+    @SerializedName("interval_days") val intervalDays: Int?,
+    /** A forage key (acacia, rapeseed, ...) when the entry is about one kind of honey. */
+    val honey: String?,
+    /** Whether today lies within the entry. */
+    val active: Boolean?,
+) {
+    val id: String get() = "$key|$start"
+    val isActive: Boolean get() = active == true
+}
+
+data class CalendarOut(
+    val region: RegionOut,
+    val today: String,
+    val start: String,
+    val end: String,
+    val entries: List<CalendarEntryOut>,
 )
 
 // MARK: - Moving hives

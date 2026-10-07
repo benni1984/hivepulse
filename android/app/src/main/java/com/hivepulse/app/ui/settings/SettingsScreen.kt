@@ -175,7 +175,8 @@ fun SettingsScreen(
     onAdminClick: () -> Unit = {},
     onCustomFieldsClick: () -> Unit = {},
     onGuidedTourClick: () -> Unit = {},
-    vm: SettingsViewModel = hiltViewModel()
+    vm: SettingsViewModel = hiltViewModel(),
+    regionVm: com.hivepulse.app.ui.calendar.RegionViewModel = hiltViewModel(),
 ) {
     val state by vm.state.collectAsState()
     val context = androidx.compose.ui.platform.LocalContext.current
@@ -506,6 +507,13 @@ fun SettingsScreen(
                             CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
                         else
                             Text(stringResource(R.string.reminder_save_button))
+                    }
+
+                    // Region: where the beekeeper's year is moved to
+                    val region by regionVm.state.collectAsState()
+                    if (region.isLoaded) {
+                        Text(stringResource(R.string.region_title), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
+                        com.hivepulse.app.ui.calendar.RegionForm(regionVm)
                     }
 
                     // Data Export

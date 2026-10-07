@@ -51,6 +51,7 @@ object Routes {
     const val MOVE_HIVES         = "move_hives/{apiaryId}"
     const val HIVE_MOVES         = "hive_moves/{hiveId}"
     const val MOVES_OVERVIEW     = "moves_overview"
+    const val BEEKEEPING_YEAR    = "beekeeping_year"
     const val TREATMENTS         = "treatments/{type}/{id}"
     const val GUIDED_TOUR        = "guided_tour?fromSettings={fromSettings}"
 }
@@ -107,6 +108,7 @@ fun HivePulseNavGraph(
                 onBatchClick  = { navController.navigate(Routes.QR_BATCH_LIST) },
                 onStatsClick    = { navController.navigate(Routes.STATS_OVERVIEW) },
                 onMovesClick    = { navController.navigate(Routes.MOVES_OVERVIEW) },
+                onCalendarClick = { navController.navigate(Routes.BEEKEEPING_YEAR) },
                 onHiveClick     = { id -> navController.navigate("hive_detail/$id") }
             )
         }
@@ -160,6 +162,9 @@ fun HivePulseNavGraph(
                 navArgument("id") { type = NavType.StringType },
             )) {
             com.hivepulse.app.ui.home.TreatmentsScreen(onBack = { navController.popBackStack() })
+        }
+        composable(Routes.BEEKEEPING_YEAR) {
+            com.hivepulse.app.ui.calendar.BeekeepingYearScreen(onBack = { navController.popBackStack() })
         }
         composable(Routes.MOVES_OVERVIEW) {
             com.hivepulse.app.ui.moves.MovesOverviewScreen(onBack = { navController.popBackStack() })

@@ -126,7 +126,7 @@ def node_enabled(dump, text):
 # Content descriptions of FABs and nav items that should never be treated as list items
 _SKIP_CONTENT_DESCS = frozenset({
     "New Apiary", "New Hive", "New Inspection",
-    "Statistics", "Print QR codes", "Scan QR code", "Settings",
+    "Statistics", "Print QR codes", "Scan QR code", "Settings", "Beekeeping year",
     "My Apiaries", "Hornets", "Members",
 })
 
@@ -658,6 +658,16 @@ def capture_moves_overview():
     keyevent("KEYCODE_BACK")
 
 
+def capture_beekeeping_year():
+    print("Capturing: android-beekeeping-year", flush=True)
+    back_to_apiaries()
+    tap_desc("Beekeeping year")
+    # The list loads, lays itself out and scrolls itself to today a moment after it opens.
+    time.sleep(4.0)
+    screenshot("android-beekeeping-year")
+    keyevent("KEYCODE_BACK")
+
+
 def capture_settings_screens():
     print("Capturing: android-settings-account, android-settings-reminders", flush=True)
     back_to_apiaries()
@@ -730,6 +740,7 @@ def main():
         capture_home_and_apiary_list,
         capture_apiary_screens,
         capture_moves_overview,
+        capture_beekeeping_year,
         capture_settings_screens,
         capture_hornets_and_members,
     ):

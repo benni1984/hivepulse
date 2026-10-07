@@ -86,6 +86,31 @@ class ApiaryWithDataTest {
         composeRule.waitUntil(timeoutMillis = 5_000) {
             composeRule.onAllNodesWithTag("hiveEditName").fetchSemanticsNodes().isNotEmpty()
         }
+    fun apiaryList_opensTheBeekeepingYearWithTheRegionAndTheEntries() {
+        val region = com.hivepulse.app.data.api.RegionOut("DE", "69123", 49.4, 8.7, 0, 2, "postal_code", true)
+        coEvery { apiService.region() } returns region
+        coEvery { apiService.calendar(any(), any(), any()) } returns com.hivepulse.app.data.api.CalendarOut(
+            region, "2026-10-07", "2026-09-01", "2027-01-29",
+            listOf(
+                com.hivepulse.app.data.api.CalendarEntryOut(
+                    "winter-prep", "winter", "Make the hives winter-proof", "Fit the mouse guard.",
+                    "2026-10-01", "2026-11-20", null, null, true,
+                ),
+                com.hivepulse.app.data.api.CalendarEntryOut(
+                    "swarm-control", "swarm", "Swarm control: look for queen cells", "Check weekly.",
+                    "2027-04-22", "2027-07-02", 9, null, false,
+                ),
+            ),
+        )
+        waitForApiaryList()
+
+        composeRule.onNodeWithTag("beekeepingYearButton").performClick()
+
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithText("Make the hives winter-proof").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithTag("calendarRegion").assertIsDisplayed()
+        composeRule.onNodeWithTag("changeRegionButton").assertIsDisplayed()
     }
 
     private fun waitForApiaryList() {

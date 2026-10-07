@@ -68,6 +68,22 @@ final class ApiaryListUITests: XCTestCase {
 
         XCTAssertTrue(app.textFields["hiveEditName"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.navigationBars["New Hive"].exists)
+    // MARK: - The beekeeper's year
+
+    func test_apiaryList_opensTheBeekeepingYearWithTheRegionAndTheEntries() {
+        continueAfterFailure = false
+        app = XCUIApplication()
+        app.launchArguments = ["-resetKeychain", "-mockApiaryWithHive", "-mockNewTools"]
+        app.launch()
+
+        let button = app.buttons["beekeepingYearButton"]
+        XCTAssertTrue(button.waitForExistence(timeout: 5))
+        button.tap()
+
+        XCTAssertTrue(app.navigationBars["Beekeeping year"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Make the hives winter-proof"].waitForExistence(timeout: 5)
+                      || app.staticTexts["Swarm control: look for queen cells"].exists)
+        XCTAssertTrue(app.buttons["changeRegionButton"].waitForExistence(timeout: 5))
     }
 
     // MARK: - Editing

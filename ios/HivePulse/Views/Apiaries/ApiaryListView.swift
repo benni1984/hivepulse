@@ -69,7 +69,7 @@ struct ApiaryListView: View {
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 if apiaryVM.isLoading { ProgressView() }
-                // Same order as Android's top bar: statistics, QR batches, moves map, invitation link.
+                // Same order as Android's top bar: statistics, QR batches, moves map, beekeeping year, invitation link.
                 // Creating an apiary is the amber button at the bottom right, as on Android.
                 NavigationLink {
                     OverviewStatsView()
@@ -94,6 +94,13 @@ struct ApiaryListView: View {
                 }
                 .accessibilityLabel(NSLocalizedString("moves.overviewTitle", comment: ""))
                 .accessibilityIdentifier("movesOverviewButton")
+                NavigationLink {
+                    BeekeepingYearView()
+                } label: {
+                    Image(systemName: "calendar")
+                }
+                .accessibilityLabel(NSLocalizedString("calendar.title", comment: ""))
+                .accessibilityIdentifier("beekeepingYearButton")
                 Button { showRedeem = true } label: { Image(systemName: "envelope.open") }
                     .accessibilityLabel(NSLocalizedString("invitation.redeemTitle", comment: ""))
                     .accessibilityIdentifier("redeemInvitationButton")

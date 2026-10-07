@@ -64,6 +64,7 @@ extension MockURLProtocol {
         ("inspections",      200, emptyList),
         ("hives",            200, emptyList),
         ("field-definitions",200, "[]"),
+        ("users/me/region",200, regionJSON),
         ("users/me/reminder",200, reminderJSON),   // must come before "users/me"
         ("users/me",         200, userJSON),
         ("qr-batches",       200, emptyList),
@@ -82,6 +83,7 @@ extension MockURLProtocol {
         ("hives/h-1",                      200, hiveJSON),
         ("apiaries/a-1",                   200, apiaryJSON),
         ("field-definitions",              200, "[]"),
+        ("users/me/region",              200, regionJSON),
         ("users/me/reminder",              200, reminderJSON),  // before "users/me"
         ("users/me",                       200, userJSON),
         ("qr-batches",                     200, emptyList),
@@ -95,6 +97,7 @@ extension MockURLProtocol {
         ("inspections",      200, emptyList),
         ("hives",            200, emptyList),
         ("field-definitions",200, "[]"),
+        ("users/me/region",200, regionJSON),
         ("users/me/reminder",200, reminderJSON),   // must come before "users/me"
         ("users/me",         200, supporterUserJSON),
         ("qr-batches",       200, emptyList),
@@ -118,12 +121,38 @@ extension MockURLProtocol {
 
     // The pages behind the newer tools (-mockNewTools): where a hive has stood, treatments, working together.
     static let newToolsHandlers: [(String, Int, String)] = [
+        ("calendar",             200, calendarJSON),
         ("hives/moves/overview", 200, "[]"),
         ("hives/h-1/moves",      200, "[]"),   // before "hives/h-1"
         ("treatments",           200, "[]"),
         ("shares/incoming",      200, "[]"),
         ("shares",               200, "[]"),
     ]
+
+    private static let regionJSON = """
+    {"country":null,"postal_code":null,"latitude":null,"longitude":null,"adjust_days":0,"shift_days":0,
+     "source":"default","located":true}
+    """
+
+    // The beekeeper's year around "today" (2026-10-07), with something running now, a repeated task and a honey.
+    private static let calendarJSON = """
+    {"region":{"country":"DE","postal_code":"69123","latitude":49.4,"longitude":8.7,"adjust_days":0,"shift_days":2,
+               "source":"postal_code","located":true},
+     "today":"2026-10-07","start":"2026-09-01","end":"2027-01-29",
+     "entries":[
+      {"key":"winter-feeding","category":"feeding","title":"Feed for the winter","body":"Feed sugar syrup in a few large rations while it is still warm.",
+       "start":"2026-08-01","end":"2026-09-25","interval_days":null,"honey":null,"active":false},
+      {"key":"winter-prep","category":"winter","title":"Make the hives winter-proof","body":"Fit the mouse guard and a reduced entrance, and leave the colonies in peace.",
+       "start":"2026-10-01","end":"2026-11-20","interval_days":null,"honey":null,"active":true},
+      {"key":"oxalic-acid","category":"varroa","title":"Winter treatment in the brood-free time","body":"After some days of hard frost, once, as approved.",
+       "start":"2026-11-25","end":"2026-12-31","interval_days":null,"honey":null,"active":false},
+      {"key":"candy-feeding","category":"feeding","title":"Feed candy if the stores run low","body":"Lift the hive at the back: a light colony needs help now.",
+       "start":"2027-02-01","end":"2027-03-10","interval_days":null,"honey":null,"active":false},
+      {"key":"swarm-control","category":"swarm","title":"Swarm control: look for queen cells","body":"Check every colony weekly, at the latest every 9 days.",
+       "start":"2027-04-22","end":"2027-07-02","interval_days":9,"honey":null,"active":false},
+      {"key":"harvest-rapeseed","category":"harvest","title":"Rapeseed honey: extract at once","body":"Rapeseed honey sets hard within days.",
+       "start":"2027-05-17","end":"2027-06-07","interval_days":null,"honey":"rapeseed","active":false}]}
+    """
 
     private static let homeJSON = """
     {"today":"2026-10-07","in_season":true,"apiary_count":1,"hive_count":1,
@@ -144,6 +173,7 @@ extension MockURLProtocol {
         ("qr-batches/b-1",     200, qrBatchJSON),       // before "qr-batches"
         ("qr-batches",         200, qrBatchListJSON),
         ("field-definitions",  200, "[]"),
+        ("users/me/region",  200, regionJSON),
         ("users/me/reminder",  200, reminderJSON),      // before "users/me"
         ("users/me",           200, userJSON),
         ("apiaries",           200, emptyList),

@@ -158,6 +158,15 @@ await soft('moves-overview', async () => {
   await shot(page, 'moves-overview');
 });
 
+// ── The beekeeper's year ──────────────────────────────────────────────────────
+
+await soft('beekeeping-year', async () => {
+  await goto(page, `${BASE}/en/dashboard/calendar`);
+  await page.getByTestId('calendar-today').waitFor({ timeout: 15_000 });
+  await page.waitForTimeout(1_000); // the list scrolls itself to today
+  await shot(page, 'beekeeping-year');
+});
+
 // ── Stats ─────────────────────────────────────────────────────────────────────
 
 await goto(page, `${BASE}/en/dashboard/stats`);

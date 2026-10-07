@@ -37,6 +37,7 @@ fun ApiaryListScreen(
     onBatchClick: () -> Unit,
     onStatsClick: () -> Unit = {},
     onMovesClick: () -> Unit = {},
+    onCalendarClick: () -> Unit = {},
     onHiveClick: (String) -> Unit = {},
     vm: ApiaryViewModel = hiltViewModel(),
     invitationsVm: InvitationsViewModel = hiltViewModel(),
@@ -55,12 +56,15 @@ fun ApiaryListScreen(
             TopAppBar(
                 title = { Text(stringResource(R.string.screen_apiaries), style = MaterialTheme.typography.titleLarge) },
                 actions = {
-                    // Same order as the iPhone's toolbar: statistics, QR batches, moves map, invitation link.
+                    // Same order as the iPhone's toolbar: statistics, QR batches, moves map, beekeeping year, invitation link.
                     // Scanning is a tab of the bottom bar on both.
                     IconButton(onClick = onStatsClick)    { Icon(Icons.Default.BarChart,     contentDescription = stringResource(R.string.screen_stats_overview)) }
                     IconButton(onClick = onBatchClick)    { Icon(Icons.Default.Print,        contentDescription = stringResource(R.string.tab_print)) }
                     IconButton(onClick = onMovesClick, modifier = Modifier.testTag("movesOverviewButton")) {
                         Icon(Icons.Default.Map, contentDescription = stringResource(R.string.moves_overview_title))
+                    }
+                    IconButton(onClick = onCalendarClick, modifier = Modifier.testTag("beekeepingYearButton")) {
+                        Icon(Icons.Default.CalendarMonth, contentDescription = stringResource(R.string.calendar_title))
                     }
                     IconButton(onClick = { showRedeem = true }, modifier = Modifier.testTag("redeemInvitationButton")) {
                         Icon(Icons.Default.MarkEmailRead, contentDescription = stringResource(R.string.invitation_redeem_title))
