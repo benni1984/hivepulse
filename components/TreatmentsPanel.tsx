@@ -127,7 +127,7 @@ export default function TreatmentsPanel({ type, id }: { type: 'hive' | 'apiary';
         </form>
       )}
 
-      {loading && <div className="spinner" />}
+      {loading && <div className="dash-panel-spinner" />}
       {!loading && open.length === 0 && !showForm && <p className="dash-card-meta">{t('treatments.empty')}</p>}
 
       {open.length > 0 && (

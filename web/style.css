@@ -1032,7 +1032,10 @@ tr:last-child td { border-bottom: none; }
   color: var(--muted);
 }
 
-.spinner {
+/* The panels on a page (sharing, treatments) use their own class: the E2E suite waits for
+   `.spinner` of the page and fails when a second one is in the DOM. */
+.spinner,
+.dash-panel-spinner {
   width: 32px;
   height: 32px;
   border: 3px solid var(--border);
