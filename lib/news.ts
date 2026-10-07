@@ -23,6 +23,28 @@ export function newsText(entry: NewsEntry, locale: string): NewsText {
 export const NEWS: NewsEntry[] = [
   {
     date: '2026-10-07',
+    tag: 'feature',
+    text: {
+      en: {
+        title: 'Invitations Without Pasting a Link',
+        body: 'If you sign in with Apple or Google, an invitation sent to that address is already waiting in your apiary list. Tap Accept, done. The envelope icon is gone from the apps’ toolbar; a link from an e-mail is still redeemed at the end of the apiary list.',
+      },
+      de: {
+        title: 'Einladungen ohne Link einfügen',
+        body: 'Wenn du dich mit Apple oder Google anmeldest, wartet eine an diese Adresse geschickte Einladung schon in deiner Liste der Bienenstände. Auf Annehmen tippen, fertig. Das Umschlag-Symbol in der Symbolleiste der Apps ist weg; ein Link aus einer E-Mail wird weiter am Ende der Liste der Bienenstände eingelöst.',
+      },
+      fr: {
+        title: 'Des invitations sans lien à coller',
+        body: 'Si vous vous connectez avec Apple ou Google, une invitation envoyée à cette adresse vous attend déjà dans la liste des ruchers. Touchez Accepter, c’est fait. L’icône d’enveloppe a quitté la barre des applications ; un lien reçu par e-mail s’utilise toujours à la fin de la liste des ruchers.',
+      },
+      es: {
+        title: 'Invitaciones sin pegar un enlace',
+        body: 'Si inicias sesión con Apple o Google, una invitación enviada a esa dirección ya te espera en la lista de colmenares. Toca Aceptar y listo. El icono de sobre ya no está en la barra de las apps; un enlace de un correo se sigue usando al final de la lista de colmenares.',
+      },
+    },
+  },
+  {
+    date: '2026-10-07',
     tag: 'fix',
     text: {
       en: {

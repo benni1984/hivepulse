@@ -70,7 +70,7 @@ The two apps must look and behave alike: same places, same order, same wording. 
 the other in the same PR.
 
 - **Bottom tabs, in this order:** Apiaries, Scan, Hornets, Members, Settings.
-- **Apiary list toolbar, in this order:** statistics, QR batches, moves map, beekeeping year, invitation link. Creating an apiary
+- **Apiary list toolbar, in this order:** statistics, QR batches, moves map, beekeeping year. Creating an apiary
   is the amber button at the bottom right, not a toolbar icon.
 - **Apiary page toolbar:** move, share, treatments, custom fields, edit. **Hive page toolbar:** share, edit,
   QR code, statistics; move history and treatments are rows of the page.

@@ -64,8 +64,10 @@ export default function SharingContent({ Screenshot }: { Screenshot: typeof Help
           </li>
           <li>
             <strong>Du hast noch kein Konto:</strong> Die E-Mail enthält einen Link. Öffne ihn, registriere dich oder melde
-            dich mit dieser Adresse an und nimm an. In den Apps tippst du in der Liste der Bienenstände oben auf das
-            Umschlag-Symbol (<em>Einladungslink einlösen</em>) und fügst den Link ein.
+            dich mit dieser Adresse an und nimm an. Meldest du dich mit Apple oder Google an, wartet die Einladung schon in deiner
+            Liste der Bienenstände und du tippst nur auf <em>Annehmen</em>. Hast du dich in der App mit einem Passwort
+            registriert, scrollst du ans Ende der Liste der Bienenstände, tippst auf <em>Einladungslink einlösen</em> und
+            fügst den Link ein.
           </li>
         </ul>
       </section>

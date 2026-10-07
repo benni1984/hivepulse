@@ -126,7 +126,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
         </p>
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li><strong>Onglets en bas :</strong> Ruchers, Scanner, Frelons, Membres, Paramètres.</li>
-          <li><strong>Barre de la liste des ruchers :</strong> statistiques, lots de QR codes, carte des déplacements, lien d&rsquo;invitation.</li>
+          <li><strong>Barre de la liste des ruchers :</strong> statistiques, lots de QR codes, carte des déplacements, année de l&rsquo;apiculteur.</li>
           <li><strong>Créer quelque chose</strong> (un rucher, une visite, un lot de QR codes, un champ personnalisé), c&rsquo;est toujours le bouton ambre en bas à droite.</li>
           <li><strong>Les paramètres</strong> contiennent cette aide, les notes de version avec la liste complète des fonctions et la visite guidée.</li>
         </ul>

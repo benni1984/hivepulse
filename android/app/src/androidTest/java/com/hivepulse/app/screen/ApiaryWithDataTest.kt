@@ -5,7 +5,10 @@ import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.hasScrollAction
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.performScrollToIndex
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
@@ -117,6 +120,16 @@ class ApiaryWithDataTest {
         composeRule.onNodeWithTag("beekeepingYearList").performScrollToIndex(1)
         composeRule.onNodeWithTag("calendarRegion").assertIsDisplayed()
         composeRule.onNodeWithTag("changeRegionButton").assertIsDisplayed()
+    }
+
+    @Test
+    fun apiaryList_redeemsAnInvitationLinkFromTheFooterNotTheToolbar() {
+        waitForApiaryList()
+
+        composeRule.onNode(hasScrollAction()).performScrollToNode(hasTestTag("redeemInvitationButton"))
+        composeRule.onNodeWithTag("redeemInvitationButton").performClick()
+
+        composeRule.onNodeWithTag("redeemField").assertIsDisplayed()
     }
 
     private fun waitForApiaryList() {

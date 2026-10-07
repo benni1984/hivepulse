@@ -98,6 +98,15 @@ export const RELEASES: Release[] = [
         ),
       },
       {
+        kind: 'changed',
+        text: t(
+          'Invitations are simpler: whoever signs in with Apple or Google finds an invitation sent to that address waiting in the apiary list, with no link to paste. The envelope icon is gone from the toolbar; a link from an e-mail is still redeemed at the end of the apiary list.',
+          'Einladungen sind einfacher: Wer sich mit Apple oder Google anmeldet, findet eine an diese Adresse geschickte Einladung schon in der Liste der Bienenstände, ohne einen Link einzufügen. Das Umschlag-Symbol in der Symbolleiste ist weg; ein Link aus einer E-Mail wird weiter am Ende der Liste der Bienenstände eingelöst.',
+          'Les invitations sont plus simples : qui se connecte avec Apple ou Google trouve l’invitation envoyée à cette adresse déjà dans la liste des ruchers, sans lien à coller. L’icône d’enveloppe a quitté la barre ; un lien reçu par e-mail s’utilise toujours à la fin de la liste des ruchers.',
+          'Las invitaciones son más sencillas: quien inicia sesión con Apple o Google encuentra la invitación enviada a esa dirección ya en la lista de colmenares, sin pegar ningún enlace. El icono de sobre ya no está en la barra; un enlace de un correo se sigue usando al final de la lista de colmenares.',
+        ),
+      },
+      {
         kind: 'added',
         text: t(
           'Delete QR batches that no hive uses.',

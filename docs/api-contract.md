@@ -138,6 +138,11 @@ so there is no separate registration step.
 }
 ```
 
+Invitations (see [Invitations](#invitations)) that were made out to the provider's verified address
+before the account existed are attached to the account, so they show up under
+`GET /shares/incoming` like one made to an existing account. They stay pending: nobody joins an
+apiary without accepting.
+
 `name` is optional and only used when the account is created. Apple sends a name exactly
 once — in the authorization response of the very first sign-in, never in the token itself —
 so the client has to pass it on or it is lost for good. Google carries the name in the token

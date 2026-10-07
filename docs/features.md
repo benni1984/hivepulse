@@ -65,7 +65,7 @@ Guide values only; medicines subject to the approvals of the country.
 | Feature | Where | W | I | A | Contract |
 |---------|-------|:-:|:-:|:-:|----------|
 | Invite another beekeeper by e-mail to an apiary or single hives | Apiary or hive → work together | ✔ | ✔ | ✔ | Sharing |
-| Accept in the app, on the website, or through the e-mail link | Top of the apiary list; envelope icon | ✔ | ✔ | ✔ | Sharing |
+| Accept in the app, on the website, or through the e-mail link | Top of the apiary list; end of the list for a link (Apple/Google sign-in needs none) | ✔ | ✔ | ✔ | Sharing |
 | Owner-only: delete, public map, move, invite (`403 OWNER_ONLY`) | | ✔ | ✔ | ✔ | Sharing |
 
 ## Statistics, data and community
@@ -83,8 +83,8 @@ crash reports to an EU-region Sentry; a guided tour.
 ## Navigation (the same on iPhone and Android)
 
 Tabs: Apiaries, Scan, Hornets, Members, Settings. Apiary list toolbar: statistics, QR batches, map of
-moves, invitation link. Every create action is the amber labelled button at the bottom right.
-Settings: custom fields, profile, change password, reminders, export, admin, help and tour, release
+moves, beekeeping year. Every create action is the amber labelled button at the bottom right.
+Settings: custom fields, profile, change password, reminders, region, export, admin, help and tour, release
 notes, diagnostics, log out, danger zone. See `CLAUDE.md`.
 
 ## Wording

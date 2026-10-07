@@ -338,3 +338,43 @@ def test_a_name_can_still_be_changed_without_a_password(client, signing):
     # Only the password path is closed, not the profile.
     assert r.status_code == 200
     assert r.json()["name"] == "Neuer Name"
+
+
+# ── Invitations made before the account existed ───────────────────────────────
+
+def _alice_invites(client, monkeypatch, email):
+    from app.routers import shares as shares_router
+    monkeypatch.setattr(shares_router, "send_email", lambda *a, **k: None)
+    client.post("/api/v1/auth/register", json={
+        "email": "alice-owner@example.com", "password": "password123", "name": "Alice",
+    })
+    token = client.post("/api/v1/auth/login", json={
+        "email": "alice-owner@example.com", "password": "password123"}).json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+    apiary = client.post("/api/v1/apiaries", json={"name": "Garden"}, headers=headers).json()
+    r = client.post("/api/v1/shares", json={"email": email, "apiary_id": apiary["id"]}, headers=headers)
+    assert r.status_code == 201
+
+
+def test_an_invitation_sent_before_the_account_existed_is_waiting_after_a_verified_sign_in(
+        client, signing, monkeypatch):
+    pem, _, _ = signing
+    _alice_invites(client, monkeypatch, "newcomer@example.com")
+
+    body = _sign_in(client, _token(pem, sub="newcomer-1", email="newcomer@example.com")).json()
+
+    incoming = client.get("/api/v1/shares/incoming",
+                          headers={"Authorization": f"Bearer {body['access_token']}"}).json()
+    # Pending, not accepted: nobody joins an apiary without saying yes.
+    assert [(i["owner_name"], i["target"]["name"]) for i in incoming] == [("Alice", "Garden")]
+
+
+def test_an_invitation_for_another_address_stays_unbound(client, signing, monkeypatch):
+    pem, _, _ = signing
+    _alice_invites(client, monkeypatch, "somebody-else@example.com")
+
+    body = _sign_in(client, _token(pem, sub="newcomer-2", email="newcomer2@example.com")).json()
+
+    incoming = client.get("/api/v1/shares/incoming",
+                          headers={"Authorization": f"Bearer {body['access_token']}"}).json()
+    assert incoming == []

@@ -29,6 +29,17 @@ final class ApiaryListUITests: XCTestCase {
         XCTAssertFalse(app.navigationBars.buttons["Add"].exists, "no plus in the toolbar any more")
     }
 
+    func test_apiaryList_redeemsAnInvitationLinkFromTheFooterNotTheToolbar() {
+        launch(with: "-mockAuthenticated")
+        XCTAssertTrue(app.navigationBars["Apiaries"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.navigationBars.buttons["redeemInvitationButton"].exists, "no envelope in the toolbar any more")
+        let button = app.buttons["redeemInvitationButton"]
+        XCTAssertTrue(button.waitForExistence(timeout: 5))
+        button.tap()
+        XCTAssertTrue(app.alerts.firstMatch.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.alerts.textFields.firstMatch.exists)
+    }
+
     // MARK: - With data
 
     func test_apiaryList_showsApiaryNameWhenDataLoaded() {

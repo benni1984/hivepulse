@@ -56,7 +56,7 @@ fun ApiaryListScreen(
             TopAppBar(
                 title = { Text(stringResource(R.string.screen_apiaries), style = MaterialTheme.typography.titleLarge) },
                 actions = {
-                    // Same order as the iPhone's toolbar: statistics, QR batches, moves map, beekeeping year, invitation link.
+                    // Same order as the iPhone's toolbar: statistics, QR batches, moves map, beekeeping year.
                     // Scanning is a tab of the bottom bar on both.
                     IconButton(onClick = onStatsClick)    { Icon(Icons.Default.BarChart,     contentDescription = stringResource(R.string.screen_stats_overview)) }
                     IconButton(onClick = onBatchClick)    { Icon(Icons.Default.Print,        contentDescription = stringResource(R.string.tab_print)) }
@@ -65,9 +65,6 @@ fun ApiaryListScreen(
                     }
                     IconButton(onClick = onCalendarClick, modifier = Modifier.testTag("beekeepingYearButton")) {
                         Icon(Icons.Default.CalendarMonth, contentDescription = stringResource(R.string.calendar_title))
-                    }
-                    IconButton(onClick = { showRedeem = true }, modifier = Modifier.testTag("redeemInvitationButton")) {
-                        Icon(Icons.Default.MarkEmailRead, contentDescription = stringResource(R.string.invitation_redeem_title))
                     }
                 }
             )
@@ -92,6 +89,7 @@ fun ApiaryListScreen(
                         Icon(Icons.Default.Hive, contentDescription = null, Modifier.size(48.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         Text(stringResource(R.string.empty_apiaries_title), style = MaterialTheme.typography.titleMedium)
                         Text(stringResource(R.string.action_new_apiary), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        RedeemInvitationLink { showRedeem = true }
                     }
                 }
                 else -> LazyColumn(
@@ -118,6 +116,7 @@ fun ApiaryListScreen(
                     items(state.apiaries) { apiary ->
                         ApiaryCard(apiary, onClick = { onApiaryClick(apiary.id) }, onDelete = { vm.delete(apiary.id) })
                     }
+                    item { RedeemInvitationLink { showRedeem = true } }
                 }
             }
         }
@@ -160,6 +159,17 @@ fun ApiaryListScreen(
             },
             onDismiss = { showCreate = false }
         )
+    }
+}
+
+/**
+ * Invitations to an existing account just show up above the list. A link is only needed for one made to an
+ * address that had no account and who signed up with a password; the website takes the link by itself.
+ */
+@Composable
+private fun RedeemInvitationLink(onClick: () -> Unit) {
+    TextButton(onClick = onClick, modifier = Modifier.testTag("redeemInvitationButton")) {
+        Text(stringResource(R.string.invitation_redeem_title))
     }
 }
 
