@@ -14,6 +14,7 @@ const mockExportApiaryInspections = vi.hoisted(() => vi.fn());
 
 // Sharing has its own tests; these pages only need it out of the way.
 vi.mock('@/components/SharingPanel', () => ({ default: () => null }));
+vi.mock('@/components/MoveHivesPanel', () => ({ default: () => null }));
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }));

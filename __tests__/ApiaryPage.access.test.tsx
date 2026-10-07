@@ -7,6 +7,7 @@ const mockGetApiary = vi.hoisted(() => vi.fn());
 
 vi.mock('@/components/SharingPanel', () => ({ default: () => <div data-testid="sharing-panel" /> }));
 
+vi.mock('@/components/MoveHivesPanel', () => ({ default: () => <div data-testid="move-panel-stub" /> }));
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string, params?: Record<string, string>) =>
     params ? `${key}|${Object.values(params).join('|')}` : key,
@@ -32,7 +33,9 @@ vi.mock('@/hooks/useDashboardAuth', () => ({
 
 vi.mock('@/lib/api', () => ({
   getApiary: mockGetApiary,
-  getHives: vi.fn().mockResolvedValue({ items: [], total: 0, page: 1, per_page: 100 }),
+  getHives: vi.fn().mockResolvedValue({
+    items: [{ id: 'h-1', name: 'Hive 1', hive_type: 'langstroth', apiary_id: 'apiary-1' }], total: 1, page: 1, per_page: 100,
+  }),
   getApiaryStats: vi.fn().mockResolvedValue({
     hive_count: 0, inspections_total: 0, average_varroa: null,
     mood_distribution: { calm: 0, nervous: 0, aggressive: 0 },
@@ -58,7 +61,7 @@ async function load(apiary: Record<string, unknown>) {
 }
 
 describe('what each kind of access sees on an apiary', () => {
-  beforeEach(() => mockGetApiary.mockReset());
+  beforeEach(() => { mockGetApiary.mockReset(); });
 
   it('the owner can edit, add hives, share and delete', async () => {
     await load({ access: 'owner', owner_name: null });
@@ -69,6 +72,31 @@ describe('what each kind of access sees on an apiary', () => {
     expect(screen.getByTestId('sharing-panel')).toBeInTheDocument();
     expect(screen.getByText('apiary.dangerTitle')).toBeInTheDocument();
     expect(screen.queryByTestId('shared-note')).toBeNull();
+  });
+
+  it('only the owner can move hives', async () => {
+    await load({ access: 'owner', owner_name: null });
+    expect(screen.getByText('moves.title')).toBeInTheDocument();
+  });
+
+  it('a collaborator cannot move hives, even though they can work on them', async () => {
+    await load({ access: 'shared', owner_name: 'Alice' });
+    expect(screen.queryByText('moves.title')).toBeNull();
+  });
+
+  it('somebody with single hives shared cannot move hives', async () => {
+    await load({ access: 'partial', owner_name: 'Bob' });
+    expect(screen.queryByText('moves.title')).toBeNull();
+  });
+
+  it('opens the move form from the button', async () => {
+    await load({ access: 'owner', owner_name: null });
+
+    fireEvent.click(screen.getByText('moves.title'));
+
+    expect(screen.getByTestId('move-panel-stub')).toBeInTheDocument();
+    // The button gives way to the form it opened.
+    expect(screen.queryByText('moves.title')).toBeNull();
   });
 
   it('a server that does not know sharing is treated as the owner', async () => {

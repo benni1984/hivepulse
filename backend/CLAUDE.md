@@ -5,7 +5,7 @@
 - Run tests: `pytest` (from `backend/`)
 - Database: SQLite for dev, PostgreSQL (Neon) for staging/production
 - ORM: SQLAlchemy + Alembic migrations in `backend/alembic/versions/`
-- Latest migration: `014_apple_refresh_token.py`
+- Latest migration: `016_hive_moves.py`
 
 ## Push notifications
 

@@ -61,11 +61,14 @@ export default function DashboardPage() {
     <DashboardShell>
       <div className="dash-page-header">
         <h1 className="dash-page-title">{t('apiaries.title')}</h1>
-        {!showCreate && (
-          <button className="dash-new-btn" onClick={openCreate}>
-            {t('apiaries.new')}
-          </button>
-        )}
+        <span className="dash-row-actions">
+          <Link href="/dashboard/moves" className="dash-row-btn">{t('moves.openOverview')}</Link>
+          {!showCreate && (
+            <button className="dash-new-btn" onClick={openCreate}>
+              {t('apiaries.new')}
+            </button>
+          )}
+        </span>
       </div>
 
       {ready && <IncomingInvitations onChange={loadApiaries} />}

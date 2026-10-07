@@ -6,6 +6,7 @@ import { Link, useRouter } from '@/i18n/navigation';
 import dynamic from 'next/dynamic';
 import DashboardShell from '@/components/DashboardShell';
 import SharingPanel from '@/components/SharingPanel';
+import HiveMovesSection from '@/components/HiveMovesSection';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getHive, getHiveStats, getInspections, updateHive, deleteHive, createInspection, updateInspection, deleteInspection, getUserFieldDefs, getApiaryFieldDefs, exportHiveInspections, type Hive, type HiveStats, type Inspection, type InspectionInput, type FieldDefinition } from '@/lib/api';
 
@@ -558,6 +559,9 @@ export default function HivePage() {
               </form>
             </div>
           )}
+
+          {/* ── Where the hive has stood ───────────────────────────── */}
+          <HiveMovesSection hiveId={id} />
 
           {/* ── Sharing and deleting stay with the owner ────────────── */}
           {(hive.access ?? 'owner') === 'owner' && <SharingPanel type="hive" id={id} />}

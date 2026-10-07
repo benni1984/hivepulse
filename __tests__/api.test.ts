@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { login, register, logout, getMe, updateMe, deleteMe, getApiaries, createApiary, updateApiary, deleteApiary, createHive, updateHive, deleteHive, getHive, clearTokens, createInspection, updateInspection, deleteInspection, getQrBatches, createQrBatch, getQrBatch, downloadQrBatchPdf, getPublicStats, exportHiveInspections, exportApiaryInspections, getReminderSettings, updateReminderSettings, registerPushToken, forgotPassword, resetPassword, socialSignIn, deleteQrBatch, createShare, getShares, getIncomingShares, acceptShare, declineShare, deleteShare, acceptShareByToken } from '@/lib/api';
+import { login, register, logout, getMe, updateMe, deleteMe, getApiaries, createApiary, updateApiary, deleteApiary, createHive, updateHive, deleteHive, getHive, clearTokens, createInspection, updateInspection, deleteInspection, getQrBatches, createQrBatch, getQrBatch, downloadQrBatchPdf, getPublicStats, exportHiveInspections, exportApiaryInspections, getReminderSettings, updateReminderSettings, registerPushToken, forgotPassword, resetPassword, socialSignIn, deleteQrBatch, createShare, getShares, getIncomingShares, acceptShare, declineShare, deleteShare, acceptShareByToken, moveHives, getHiveMoves, getMovesOverview } from '@/lib/api';
 
 const mockUser = { id: '1', email: 'a@b.com', name: 'Test', locale: 'en', created_at: '2024-01-01' };
 const mockTokens = { access_token: 'access-123', refresh_token: 'refresh-456', user: mockUser };
@@ -80,6 +80,48 @@ describe('deleteQrBatch', () => {
   it('fails on any other error', async () => {
     vi.mocked(fetch).mockResolvedValueOnce(ok({}, 500));
     await expect(deleteQrBatch('b-1')).rejects.toThrow('Delete failed');
+  });
+});
+
+describe('moving hives', () => {
+  const call = (n = 0) => vi.mocked(fetch).mock.calls[n] as [string, RequestInit | undefined];
+
+  it('moveHives posts the hives, the target and the details', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ moved: 2, apiary: { id: 'a-1' }, moves: [] }, 201));
+    const result = await moveHives({ hive_ids: ['h-1', 'h-2'], to_apiary_id: 'a-1', moved_on: '2026-05-12', forage: 'acacia' });
+
+    expect(call()[0]).toContain('/hives/move');
+    expect(call()[1]?.method).toBe('POST');
+    expect(JSON.parse(call()[1]?.body as string)).toEqual({
+      hive_ids: ['h-1', 'h-2'], to_apiary_id: 'a-1', moved_on: '2026-05-12', forage: 'acacia',
+    });
+    expect(result.moved).toBe(2);
+  });
+
+  it('moveHives surfaces the server\'s reason', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ detail: { code: 'OWNER_ONLY', message: 'Only the owner can do this.' } }, 403));
+    await expect(moveHives({ hive_ids: ['h-1'], to_apiary_id: 'a-1' })).rejects.toThrow('Only the owner can do this.');
+  });
+
+  it('getHiveMoves reads the history of one hive', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok([{ id: 'm-1' }]));
+    expect(await getHiveMoves('h-1')).toEqual([{ id: 'm-1' }]);
+    expect(call()[0]).toContain('/hives/h-1/moves');
+  });
+
+  it('getMovesOverview limits by the dates it is given and by nothing otherwise', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(ok([])).mockResolvedValueOnce(ok([]));
+    await getMovesOverview();
+    await getMovesOverview({ from: '2026-06-01', to: '2026-06-30' });
+
+    expect(call(0)[0]).toMatch(/\/hives\/moves\/overview$/);
+    expect(call(1)[0]).toContain('/hives/moves/overview?from=2026-06-01&to=2026-06-30');
+  });
+
+  it('a failed history is an error, not silence', async () => {
+    vi.mocked(fetch).mockResolvedValue(ok({}, 500));
+    await expect(getHiveMoves('h-1')).rejects.toThrow();
+    await expect(getMovesOverview()).rejects.toThrow();
   });
 });
 

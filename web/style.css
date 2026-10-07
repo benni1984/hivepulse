@@ -1450,8 +1450,10 @@ tr:last-child td { border-bottom: none; }
 
 /* Sharing (invitations). Looks like the inline forms but has classes of its own: it sits on the same page
    as the edit and create forms, and a selector for "the" form's button must find exactly one. */
-.dash-share-form { background: var(--page); border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin-bottom: 24px; }
-.dash-share-form .dash-form-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.dash-share-form, .dash-move-form { background: var(--page); border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin-bottom: 24px; }
+.dash-share-form .dash-form-actions, .dash-move-form .dash-form-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.dash-move-form h2 { font-size: 19px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 8px; color: var(--text); }
+.dash-move-form textarea { width: 100%; padding: 11px 12px; border: 1px solid var(--field-border); border-radius: 9px; font-size: 15px; font-family: inherit; resize: vertical; min-height: 72px; box-sizing: border-box; color: var(--text); background: #fff; }
 .dash-share-btn {
   min-height: 44px;
   background: linear-gradient(180deg, #166534, #14532d);
