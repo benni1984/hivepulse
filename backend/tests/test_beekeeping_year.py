@@ -16,7 +16,7 @@ API = "/api/v1"
 
 # ── The content ──────────────────────────────────────────────────────────────────────────
 
-def test_every_entry_is_written_in_all_four_languages():
+def test_every_entry_is_written_in_all_five_languages():
     for entry in beekeeping_year.ENTRIES:
         for language in beekeeping_year.LANGUAGES:
             assert entry.title[language].strip(), f"{entry.key} has no {language} title"
@@ -25,7 +25,7 @@ def test_every_entry_is_written_in_all_four_languages():
 
 def test_the_translations_are_not_copies_of_the_english_text():
     for entry in beekeeping_year.ENTRIES:
-        for language in ("de", "fr", "es"):
+        for language in ("de", "fr", "es", "pl"):
             assert entry.body[language] != entry.body["en"], f"{entry.key}: {language} is the English text"
 
 
@@ -77,10 +77,12 @@ def test_the_texts_use_the_words_of_the_apps():
     german = " ".join(e.title["de"] + " " + e.body["de"] for e in beekeeping_year.ENTRIES)
     french = " ".join(e.title["fr"] + " " + e.body["fr"] for e in beekeeping_year.ENTRIES)
     spanish = " ".join(e.title["es"] + " " + e.body["es"] for e in beekeeping_year.ENTRIES)
+    polish = " ".join(e.title["pl"] + " " + e.body["pl"] for e in beekeeping_year.ENTRIES)
 
     assert "Begehung" not in german and "Inspektion" not in german
     assert "inspection" not in french.lower()
     assert "inspecci" not in spanish.lower()
+    assert "inspekcj" not in polish.lower()
 
 
 # ── The move to the beekeeper's place ─────────────────────────────────────────────────────
@@ -109,7 +111,8 @@ def test_the_shift_is_capped_and_the_hand_adjustment_comes_on_top():
 def test_the_language_is_the_first_supported_one():
     assert season.pick_language("de") == "de"
     assert season.pick_language(None, "fr-CH,fr;q=0.9,en;q=0.8") == "fr"
-    assert season.pick_language("pl", "xx", "es") == "es"
+    assert season.pick_language("it", "xx", "es") == "es"
+    assert season.pick_language(None, "pl-PL,pl;q=0.9,en;q=0.8") == "pl"
     assert season.pick_language(None, None, None) == "en"
 
 

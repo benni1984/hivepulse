@@ -330,6 +330,13 @@ SCREENSHOT_ACCOUNTS = {
         "notes": ["Colonia en buena forma", "Reina vista, buena puesta",
                   "Alza colocada", "Reservas suficientes"],
     },
+    "pl": {
+        "name": "Pasieka Słoneczna",
+        "hive": "Rodzina",
+        "apiaries": ["Ogród", "Stary sad", "Skraj lasu"],
+        "notes": ["Rodzina w dobrej kondycji", "Matka widziana, zwarty czerw",
+                  "Dołożono nadstawkę", "Zapasów wystarczy"],
+    },
 }
 
 # Six visits across a season, newest first. A listing should show a well-kept colony, so the

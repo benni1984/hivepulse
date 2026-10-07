@@ -13,7 +13,7 @@ import pytest
 from app.i18n import MESSAGES, get_message
 
 REPO = pathlib.Path(__file__).resolve().parents[2]
-LOCALES = ("en", "de", "fr", "es")
+LOCALES = ("en", "de", "fr", "es", "pl")
 
 
 @pytest.mark.parametrize("code", sorted(MESSAGES))
@@ -25,6 +25,11 @@ def test_every_error_message_exists_in_every_language(code):
 def test_accept_language_picks_the_spanish_message():
     assert get_message("HIVE_NOT_FOUND", "es") == MESSAGES["HIVE_NOT_FOUND"]["es"]
     assert get_message("HIVE_NOT_FOUND", "es-ES,es;q=0.9") == MESSAGES["HIVE_NOT_FOUND"]["es"]
+
+
+def test_accept_language_picks_the_polish_message():
+    assert get_message("HIVE_NOT_FOUND", "pl") == MESSAGES["HIVE_NOT_FOUND"]["pl"]
+    assert get_message("HIVE_NOT_FOUND", "pl-PL,pl;q=0.9,en;q=0.5") == MESSAGES["HIVE_NOT_FOUND"]["pl"]
 
 
 def test_unknown_language_falls_back_to_english():
