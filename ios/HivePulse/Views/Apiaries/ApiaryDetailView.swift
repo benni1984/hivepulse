@@ -6,6 +6,7 @@ struct ApiaryDetailView: View {
     @StateObject private var apiaryVM = ApiaryViewModel()
     @State private var showEdit = false
     @State private var showAddHive = false
+    @State private var showMove = false
 
     init(apiary: ApiaryOut) {
         _apiary = State(initialValue: apiary)
@@ -61,6 +62,14 @@ struct ApiaryDetailView: View {
         .hpScreenBackground()
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
+                // Taking hives to where something is in bloom is the owner's to do.
+                if apiary.isOwner && !hiveVM.hives.isEmpty {
+                    Button { showMove = true } label: {
+                        Image(systemName: "arrow.left.arrow.right")
+                    }
+                    .accessibilityLabel(NSLocalizedString("moves.title", comment: ""))
+                    .accessibilityIdentifier("moveHivesButton")
+                }
                 if apiary.isOwner {
                     NavigationLink(destination: SharingView(target: .apiary(apiary.id), isHive: false)) {
                         Image(systemName: "person.2")
@@ -85,6 +94,12 @@ struct ApiaryDetailView: View {
         }
         .task { await hiveVM.load(apiaryId: apiary.id) }
         .refreshable { await hiveVM.load(apiaryId: apiary.id) }
+        .sheet(isPresented: $showMove) {
+            MoveHivesView(apiaryId: apiary.id, hives: hiveVM.hives) { _ in
+                // The hives that left are gone from this list.
+                Task { await hiveVM.load(apiaryId: apiary.id) }
+            }
+        }
         .sheet(isPresented: $showEdit) {
             // Saving used to only close the sheet, so edits (and making an apiary public) were lost.
             ApiaryFormView(mode: .edit(apiary)) { name, desc, lat, lon, addr, isPublic in

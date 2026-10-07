@@ -80,6 +80,13 @@ struct ApiaryListView: View {
                 }
                 .accessibilityLabel(NSLocalizedString("screen.qrBatches", comment: ""))
                 .accessibilityIdentifier("qrBatchesButton")
+                NavigationLink {
+                    MovesOverviewView()
+                } label: {
+                    Image(systemName: "map")
+                }
+                .accessibilityLabel(NSLocalizedString("moves.overviewTitle", comment: ""))
+                .accessibilityIdentifier("movesOverviewButton")
                 Button { showRedeem = true } label: { Image(systemName: "envelope.open") }
                     .accessibilityLabel(NSLocalizedString("invitation.redeemTitle", comment: ""))
                     .accessibilityIdentifier("redeemInvitationButton")

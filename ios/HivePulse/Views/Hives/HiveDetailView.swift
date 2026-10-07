@@ -38,6 +38,13 @@ struct HiveDetailView: View {
                 }
             }
 
+            Section {
+                NavigationLink(destination: HiveMovesView(hiveId: hive.id)) {
+                    Label(NSLocalizedString("moves.historyTitle", comment: ""), systemImage: "arrow.left.arrow.right")
+                }
+                .accessibilityIdentifier("hiveMovesLink")
+            }
+
             Section(NSLocalizedString("section.inspections", comment: "")) {
                 if inspectionVM.inspections.isEmpty && !inspectionVM.isLoading {
                     Text(NSLocalizedString("empty.inspections", comment: ""))

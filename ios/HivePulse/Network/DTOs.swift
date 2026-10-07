@@ -356,6 +356,70 @@ struct IncomingShareOut: Codable, Identifiable {
     }
 }
 
+// MARK: - Moving hives
+
+struct MovePlace: Codable, Equatable {
+    let apiaryId: String?
+    let name: String
+    let latitude: Double?
+    let longitude: Double?
+    enum CodingKeys: String, CodingKey {
+        case name, latitude, longitude
+        case apiaryId = "apiary_id"
+    }
+}
+
+struct HiveMoveOut: Codable, Identifiable {
+    let id: String
+    let hiveId: String
+    let hiveName: String
+    /// "YYYY-MM-DD"
+    let movedOn: String
+    let forage: String?
+    let note: String?
+    let from: MovePlace
+    let to: MovePlace
+    let createdByName: String?
+    let createdAt: Date
+    enum CodingKeys: String, CodingKey {
+        case id, forage, note, from, to
+        case hiveId = "hive_id"
+        case hiveName = "hive_name"
+        case movedOn = "moved_on"
+        case createdByName = "created_by_name"
+        case createdAt = "created_at"
+    }
+}
+
+struct NewApiaryForMove: Encodable {
+    let name: String
+    let address: String?
+    var latitude: Double? = nil
+    var longitude: Double? = nil
+}
+
+struct MoveCreateRequest: Encodable {
+    let hiveIds: [String]
+    let toApiaryId: String?
+    let newApiary: NewApiaryForMove?
+    let movedOn: String?
+    let forage: String?
+    let note: String?
+    enum CodingKeys: String, CodingKey {
+        case forage, note
+        case hiveIds = "hive_ids"
+        case toApiaryId = "to_apiary_id"
+        case newApiary = "new_apiary"
+        case movedOn = "moved_on"
+    }
+}
+
+struct MoveResult: Codable {
+    let moved: Int
+    let apiary: ApiaryOut
+    let moves: [HiveMoveOut]
+}
+
 struct ShareTokenRequest: Encodable {
     let token: String
 }
