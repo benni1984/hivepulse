@@ -90,7 +90,8 @@ final class ScreenshotUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts[label("tour.welcome.title")].waitForExistence(timeout: 10))
         snap("13-guided-tour-welcome", app)
 
-        app.buttons[label("action.next")].tap()
+        // The tour has its own wording ("tour.next"); in Polish it differs from "action.next".
+        app.buttons[label("tour.next")].tap()
         XCTAssertTrue(app.staticTexts[label("tour.qr.title")].waitForExistence(timeout: 10))
         sleep(1)
         snap("14-guided-tour-qr", app)
