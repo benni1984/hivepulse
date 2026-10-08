@@ -151,7 +151,7 @@ jobs:
         if: inputs.track != 'none'
         run: |
           missing=""
-          for locale in de-DE en-US fr-FR es-ES; do
+          for locale in de-DE en-US fr-FR es-ES pl-PL; do
             file="distribution/whatsnew/whatsnew-$locale"
             if [ ! -s "$file" ]; then
               missing="$missing $locale"
@@ -166,7 +166,7 @@ jobs:
             echo "::error::release notes missing for:$missing" >&2
             exit 1
           fi
-          echo "Release notes present and within the limit for all four languages"
+          echo "Release notes present and within the limit for all five languages"
 
       - name: Upload to Play
         if: inputs.track != 'none'
