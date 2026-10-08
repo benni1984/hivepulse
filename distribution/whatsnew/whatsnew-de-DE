@@ -1,7 +1,13 @@
-Erste Version von HivePulse.
+HivePulse 1.0.0
 
-QR-Code am Volk scannen, Kontrolle erfassen, fertig: Waben, Königin, Sanftmut, Varroa, Behandlungen, Futter, Notizen. Große Knöpfe, damit es mit Handschuhen geht. Geht ohne Netz.
+QR-Code am Volk scannen, Kontrolle erfassen, fertig. Große Knöpfe für Handschuhe, geht ohne Netz.
 
-Neu: eine Startseite mit dem, was fällig ist, geplante Behandlungen, Völker zur Blüte verlagern mit Karte und gemeinsam mit einem anderen Imker an einem Bienenstand arbeiten.
+Neu in diesem Build:
+• Das Imkerjahr: ein Zeitstrahl, was wann zu tun ist, passend zu deinem Standort
+• Volk von Hand anlegen, ganz ohne Aufkleber
+• Ein Volk von seiner eigenen Seite verlagern
+• Polnisch als fünfte Sprache
+• Eine weichere regionale Gesundheitskarte
+• Korrekturen bei Sprache und Einstellungen
 
 Sag uns, was unklar war: hivepulse@multihead.de
