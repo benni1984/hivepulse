@@ -25,7 +25,7 @@ from sqlalchemy.orm import Session
 from app.utils.scales import varroa_level_from_count
 from app.models import (
     Base, User, Apiary, Hive, Inspection, QrBatch, QrToken,
-    HornetCatch, HornetNest, HornetSighting, HornetTrap, HornetTrapCatch,
+    HornetCatch, HornetNest, HornetSighting, HornetTrap, HornetTrapCatch, HiveMove, PlannedTreatment,
 )
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -353,24 +353,51 @@ SCREENSHOT_VISITS = [
 ]
 
 
+# The tools that came with the home summary need something to show, or their screens are empty
+# pages: the map of moves, the move history, the planned treatments. Hive and apiary are given as
+# positions in the lists above (apiary 0 is the home yard), so the data reads the same in every
+# language. Days are counted back from today; a negative number is still to come.
+SCREENSHOT_MOVES = [
+    # (to apiary, hive in it, from apiary, days ago, forage key)
+    (0, 1, 1, 24, "rapeseed"),
+    (0, 2, 2, 52, "acacia"),
+    (1, 1, 0, 10, "rapeseed"),
+]
+
+SCREENSHOT_TREATMENTS = {
+    # language: (for a whole apiary, for one hive)
+    "en": ("Oxalic acid trickling", "Formic acid"),
+    "de": ("Oxalsäure träufeln", "Ameisensäure"),
+    "fr": ("Acide oxalique, dégouttement", "Acide formique"),
+    "es": ("Ácido oxálico por goteo", "Ácido fórmico"),
+    "pl": ("Kwas szczawiowy, podkraplanie", "Kwas mrówkowy"),
+}
+
+
 def seed_screenshot_account(db: Session, language: str) -> User:
     spec = SCREENSHOT_ACCOUNTS[language]
     user = upsert_user(db, f"screenshots-{language}@apiscan.app", spec["name"],
                        SCREENSHOT_PASSWORD, is_supporter=True)
     db.flush()
 
+    apiaries, hives = [], {}
     for index, apiary_name in enumerate(spec["apiaries"]):
         lat, lon, city = LOCATIONS[index]
         # Deliberately not public: these colonies are props and must not move the community
         # map, the heatmap or the member statistics.
         apiary = ensure_apiary(db, user, apiary_name, lat, lon, city, is_public=False)
         db.flush()
+        apiaries.append(apiary)
 
         for number in range(1, 4 if index == 0 else 3):
             hive = ensure_hive(db, apiary, user, f"{spec['hive']} {number}",
                                HIVE_TYPES[number % len(HIVE_TYPES)])
             db.flush()
+            hives[(index, number)] = hive
             seed_screenshot_visits(db, hive, spec["notes"])
+
+    seed_screenshot_moves(db, user, apiaries, hives)
+    seed_screenshot_treatments(db, user, language, apiaries, hives)
 
     # One batch worth photographing. ensure_hive creates a batch of a single code per hive,
     # which makes the QR screen a list of ones.
@@ -384,6 +411,42 @@ def seed_screenshot_account(db: Session, language: str) -> User:
         print(f"    created a QR batch of 12 for {language}")
 
     return user
+
+
+def seed_screenshot_moves(db: Session, user: User, apiaries: list, hives: dict):
+    """Rewrite the move history of these props, like the visits: the list above is the authority."""
+    for hive in hives.values():
+        for move in db.query(HiveMove).filter_by(hive_id=hive.id).all():
+            db.delete(move)
+    db.flush()
+
+    for to_index, number, from_index, days_ago, forage in SCREENSHOT_MOVES:
+        hive, origin, target = hives[(to_index, number)], apiaries[from_index], apiaries[to_index]
+        db.add(HiveMove(
+            id=_uuid(), hive_id=hive.id,
+            from_apiary_id=origin.id, to_apiary_id=target.id,
+            moved_on=_date_ago(days_ago), forage=forage,
+            # Both ends are copied into the row when a move is made, so the history survives a
+            # renamed apiary; this script writes the row itself and has to copy them too.
+            from_name=origin.name, from_latitude=origin.latitude, from_longitude=origin.longitude,
+            to_name=target.name, to_latitude=target.latitude, to_longitude=target.longitude,
+            created_by_id=user.id, created_at=_ago(days_ago),
+        ))
+
+
+def seed_screenshot_treatments(db: Session, user: User, language: str, apiaries: list, hives: dict):
+    """Two planned treatments and one that is done, so the list shows all three states."""
+    for treatment in db.query(PlannedTreatment).filter_by(created_by_id=user.id).all():
+        db.delete(treatment)
+    db.flush()
+
+    for_apiary, for_hive = SCREENSHOT_TREATMENTS[language]
+    db.add(PlannedTreatment(id=_uuid(), apiary_id=apiaries[0].id, product=for_apiary,
+                            due_on=_date_ago(-6), created_by_id=user.id))
+    db.add(PlannedTreatment(id=_uuid(), hive_id=hives[(0, 1)].id, product=for_hive,
+                            due_on=_date_ago(-18), created_by_id=user.id))
+    db.add(PlannedTreatment(id=_uuid(), apiary_id=apiaries[1].id, product=for_apiary,
+                            due_on=_date_ago(40), done_on=_date_ago(38), created_by_id=user.id))
 
 
 def seed_screenshot_visits(db: Session, hive: Hive, notes: list):

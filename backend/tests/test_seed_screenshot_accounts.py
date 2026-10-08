@@ -19,7 +19,7 @@ from sqlalchemy.orm import Session
 BACKEND = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(BACKEND))
 
-from app.models import Apiary, Base, Hive, Inspection, QrBatch, User  # noqa: E402
+from app.models import Apiary, Base, Hive, HiveMove, Inspection, PlannedTreatment, QrBatch, User  # noqa: E402
 
 
 @pytest.fixture(scope="module")
@@ -137,6 +137,38 @@ def test_there_is_a_qr_batch_worth_photographing(seeded):
         assert db.query(QrBatch).filter_by(user_id=user.id, count=12).count() == 1
 
 
+def test_the_tools_that_came_with_the_home_summary_have_something_to_show(seeded):
+    """The map of moves, a hive's history and the treatments list are empty pages without this."""
+    seed, db = seeded
+    for language in seed.SCREENSHOT_ACCOUNTS:
+        user = db.query(User).filter_by(email=f"screenshots-{language}@apiscan.app").one()
+        hive_ids = [h.id for h in db.query(Hive).filter_by(user_id=user.id)]
+
+        moves = db.query(HiveMove).filter(HiveMove.hive_id.in_(hive_ids)).all()
+        assert len(moves) == len(seed.SCREENSHOT_MOVES)
+        for move in moves:
+            # Both ends carry a name and a position, or the journey cannot be drawn on the map.
+            assert move.from_name and move.to_name
+            assert None not in (move.from_latitude, move.from_longitude, move.to_latitude, move.to_longitude)
+            assert move.from_apiary_id != move.to_apiary_id
+
+        treatments = db.query(PlannedTreatment).filter_by(created_by_id=user.id).all()
+        assert len(treatments) == 3
+        assert sum(1 for t in treatments if t.done_on) == 1, "one is done, two are still to do"
+        assert {t.product for t in treatments} <= set(seed.SCREENSHOT_TREATMENTS[language])
+
+
+def test_the_treatments_are_named_in_the_language_of_the_listing(seeded):
+    seed, db = seeded
+    german = db.query(User).filter_by(email="screenshots-de@apiscan.app").one()
+    polish = db.query(User).filter_by(email="screenshots-pl@apiscan.app").one()
+
+    assert {t.product for t in db.query(PlannedTreatment).filter_by(created_by_id=german.id)} == {
+        "Oxalsäure träufeln", "Ameisensäure"}
+    assert {t.product for t in db.query(PlannedTreatment).filter_by(created_by_id=polish.id)} == {
+        "Kwas szczawiowy, podkraplanie", "Kwas mrówkowy"}
+
+
 def test_running_it_twice_changes_nothing(seeded):
     seed, db = seeded
     german = db.query(User).filter_by(email="screenshots-de@apiscan.app").one()
@@ -145,6 +177,8 @@ def test_running_it_twice_changes_nothing(seeded):
         db.query(Hive).filter_by(user_id=german.id).count(),
         db.query(Inspection).count(),
         db.query(QrBatch).filter_by(user_id=german.id).count(),
+        db.query(HiveMove).count(),
+        db.query(PlannedTreatment).count(),
     )
 
     seed.seed_screenshot_account(db, "de")
@@ -155,6 +189,8 @@ def test_running_it_twice_changes_nothing(seeded):
         db.query(Hive).filter_by(user_id=german.id).count(),
         db.query(Inspection).count(),
         db.query(QrBatch).filter_by(user_id=german.id).count(),
+        db.query(HiveMove).count(),
+        db.query(PlannedTreatment).count(),
     )
     # Seeding runs on every staging refresh; a second run must not double the data.
     assert before == after

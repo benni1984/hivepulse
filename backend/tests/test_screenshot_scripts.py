@@ -119,3 +119,40 @@ def test_the_apiary_card_is_looked_for_below_the_fold_before_anything_else_is_ta
 
     assert len(swipes) == 2, "it should scroll until the card appears"
     assert taps == [(40 + 1000 // 3, 1000)], "it should tap the card, not the summary row above it"
+
+
+# ── The eight store screenshots ────────────────────────────────────────────────
+
+STORE_LANGUAGES = ("values", "values-de", "values-fr", "values-es", "values-pl")
+STORE_SCREEN_KEYS = ("calendar_title", "moves_overview_title", "treatments_title", "tab_members",
+                     "heatmap_section_title", "action_new_inspection", "section_inspections")
+
+
+def test_the_store_script_names_the_eight_screens_the_listing_tells_its_story_with():
+    script = (ROOT / "scripts/android-store-screenshots.py").read_text(encoding="utf-8")
+
+    names = re.findall(r'screenshot\("(\d-[a-z-]+)"\)', script)
+    assert sorted(names) == [
+        "1-apiaries", "2-hive-detail", "3-inspection-form", "4-inspection-frames",
+        "5-beekeeping-year", "6-moves-map", "7-treatments", "8-health-map",
+    ], "the listing has room for eight, and the new tools belong in it"
+
+
+def test_every_label_the_new_store_screens_look_up_exists_in_every_store_language():
+    """A missing key falls back to English silently; a German listing would show an English word."""
+    for folder in STORE_LANGUAGES:
+        tree = ET.parse(ROOT / "android/app/src/main/res" / folder / "strings.xml")
+        defined = {n.get("name") for n in tree.getroot().findall("string")}
+        for key in STORE_SCREEN_KEYS:
+            assert key in defined, f"{folder} has no {key}"
+
+
+def test_the_store_script_does_not_wait_for_words_the_toolbar_icon_already_carries():
+    """The icon that opens a screen has the same words as its title in its content description, so
+    waiting for them passes before the screen has opened. The script waits for the list to go."""
+    script = (ROOT / "scripts/android-store-screenshots.py").read_text(encoding="utf-8")
+
+    for function in ("capture_beekeeping_year", "capture_moves_map", "capture_treatments"):
+        body = script[script.index(f"def {function}"):]
+        body = body[:body.index("\n\n\n")]
+        assert "leave_the_apiary_list()" in body, f"{function} does not wait for the list to go"
