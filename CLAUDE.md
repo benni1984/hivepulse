@@ -224,6 +224,36 @@ entry in `lib/news.ts`, and a row in `docs/features.md`. German is Bienenstand /
 QR-Batch, French rucher / ruche / visite, Spanish colmenar / colmena / revisión, Polish pasieka / rodzina pszczela / przegląd
 (hive type: typ ula).
 
+## Release readiness — IMPORTANT
+
+A change is not done when the code works. It is done when a release could go out with it, on
+**every platform at once** (web, Android, iOS, backend), so everything a release needs is made in
+the same piece of work, not promised for later:
+
+- **Texts, in all five languages (en, de, fr, es, pl):** the release-notes entry and News entry
+  (see "Shipping a feature"), the help page, and the store texts that change with it —
+  `docs/store-listing.md` for both stores (name, short description, description, subtitle,
+  keywords, promotional text, What's New) and `distribution/whatsnew/whatsnew-<locale>` for Play
+  (max 500 characters each).
+- **Pictures:** the store screenshots of both stores are one set of eight screens, the same on
+  Android and iPhone (`scripts/android-store-screenshots.py`, `ScreenshotUITests` and the pick in
+  `ios-store-screenshots.yml`). A new feature that belongs in the listing replaces the weakest
+  of the eight; a screen that needs data gets it in the seed (`backend/scripts/seed_staging.py`,
+  the `screenshots-<lang>` accounts) and, on iPhone, in the mock (`-mockStoreData`). Help-page
+  screenshots follow automatically (see "Screenshots").
+- **Documentation:** `docs/api-contract.md`, `docs/features.md`, and the setup docs when a
+  workflow, secret or console step changes.
+- **A new language** is all of the above at once: strings on all platforms, backend messages,
+  help pages, store texts for both stores, release notes for Play, screenshot accounts and
+  matrices of both screenshot workflows. The tests pin the lists (workflow matrices, seed
+  accounts, parser locales), so a language added in one place fails in the other.
+- **Both apps together:** whatever changes in Android changes in iOS in the same PR, and the
+  other way round — features, wording, screens, tests, pipelines. If one of them cannot be done
+  (no macOS, no emulator in the session), say so and leave it for CI, but still write it.
+- **Say what is left for a person:** a console step (adding a language in Play Console / App
+  Store Connect, uploading screenshots, editing a draft release) is named in the PR with the
+  place to click, because no workflow does it.
+
 ## Implementation Status
 
 All components complete across web, Android, and iOS. No open feature gaps.
