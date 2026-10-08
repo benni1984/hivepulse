@@ -1,7 +1,13 @@
-First release of HivePulse.
+HivePulse 1.0.0
 
-Scan the QR code on a hive, log the visit, done: frames, queen, temperament, varroa, treatments, feed, notes. Big buttons, so it works with gloves on. Works without a signal.
+Scan the QR code on a hive, log the visit, done. Big buttons for gloves, works without a signal.
 
-New: a home screen with what is due, planned treatments, moving hives to the bloom with a map, and working on an apiary together with another beekeeper.
+New in this build:
+• The beekeeper's year: a timeline of what to do and when, shifted to your location
+• Add a hive by hand, no sticker needed
+• Move a hive from its own page
+• Polish as a fifth language
+• A softer regional health map
+• Fixes for language and Settings
 
 Tell us what was confusing: hivepulse@multihead.de
