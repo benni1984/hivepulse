@@ -191,3 +191,21 @@ def test_the_capture_workflow_signs_in_with_the_password_the_seed_sets():
         "the capture must use the screenshot accounts, not the demo account the E2E suite "
         "fills with its leftovers"
     )
+
+
+def test_every_language_the_capture_workflow_runs_has_a_seeded_account():
+    """A language added to the matrix without an account fails its emulator run at the login."""
+    import yaml
+
+    seed = importlib.import_module("scripts.seed_staging")
+    workflow = yaml.safe_load(
+        (BACKEND.parent / ".github/workflows/android-store-screenshots.yml").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    languages = workflow["jobs"]["capture"]["strategy"]["matrix"]["language"]
+
+    assert "pl" in languages, "Polish is a store language and needs its screenshots"
+    missing = [language for language in languages if language not in seed.SCREENSHOT_ACCOUNTS]
+    assert not missing, f"no seeded screenshot account for {missing}"

@@ -1,13 +1,13 @@
 name: Android Store Screenshots
 
-# Captures the Play store screenshots in all four store languages, by driving the debug build
+# Captures the Play store screenshots in all five store languages, by driving the debug build
 # on an emulator once per language. Play accepts up to 8 phone screenshots per language, each
 # side between 320 and 3840 pixels, as a JPEG or a 24-bit PNG — `adb screencap` writes RGBA,
 # so the script flattens every capture before saving.
 #
 # The languages run as a matrix rather than in one job: an emulator run takes most of the
-# time, four of them in parallel cost the same wall clock as one, and a language that fails
-# does not take the other three with it.
+# time, five of them in parallel cost the same wall clock as one, and a language that fails
+# does not take the other four with it.
 
 on:
   workflow_dispatch:
@@ -33,7 +33,7 @@ jobs:
       matrix:
         # A German listing showing an English interface reads as "not translated" — the one
         # screenshot detail that actually changes whether somebody installs.
-        language: [de, en, fr, es]
+        language: [de, en, fr, es, pl]
 
     steps:
       - uses: actions/checkout@v4
