@@ -11,7 +11,8 @@ upload the screenshots from an "iOS Store Screenshots" run. Edit the text here, 
 console, or the next upload overwrites it. `scripts/build_appstore_metadata.py` is the parser:
 it relies on the `**en**` blocks and the tables keeping their current shape.
 
-Both stores list a language separately. Fill the four below and leave the rest to Play's
+Both stores list a language separately. Fill the ones below (Play has a fifth, Polish; the App Store
+texts are in four) and leave the rest to Play's
 automatic translation — or rather, do not: an automatically translated listing reads like
 one, and beekeepers notice.
 
@@ -31,6 +32,7 @@ isn't.
 | de | `HivePulse — Imker-Journal` | 25 |
 | fr | `HivePulse — Journal rucher` | 26 |
 | es | `HivePulse — Diario apícola` | 26 |
+| pl | `HivePulse — Dziennik pasieki` | 28 |
 
 ### Short description — max 80
 
@@ -57,6 +59,12 @@ Scannez le QR de la ruche et notez la visite. Fonctionne sans réseau.
 Escanea el QR de la colmena y anota la visita. Funciona sin cobertura.
 ```
 (70)
+
+**pl**
+```
+Zeskanuj kod QR na ulu i zapisz przegląd. Działa też bez zasięgu.
+```
+(65)
 
 ### Full description — max 4000
 
@@ -171,6 +179,34 @@ Sin publicidad, sin rastreo publicitario, y nada sobre ti se vende ni se cede. E
 Las abejas no leen notas de versión. La aplicación intenta no estorbar mientras trabajas.
 ```
 (1996)
+
+**pl**
+```
+HivePulse zamienia przegląd w pół minuty stukania.
+
+Naklej kod QR na każdy ul. Zeskanuj go, a aplikacja od razu otworzy właśnie ten ul — bez przewijania listy zmarzniętymi rękami. Zapisz obserwacje: ramki z czerwiem i miodem, widziana matka, łagodność, liczba warrozy, zabiegi, dokarmianie, własne notatki. Liczby od 0 do 10 to duże przyciski zamiast małych strzałek, więc formularz działa także w rękawicach.
+
+DZIAŁA BEZ ZASIĘGU
+Pasieki rzadko stoją tam, gdzie jest zasięg. Przeglądy zapisane offline czekają w telefonie i wysyłają się, gdy tylko wróci połączenie. Nic nie ginie, a ponowna próba nie utworzy duplikatu.
+
+WŁASNE POLA
+Każdy pszczelarz liczy coś, czego nikt inny nie liczy. Dodaj własne pola — dla wszystkich rodzin albo tylko dla jednej pasieki — a pojawią się w formularzu jak te wbudowane.
+
+ZOBACZ SEZON
+Dla każdej rodziny i każdej pasieki: jak rozwijała się rodzina pszczela, kiedy wzrosła liczba warrozy, które rodziny od dawna czekają na przegląd. Rzeczy oczywiste z perspektywy czasu, a niewidoczne w papierowym zeszycie.
+
+SZERSZEŃ AZJATYCKI
+Tracker Vespa velutina: zgłoś odłów, gniazdo lub obserwację ze zdjęciem, zobacz, co zgłosili inni w pobliżu, i prowadź własne, nazwane pułapki z dziennym licznikiem odłowów. Zgłoszenia ze zdjęciami sprawdza społeczność, bo szerszenia łatwo pomylić.
+
+DOMYŚLNIE PRYWATNIE
+Twoje pasieki są prywatne. Jeśli umieścisz jedną na publicznej mapie, pojawi się na poziomie miejscowości, nigdy w dokładnych współrzędnych — chodzi o pokazanie pszczelarstwa, a nie lokalizacji uli. W każdej chwili możesz to wyłączyć.
+
+BEZ REKLAM, BEZ SPRZEDAŻY DANYCH
+Żadnych reklam, żadnego śledzenia reklamowego i nic o Tobie nie jest sprzedawane ani przekazywane. Projekt jest open source. Kto chce go wesprzeć, może to zrobić, a żadna funkcja aplikacji od tego nie zależy.
+
+Pszczoły nie czytają informacji o wersji. Aplikacja stara się nie przeszkadzać w pracy.
+```
+(1899)
 
 ---
 
