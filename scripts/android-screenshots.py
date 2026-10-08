@@ -479,15 +479,20 @@ def capture_data_export():
     # account and password sections and is never on screen without scrolling (CI run 35123747449).
     wait_for("Display Name", timeout=15)
     time.sleep(1)
-    # Scroll down until "Export Data" button (or "Data Export" section header) is visible
-    for _ in range(3):
+    # Scroll down until "Export Data" button (or "Data Export" section header) is visible. Settings
+    # keeps growing (region, release notes, ...), so allow plenty of swipes — and look once more
+    # after the last one: checking only before a swipe missed a section that the final swipe
+    # had just brought on screen (CI run 37793498183).
+    for _ in range(8):
         d = get_ui_dump()
         if "Export Data" in d or "Data Export" in d:
             break
         swipe(540, 1800, 540, 400, 600)
         time.sleep(0.8)
     else:
-        raise TimeoutError("Could not find Export Data section after scrolling")
+        d = get_ui_dump()
+        if "Export Data" not in d and "Data Export" not in d:
+            raise TimeoutError("Could not find Export Data section after scrolling")
     time.sleep(0.5)
     screenshot("android-data-export")
     keyevent("KEYCODE_BACK")
