@@ -80,6 +80,23 @@ import SharingEs from './content/sharing.es';
 import MovingHivesEs from './content/moving-hives.es';
 import HomeAndTreatmentsEs from './content/home-and-treatments.es';
 import BeekeepingYearEs from './content/beekeeping-year.es';
+import GettingStartedPl from './content/getting-started.pl';
+import AviariesPl from './content/apiaries.pl';
+import HivesPl from './content/hives.pl';
+import QrCodesPl from './content/qr-codes.pl';
+import CustomFieldsPl from './content/custom-fields.pl';
+import InspectionsPl from './content/inspections.pl';
+import DataExportPl from './content/data-export.pl';
+import HiveStatsPl from './content/hive-stats.pl';
+import CommunityStatsPl from './content/community-stats.pl';
+import HornetTrackerPl from './content/hornet-tracker.pl';
+import HornetTrapsPl from './content/hornet-traps.pl';
+import RemindersPl from './content/reminders.pl';
+import AccountPl from './content/account.pl';
+import SharingPl from './content/sharing.pl';
+import MovingHivesPl from './content/moving-hives.pl';
+import HomeAndTreatmentsPl from './content/home-and-treatments.pl';
+import BeekeepingYearPl from './content/beekeeping-year.pl';
 
 type ContentComponent = React.ComponentType<{ Screenshot: typeof HelpScreenshot }>;
 type SlugMap = Record<string, ContentComponent>;
@@ -116,6 +133,14 @@ const CONTENT: Record<string, SlugMap> = {
     'hornet-tracker': HornetTrackerEs, 'hornet-traps': HornetTrapsEs,
     'reminders': RemindersEs, 'account': AccountEs,
     'sharing': SharingEs, 'moving-hives': MovingHivesEs, 'home-and-treatments': HomeAndTreatmentsEs, 'beekeeping-year': BeekeepingYearEs,
+  },
+  pl: {
+    'getting-started': GettingStartedPl, 'apiaries': AviariesPl, 'hives': HivesPl,
+    'qr-codes': QrCodesPl, 'custom-fields': CustomFieldsPl, 'inspections': InspectionsPl,
+    'data-export': DataExportPl, 'hive-stats': HiveStatsPl, 'community-stats': CommunityStatsPl,
+    'hornet-tracker': HornetTrackerPl, 'hornet-traps': HornetTrapsPl,
+    'reminders': RemindersPl, 'account': AccountPl,
+    'sharing': SharingPl, 'moving-hives': MovingHivesPl, 'home-and-treatments': HomeAndTreatmentsPl, 'beekeeping-year': BeekeepingYearPl,
   },
 };
 

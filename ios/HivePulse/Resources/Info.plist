@@ -9,7 +9,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>HivePulse</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.0.0</string>
 	<key>SENTRY_DSN</key>
 	<string>$(SENTRY_DSN)</string>
 	<key>CFBundleVersion</key>
@@ -50,6 +50,7 @@
 		<string>fr</string>
 		<string>de</string>
 		<string>es</string>
+		<string>pl</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>

@@ -78,6 +78,16 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Die regionale Gesundheitskarte</h2>
+        <p>
+          Supporter sehen außerdem eine Karte der Region. Jedes Gebiet erscheint als weicher, runder Farbfleck, der zum Rand hin ausläuft und in die Nachbarn übergeht — grün, bernsteinfarben oder rot, je nach gewählter Ansicht: <strong>Varroa-Risiko</strong>, <strong>Volksstimmung</strong>, <strong>Schwarmdruck</strong> oder <strong>Brutgesundheit</strong>.
+        </p>
+        <p>
+          Tippen Sie auf die Mitte eines Flecks oder fahren Sie mit der Maus darüber, um zu sehen, auf wie vielen Bienenständen und Kontrollen er beruht und welche Durchschnittswerte gelten. Grau bedeutet, dass es für diese Ansicht noch keine Daten gibt. Es zählen nur öffentliche Bienenstände, und die Karte zeigt Gebiete, nie einzelne Bienenstände.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Supporter werden</h2>
         <p>
           Die detaillierte Community-Aufschlüsselung — Trenddiagramme, regionale Aufschlüsselungen, Top-Bienenstände —

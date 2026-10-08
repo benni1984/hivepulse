@@ -35,7 +35,7 @@ hivepulse/
   web/                  style.css, landing.css — global styles for the Next.js app
   components/           Shared React components (Nav, Footer, DashboardShell, …)
   lib/                  API client (lib/api.ts), hooks, utilities
-  messages/             next-intl locale files (en, de, fr, es)
+  messages/             next-intl locale files (en, de, fr, es, pl)
   e2e/staging/          Playwright end-to-end tests against staging
   hivepulse-redesign/   Design ground truth — bundle.html (self-contained Tailwind prototype)
   docs/                 API contract and architecture notes
@@ -100,7 +100,7 @@ Source of truth for all endpoints, shapes, and enums: `docs/api-contract.md`. Up
 - Production: `hivepulse.multihead.de` (CNAME → Vercel)
 - Demo: `demo@apiscan.app` / `demo1234` (supporter)
 - Admin: `admin@apiscan.app` / `admin1234` (admin + supporter)
-- Store screenshots: `screenshots-{de,en,fr,es}@apiscan.app` / `demo1234` — curated,
+- Store screenshots: `screenshots-{de,en,fr,es,pl}@apiscan.app` / `demo1234` — curated,
   non-public data in each listing language. Do not point tests at them; the E2E suite
   uses the demo account and leaves apiaries behind, which is why these exist.
 - Seed: GitHub → Actions → "Seed Staging" → Run workflow
@@ -122,6 +122,8 @@ stored credentials is the only way to tell.
 ## Git & PR Workflow
 
 Push branch → open PR immediately → merge once all CI checks are green (no confirmation needed). **Never push directly to main** — branch protection is enforced; bypassing it skips required CI checks.
+
+**Bug reports.** A bug reported on one platform is checked on web, Android **and** iOS before it is fixed, and the fix says what was found on each. Every reported bug gets a GitHub issue in English with the label `closed-test` (the list can be shown to Google as the closed-test feedback), plus `bug` and `ios` / `android` / `web` / `backend`; the fix closes it (`Fixes #n`).
 
 ## CI/CD Pipeline
 
@@ -167,9 +169,9 @@ Work in one component per session. Do not mix backend, iOS, and Android in the s
 
 ## Translations — IMPORTANT
 
-Four languages everywhere: **en, de, fr, es** — web (`messages/*.json`), iOS
+Five languages everywhere: **en, de, fr, es, pl** — web (`messages/*.json`), iOS
 (`ios/HivePulse/Resources/*.lproj/Localizable.strings`), Android
-(`android/app/src/main/res/values{,-de,-fr,-es}/strings.xml`) and backend error messages
+(`android/app/src/main/res/values{,-de,-fr,-es,-pl}/strings.xml`) and backend error messages
 (`backend/app/i18n.py`).
 
 A missing translation never fails at runtime — it silently falls back to English. Before
@@ -217,9 +219,10 @@ are retaken **automatically** when the interface changes. Nobody has to remember
 
 Besides the code and its tests, every user-visible feature gets: a line in `lib/releaseNotes.ts`
 (`RELEASES`, and `FEATURES` when it is new — the page `/release-notes` and the apps' Settings → Release
-notes show it), a help page or a new section in `app/[locale]/help/[slug]/content/` (4 languages), a News
+notes show it), a help page or a new section in `app/[locale]/help/[slug]/content/` (5 languages), a News
 entry in `lib/news.ts`, and a row in `docs/features.md`. German is Bienenstand / Volk / Kontrolle /
-QR-Batch, French rucher / ruche / visite, Spanish colmenar / colmena / revisión.
+QR-Batch, French rucher / ruche / visite, Spanish colmenar / colmena / revisión, Polish pasieka / rodzina pszczela / przegląd
+(hive type: typ ula).
 
 ## Implementation Status
 

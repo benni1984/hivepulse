@@ -80,6 +80,16 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">La carte régionale de santé</h2>
+        <p>
+          Les Supporters voient aussi une carte de la région. Chaque zone apparaît comme une tache de couleur ronde et douce, qui s’estompe vers le bord et se fond dans ses voisines — verte, ambre ou rouge selon la vue choisie : <strong>Risque Varroa</strong>, <strong>Humeur des colonies</strong>, <strong>Pression d’essaimage</strong> ou <strong>Santé du couvain</strong>.
+        </p>
+        <p>
+          Touchez ou survolez le centre d’une tache pour voir sur combien de ruchers et de visites elle repose, ainsi que les valeurs moyennes. Le gris signifie qu’il n’y a pas encore de données pour cette vue. Seuls les ruchers publics comptent, et la carte montre des zones, jamais des ruchers individuels.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Devenir Supporter</h2>
         <p>
           La ventilation détaillée de la communauté — graphiques de tendances, ventilations régionales, ruchers

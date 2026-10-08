@@ -86,7 +86,7 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
           <li>Les dates sont des valeurs indicatives tirées de la pratique apicole habituelle, pas des règles : la floraison et la météo décident.</li>
           <li>Médicaments uniquement selon l&rsquo;autorisation et les règles de votre pays ; en cas de doute, demandez à votre syndicat apicole ou à l&rsquo;autorité vétérinaire.</li>
           <li>Un soupçon de loque doit être déclaré à l&rsquo;autorité vétérinaire.</li>
-          <li>Les textes sont dans la langue de l&rsquo;application : anglais, allemand, français et espagnol.</li>
+          <li>Les textes sont dans la langue de l&rsquo;application : anglais, allemand, français, espagnol et polonais.</li>
         </ul>
       </section>
     </>

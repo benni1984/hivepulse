@@ -85,7 +85,7 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
           <li>Las fechas son valores orientativos de la práctica apícola habitual, no normas: la floración y el tiempo deciden.</li>
           <li>Medicamentos solo según la autorización y las normas de tu país; en caso de duda, pregunta a tu asociación de apicultores o a la autoridad veterinaria.</li>
           <li>La sospecha de loque debe comunicarse a la autoridad veterinaria.</li>
-          <li>Los textos están en el idioma de la app: inglés, alemán, francés y español.</li>
+          <li>Los textos están en el idioma de la app: inglés, alemán, francés, español y polaco.</li>
         </ul>
       </section>
     </>

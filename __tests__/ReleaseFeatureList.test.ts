@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { FEATURES, RELEASES, pick, type Localized } from '@/lib/releaseNotes';
 
-const LOCALES = ['en', 'de', 'fr', 'es'] as const;
+const LOCALES = ['en', 'de', 'fr', 'es', 'pl'] as const;
 
 function allTexts(): { where: string; text: Localized }[] {
   const out: { where: string; text: Localized }[] = [];
@@ -17,7 +17,7 @@ function allTexts(): { where: string; text: Localized }[] {
 }
 
 describe('release notes data', () => {
-  it('has every text in all four languages', () => {
+  it('has every text in all five languages', () => {
     for (const { where, text } of allTexts()) {
       for (const locale of LOCALES) {
         expect(text[locale]?.trim(), `${where} is missing ${locale}`).toBeTruthy();
@@ -60,6 +60,7 @@ describe('release notes data', () => {
       de: /Begehung|Inspektion|Bienenstock|Bienenstöcke/,
       fr: /inspection/i,
       es: /inspecci/i,
+      pl: /inspekcj/i,
     };
     for (const { where, text } of allTexts()) {
       for (const [locale, pattern] of Object.entries(forbidden)) {
@@ -69,8 +70,9 @@ describe('release notes data', () => {
   });
 
   it('pick falls back to English for an unknown locale', () => {
-    const text = { en: 'a', de: 'b', fr: 'c', es: 'd' };
+    const text = { en: 'a', de: 'b', fr: 'c', es: 'd', pl: 'e' };
     expect(pick(text, 'de')).toBe('b');
-    expect(pick(text, 'pl')).toBe('a');
+    expect(pick(text, 'pl')).toBe('e');
+    expect(pick(text, 'it')).toBe('a');
   });
 });

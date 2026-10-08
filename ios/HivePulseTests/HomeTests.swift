@@ -18,14 +18,20 @@ private final class MockTreatmentService: TreatmentServiceProtocol {
     var createError: Error?
     var actionError: Error?
 
-    private(set) var filters: [TreatmentFilter] = []
+    // The view model loads the open and the done list at the same time, so both calls append here at once.
+    private let lock = NSLock()
+    private var recordedFilters: [TreatmentFilter] = []
+    var filters: [TreatmentFilter] {
+        lock.lock(); defer { lock.unlock() }
+        return recordedFilters
+    }
     private(set) var created: [TreatmentCreateRequest] = []
     private(set) var doneIds: [String] = []
     private(set) var reopenedIds: [String] = []
     private(set) var deletedIds: [String] = []
 
     func list(_ filter: TreatmentFilter) async throws -> [PlannedTreatmentOut] {
-        filters.append(filter)
+        lock.lock(); recordedFilters.append(filter); lock.unlock()
         if let listError { throw listError }
         return filter.status == "done" ? done : open
     }

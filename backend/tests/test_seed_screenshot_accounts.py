@@ -45,7 +45,7 @@ def seeded(tmp_path_factory):
 
 def test_every_store_language_has_its_own_account(seeded):
     seed, db = seeded
-    for language in ("de", "en", "fr", "es"):
+    for language in ("de", "en", "fr", "es", "pl"):
         user = db.query(User).filter_by(email=f"screenshots-{language}@apiscan.app").one()
         assert user.is_supporter, "supporter screens are part of the listing"
 

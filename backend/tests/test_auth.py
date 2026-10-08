@@ -44,6 +44,21 @@ def test_refresh(client):
     assert "access_token" in r2.json()
 
 
+def test_register_pl_locale(client):
+    r = client.post("/api/v1/auth/register", json={
+        "email": "pl_user@example.com", "password": "password1", "name": "Użytkownik", "locale": "pl"
+    })
+    assert r.status_code == 201
+    assert r.json()["user"]["locale"] == "pl"
+
+
+def test_register_refuses_a_language_that_is_not_offered(client):
+    r = client.post("/api/v1/auth/register", json={
+        "email": "it_user@example.com", "password": "password1", "name": "Utente", "locale": "it"
+    })
+    assert r.status_code == 422
+
+
 def test_register_es_locale(client):
     r = client.post("/api/v1/auth/register", json={
         "email": "es_user@example.com", "password": "password1", "name": "Usuario", "locale": "es"

@@ -10,7 +10,7 @@ final class ColonyLabelLocalizationTests: XCTestCase {
 
     private let moods = ["calm", "nervous", "aggressive"]
     private let queenColors = ["white", "yellow", "red", "green", "blue"]
-    private let locales = ["en", "de", "fr", "es"]
+    private let locales = ["en", "de", "fr", "es", "pl"]
 
     private func bundle(_ locale: String) throws -> Bundle {
         let main = Bundle(for: AuthViewModel.self)
@@ -32,6 +32,12 @@ final class ColonyLabelLocalizationTests: XCTestCase {
         let german = try bundle("de")
         XCTAssertEqual(german.localizedString(forKey: "mood.calm", value: nil, table: nil), "Ruhig")
         XCTAssertEqual(german.localizedString(forKey: "queenColor.white", value: nil, table: nil), "Weiß")
+    }
+
+    func test_thePolishLabelsAreNotStillEnglish() throws {
+        let polish = try bundle("pl")
+        XCTAssertEqual(polish.localizedString(forKey: "mood.calm", value: nil, table: nil), "Spokojna")
+        XCTAssertEqual(polish.localizedString(forKey: "queenColor.white", value: nil, table: nil), "Biały")
     }
 
     private func assertTranslated(keys: [String]) throws {

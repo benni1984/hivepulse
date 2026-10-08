@@ -17,7 +17,7 @@ import ObjectiveC
 /// `-AppleLanguages`, and a profile that says "en" would silently override them.
 enum AppLanguage {
     static let key = "appLanguageOverride"
-    static let supported = ["en", "de", "fr", "es"]
+    static let supported = ["en", "de", "fr", "es", "pl"]
 
     /// Call once at launch, before any view reads a string.
     static func applyStored(defaults: UserDefaults = .standard) {
@@ -32,6 +32,20 @@ enum AppLanguage {
         // they must read the new language when they do.
         apply(code)
         defaults.set(code, forKey: key)
+    }
+
+    /// The language the app speaks right now, for the picker in Settings: the beekeeper's choice, else the phone's
+    /// language when the app has it, else the profile's language. The profile alone is wrong here: it says what
+    /// e-mails are written in, and for somebody who never picked a language it still says English.
+    static func effective(profileLocale: String?, defaults: UserDefaults = .standard,
+                          phoneLanguages: [String] = Bundle.main.preferredLocalizations) -> String {
+        if let chosen = defaults.string(forKey: key), supported.contains(chosen) { return chosen }
+        for tag in phoneLanguages {
+            let code = String(tag.prefix(2)).lowercased()
+            if supported.contains(code) { return code }
+        }
+        if let profile = profileLocale, supported.contains(profile) { return profile }
+        return "en"
     }
 
     /// Back to following the phone.

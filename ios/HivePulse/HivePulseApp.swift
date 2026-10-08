@@ -16,6 +16,9 @@ struct HivePulseApp: App {
     /// rebuilds the views when it changes: they ask for their strings again, now from the new
     /// language.
     @AppStorage(AppLanguage.key) private var languageOverride = ""
+    /// The tab the beekeeper is on. It lives here, outside the view that is rebuilt on a language change, so that
+    /// saving the profile with a new language does not throw them back to the first tab.
+    @State private var selectedTab = 0
 
     init() {
         // First statement: a crash during setup should still be reported.
@@ -81,7 +84,7 @@ struct HivePulseApp: App {
             // Stable container so the tour cover survives the login -> tabs switch that happens in the same update.
             ZStack {
                 if authVM.isAuthenticated {
-                    MainTabView()
+                    MainTabView(selection: $selectedTab)
                         // On the view, not the container: keying the container would restart
                         // the .task below and ask for push permission again.
                         .id(languageOverride)

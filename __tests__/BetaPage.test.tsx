@@ -24,6 +24,7 @@ import en from '@/messages/en.json';
 import de from '@/messages/de.json';
 import fr from '@/messages/fr.json';
 import es from '@/messages/es.json';
+import pl from '@/messages/pl.json';
 
 const render_ = async () =>
   render(await BetaPage({ params: Promise.resolve({ locale: 'de' }) }));
@@ -80,7 +81,7 @@ describe('BetaPage', () => {
 });
 
 describe('the beta texts', () => {
-  const locales = { en, de, fr, es } as Record<string, { beta: Record<string, string> }>;
+  const locales = { en, de, fr, es, pl } as Record<string, { beta: Record<string, string> }>;
   const required = [
     'title', 'intro', 'joinTitle', 'joinAndroid', 'joinIos', 'notOpenYet', 'joinNote',
     'expectTitle', 'expect1', 'expect2', 'expect3', 'expect4',
@@ -88,7 +89,7 @@ describe('the beta texts', () => {
     'dataTitle', 'dataBody',
   ];
 
-  it('exist in all four languages', () => {
+  it('exist in all five languages', () => {
     for (const [name, messages] of Object.entries(locales)) {
       for (const key of required) {
         expect(messages.beta?.[key], `${name} is missing ${key}`).toBeTruthy();
@@ -136,7 +137,7 @@ describe('the beta texts', () => {
     });
 
     it('exists in every language', () => {
-      for (const messages of [en, de, fr, es]) {
+      for (const messages of [en, de, fr, es, pl]) {
         const beta = (messages as { beta: Record<string, string> }).beta;
         expect(beta.androidNote).toBeTruthy();
         expect(beta.androidNoteSubject).toBeTruthy();

@@ -37,6 +37,7 @@ def test_normalize_maps_tags_and_falls_back():
     assert normalize("de") == "de"
     assert normalize("es-ES") == "es"
     assert normalize("fr-CA,fr;q=0.9") == "fr"
+    assert normalize("pl-PL") == "pl"
     assert normalize("it") == "en"
     assert normalize(None) == "en"
 
@@ -47,6 +48,17 @@ def test_hive_count_uses_singular_and_plural():
     assert hive_count(1, "en") == "1 hive"
     assert hive_count(2, "fr") == "2 ruches"
     assert hive_count(2, "es") == "2 colmenas"
+
+
+def test_hive_count_has_the_three_polish_forms():
+    # 1 rodzina, 2-4 rodziny, 5-21 rodzin, 22-24 rodziny again, but 12-14 are "rodzin".
+    forms = {n: hive_count(n, "pl") for n in (1, 2, 4, 5, 12, 14, 22, 25, 112)}
+    assert forms[1] == "1 rodzina pszczela"
+    assert forms[2] == "2 rodziny pszczele" and forms[4] == "4 rodziny pszczele"
+    assert forms[22] == "22 rodziny pszczele"
+    assert forms[5] == "5 rodzin pszczelich" and forms[12] == "12 rodzin pszczelich"
+    assert forms[14] == "14 rodzin pszczelich" and forms[25] == "25 rodzin pszczelich"
+    assert forms[112] == "112 rodzin pszczelich"
 
 
 def test_reminder_push_is_translated():
@@ -91,7 +103,7 @@ def test_the_reset_mail_says_which_account_it_is_for():
     the mail did not say. A reader has to be able to tell whether it concerns them."""
     from app.notifications_i18n import reset_email
 
-    for locale in ("en", "de", "fr", "es"):
+    for locale in ("en", "de", "fr", "es", "pl"):
         _, body = reset_email("https://example.com/r?t=x", 30, locale,
                               account="imker@example.com")
         assert "imker@example.com" in body, f"{locale} does not name the account"

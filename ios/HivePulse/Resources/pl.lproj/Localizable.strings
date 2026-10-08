@@ -1,0 +1,580 @@
+/* Auth */
+"login.subtitle" = "Zapisuj przeglądy swoich rodzin,\nśledź swoje rodziny pszczele.";
+"action.login" = "Zaloguj się";
+"action.register" = "Załóż konto";
+"action.createAccount" = "Załóż konto";
+"screen.register" = "Załóż konto";
+"error.unauthorized" = "Sesja wygasła. Zaloguj się ponownie.";
+"error.cameraNotAvailable" = "Aparat nie jest dostępny na tym urządzeniu.";
+
+/* Tabs */
+"tab.apiaries" = "Pasieki";
+"tab.scan" = "Skanuj";
+"tab.print" = "Drukuj QR";
+"tab.settings" = "Ustawienia";
+
+/* Screens */
+"screen.apiaries" = "Pasieki";
+"screen.qrCode" = "Kod QR";
+"screen.qrBatches" = "Partie kodów QR";
+"screen.batchDetail" = "Partia";
+"screen.initializeHive" = "Załóż rodzinę";
+
+/* Fields */
+"field.email" = "E-mail";
+"field.password" = "Hasło";
+"field.name" = "Imię";
+"field.language" = "Język";
+"field.hiveName" = "Nazwa rodziny";
+"field.hiveType" = "Typ ula";
+"hiveType.langstroth" = "Langstroth";
+"hiveType.dadant" = "Dadant";
+"hiveType.top_bar" = "Ul top-bar";
+"hiveType.warre" = "Warré";
+"hiveType.other" = "Inny";
+"field.apiary" = "Pasieka";
+"field.date" = "Data";
+"field.description" = "Opis";
+"field.address" = "Adres";
+"field.showOnPublicMap" = "Pokaż na mapie publicznej";
+"field.showOnPublicMapHint" = "Pasieka pojawia się na mapie społeczności z dokładnością do miasta i liczy się do statystyk społeczności.";
+"field.location" = "Lokalizacja";
+"field.notes" = "Notatki";
+"field.acquisitionDate" = "Data nabycia";
+"field.queenSeen" = "Matka widziana";
+"field.queenColor" = "Kolor matki";
+"field.broodFrames" = "Ramki z czerwiem";
+"field.honeyFrames" = "Ramki z miodem";
+"field.mood" = "Temperament rodziny";
+"field.populationStrength" = "Siła rodziny";
+"field.varroaCount" = "Poziom Varroa";
+"field.swarmCellsSeen" = "Widziane mateczniki rojowe";
+"field.treatmentApplied" = "Zastosowany zabieg";
+"field.feedingDone" = "Dokarmianie wykonane";
+"field.feedingType" = "Rodzaj dokarmiania";
+"field.weightKg" = "Waga (kg)";
+"field.count" = "Liczba kodów";
+
+/* Sections */
+"section.profile" = "Profil";
+"section.language" = "Język";
+"section.details" = "Szczegóły";
+"section.location" = "Lokalizacja";
+"section.notes" = "Notatki";
+"section.hives" = "Rodziny";
+"section.inspections" = "Przeglądy";
+"section.customFields" = "Własne pola";
+"section.newHive" = "Nowa rodzina";
+"section.date" = "Data";
+"section.queen" = "Matka";
+"section.frames" = "Ramki";
+"section.colony" = "Rodzina";
+"section.varroa" = "Varroa";
+"section.treatment" = "Zabieg i dokarmianie";
+"section.weight" = "Waga";
+
+/* Labels */
+"label.hives" = "rodz.";
+"label.neverInspected" = "Nigdy nie przeglądana";
+"label.queenSeen" = "Matka widziana";
+"label.yes" = "Tak";
+"label.no" = "Nie";
+"label.notRecorded" = "Nie zapisano";
+"label.unknown" = "Nieznane";
+"label.add" = "Dodaj";
+"label.linked" = "przypisany";
+"label.locationAutoFilled" = "Lokalizacja zostanie ustalona automatycznie";
+
+/* Actions */
+"action.forgotPassword" = "Nie pamiętasz hasła?";
+"forgot.title" = "Zresetuj hasło";
+"forgot.desc" = "Podaj swój adres e-mail, a wyślemy ci link do zresetowania hasła.";
+"forgot.submit" = "Wyślij link do resetu";
+"forgot.sent" = "Jeśli ten adres jest zarejestrowany, wkrótce dostaniesz link do resetu. Sprawdź skrzynkę.";
+"forgot.back" = "Wróć do logowania";
+"forgot.offline" = "Brak połączenia. Sprawdź sieć i spróbuj ponownie.";
+"action.save" = "Zapisz";
+"action.cancel" = "Anuluj";
+"action.done" = "Gotowe";
+"action.scanQR" = "Skanuj kod QR";
+"action.useMyLocation" = "Użyj mojej lokalizacji";
+"action.editApiary" = "Edytuj pasiekę";
+"action.newApiary" = "Nowa pasieka";
+"action.newHive" = "Nowa rodzina";
+"action.newInspection" = "Nowy przegląd";
+"action.editInspection" = "Edytuj przegląd";
+"action.saveProfile" = "Zapisz profil";
+"action.logout" = "Wyloguj się";
+"action.help" = "Pomoc i dokumentacja";
+"action.newBatch" = "Nowa partia";
+"action.generate" = "Generuj";
+"action.downloadPDF" = "Drukuj PDF";
+
+/* Empty states */
+"empty.apiaries.title" = "Brak pasiek";
+"empty.apiaries.description" = "Dodaj pierwszą pasiekę, aby zacząć.";
+"empty.hives.title" = "Brak rodzin";
+"empty.hives.description" = "Dotknij Nowa rodzina albo zeskanuj kod QR na ulu.";
+"empty.inspections" = "Nie ma jeszcze przeglądów.";
+"empty.batches.title" = "Brak partii kodów QR";
+"empty.batches.description" = "Wygeneruj partię kodów QR do wydrukowania i naklejenia na ulach.";
+
+/* Alerts */
+"alert.error" = "Błąd";
+"error.apiaryHasHives" = "Najpierw usuń wszystkie rodziny w tej pasiece, zanim ją usuniesz.";
+"alert.logoutConfirm" = "Czy na pewno chcesz się wylogować?";
+"alert.batchCountHint" = "Podaj liczbę kodów QR do wygenerowania (1–50).";
+
+/* Stats */
+"stat.inspections" = "Przeglądy";
+"stat.daysSinceLast" = "Dni od ostatniego";
+"stat.queenSeenRate" = "Matka widziana";
+"stat.swarmAlerts" = "Alarmy rójki";
+"stat.moodDistribution" = "Temperament rodziny";
+"stat.varroaTrend" = "Zarażenie Varroa";
+"stat.broodFrames" = "Ramki z czerwiem";
+"stat.honeyFrames" = "Ramki z miodem";
+"stat.weight" = "Waga (kg)";
+"stat.customRange" = "Własny zakres dat";
+"stat.from" = "Od";
+"stat.to" = "Do";
+
+/* Scan */
+"scan.instruction" = "Zeskanuj kod QR na ulu, aby otworzyć jego wpis albo założyć go po raz pierwszy.";
+
+/* Export */
+"section.export" = "Eksport danych";
+"action.exportData" = "Eksportuj dane";
+"action.download" = "Pobierz";
+"label.selectApiary" = "Wybierz pasiekę";
+"label.selectFormat" = "Format pliku";
+
+/* Generic actions */
+"action.delete" = "Usuń";
+"action.prev" = "Poprzednie";
+"action.next" = "Następne";
+"action.loadMore" = "Pokaż więcej";
+
+/* Hornets */
+"tab.hornets" = "Szerszenie";
+"hornets.title" = "Tropiciel szerszeni";
+"hornets.tab.info" = "Info";
+"hornets.tab.map" = "Mapa";
+"hornets.tab.report" = "Zgłoś";
+"hornets.tab.community" = "Społeczność";
+"hornets.tab.traps" = "Pułapki";
+"hornets.stats.title" = "Statystyki na żywo";
+"hornets.stats.caught" = "Odłowione";
+"hornets.stats.nests" = "Gniazda";
+"hornets.stats.destroyed" = "Zniszczone";
+"hornets.stats.sightings" = "Potwierdzone";
+"hornets.info.problem" = "Szerszeń azjatycki";
+"hornets.info.problemText" = "Vespa velutina (szerszeń azjatycki) to inwazyjny drapieżnik pustoszący rodziny pszczele. Wykrywanie gniazd i odławianie wczesną wiosną jest kluczowe.";
+"hornets.info.whyCatch" = "Po co odławiać?";
+"hornets.info.whyCatchText" = "Odławianie matek wiosną, zanim zaczną budować gniazda, ogranicza rozwój rodzin szerszeni i chroni zapylacze. Zapisuj odłowy, aby śledzić lokalną presję.";
+"hornets.info.reportNest" = "Widzisz gniazdo?";
+"hornets.info.reportNestText" = "Zaznacz dokładne miejsce, aby lokalne władze mogły zlecić profesjonalne usunięcie. Zgłoszenia anonimowe są mile widziane.";
+"hornets.map.noNests" = "Brak zgłoszonych gniazd";
+"hornets.map.hint" = "Zaznacz jako pierwszy gniazdo w swojej okolicy.";
+"hornets.map.status.found" = "Znalezione";
+"hornets.map.status.ordered" = "Zlecono zniszczenie";
+"hornets.map.status.destroyed" = "Zniszczone";
+"hornets.report.catchTab" = "Odłów";
+"hornets.report.nestTab" = "Gniazdo";
+"hornets.report.count" = "Złapane szerszenie";
+"hornets.report.location" = "Lokalizacja (opcjonalnie)";
+"hornets.report.locationRequired" = "Wymagana lokalizacja GPS";
+"hornets.report.notes" = "Notatki";
+"hornets.report.notesPlaceholder" = "Opisz, co znaleziono…";
+"hornets.report.reporterName" = "Twoje imię (opcjonalnie)";
+"hornets.report.submit" = "Wyślij zgłoszenie";
+"hornets.report.success" = "Dziękujemy! Twoje zgłoszenie zostało wysłane.";
+"hornets.community.empty" = "Brak obserwacji";
+"hornets.community.vote.yes" = "Szerszeń ✓";
+"hornets.community.vote.no" = "To nie szerszeń";
+"hornets.community.confirmed" = "Potwierdzone";
+"hornets.community.pending" = "Oczekuje";
+"hornets.community.rejected" = "Odrzucone";
+/* Traps */
+"hornets.traps.title" = "Zarządzanie pułapkami";
+"hornets.traps.subtitle" = "Rejestruj pułapki, zapisuj dzienne odłowy i znajdź pobliskie pułapki przez GPS lub kod dostępu.";
+"hornets.traps.hint" = "Logowanie niepotrzebne";
+"hornets.traps.new" = "Zarejestruj pułapkę";
+"hornets.traps.name" = "Nazwa pułapki";
+"hornets.traps.namePlaceholder" = "np. pułapka w ogrodzie przy ulach";
+"hornets.traps.notes" = "Notatki (opcjonalnie)";
+"hornets.traps.owner" = "Twoje imię (opcjonalnie)";
+"hornets.traps.submit" = "Zarejestruj pułapkę";
+"hornets.traps.success" = "Pułapka zarejestrowana!";
+"hornets.traps.code" = "Kod dostępu";
+"hornets.traps.codeCopy" = "Kopiuj kod";
+"hornets.traps.codeCopied" = "Skopiowano!";
+"hornets.traps.total" = "Złapano łącznie";
+"hornets.traps.logCatch" = "Zapisz odłów";
+"hornets.traps.count" = "Liczba";
+"hornets.traps.date" = "Data";
+"hornets.traps.logSubmit" = "Zapisz";
+"hornets.traps.logSuccess" = "Odłów zapisany!";
+"hornets.traps.logError" = "Nie udało się zapisać odłowu";
+"hornets.traps.searchCode" = "Wpisz kod dostępu";
+"hornets.traps.search" = "Znajdź po kodzie";
+"hornets.traps.notFound" = "Nie znaleziono pułapki";
+"hornets.traps.nearby" = "Pułapki w pobliżu";
+"hornets.traps.nearbySearching" = "Szukam w pobliżu…";
+"hornets.traps.noNearby" = "Nie znaleziono pułapek w promieniu 50 m";
+"hornets.traps.distanceM" = "{m} m stąd";
+"hornets.traps.gps" = "Użyj GPS";
+"hornets.traps.gpsError" = "Nie udało się ustalić lokalizacji GPS";
+"hornets.traps.noCatches" = "Nie zapisano jeszcze odłowów";
+"hornets.traps.history" = "Historia odłowów";
+"hornets.traps.backToList" = "Wstecz";
+
+/* Admin */
+"admin.title" = "Administrator";
+"admin.stats" = "Statystyki";
+"admin.users" = "Użytkownicy";
+"admin.map" = "Mapa";
+"admin.health" = "Kondycja";
+
+"admin.stats.preset" = "Okres";
+"admin.stats.users" = "Użytkownicy";
+"admin.stats.totalUsers" = "Wszyscy użytkownicy";
+"admin.stats.newUsers" = "Nowi w okresie";
+"admin.stats.supporters" = "Wspierający";
+"admin.stats.active30d" = "Aktywni (30 dni)";
+"admin.stats.platform" = "Platforma";
+"admin.stats.apiaries" = "Pasieki";
+"admin.stats.publicApiaries" = "Pasieki publiczne";
+"admin.stats.hives" = "Rodziny";
+"admin.stats.inspections" = "Przeglądy";
+"admin.stats.sessions" = "Sesje";
+"admin.stats.activeSessions" = "Aktywne sesje";
+"admin.stats.usersOnline" = "Użytkownicy online";
+"admin.stats.avgSessions" = "Śr. liczba sesji na użytkownika";
+"admin.stats.signups" = "Rejestracje (ostatnie 14 dni)";
+
+"admin.users.search" = "Szukaj po imieniu lub e-mailu";
+"admin.users.supporter" = "Wspierający";
+"admin.users.makeSupporter" = "Nadaj status wspierającego";
+"admin.users.removeSupporter" = "Odbierz status wspierającego";
+"admin.users.revokeTokens" = "Unieważnij sesje";
+
+"admin.map.all" = "Wszystkie";
+"admin.map.flagged" = "Oznaczone";
+"admin.map.setPrivate" = "Ustaw jako prywatną";
+
+"admin.health.inactive" = "Nieaktywni użytkownicy";
+"admin.health.noVarroa" = "Brak danych o Varroa";
+"admin.health.zeroHives" = "Rodziny bez przeglądów";
+
+/* Password change */
+"section.changePassword" = "Zmień hasło";
+"field.currentPassword" = "Obecne hasło";
+"field.newPassword" = "Nowe hasło";
+"field.confirmPassword" = "Potwierdź nowe hasło";
+"action.changePassword" = "Zmień hasło";
+"alert.passwordMismatch" = "Hasła nie są takie same.";
+"alert.passwordTooShort" = "Hasło musi mieć co najmniej 8 znaków.";
+"alert.passwordChanged" = "Hasło zostało zmienione.";
+
+/* Inspection Reminders */
+"section.reminders" = "Przypomnienia o przeglądach";
+"reminder.enabled" = "Wysyłaj przypomnienia o przeglądach";
+"reminder.intervalFormat" = "Przypominaj co %d dn.";
+"reminder.seasonStart" = "Początek sezonu";
+"reminder.seasonEnd" = "Koniec sezonu";
+"reminder.saveButton" = "Zapisz ustawienia przypomnień";
+"reminder.saved" = "Ustawienia przypomnień zapisane.";
+"reminder.emailEnabled" = "Powiadamiaj mnie też e-mailem";
+"reminder.emailHint" = "Powiadomienia push przychodzą w tej aplikacji. Przypomnienia e-mail docierają do ciebie także wtedy, gdy korzystasz tylko z serwisu; oba kanały dzielą to samo konto, więc ustawienia tutaj obowiązują wszędzie.";
+
+/* Members */
+"tab.members" = "Członkowie";
+"members.title" = "Członkowie";
+"members.comingSoon" = "Więcej statystyk społeczności wkrótce.";
+"members.gate.title" = "Funkcja dla wspierających";
+"members.gate.desc" = "Zostań wspierającym, aby odblokować statystyki społeczności i pomóc utrzymać HivePulse.";
+"members.stat.avgVarroa" = "Śr. Varroa";
+"members.stat.goodMood" = "Dobry temperament";
+"members.stat.avgBrood" = "Śr. liczba ramek z czerwiem";
+"members.stat.interval" = "Śr. odstęp między przeglądami";
+"members.becomeSupporter" = "Dowiedz się więcej i zostań wspierającym";
+
+/* Delete account */
+"section.dangerZone" = "Strefa zagrożenia";
+"action.deleteAccount" = "Usuń konto";
+"alert.deleteAccountConfirm" = "Usunąć twoje konto?";
+"alert.deleteAccountMessage" = "Wszystkie twoje dane (pasieki, rodziny i przeglądy) zostaną trwale usunięte. Tego nie można cofnąć.";
+"alert.deleteAccountAction" = "Usuń na stałe";
+
+/* Statistics overview */
+"screen.statsOverview" = "Moje statystyki";
+"overview.period" = "Okres";
+"overview.apiaries" = "Pasieki";
+"overview.hives" = "Rodziny";
+"overview.inspections" = "Przeglądy";
+"overview.perApiary" = "Według pasieki";
+"overview.noData" = "Brak przeglądów w tym okresie.";
+"overview.rowFormat" = "%1$d rodzin · %2$d przeglądów";
+
+/* Guided tour */
+"tour.skip" = "Pomiń";
+"tour.next" = "Dalej";
+"tour.getStarted" = "Zaczynamy";
+"action.releaseNotes" = "Informacje o wersjach";
+"tour.showAgain" = "Pokaż przewodnik ponownie";
+"tour.welcome.title" = "Witaj w HivePulse";
+"tour.welcome.body" = "Twój dziennik rodzin w kieszeni. Oto krótki przegląd tego, co HivePulse robi dla ciebie.";
+"tour.qr.title" = "Każda rodzina jednym skanem";
+"tour.qr.body" = "Zakładaj pasieki, przyklej wydrukowany kod QR na każdym ulu i zeskanuj go, aby od razu otworzyć daną rodzinę, bez szukania na listach w pasiece.";
+"tour.inspections.title" = "Przeglądy w kilka sekund";
+"tour.inspections.body" = "Zapisuj matkę, czerw, Varroa, temperament i więcej kilkoma dotknięciami. Własne pola obejmą wszystko inne, co chcesz śledzić.";
+"tour.stats.title" = "Wykrywaj problemy wcześnie";
+"tour.stats.body" = "Trendy Varroa, czerwiu i wagi dla każdej rodziny oraz przegląd wszystkich pasiek pokazują od razu, które rodziny wymagają uwagi.";
+"tour.reminders.title" = "Żaden przegląd nie umknie";
+"tour.reminders.body" = "Ustaw odstęp i sezon, a HivePulse przypomni ci powiadomieniem push lub e-mailem, gdy przyjdzie czas na przegląd.";
+"tour.hornets.title" = "Chroń swój region";
+"tour.hornets.body" = "Zgłaszaj obserwacje szerszenia azjatyckiego i gniazda, zarządzaj pułapkami i oglądaj dane o zdrowiu społeczności w swoim regionie.";
+
+/* Community heatmap (members) */
+"heatmap.title" = "Regionalna mapa zdrowia";
+"heatmap.empty" = "Brak danych społeczności.";
+"heatmap.hint" = "Dotknij komórki, aby zobaczyć szczegóły.";
+"heatmap.overlay.varroa" = "Ryzyko Varroa";
+"heatmap.overlay.mood" = "Temperament rodzin";
+"heatmap.overlay.swarm" = "Presja rójkowa";
+"heatmap.overlay.brood" = "Zdrowie czerwiu";
+"heatmap.varroa.low" = "Brak / niskie (< 1)";
+"heatmap.varroa.medium" = "Średnie (1–2)";
+"heatmap.varroa.high" = "Wysokie (≥ 2)";
+"heatmap.mood.good" = "Dobry (≥ 70% spokojnych)";
+"heatmap.mood.fair" = "Średni (40–70%)";
+"heatmap.mood.low" = "Niski (< 40%)";
+"heatmap.swarm.low" = "Niska (< 10%)";
+"heatmap.swarm.medium" = "Średnia (10–30%)";
+"heatmap.swarm.high" = "Wysoka (> 30%)";
+"heatmap.brood.strong" = "Silny (≥ 5 ramek)";
+"heatmap.brood.fair" = "Średni (3–5)";
+"heatmap.brood.low" = "Niski (< 3)";
+"heatmap.noData" = "Brak danych";
+"heatmap.cellSummary" = "%d pasiek · %d przeglądów";
+"heatmap.cell.varroa" = "Śr. Varroa";
+"heatmap.cell.mood" = "Spokojny temperament";
+"heatmap.cell.brood" = "Śr. czerwiu";
+"heatmap.cell.swarm" = "Mateczniki rojowe";
+
+/* Custom field definitions */
+"fielddefs.title" = "Własne pola";
+"fielddefs.subtitle" = "Rozszerz formularze rodzin i przeglądów o własne pola.";
+"fielddefs.apiaryTitle" = "Pola przypisane do pasieki";
+"fielddefs.apiarySubtitle" = "Te pola dotyczą tylko rodzin i przeglądów w tej pasiece.";
+"fielddefs.empty" = "Nie ma jeszcze własnych pól.";
+"fielddefs.new" = "Nowe pole";
+"fielddefs.createTitle" = "Nowe własne pole";
+"fielddefs.editTitle" = "Edytuj pole";
+"fielddefs.name" = "Nazwa pola";
+"fielddefs.target" = "Dotyczy";
+"fielddefs.target.hive" = "Rodzina";
+"fielddefs.target.inspection" = "Przegląd";
+"fielddefs.type" = "Typ pola";
+"fielddefs.type.text" = "Tekst";
+"fielddefs.type.number" = "Liczba";
+"fielddefs.type.boolean" = "Tak / Nie";
+"fielddefs.type.date" = "Data";
+"fielddefs.type.select" = "Wybór";
+"fielddefs.options" = "Opcje (po jednej w wierszu)";
+"fielddefs.required" = "Wymagane";
+"fielddefs.createBtn" = "Utwórz pole";
+"fielddefs.saveBtn" = "Zapisz zmiany";
+"fielddefs.createSuccess" = "Pole utworzone.";
+"fielddefs.saveSuccess" = "Pole zapisane.";
+"fielddefs.deleteConfirm" = "Usunąć to pole? Dane korzystające z tego pola zostaną utracone.";
+
+/* Inspection picker values */
+"mood.calm" = "Spokojna";
+"mood.nervous" = "Nerwowa";
+"mood.aggressive" = "Agresywna";
+"queenColor.white" = "Biały";
+"queenColor.yellow" = "Żółty";
+"queenColor.red" = "Czerwony";
+"queenColor.green" = "Zielony";
+"queenColor.blue" = "Niebieski";
+
+/* Inspection word scales and hive editing */
+"field.varroaLevel" = "Zarażenie Varroa";
+"varroaLevel.0" = "Brak";
+"varroaLevel.1" = "Niskie";
+"varroaLevel.2" = "Średnie";
+"varroaLevel.3" = "Wysokie";
+"strength.1" = "Słaba";
+"strength.2" = "Średnia";
+"strength.3" = "Silna";
+"screen.editHive" = "Edytuj rodzinę";
+"offline.pendingUpload" = "Czeka na przesłanie";
+"offline.savedLocally" = "Zapisano bez połączenia. Prześle się samo, gdy tylko będziesz online.";
+
+/* Diagnostics */
+"diagnostics.title" = "Diagnostyka";
+"diagnostics.version" = "Wersja %@ (%@)";
+"diagnostics.sendTestReport" = "Wyślij raport testowy";
+"diagnostics.sent" = "Dotarł. Numer referencyjny: %@";
+"diagnostics.failed" = "Nie wyszedł. Raportowanie awarii nie działa w tej wersji.";
+"diagnostics.off" = "Raportowanie awarii jest w tej wersji wyłączone.";
+
+/* Sign in with Apple */
+"label.or" = "lub";
+"action.signInWithEmail" = "Zaloguj się adresem e-mail";
+"error.appleSignIn" = "Apple nie przekazało logowania. Spróbuj ponownie.";
+
+/* Sign in with Google */
+"action.continueWithGoogle" = "Kontynuuj z Google";
+"error.googleSignIn" = "Google nie przekazało logowania. Spróbuj ponownie.";
+
+/* Deleting a QR batch */
+"confirm.deleteBatch.title" = "Usunąć tę partię kodów QR?";
+"confirm.deleteBatch.message" = "Wszystkie jej kody zostaną usunięte razem z nią. Nieużywanych kodów nie da się odzyskać.";
+
+/* Sharing apiaries and hives */
+"sharing.title" = "Pracujcie razem";
+"sharing.emailLabel" = "Adres e-mail tej osoby";
+"sharing.invite" = "Zaproś";
+"sharing.inviteSent" = "Zaproszenie wysłane.";
+"sharing.empty" = "Nikogo jeszcze nie zaproszono.";
+"sharing.pending" = "Czeka na odpowiedź";
+"sharing.accepted" = "Pracuje z tobą";
+"sharing.revoke" = "Usuń";
+"sharing.withdraw" = "Wycofaj";
+"sharing.confirmRevoke" = "Usunąć tę osobę? Traci dostęp; to, co zapisała, zostaje.";
+"sharing.confirmWithdraw" = "Wycofać to zaproszenie?";
+"sharing.introApiary" = "Zaproś innego pszczelarza, aby opiekował się tą pasieką razem z tobą. Widzi wszystkie rodziny w niej i może zapisywać przeglądy.";
+"sharing.introHive" = "Zaproś innego pszczelarza, aby opiekował się tą rodziną razem z tobą. Widzi tylko tę rodzinę, nie pozostałe w pasiece.";
+"invitation.apiary" = "%1$@ zaprasza cię do wspólnej pracy nad pasieką %2$@.";
+"invitation.hive" = "%1$@ zaprasza cię do wspólnej pracy nad rodziną %2$@ w pasiece %3$@.";
+"invitation.accept" = "Przyjmij";
+"invitation.decline" = "Odrzuć";
+"label.sharedBy" = "Udostępnia: %@";
+"label.partialBy" = "Część rodzin udostępnia: %@";
+"label.recordedBy" = "zapisane przez: %@";
+"invitation.redeemTitle" = "Użyj linku z zaproszenia";
+"invitation.redeemMessage" = "Wklej link z e-maila z zaproszeniem. Dotyczy to zaproszeń wysłanych na adres, który nie miał jeszcze konta HivePulse.";
+"invitation.redeemField" = "Link lub kod";
+"invitation.redeemButton" = "Zrealizuj";
+"invitation.invalidLink" = "To nie wygląda na link z zaproszenia.";
+
+/* Moving hives */
+"moves.title" = "Przewieź rodziny";
+"moves.moveHive" = "Przewieź tę rodzinę";
+"moves.selectHives" = "Które rodziny";
+"moves.backHint" = "Gdzie stały wcześniej";
+"moves.backTo" = "Z powrotem do: %@ (%d)";
+"moves.selectAll" = "Zaznacz wszystkie lub żadne";
+"moves.target" = "Przenieś do";
+"moves.targetChoose" = "Wybierz miejsce";
+"moves.targetNew" = "Nowe miejsce";
+"moves.newName" = "Nazwa nowego miejsca";
+"moves.newAddress" = "Adres (opcjonalnie)";
+"moves.newAddressHint" = "Z adresem miejsce pojawi się na mapie.";
+"moves.date" = "Data";
+"moves.forage" = "Pożytek";
+"moves.forageNone" = "Nie podano";
+"moves.forageOther" = "Jaki pożytek";
+"moves.note" = "Notatka (opcjonalnie)";
+"moves.submit" = "Przenieś (%d)";
+"moves.historyTitle" = "Gdzie ta rodzina stała";
+"moves.historyEmpty" = "Ta rodzina nie była jeszcze przenoszona.";
+"moves.noPosition" = "To miejsce nie ma pozycji, więc nie ma go na mapie.";
+"moves.noPositionAtAll" = "Żadne z tych miejsc nie ma jeszcze pozycji, więc nie ma czego narysować. Podaj miejscom adres lub pozycję.";
+"moves.overviewTitle" = "Mapa przeniesień";
+"moves.overviewIntro" = "Każde przeniesienie twoich rodzin, z trasą każdej rodziny na mapie.";
+"moves.overviewEmpty" = "Żadna rodzina nie była jeszcze przenoszona.";
+"moves.range" = "Okres";
+"moves.from" = "Od";
+"moves.to" = "Do";
+"forage.acacia" = "Robinia akacjowa";
+"forage.rapeseed" = "Rzepak";
+"forage.orchard" = "Kwiat sadów";
+"forage.dandelion" = "Mlecz";
+"forage.linden" = "Lipa";
+"forage.chestnut" = "Kasztan";
+"forage.fir" = "Jodła";
+"forage.heather" = "Wrzos";
+"forage.sunflower" = "Słonecznik";
+"forage.lavender" = "Lawenda";
+"forage.other" = "Inny";
+
+/* Home summary and planned treatments */
+"home.title" = "Dziś w skrócie";
+"home.outOfSeason" = "To jest poza twoim sezonem przypomnień; terminy i tak są liczone tak samo.";
+"home.nextInspection" = "Następny przegląd";
+"home.overdue" = "%d zaległych";
+"home.dueOn" = "Termin %@";
+"home.dueSoon" = "%d do przeglądu w ciągu trzech dni";
+"home.dueSince" = "zaległy od %@";
+"home.neverInspected" = "nigdy nie przeglądana";
+"home.health" = "Stan rodzin";
+"home.healthOk" = "%d w porządku";
+"home.healthWatch" = "%d do obserwacji";
+"home.healthAlert" = "%d alarmowych";
+"home.healthUnknown" = "%d nieznanych";
+"home.noConcerns" = "Nic nie wymaga twojej uwagi.";
+"home.reason.varroa_high" = "wysoka Varroa";
+"home.reason.swarm_cells" = "mateczniki";
+"home.reason.aggressive" = "agresywna";
+"home.reason.varroa_medium" = "średnia Varroa";
+"home.reason.nervous" = "nerwowa";
+"home.reason.queen_not_seen" = "matka niewidziana";
+"home.treatments" = "Nadchodzące zabiegi";
+"home.treatmentsOverdue" = "%d zaległych";
+"home.noTreatments" = "W ciągu najbliższych 30 dni nie zaplanowano żadnego zabiegu.";
+"home.markDone" = "Zrobione";
+"treatments.title" = "Zabiegi";
+"treatments.introHive" = "Zaplanuj zabieg dla tej rodziny. To, co jest do zrobienia, widać na ekranie głównym.";
+"treatments.introApiary" = "Zaplanuj zabieg dla każdej rodziny tej pasieki. To, co jest do zrobienia, widać na ekranie głównym.";
+"treatments.plan" = "Zaplanuj zabieg";
+"treatments.product" = "Preparat";
+"treatments.dueOn" = "Termin";
+"treatments.note" = "Notatka (opcjonalnie)";
+"treatments.empty" = "Nic nie zaplanowano.";
+"treatments.overdue" = "zaległy od %@";
+"treatments.dueOnDate" = "termin %@";
+"treatments.confirmDelete" = "Usunąć ten zaplanowany zabieg?";
+"treatments.doneTitle" = "Zrobione";
+"treatments.doneOn" = "zrobiono %@";
+"treatments.reopen" = "Otwórz ponownie";
+
+/* The beekeeper's year and its region */
+"calendar.title" = "Rok pszczelarski";
+"calendar.intro" = "Co robić i kiedy, miesiąc po miesiącu, dla twojego miejsca. Przewijaj w górę i w dół: rok się powtarza.";
+"calendar.loadError" = "Nie udało się wczytać kalendarza.";
+"calendar.today" = "Dziś, %1$@";
+"calendar.now" = "Teraz";
+"calendar.interval" = "Najpóźniej co %1$d dn.";
+"calendar.regionNone" = "Terminy dla środkowych Niemiec. Ustaw region, aby przesunąć je na swoje miejsce.";
+"calendar.regionFromApiary" = "twoja pierwsza pasieka";
+"calendar.regionNoShift" = "%1$@: te same terminy co w środkowych Niemczech";
+"calendar.regionLater" = "%1$@: o %2$d dn. później niż w środkowych Niemczech";
+"calendar.regionEarlier" = "%1$@: o %2$d dn. wcześniej niż w środkowych Niemczech";
+"calendar.notLocated" = "Nie znaleziono tego kodu pocztowego.";
+"calendar.setRegion" = "Ustaw region";
+"calendar.changeRegion" = "Zmień region";
+"calendar.disclaimer" = "Wartości orientacyjne z zasad dobrej praktyki pszczelarskiej, nie przepisy: o terminach decydują kwitnienie i pogoda, a daty przesuwają się wraz z twoim miejscem. Leki tylko takie, jakie są dopuszczone i zalecone w twoim kraju; w razie wątpliwości zapytaj swój związek pszczelarzy lub urząd weterynaryjny.";
+"calendar.category.inspection" = "Przegląd";
+"calendar.category.swarm" = "Kontrola rójki";
+"calendar.category.feeding" = "Karmienie";
+"calendar.category.varroa" = "Varroa";
+"calendar.category.harvest" = "Miodobranie";
+"calendar.category.migration" = "Przewóz";
+"calendar.category.bloom" = "Kwitnienie";
+"calendar.category.care" = "Pielęgnacja";
+"calendar.category.winter" = "Zima";
+"region.title" = "Region dla roku pszczelarskiego";
+"region.intro" = "Kraj i kod pocztowy przesuwają rok pszczelarski na twoje miejsce: na południu kwitnienie zaczyna się wcześniej, na północy później. Zapisywana jest tylko pozycja, nie adres.";
+"region.country" = "Kraj";
+"region.countryNone" = "— nie ustawiono —";
+"region.postal" = "Kod pocztowy";
+"region.adjust" = "Korekta ręczna (dni)";
+"region.adjustHint" = "Dodatnia wartość oznacza później, ujemna wcześniej: dla górskiej doliny lub osłoniętego ogrodu. Od −28 do 28.";
+"region.save" = "Zapisz region";
+"region.saved" = "Region zapisany.";
+"region.error" = "Nie udało się zapisać regionu.";
+"region.notLocated" = "Nie znaleziono tego kodu pocztowego, więc terminy opierają się na twojej pierwszej pasiece albo na środkowych Niemczech.";

@@ -19,20 +19,24 @@ function today(): string {
  * on the apiary page next to the edit and create forms, whose buttons the end-to-end suite finds by class.
  */
 export default function MoveHivesPanel({
-  apiaryId, hives, onMoved, onCancel,
+  apiaryId, hives, selectedIds, onMoved, onCancel,
 }: {
   apiaryId: string;
   hives: Hive[];
+  /** Hives that start out ticked, for the hive page where the hive being looked at is the one to move. */
+  selectedIds?: string[];
   onMoved: (result: MoveResult) => void;
   onCancel: () => void;
 }) {
   const t = useTranslations('dash');
   const [targets, setTargets] = useState<Apiary[]>([]);
   const [history, setHistory] = useState<HiveMove[]>([]);
-  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [selected, setSelected] = useState<Set<string>>(new Set(selectedIds ?? []));
   const [target, setTarget] = useState('');
   const [newName, setNewName] = useState('');
   const [newAddress, setNewAddress] = useState('');
+  const [position, setPosition] = useState<{ lat: number; lon: number } | null>(null);
+  const [locating, setLocating] = useState(false);
   const [movedOn, setMovedOn] = useState(today());
   const [forage, setForage] = useState('');
   const [otherForage, setOtherForage] = useState('');
@@ -58,6 +62,27 @@ export default function MoveHivesPanel({
     setTarget(place.apiaryId);
   }
 
+  // The beekeeper is usually standing at the new place when this is filled in.
+  function useMyLocation() {
+    if (typeof navigator === 'undefined' || !navigator.geolocation) {
+      setError(t('moves.locationError'));
+      return;
+    }
+    setLocating(true);
+    setError(null);
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        setPosition({ lat: pos.coords.latitude, lon: pos.coords.longitude });
+        setLocating(false);
+      },
+      () => {
+        setError(t('moves.locationError'));
+        setLocating(false);
+      },
+      { enableHighAccuracy: true, timeout: 15_000 },
+    );
+  }
+
   function toggle(id: string) {
     setSelected(prev => {
       const next = new Set(prev);
@@ -79,7 +104,13 @@ export default function MoveHivesPanel({
       const result = await moveHives({
         hive_ids: [...selected],
         ...(target === NEW_APIARY
-          ? { new_apiary: { name: newName.trim(), address: newAddress.trim() || undefined } }
+          ? {
+              new_apiary: {
+                name: newName.trim(),
+                address: newAddress.trim() || undefined,
+                ...(position ? { latitude: position.lat, longitude: position.lon } : {}),
+              },
+            }
           : { to_apiary_id: target }),
         moved_on: movedOn || undefined,
         forage: forageValue || undefined,
@@ -153,6 +184,16 @@ export default function MoveHivesPanel({
             <label htmlFor="move-new-address">{t('moves.newAddress')}</label>
             <input id="move-new-address" type="text" value={newAddress} onChange={e => setNewAddress(e.target.value)} />
             <small className="dash-card-meta">{t('moves.newAddressHint')}</small>
+          </div>
+          <div className="dash-form-group">
+            <button className="dash-move-back-btn" type="button" onClick={useMyLocation} disabled={locating} data-testid="move-use-location">
+              {locating ? '…' : t('moves.useLocation')}
+            </button>
+            {position && (
+              <small className="dash-card-meta" style={{ display: 'block', marginTop: 4 }} data-testid="move-position">
+                {t('moves.locationSet', { lat: position.lat.toFixed(5), lon: position.lon.toFixed(5) })}
+              </small>
+            )}
           </div>
         </>
       )}

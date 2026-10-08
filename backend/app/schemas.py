@@ -36,7 +36,7 @@ class RegisterRequest(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8)
     name: str = Field(min_length=1, max_length=200)
-    locale: str = Field(default="en", pattern="^(en|fr|de|es)$")
+    locale: str = Field(default="en", pattern="^(en|fr|de|es|pl)$")
 
 
 class SocialSignInRequest(BaseModel):
@@ -45,7 +45,7 @@ class SocialSignInRequest(BaseModel):
     # Apple sends the name once, in the first authorization response and never in the token,
     # so the client passes it on or it is lost for good. Only used when creating an account.
     name: Optional[str] = Field(default=None, max_length=200)
-    locale: str = Field(default="en", pattern="^(en|fr|de|es)$")
+    locale: str = Field(default="en", pattern="^(en|fr|de|es|pl)$")
     # Apple's one-time code from the same authorization. Lets the server obtain a token it
     # can hand back when the account is deleted, which Apple requires.
     authorization_code: Optional[str] = Field(default=None, max_length=2000)
@@ -111,7 +111,7 @@ class AccessTokenResponse(BaseModel):
 
 class UserUpdate(BaseModel):
     name: Optional[str] = Field(default=None, max_length=200)
-    locale: Optional[str] = Field(default=None, pattern="^(en|fr|de|es)$")
+    locale: Optional[str] = Field(default=None, pattern="^(en|fr|de|es|pl)$")
     password: Optional[str] = Field(default=None, min_length=8)
     current_password: Optional[str] = None
 

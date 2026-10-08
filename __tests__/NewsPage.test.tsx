@@ -56,7 +56,7 @@ describe('NewsPage', () => {
 describe('news entries', () => {
   it('have a non-empty title and body in every locale', () => {
     for (const entry of NEWS) {
-      for (const locale of ['en', 'de', 'fr', 'es'] as const) {
+      for (const locale of ['en', 'de', 'fr', 'es', 'pl'] as const) {
         expect(entry.text[locale].title.trim(), `${entry.date} ${locale}`).not.toBe('');
         expect(entry.text[locale].body.trim(), `${entry.date} ${locale}`).not.toBe('');
       }

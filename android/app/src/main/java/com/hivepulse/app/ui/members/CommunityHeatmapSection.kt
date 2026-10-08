@@ -133,14 +133,28 @@ private fun HeatmapMap(
 
     AndroidView(factory = { mapView }, modifier = modifier, update = { map ->
         map.overlays.removeAll { it is Polygon }
+        // Every cell is a soft round patch: a few faint circles of one colour, the smaller ones on top of the
+        // bigger ones. The last one carries the tap, so the whole patch opens the cell's details.
         heatmap.features.forEach { feature ->
-            val ring = feature.geometry.coordinates.firstOrNull() ?: return@forEach
+            val blob = blobFor(feature.geometry.coordinates.firstOrNull() ?: emptyList()) ?: return@forEach
+            val color = heatLevel(feature.properties, overlay).argb(overlay)
+            BLOB_RINGS.forEach { ring ->
+                map.overlays.add(Polygon(map).apply {
+                    points = circlePoints(blob, ring.scale).map { GeoPoint(it[0], it[1]) }
+                    fillPaint.color = color
+                    fillPaint.alpha = ring.alpha
+                    outlinePaint.alpha = 0
+                    outlinePaint.strokeWidth = 0f
+                    // A patch of colour and nothing else: without this the default info window swallows the tap.
+                    setOnClickListener { _, _, _ -> false }
+                })
+            }
+            // Invisible, and the topmost overlay of the patch, so it is what the tap hits.
             map.overlays.add(Polygon(map).apply {
-                points = ring.map { GeoPoint(it[1], it[0]) }
-                fillPaint.color = heatLevel(feature.properties, overlay).argb(overlay)
-                fillPaint.alpha = 166   // ≈ 0.65 opacity, same as web
-                outlinePaint.color = android.graphics.Color.WHITE
-                outlinePaint.strokeWidth = 1f
+                points = circlePoints(blob, BLOB_HIT_SCALE).map { GeoPoint(it[0], it[1]) }
+                fillPaint.alpha = 0
+                outlinePaint.alpha = 0
+                outlinePaint.strokeWidth = 0f
                 setOnClickListener { _, _, _ -> onCellClick(feature.properties); true }
             })
         }

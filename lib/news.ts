@@ -1,7 +1,7 @@
-// News feed entries, newest first. Every entry carries its text in all four site locales;
+// News feed entries, newest first. Every entry carries its text in all five site locales;
 // app/[locale]/news/page.tsx picks the one matching the current locale.
 
-export type NewsLocale = 'en' | 'de' | 'fr' | 'es';
+export type NewsLocale = 'en' | 'de' | 'fr' | 'es' | 'pl';
 export type NewsTag = 'feature' | 'fix' | 'design' | 'release' | 'privacy';
 
 export interface NewsText {
@@ -23,6 +23,58 @@ export function newsText(entry: NewsEntry, locale: string): NewsText {
 export const NEWS: NewsEntry[] = [
   {
     date: '2026-10-07',
+    tag: 'design',
+    text: {
+      en: {
+        title: 'A Softer Regional Health Map',
+        body: 'The regional health map in the Members tab no longer shows hard-edged rectangles. Each area is now a soft, round patch of colour that fades out towards its edge and blends into its neighbours, like a real heat map. It looks the same on the website, Android and iPhone, and you tap or hover over the middle of a patch to see the figures behind it.',
+      },
+      de: {
+        title: 'Eine weichere regionale Gesundheitskarte',
+        body: 'Die regionale Gesundheitskarte im Mitglieder-Tab zeigt keine harten Rechtecke mehr. Jedes Gebiet ist jetzt ein weicher, runder Farbfleck, der zum Rand hin ausläuft und in die Nachbarn übergeht, wie bei einer echten Heatmap. Auf der Webseite, Android und iPhone sieht sie gleich aus, und auf die Mitte eines Flecks tippen oder mit der Maus darüberfahren zeigt die Zahlen dahinter.',
+      },
+      fr: {
+        title: 'Une carte régionale de santé plus douce',
+        body: 'La carte régionale de santé de l’onglet Membres n’affiche plus de rectangles aux bords durs. Chaque zone est maintenant une tache de couleur ronde et douce, qui s’estompe vers le bord et se fond dans ses voisines, comme une vraie carte de chaleur. Elle est identique sur le site, Android et iPhone, et il suffit de toucher ou de survoler le centre d’une tache pour voir les chiffres derrière.',
+      },
+      es: {
+        title: 'Un mapa regional de salud más suave',
+        body: 'El mapa regional de salud de la pestaña Miembros ya no muestra rectángulos de bordes duros. Cada zona es ahora una mancha de color redonda y suave que se difumina hacia el borde y se mezcla con las vecinas, como un mapa de calor de verdad. Se ve igual en la web, Android y iPhone, y basta tocar o pasar el cursor sobre el centro de una mancha para ver las cifras que hay detrás.',
+      },
+      pl: {
+        title: 'Łagodniejsza regionalna mapa zdrowia',
+        body: 'Regionalna mapa zdrowia na karcie Członkowie nie pokazuje już ostrych prostokątów. Każdy obszar jest teraz miękką, okrągłą plamą koloru, która zanika ku brzegowi i łączy się z sąsiednimi, jak prawdziwa mapa cieplna. Wygląda tak samo w serwisie, na Androidzie i iPhonie, a dotknięcie środka plamy lub najechanie na nią kursorem pokazuje stojące za nią liczby.',
+      },
+    },
+  },
+  {
+    date: '2026-10-07',
+    tag: 'feature',
+    text: {
+      en: {
+        title: 'HivePulse Now Speaks Polish',
+        body: 'The website, the iPhone and Android apps, the e-mails and the beekeeping year are now also available in Polish, with the usual beekeepers’ words: pasieka, rodzina pszczela, przegląd. Pick Polski in the language menu or in your profile. A native speaker has not read everything yet, so if a word sounds odd to you, tell us.',
+      },
+      de: {
+        title: 'HivePulse spricht jetzt Polnisch',
+        body: 'Die Website, die Apps für iPhone und Android, die E-Mails und das Imkerjahr gibt es jetzt auch auf Polnisch, mit den üblichen Imkerbegriffen: pasieka, rodzina pszczela, przegląd. Wähle Polski im Sprachmenü oder in deinem Profil. Eine Muttersprachlerin oder ein Muttersprachler hat noch nicht alles gelesen; wenn dir ein Wort seltsam vorkommt, sag es uns.',
+      },
+      fr: {
+        title: 'HivePulse parle maintenant polonais',
+        body: 'Le site, les applications iPhone et Android, les e-mails et l’année apicole existent désormais aussi en polonais, avec les termes habituels des apiculteurs : pasieka, rodzina pszczela, przegląd. Choisissez Polski dans le menu des langues ou dans votre profil. Un locuteur natif n’a pas encore tout relu ; si un mot vous semble étrange, dites-le-nous.',
+      },
+      es: {
+        title: 'HivePulse ya habla polaco',
+        body: 'El sitio web, las apps para iPhone y Android, los correos y el año apícola están ahora también en polaco, con los términos habituales de los apicultores: pasieka, rodzina pszczela, przegląd. Elige Polski en el menú de idiomas o en tu perfil. Un hablante nativo aún no ha leído todo; si una palabra te suena rara, cuéntanoslo.',
+      },
+      pl: {
+        title: 'HivePulse mówi teraz po polsku',
+        body: 'Serwis, aplikacje na iPhone\'a i Androida, e-maile i rok pszczelarski są teraz dostępne także po polsku, ze zwykłymi słowami pszczelarzy: pasieka, rodzina pszczela, przegląd. Wybierz Polski w menu języków lub w profilu. Native speaker nie przeczytał jeszcze wszystkiego, więc jeśli jakieś słowo brzmi dziwnie, daj nam znać.',
+      },
+    },
+  },
+  {
+    date: '2026-10-07',
     tag: 'feature',
     text: {
       en: {
@@ -40,6 +92,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'Invitaciones sin pegar un enlace',
         body: 'Si inicias sesión con Apple o Google, una invitación enviada a esa dirección ya te espera en la lista de colmenares. Toca Aceptar y listo. El icono de sobre ya no está en la barra de las apps; un enlace de un correo se sigue usando al final de la lista de colmenares.',
+      },
+      pl: {
+        title: 'Zaproszenia bez wklejania linku',
+        body: 'Jeśli logujesz się przez Apple lub Google, zaproszenie wysłane na ten adres czeka już na liście twoich pasiek. Dotknij Przyjmij i gotowe. Ikona koperty zniknęła z paska narzędzi aplikacji; link z e-maila nadal realizuje się na końcu listy pasiek.',
       },
     },
   },
@@ -63,6 +119,10 @@ export const NEWS: NewsEntry[] = [
         title: 'Añadir una colmena sin pegatina, en ambas apps',
         body: 'En la página del colmenar de las apps de iPhone y Android no había forma de añadir una colmena salvo escaneando un código QR impreso. Ahora está el botón ámbar «Nueva colmena», como en la web: nombre, tipo, fecha y notas, y la colmena existe. La pegatina sigue abriendo y configurando una colmena como antes.',
       },
+      pl: {
+        title: 'Dodaj rodzinę bez naklejki, w obu aplikacjach',
+        body: 'Na stronie pasieki w aplikacjach na iPhone\'a i Androida nie dało się dodać rodziny bez zeskanowania wydrukowanego kodu QR. Teraz jest tam bursztynowy przycisk Nowa rodzina, tak jak w serwisie: nazwa, typ, data i notatki, i rodzina istnieje. Naklejka nadal otwiera i zakłada rodzinę jak dotąd.',
+      },
     },
   },
   {
@@ -84,6 +144,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'El año apícola: qué hacer y cuándo, para tu lugar',
         body: 'Una nueva línea del tiempo muestra lo que hace un apicultor mes a mes: alimentar con candy en febrero, las primeras revisiones, el control de la enjambrazón como mínimo cada 9 días, los cuadros de zánganos contra la varroa, cuándo trasladar para colza, acacia, tilo, abeto o brezo y cuándo extraer cada miel, y la preparación del invierno. Se desplaza sin fin, se abre en hoy y habla tu idioma. Indica tu país y tu código postal y cada fecha se adapta a tu lugar; puedes ajustarla a mano. Las fechas son valores orientativos, no normas, y los medicamentos solo según la autorización de tu país. En la web y en ambas apps.',
+      },
+      pl: {
+        title: 'Rok pszczelarski: co robić i kiedy, dla twojego miejsca',
+        body: 'Nowa oś czasu pokazuje, co pszczelarz robi miesiąc po miesiącu: karmienie ciastem cukrowym w lutym, pierwsze przeglądy, kontrola rójki najpóźniej co 9 dni, ramki trutowe przeciw Varroa, kiedy przewozić na rzepak, akację, lipę, jodłę lub wrzos i kiedy odwirować każdy miód, oraz przygotowanie do zimy. Przewija się bez końca, otwiera się na dzisiejszym dniu i mówi w twoim języku. Podaj kraj i kod pocztowy, a każda data przesunie się na twoje miejsce; możesz ją też poprawić ręcznie. Terminy to wartości orientacyjne, nie przepisy, a leki zawsze tylko takie, jakie są dopuszczone w twoim kraju. W serwisie i w obu aplikacjach.',
       },
     },
   },
@@ -107,6 +171,10 @@ export const NEWS: NewsEntry[] = [
         title: 'Tu día de un vistazo y tratamientos que puedes planificar',
         body: 'El inicio de la lista de colmenares ahora te dice lo que importa: cuándo toca la próxima revisión (calculada con tu intervalo de recordatorio), cómo están tus colmenas — bien, a vigilar o en alerta, con el motivo — y qué tratamientos se acercan. Puedes planificar un tratamiento para una sola colmena o para todas las de un colmenar, con el producto y el día, y marcarlo cuando esté hecho. De vez en cuando ese mismo espacio puede llevar un anuncio nuestro; no hay red publicitaria y no se rastrea nada. La web ya lo tiene; las aplicaciones lo reciben con sus próximas versiones.',
       },
+      pl: {
+        title: 'Twój dzień w skrócie i zabiegi, które możesz zaplanować',
+        body: 'Początek listy pasiek mówi teraz, co jest ważne: kiedy przypada następny przegląd (liczony od twojego odstępu przypomnień), jak radzą sobie twoje rodziny (w porządku, do obserwacji lub alarm, z powodem) i jakie zabiegi się zbliżają. Możesz zaplanować zabieg dla pojedynczej rodziny lub dla wszystkich rodzin pasieki, z preparatem i dniem, i odhaczyć go po wykonaniu. Od czasu do czasu to samo miejsce może zawierać ogłoszenie od nas; nie ma sieci reklamowej i nic nie jest śledzone. Serwis już to ma; aplikacje dostaną to w kolejnych wersjach.',
+      },
     },
   },
   {
@@ -128,6 +196,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'Llevar las colmenas a la floración y ver dónde han estado',
         body: 'Los apicultores trashumantes ya pueden trasladar colmenas en un solo paso: elegir las colmenas, el nuevo lugar (un colmenar existente o uno nuevo, con dirección), el día y la floración, desde la acacia y la colza hasta el abeto y el brezo. Cada traslado queda guardado. Cada colmena muestra dónde ha estado, y el mapa de traslados dibuja el recorrido de cada una, parada por parada. Solo el propietario de un colmenar puede trasladar sus colmenas. Cuando las colmenas van y vienen entre dos lugares, un atajo las devuelve con un toque a donde estaban antes. La web ya lo tiene; las aplicaciones lo recibirán con sus próximas versiones.',
+      },
+      pl: {
+        title: 'Zabieranie rodzin na pożytek i oglądanie, dokąd pojechały',
+        body: 'Pszczelarze wędrowni mogą teraz przewozić rodziny jednym działaniem: wybierz rodziny, nowe miejsce (istniejącą pasiekę lub nową, z adresem), dzień i pożytek, od akacji i rzepaku po jodłę i wrzos. Każde przeniesienie jest zapamiętywane. Każda rodzina pokazuje, gdzie stała, a mapa przeniesień rysuje podróż każdej rodziny, przystanek po przystanku. Rodziny pasieki może przenosić tylko jej właściciel. Gdy rodziny kursują między dwoma miejscami, skrót odsyła je jednym dotknięciem tam, gdzie stały wcześniej. Serwis już to ma; aplikacje dostaną to w kolejnych wersjach.',
       },
     },
   },
@@ -151,6 +223,10 @@ export const NEWS: NewsEntry[] = [
         title: 'Dos apicultores, un colmenar',
         body: 'Ahora puedes invitar a otro apicultor a trabajar contigo en un colmenar, o solo en algunas colmenas. Introduce su correo electrónico, la persona acepta y ve lo que compartes: puede anotar revisiones, editar colmenas y ver las cifras, y todo lo que anota lleva su nombre. Solo tú puedes eliminar, invitar a otras personas o poner el colmenar en el mapa público. Si algún día eliminas tu cuenta, un colmenar compartido pasa a la primera persona que aceptó, para que no se pierda lo que habéis construido juntos. Compartir ya está en la web y llegará a las aplicaciones con sus próximas versiones.',
       },
+      pl: {
+        title: 'Dwóch pszczelarzy, jedna pasieka',
+        body: 'Możesz teraz zaprosić innego pszczelarza do wspólnej pracy nad pasieką lub nad pojedynczymi rodzinami. Wpisz jego adres e-mail, osoba przyjmie zaproszenie i zobaczy to, co udostępniasz: może zapisywać przeglądy, edytować rodziny i oglądać liczby, a wszystko, co wpisze, nosi jej imię. Tylko ty możesz usuwać, zapraszać innych lub umieścić pasiekę na mapie publicznej. Jeśli kiedyś usuniesz konto, współdzielona pasieka trafia do osoby, która przyjęła zaproszenie jako pierwsza, aby to, co razem zbudowaliście, nie przepadło. Udostępnianie jest już w serwisie, a do aplikacji trafi w kolejnych wersjach.',
+      },
     },
   },
   {
@@ -172,6 +248,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'Elimina los lotes de QR que no necesitas',
         body: 'Un lote de códigos QR generado por error, o que nunca imprimiste, ahora se puede eliminar en la web, y en las aplicaciones de iPhone y Android con sus próximas versiones. Un lote se conserva mientras uno de sus códigos esté pegado en una colmena, porque escaneando esa pegatina se vuelve a encontrar la colmena.',
+      },
+      pl: {
+        title: 'Usuwaj partie kodów QR, których nie potrzebujesz',
+        body: 'Partię kodów QR wygenerowaną przez pomyłkę lub nigdy niewydrukowaną można teraz usunąć w serwisie, a w aplikacjach na iPhone\'a i Androida w ich kolejnych wersjach. Partia zostaje, dopóki jeden z jej kodów jest przyklejony do rodziny, bo skanowanie tej naklejki to sposób, w jaki rodzina jest odnajdywana.',
       },
     },
   },
@@ -195,6 +275,10 @@ export const NEWS: NewsEntry[] = [
         title: 'Inicia sesión con Apple o Google, sin contraseña',
         body: 'Ahora puedes iniciar sesión con tu cuenta de Apple o de Google, en la web y en las versiones de prueba de las aplicaciones: Apple en el iPhone y en la web, Google en Android, el iPhone y la web. Si el correo electrónico es el mismo, entras en la cuenta que ya tenías, con todas tus colmenas. El formulario de correo sigue ahí, como un enlace discreto bajo los botones. HivePulse solo recibe de ellos tu nombre y tu dirección, nunca una contraseña.',
       },
+      pl: {
+        title: 'Logowanie przez Apple lub Google, bez hasła do zapamiętania',
+        body: 'Możesz teraz logować się kontem Apple lub Google, w serwisie i w wersjach testowych aplikacji: Apple na iPhonie i w serwisie, Google na Androidzie, iPhonie i w serwisie. Jeśli adres e-mail jest ten sam, trafiasz na istniejące konto, ze wszystkimi rodzinami. Formularz e-mail nadal istnieje, jako dyskretny link pod przyciskami. HivePulse otrzymuje od nich tylko twoje imię i adres, nigdy hasło.',
+      },
     },
   },
   {
@@ -216,6 +300,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'Un fallo encontrado antes de que nadie se topara con él',
         body: 'El servidor mantiene líneas abiertas hacia la base de datos para responder rápido. Esas líneas se cerraban desde el otro lado durante los ratos tranquilos, sin que el servidor se diera cuenta: la primera petición tras una pausa podía fallar con un error, un colmenar que simplemente no cargaba. Nuestra propia supervisión lo detectó en el sistema de pruebas antes de que ningún apicultor se topara con él. Ahora el servidor comprueba una línea antes de usarla y abre otra nueva sin hacer ruido cuando hace falta. No hay nada que hacer por tu parte.',
+      },
+      pl: {
+        title: 'Usterka znaleziona, zanim ktokolwiek na nią trafił',
+        body: 'Serwer utrzymuje zestaw otwartych połączeń z bazą danych, aby szybko odpowiadać. W cichych okresach połączenia te były zamykane z drugiej strony, a serwer tego nie zauważał, więc pierwsze żądanie po przerwie mogło skończyć się błędem: pasieka, która po prostu się nie wczytywała. Nasz własny monitoring wychwycił to w systemie testowym, zanim zetknął się z tym jakikolwiek pszczelarz. Serwer sprawdza teraz połączenie przed użyciem i w razie potrzeby po cichu otwiera nowe. Po twojej stronie nie trzeba nic robić.',
       },
     },
   },
@@ -239,6 +327,10 @@ export const NEWS: NewsEntry[] = [
         title: 'Doce apicultores para que la aplicación pueda publicarse',
         body: 'HivePulse está terminada, pero todavía no está en las tiendas, y no por falta de ganas. Antes de que Google deje publicar a un desarrollador nuevo, doce personas tienen que probar la aplicación durante catorce días seguidos. La ronda de pruebas es, por tanto, la condición y no un trámite. Si tienes colmenas y un teléfono Android o un iPhone, puedes conseguir la aplicación ya y ayudar a que llegue a todos los demás: hay una página que explica qué implica, qué informar y qué pasa con tus datos. Un cuarto de hora para instalarla y una visita a las colmenas para resultar útil.',
       },
+      pl: {
+        title: 'Potrzeba dwunastu pszczelarzy, zanim aplikacja będzie mogła się ukazać',
+        body: 'HivePulse jest gotowy, ale jeszcze nie ma go w sklepach, i nie z braku starań. Zanim Google pozwoli nowemu deweloperowi opublikować aplikację, dwanaście osób musi ją testować przez czternaście kolejnych dni. Runda testowa jest więc bramą, nie formalnością. Jeśli masz pszczoły i telefon z Androidem lub iPhone\'a, możesz pobrać aplikację już teraz i pomóc jej dotrzeć do wszystkich innych: jest strona wyjaśniająca, na czym to polega, co zgłaszać i co dzieje się z twoimi danymi. Kwadrans na konfigurację i jedna wizyta przy ulach, by się przydać.',
+      },
     },
   },
   {
@@ -260,6 +352,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'El sitio ya no le cuenta a Google que estuviste aquí',
         body: 'Las tipografías del sitio se cargaban desde servidores de Google: en cada visita tu dirección IP llegaba a Google antes de que se mostrara una sola palabra. Ahora las servimos desde nuestros propios servidores, así que nadie de fuera se entera de tu visita. Una de las cuatro tipografías, por cierto, se cargaba en cinco grosores y no se usaba en ningún sitio; también ha desaparecido, lo que aligera tu primera visita.',
+      },
+      pl: {
+        title: 'Serwis nie zdradza już Google\'owi twojej wizyty',
+        body: 'Czcionki używane w całym serwisie były ładowane z serwerów Google, co oznaczało, że każde wyświetlenie strony przekazywało Google twój adres IP, zanim pojawiło się jakiekolwiek słowo. Teraz są dostarczane z naszych własnych serwerów, więc nikt z zewnątrz nie dowiaduje się o twojej wizycie. Jedna z czterech czcionek okazała się ładowana w pięciu grubościach i nieużywana nigdzie, więc też zniknęła: trochę mniej do pobrania przy pierwszej wizycie.',
       },
     },
   },
@@ -283,6 +379,10 @@ export const NEWS: NewsEntry[] = [
         title: 'Los fallos ya no pasan desapercibidos',
         body: 'Cuando una app se cerraba en mitad de una revisión, nadie se enteraba salvo que el apicultor escribiera. Ahora ambas apps y el servidor avisan cuando algo se rompe: el punto del código, la versión de la app y el tipo de dispositivo. Queda fuera a propósito todo lo que tiene que ver contigo: ninguna nota de revisión, ninguna contraseña, ninguna dirección de correo, ninguna dirección IP, ninguna captura de pantalla. Un informe indica tu número de cuenta y nada más, y se guarda en Europa. Los informes van a Sentry, que los procesa por encargo nuestro.',
       },
+      pl: {
+        title: 'Awarie nie przechodzą już niezauważone',
+        body: 'Gdy aplikacja zamykała się w środku przeglądu, nikt się o tym nie dowiadywał, chyba że pszczelarz napisał. Obie aplikacje i serwer wysyłają teraz raport, gdy coś się psuje: miejsce w kodzie, wersję aplikacji i rodzaj urządzenia. Celowo pomijają wszystko o tobie: żadnych notatek z przeglądów, haseł, adresów e-mail, adresów IP ani zrzutów ekranu. Raport zawiera numer twojego konta i nic więcej, a przechowywany jest w Europie. Raporty trafiają do Sentry, które przetwarza je w naszym imieniu.',
+      },
     },
   },
   {
@@ -304,6 +404,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'Contar cuadros con guantes: toca el número',
         body: 'Los cuadros de cría y de miel se introducían con un botón de más y otro de menos; en el iPhone eran las diminutas flechas del sistema, casi imposibles de acertar con guantes, y ocho cuadros exigían ocho toques. Ahora ambas apps muestran cada valor de 0 a 10 como un botón grande a lo ancho del formulario. Un toque fija el número y otro lo borra. Los botones miden 60 puntos de alto en el iPhone y 68dp en Android, muy por encima de lo que necesita un dedo con guante.',
+      },
+      pl: {
+        title: 'Liczba ramek w rękawicach: dotknij liczby',
+        body: 'Ramki z czerwiem i miodem wpisywało się przyciskami plus i minus; na iPhonie były to maleńkie systemowe strzałki, trudne do użycia w rękawicach, a wybranie ośmiu ramek oznaczało osiem dotknięć. Obie aplikacje pokazują teraz każdą wartość od 0 do 10 jako osobny duży przycisk na całą szerokość formularza. Jedno dotknięcie ustawia liczbę, ponowne ją czyści. Przyciski mają 60 punktów wysokości na iPhonie i 68 dp na Androidzie, wygodnie więcej, niż potrzebuje palec w rękawicy.',
       },
     },
   },
@@ -327,6 +431,10 @@ export const NEWS: NewsEntry[] = [
         title: 'La app de Android vuelve a ser ámbar en todas partes',
         body: 'En algunos puntos la app de Android mostraba el lila predeterminado de Android: los botones de más y menos de los cuadros de cría y miel, y la tarjeta de estadísticas. La app nunca le había indicado al sistema qué colores usar en esas superficies. Ahora siguen la paleta ámbar y piedra de HivePulse como todo lo demás. La lista de colmenares y la de lotes de QR también dejan espacio abajo, así que la última entrada ya no queda oculta tras el botón redondo.',
       },
+      pl: {
+        title: 'Aplikacja na Androida znów jest wszędzie bursztynowa',
+        body: 'Przyciski i karty w aplikacji na Androida w kilku miejscach miały domyślny liliowy kolor Androida: przyciski plus i minus dla ramek z czerwiem i miodem oraz karta statystyk, bo aplikacja nigdy nie powiedziała systemowi, jakich kolorów użyć na tych powierzchniach. Teraz podążają za bursztynowo-kamienną paletą HivePulse jak wszystko inne. Lista pasiek i lista partii kodów QR zostawiają też miejsce na dole, więc ostatnia pozycja nie chowa się już za okrągłym przyciskiem.',
+      },
     },
   },
   {
@@ -348,6 +456,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'Haz público un colmenar más tarde, y noticias en tu idioma',
         body: 'Hasta ahora un colmenar solo podía aparecer en el mapa público si lo marcabas al crearlo, y en la app de iPhone ni siquiera entonces; además, los cambios en un colmenar se perdían sin aviso en el iPhone. Ambas apps permiten ahora editar un colmenar en cualquier momento, incluido el interruptor «Mostrar en el mapa público», y los cambios se guardan. Solo los colmenares públicos aparecen en el mapa de la comunidad y cuentan en sus cifras. En la web, las noticias se muestran ya en tu idioma, la foto del avispón asiático ha vuelto al rastreador de avispones y la navegación superior ya no corta el botón de descarga con textos más largos en alemán o francés.',
+      },
+      pl: {
+        title: 'Udostępnij pasiekę później i aktualności w twoim języku',
+        body: 'Pasiekę można było umieścić na mapie publicznej tylko przy jej tworzeniu, a w aplikacji na iPhone\'a nawet wtedy nie, i edycja pasieki na iPhonie po cichu odrzucała twoje zmiany. Obie aplikacje pozwalają teraz edytować pasiekę w dowolnym momencie, łącznie z przełącznikiem „Pokaż na mapie publicznej”, a zmiany są zapisywane. Na mapie społeczności i w jej liczbach liczą się tylko pasieki publiczne. W serwisie wpisy z aktualności pojawiają się w twoim języku, zdjęcie szerszenia azjatyckiego w tropicielu szerszeni wróciło, a górna nawigacja nie ucina już przycisku pobierania przy dłuższych niemieckich lub francuskich etykietach.',
       },
     },
   },
@@ -371,6 +483,10 @@ export const NEWS: NewsEntry[] = [
         title: 'Palabras en lugar de números al inspeccionar',
         body: 'Registrar una revisión en la colmena ahora es más rápido. La fuerza de la colonia se elige simplemente entre débil, media o fuerte, y la varroa se anota como ninguna, baja, media o alta en lugar de un recuento de ácaros, tanto en las apps de iOS y Android como en la web. Tus registros anteriores se convirtieron automáticamente. El color de la reina se elige tocando un punto de color. Y por fin puedes editar el nombre, el tipo, la fecha de adquisición y las notas de una colmena directamente en las apps, no solo en la web. Además, las colonias fuertes vuelven a guardarse correctamente en la app de Android.',
       },
+      pl: {
+        title: 'Słowa zamiast liczb podczas przeglądu',
+        body: 'Zapisywanie przeglądu przy rodzinie jest teraz szybsze. Siła rodziny to prosty wybór: słaba, średnia lub silna, a Varroa zapisuje się jako brak, niska, średnia lub wysoka zamiast liczby roztoczy, zarówno w aplikacjach na iOS i Androida, jak i w serwisie. Twoje wcześniejsze wpisy zostały przekonwertowane automatycznie. Kolor matki wybiera się dotknięciem kolorowej kropki. Wreszcie możesz edytować nazwę, typ, datę nabycia i notatki rodziny bezpośrednio w aplikacjach, nie tylko w serwisie. Silne rodziny zapisują się teraz poprawnie także w aplikacji na Androida.',
+      },
     },
   },
   {
@@ -392,6 +508,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'Un HivePulse más luminoso y sereno',
         body: 'La web tiene un nuevo aspecto. El verde oscuro y pesado deja paso a superficies blancas y gris cálido, y el color indica ahora lo que estás viendo: verde para tus colmenares y colonias, ámbar para avisos, rojo para la salud de las colonias y el rastreador de avispones, y gris azulado para estadísticas y ayuda. La barra lateral del panel es clara, las cifras usan una tipografía monoespaciada nítida y los botones son más grandes y fáciles de pulsar. El logotipo de HivePulse también es más redondeado. Nada ha cambiado de sitio y todo funciona igual que antes: simplemente resulta más agradable a la vista.',
+      },
+      pl: {
+        title: 'Jaśniejszy, spokojniejszy HivePulse',
+        body: 'Serwis ma nowy wygląd. Ciężka ciemna zieleń ustąpiła białym i ciepłym szarym powierzchniom, a kolor sygnalizuje teraz, na co patrzysz: zieleń dla pasiek i rodzin, bursztyn dla komunikatów, czerwień dla zdrowia rodzin i tropiciela szerszeni, a niebieskoszary dla statystyk i pomocy. Pasek boczny panelu jest jasny, liczby są ustawione wyraźną czcionką o stałej szerokości, a przyciski są większe i łatwiejsze do trafienia. Logotyp HivePulse też jest bardziej zaokrąglony. Nic się nie przesunęło i każda funkcja działa dokładnie jak wcześniej, po prostu jest łagodniejsze dla oczu.',
       },
     },
   },
@@ -415,6 +535,10 @@ export const NEWS: NewsEntry[] = [
         title: 'Números legibles y traducciones correctas en el formulario de revisión',
         body: 'Al registrar una revisión en el iPhone solo se veían un más y un menos para los cuadros de cría, los cuadros de miel y la fuerza de la colonia: faltaba el número, así que no se veía qué valor se estaba poniendo. El número ha vuelto. Las opciones de estado de ánimo, color de la reina y fuerza de la colonia también aparecían en inglés sin importar el idioma; ahora están traducidas al alemán, francés, español e inglés en ambas apps. El peso de la colmena ya no es un simple cuadro de texto: conserva el teclado para valores exactos y añade botones de más y menos en pasos de medio kilo, cómodos con guantes. En la web, la leyenda del gráfico de ánimo también mostraba etiquetas en inglés y ahora sigue tu idioma.',
       },
+      pl: {
+        title: 'Czytelne liczby i poprawne tłumaczenia w formularzu przeglądu',
+        body: 'Zapisywanie przeglądu na iPhonie pokazywało tylko plus i minus przy ramkach z czerwiem, ramkach z miodem i sile rodziny; brakowało samej liczby, więc nie było widać, co się ustawia. Liczba wróciła. Opcje temperamentu rodziny, koloru matki i siły rodziny pojawiały się też po angielsku bez względu na używany język; teraz są przetłumaczone na niemiecki, francuski, hiszpański i angielski w obu aplikacjach. Waga rodziny nie jest już zwykłym polem tekstowym: zachowuje klawiaturę dla dokładnych wartości i dodaje przyciski plus i minus w krokach co pół kilograma, dla rąk w rękawicach przy ulu. W serwisie legenda wykresu temperamentu też pokazywała angielskie etykiety, a teraz podąża za twoim językiem.',
+      },
     },
   },
   {
@@ -436,6 +560,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'La página de Miembros vuelve a cargar al instante',
         body: 'El recuadro de la comunidad en la página de Miembros esperaba a las estadísticas globales antes de mostrar nada, y esas estadísticas se calculaban con una consulta a la base de datos por cada colmenar y cada colmena, lo que tardaba varios segundos a medida que crecía la comunidad. Ahora el servidor las reúne con unas pocas consultas, y la invitación a iniciar sesión o hacerse colaborador aparece de inmediato mientras se cargan las cifras.',
+      },
+      pl: {
+        title: 'Strona członków znów ładuje się natychmiast',
+        body: 'Pole społeczności na stronie członków czekało na statystyki globalne, zanim cokolwiek pokazało, a te statystyki liczono osobnym zapytaniem do bazy dla każdej pasieki i rodziny, co trwało kilka sekund w miarę rozrostu społeczności. Serwer zbiera je teraz kilkoma zapytaniami, a monit o zalogowanie lub status wspierającego pojawia się od razu, gdy liczby się uzupełniają.',
       },
     },
   },
@@ -459,6 +587,10 @@ export const NEWS: NewsEntry[] = [
         title: 'Un recorrido guiado para nuevos usuarios en ambas apps',
         body: 'La primera vez que inicias sesión en la app de iOS o Android, un breve recorrido deslizable te presenta lo que HivePulse puede hacer por ti: códigos QR en cada colmena, revisiones rápidas, estadísticas, recordatorios y el rastreador de avispones. Puedes saltarlo cuando quieras y volver a verlo desde Ajustes con «Mostrar de nuevo el recorrido».',
       },
+      pl: {
+        title: 'Przewodnik dla nowych użytkowników w obu aplikacjach',
+        body: 'Przy pierwszym logowaniu do aplikacji na iOS lub Androida krótki przewodnik do przewijania przedstawia teraz, co HivePulse może dla ciebie zrobić: kody QR na każdej rodzinie, szybkie przeglądy, statystyki, przypomnienia i tropiciel szerszeni. Pomiń go w dowolnej chwili i przywołaj później z Ustawień przyciskiem „Pokaż przewodnik ponownie”.',
+      },
     },
   },
   {
@@ -480,6 +612,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'La app de iOS estrena el nuevo aspecto de HivePulse y se pone al día con la web y Android',
         body: 'La app de iPhone usa ahora el mismo diseño en ámbar y piedra y la misma tipografía DM Sans que la web. Además incorpora todo lo que la app de Android recibió hace poco: PDF de códigos QR imprimibles que se abren al instante, recordatorios por correo electrónico, el resumen de estadísticas de toda la cuenta, enlaces para restablecer la contraseña, la gestión de tus campos personalizados para todos los colmenares o solo uno y, para los colaboradores, el mapa regional de salud en la pestaña Miembros.',
+      },
+      pl: {
+        title: 'Aplikacja na iOS dostaje nowy wygląd HivePulse i nadrabia zaległości względem serwisu i Androida',
+        body: 'Aplikacja na iPhone\'a używa teraz tego samego bursztynowo-kamiennego designu i kroju DM Sans co serwis. Dostała też wszystko, co ostatnio zyskała aplikacja na Androida: drukowalne PDF z kodami QR otwierane od razu, przypomnienia e-mail, ogólnokontowy przegląd statystyk, linki do resetu hasła, zarządzanie własnymi polami dla wszystkich pasiek lub tylko jednej oraz, dla wspierających, regionalną mapę zdrowia na karcie Członkowie.',
       },
     },
   },
@@ -503,6 +639,10 @@ export const NEWS: NewsEntry[] = [
         title: 'Arreglada la descarga del PDF de códigos QR en la app de Android',
         body: 'Pulsar Descargar PDF en un lote de QR en la app de Android no hacía nada: la descarga se delegaba fuera de la app y fallaba sin avisar cuando la sesión llevaba un rato abierta. Ahora la app descarga el PDF imprimible por sí misma, lo guarda en tu carpeta de Descargas y lo abre enseguida, y volver a pulsar ya no acumula copias duplicadas.',
       },
+      pl: {
+        title: 'Naprawione pobieranie PDF z kodami QR w aplikacji na Androida',
+        body: 'Dotknięcie Pobierz PDF przy partii kodów QR w aplikacji na Androida nic nie robiło: pobieranie było przekazywane poza aplikację i po dłuższym czasie otwartej sesji cicho się nie udawało. Aplikacja pobiera teraz drukowalny PDF sama, zapisuje go w folderze Pobrane i od razu otwiera, a ponowne dotknięcie nie tworzy już zdublowanych kopii.',
+      },
     },
   },
   {
@@ -524,6 +664,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'El resumen de estadísticas y el mapa de salud de la comunidad llegan a Android',
         body: 'La app de Android tiene ahora la misma página de estadísticas de toda la cuenta que el panel web: colmenares, colmenas e revisiones de un vistazo, desglosados por colmenar para cualquier periodo. Los colaboradores también tienen el mapa regional de salud en la pestaña Miembros, con las mismas capas de varroa, ánimo, enjambrazón y cría que en la web.',
+      },
+      pl: {
+        title: 'Przegląd statystyk i mapa zdrowia społeczności trafiają na Androida',
+        body: 'Aplikacja na Androida ma teraz tę samą ogólnokontową stronę statystyk co panel internetowy: pasieki, rodziny i przeglądy w skrócie, z podziałem na pasieki dla dowolnego okresu. Wspierający dostają też regionalną mapę zdrowia na karcie Członkowie, z tymi samymi nakładkami Varroa, temperamentu, rójki i czerwiu co w sieci.',
       },
     },
   },
@@ -547,6 +691,10 @@ export const NEWS: NewsEntry[] = [
         title: 'Campos personalizados, recordatorios por correo y restablecimiento de contraseña en la app de Android',
         body: 'Algunas cosas solo se podían hacer en la web. En la app de Android ya puedes crear, editar y eliminar tus campos personalizados, para todos los colmenares o solo uno, activar recordatorios por correo además de las notificaciones push y pedir un enlace para restablecer la contraseña sin salir de la app.',
       },
+      pl: {
+        title: 'Własne pola, przypomnienia e-mail i reset hasła prosto w aplikacji na Androida',
+        body: 'Kilka rzeczy dało się wcześniej zrobić tylko w serwisie. W aplikacji na Androida możesz teraz tworzyć, edytować i usuwać własne pola (dla wszystkich pasiek lub tylko jednej), włączyć przypomnienia e-mail obok powiadomień push i poprosić o link do resetu hasła bez opuszczania aplikacji.',
+      },
     },
   },
   {
@@ -568,6 +716,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'La navegación del panel ya funciona en el móvil',
         body: 'En pantallas pequeñas, la barra lateral del panel ocultaba toda la navegación sin nada que la sustituyera, así que desde el móvil solo se podía llegar al botón de cerrar sesión. Un nuevo botón de menú muestra ahora tus colmenares, estadísticas, perfil y todas las demás páginas desde el teléfono.',
+      },
+      pl: {
+        title: 'Nawigacja panelu działa już na telefonie',
+        body: 'Pasek boczny panelu chował całą nawigację na małych ekranach i nic jej nie zastępowało, więc odwiedzający z telefonu nie mieli jak dotrzeć do niczego poza przyciskiem wylogowania. Nowy przełącznik menu pokazuje teraz twoje pasieki, statystyki, profil i każdą inną stronę z poziomu telefonu.',
       },
     },
   },
@@ -591,6 +743,10 @@ export const NEWS: NewsEntry[] = [
         title: 'Los recordatorios de revisión ya también llegan por correo',
         body: 'Las notificaciones push solo llegaban a las apps de iOS y Android, así que quien usaba solo la web nunca recibía aviso de una revisión atrasada. Ahora puedes activar los recordatorios por correo desde tu página de perfil, de forma independiente a las notificaciones push: uno, otro, ambos o ninguno.',
       },
+      pl: {
+        title: 'Przypomnienia o przeglądach także e-mailem',
+        body: 'Powiadomienia push docierały tylko do aplikacji na iOS i Androida, więc pszczelarze korzystający wyłącznie z serwisu nie mieli jak dowiedzieć się o spóźnionym przeglądzie. Możesz teraz włączyć przypomnienia e-mail na stronie profilu, niezależnie od push, więc możesz włączyć jedno, oba albo żadne.',
+      },
     },
   },
   {
@@ -612,6 +768,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'Arreglados los marcadores del mapa público para colmenares con solo dirección',
         body: 'Los colmenares públicos creados desde el panel web solo guardaban una dirección en texto libre, nunca coordenadas GPS, así que contaban en los totales de la comunidad pero nunca aparecían como marcador en el mapa en vivo. Ahora el servidor convierte automáticamente la dirección guardada en coordenadas, de modo que todo colmenar público con dirección aparece en el mapa a partir de ahora.',
+      },
+      pl: {
+        title: 'Naprawione pinezki na mapie publicznej dla pasiek z samym adresem',
+        body: 'Pasieki publiczne tworzone w panelu internetowym zbierały tylko adres w wolnym tekście, nigdy współrzędnych GPS, więc były liczone w sumach społeczności, ale nigdy nie rysowano ich jako pinezki na mapie na żywo. Backend automatycznie zamienia teraz zapisany adres na współrzędne, więc każda pasieka publiczna z adresem będzie odtąd widoczna na mapie.',
       },
     },
   },
@@ -635,6 +795,10 @@ export const NEWS: NewsEntry[] = [
         title: '¿Olvidaste tu contraseña? Te ayudamos',
         body: 'Ya está disponible el proceso completo para recuperar y restablecer la contraseña en el panel web, iOS y Android: pide un enlace por correo, elige una contraseña nueva y todas tus sesiones abiertas se cierran automáticamente por seguridad.',
       },
+      pl: {
+        title: 'Nie pamiętasz hasła? Mamy to',
+        body: 'Pełny proces zapomnianego hasła i jego resetu działa teraz w panelu internetowym, na iOS i na Androidzie: poproś o link do resetu e-mailem, ustaw nowe hasło, a wszystkie istniejące sesje zostaną dla bezpieczeństwa automatycznie wylogowane.',
+      },
     },
   },
   {
@@ -656,6 +820,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'Campos de revisión personalizados: registra lo que te importa',
         body: 'Cada apicultor sigue cosas distintas. Las definiciones de campos personalizados te permiten añadir tus propios datos de revisión a nivel de colmenar o de colmena, con campos de texto, número, sí/no, fecha y selección, ya disponibles en el panel web, iOS y Android.',
+      },
+      pl: {
+        title: 'Własne pola przeglądu: zapisuj to, co ważne dla ciebie',
+        body: 'Każdy pszczelarz śledzi coś innego. Definicje własnych pól pozwalają dodać własne dane przeglądu na poziomie pasieki lub rodziny, z obsługą pól tekstowych, liczbowych, tak/nie, daty i wyboru, dostępne teraz w panelu internetowym, na iOS i na Androidzie.',
       },
     },
   },
@@ -679,6 +847,10 @@ export const NEWS: NewsEntry[] = [
         title: 'Llega el panel web: gestiona tus colmenas desde cualquier navegador',
         body: 'Ya no necesitas la app móvil para ver cómo están tus abejas. El nuevo panel en el navegador incluye inicio de sesión, tu lista de colmenares, el detalle de cada colmena con gráficos de varroa, la gestión de lotes de QR y estadísticas personales, todo desde un ordenador de sobremesa o portátil.',
       },
+      pl: {
+        title: 'Startuje panel internetowy: zarządzaj rodzinami z dowolnej przeglądarki',
+        body: 'Nie potrzebujesz już aplikacji mobilnej, aby zajrzeć do swoich pszczół. Nowy panel w przeglądarce obejmuje logowanie, listę pasiek, szczegóły rodziny z wykresami Varroa, zarządzanie partiami kodów QR i osobiste statystyki, wszystko z komputera stacjonarnego lub laptopa.',
+      },
     },
   },
   {
@@ -701,6 +873,10 @@ export const NEWS: NewsEntry[] = [
         title: 'Mapas de calor regionales de varroa en el mapa público',
         body: 'El mapa público en vivo muestra ahora un mapa de calor de varroa: la presión de ácaros de los colmenares públicos se agrupa en celdas de unos 50 km, coloreadas de verde a rojo, para que los apicultores detecten de un vistazo las tendencias de riesgo regionales.',
       },
+      pl: {
+        title: 'Regionalne mapy cieplne Varroa na mapie publicznej',
+        body: 'Publiczna mapa na żywo nakłada teraz mapę cieplną gęstości Varroa: nasilenie roztoczy zagregowane z pasiek publicznych w komórkach siatki o boku około 50 km, oznaczone kolorami od zielonego do czerwonego, aby pszczelarze od razu dostrzegali regionalne trendy ryzyka.',
+      },
     },
   },
   {
@@ -722,6 +898,10 @@ export const NEWS: NewsEntry[] = [
       es: {
         title: 'La ubicación de los colmenares se muestra a nivel de localidad, no con GPS exacto',
         body: 'Para proteger a los apicultores frente a posibles robos de colmenas, el mapa público y las páginas de la comunidad muestran ahora el centro de la ciudad o pueblo más cercano en lugar de las coordenadas exactas del colmenar. Con la sesión iniciada sigues viendo tu ubicación exacta; solo la vista pública está difuminada.',
+      },
+      pl: {
+        title: 'Lokalizacje pasiek pokazywane na poziomie miasta, nie dokładnego GPS',
+        body: 'Aby chronić pszczelarzy przed potencjalną kradzieżą uli, mapa publiczna i strony społeczności pokazują teraz środek najbliższego miasta lub wsi zamiast dokładnych współrzędnych pasieki. Po zalogowaniu nadal widzisz własną dokładną lokalizację; rozmyty jest tylko widok publiczny.',
       },
     },
   },

@@ -6,11 +6,12 @@ import en from '@/messages/en.json';
 import de from '@/messages/de.json';
 import fr from '@/messages/fr.json';
 import es from '@/messages/es.json';
+import pl from '@/messages/pl.json';
 
 const HIVE_TYPES = ['langstroth', 'dadant', 'top_bar', 'warre', 'other'] as const;
 
 describe('hive type labels in the message files', () => {
-  const locales = { en, de, fr, es } as Record<string, { hiveTypes: Record<string, string> }>;
+  const locales = { en, de, fr, es, pl } as Record<string, { hiveTypes: Record<string, string> }>;
 
   it('exist in every language', () => {
     for (const [name, messages] of Object.entries(locales)) {

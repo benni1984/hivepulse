@@ -13,7 +13,7 @@ It checks, for web (next-intl), iOS (.strings), Android (strings.xml) and the ba
   * placeholders ({name}, %1$s, %@, %d) match the reference string
   * the help URL points at the matching language
   * user-visible screens do not hardcode English text
-  * backend error messages and notification templates exist in all four languages
+  * backend error messages and notification templates exist in all five languages
 
 Android also has this as a unit test (TranslationCompletenessTest); this script is the
 cross-platform version that CI runs for every component at once.
@@ -28,7 +28,9 @@ import sys
 import xml.etree.ElementTree as ET
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-LOCALES = ("en", "de", "fr", "es")
+LOCALES = ("en", "de", "fr", "es", "pl")
+# &amp; &lt; &gt; &quot; &#39; and friends: right in XML and JSX text, wrong in a .strings file or a JSON message.
+ENTITY = re.compile(r"&(?:amp|lt|gt|quot|apos|#\d+);")
 
 findings: list[tuple[str, str]] = []
 
@@ -78,6 +80,9 @@ def check_web() -> None:
             fail(area, f"messages/{locale}.json is missing")
             continue
         messages[locale] = flatten(json.loads(path.read_text(encoding="utf-8")))
+        for key, value in messages[locale].items():
+            if ENTITY.search(value):
+                fail(area, f"{locale}: {key} contains an HTML entity, write the character itself")
     if "en" not in messages:
         return
     placeholder = re.compile(r"\{[a-zA-Z0-9_]+\}")
@@ -115,6 +120,10 @@ def check_ios() -> None:
             fail(area, f"{locale}.lproj/Localizable.strings is missing")
             continue
         tables[locale] = load_strings(path)
+        # A .strings file is plain text: "&amp;" shows up on screen as "&amp;" (it did, in Settings).
+        for key, value in tables[locale].items():
+            if ENTITY.search(value):
+                fail(area, f"{locale}: {key} contains an HTML entity, write the character itself")
     if "en" not in tables:
         return
     placeholder = re.compile(r"%(?:\d+\$)?[@dfs]")
@@ -145,7 +154,7 @@ def load_xml(path: pathlib.Path) -> dict[str, str]:
 def check_android() -> None:
     area = "android"
     res = ROOT / "android/app/src/main/res"
-    folders = {"en": "values", "de": "values-de", "fr": "values-fr", "es": "values-es"}
+    folders = {"en": "values", "de": "values-de", "fr": "values-fr", "es": "values-es", "pl": "values-pl"}
     tables = {}
     for locale, folder in folders.items():
         path = res / folder / "strings.xml"
@@ -187,12 +196,12 @@ def check_backend() -> None:
     if not blocks:
         fail(area, "no error-message blocks found in i18n.py — has the format changed?")
     for code, body in blocks:
-        have = set(re.findall(r'"(en|de|fr|es)":', body))
+        have = set(re.findall(r'"(en|de|fr|es|pl)":', body))
         for locale in sorted(set(LOCALES) - have):
             fail(area, f"error {code} has no {locale} message")
 
     if "SUPPORTED_LANGUAGES" in source:
-        accepted = set(re.findall(r'"(en|de|fr|es)"', source.split("SUPPORTED_LANGUAGES")[1][:80]))
+        accepted = set(re.findall(r'"(en|de|fr|es|pl)"', source.split("SUPPORTED_LANGUAGES")[1][:80]))
         for locale in sorted(set(LOCALES) - accepted):
             fail(area, f"get_message never selects {locale!r} — that language is served in English")
 
@@ -207,7 +216,7 @@ def check_backend() -> None:
         fail(area, "no notification templates found — has the format changed?")
     placeholder = re.compile(r"\{[a-z_]+\}")
     for key, body in entries:
-        variants = dict(re.findall(r'"(en|de|fr|es)":\s*"(.*)",', body))
+        variants = dict(re.findall(r'"(en|de|fr|es|pl)":\s*"(.*)",', body))
         for locale in sorted(set(LOCALES) - set(variants)):
             fail(area, f"notification template {key} has no {locale} text")
         english = sorted(placeholder.findall(variants.get("en", "")))

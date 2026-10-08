@@ -26,10 +26,10 @@ enum BeekeepingYear {
         "RS", "SE", "SI", "SK", "SM", "TR", "UA",
     ]
 
-    /// The language of the app as the server knows it: "de", "fr", "es" or "en".
+    /// The language of the app as the server knows it: "de", "fr", "es", "pl" or "en".
     static var appLanguage: String {
         let tag = Bundle.main.preferredLocalizations.first?.prefix(2).lowercased() ?? "en"
-        return ["en", "de", "fr", "es"].contains(tag) ? tag : "en"
+        return ["en", "de", "fr", "es", "pl"].contains(tag) ? tag : "en"
     }
 
     /// What the dates are moved by, in words.

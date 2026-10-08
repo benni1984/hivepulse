@@ -11,11 +11,12 @@ class AppLanguageTest {
         assertEquals("de", AppLanguage.normalize("de-DE"))
         assertEquals("fr", AppLanguage.normalize("fr_CA"))
         assertEquals("es", AppLanguage.normalize("ES"))
+        assertEquals("pl", AppLanguage.normalize("pl-PL"))
     }
 
     @Test
-    fun `the four shipped languages are recognised`() {
-        assertEquals(listOf("en", "de", "fr", "es"), AppLanguage.supported.mapNotNull { AppLanguage.normalize(it) })
+    fun `the five shipped languages are recognised`() {
+        assertEquals(listOf("en", "de", "fr", "es", "pl"), AppLanguage.supported.mapNotNull { AppLanguage.normalize(it) })
     }
 
     @Test

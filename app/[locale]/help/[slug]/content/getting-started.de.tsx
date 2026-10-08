@@ -58,7 +58,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
             <span className="help-step-num">2</span>
             <div className="help-step-body">
               <strong>Daten eingeben</strong>
-              <p>Geben Sie eine E-Mail-Adresse, einen Anzeigenamen, Ihre bevorzugte Sprache (Englisch, Französisch, Deutsch oder Spanisch) und ein Passwort mit mindestens 8 Zeichen ein.</p>
+              <p>Geben Sie eine E-Mail-Adresse, einen Anzeigenamen, Ihre bevorzugte Sprache (Englisch, Französisch, Deutsch, Spanisch oder Polnisch) und ein Passwort mit mindestens 8 Zeichen ein.</p>
             </div>
           </li>
           <li>

@@ -48,7 +48,7 @@ object Routes {
     const val MEMBERS            = "members"
     const val FIELD_DEFINITIONS  = "field_definitions?apiaryId={apiaryId}"
     const val SHARING            = "sharing/{type}/{id}"
-    const val MOVE_HIVES         = "move_hives/{apiaryId}"
+    const val MOVE_HIVES         = "move_hives/{apiaryId}?hiveId={hiveId}"
     const val HIVE_MOVES         = "hive_moves/{hiveId}"
     const val MOVES_OVERVIEW     = "moves_overview"
     const val BEEKEEPING_YEAR    = "beekeeping_year"
@@ -140,12 +140,17 @@ fun HivePulseNavGraph(
                 onQrClick         = { hiveId -> navController.navigate("hive_qr/$hiveId") },
                 onShareClick      = { hiveId -> navController.navigate("sharing/hive/$hiveId") },
                 onMovesClick      = { hiveId -> navController.navigate("hive_moves/$hiveId") },
+                onMoveHiveClick   = { hiveId, apiaryId -> navController.navigate("move_hives/$apiaryId?hiveId=$hiveId") },
                 onTreatmentsClick = { hiveId -> navController.navigate("treatments/hive/$hiveId") },
                 onBack            = { navController.popBackStack() }
             )
         }
         composable(Routes.MOVE_HIVES,
-            arguments = listOf(navArgument("apiaryId") { type = NavType.StringType })) {
+            arguments = listOf(
+                navArgument("apiaryId") { type = NavType.StringType },
+                // Set when the hive page opens the form: that hive starts out ticked.
+                navArgument("hiveId") { type = NavType.StringType; nullable = true; defaultValue = null },
+            )) {
             com.hivepulse.app.ui.moves.MoveHivesScreen(
                 onBack = { navController.popBackStack() },
                 // Back to the apiary, whose hive list no longer holds the hives that left.

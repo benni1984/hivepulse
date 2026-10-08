@@ -12,12 +12,14 @@ const LOCALE_FLAGS: Record<string, string> = {
   de: '🇩🇪 DE',
   fr: '🇫🇷 FR',
   es: '🇪🇸 ES',
+  pl: '🇵🇱 PL',
 };
 const LOCALE_LABELS: Record<string, string> = {
   en: '🇬🇧 English',
   de: '🇩🇪 Deutsch',
   fr: '🇫🇷 Français',
   es: '🇪🇸 Español',
+  pl: '🇵🇱 Polski',
 };
 
 export default function Nav({ locale }: { locale: string }) {

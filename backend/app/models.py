@@ -31,7 +31,7 @@ class User(Base):
     apple_refresh_token = Column(String, nullable=True)
     apple_token_client_id = Column(String, nullable=True)
     name = Column(String, nullable=False)
-    locale = Column(SAEnum("en", "fr", "de", "es", name="locale_enum"), default="en")
+    locale = Column(SAEnum("en", "fr", "de", "es", "pl", name="locale_enum"), default="en")
     is_admin = Column(Boolean, default=False, nullable=False)
     is_supporter = Column(Boolean, default=False, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)

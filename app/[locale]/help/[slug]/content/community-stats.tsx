@@ -80,6 +80,16 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">The regional health map</h2>
+        <p>
+          Supporters also see a map of the region. Each area appears as a soft, round patch of colour that fades out towards its edge and blends into its neighbours — green, amber or red depending on the overlay you choose: <strong>Varroa Risk</strong>, <strong>Colony Mood</strong>, <strong>Swarm Pressure</strong> or <strong>Brood Health</strong>.
+        </p>
+        <p>
+          Tap or hover over the middle of a patch to see how many apiaries and inspections it is based on and the average values. Grey means there is no data for that overlay yet. Only public apiaries count, and the map shows areas, never individual apiaries.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Becoming a Supporter</h2>
         <p>
           The detailed community breakdown — trend charts, regional breakdowns, top-performing

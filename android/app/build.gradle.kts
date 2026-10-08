@@ -27,7 +27,7 @@ android {
     // Google Play refuses an upload whose version code it has seen before, so the release
     // workflow passes a strictly increasing one. Local builds stay at 1.
     val buildVersionCode: Int = (project.findProperty("VERSION_CODE") as? String)?.toIntOrNull() ?: 1
-    val buildVersionName: String = (project.findProperty("VERSION_NAME") as? String) ?: "1.0"
+    val buildVersionName: String = (project.findProperty("VERSION_NAME") as? String) ?: "1.0.0"
 
     // The upload keystore never lives in this repository. The release workflow writes it from
     // a secret and points at it; without it a release build is simply left unsigned, which is

@@ -7,9 +7,10 @@ import dynamic from 'next/dynamic';
 import DashboardShell from '@/components/DashboardShell';
 import SharingPanel from '@/components/SharingPanel';
 import HiveMovesSection from '@/components/HiveMovesSection';
+import MoveHivesPanel from '@/components/MoveHivesPanel';
 import TreatmentsPanel from '@/components/TreatmentsPanel';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
-import { getHive, getHiveStats, getInspections, updateHive, deleteHive, createInspection, updateInspection, deleteInspection, getUserFieldDefs, getApiaryFieldDefs, exportHiveInspections, type Hive, type HiveStats, type Inspection, type InspectionInput, type FieldDefinition } from '@/lib/api';
+import { getHive, getHives, getHiveStats, getInspections, updateHive, deleteHive, createInspection, updateInspection, deleteInspection, getUserFieldDefs, getApiaryFieldDefs, exportHiveInspections, type Hive, type HiveStats, type MoveResult, type Inspection, type InspectionInput, type FieldDefinition } from '@/lib/api';
 
 function moodPct(dist: { calm: number; nervous: number; aggressive: number }) {
   const total = dist.calm + dist.nervous + dist.aggressive;
@@ -42,6 +43,10 @@ export default function HivePage() {
   const [loading, setLoading] = useState(true);
 
   const [showEdit, setShowEdit] = useState(false);
+  // The hive can be taken to another apiary from here; the panel lists the hives of its apiary with this one ticked.
+  const [showMove, setShowMove] = useState(false);
+  const [siblings, setSiblings] = useState<Hive[]>([]);
+  const [moveMessage, setMoveMessage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [editForm, setEditForm] = useState({ name: '', hive_type: 'langstroth', acquisition_date: '', notes: '' });
   const [editMessage, setEditMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
@@ -92,6 +97,25 @@ export default function HivePage() {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [ready, id]);
+
+  async function openMove() {
+    if (!hive) return;
+    setMoveMessage(null);
+    try {
+      const page = await getHives(hive.apiary_id);
+      setSiblings(page.items.some(h => h.id === hive.id) ? page.items : [hive, ...page.items]);
+    } catch {
+      setSiblings([hive]);
+    }
+    setShowMove(true);
+  }
+
+  async function handleMoved(result: MoveResult) {
+    setShowMove(false);
+    setMoveMessage(t('moves.success', { name: result.apiary.name }));
+    // The hive stands in another apiary now, and its back link and history follow it.
+    try { setHive(await getHive(id)); } catch { /* the old page stays until the next visit */ }
+  }
 
   function openEdit() {
     if (hive) {
@@ -505,9 +529,24 @@ export default function HivePage() {
             </div>
           )}
           {!showEdit ? (
-            <div style={{ marginTop: 24 }}>
+            <>
+            <div style={{ marginTop: 24, display: 'flex', flexWrap: 'wrap', gap: 8 }}>
               <button className="dash-admin-btn" onClick={openEdit}>{t('hive.editBtn')}</button>
+              {(hive.access ?? 'owner') === 'owner' && !showMove && (
+                <button className="dash-admin-btn" onClick={openMove} data-testid="move-this-hive">{t('moves.moveHive')}</button>
+              )}
             </div>
+            {moveMessage && <div className="dash-success-banner" style={{ marginTop: 16 }}>{moveMessage}</div>}
+            {showMove && (
+              <MoveHivesPanel
+                apiaryId={hive.apiary_id}
+                hives={siblings}
+                selectedIds={[hive.id]}
+                onMoved={handleMoved}
+                onCancel={() => setShowMove(false)}
+              />
+            )}
+            </>
           ) : (
             <div className="dash-inline-form" style={{ marginTop: 24 }}>
               <h2>{t('hive.editTitle')}</h2>

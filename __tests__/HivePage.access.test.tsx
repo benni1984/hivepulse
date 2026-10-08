@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import React from 'react';
 import HivePage from '@/app/[locale]/dashboard/hive/[id]/page';
@@ -10,6 +10,11 @@ vi.mock('@/components/SharingPanel', () => ({ default: () => <div data-testid="s
 
 vi.mock('@/components/HiveMovesSection', () => ({ default: () => null }));
 vi.mock('@/components/TreatmentsPanel', () => ({ default: () => null }));
+vi.mock('@/components/MoveHivesPanel', () => ({
+  default: ({ selectedIds, hives }: { selectedIds?: string[]; hives: { id: string }[] }) => (
+    <div data-testid="move-panel" data-selected={(selectedIds ?? []).join(',')} data-hives={hives.map(h => h.id).join(',')} />
+  ),
+}));
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string, params?: Record<string, string>) =>
     params ? `${key}|${Object.values(params).join('|')}` : key,
@@ -39,6 +44,7 @@ vi.mock('@/hooks/useDashboardAuth', () => ({
 
 vi.mock('@/lib/api', () => ({
   getHive: mockGetHive,
+  getHives: vi.fn().mockResolvedValue({ items: [{ id: 'hive-1', name: 'Hive Alpha' }, { id: 'hive-2', name: 'Hive Beta' }] }),
   getHiveStats: vi.fn().mockResolvedValue({
     inspection_count: 0, varroa_trend: [], mood_distribution: { calm: 0, nervous: 0, aggressive: 0 },
   }),
@@ -88,6 +94,26 @@ describe('what each kind of access sees on a hive', () => {
     expect(screen.getByText('hive.editBtn')).toBeInTheDocument();
     expect(screen.queryByTestId('sharing-panel')).toBeNull();
     expect(screen.queryByText('hive.dangerTitle')).toBeNull();
+  });
+
+  it('the owner can move the hive from its own page, with this hive ticked', async () => {
+    mockGetHive.mockResolvedValue({ ...hive, access: 'owner' });
+    render(<HivePage />);
+
+    await waitFor(() => screen.getByText('Hive Alpha'));
+    fireEvent.click(screen.getByTestId('move-this-hive'));
+
+    const panel = await screen.findByTestId('move-panel');
+    expect(panel.getAttribute('data-selected')).toBe('hive-1');
+    expect(panel.getAttribute('data-hives')).toBe('hive-1,hive-2');
+  });
+
+  it('a collaborator has no move button', async () => {
+    mockGetHive.mockResolvedValue({ ...hive, access: 'shared' });
+    render(<HivePage />);
+
+    await waitFor(() => screen.getByText('Hive Alpha'));
+    expect(screen.queryByTestId('move-this-hive')).toBeNull();
   });
 
   it('shows who recorded an inspection', async () => {

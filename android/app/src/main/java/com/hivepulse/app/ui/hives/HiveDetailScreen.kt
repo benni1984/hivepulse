@@ -107,6 +107,8 @@ fun HiveDetailScreen(
     onBack: () -> Unit,
     onShareClick: (String) -> Unit = {},
     onMovesClick: (String) -> Unit = {},
+    /** The hive and its apiary: opens the move form with this hive ticked. */
+    onMoveHiveClick: (String, String) -> Unit = { _, _ -> },
     onTreatmentsClick: (String) -> Unit = {},
     vm: HiveDetailViewModel = hiltViewModel()
 ) {
@@ -225,6 +227,10 @@ fun HiveDetailScreen(
                         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
                     ) {
                         LinkRow(Icons.Default.SwapHoriz, stringResource(R.string.moves_history_title), "hiveMovesLink") { onMovesClick(hiveId) }
+                        if (state.hive?.isOwner == true) {
+                            HorizontalDivider(color = Stone200)
+                            LinkRow(Icons.Default.SwapHoriz, stringResource(R.string.moves_move_hive), "moveThisHiveButton") { state.hive?.let { onMoveHiveClick(hiveId, it.apiaryId) } }
+                        }
                         HorizontalDivider(color = Stone200)
                         LinkRow(Icons.Default.Medication, stringResource(R.string.treatments_title), "hiveTreatmentsLink") { onTreatmentsClick(hiveId) }
                     }

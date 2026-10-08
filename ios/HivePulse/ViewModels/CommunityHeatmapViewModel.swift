@@ -115,8 +115,13 @@ final class CommunityHeatmapViewModel: ObservableObject {
         }
     }
 
-    /// Selects the cell under a tapped map coordinate; tapping outside every cell clears the selection.
+    /// Selects the patch under a tapped map coordinate; tapping outside every patch clears the selection.
+    /// Neighbouring patches overlap, so the one whose centre is nearest wins.
     func select(at coordinate: CLLocationCoordinate2D) {
-        selected = heatmap?.features.first { $0.contains(coordinate) }?.properties
+        let hits = (heatmap?.features ?? []).compactMap { feature -> (CommunityHeatmapProperties, Double)? in
+            guard let blob = HeatBlobs.blob(for: feature.ring), blob.isHit(by: coordinate) else { return nil }
+            return (feature.properties, blob.distance(to: coordinate))
+        }
+        selected = hits.min { $0.1 < $1.1 }?.0
     }
 }

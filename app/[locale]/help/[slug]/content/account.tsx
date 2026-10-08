@@ -29,7 +29,7 @@ export default function AccountContent({ Screenshot }: { Screenshot: typeof Help
             <span className="help-step-num">3</span>
             <div className="help-step-body">
               <strong>Change language</strong>
-              <p>Select English, French, German, or Spanish from the language picker.</p>
+              <p>Select English, French, German, Spanish, or Polish from the language picker.</p>
             </div>
           </li>
         </ol>

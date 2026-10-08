@@ -67,11 +67,17 @@ struct CommunityHeatmapSection: View {
     private func map(_ heatmap: CommunityHeatmap) -> some View {
         MapReader { proxy in
             Map(position: $camera, interactionModes: [.pan, .zoom]) {
+                // Every cell is a soft round patch: a few faint circles of one colour, the smaller ones on top.
                 ForEach(heatmap.features.indices, id: \.self) { index in
                     let feature = heatmap.features[index]
-                    MapPolygon(coordinates: feature.ring)
-                        .foregroundStyle(feature.properties.level(for: vm.overlay).color(for: vm.overlay).opacity(0.65))
-                        .stroke(.white, lineWidth: 1)
+                    if let blob = HeatBlobs.blob(for: feature.ring) {
+                        let color = feature.properties.level(for: vm.overlay).color(for: vm.overlay)
+                        ForEach(HeatBlobs.rings.indices, id: \.self) { ringIndex in
+                            let ring = HeatBlobs.rings[ringIndex]
+                            MapCircle(center: blob.center, radius: blob.radius * ring.scale)
+                                .foregroundStyle(color.opacity(ring.opacity))
+                        }
+                    }
                 }
             }
             .onTapGesture { point in

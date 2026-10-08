@@ -225,8 +225,8 @@ fun SettingsScreen(
         state.user?.let { if (editName.isEmpty()) editName = it.name }
     }
 
-    val locales      = listOf("en", "fr", "de", "es")
-    val localeLabels = listOf("English", "Français", "Deutsch", "Español")
+    val locales      = listOf("en", "fr", "de", "es", "pl")
+    val localeLabels = listOf("English", "Français", "Deutsch", "Español", "Polski")
 
     Scaffold(
         topBar = {
@@ -552,7 +552,7 @@ fun SettingsScreen(
                 Spacer(Modifier.weight(1f))
 
                 // Help
-                val helpLocale = state.user?.locale ?: "en"
+                val helpLocale = AppLanguage.current(context) ?: state.user?.locale ?: "en"
                 val helpUrl = "https://hivepulse.multihead.de/$helpLocale/help"
                 OutlinedButton(
                     onClick = {

@@ -105,13 +105,14 @@ describe('countries', () => {
     for (const code of COUNTRY_CODES) expect(code).toMatch(/^[A-Z]{2}$/);
   });
 
-  it('covers the countries of the four languages', () => {
-    for (const code of ['DE', 'AT', 'CH', 'FR', 'ES', 'GB', 'IT', 'BE', 'LU']) expect(COUNTRY_CODES).toContain(code);
+  it('covers the countries of the five languages', () => {
+    for (const code of ['DE', 'AT', 'CH', 'FR', 'ES', 'GB', 'IT', 'BE', 'LU', 'PL']) expect(COUNTRY_CODES).toContain(code);
   });
 
   it('names a country in the language of the page', () => {
     expect(countryName('DE', 'en')).toBe('Germany');
     expect(countryName('DE', 'de')).toBe('Deutschland');
     expect(countryName('ES', 'fr')).toBe('Espagne');
+    expect(countryName('DE', 'pl')).toBe('Niemcy');
   });
 });

@@ -13,6 +13,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.LocationOn
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -50,7 +57,7 @@ private fun forageLabel(value: String): String = forageText(LocalContext.current
 
 // ── Taking hives elsewhere ────────────────────────────────────────────────────────────────────
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, ExperimentalPermissionsApi::class)
 @Composable
 fun MoveHivesScreen(
     onBack: () -> Unit,
@@ -58,6 +65,9 @@ fun MoveHivesScreen(
     vm: MoveHivesViewModel = hiltViewModel(),
 ) {
     val state by vm.state.collectAsState()
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val locationPerm = rememberPermissionState(android.Manifest.permission.ACCESS_FINE_LOCATION)
 
     Scaffold(
         topBar = {
@@ -140,6 +150,35 @@ fun MoveHivesScreen(
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth(),
                     )
+                }
+                item {
+                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        val lat = state.latitude
+                        val lon = state.longitude
+                        if (lat != null && lon != null) {
+                            Text(String.format("%.5f, %.5f", lat, lon), style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("movePosition"))
+                        }
+                        OutlinedButton(
+                            onClick = {
+                                if (locationPerm.status.isGranted) {
+                                    val fused = LocationServices.getFusedLocationProviderClient(context)
+                                    scope.launch {
+                                        try {
+                                            fused.lastLocation.await()?.let { vm.setPosition(it.latitude, it.longitude) }
+                                        } catch (_: Exception) {}
+                                    }
+                                } else {
+                                    locationPerm.launchPermissionRequest()
+                                }
+                            },
+                            modifier = Modifier.testTag("moveUseLocation"),
+                        ) {
+                            Icon(Icons.Default.LocationOn, null)
+                            Spacer(Modifier.width(4.dp))
+                            Text(stringResource(R.string.action_use_my_location))
+                        }
+                    }
                 }
             }
 

@@ -7,6 +7,9 @@ struct HiveDetailView: View {
     @StateObject private var hiveVM = HiveViewModel()
     @State private var showAddInspection = false
     @State private var showEdit = false
+    @State private var showMove = false
+    /// The hives of this apiary, so the form can offer them with this one ticked.
+    @State private var siblings: [HiveOut] = []
 
     init(hive: HiveOut, apiaryId: String) {
         _hive = State(initialValue: hive)
@@ -43,6 +46,18 @@ struct HiveDetailView: View {
                     Label(NSLocalizedString("moves.historyTitle", comment: ""), systemImage: "arrow.left.arrow.right")
                 }
                 .accessibilityIdentifier("hiveMovesLink")
+                if hive.isOwner {
+                    Button {
+                        Task {
+                            await hiveVM.load(apiaryId: apiaryId)
+                            siblings = hiveVM.hives.contains(where: { $0.id == hive.id }) ? hiveVM.hives : [hive] + hiveVM.hives
+                            showMove = true
+                        }
+                    } label: {
+                        Label(NSLocalizedString("moves.moveHive", comment: ""), systemImage: "arrow.triangle.swap")
+                    }
+                    .accessibilityIdentifier("moveThisHiveButton")
+                }
                 NavigationLink(destination: TreatmentsView(target: .hive(hive.id))) {
                     Label(NSLocalizedString("treatments.title", comment: ""), systemImage: "cross.case")
                 }
@@ -115,6 +130,12 @@ struct HiveDetailView: View {
             HiveEditView(hive: hive) { name, hiveType, acquisitionDate, notes in
                 hive = try await hiveVM.update(hive.id, name: name, hiveType: hiveType,
                                                notes: notes, acquisitionDate: acquisitionDate)
+            }
+        }
+        .sheet(isPresented: $showMove) {
+            MoveHivesView(apiaryId: apiaryId, hives: siblings, selected: [hive.id]) { _ in
+                // The hive stands in another apiary now.
+                Task { if let moved = try? await HiveService().get(hive.id) { hive = moved } }
             }
         }
         .sheet(isPresented: $showStats) {

@@ -50,7 +50,7 @@ struct SettingsView: View {
     @State private var testReportId: String?
     @State private var testReportFailed = false
 
-    private let locales = [("en", "English"), ("fr", "Français"), ("de", "Deutsch"), ("es", "Español")]
+    private let locales = [("en", "English"), ("fr", "Français"), ("de", "Deutsch"), ("es", "Español"), ("pl", "Polski")]
     private let apiaryService = ApiaryService()
     private let exportService = ExportService()
 
@@ -274,7 +274,9 @@ struct SettingsView: View {
                 HStack {
                     Text("HivePulse").foregroundColor(.secondary)
                     Spacer()
-                    Text("v1.0").foregroundColor(.secondary)
+                    Text(String(format: NSLocalizedString("diagnostics.version", comment: ""), appVersion, appBuild))
+                        .foregroundColor(.secondary)
+                        .accessibilityIdentifier("appVersionLabel")
                 }
             }
         }
@@ -282,7 +284,7 @@ struct SettingsView: View {
         .hpScreenBackground()
         .task {
             name   = authVM.currentUser?.name ?? ""
-            locale = authVM.currentUser?.locale ?? "en"
+            locale = AppLanguage.effective(profileLocale: authVM.currentUser?.locale)
             loadedLocale = locale
             apiaries = (try? await apiaryService.list().items) ?? []
             await authVM.loadReminderSettings()

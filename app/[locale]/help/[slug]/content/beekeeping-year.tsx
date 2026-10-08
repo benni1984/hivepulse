@@ -85,7 +85,7 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
           <li>The dates are guide values from usual beekeeping practice, not rules: bloom and weather decide.</li>
           <li>Medicines only as approved and prescribed in your country; ask your beekeepers&rsquo; association or veterinary office when in doubt.</li>
           <li>Suspected foulbrood must be reported to the veterinary authority.</li>
-          <li>The texts are in the language of the app: English, German, French and Spanish.</li>
+          <li>The texts are in the language of the app: English, German, French, Spanish and Polish.</li>
         </ul>
       </section>
     </>

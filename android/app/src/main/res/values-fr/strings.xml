@@ -455,6 +455,7 @@
     <string name="invitation_redeem_button">Utiliser</string>
     <string name="invitation_invalid_link">Cela ne ressemble pas à un lien d’invitation.</string>
     <string name="moves_title">Déplacer des ruches</string>
+    <string name="moves_move_hive">Déplacer cette ruche</string>
     <string name="moves_select_hives">Quelles ruches</string>
     <string name="moves_back_hint">Où elles étaient avant</string>
     <string name="moves_back_to">Retour à %1$s (%2$d)</string>

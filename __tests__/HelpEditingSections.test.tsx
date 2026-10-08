@@ -14,7 +14,7 @@ vi.mock('next/link', () => ({
 
 import HelpTopicPage from '@/app/[locale]/help/[slug]/page';
 
-const LOCALES = ['en', 'de', 'fr', 'es'] as const;
+const LOCALES = ['en', 'de', 'fr', 'es', 'pl'] as const;
 
 async function renderTopic(locale: string, slug: string) {
   const jsx = await HelpTopicPage({ params: Promise.resolve({ locale, slug }) });
@@ -29,6 +29,7 @@ describe('help covers editing and public visibility', () => {
     de: { apiary: /Bienenstand bearbeiten/i, hive: /Volk bearbeiten/i, publicSwitch: /Auf öffentlicher Karte anzeigen/i },
     fr: { apiary: /Modifier un rucher/i, hive: /Modifier une ruche/i, publicSwitch: /Afficher sur la carte publique/i },
     es: { apiary: /Editar un colmenar/i, hive: /Editar una colmena/i, publicSwitch: /Mostrar en el mapa público/i },
+    pl: { apiary: /Edycja pasieki/i, hive: /Edycja rodziny/i, publicSwitch: /Pokaż na mapie publicznej/i },
   };
 
   it.each(LOCALES)('explains how to edit an apiary and make it public (%s)', async locale => {
@@ -51,9 +52,10 @@ describe('help covers editing and public visibility', () => {
       de: /tippst du die Zahl/i,
       fr: /touchez directement le chiffre/i,
       es: /tocándolo directamente/i,
+      pl: /dotykając samej liczby/i,
     };
     expect(text).toMatch(hint[locale]);
-    expect(text).toMatch(/0 (bis|to|al)? ?10|0 à 10/i);
+    expect(text).toMatch(/0 (bis|to|al|do)? ?10|0 à 10/i);
   });
 
   it('mentions that private apiaries are not counted, in every locale', async () => {
@@ -62,6 +64,7 @@ describe('help covers editing and public visibility', () => {
       de: /Private Bienenstände zählen nie mit/i,
       fr: /les ruchers privés ne sont jamais comptés/i,
       es: /los colmenares privados nunca se cuentan/i,
+      pl: /pasieki prywatne nigdy nie są liczone/i,
     };
     for (const locale of LOCALES) {
       const { container } = await renderTopic(locale, 'apiaries');
@@ -77,12 +80,14 @@ describe('help covers reminder channels and the guided tour', () => {
     de: /E-Mail/i,
     fr: /e-mail/i,
     es: /correo electrónico/i,
+    pl: /e-mail/i,
   };
   const tourHint: Record<string, RegExp> = {
     en: /guided tour/i,
     de: /geführte Tour|Tour erneut anzeigen/i,
     fr: /visite guidée/i,
     es: /recorrido guiado/i,
+    pl: /przewodnik/i,
   };
 
   it.each(LOCALES)('names push and email as the two reminder channels (%s)', async locale => {

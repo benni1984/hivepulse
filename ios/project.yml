@@ -96,6 +96,8 @@ targets:
         buildPhase: resources
       - path: HivePulse/Resources/es.lproj
         buildPhase: resources
+      - path: HivePulse/Resources/pl.lproj
+        buildPhase: resources
     dependencies:
       - target: HivePulse
     settings:
