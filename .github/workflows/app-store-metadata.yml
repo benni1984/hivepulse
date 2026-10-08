@@ -1,7 +1,7 @@
 name: App Store Metadata
 
 # Puts the App Store listing texts, and optionally the screenshots, into App Store Connect, so
-# they are not typed in by hand in four languages.
+# they are not typed in by hand in five languages.
 #
 # The texts come from docs/store-listing.md and nowhere else. scripts/build_appstore_metadata.py
 # turns them into the folder layout fastlane's `deliver` uploads and checks Apple's length limits

@@ -2,7 +2,7 @@
 """Capture the Play store screenshots for one language.
 
 The help-page capture in android-screenshots.py navigates by English labels, which is fine
-when it only ever runs in English. A store listing needs all four languages, and a German
+when it only ever runs in English. A store listing needs every language it is offered in, and a German
 listing showing an English interface reads as "not translated" — the one screenshot detail
 that actually changes whether somebody installs.
 
@@ -241,28 +241,18 @@ def capture_hive_detail():
     screenshot("2-hive-detail")
 
 
-def capture_hive_stats():
-    A.wait_for(S("section_inspections"), timeout=20)
-    A.tap_node(A.get_ui_dump(), content_desc=S("action_stats"))
-    A.wait_for(S("screen_hive_stats"), timeout=20)
-    time.sleep(1)
-    screenshot("3-hive-stats")
-    A.keyevent("KEYCODE_BACK")
-    A.wait_for(S("section_inspections"), timeout=20)
-
-
 def capture_inspection_form():
     A.wait_for(S("section_inspections"), timeout=20)
     # A content description, not a text node — the extended button carries its label there.
     A.tap_node(A.get_ui_dump(), content_desc=S("action_new_inspection"))
     A.wait_for(S("section_date"), timeout=20)
     time.sleep(1.5)
-    screenshot("4-inspection-form")
+    screenshot("3-inspection-form")
     # The glove-friendly tap grid is the thing that sets this app apart at the hive, and it
     # sits below the fold.
     A.swipe(540, 1600, 540, 700)
     time.sleep(1.5)
-    screenshot("5-inspection-frames")
+    screenshot("4-inspection-frames")
     A.keyevent("KEYCODE_BACK")
     time.sleep(1)
     dump = A.get_ui_dump()
@@ -270,39 +260,71 @@ def capture_inspection_form():
         A.keyevent("KEYCODE_BACK")
 
 
-def capture_qr_batches():
+def leave_the_apiary_list(timeout=25):
+    """Wait until the list is gone. Not until the new title shows: the toolbar icon that opened a
+    screen carries the same words as its title, so waiting for the words proves nothing."""
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        if S("screen_apiaries") not in A.get_ui_dump():
+            return
+        time.sleep(1)
+    raise TimeoutError("never left the apiary list")
+
+
+def capture_beekeeping_year():
     back_to_apiaries()
     A.wait_for(S("screen_apiaries"), timeout=20)
-    A.tap_node(A.get_ui_dump(), content_desc=S("tab_print"))
-    A.wait_for(S("screen_qr_batches"), timeout=20)
-    # Capturing on the title alone once produced a spinner on a blank screen.
-    deadline = time.time() + 20
-    while time.time() < deadline:
-        dump = A.get_ui_dump()
-        # The empty state resource contains an escaped newline; match its first line only.
-        if "Batch " in dump or S("empty_qr_batches").split("\\n")[0] in dump:
-            break
-        time.sleep(0.5)
-    time.sleep(1)
-    screenshot("6-qr-batches")
+    A.tap_node(A.get_ui_dump(), content_desc=S("calendar_title"))
+    leave_the_apiary_list()
+    # The list lays itself out and scrolls itself to today a moment after it opens.
+    time.sleep(4)
+    screenshot("5-beekeeping-year")
     A.keyevent("KEYCODE_BACK")
 
 
-def capture_settings():
+def capture_moves_map():
+    back_to_apiaries()
+    A.wait_for(S("screen_apiaries"), timeout=20)
+    A.tap_node(A.get_ui_dump(), content_desc=S("moves_overview_title"))
+    leave_the_apiary_list()
+    # The map tiles come from the network and draw after the screen does.
+    time.sleep(5)
+    screenshot("6-moves-map")
+    A.keyevent("KEYCODE_BACK")
+
+
+def capture_treatments():
+    back_to_apiaries()
+    A.wait_for(S("screen_apiaries"), timeout=20)
+    A.tap_first_apiary()
+    leave_the_apiary_list()
+    time.sleep(1)
+    # A content description: it is an icon in the apiary's toolbar.
+    A.tap_node(A.get_ui_dump(), content_desc=S("treatments_title"))
+    time.sleep(2.5)
+    screenshot("7-treatments")
+    A.keyevent("KEYCODE_BACK")
+    time.sleep(1)
+    A.keyevent("KEYCODE_BACK")
+
+
+def capture_health_map():
     back_to_apiaries()
     A.wait_for(S("screen_apiaries"), timeout=20)
     # The bottom bar item carries a text label, not a content description.
-    A.tap_node(A.get_ui_dump(), text=S("tab_settings"))
-    # Not the screen title: the same word labels the bottom bar and is on screen everywhere,
-    # so waiting for it would photograph whatever happened to be showing. Wait for a field
-    # only the settings screen has above the fold.
-    A.wait_for(S("field_display_name"), timeout=20)
-    time.sleep(1)
-    screenshot("7-settings")
-    # Reminders are the reason a beekeeper comes back, and they are further down.
-    A.swipe(540, 1700, 540, 600)
-    time.sleep(1.5)
-    screenshot("8-reminders")
+    A.tap_node(A.get_ui_dump(), text=S("tab_members"))
+    A.wait_for(S("heatmap_section_title"), timeout=30)
+    # The map sits under the community figures: bring it up, then a little further so that the
+    # whole map and not only its heading is in the picture.
+    for _ in range(5):
+        if S("heatmap_section_title") in A.get_ui_dump():
+            break
+        A.swipe(540, 1700, 540, 900)
+        time.sleep(0.8)
+    A.swipe(540, 1500, 540, 1000)
+    # Tiles, and the soft patches drawn over them.
+    time.sleep(6)
+    screenshot("8-health-map")
 
 
 def back_to_apiaries():
@@ -397,16 +419,17 @@ def main():
     login()
     confirm_the_app_speaks(LANG)
 
-    # Eight, in the order the listing tells the story: what you keep, one hive, the season,
-    # recording a visit, the tap grid at the hive, the printed codes, the app's settings and
-    # the reminders that bring you back.
+    # Eight, in the order the listing tells the story: what you keep and what is due, one hive,
+    # recording a visit, the tap grid at the hive, the season ahead, where the hives went, what
+    # is planned for them, and how the region is doing.
     steps = [
         capture_apiary_list,
         capture_hive_detail,
-        capture_hive_stats,
         capture_inspection_form,
-        capture_qr_batches,
-        capture_settings,
+        capture_beekeeping_year,
+        capture_moves_map,
+        capture_treatments,
+        capture_health_map,
     ]
     for step in steps:
         print(f"→ {step.__name__}", flush=True)

@@ -8,7 +8,7 @@ import { join } from 'node:path';
  * because the next attempt needs a higher one.
  */
 const DIR = join(process.cwd(), 'distribution', 'whatsnew');
-const LOCALES = ['de-DE', 'en-US', 'fr-FR', 'es-ES'] as const;
+const LOCALES = ['de-DE', 'en-US', 'fr-FR', 'es-ES', 'pl-PL'] as const;
 
 describe('Play release notes', () => {
   it('exist for every language the store lists', () => {
@@ -27,7 +27,7 @@ describe('Play release notes', () => {
     }
   });
 
-  it('are actually translated, not four copies of one language', () => {
+  it('are actually translated, not five copies of one language', () => {
     const texts = LOCALES.map(l => readFileSync(join(DIR, `whatsnew-${l}`), 'utf8'));
     expect(new Set(texts).size).toBe(LOCALES.length);
   });

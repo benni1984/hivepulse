@@ -24,7 +24,7 @@ def listing():
 
 
 def test_every_store_language_has_every_text(listing):
-    assert set(listing) == {"en-US", "de-DE", "fr-FR", "es-ES"}
+    assert set(listing) == {"en-US", "de-DE", "fr-FR", "es-ES", "pl"}
     wanted = {"name", "subtitle", "description", "keywords", "promotional_text",
               "release_notes", "support_url", "marketing_url", "privacy_url"}
     for folder, values in listing.items():

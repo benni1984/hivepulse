@@ -8,7 +8,7 @@ because a console rejects an over-long text only after the upload has started.
     python scripts/build_appstore_metadata.py --out build/appstore --release-notes
 
 Writes `<out>/metadata/<locale>/{name,subtitle,description,keywords,promotional_text,
-support_url,marketing_url,privacy_url}.txt` for the four store languages, plus the two
+support_url,marketing_url,privacy_url}.txt` for the five store languages, plus the two
 category files at the metadata root. `release_notes.txt` is only written with
 --release-notes: Apple does not accept "What's New" on the very first version of an app.
 
@@ -27,7 +27,7 @@ if hasattr(sys.stdout, "reconfigure"):
 LISTING = Path(__file__).resolve().parent.parent / "docs" / "store-listing.md"
 
 # The listing's short language codes, and the folder names deliver expects.
-LOCALES = {"en": "en-US", "de": "de-DE", "fr": "fr-FR", "es": "es-ES"}
+LOCALES = {"en": "en-US", "de": "de-DE", "fr": "fr-FR", "es": "es-ES", "pl": "pl"}
 
 # App Store Connect's limits, in characters.
 LIMITS = {
@@ -71,13 +71,13 @@ def _find(sections: dict[tuple[str, str], str], top: str, title_start: str) -> s
 
 def _blocks(body: str) -> dict[str, str]:
     """`**xx**` followed by a fenced block, per language."""
-    pattern = re.compile(r"\*\*(en|de|fr|es)\*\*\s*\n```[^\n]*\n(.*?)\n```", re.DOTALL)
+    pattern = re.compile(r"\*\*(en|de|fr|es|pl)\*\*\s*\n```[^\n]*\n(.*?)\n```", re.DOTALL)
     return {code: text.strip() for code, text in pattern.findall(body)}
 
 
 def _table(body: str) -> dict[str, str]:
     """Rows like  | en | `text` | 26 |  per language."""
-    pattern = re.compile(r"^\|\s*(en|de|fr|es)\s*\|\s*`(.+?)`\s*\|", re.MULTILINE)
+    pattern = re.compile(r"^\|\s*(en|de|fr|es|pl)\s*\|\s*`(.+?)`\s*\|", re.MULTILINE)
     return {code: text.strip() for code, text in pattern.findall(body)}
 
 

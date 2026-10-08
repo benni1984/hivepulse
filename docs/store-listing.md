@@ -11,7 +11,7 @@ upload the screenshots from an "iOS Store Screenshots" run. Edit the text here, 
 console, or the next upload overwrites it. `scripts/build_appstore_metadata.py` is the parser:
 it relies on the `**en**` blocks and the tables keeping their current shape.
 
-Both stores list a language separately. Fill the four below and leave the rest to Play's
+Both stores list a language separately. Fill the five below and leave the rest to Play's
 automatic translation — or rather, do not: an automatically translated listing reads like
 one, and beekeepers notice.
 
@@ -31,6 +31,7 @@ isn't.
 | de | `HivePulse — Imker-Journal` | 25 |
 | fr | `HivePulse — Journal rucher` | 26 |
 | es | `HivePulse — Diario apícola` | 26 |
+| pl | `HivePulse — Dziennik pasieki` | 28 |
 
 ### Short description — max 80
 
@@ -57,6 +58,12 @@ Scannez le QR de la ruche et notez la visite. Fonctionne sans réseau.
 Escanea el QR de la colmena y anota la visita. Funciona sin cobertura.
 ```
 (70)
+
+**pl**
+```
+Zeskanuj kod QR na ulu i zapisz przegląd. Działa też bez zasięgu.
+```
+(65)
 
 ### Full description — max 4000
 
@@ -172,6 +179,34 @@ Las abejas no leen notas de versión. La aplicación intenta no estorbar mientra
 ```
 (1996)
 
+**pl**
+```
+HivePulse zamienia przegląd w pół minuty stukania.
+
+Naklej kod QR na każdy ul. Zeskanuj go, a aplikacja od razu otworzy właśnie ten ul — bez przewijania listy zmarzniętymi rękami. Zapisz obserwacje: ramki z czerwiem i miodem, widziana matka, łagodność, liczba warrozy, zabiegi, dokarmianie, własne notatki. Liczby od 0 do 10 to duże przyciski zamiast małych strzałek, więc formularz działa także w rękawicach.
+
+DZIAŁA BEZ ZASIĘGU
+Pasieki rzadko stoją tam, gdzie jest zasięg. Przeglądy zapisane offline czekają w telefonie i wysyłają się, gdy tylko wróci połączenie. Nic nie ginie, a ponowna próba nie utworzy duplikatu.
+
+WŁASNE POLA
+Każdy pszczelarz liczy coś, czego nikt inny nie liczy. Dodaj własne pola — dla wszystkich rodzin albo tylko dla jednej pasieki — a pojawią się w formularzu jak te wbudowane.
+
+ZOBACZ SEZON
+Dla każdej rodziny i każdej pasieki: jak rozwijała się rodzina pszczela, kiedy wzrosła liczba warrozy, które rodziny od dawna czekają na przegląd. Rzeczy oczywiste z perspektywy czasu, a niewidoczne w papierowym zeszycie.
+
+SZERSZEŃ AZJATYCKI
+Tracker Vespa velutina: zgłoś odłów, gniazdo lub obserwację ze zdjęciem, zobacz, co zgłosili inni w pobliżu, i prowadź własne, nazwane pułapki z dziennym licznikiem odłowów. Zgłoszenia ze zdjęciami sprawdza społeczność, bo szerszenia łatwo pomylić.
+
+DOMYŚLNIE PRYWATNIE
+Twoje pasieki są prywatne. Jeśli umieścisz jedną na publicznej mapie, pojawi się na poziomie miejscowości, nigdy w dokładnych współrzędnych — chodzi o pokazanie pszczelarstwa, a nie lokalizacji uli. W każdej chwili możesz to wyłączyć.
+
+BEZ REKLAM, BEZ SPRZEDAŻY DANYCH
+Żadnych reklam, żadnego śledzenia reklamowego i nic o Tobie nie jest sprzedawane ani przekazywane. Projekt jest open source. Kto chce go wesprzeć, może to zrobić, a żadna funkcja aplikacji od tego nie zależy.
+
+Pszczoły nie czytają informacji o wersji. Aplikacja stara się nie przeszkadzać w pracy.
+```
+(1899)
+
 ---
 
 ## App Store
@@ -187,6 +222,7 @@ Play gives to the short description, and keywords are a separate field nobody se
 | de | `Durchsichten, auch offline` | 26 |
 | fr | `Visites de ruches, hors ligne` | 29 |
 | es | `Revisiones, también sin red` | 27 |
+| pl | `Przeglądy uli, także offline` | 28 |
 
 ### Keywords — max 100, comma separated, no spaces after commas
 
@@ -214,6 +250,12 @@ apicultura,colmena,colmenar,revision,varroa,reina,avispa,velutina,miel,enjambre,
 ```
 (88)
 
+**pl**
+```
+pszczelarstwo,ul,pasieka,przeglad,warroza,matka,szerszen,velutina,miod,roj,dziennik,qr,rodzina
+```
+(94)
+
 ### Promotional text — max 170, changeable without a review
 
 **en**
@@ -239,6 +281,12 @@ Les visites fonctionnent désormais hors ligne : saisissez à la ruche, l'applic
 Las revisiones ya funcionan sin cobertura: anota en la colmena y la app lo envía cuando vuelvas a tener señal.
 ```
 (110)
+
+**pl**
+```
+Przeglądy działają teraz bez zasięgu: zapisz je przy ulu, a aplikacja wyśle je, gdy tylko znów będziesz w zasięgu.
+```
+(114)
 
 ### Description
 
@@ -292,6 +340,17 @@ El español está completo y varios textos en alemán y francés que seguían en
 Los fallos ahora se informan, para poder corregir un problema sin esperar un mensaje. El informe no contiene notas de revisión, ni contraseñas, ni direcciones.
 ```
 
+**pl**
+```
+Przeglądy działają teraz bez zasięgu. Zapisz przegląd przy ulu; aplikacja go zachowa i wyśle, gdy tylko pojawi się połączenie. Ponowna próba nie utworzy duplikatu.
+
+Ramki z czerwiem i miodem wpisujesz, dotykając liczby — od 0 do 10 w dużych przyciskach zamiast małych strzałek, więc działa to także w rękawicach.
+
+Polski jest kompletny, a kilka niemieckich i francuskich tekstów, które zostały po angielsku, zostało przetłumaczonych.
+
+Awarie są teraz zgłaszane, aby można było naprawić problem bez czekania na wiadomość. Zgłoszenie nie zawiera notatek z przeglądów, haseł ani adresów.
+```
+
 ---
 
 ## The other fields
@@ -333,7 +392,7 @@ for any language where none are uploaded, so one set works to start with.
 **Play accepts 8 phone screenshots per language, the App Store 10**, and each language is
 listed separately — a German listing showing an English interface reads as "not translated".
 
-**Actions → "iOS Store Screenshots"** captures the iPhone set in all four languages and
+**Actions → "iOS Store Screenshots"** captures the iPhone set in all five languages and
 uploads two artifacts per language: `app-store-screenshots-<lang>` holds exactly the eight
 below, numbered in upload order, and `all-screenshots-<lang>` holds all nineteen for
 reference.

@@ -41,6 +41,7 @@ struct HivePulseApp: App {
             var handlers = MockURLProtocol.apiaryWithHiveHandlers
             if args.contains("-mockHomeSummary") { handlers = MockURLProtocol.homeSummaryHandlers + handlers }
             if args.contains("-mockNewTools") { handlers = MockURLProtocol.newToolsHandlers + handlers }
+            if args.contains("-mockStoreData") { handlers = MockURLProtocol.storeDataHandlers + handlers }
             MockURLProtocol.configure(handlers)
             APIClient.shared = .forUITesting()
         } else if args.contains("-mockAuthenticatedSupporter") {

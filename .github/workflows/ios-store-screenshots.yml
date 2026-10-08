@@ -1,6 +1,6 @@
 name: iOS Store Screenshots
 
-# Captures the App Store screenshots in all four store languages, by running the existing
+# Captures the App Store screenshots in all five store languages, by running the existing
 # ScreenshotUITests once per language on the largest iPhone simulator the runner has. Nothing new is photographed — the same screens the design
 # review already captures, on a device whose pixel size App Store Connect accepts.
 #
@@ -36,7 +36,7 @@ jobs:
         # The store lists each language separately, and a German listing showing an English
         # interface reads as "not translated" — the one screenshot detail that actually
         # changes whether somebody installs.
-        language: [de, en, fr, es]
+        language: [de, en, fr, es, pl]
 
     steps:
       - uses: actions/checkout@v4
@@ -84,7 +84,7 @@ jobs:
           # Only the screenshot class: the rest of the UI suite has nothing to contribute here
           # and would triple the runtime.
           # Only TEST_RUNNER_-prefixed variables reach the test process; xcodebuild strips
-          # the prefix. Without it the test falls back to English and all four languages
+          # the prefix. Without it the test falls back to English and all five languages
           # write into the same folder.
           TEST_RUNNER_SCREENSHOT_DIR="$GITHUB_WORKSPACE/screenshots" \
           TEST_RUNNER_SCREENSHOT_LANG="${{ matrix.language }}" \
@@ -140,10 +140,11 @@ jobs:
           out="$GITHUB_WORKSPACE/store/${{ matrix.language }}"
           mkdir -p "$out"
           i=1
-          # Open a hive, record a visit, tap the frame count, work without a signal,
-          # read the season, track hornets, print the QR codes.
-          names="03-apiaries 05-hive-detail 18-inspection-form 19-inspection-frames"
-          names="$names 20-offline-pending 21-hive-stats 22-hornets 08-qr-batches"
+          # The same eight as the Play listing, in the same order: what is due, one hive, record a
+          # visit, tap the frame count, the season ahead, where the hives went, what is planned for
+          # them, and how the region is doing.
+          names="23-home-summary 05-hive-detail 18-inspection-form 19-inspection-frames"
+          names="$names 27-beekeeping-year 28-moves-map 29-treatments-planned 30-health-map"
           for name in $names
           do
             if [ -f "$src/$name.png" ]; then

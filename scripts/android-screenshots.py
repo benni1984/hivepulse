@@ -144,9 +144,9 @@ def swipe_tap(x, y, duration_ms=200):
 APIARY_CARD_TEXT = re.compile(r"^\d+ \S+$")
 
 
-def tap_first_apiary():
-    """Tap the first apiary card of the list, whatever sits above it."""
-    root = ET.fromstring(get_ui_dump())
+def _tap_apiary_card(dump):
+    """Tap the first apiary card in this dump; False when none is on screen."""
+    root = ET.fromstring(dump)
     for node in root.iter("node"):
         if node.get("clickable") != "true":
             continue
@@ -156,8 +156,28 @@ def tap_first_apiary():
         b = _bounds(node)
         if b:
             swipe_tap(b[0] + (b[2] - b[0]) // 3, (b[1] + b[3]) // 2)
+            return True
+    return False
+
+
+def tap_first_apiary(scrolls=4):
+    """Tap the first apiary card of the list, whatever sits above it.
+
+    The home summary at the top of the list is tall, and a lazy list only composes what is on
+    screen, so on a phone the cards can start below the fold and are simply not in the dump.
+    Scroll down for them before giving up: the fallback below taps the first wide row, which is
+    one of the summary's own rows and opens a hive instead.
+    """
+    for attempt in range(scrolls + 1):
+        dump = get_ui_dump()
+        if _tap_apiary_card(dump):
             return
-    print("  no apiary card found, falling back to the first list item", flush=True)
+        if attempt < scrolls:
+            swipe(540, 1700, 540, 800)
+            time.sleep(0.8)
+    print("  no apiary card found after scrolling, the screen shows:", flush=True)
+    print(summarize_ui_dump(get_ui_dump()), flush=True)
+    print("  falling back to the first list item", flush=True)
     tap_first_content_item()
 
 

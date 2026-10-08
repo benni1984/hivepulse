@@ -42,7 +42,7 @@ def test_the_store_script_looks_the_link_up_in_every_language():
 
     # Looked up by key, so the German listing is photographed with the German link.
     assert 'label_in(dump, "action_sign_in_with_email")' in script
-    for folder in ("values", "values-de", "values-fr", "values-es"):
+    for folder in ("values", "values-de", "values-fr", "values-es", "values-pl"):
         text = (ROOT / "android/app/src/main/res" / folder / "strings.xml").read_text(encoding="utf-8")
         assert 'name="action_sign_in_with_email"' in text, f"{folder} has no translation"
 
@@ -60,7 +60,7 @@ def test_the_help_script_taps_an_apiary_card_not_just_the_first_wide_row():
 
     # The card reads "<count> <label_hives>" in every language of the store listing.
     pattern = re.search(r'APIARY_CARD_TEXT\s*=\s*re\.compile\(r"([^"]+)"', script).group(1)
-    for folder in ("values", "values-de", "values-fr", "values-es"):
+    for folder in ("values", "values-de", "values-fr", "values-es", "values-pl"):
         tree = ET.parse(ROOT / "android/app/src/main/res" / folder / "strings.xml")
         label = next("".join(n.itertext()) for n in tree.getroot().findall("string") if n.get("name") == "label_hives")
         assert re.match(pattern, f"3 {label}"), f"{folder}: the apiary card text '3 {label}' is not recognised"
@@ -87,3 +87,72 @@ def test_every_extra_screen_is_best_effort():
                  "capture_settings_screens", "capture_hornets_and_members"):
         assert name in main[main.index("best_effort"):] or name in main.split("for extra in (")[1]
     assert "best_effort(extra)" in main
+
+
+def test_the_apiary_card_is_looked_for_below_the_fold_before_anything_else_is_tapped():
+    """The home summary is tall and a lazy list composes only what is on screen, so the cards can
+    start below the fold. The old walk then tapped the summary's first row, which opens a hive,
+    and every later screenshot of the run failed (all five languages, 2026-10-08)."""
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("android_screenshots", ROOT / "scripts/android-screenshots.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    def dump(with_card: bool) -> str:
+        card = (
+            '<node clickable="true" bounds="[40,900][1040,1100]">'
+            '<node text="Orchard" bounds="[0,0][1,1]"/><node text="3 hives" bounds="[0,0][1,1]"/></node>'
+            if with_card else ""
+        )
+        summary = '<node clickable="true" bounds="[40,300][1040,500]"><node text="Next inspection" bounds="[0,0][1,1]"/></node>'
+        return f"<hierarchy>{summary}{card}</hierarchy>"
+
+    dumps = iter([dump(False), dump(False), dump(True)])
+    swipes, taps = [], []
+    module.get_ui_dump = lambda *a, **k: next(dumps)
+    module.swipe = lambda *a, **k: swipes.append(a)
+    module.swipe_tap = lambda x, y, *r: taps.append((x, y))
+    module.time.sleep = lambda *a: None
+
+    module.tap_first_apiary()
+
+    assert len(swipes) == 2, "it should scroll until the card appears"
+    assert taps == [(40 + 1000 // 3, 1000)], "it should tap the card, not the summary row above it"
+
+
+# ── The eight store screenshots ────────────────────────────────────────────────
+
+STORE_LANGUAGES = ("values", "values-de", "values-fr", "values-es", "values-pl")
+STORE_SCREEN_KEYS = ("calendar_title", "moves_overview_title", "treatments_title", "tab_members",
+                     "heatmap_section_title", "action_new_inspection", "section_inspections")
+
+
+def test_the_store_script_names_the_eight_screens_the_listing_tells_its_story_with():
+    script = (ROOT / "scripts/android-store-screenshots.py").read_text(encoding="utf-8")
+
+    names = re.findall(r'screenshot\("(\d-[a-z-]+)"\)', script)
+    assert sorted(names) == [
+        "1-apiaries", "2-hive-detail", "3-inspection-form", "4-inspection-frames",
+        "5-beekeeping-year", "6-moves-map", "7-treatments", "8-health-map",
+    ], "the listing has room for eight, and the new tools belong in it"
+
+
+def test_every_label_the_new_store_screens_look_up_exists_in_every_store_language():
+    """A missing key falls back to English silently; a German listing would show an English word."""
+    for folder in STORE_LANGUAGES:
+        tree = ET.parse(ROOT / "android/app/src/main/res" / folder / "strings.xml")
+        defined = {n.get("name") for n in tree.getroot().findall("string")}
+        for key in STORE_SCREEN_KEYS:
+            assert key in defined, f"{folder} has no {key}"
+
+
+def test_the_store_script_does_not_wait_for_words_the_toolbar_icon_already_carries():
+    """The icon that opens a screen has the same words as its title in its content description, so
+    waiting for them passes before the screen has opened. The script waits for the list to go."""
+    script = (ROOT / "scripts/android-store-screenshots.py").read_text(encoding="utf-8")
+
+    for function in ("capture_beekeeping_year", "capture_moves_map", "capture_treatments"):
+        body = script[script.index(f"def {function}"):]
+        body = body[:body.index("\n\n\n")]
+        assert "leave_the_apiary_list()" in body, f"{function} does not wait for the list to go"
