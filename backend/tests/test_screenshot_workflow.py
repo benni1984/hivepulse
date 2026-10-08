@@ -79,7 +79,7 @@ def test_the_iphone_help_images_come_from_the_english_store_set():
 
     # One artifact per language, named after it; the English one is what the help images are cut from.
     assert "name: all-screenshots-${{ matrix.language }}" in _text("ios-store-screenshots")
-    assert "language: [de, en, fr, es]" in _text("ios-store-screenshots")
+    assert "language: [de, en, fr, es, pl]" in _text("ios-store-screenshots")
     assert "name: all-screenshots-en" in commit
     assert "pick_ios_help_screenshots.py" in commit
 
@@ -99,3 +99,19 @@ def test_the_commit_job_does_not_wait_for_a_platform_that_was_not_due():
 
     assert "always()" in commit["if"]
     assert set(commit["needs"]) >= {"plan", "web", "android", "store-ios"}
+
+
+def test_both_stores_are_photographed_in_the_same_languages_and_the_same_eight_screens():
+    """The two apps look and behave alike, and so do their listings. Polish was missing from the
+    iPhone set while the Android one had it, and the eight screens were chosen for one platform."""
+    android = _workflow("android-store-screenshots")["jobs"]["capture"]["strategy"]["matrix"]["language"]
+    iphone = _workflow("ios-store-screenshots")["jobs"]["capture"]["strategy"]["matrix"]["language"]
+
+    assert android == iphone
+    assert "pl" in iphone
+
+    pick = _text("ios-store-screenshots")
+    for name in ("23-home-summary", "05-hive-detail", "18-inspection-form", "19-inspection-frames",
+                 "27-beekeeping-year", "28-moves-map", "29-treatments-planned", "30-health-map"):
+        assert name in pick, f"{name} is not in the iPhone listing set"
+        assert f'snap("{name}"' in (ROOT / "ios/HivePulseUITests/ScreenshotUITests.swift").read_text(encoding="utf-8")

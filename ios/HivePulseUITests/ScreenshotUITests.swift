@@ -238,6 +238,51 @@ final class ScreenshotUITests: XCTestCase {
         snap("27-beekeeping-year", app)
     }
 
+    // MARK: - The listing's own pictures
+    //
+    // The store listing shows the tools that came with the home summary, with something in them: the
+    // other captures above use the empty pages the help texts describe. These ride on -mockStoreData.
+
+    /// Where the hives went: the map of moves with three journeys.
+    func test_capture_store_moves_map() {
+        let app = launch(["-resetKeychain", "-mockApiaryWithHive", "-mockNewTools", "-mockStoreData"])
+        let button = app.buttons["movesOverviewButton"]
+        XCTAssertTrue(button.waitForExistence(timeout: 10))
+        button.tap()
+        // The map tiles come from Apple's servers and draw after the screen does.
+        Thread.sleep(forTimeInterval: 5.0)
+        snap("28-moves-map", app)
+    }
+
+    /// What is planned for the hives: two treatments to do and one done.
+    func test_capture_store_treatments() {
+        let app = launch(["-resetKeychain", "-mockApiaryWithHive", "-mockNewTools", "-mockStoreData"])
+        XCTAssertTrue(app.staticTexts["Meadow"].waitForExistence(timeout: 10))
+        app.staticTexts["Meadow"].tap()
+        XCTAssertTrue(app.staticTexts["Hive Alpha"].waitForExistence(timeout: 10))
+        app.staticTexts["Hive Alpha"].tap()
+
+        let treatments = app.buttons["hiveTreatmentsLink"]
+        XCTAssertTrue(treatments.waitForExistence(timeout: 10))
+        treatments.tap()
+        Thread.sleep(forTimeInterval: 2.0)
+        snap("29-treatments-planned", app)
+    }
+
+    /// How the region is doing: the health map with its soft patches, brought into view.
+    func test_capture_store_health_map() {
+        let app = launch(["-resetKeychain", "-mockAuthenticatedSupporter"])
+        XCTAssertTrue(app.tabBars.buttons[label("tab.members")].waitForExistence(timeout: 10))
+        app.tabBars.buttons[label("tab.members")].tap()
+        let map = app.descendants(matching: .any)["communityHeatmapMap"]
+        XCTAssertTrue(map.waitForExistence(timeout: 10))
+        // The map sits under the community figures.
+        for _ in 0..<5 where !map.isHittable { app.swipeUp() }
+        // Tiles, and the patches drawn over them.
+        Thread.sleep(forTimeInterval: 4.0)
+        snap("30-health-map", app)
+    }
+
     // MARK: - Helpers
 
     /// The language this run captures, from SCREENSHOT_LANG; English when unset.
@@ -245,8 +290,8 @@ final class ScreenshotUITests: XCTestCase {
         // The workflow passes TEST_RUNNER_SCREENSHOT_LANG; xcodebuild strips that prefix
         // before handing it to this process, and anything without it never arrives at all.
         let value = ProcessInfo.processInfo.environment["SCREENSHOT_LANG"] ?? "en"
-        guard ["en", "de", "fr", "es"].contains(value) else {
-            XCTFail("SCREENSHOT_LANG=\(value) is not one of the four store languages")
+        guard ["en", "de", "fr", "es", "pl"].contains(value) else {
+            XCTFail("SCREENSHOT_LANG=\(value) is not one of the five store languages")
             return "en"
         }
         return value

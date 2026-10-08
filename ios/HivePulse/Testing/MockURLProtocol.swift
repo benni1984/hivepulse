@@ -129,6 +129,37 @@ extension MockURLProtocol {
         ("shares",               200, "[]"),
     ]
 
+    // Filled pages for the store listing (-mockStoreData, on top of -mockNewTools): three journeys on the
+    // map of moves and three planned treatments, two to do and one done. Dates sit around the calendar's "today".
+    static let storeDataHandlers: [(String, Int, String)] = [
+        ("hives/moves/overview", 200, storeMovesJSON),
+        ("treatments",           200, storeTreatmentsJSON),
+    ]
+
+    private static let storeMovesJSON = """
+    [{"id":"m-1","hive_id":"h-1","hive_name":"Hive Alpha","moved_on":"2026-09-14","forage":"rapeseed","note":null,
+      "from":{"apiary_id":"a-2","name":"Orchard","latitude":47.3769,"longitude":8.5417},
+      "to":{"apiary_id":"a-1","name":"Meadow","latitude":48.1351,"longitude":11.5820},
+      "created_by_name":"Tester","created_at":"2026-09-14T08:00:00.123456"},
+     {"id":"m-2","hive_id":"h-2","hive_name":"Hive Beta","moved_on":"2026-08-20","forage":"acacia","note":null,
+      "from":{"apiary_id":"a-1","name":"Meadow","latitude":48.1351,"longitude":11.5820},
+      "to":{"apiary_id":"a-3","name":"Forest edge","latitude":47.8095,"longitude":13.0550},
+      "created_by_name":"Tester","created_at":"2026-08-20T08:00:00.123456"},
+     {"id":"m-3","hive_id":"h-3","hive_name":"Hive Gamma","moved_on":"2026-09-28","forage":"rapeseed","note":null,
+      "from":{"apiary_id":"a-4","name":"Heath","latitude":50.9333,"longitude":6.95},
+      "to":{"apiary_id":"a-1","name":"Meadow","latitude":48.1351,"longitude":11.5820},
+      "created_by_name":"Tester","created_at":"2026-09-28T08:00:00.123456"}]
+    """
+
+    private static let storeTreatmentsJSON = """
+    [{"id":"t-1","target":{"type":"apiary","id":"a-1","name":"Meadow"},"apiary_name":"Meadow","product":"Oxalic acid trickling",
+      "due_on":"2026-10-13","note":null,"done_on":null,"overdue":false,"created_by_name":"Tester","created_at":"2026-10-01T08:00:00.123456"},
+     {"id":"t-2","target":{"type":"hive","id":"h-1","name":"Hive Alpha"},"apiary_name":"Meadow","product":"Formic acid",
+      "due_on":"2026-10-25","note":null,"done_on":null,"overdue":false,"created_by_name":"Tester","created_at":"2026-10-01T08:00:00.123456"},
+     {"id":"t-3","target":{"type":"apiary","id":"a-2","name":"Orchard"},"apiary_name":"Orchard","product":"Oxalic acid trickling",
+      "due_on":"2026-08-30","note":null,"done_on":"2026-09-01","overdue":false,"created_by_name":"Tester","created_at":"2026-08-20T08:00:00.123456"}]
+    """
+
     private static let regionJSON = """
     {"country":null,"postal_code":null,"latitude":null,"longitude":null,"adjust_days":0,"shift_days":0,
      "source":"default","located":true}
