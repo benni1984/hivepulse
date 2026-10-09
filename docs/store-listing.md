@@ -8,7 +8,11 @@ within them.
 Metadata" reads them from this file and sends them to App Store Connect through the API. It
 starts as a dry run, checks Apple's length limits first, never submits for review, and can
 upload the screenshots from an "iOS Store Screenshots" run. Edit the text here, not in the
-console, or the next upload overwrites it. `scripts/build_appstore_metadata.py` is the parser:
+console, or the next upload overwrites it. **Once, before the first upload:** fill in
+"App Review Information" (name, phone, email) on the version page in App Store Connect. Deliver
+reads that record at the very end of the text upload and stops with `No data` while it does not
+exist (first run, 37992872482); the texts of all languages are sent before that point, the
+screenshots after it. The workflow activates missing languages itself. `scripts/build_appstore_metadata.py` is the parser:
 it relies on the `**en**` blocks and the tables keeping their current shape.
 
 Both stores list a language separately. Fill the five below and leave the rest to Play's

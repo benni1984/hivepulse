@@ -114,3 +114,8 @@ def test_the_workflow_fetches_the_screenshots_of_every_language():
 def test_the_workflow_creates_build_before_tee_writes_into_it():
     text = WORKFLOW.read_text(encoding="utf-8")
     assert text.index("mkdir -p build\n") < text.index("tee build/summary.txt")
+
+
+def test_the_workflow_gives_deliver_a_deliverfile_so_it_does_not_ask_to_set_up():
+    text = WORKFLOW.read_text(encoding="utf-8")
+    assert text.index("touch Deliverfile") < text.index("fastlane deliver \\")

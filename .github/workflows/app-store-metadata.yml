@@ -131,6 +131,11 @@ jobs:
           if [ -n "$SHOTS_RUN" ]; then SKIP_SHOTS=false; else SKIP_SHOTS=true; fi
           mkdir -p build/appstore/screenshots
 
+          # Without a Deliverfile deliver stops to ask "Do you want to setup deliver?", which cannot be
+          # answered on a runner (first real run, 37992068592). An empty one counts as the configuration;
+          # everything is passed as options below.
+          touch Deliverfile
+
           fastlane deliver \
             --api_key_path "$KEY_JSON" \
             --app_identifier com.hivepulse.app \
