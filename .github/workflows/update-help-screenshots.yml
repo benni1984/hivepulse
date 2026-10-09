@@ -12,7 +12,7 @@ name: Update help page screenshots
 #                     were taken from — so the "stale" notice goes away when it is merged.
 #
 # Runs after every green CI on main (it costs nothing when nothing changed) and on demand. The store sets
-# (four languages each) stay workflow artifacts: the store listings are uploaded by hand.
+# (five languages each) stay workflow artifacts: the store listings are uploaded by hand.
 
 on:
   workflow_dispatch:
@@ -203,7 +203,7 @@ jobs:
           if-no-files-found: ignore
 
   # --------------------------------------------------------------------------
-  # 2c. The store sets, four languages each (artifacts for the listings). The iPhone help images
+  # 2c. The store sets, five languages each (artifacts for the listings). The iPhone help images
   #     are cut from the English App Store set, so there is one simulator run, not two.
   # --------------------------------------------------------------------------
   store-android:
@@ -268,11 +268,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: all-screenshots-en
-          path: ios-screenshots
+          path: ${{ runner.temp }}/ios-screenshots
 
       - name: Cut the iPhone help images from it
         if: needs.store-ios.result == 'success'
-        run: python3 scripts/pick_ios_help_screenshots.py ios-screenshots public/docs/screenshots
+        run: python3 scripts/pick_ios_help_screenshots.py "${{ runner.temp }}/ios-screenshots" public/docs/screenshots
 
       # The status-bar clock and counters like "Days since last inspection" change every run,
       # so without this the workflow would open a pull request (and deploy) every day.
@@ -295,18 +295,20 @@ jobs:
           python3 scripts/check_screenshot_freshness.py --update $args
 
       - name: Commit and open PR for updated screenshots
+        # No "[skip ci]" in the commit message: the branch protection waits for the CI checks, and a
+        # skipped run leaves them pending forever (PR #402). The PAT makes the push start them.
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.SCREENSHOT_PAT }}
           base: main
-          commit-message: 'chore(screenshots): auto-update help page screenshots [skip ci]'
+          commit-message: 'chore(screenshots): auto-update help page screenshots'
           branch: chore/auto-screenshots
           delete-branch: true
           title: 'chore(screenshots): auto-update help page screenshots'
           body: |
             Retaken automatically because the interface changed: web ${{ needs.web.result }}, Android ${{ needs.android.result }}, iPhone ${{ needs.store-ios.result }}.
 
-            The store sets (Play and App Store, four languages each) are artifacts of the run:
+            The store sets (Play and App Store, five languages each) are artifacts of the run:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           committer: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
           author: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
