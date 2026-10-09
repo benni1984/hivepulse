@@ -98,3 +98,24 @@ def test_spaces_after_keyword_commas_are_caught():
         builder.read_listing(spaced)
 
     assert "space after a comma" in str(failure.value)
+
+
+WORKFLOW = ROOT / ".github" / "workflows" / "app-store-metadata.yml"
+
+
+def test_the_workflow_fetches_the_screenshots_of_every_language():
+    # The loop and the folder map once stopped at four languages, so Polish got its texts and no pictures.
+    text = WORKFLOW.read_text(encoding="utf-8")
+    for lang, folder in {"en": "en-US", "de": "de-DE", "fr": "fr-FR", "es": "es-ES", "pl": "pl"}.items():
+        assert f"[{lang}]={folder}" in text, lang
+    assert "for lang in en de fr es pl; do" in text
+
+
+def test_the_workflow_creates_build_before_tee_writes_into_it():
+    text = WORKFLOW.read_text(encoding="utf-8")
+    assert text.index("mkdir -p build\n") < text.index("tee build/summary.txt")
+
+
+def test_the_workflow_gives_deliver_a_deliverfile_so_it_does_not_ask_to_set_up():
+    text = WORKFLOW.read_text(encoding="utf-8")
+    assert text.index("touch Deliverfile") < text.index("fastlane deliver \\")

@@ -66,6 +66,7 @@ jobs:
 
       - name: Build and check the texts
         run: |
+          mkdir -p build
           python3 scripts/build_appstore_metadata.py --out build/appstore \
             ${{ inputs.include_release_notes && '--release-notes' || '' }} | tee build/summary.txt || exit 1
           {
@@ -79,8 +80,8 @@ jobs:
       - name: Fetch the screenshots
         if: env.SHOTS_RUN != ''
         run: |
-          declare -A FOLDER=([en]=en-US [de]=de-DE [fr]=fr-FR [es]=es-ES)
-          for lang in en de fr es; do
+          declare -A FOLDER=([en]=en-US [de]=de-DE [fr]=fr-FR [es]=es-ES [pl]=pl)
+          for lang in en de fr es pl; do
             dir="build/appstore/screenshots/${FOLDER[$lang]}"
             mkdir -p "$dir"
             gh run download "$SHOTS_RUN" --repo "$GITHUB_REPOSITORY" \
@@ -129,6 +130,11 @@ jobs:
 
           if [ -n "$SHOTS_RUN" ]; then SKIP_SHOTS=false; else SKIP_SHOTS=true; fi
           mkdir -p build/appstore/screenshots
+
+          # Without a Deliverfile deliver stops to ask "Do you want to setup deliver?", which cannot be
+          # answered on a runner (first real run, 37992068592). An empty one counts as the configuration;
+          # everything is passed as options below.
+          touch Deliverfile
 
           fastlane deliver \
             --api_key_path "$KEY_JSON" \
