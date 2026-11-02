@@ -28,6 +28,17 @@
     <fields>;
 }
 
+# A generic response class needs the class itself kept, not just its members. Gson works out what
+# `items: List<T>` holds from the Signature attribute of the class, and R8 drops that attribute
+# on a class that is only partly kept. The first smoke-test run showed it: login worked, but every
+# list the app shows (apiaries, hives, inspections, QR batches, sightings, admin) arrived as raw
+# maps and the screen said "No apiaries yet". Every generic class in data/api needs a line like
+# this one; ProguardRulesTest fails when one is missing.
+-keep class com.hivepulse.app.data.api.PaginatedResponse {
+    <init>(...);
+    <fields>;
+}
+
 # ── Encrypted token storage ────────────────────────────────────────────────────
 # androidx.security-crypto uses Tink, whose key classes are protobuf messages that are
 # read by field name. Without this the stored login token cannot be opened again.

@@ -25,6 +25,25 @@ class ProguardRulesTest {
     }
 
     @Test
+    fun `every generic api class is kept as a class, not only its members`() {
+        // Gson resolves `items: List<T>` from the Signature attribute of the class itself; R8
+        // drops it on a class that is only partly kept, and every list then arrives as raw maps.
+        val generic = Regex("""class\s+(\w+)\s*<""")
+        val names = apiPackage.walk().filter { it.extension == "kt" }
+            .flatMap { generic.findAll(it.readText()).map { m -> m.groupValues[1] } }
+            .toList()
+
+        assertTrue("expected at least PaginatedResponse, found $names", "PaginatedResponse" in names)
+        val missing = names.filterNot {
+            Regex("""-keep\s+class\s+com\.hivepulse\.app\.data\.api\.$it\s*\{""").containsMatchIn(rules)
+        }
+        assertTrue(
+            "generic classes in data/api without a '-keep class' rule: $missing (see proguard-rules.pro)",
+            missing.isEmpty(),
+        )
+    }
+
+    @Test
     fun `the encrypted token storage keeps what Tink reads by field name`() {
         assertTrue(rules.contains("com.google.crypto.tink.shaded.protobuf.GeneratedMessageLite"))
     }
