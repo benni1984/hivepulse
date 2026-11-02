@@ -38,7 +38,7 @@ on:
         default: false
         type: boolean
       screenshots_run_id:
-        description: 'Run ID of an "iOS Store Screenshots" run whose screenshots to upload. Empty leaves them alone.'
+        description: '"latest", or the run ID of an "iOS Store Screenshots" run. Empty leaves the screenshots alone.'
         required: false
         default: ''
         type: string
@@ -76,6 +76,19 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
         shell: bash
+
+      # "latest" saves looking the run up in the Actions tab and pasting its number, which is
+      # the last thing about this that was still done by hand.
+      - name: Find the screenshot run
+        if: env.SHOTS_RUN != ''
+        run: |
+          if [ "$SHOTS_RUN" = "latest" ]; then
+            SHOTS_RUN=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "iOS Store Screenshots" \
+              --status success --limit 1 --json databaseId --jq '.[0].databaseId')
+            test -n "$SHOTS_RUN" || { echo "::error::no successful \"iOS Store Screenshots\" run to take screenshots from"; exit 1; }
+            echo "Using run $SHOTS_RUN"
+          fi
+          echo "SHOTS_RUN=$SHOTS_RUN" >> "$GITHUB_ENV"
 
       - name: Fetch the screenshots
         if: env.SHOTS_RUN != ''

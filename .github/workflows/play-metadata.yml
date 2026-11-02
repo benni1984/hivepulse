@@ -1,0 +1,138 @@
+name: Play Metadata
+
+# Puts the Google Play store listing — texts, screenshots, icon and feature graphic — into the
+# Play Console, so none of it is typed or dragged in by hand in five languages. The counterpart
+# of "App Store Metadata" for the other store.
+#
+# The texts come from docs/store-listing.md and nowhere else. scripts/build_play_metadata.py
+# turns them into files and checks Play's length limits first, so a text that is too long fails
+# here, before anything is sent.
+#
+# It never releases anything: the bundle and the "What's new" notes go up with "Android Release
+# Bundle". This changes the listing around them, which Play reviews on its own.
+#
+# Starts as a dry run: it builds and checks the files and attaches them to the run as an
+# artifact, and sends nothing. Untick "dry_run" to upload.
+#
+# Uses the same service account as the release upload (secret PLAY_SERVICE_ACCOUNT_JSON); it
+# needs the "edit store listing" permission, which docs/android-release-setup.md step 5 grants.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Only build and check the files; send nothing to Play.'
+        required: true
+        default: true
+        type: boolean
+      screenshots_run_id:
+        description: '"latest", or the run ID of an "Android Store Screenshots" run. Empty leaves the screenshots alone.'
+        required: false
+        default: ''
+        type: string
+      changes_not_sent_for_review:
+        description: 'Tick when the console has other pending changes — otherwise Play rejects the edit.'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: play-metadata
+  cancel-in-progress: false
+
+jobs:
+  metadata:
+    name: Play metadata
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      DRY_RUN: ${{ inputs.dry_run }}
+      SHOTS_RUN: ${{ inputs.screenshots_run_id }}
+      PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build and check the texts
+        run: |
+          mkdir -p build
+          python scripts/build_play_metadata.py --out build/play | tee build/summary.txt || exit 1
+          {
+            echo '### Play listing texts'
+            echo '```'
+            cat build/summary.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+        shell: bash
+
+      # "latest" saves looking the run up in the Actions tab and pasting its number, which is
+      # the last thing about this that was still done by hand.
+      - name: Find the screenshot run
+        if: env.SHOTS_RUN != ''
+        run: |
+          if [ "$SHOTS_RUN" = "latest" ]; then
+            SHOTS_RUN=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "Android Store Screenshots" \
+              --status success --limit 1 --json databaseId --jq '.[0].databaseId')
+            test -n "$SHOTS_RUN" || { echo "::error::no successful \"Android Store Screenshots\" run to take screenshots from"; exit 1; }
+            echo "Using run $SHOTS_RUN"
+          fi
+          echo "SHOTS_RUN=$SHOTS_RUN" >> "$GITHUB_ENV"
+
+      # The screenshot workflow names its artifacts by the short language code; the Play API wants
+      # the full locale, which is also what build_play_metadata.py writes its folders as.
+      - name: Fetch the screenshots
+        if: env.SHOTS_RUN != ''
+        run: |
+          declare -A LOCALE=([en]=en-US [de]=de-DE [fr]=fr-FR [es]=es-ES [pl]=pl-PL)
+          for lang in en de fr es pl; do
+            dir="build/play-screenshots/${LOCALE[$lang]}"
+            mkdir -p "$dir"
+            gh run download "$SHOTS_RUN" --repo "$GITHUB_REPOSITORY" \
+              --name "play-screenshots-$lang" --dir "$dir"
+            count=$(find "$dir" -name '*.png' | wc -l)
+            echo "$lang: $count screenshots"
+            test "$count" -ge 1 || { echo "::error::no screenshots for $lang in run $SHOTS_RUN"; exit 1; }
+          done
+
+      - name: Check what would be sent
+        run: |
+          if [ -n "$SHOTS_RUN" ]; then SHOTS=(--screenshots build/play-screenshots); else SHOTS=(); fi
+          python scripts/upload_play_metadata.py --metadata build/play "${SHOTS[@]}" --dry-run
+        shell: bash
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: play-metadata
+          path: |
+            build/play
+            build/play-screenshots
+          retention-days: 14
+
+      - name: Dry run ends here
+        if: env.DRY_RUN == 'true'
+        run: echo "Dry run - the files are attached to this run, nothing was sent to Play."
+
+      - name: Check the service account secret is present
+        if: env.DRY_RUN != 'true'
+        run: |
+          if [ -z "$PLAY_SERVICE_ACCOUNT_JSON" ]; then
+            echo "::error::PLAY_SERVICE_ACCOUNT_JSON is not set — see docs/android-release-setup.md step 5." >&2
+            exit 1
+          fi
+
+      - name: Install the Play API client
+        if: env.DRY_RUN != 'true'
+        run: pip install --quiet google-api-python-client google-auth
+
+      - name: Send to Play
+        if: env.DRY_RUN != 'true'
+        run: |
+          if [ -n "$SHOTS_RUN" ]; then SHOTS=(--screenshots build/play-screenshots); else SHOTS=(); fi
+          python scripts/upload_play_metadata.py --metadata build/play "${SHOTS[@]}" \
+            ${{ inputs.changes_not_sent_for_review && '--changes-not-sent-for-review' || '' }}
+        shell: bash
