@@ -89,6 +89,12 @@ Release notes come from `distribution/whatsnew/whatsnew-<locale>`, one file per 
 language. The workflow refuses to upload when one is missing or over 500 characters, because
 a rejected upload burns the version code: the next attempt needs a higher one.
 
+The release is shrunk and obfuscated by R8 (Play Console flags a release without it). Before a
+build goes to a track, run **Actions → "Android release smoke test"**: it installs that same
+variant on an emulator and walks the screens against staging. The debug build the tests use
+never runs R8, so this is the only check that a keep rule is missing. The mapping file is inside
+the `.aab`; Play Console uses it to read crash reports.
+
 The signed `.aab` is attached to the run as an artifact, kept for 30 days. It is not
 published anywhere: a bundle signed with your upload key belongs in the Play Console, not
 on a download page. The public preview APK is a different workflow

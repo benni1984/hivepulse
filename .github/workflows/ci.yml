@@ -192,6 +192,13 @@ jobs:
         if: needs.changes.outputs.android == 'true'
         run: cd android && ./gradlew test --no-daemon
 
+      # The unit tests and the emulator tests build the debug variant, where R8 does not run. The
+      # release variant does run it, and a missing keep rule or a class it cannot find fails right
+      # here instead of in the release workflow. Unsigned is fine: nothing is installed.
+      - name: Build the release variant (R8 shrinks and obfuscates it)
+        if: needs.changes.outputs.android == 'true'
+        run: cd android && ./gradlew assembleRelease --no-daemon
+
       - name: Upload test results
         if: always() && needs.changes.outputs.android == 'true'
         uses: actions/upload-artifact@v4

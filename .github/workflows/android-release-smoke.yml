@@ -1,0 +1,99 @@
+name: Android release smoke test
+
+# The release build is shrunk and obfuscated by R8; the debug build, the unit tests and the
+# emulator tests are not. A keep rule that is missing shows up as an API call that parses to
+# nothing or a screen that crashes, and nobody sees it until the release is on a phone. This
+# builds the release variant, signs it with a throwaway key, installs it on an emulator and
+# walks the real screens against staging (scripts/android-screenshots.py logs in, opens the
+# apiary and its hives and visits the settings, so the Gson classes and the encrypted token
+# storage are exercised). The pictures are thrown away; what counts is that the run finishes.
+#
+# It starts by itself when a pull request touches the R8 rules, the build script or the API
+# classes, and by hand before a release goes to a track: Actions → "Android release smoke test".
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'android/app/proguard-rules.pro'
+      - 'android/app/build.gradle.kts'
+      - 'android/app/src/main/java/com/hivepulse/app/data/api/**'
+      - '.github/workflows/android-release-smoke.yml'
+      - 'scripts/android-screenshots.py'
+
+concurrency:
+  group: android-release-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: Release build on an emulator
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: temurin
+
+      - uses: gradle/actions/setup-gradle@v3
+
+      - name: Enable KVM (speeds up emulator ~10x)
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      # A key made on the spot: the real upload key stays in the release workflow's secrets, and
+      # build.gradle.kts signs the release variant with whatever these variables point at.
+      - name: Make a throwaway signing key
+        run: |
+          keytool -genkeypair -v -keystore "$RUNNER_TEMP/smoke.jks" -storetype JKS \
+            -alias smoke -keyalg RSA -keysize 2048 -validity 2 \
+            -storepass smoke-pass -keypass smoke-pass \
+            -dname "CN=HivePulse smoke test" > /dev/null
+          {
+            echo "ANDROID_KEYSTORE_FILE=$RUNNER_TEMP/smoke.jks"
+            echo "ANDROID_KEYSTORE_PASSWORD=smoke-pass"
+            echo "ANDROID_KEY_ALIAS=smoke"
+            echo "ANDROID_KEY_PASSWORD=smoke-pass"
+          } >> "$GITHUB_ENV"
+
+      - name: Build the release APK (R8 on)
+        run: |
+          chmod +x android/gradlew
+          cd android
+          ./gradlew assembleRelease --no-daemon \
+            -Dorg.gradle.jvmargs="-Xmx3g -XX:MaxMetaspaceSize=512m" \
+            -PBASE_URL="https://apiscan-staging.vercel.app/api/v1/"
+          ls -l app/build/outputs/apk/release/
+
+      - name: Walk the screens with the release APK on an emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        env:
+          APK_PATH: android/app/build/outputs/apk/release/app-release.apk
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          heap-size: 512M
+          disk-size: 4096M
+          ram-size: 2048M
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          disable-animations: true
+          script: python3 -u scripts/android-screenshots.py
+
+      - name: Upload the R8 mapping and the diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-release-smoke
+          path: |
+            android/app/build/outputs/mapping/release/
+            _screenshot-debug/
+          retention-days: 7
+          if-no-files-found: ignore
