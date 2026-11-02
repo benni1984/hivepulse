@@ -111,6 +111,14 @@ def test_the_workflow_fetches_the_screenshots_of_every_language():
     assert "for lang in en de fr es pl; do" in text
 
 
+def test_the_workflow_can_take_the_newest_screenshot_run():
+    # Pasting a run ID from the Actions tab was the last step still done by hand.
+    text = WORKFLOW.read_text(encoding="utf-8")
+    assert 'if [ "$SHOTS_RUN" = "latest" ]' in text
+    assert '--workflow "iOS Store Screenshots"' in text
+    assert text.index("Find the screenshot run") < text.index("Fetch the screenshots")
+
+
 def test_the_workflow_creates_build_before_tee_writes_into_it():
     text = WORKFLOW.read_text(encoding="utf-8")
     assert text.index("mkdir -p build\n") < text.index("tee build/summary.txt")
