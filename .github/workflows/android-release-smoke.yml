@@ -41,6 +41,20 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v3
 
+      # The walk below needs something to walk through. Without apiaries the run would stop at the
+      # first list and look like a broken release, which is what R8 problems look like too.
+      - name: Check that the demo account has apiaries on staging
+        run: |
+          B=https://apiscan-staging.vercel.app/api/v1
+          tok=$(curl -sS -f -m 60 -X POST "$B/auth/login" -H 'Content-Type: application/json' \
+            -d '{"email":"demo@apiscan.app","password":"demo1234"}' | jq -r .access_token)
+          n=$(curl -sS -f -m 60 "$B/apiaries" -H "Authorization: Bearer $tok" | jq 'length')
+          echo "Apiaries of demo@apiscan.app on staging: $n"
+          if [ "$n" -lt 1 ]; then
+            echo "::error::The demo account has no apiaries on staging, so the smoke test would find nothing to open. Run Actions → Seed Staging first."
+            exit 1
+          fi
+
       - name: Enable KVM (speeds up emulator ~10x)
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
