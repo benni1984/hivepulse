@@ -20,7 +20,8 @@ import xml.etree.ElementTree as ET
 
 PACKAGE       = "com.hivepulse.app"
 MAIN_ACTIVITY = "com.hivepulse.app/.MainActivity"
-APK_PATH      = "android/app/build/outputs/apk/debug/app-debug.apk"
+# The release smoke test (android-release-smoke.yml) points this at the minified release APK.
+APK_PATH      = os.environ.get("APK_PATH", "android/app/build/outputs/apk/debug/app-debug.apk")
 OUT_DIR       = "public/docs/screenshots"
 # Failure diagnostics must never land in the published help screenshots (a DEBUG capture of the
 # login screen — with the password field filled and an HTTP 500 banner — ended up in PR #261).

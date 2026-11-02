@@ -33,6 +33,18 @@ class ReleaseBuildConfigTest {
     }
 
     @Test
+    fun `the release build is shrunk and obfuscated by R8`() {
+        // Play Console flags a release with 0 % obfuscation ("DEX code optimization below our
+        // threshold") and warns that visibility and publishing can suffer.
+        assertTrue(buildScript.contains("isMinifyEnabled = true"))
+        assertFalse(buildScript.contains("isMinifyEnabled = false"))
+        assertTrue(
+            "the keep rules must be handed to R8",
+            buildScript.contains("\"proguard-rules.pro\""),
+        )
+    }
+
+    @Test
     fun `no keystore or password is written into the repository`() {
         // The keystore arrives as a secret at build time; a path or password in here would
         // mean it is checked in somewhere.

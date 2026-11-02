@@ -29,6 +29,28 @@ At the apiary there is usually no signal, so the field path works without one:
 - UI tests (emulator/device): `./gradlew connectedAndroidTest`
 - Single UI test class: `./gradlew connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.hivepulse.app.ui.LoginScreenTest`
 
+## R8 (shrinking and obfuscation) — IMPORTANT
+
+The release build runs R8 (`isMinifyEnabled = true`); Play Console flags a release with 0 %
+obfuscation ("DEX code optimization below our threshold") and can limit visibility and
+publishing for it. The debug build, the unit tests and the instrumented tests do **not** run R8,
+so a wrong or missing keep rule is invisible to all of them.
+
+- Rules are in `app/proguard-rules.pro`. Libraries bring their own; only ours go there.
+- **Anything serialised with Gson lives in `data/api/`** (request and response classes, and the
+  classes stored as JSON in Room). The rules keep the field names of that package, because Gson
+  matches by field name and the offline cache and queue store the same JSON. A class somewhere
+  else would have its fields renamed; `ProguardRulesTest` fails when that happens.
+- A new library that reads classes by name or by field (reflection, protobuf, `Class.forName`) needs
+  a rule or its consumer rules; check its README.
+- CI builds the release variant (`assembleRelease` in the Android job) and the **"Android release
+  smoke test"** workflow installs it on an emulator and walks the screens against staging. It
+  starts by itself for changes to the rules, the build script and `data/api`, and by hand
+  (Actions → Android release smoke test) before a release goes to a track.
+- Stack traces: the mapping file travels inside the `.aab`, so Play Console deobfuscates crashes
+  by itself. Sentry gets no mapping yet (crash reporting is off without a DSN); if it is switched
+  on for the release, add its Gradle plugin first or the traces there are unreadable.
+
 ## Design System Reference — IMPORTANT
 
 HivePulse uses a consistent visual language across web and mobile. For colour and spacing reference, open **`hivepulse-redesign/bundle.html`** in a browser before implementing any new screen or component.

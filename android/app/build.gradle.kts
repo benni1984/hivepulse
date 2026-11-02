@@ -63,13 +63,20 @@ android {
 
     buildTypes {
         release {
-            // Shrinking is deliberately off for the first store release: Hilt, Room, Gson and
-            // Sentry all need keep rules, and a rule that is wrong breaks the release build
-            // only — never the debug build the tests run against. Worth turning on once there
-            // is a device to smoke-test it on.
-            isMinifyEnabled = false
+            // R8 shrinks and obfuscates the release build. Play Console flags a release without
+            // it ("DEX code optimization below our threshold: obfuscation 0 %") and that can
+            // limit visibility and publishing. The keep rules are in proguard-rules.pro; a rule
+            // that is wrong breaks the release build only — never the debug build the tests run
+            // against — so CI builds the release (assembleRelease) and the manual "Android
+            // release smoke test" workflow runs it on an emulator before it goes anywhere.
+            // Resource shrinking stays off: it is not what Play asked for, and it would need
+            // its own look at strings that are only referenced by language.
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
             signingConfig = signingConfigs.findByName("release")
-
         }
     }
 
