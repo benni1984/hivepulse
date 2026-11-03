@@ -8,6 +8,7 @@ import importlib.util
 from pathlib import Path
 
 import pytest
+import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "scripts" / "build_appstore_metadata.py"
@@ -111,12 +112,39 @@ def test_the_workflow_fetches_the_screenshots_of_every_language():
     assert "for lang in en de fr es pl; do" in text
 
 
-def test_the_workflow_can_take_the_newest_screenshot_run():
-    # Pasting a run ID from the Actions tab was the last step still done by hand.
+def test_the_pictures_are_chosen_from_a_dropdown_not_a_magic_word():
+    """"latest" and "leave them alone" used to be a word, or nothing, typed into a free-text box:
+    the two normal choices were the two easiest to get wrong, and an empty field silently meant
+    "change the texts only" rather than "I forgot". GitHub cannot list run IDs in a choice, so the
+    ID keeps its own field."""
+    spec = yaml.safe_load(WORKFLOW.read_text(encoding="utf-8"))
+    picker = spec[True]["workflow_dispatch"]["inputs"]["screenshots"]
+
+    assert picker["type"] == "choice"
+    assert picker["options"] == ["latest", "keep", "run_id"]
+    assert picker["default"] == "latest"
+
+    names = [step.get("name") for step in list(spec["jobs"].values())[0]["steps"]]
+    assert names.index("Decide which pictures to send") < names.index("Fetch the screenshots")
+
+
+def test_every_dropdown_choice_is_handled_and_latest_asks_the_right_workflow():
     text = WORKFLOW.read_text(encoding="utf-8")
-    assert 'if [ "$SHOTS_RUN" = "latest" ]' in text
-    assert '--workflow "iOS Store Screenshots"' in text
-    assert text.index("Find the screenshot run") < text.index("Fetch the screenshots")
+    for choice in ("keep)", "latest)", "run_id)"):
+        assert choice in text, choice
+    assert "--workflow 'iOS Store Screenshots'" in text
+    # Every branch has to leave SHOTS_RUN set, because the steps after it are gated on it.
+    assert text.count('echo "SHOTS_RUN=$RUN" >> "$GITHUB_ENV"') == 1
+
+
+def test_a_typed_run_id_is_checked_before_anything_is_downloaded():
+    """A pasted number used to be taken on faith: the wrong one failed four artifact downloads
+    later, and a run that had failed handed over an incomplete set of pictures."""
+    text = WORKFLOW.read_text(encoding="utf-8")
+    assert "--json workflowName" in text
+    assert "--json conclusion" in text
+    assert "is a '$NAME' run, not 'iOS Store Screenshots'" in text
+    assert text.index("--json workflowName") < text.index("Fetch the screenshots")
 
 
 def test_the_workflow_creates_build_before_tee_writes_into_it():

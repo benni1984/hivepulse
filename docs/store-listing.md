@@ -6,12 +6,15 @@ within them.
 
 **Uploading — Google Play.** Actions → "Play Metadata" reads the texts below and sends the
 title, both descriptions, the screenshots, the icon and the feature graphic to the Play
-Console through the API, in all five languages. Put `latest` into `screenshots_run_id` to
-take the pictures from the newest successful "Android Store Screenshots" run. It starts as a
-dry run, checks Play's length limits first, and never releases anything — the bundle and the
-"What's new" notes go up with "Android Release Bundle". Edit the text here, not in the
-console, or the next upload overwrites it. `scripts/build_play_metadata.py` is the parser and
-`scripts/upload_play_metadata.py` the uploader.
+Console through the API, in all five languages. "Which pictures to send" is a dropdown:
+`latest` takes them from the newest successful "Android Store Screenshots" run, `keep` leaves
+the ones in the console alone and changes only the texts, and `run_id` uses the run typed into
+`screenshots_run_id` — which is checked for being the right workflow and a successful one
+before anything downloads. It starts as a dry run, checks Play's length limits first, and
+never releases anything — the bundle and the "What's new" notes go up with "Android Release
+Bundle". Edit the text here, not in the console, or the next upload overwrites it.
+`scripts/build_play_metadata.py` is the parser and `scripts/upload_play_metadata.py` the
+uploader.
 
 **Uploading — App Store.** The App Store texts below are not typed in by hand: Actions → "App Store
 Metadata" reads them from this file and sends them to App Store Connect through the API. It

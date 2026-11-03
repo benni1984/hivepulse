@@ -206,7 +206,7 @@ are retaken **automatically** when the interface changes. Nobody has to remember
   and the updated manifest. Merge it; that is what clears the notice.
 - The store sets are artifacts of that run (Actions → the run → `play-screenshots-*`,
   `app-store-screenshots-*`). **Both listings upload themselves:** Actions → "Play Metadata" or
-  "App Store Metadata", screenshots run `latest`, untick `dry_run`. Texts come from
+  "App Store Metadata", "Which pictures to send" on `latest`, untick `dry_run`. Texts come from
   `docs/store-listing.md`, pictures from the screenshot run; nothing is typed into a console.
 - Run it on demand: Actions → Update help page screenshots → platform `all` (or one platform).
 - A help page references `android-<name>.png` and `<web name>.png`; the iPhone tab appears by itself when

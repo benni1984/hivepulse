@@ -37,8 +37,20 @@ on:
         required: true
         default: false
         type: boolean
+      screenshots:
+        description: 'Which pictures to send'
+        required: true
+        default: latest
+        type: choice
+        options:
+          # Newest successful "iOS Store Screenshots" run — the normal choice.
+          - latest
+          # Change the texts only and leave the pictures in the console as they are.
+          - keep
+          # Take the run typed into screenshots_run_id below.
+          - run_id
       screenshots_run_id:
-        description: '"latest", or the run ID of an "iOS Store Screenshots" run. Empty leaves the screenshots alone.'
+        description: 'Only read when "Which pictures to send" is run_id: the ID of a successful "iOS Store Screenshots" run.'
         required: false
         default: ''
         type: string
@@ -56,7 +68,8 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       DRY_RUN: ${{ inputs.dry_run }}
       APP_VERSION: ${{ inputs.app_version }}
-      SHOTS_RUN: ${{ inputs.screenshots_run_id }}
+      SHOTS: ${{ inputs.screenshots }}
+      SHOTS_INPUT: ${{ inputs.screenshots_run_id }}
       ASC_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
       ASC_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
       ASC_KEY_P8: ${{ secrets.APP_STORE_CONNECT_API_KEY_P8 }}
@@ -77,18 +90,34 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
         shell: bash
 
-      # "latest" saves looking the run up in the Actions tab and pasting its number, which is
-      # the last thing about this that was still done by hand.
-      - name: Find the screenshot run
-        if: env.SHOTS_RUN != ''
+      # A dropdown, because the three things anybody ever wanted here are "the newest ones",
+      # "do not touch them" and "that particular run" — and the first two were spelled by typing
+      # a magic word, or nothing at all, into a free-text box. GitHub cannot list run IDs in a
+      # choice, so the ID keeps its own field; it is now checked before anything downloads, which
+      # a pasted number never was.
+      - name: Decide which pictures to send
         run: |
-          if [ "$SHOTS_RUN" = "latest" ]; then
-            SHOTS_RUN=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "iOS Store Screenshots" \
-              --status success --limit 1 --json databaseId --jq '.[0].databaseId')
-            test -n "$SHOTS_RUN" || { echo "::error::no successful \"iOS Store Screenshots\" run to take screenshots from"; exit 1; }
-            echo "Using run $SHOTS_RUN"
-          fi
-          echo "SHOTS_RUN=$SHOTS_RUN" >> "$GITHUB_ENV"
+          case "$SHOTS" in
+            keep)
+              echo 'Texts only - the pictures in the console stay as they are.'
+              RUN=''
+              ;;
+            latest)
+              RUN=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow 'iOS Store Screenshots' --status success --limit 1 --json databaseId --jq '.[0].databaseId')
+              test -n "$RUN" || { echo "::error::no successful 'iOS Store Screenshots' run to take pictures from - run it first"; exit 1; }
+              echo "Newest successful run: $RUN"
+              ;;
+            run_id)
+              RUN="$SHOTS_INPUT"
+              test -n "$RUN" || { echo "::error::'run_id' was chosen, so screenshots_run_id has to hold one"; exit 1; }
+              NAME=$(gh run view "$RUN" --repo "$GITHUB_REPOSITORY" --json workflowName --jq .workflowName)
+              RESULT=$(gh run view "$RUN" --repo "$GITHUB_REPOSITORY" --json conclusion --jq .conclusion)
+              test "$NAME" = 'iOS Store Screenshots' || { echo "::error::run $RUN is a '$NAME' run, not 'iOS Store Screenshots'"; exit 1; }
+              test "$RESULT" = success || { echo "::error::run $RUN ended '$RESULT' - its pictures are incomplete"; exit 1; }
+              echo "Run $RUN checks out"
+              ;;
+          esac
+          echo "SHOTS_RUN=$RUN" >> "$GITHUB_ENV"
 
       - name: Fetch the screenshots
         if: env.SHOTS_RUN != ''
