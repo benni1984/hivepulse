@@ -1802,6 +1802,290 @@ button.hornets-action-card { width: 100%; }
 .dash-cal-cat-feeding, .dash-cal-cat-harvest { border-left-color: var(--amber-mid); }
 .dash-cal-cat-feeding .dash-cal-chip:first-child, .dash-cal-cat-harvest .dash-cal-chip:first-child { background: var(--amber-tint); color: var(--amber-ink); }
 .dash-cal-disclaimer { margin-top: 28px; font-size: 13px; }
+
+/* ── The beekeeping year as a ribbon ──────────────────────────────────────────────────────────
+   Twelve months across, one row per category, the seasons drawn behind the bars. The list view
+   answers "what now"; this answers how the year hangs together, which you see in a picture or not
+   at all.
+
+   Every colour here is a palette token. The seasons differ in which token they use, not in having
+   colours of their own, which is why dark mode needs no second set of drawings.
+
+   All of the motion is decoration and all of it stops under prefers-reduced-motion, at the bottom
+   of this block. Somebody reading this at a hive, in the sun, with gloves on, does not need
+   anything to shimmer. */
+
+.dash-year { margin: 18px 0 0; }
+
+.dash-year-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid var(--slate-border);
+  border-radius: 14px;
+  background: var(--surface);
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Wide enough that a month is readable on a phone; the ribbon scrolls sideways instead of
+   squeezing twelve labels into 360px. */
+.dash-year-canvas {
+  position: relative;
+  min-width: 920px;
+  padding: 0 0 10px;
+}
+
+/* ── The scenery ───────────────────────────────────────────────────────────────────────────── */
+
+.dash-year-scenes { position: absolute; inset: 34px 0 10px; pointer-events: none; }
+
+.dash-year-scene-slot { position: absolute; top: 0; bottom: 0; overflow: hidden; }
+
+.dash-year-scene-slot::before {
+  /* The seasonal wash. A band, not a block: it fades out upwards so the bars sit on light. */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--season-wash) 0%, transparent 78%);
+}
+
+.dash-year-season-winter { --season-wash: var(--slate-tint); --season-ink: var(--slate-mid); --season-soft: var(--slate-border); }
+.dash-year-season-spring { --season-wash: var(--green-tint); --season-ink: var(--green-mid-c); --season-soft: var(--green-border); }
+.dash-year-season-summer { --season-wash: var(--amber-tint); --season-ink: var(--amber-mid); --season-soft: var(--amber-border); }
+.dash-year-season-autumn { --season-wash: var(--red-tint); --season-ink: var(--red-mid); --season-soft: var(--red-border); }
+
+.dash-year-scene {
+  position: absolute;
+  inset: auto 0 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+}
+
+.dash-year-ground { stroke: var(--season-soft); stroke-width: 1; fill: none; }
+.dash-year-branch { stroke: var(--season-ink); stroke-width: 1.4; fill: none; opacity: 0.55; stroke-linecap: round; }
+.dash-year-stem   { stroke: var(--green-mid-c); stroke-width: 1; fill: none; opacity: 0.6; }
+
+.dash-year-hive { fill: var(--amber-ink); opacity: 0.55; }
+.dash-year-hive-door { fill: var(--surface); opacity: 0.9; }
+.dash-year-snow-cap { fill: #ffffff; opacity: 0.85; }
+
+.dash-year-sun { fill: var(--amber-mid); opacity: 0.5; }
+.dash-year-sunray {
+  stroke: var(--amber-mid); stroke-width: 1.6; stroke-linecap: round; opacity: 0.4;
+  animation: dash-year-ray 4s ease-in-out infinite;
+}
+@keyframes dash-year-ray { 0%, 100% { opacity: 0.22; } 50% { opacity: 0.55; } }
+
+.dash-year-grass { stroke: var(--green-mid-c); stroke-width: 1.1; fill: none; opacity: 0.45; stroke-linecap: round;
+  transform-origin: bottom center; animation: dash-year-sway 6s ease-in-out infinite; }
+@keyframes dash-year-sway { 0%, 100% { transform: skewX(0deg); } 50% { transform: skewX(4deg); } }
+
+.dash-year-blossom { fill: #fff1f2; opacity: 0.9; transform-origin: center; animation: dash-year-bloom 9s ease-in-out infinite; }
+.dash-year-blossom-heart { fill: var(--amber-mid); opacity: 0.8; }
+@keyframes dash-year-bloom { 0%, 100% { transform: scale(0.94); } 50% { transform: scale(1.06); } }
+
+.dash-year-flower { transform-origin: bottom center; animation: dash-year-sway 7s ease-in-out infinite; }
+.dash-year-flower-head { fill: var(--amber-mid); opacity: 0.75; }
+.dash-year-flower-summer { fill: #fbbf24; opacity: 0.8; }
+
+.dash-year-heather { transform-origin: bottom center; animation: dash-year-sway 8s ease-in-out infinite; }
+.dash-year-heather-bell { fill: #a78bfa; opacity: 0.6; }
+
+/* Falling things. One keyframe set, three uses: the drift differs, the fall does not. */
+@keyframes dash-year-fall {
+  0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { transform: translateY(104px) translateX(14px) rotate(220deg); opacity: 0; }
+}
+.dash-year-flake { fill: #ffffff; animation: dash-year-fall 12s linear infinite; }
+.dash-year-petal { fill: #fecdd3; animation: dash-year-fall 11s linear infinite; }
+.dash-year-leaf  { fill: var(--red-mid); opacity: 0.7; animation: dash-year-fall 10s linear infinite; }
+
+/* The bees. They drift along a stretch of the ribbon and come back, which is what a foraging bee
+   looks like from far enough away. */
+.dash-year-bee { animation: dash-year-forage 15s ease-in-out infinite; }
+@keyframes dash-year-forage {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(26px, -9px); }
+  50%  { transform: translate(52px, 5px); }
+  75%  { transform: translate(24px, 12px); }
+  100% { transform: translate(0, 0); }
+}
+.dash-year-bee-body { fill: var(--amber-ink); }
+.dash-year-bee-stripe { fill: #fde68a; }
+.dash-year-bee-wing {
+  fill: #ffffff; opacity: 0.75; transform-origin: center bottom;
+  animation: dash-year-wing 0.18s ease-in-out infinite;
+}
+.dash-year-bee-wing-far { opacity: 0.5; animation-delay: 0.09s; }
+@keyframes dash-year-wing { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.45); } }
+
+/* ── Months, grid and today ────────────────────────────────────────────────────────────────── */
+
+.dash-year-months { position: relative; height: 34px; }
+
+.dash-year-month {
+  position: absolute; top: 0; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--body-text);
+}
+.dash-year-month span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.dash-year-grid { position: absolute; inset: 34px 0 10px; pointer-events: none; }
+.dash-year-gridline { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--slate-line); }
+
+.dash-year-now { position: absolute; top: 18px; bottom: 10px; width: 0; pointer-events: none; z-index: 3; }
+.dash-year-now::before {
+  content: ''; position: absolute; top: 16px; bottom: 0; left: -1px; width: 2px;
+  background: var(--amber-mid);
+}
+.dash-year-now-dot {
+  position: absolute; top: 10px; left: -5px; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--amber-mid); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5);
+  animation: dash-year-pulse 2.4s ease-out infinite;
+}
+@keyframes dash-year-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5); }
+  70%  { box-shadow: 0 0 0 11px rgba(245, 158, 11, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+.dash-year-now-label {
+  position: absolute; top: -4px; left: 8px; white-space: nowrap;
+  font-size: 11px; font-weight: 700; color: var(--amber-ink);
+  background: var(--amber-wash); border: 1px solid var(--amber-border);
+  border-radius: 999px; padding: 1px 8px;
+}
+
+/* ── The rows and the bars ─────────────────────────────────────────────────────────────────── */
+
+.dash-year-rows { position: relative; z-index: 2; padding: 6px 0 0; }
+
+.dash-year-row { position: relative; display: flex; align-items: center; height: 36px; }
+
+.dash-year-row-label {
+  position: sticky; left: 0; z-index: 4;
+  flex: 0 0 104px; width: 104px;
+  padding: 0 10px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--body-text);
+  /* Over the scenery as the ribbon scrolls, or the label becomes unreadable above a meadow. */
+  background: linear-gradient(to right, var(--surface) 72%, transparent);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.dash-year-track { position: relative; flex: 1 1 auto; height: 100%; }
+
+.dash-year-bar {
+  position: absolute; top: 5px; height: 26px;
+  display: flex; align-items: center;
+  border: 1px solid var(--bar-border);
+  border-radius: 7px;
+  background: var(--bar-fill);
+  color: var(--bar-ink);
+  padding: 0 7px;
+  font: inherit; font-size: 12px; font-weight: 600; text-align: left;
+  cursor: pointer;
+  /* Drawn in from the left on first paint: the ribbon builds itself once, like a year filling up. */
+  transform-origin: left center;
+  animation: dash-year-draw 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  transition: filter 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+@keyframes dash-year-draw {
+  from { transform: scaleX(0.02); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+
+.dash-year-bar-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.dash-year-bar:hover { filter: brightness(0.97); transform: translateY(-1px); }
+.dash-year-bar:focus-visible { outline: 2px solid var(--amber-mid); outline-offset: 2px; }
+
+.dash-year-bar-picked { box-shadow: 0 0 0 2px var(--amber-mid); }
+
+/* An entry that reaches past the edge of the year is drawn open on that side, rather than looking
+   like something that happens to begin on 1 January. */
+.dash-year-bar-open-start { border-top-left-radius: 0; border-bottom-left-radius: 0; border-left-style: dashed; }
+.dash-year-bar-open-end   { border-top-right-radius: 0; border-bottom-right-radius: 0; border-right-style: dashed; }
+
+.dash-year-bar-active { border-width: 2px; font-weight: 700; }
+
+/* The nine categories, four colour families. Pairs that never sit in the same row share one, so
+   no category is left to an ad-hoc colour. */
+.dash-year-cat-inspection, .dash-year-cat-bloom {
+  --bar-fill: var(--green-tint); --bar-border: var(--green-border); --bar-ink: var(--green-ink);
+}
+.dash-year-cat-swarm, .dash-year-cat-varroa {
+  --bar-fill: var(--red-tint); --bar-border: var(--red-border); --bar-ink: var(--red-ink);
+}
+.dash-year-cat-feeding, .dash-year-cat-harvest {
+  --bar-fill: var(--amber-tint); --bar-border: var(--amber-border); --bar-ink: var(--amber-ink);
+}
+.dash-year-cat-migration, .dash-year-cat-care, .dash-year-cat-winter {
+  --bar-fill: var(--slate-tint); --bar-border: var(--slate-border); --bar-ink: var(--slate-ink);
+}
+
+/* ── The detail under the ribbon ───────────────────────────────────────────────────────────── */
+
+.dash-year-detail {
+  margin: 14px 0 0;
+  border: 1px solid var(--bar-border);
+  border-left: 4px solid var(--bar-border);
+  border-radius: 12px;
+  background: var(--card);
+  padding: 14px 16px;
+  animation: dash-year-reveal 0.25s ease both;
+}
+@keyframes dash-year-reveal { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: none; } }
+
+.dash-year-detail-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.dash-year-detail h3 { margin: 10px 0 4px; font-size: 16px; }
+.dash-year-detail p { margin: 0; font-size: 14px; color: var(--body-text); }
+
+.dash-year-detail-close {
+  margin-left: auto; border: 0; background: none; cursor: pointer;
+  font-size: 20px; line-height: 1; color: var(--body-text); padding: 0 2px;
+}
+.dash-year-detail-close:hover { color: var(--amber-ink); }
+
+.dash-year-regional {
+  margin-top: 10px !important;
+  background: var(--green-wash); border: 1px solid var(--green-border); border-radius: 9px;
+  padding: 8px 10px; font-size: 13px; color: var(--green-ink);
+}
+
+/* ── The switch between the list and the ribbon ────────────────────────────────────────────── */
+
+.dash-year-switch { display: inline-flex; gap: 4px; background: var(--slate-wash);
+  border: 1px solid var(--slate-border); border-radius: 999px; padding: 3px; margin: 0 0 4px; }
+
+.dash-year-switch button {
+  border: 0; background: none; cursor: pointer; border-radius: 999px;
+  padding: 6px 16px; font: inherit; font-size: 13px; font-weight: 600; color: var(--slate-ink);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.dash-year-switch button[aria-pressed='true'] { background: var(--amber-mid); color: #ffffff; }
+.dash-year-switch button:focus-visible { outline: 2px solid var(--amber-mid); outline-offset: 2px; }
+
+.dash-year-switch-hint { margin: 0 0 12px; }
+
+@media (max-width: 640px) {
+  .dash-year-row-label { flex-basis: 76px; width: 76px; font-size: 10px; }
+  .dash-year-canvas { min-width: 760px; }
+}
+
+/* Decoration is decoration. Nothing above carries information, so nothing above needs to move. */
+@media (prefers-reduced-motion: reduce) {
+  .dash-year-sunray, .dash-year-grass, .dash-year-blossom, .dash-year-flower, .dash-year-heather,
+  .dash-year-flake, .dash-year-petal, .dash-year-leaf, .dash-year-bee, .dash-year-bee-wing,
+  .dash-year-now-dot, .dash-year-bar, .dash-year-detail {
+    animation: none !important;
+  }
+  .dash-year-bar { transform: none; opacity: 1; }
+  .dash-year-flake, .dash-year-petal, .dash-year-leaf { opacity: 0; }
+  .dash-year-bar:hover { transform: none; }
+}
 .dash-region-form { display: grid; gap: 12px; }
 .dash-region-form .dash-region-row { display: flex; flex-wrap: wrap; gap: 12px; }
 .dash-region-form .dash-region-row > * { flex: 1 1 180px; }

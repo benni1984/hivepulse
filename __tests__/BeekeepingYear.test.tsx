@@ -26,7 +26,8 @@ const REGION: Region = {
 function entry(key: string, start: string, end: string, overrides: Partial<CalendarEntry> = {}): CalendarEntry {
   return {
     key, category: 'care', title: `Title of ${key}`, body: `Body of ${key}`, start, end,
-    interval_days: null, honey: null, active: false, ...overrides,
+    interval_days: null, honey: null, active: false,
+    regional_shift_days: 0, rating_count: 0, ...overrides,
   };
 }
 

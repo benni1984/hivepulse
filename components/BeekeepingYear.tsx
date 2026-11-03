@@ -7,6 +7,7 @@ import {
   WINDOW_DAYS, addDays, buildTimeline, countryName, firstOfMonth, isoDay, mergeEntries, scrollParent,
 } from '@/lib/calendar';
 import { isKnownForage } from '@/lib/moves';
+import YearRibbon from './year/YearRibbon';
 
 /**
  * The beekeeper's year as an endless timeline: what to do when, month by month, moved to the beekeeper's own
@@ -23,6 +24,8 @@ export default function BeekeepingYear() {
   const [error, setError] = useState(false);
   const [busy, setBusy] = useState({ next: false, previous: false });
   const [ready, setReady] = useState(false);
+  // The list is the default: it answers "what do I do now", which is why somebody opens this.
+  const [view, setView] = useState<'list' | 'ribbon'>('list');
 
   const topRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -129,7 +132,19 @@ export default function BeekeepingYear() {
 
   return (
     <div className="dash-cal" data-testid="beekeeping-year">
-      <p className="dash-card-meta">{t('calendar.intro')}</p>
+      <div className="dash-year-switch" role="group" aria-label={t('calendar.title')}>
+        <button type="button" aria-pressed={view === 'list'} onClick={() => setView('list')}
+                data-testid="year-view-list">
+          {t('calendar.viewList')}
+        </button>
+        <button type="button" aria-pressed={view === 'ribbon'} onClick={() => setView('ribbon')}
+                data-testid="year-view-ribbon">
+          {t('calendar.viewRibbon')}
+        </button>
+      </div>
+      <p className="dash-card-meta dash-year-switch-hint">
+        {view === 'list' ? t('calendar.viewListHint') : t('calendar.viewRibbonHint')}
+      </p>
 
       {region && (
         <div className="dash-cal-region" data-testid="calendar-region">
@@ -141,10 +156,12 @@ export default function BeekeepingYear() {
         </div>
       )}
 
-      {error && <div className="dash-error-banner">{t('calendar.loadError')}</div>}
-      {!loaded && !error && <div className="spinner" aria-label={t('calendar.loading')} />}
+      {view === 'ribbon' && <YearRibbon year={new Date(today).getFullYear()} />}
 
-      {loaded && (
+      {view === 'list' && error && <div className="dash-error-banner">{t('calendar.loadError')}</div>}
+      {view === 'list' && !loaded && !error && <div className="spinner" aria-label={t('calendar.loading')} />}
+
+      {view === 'list' && loaded && (
         <>
           <div ref={topRef} className="dash-cal-edge" data-testid="calendar-top">
             {busy.previous ? t('calendar.loadingEarlier') : ''}

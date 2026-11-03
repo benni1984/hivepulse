@@ -864,6 +864,13 @@
       "setRegion": "Indiquer la région",
       "changeRegion": "Changer la région",
       "disclaimer": "Valeurs indicatives tirées de la pratique apicole habituelle, pas des règles : la floraison et la météo décident, et les dates se décalent selon votre lieu. Médicaments uniquement selon l’autorisation et les règles de votre pays ; en cas de doute, demandez à votre syndicat apicole ou à la direction départementale de la protection des populations.",
+      "viewList": "Liste",
+      "viewRibbon": "Vue d’ensemble",
+      "viewListHint": "Ce qu’il faut faire maintenant, mois par mois",
+      "viewRibbonHint": "Toute l’année en une image",
+      "closeEntry": "Fermer",
+      "regionalShift": "{count, plural, one {# apiculteur} other {# apiculteurs}} près de vous placent cela {days, plural, one {# jour} other {# jours}} autrement, et c’est pris en compte ici.",
+      "ribbonEmpty": "Rien à afficher pour cette année.",
       "categories": {
         "inspection": "Visite",
         "swarm": "Essaimage",

@@ -7,7 +7,8 @@ import type { CalendarEntry } from '@/lib/api';
 function entry(key: string, start: string, end = start, overrides: Partial<CalendarEntry> = {}): CalendarEntry {
   return {
     key, category: 'care', title: key, body: '', start, end,
-    interval_days: null, honey: null, active: false, ...overrides,
+    interval_days: null, honey: null, active: false,
+    regional_shift_days: 0, rating_count: 0, ...overrides,
   };
 }
 
