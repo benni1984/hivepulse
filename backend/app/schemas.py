@@ -173,6 +173,11 @@ class CalendarEntry(BaseModel):
     honey: Optional[str] = None
     # Whether today lies within the entry.
     active: bool
+    # Days this one entry is moved on top of `region.shift_days`, because beekeepers of this
+    # region said so and an admin approved it. 0 when no approved correction covers the place.
+    regional_shift_days: int = 0
+    # How many ratings that correction rests on, so a client can say "11 beekeepers near you".
+    rating_count: int = 0
 
 
 class CalendarOut(BaseModel):
@@ -182,6 +187,115 @@ class CalendarOut(BaseModel):
     start: date
     end: date
     entries: List[CalendarEntry]
+
+
+# ── The beekeeping-year questionnaire ────────────────────────────────────────────────────────
+
+class PublicCalendarEntry(BaseModel):
+    """A timeline entry as the questionnaire shows it: no `active`, because nobody is signed in."""
+
+    key: str
+    category: str
+    title: str
+    body: str
+    start: date
+    end: date
+    interval_days: Optional[int] = None
+    honey: Optional[str] = None
+
+
+class PublicCalendarOut(BaseModel):
+    shift_days: int = 0
+    # False when a country and postal code were given that could not be looked up; the dates are
+    # then unshifted and a client should say so.
+    located: bool = True
+    entries: List[PublicCalendarEntry]
+
+
+class YearRatingIn(BaseModel):
+    key: str = Field(max_length=80)
+    verdict: Literal["fits", "too_early", "too_late", "wrong"]
+    # Only meaningful with too_early / too_late. A day is the smallest unit a beekeeper can mean.
+    shift_days: Optional[int] = Field(default=None, ge=-120, le=120)
+    note: Optional[str] = Field(default=None, max_length=500)
+
+    @model_validator(mode="after")
+    def clean(self) -> "YearRatingIn":
+        self.key = self.key.strip()
+        if not self.key:
+            raise ValueError("key must not be empty")
+        if self.note is not None:
+            self.note = self.note.strip() or None
+        # A direction without a size is fine (the beekeeper only knows it is off); a size on a
+        # verdict that has no direction is not, and silently keeping it would skew the median.
+        if self.verdict not in ("too_early", "too_late"):
+            self.shift_days = None
+        return self
+
+
+class YearFeedbackIn(BaseModel):
+    # Required: a rating that cannot be placed cannot be weighted, and is worth nothing.
+    # Wide enough to let the validator strip surrounding spaces; it then insists on two letters.
+    country: str = Field(min_length=2, max_length=8)
+    postal_code: str = Field(min_length=1, max_length=20)
+    # A string the client keeps. Hashed before it is stored; long enough not to collide by accident.
+    device_id: str = Field(min_length=16, max_length=200)
+    years_keeping: Optional[int] = Field(default=None, ge=0, le=80)
+    ratings: List[YearRatingIn] = Field(min_length=1, max_length=60)
+
+    @model_validator(mode="after")
+    def clean(self) -> "YearFeedbackIn":
+        country = self.country.strip().upper()
+        if not (len(country) == 2 and country.isalpha()):
+            raise ValueError("country must be a two-letter country code")
+        self.country = country
+        self.postal_code = " ".join(self.postal_code.split())
+        if not self.postal_code:
+            raise ValueError("postal_code must not be empty")
+        # The last word wins for a repeated entry, rather than counting one browser twice.
+        deduplicated = {rating.key: rating for rating in self.ratings}
+        self.ratings = list(deduplicated.values())
+        return self
+
+
+class YearFeedbackOut(BaseModel):
+    accepted: int
+    # How many of the entries this device had already rated.
+    replaced: int
+    located: bool = True
+
+
+class YearProposalOut(BaseModel):
+    id: str
+    entry_key: str
+    entry_title: str
+    # "shift" moves the entry, "hide" means it does not apply in that region.
+    kind: str
+    shift_days: Optional[int] = None
+    rating_count: int
+    latitude: float
+    longitude: float
+    radius_km: int
+    country: Optional[str] = None
+    verdict_counts: dict
+    # Smallest and largest correction in the group, so an admin sees the disagreement.
+    shift_days_range: Optional[List[int]] = None
+    # Admins only. Never shown to another user.
+    notes: List[str] = []
+    status: str
+    created_at: datetime
+    decided_at: Optional[datetime] = None
+
+
+class YearProposalApprove(BaseModel):
+    # An admin who knows the region may approve something other than the proposed median.
+    shift_days: Optional[int] = Field(default=None, ge=-120, le=120)
+
+
+class YearRecomputeOut(BaseModel):
+    created: int
+    updated: int
+    unchanged: int
 
 
 class AdminUserDetail(BaseModel):

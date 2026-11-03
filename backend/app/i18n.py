@@ -57,6 +57,27 @@ MESSAGES = {
         "es": "No tienes permiso para acceder a este recurso.",
         "pl": "Nie masz uprawnień do tego zasobu.",
     },
+    "POSTAL_CODE_NOT_FOUND": {
+        "en": "That postal code could not be found in that country. A rating without a place cannot be used.",
+        "fr": "Ce code postal est introuvable dans ce pays. Un avis sans lieu est inutilisable.",
+        "de": "Diese Postleitzahl wurde in diesem Land nicht gefunden. Eine Bewertung ohne Ort ist nicht verwertbar.",
+        "es": "No se ha encontrado ese código postal en ese país. Una valoración sin lugar no se puede usar.",
+        "pl": "Nie znaleziono tego kodu pocztowego w tym kraju. Ocena bez miejsca jest nieprzydatna.",
+    },
+    "UNKNOWN_CALENDAR_ENTRY": {
+        "en": "The timeline has no entry with that key.",
+        "fr": "La chronologie ne contient aucune entrée avec cette clé.",
+        "de": "Der Zeitstrahl hat keinen Eintrag mit diesem Schlüssel.",
+        "es": "La cronología no tiene ninguna entrada con esa clave.",
+        "pl": "Na osi czasu nie ma wpisu o tym kluczu.",
+    },
+    "YEAR_PROPOSAL_NOT_FOUND": {
+        "en": "That proposal does not exist.",
+        "fr": "Cette proposition n'existe pas.",
+        "de": "Dieser Vorschlag existiert nicht.",
+        "es": "Esa propuesta no existe.",
+        "pl": "Ta propozycja nie istnieje.",
+    },
     "USER_NOT_FOUND": {
         "en": "User not found.",
         "fr": "Utilisateur introuvable.",

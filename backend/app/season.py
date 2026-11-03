@@ -65,11 +65,29 @@ def occurrences(entry: Entry, first: date, last: date, shift: int) -> Iterator[t
             yield start, end
 
 
-def timeline(first: date, last: date, shift: int, language: str, today: date) -> list[dict]:
-    """The entries of the window, oldest first, in the language, with what is going on today marked."""
+def timeline(
+    first: date,
+    last: date,
+    shift: int,
+    language: str,
+    today: date,
+    corrections: Optional[dict] = None,
+) -> list[dict]:
+    """The entries of the window, oldest first, in the language, with what is going on today marked.
+
+    `corrections` are the approved regional corrections that cover this beekeeper's place, by
+    entry key (see `app/year_feedback.py`). They are what beekeepers of a region said the formula
+    above gets wrong there, after an admin agreed: a correction moves that one entry on top of
+    `shift`, or drops it from the timeline when it does not apply there at all.
+    """
+    corrections = corrections or {}
     items: list[dict] = []
     for entry in ENTRIES:
-        for start, end in occurrences(entry, first, last, shift):
+        correction = corrections.get(entry.key)
+        if correction is not None and correction.kind == "hide":
+            continue
+        regional = (correction.shift_days or 0) if correction is not None else 0
+        for start, end in occurrences(entry, first, last, shift + regional):
             items.append({
                 "key": entry.key,
                 "category": entry.category,
@@ -80,6 +98,10 @@ def timeline(first: date, last: date, shift: int, language: str, today: date) ->
                 "interval_days": entry.interval_days,
                 "honey": entry.honey,
                 "active": start <= today <= end,
+                "regional_shift_days": regional,
+                # How many beekeepers the correction rests on, so a client can say so. Zero when
+                # no correction covers the place, which is not the same as "nobody agreed".
+                "rating_count": correction.rating_count if correction is not None else 0,
             })
     items.sort(key=lambda item: (item["start"], item["key"]))
     return items

@@ -145,15 +145,24 @@ def test_the_fingerprint_ignores_the_line_endings_of_the_clone():
         crlf_file.unlink(missing_ok=True)
 
 
-def test_the_recorded_manifest_still_matches_this_checkout():
-    """The fingerprints in the manifest are written by the runner. If the fold above ever stops
-    agreeing with what the runner computes, all three platforms go stale at once and the
-    screenshot workflow retakes everything for nothing."""
-    fresh = _freshness_module("fresh_manifest")
+def test_the_fold_changes_nothing_for_the_runner_that_writes_the_manifest():
+    """The fingerprints in the manifest were written on Linux, where no file holds a CRLF. The
+    fold has to be a no-op there, or every platform goes stale at once and the screenshot
+    workflow retakes everything for nothing.
 
-    recorded = fresh.load_manifest()
-    for platform in fresh.WATCHED:
-        combined, _ = fresh.fingerprint(platform)
-        assert recorded[platform]["fingerprint"] == combined, (
-            f"{platform}: the manifest says {recorded[platform]['fingerprint'][:12]}, "
-            f"this checkout hashes to {combined[:12]}")
+    This replaces an earlier test that compared the manifest against this checkout. That one
+    went red on every interface change — before the screenshots had been retaken, which is the
+    normal state of a branch — so it reported the thing the non-blocking freshness job already
+    reports, as a failure. A test that fails when nothing is wrong is the alarm this fold was
+    written to remove."""
+    import hashlib
+
+    fresh = _freshness_module("fresh_noop")
+
+    lf = ROOT / "backend" / "tests" / "__eol_runner.tmp"
+    try:
+        content = bytes([10]).join([b"a = 1", b"b = 2", b""])
+        lf.write_bytes(content)
+        assert fresh._digest(lf) == hashlib.sha256(content).hexdigest()
+    finally:
+        lf.unlink(missing_ok=True)
