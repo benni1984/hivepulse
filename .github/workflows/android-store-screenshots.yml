@@ -12,8 +12,8 @@ name: Android Store Screenshots
 on:
   workflow_dispatch:
   # Called by "Update help page screenshots" when the interface changed, so the store sets are
-  # retaken automatically too. Their pictures stay workflow artifacts (store listings are uploaded
-  # by hand); the iPhone help images are cut from the English set.
+  # retaken automatically too. Their pictures stay workflow artifacts, which "Play Metadata" picks up
+  # with screenshots_run_id: latest; the iPhone help images are cut from the English set.
   workflow_call:
     inputs:
       ref:
