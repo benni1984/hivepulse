@@ -115,3 +115,45 @@ def test_both_stores_are_photographed_in_the_same_languages_and_the_same_eight_s
                  "27-beekeeping-year", "28-moves-map", "29-treatments-planned", "30-health-map"):
         assert name in pick, f"{name} is not in the iPhone listing set"
         assert f'snap("{name}"' in (ROOT / "ios/HivePulseUITests/ScreenshotUITests.swift").read_text(encoding="utf-8")
+
+
+def _freshness_module(name):
+    spec = importlib.util.spec_from_file_location(
+        name, ROOT / "scripts" / "check_screenshot_freshness.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_the_fingerprint_ignores_the_line_endings_of_the_clone():
+    """A Windows clone with core.autocrlf=true holds every watched source file with CRLF; the
+    Linux runner that writes the manifest holds it with LF. Hashing the raw bytes reported all
+    three platforms stale on Windows however current the pictures were — a notice nobody could
+    act on, which is worse than no notice, because it hides the real one."""
+    fresh = _freshness_module("fresh_eol")
+
+    lines = [b"export const a = 1;", b"export const b = 2;", b""]
+    lf = ROOT / "backend" / "tests" / "__eol_lf.tmp"
+    crlf_file = ROOT / "backend" / "tests" / "__eol_crlf.tmp"
+    try:
+        lf.write_bytes(bytes([10]).join(lines))
+        crlf_file.write_bytes(bytes([13, 10]).join(lines))
+        assert lf.read_bytes() != crlf_file.read_bytes()
+        assert fresh._digest(lf) == fresh._digest(crlf_file)
+    finally:
+        lf.unlink(missing_ok=True)
+        crlf_file.unlink(missing_ok=True)
+
+
+def test_the_recorded_manifest_still_matches_this_checkout():
+    """The fingerprints in the manifest are written by the runner. If the fold above ever stops
+    agreeing with what the runner computes, all three platforms go stale at once and the
+    screenshot workflow retakes everything for nothing."""
+    fresh = _freshness_module("fresh_manifest")
+
+    recorded = fresh.load_manifest()
+    for platform in fresh.WATCHED:
+        combined, _ = fresh.fingerprint(platform)
+        assert recorded[platform]["fingerprint"] == combined, (
+            f"{platform}: the manifest says {recorded[platform]['fingerprint'][:12]}, "
+            f"this checkout hashes to {combined[:12]}")

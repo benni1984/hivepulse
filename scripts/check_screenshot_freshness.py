@@ -71,19 +71,28 @@ PURPOSE = {
 }
 
 
+def _digest(path: Path) -> str:
+    """sha256 of a file, with CRLF folded to LF.
+
+    Everything watched is source text, and a Windows clone with core.autocrlf=true holds it
+    with CRLF while the Linux runner that wrote the manifest holds it with LF. Hashing the raw
+    bytes made every platform look stale on Windows however current the pictures were, which is
+    a notice nobody can act on. Folding the line endings costs nothing on the runner — there is
+    no CRLF there to fold — so the fingerprints already in the manifest stay valid.
+    """
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+
 def _hash_path(path: Path) -> list[tuple[str, str]]:
     """(relative path, sha256) for a file, or for every file under a directory."""
     if path.is_file():
-        digest = hashlib.sha256(path.read_bytes()).hexdigest()
-        return [(path.relative_to(REPO).as_posix(), digest)]
+        return [(path.relative_to(REPO).as_posix(), _digest(path))]
     if not path.is_dir():
         return []
     entries: list[tuple[str, str]] = []
     for child in sorted(path.rglob("*")):
         if child.is_file() and not any(part.startswith(".") for part in child.parts):
-            entries.append(
-                (child.relative_to(REPO).as_posix(), hashlib.sha256(child.read_bytes()).hexdigest())
-            )
+            entries.append((child.relative_to(REPO).as_posix(), _digest(child)))
     return entries
 
 
