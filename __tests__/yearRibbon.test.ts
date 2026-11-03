@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
-  RIBBON_CATEGORIES, barFor, dayOffset, daysInYear, monthColumns, rowsFor, seasonSegments,
-  todayPosition,
+  LANE_GAP, RIBBON_CATEGORIES, barFor, dayOffset, daysInYear, lanesFor, monthColumns, rowsFor,
+  seasonSegments, todayPosition,
 } from '@/lib/yearRibbon';
 import type { CalendarEntry } from '@/lib/api';
 
@@ -122,6 +122,68 @@ describe('the rows', () => {
     ], 2026);
 
     expect(rows[0].bars[0].left).toBeLessThan(rows[0].bars[1].left);
+  });
+});
+
+describe('the lanes within a row', () => {
+  // Beekeeping overlaps by nature: the swarm season runs through the first harvest, three
+  // migrations are open at once in June. On one line those either hide each other or have to be
+  // drawn shorter than they are.
+
+  function bar(left: number, width: number) {
+    return { entry: entry(), left, width, clippedStart: false, clippedEnd: false };
+  }
+
+  it('keeps bars that do not overlap on one lane', () => {
+    expect(lanesFor([bar(0, 10), bar(20, 10), bar(40, 10)])).toHaveLength(1);
+  });
+
+  it('puts two overlapping bars on two lanes', () => {
+    const lanes = lanesFor([bar(0, 30), bar(10, 30)]);
+
+    expect(lanes).toHaveLength(2);
+    expect(lanes[0]).toHaveLength(1);
+    expect(lanes[1]).toHaveLength(1);
+  });
+
+  it('uses no more lanes than the busiest moment needs', () => {
+    // Three at once in the middle, but the two at the ends fit beside them.
+    const lanes = lanesFor([bar(0, 5), bar(10, 20), bar(12, 20), bar(14, 20), bar(80, 5)]);
+
+    expect(lanes).toHaveLength(3);
+    expect(lanes.flat()).toHaveLength(5);
+  });
+
+  it('separates bars that merely touch, which would otherwise read as one', () => {
+    const lanes = lanesFor([bar(0, 10), bar(10, 10)]);
+
+    expect(lanes).toHaveLength(2);
+  });
+
+  it('keeps bars on one lane once the gap is clear', () => {
+    expect(lanesFor([bar(0, 10), bar(10 + LANE_GAP, 10)])).toHaveLength(1);
+  });
+
+  it('loses no bar and leaves every lane in date order', () => {
+    const bars = [bar(50, 20), bar(0, 30), bar(10, 30), bar(70, 10)];
+
+    const lanes = lanesFor(bars);
+
+    expect(lanes.flat()).toHaveLength(bars.length);
+    for (const lane of lanes) {
+      const lefts = lane.map(item => item.left);
+      expect(lefts).toEqual([...lefts].sort((a, b) => a - b));
+    }
+  });
+
+  it('gives every row its lanes alongside its bars', () => {
+    const row = rowsFor([
+      entry({ start: '2026-05-01', end: '2026-06-30' }),
+      entry({ key: 'other-check', start: '2026-05-15', end: '2026-07-15' }),
+    ], 2026)[0];
+
+    expect(row.bars).toHaveLength(2);
+    expect(row.lanes).toHaveLength(2);
   });
 });
 

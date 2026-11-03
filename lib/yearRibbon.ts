@@ -40,8 +40,19 @@ export interface Bar {
 
 export interface Row {
   category: CalendarCategory;
+  /** Every bar of the category, in date order. */
   bars: Bar[];
+  /** The bars stacked into lanes so that none overlaps another. */
+  lanes: Bar[][];
 }
+
+/**
+ * The gap a bar keeps from the next one in its lane, in percent of the year.
+ *
+ * Two bars that merely touch read as one long bar. A fifth of a percent is about three quarters
+ * of a day — invisible as a date, plain as a seam.
+ */
+export const LANE_GAP = 0.2;
 
 export interface SeasonSegment {
   season: Season;
@@ -121,10 +132,35 @@ export function rowsFor(entries: CalendarEntry[], year: number): Row[] {
 
   return RIBBON_CATEGORIES
     .filter(category => (byCategory.get(category)?.length ?? 0) > 0)
-    .map(category => ({
-      category,
-      bars: (byCategory.get(category) ?? []).sort((a, b) => a.left - b.left),
-    }));
+    .map(category => {
+      const bars = (byCategory.get(category) ?? []).sort((a, b) => a.left - b.left);
+      return { category, bars, lanes: lanesFor(bars) };
+    });
+}
+
+/**
+ * Bars stacked into lanes, so that two things happening at once are two lines and not one
+ * illegible overlap.
+ *
+ * Beekeeping overlaps by nature: the swarm season runs through the first harvest, three
+ * migrations are open at the same time in June. Drawing those on one line either hides a bar
+ * behind another or shortens both into something untrue.
+ *
+ * Greedy, taking the earliest bar first and putting it in the first lane with room: for intervals
+ * sorted by start this uses the fewest lanes possible, so a category never grows taller than its
+ * busiest moment needs.
+ */
+export function lanesFor(bars: Bar[]): Bar[][] {
+  const lanes: Bar[][] = [];
+  for (const bar of [...bars].sort((a, b) => a.left - b.left)) {
+    const lane = lanes.find(candidate => {
+      const last = candidate[candidate.length - 1];
+      return last.left + last.width + LANE_GAP <= bar.left;
+    });
+    if (lane) lane.push(bar);
+    else lanes.push([bar]);
+  }
+  return lanes;
 }
 
 /** Where today's line goes, or null when today is in another year. */

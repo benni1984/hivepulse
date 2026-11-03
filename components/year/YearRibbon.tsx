@@ -51,6 +51,9 @@ export default function YearRibbon({ year }: { year: number }) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState<Bar | null>(null);
+  // Where to put the tooltip, in viewport coordinates. Fixed, so the scrolling ribbon cannot
+  // clip it at its edge — which is exactly where the bars that need it most sit.
+  const [hover, setHover] = useState<{ bar: Bar; x: number; y: number } | null>(null);
 
   const scroller = useRef<HTMLDivElement>(null);
   const todayRow = useRef<HTMLParagraphElement>(null);
@@ -116,6 +119,12 @@ export default function YearRibbon({ year }: { year: number }) {
   const toggle = useCallback(
     (bar: Bar) => setOpen(current => (sameBar(current, bar) ? null : bar)), [],
   );
+
+  // Also on focus, so the tooltip is not a thing only a mouse can reach.
+  const showTip = (bar: Bar) => (event: { currentTarget: HTMLButtonElement }) => {
+    const box = event.currentTarget.getBoundingClientRect();
+    setHover({ bar, x: box.left + box.width / 2, y: box.top });
+  };
 
   function forageLabel(key: string) {
     return isKnownForage(key) ? t(`moves.forages.${key}`) : key;
@@ -246,28 +255,38 @@ export default function YearRibbon({ year }: { year: number }) {
             {rows.map(row => (
               <div key={row.category} className="dash-year-row" data-testid="year-row">
                 <span className="dash-year-row-label">{t(`calendar.categories.${row.category}`)}</span>
-                <div className="dash-year-track">
-                  {row.bars.map(bar => (
-                    <button
-                      key={`${bar.entry.key}-${bar.entry.start}`}
-                      type="button"
-                      className={[
-                        'dash-year-bar', `dash-year-cat-${row.category}`,
-                        bar.entry.active ? 'dash-year-bar-active' : '',
-                        bar.clippedStart ? 'dash-year-bar-open-start' : '',
-                        bar.clippedEnd ? 'dash-year-bar-open-end' : '',
-                        sameBar(open, bar) ? 'dash-year-bar-picked' : '',
-                      ].filter(Boolean).join(' ')}
-                      style={{ left: `${bar.left}%`, width: `${bar.width}%` }}
-                      onClick={() => toggle(bar)}
-                      aria-expanded={sameBar(open, bar)}
-                      title={bar.entry.title}
-                      data-testid="year-bar"
-                    >
-                      <EntryIcon entryKey={bar.entry.key} category={bar.entry.category}
-                                 className="dash-year-bar-icon" />
-                      <span className="dash-year-bar-text">{bar.entry.title}</span>
-                    </button>
+                {/* One lane per set of jobs that do not clash. Beekeeping overlaps by nature —
+                    the swarm season runs through the first harvest — and on a single line those
+                    either hide each other or have to be drawn shorter than they are. */}
+                <div className="dash-year-lanes">
+                  {row.lanes.map((lane, laneIndex) => (
+                    <div key={laneIndex} className="dash-year-lane" data-testid="year-lane">
+                      {lane.map(bar => (
+                        <button
+                          key={`${bar.entry.key}-${bar.entry.start}`}
+                          type="button"
+                          className={[
+                            'dash-year-bar', `dash-year-cat-${row.category}`,
+                            bar.entry.active ? 'dash-year-bar-active' : '',
+                            bar.clippedStart ? 'dash-year-bar-open-start' : '',
+                            bar.clippedEnd ? 'dash-year-bar-open-end' : '',
+                            sameBar(open, bar) ? 'dash-year-bar-picked' : '',
+                          ].filter(Boolean).join(' ')}
+                          style={{ left: `${bar.left}%`, width: `${bar.width}%` }}
+                          onClick={() => toggle(bar)}
+                          onMouseEnter={showTip(bar)}
+                          onFocus={showTip(bar)}
+                          onMouseLeave={() => setHover(null)}
+                          onBlur={() => setHover(null)}
+                          aria-expanded={sameBar(open, bar)}
+                          data-testid="year-bar"
+                        >
+                          <EntryIcon entryKey={bar.entry.key} category={bar.entry.category}
+                                     className="dash-year-bar-icon" />
+                          <span className="dash-year-bar-text">{bar.entry.title}</span>
+                        </button>
+                      ))}
+                    </div>
                   ))}
                 </div>
               </div>
@@ -275,6 +294,20 @@ export default function YearRibbon({ year }: { year: number }) {
           </div>
         </div>
       </div>
+      )}
+
+      {hover && (
+        <div
+          className="dash-year-tip"
+          style={{ left: `${hover.x}px`, top: `${hover.y}px` }}
+          role="presentation"
+          data-testid="year-tip"
+        >
+          <span className="dash-year-tip-dates">
+            {shortDay(hover.bar.entry.start)} – {shortDay(hover.bar.entry.end)}
+          </span>
+          <span className="dash-year-tip-title">{hover.bar.entry.title}</span>
+        </div>
       )}
 
       {/* Under the ribbon rather than in a tooltip: a tooltip on a touch screen is a thing you

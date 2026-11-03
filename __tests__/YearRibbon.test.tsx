@@ -200,6 +200,56 @@ describe('the year ribbon', () => {
     expect(screen.getByTestId('year-bar').tagName).toBe('BUTTON');
   });
 
+  it('stacks overlapping jobs into lanes instead of letting them cover each other', async () => {
+    // The swarm season runs straight through the first harvest; on one line one of them is
+    // hidden behind the other.
+    mockGetCalendar.mockResolvedValue(answer([
+      entry({ key: 'swarm-control', start: '2026-04-20', end: '2026-06-30' }),
+      entry({ key: 'drone-cut', start: '2026-05-10', end: '2026-07-10' }),
+    ]));
+
+    render(<YearRibbon year={2026} />);
+
+    await waitFor(() => expect(screen.getAllByTestId('year-bar')).toHaveLength(2));
+    expect(screen.getAllByTestId('year-lane')).toHaveLength(2);
+  });
+
+  it('keeps jobs that do not clash on one lane', async () => {
+    mockGetCalendar.mockResolvedValue(answer([
+      entry({ key: 'a', start: '2026-02-01', end: '2026-03-01' }),
+      entry({ key: 'b', start: '2026-09-01', end: '2026-10-01' }),
+    ]));
+
+    render(<YearRibbon year={2026} />);
+
+    await waitFor(() => expect(screen.getAllByTestId('year-bar')).toHaveLength(2));
+    expect(screen.getAllByTestId('year-lane')).toHaveLength(1);
+  });
+
+  it('shows the whole title on hover, which is the only place it fits', async () => {
+    // A three-week job is about six percent of the ribbon: room for an icon and a syllable.
+    mockGetCalendar.mockResolvedValue(answer([entry()]));
+    render(<YearRibbon year={2026} />);
+    await waitFor(() => expect(screen.getByTestId('year-bar')).toBeInTheDocument());
+
+    expect(screen.queryByTestId('year-tip')).not.toBeInTheDocument();
+    fireEvent.mouseEnter(screen.getByTestId('year-bar'));
+
+    expect(screen.getByTestId('year-tip')).toHaveTextContent('Swarm control');
+  });
+
+  it('shows it on focus too, so it is not a thing only a mouse can reach', async () => {
+    mockGetCalendar.mockResolvedValue(answer([entry()]));
+    render(<YearRibbon year={2026} />);
+    await waitFor(() => expect(screen.getByTestId('year-bar')).toBeInTheDocument());
+
+    fireEvent.focus(screen.getByTestId('year-bar'));
+    expect(screen.getByTestId('year-tip')).toBeInTheDocument();
+
+    fireEvent.blur(screen.getByTestId('year-bar'));
+    expect(screen.queryByTestId('year-tip')).not.toBeInTheDocument();
+  });
+
   it('says so when the year cannot be loaded', async () => {
     mockGetCalendar.mockRejectedValue(new Error('nope'));
 
