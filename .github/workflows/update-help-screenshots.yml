@@ -12,7 +12,8 @@ name: Update help page screenshots
 #                     were taken from — so the "stale" notice goes away when it is merged.
 #
 # Runs after every green CI on main (it costs nothing when nothing changed) and on demand. The store sets
-# (five languages each) stay workflow artifacts: the store listings are uploaded by hand.
+# (five languages each) stay workflow artifacts; "Play Metadata" and "App Store Metadata" take them from
+# here with screenshots_run_id: latest, so no picture is dragged into a console.
 
 on:
   workflow_dispatch:

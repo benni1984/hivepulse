@@ -25,8 +25,20 @@ on:
         required: true
         default: true
         type: boolean
+      screenshots:
+        description: 'Which pictures to send'
+        required: true
+        default: latest
+        type: choice
+        options:
+          # Newest successful "Android Store Screenshots" run — the normal choice.
+          - latest
+          # Change the texts only and leave the pictures in the console as they are.
+          - keep
+          # Take the run typed into screenshots_run_id below.
+          - run_id
       screenshots_run_id:
-        description: '"latest", or the run ID of an "Android Store Screenshots" run. Empty leaves the screenshots alone.'
+        description: 'Only read when "Which pictures to send" is run_id: the ID of a successful "Android Store Screenshots" run.'
         required: false
         default: ''
         type: string
@@ -48,7 +60,8 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       DRY_RUN: ${{ inputs.dry_run }}
-      SHOTS_RUN: ${{ inputs.screenshots_run_id }}
+      SHOTS: ${{ inputs.screenshots }}
+      SHOTS_INPUT: ${{ inputs.screenshots_run_id }}
       PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
 
     steps:
@@ -70,21 +83,38 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
         shell: bash
 
-      # "latest" saves looking the run up in the Actions tab and pasting its number, which is
-      # the last thing about this that was still done by hand.
-      - name: Find the screenshot run
-        if: env.SHOTS_RUN != ''
+      # A dropdown, because the three things anybody ever wanted here are "the newest ones",
+      # "do not touch them" and "that particular run". GitHub cannot list run IDs in a choice, so
+      # the ID keeps its own field.
+      #
+      # Both branches ask for the artefact, not for a workflow name. "Android Store Screenshots" normally runs as a
+      # workflow_call from "Update help page screenshots", and a called workflow gets no run entry
+      # of its own, so `gh run list --workflow` only ever saw the last run somebody dispatched by
+      # hand. On 2026-11-03 that silently sent a month-old set of pictures to the store while a
+      # fresh one sat in the run from the same morning. What matters is which run holds the
+      # pictures, so that is what is looked up.
+      - name: Decide which pictures to send
         run: |
-          if [ "$SHOTS_RUN" = "latest" ]; then
-            SHOTS_RUN=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "Android Store Screenshots" \
-              --status success --limit 1 --json databaseId --jq '.[0].databaseId')
-            test -n "$SHOTS_RUN" || { echo "::error::no successful \"Android Store Screenshots\" run to take screenshots from"; exit 1; }
-            echo "Using run $SHOTS_RUN"
-          fi
-          echo "SHOTS_RUN=$SHOTS_RUN" >> "$GITHUB_ENV"
+          case "$SHOTS" in
+            keep)
+              echo 'Texts only - the pictures in the console stay as they are.'
+              RUN=''
+              ;;
+            latest)
+              RUN=$(gh api -X GET "repos/$GITHUB_REPOSITORY/actions/artifacts" -f name=play-screenshots-en -f per_page=30 --jq 'first(.artifacts[] | select(.expired == false) | .workflow_run.id) // empty')
+              test -n "$RUN" || { echo "::error::no unexpired 'play-screenshots-en' artefact anywhere - run 'Update help page screenshots' first"; exit 1; }
+              echo "Newest run holding the pictures: $RUN"
+              ;;
+            run_id)
+              RUN="$SHOTS_INPUT"
+              test -n "$RUN" || { echo "::error::'run_id' was chosen, so screenshots_run_id has to hold one"; exit 1; }
+              FOUND=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN/artifacts" --jq 'first(.artifacts[] | select(.name == "play-screenshots-en" and .expired == false) | .name) // empty')
+              test -n "$FOUND" || { echo "::error::run $RUN has no unexpired 'play-screenshots-en' artefact - wrong run, or its artefacts have aged out"; exit 1; }
+              echo "Run $RUN holds the pictures"
+              ;;
+          esac
+          echo "SHOTS_RUN=$RUN" >> "$GITHUB_ENV"
 
-      # The screenshot workflow names its artifacts by the short language code; the Play API wants
-      # the full locale, which is also what build_play_metadata.py writes its folders as.
       - name: Fetch the screenshots
         if: env.SHOTS_RUN != ''
         run: |

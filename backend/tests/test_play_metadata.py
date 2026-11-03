@@ -9,6 +9,7 @@ import importlib.util
 from pathlib import Path
 
 import pytest
+import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 BUILDER = ROOT / "scripts" / "build_play_metadata.py"
@@ -161,12 +162,53 @@ def test_the_workflow_fetches_the_screenshots_of_every_language():
     assert "for lang in en de fr es pl; do" in text
 
 
-def test_the_workflow_can_take_the_newest_screenshot_run():
-    # Pasting a run ID from the Actions tab was the last step still done by hand.
+def test_the_pictures_are_chosen_from_a_dropdown_not_a_magic_word():
+    """"latest" and "leave them alone" used to be a word, or nothing, typed into a free-text box:
+    the two normal choices were the two easiest to get wrong, and an empty field silently meant
+    "change the texts only" rather than "I forgot". GitHub cannot list run IDs in a choice, so the
+    ID keeps its own field."""
+    spec = yaml.safe_load(WORKFLOW.read_text(encoding="utf-8"))
+    picker = spec[True]["workflow_dispatch"]["inputs"]["screenshots"]
+
+    assert picker["type"] == "choice"
+    assert picker["options"] == ["latest", "keep", "run_id"]
+    assert picker["default"] == "latest"
+
+    names = [step.get("name") for step in list(spec["jobs"].values())[0]["steps"]]
+    assert names.index("Decide which pictures to send") < names.index("Fetch the screenshots")
+
+
+def test_every_dropdown_choice_is_handled_and_each_leaves_the_run_set():
     text = WORKFLOW.read_text(encoding="utf-8")
-    assert 'if [ "$SHOTS_RUN" = "latest" ]' in text
-    assert '--workflow "Android Store Screenshots"' in text
-    assert text.index("Find the screenshot run") < text.index("Fetch the screenshots")
+    for choice in ("keep)", "latest)", "run_id)"):
+        assert choice in text, choice
+    # Every branch has to leave SHOTS_RUN set, because the steps after it are gated on it.
+    assert text.count('echo "SHOTS_RUN=$RUN" >> "$GITHUB_ENV"') == 1
+
+
+def test_latest_looks_for_the_artefact_not_for_a_workflow_name():
+    """The screenshot workflow normally runs as a workflow_call from "Update help page
+    screenshots", and a called workflow gets no run entry of its own. Asking
+    `gh run list --workflow` therefore only ever found the last run somebody dispatched by hand:
+    on 2026-11-03 it sent a month-old set to the store while a fresh one sat in the run from the
+    same morning. The run that holds the pictures is the one worth finding."""
+    text = WORKFLOW.read_text(encoding="utf-8")
+
+    assert "actions/artifacts" in text
+    assert "-f name=play-screenshots-en" in text
+    assert "select(.expired == false)" in text
+    assert "--workflow '" not in text, "back to resolving by workflow name"
+
+
+def test_a_typed_run_id_is_checked_before_anything_is_downloaded():
+    """A pasted number used to be taken on faith: the wrong one failed four artifact downloads
+    later. It is checked for the thing that actually matters — that the run still holds the
+    pictures — rather than for its workflow's name."""
+    text = WORKFLOW.read_text(encoding="utf-8")
+
+    check = text.index('actions/runs/$RUN/artifacts')
+    assert 'select(.name == "play-screenshots-en" and .expired == false)' in text
+    assert check < text.index("Fetch the screenshots")
 
 
 def test_the_workflow_creates_build_before_tee_writes_into_it():
