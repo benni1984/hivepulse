@@ -10,7 +10,16 @@
  * width and on a wide screen without re-measuring anything.
  */
 import type { CalendarEntry, CalendarCategory } from './api';
-import { seasonOfMonth } from '@/components/year/SeasonScenery';
+
+export type Season = 'winter' | 'spring' | 'summer' | 'autumn';
+
+/** Which season a month belongs to, as a beekeeper would divide the year. */
+export function seasonOfMonth(month: number): Season {
+  if (month <= 2 || month === 12) return 'winter';
+  if (month <= 5) return 'spring';
+  if (month <= 8) return 'summer';
+  return 'autumn';
+}
 
 /** The order the rows appear in: roughly the order a beekeeper meets them through the year. */
 export const RIBBON_CATEGORIES: CalendarCategory[] = [
@@ -35,7 +44,7 @@ export interface Row {
 }
 
 export interface SeasonSegment {
-  season: 'winter' | 'spring' | 'summer' | 'autumn';
+  season: Season;
   /** First and last month of the run, 1-based and inclusive. */
   fromMonth: number;
   toMonth: number;

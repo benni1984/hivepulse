@@ -35,8 +35,18 @@ function answer(entries: CalendarEntry[], today = '2026-05-15'): CalendarWindow 
   return { region: REGION, today, start: '2025-12-15', end: '2027-01-15', entries };
 }
 
+/** jsdom implements no layout, so the component's media query has to be answered here. */
+function atWidth(wide: boolean) {
+  window.matchMedia = ((query: string) => ({
+    matches: wide, media: query, onchange: null,
+    addEventListener: () => {}, removeEventListener: () => {},
+    addListener: () => {}, removeListener: () => {}, dispatchEvent: () => false,
+  })) as unknown as typeof window.matchMedia;
+}
+
 beforeEach(() => {
   mockGetCalendar.mockReset();
+  atWidth(true);
 });
 
 describe('the year ribbon', () => {
@@ -123,18 +133,63 @@ describe('the year ribbon', () => {
     expect(screen.queryByTestId('year-today')).not.toBeInTheDocument();
   });
 
-  it('keeps the scenery out of the accessibility tree', async () => {
-    // It is decoration: it carries nothing the bars and labels do not already say, so reading it
-    // aloud would only be noise between the rows.
+  it('keeps the season tints and the icons out of the accessibility tree', async () => {
+    // The tint says nothing the month labels do not; each icon sits next to the title it
+    // illustrates. Reading either aloud would only be noise between the rows.
     mockGetCalendar.mockResolvedValue(answer([entry()]));
     const { container } = render(<YearRibbon year={2026} />);
     await waitFor(() => expect(screen.getByTestId('year-bar')).toBeInTheDocument());
 
-    const scenes = container.querySelector('.dash-year-scenes');
-    expect(scenes).toHaveAttribute('aria-hidden', 'true');
-    container.querySelectorAll('svg').forEach(svg => {
-      expect(svg).toHaveAttribute('aria-hidden', 'true');
-    });
+    expect(container.querySelector('.dash-year-seasons')).toHaveAttribute('aria-hidden', 'true');
+    const icons = container.querySelectorAll('svg');
+    expect(icons.length).toBeGreaterThan(0);
+    icons.forEach(svg => expect(svg).toHaveAttribute('aria-hidden', 'true'));
+  });
+
+  it('gives every entry its own picture, so the job is readable without the text', async () => {
+    mockGetCalendar.mockResolvedValue(answer([
+      entry(),
+      entry({ key: 'oxalic-acid', category: 'varroa', start: '2026-11-25', end: '2026-12-31' }),
+    ]));
+    const { container } = render(<YearRibbon year={2026} />);
+
+    await waitFor(() => expect(screen.getAllByTestId('year-bar')).toHaveLength(2));
+    expect(container.querySelectorAll('.dash-year-bar-icon')).toHaveLength(2);
+    // Two different jobs under one category must not share one glyph.
+    const [first, second] = [...container.querySelectorAll('.dash-year-bar-icon')]
+      .map(svg => svg.innerHTML);
+    expect(first).not.toBe(second);
+  });
+
+  it('builds only one layout, never the year twice over', async () => {
+    mockGetCalendar.mockResolvedValue(answer([entry()]));
+    render(<YearRibbon year={2026} />);
+    await waitFor(() => expect(screen.getByTestId('year-bar')).toBeInTheDocument());
+
+    expect(screen.queryByTestId('year-vlist')).not.toBeInTheDocument();
+  });
+
+  it('runs the year down the screen on a phone instead of squeezing the ribbon', async () => {
+    // Twelve months across 360 pixels is thirty pixels a month. The ribbon is not made narrower
+    // on a phone; it is not used.
+    atWidth(false);
+    mockGetCalendar.mockResolvedValue(answer([entry()]));
+    render(<YearRibbon year={2026} />);
+
+    await waitFor(() => expect(screen.getByTestId('year-vlist')).toBeInTheDocument());
+    expect(screen.queryByTestId('year-bar')).not.toBeInTheDocument();
+    expect(screen.getByTestId('year-vitem')).toBeInTheDocument();
+  });
+
+  it('opens the entry next to what was tapped on a phone', async () => {
+    atWidth(false);
+    mockGetCalendar.mockResolvedValue(answer([entry()]));
+    render(<YearRibbon year={2026} />);
+    await waitFor(() => expect(screen.getByTestId('year-vitem')).toBeInTheDocument());
+
+    fireEvent.click(screen.getByTestId('year-vitem'));
+
+    expect(screen.getByTestId('year-detail')).toHaveTextContent('Swarm control');
   });
 
   it('makes every bar a button, so the ribbon works from a keyboard', async () => {
