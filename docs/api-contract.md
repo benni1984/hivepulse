@@ -19,14 +19,15 @@ All endpoints require `Authorization: Bearer <access_token>` unless marked **pub
 9. [Inspections](#inspections)
 10. [Home Summary](#home-summary)
 11. [Planned Treatments](#planned-treatments)
-12. [Moving Hives](#moving-hives)
-13. [Sharing](#sharing)
-14. [Stats](#stats)
-15. [Public Dashboard](#public-dashboard)
-16. [Hornet Tracker](#hornet-tracker)
-17. [Admin](#admin)
-18. [Object Reference](#object-reference)
-19. [Error Codes](#error-codes)
+12. [Beekeeping Year](#beekeeping-year)
+13. [Moving Hives](#moving-hives)
+14. [Sharing](#sharing)
+15. [Stats](#stats)
+16. [Public Dashboard](#public-dashboard)
+17. [Hornet Tracker](#hornet-tracker)
+18. [Admin](#admin)
+19. [Object Reference](#object-reference)
+20. [Error Codes](#error-codes)
 
 ---
 
@@ -980,6 +981,120 @@ the previous one when they scroll up. `interval_days` is set for a task that rep
 control: 9). `honey` is a forage key (`rapeseed`, `acacia`, `linden`, `chestnut`, `fir`, `heather`,
 `sunflower`, `lavender`) when the entry is about one kind of honey. `category` is one of `inspection`,
 `swarm`, `feeding`, `varroa`, `harvest`, `migration`, `bloom`, `care`, `winter`.
+
+### The questionnaire — why it exists
+
+The 35 entries and their dates were written once, for central Germany, and moved elsewhere by a
+formula. Nobody has checked them against what beekeepers in those places actually do. The
+questionnaire collects that, from anybody, without an account — a beekeeper who is asked to rate a
+calendar should not have to register first — and the answers turn into corrections an admin
+approves.
+
+What is stored is deliberately thin: the country, a position **rounded to one decimal place**
+(about 11 km, enough for a region and too coarse for an apiary), optionally the years of
+experience, and the ratings. No name, no address, no exact postal code, no account link. The
+postal code is looked up once and then dropped.
+
+### GET `/public/calendar`
+
+The same timeline as `GET /calendar`, without a token, so the questionnaire can show what it asks
+about. No `from`/`days` window: it returns every entry of one reference year, which is what a
+questionnaire rates.
+
+Query: `lang` (`en`, `de`, `fr`, `es`, `pl`; default `Accept-Language`), `country` (two letters) and
+`postal_code` — both optional, and given together they shift the dates to that place so the
+beekeeper rates the dates they would actually see.
+
+```json
+{
+  "shift_days": 15,
+  "located": true,
+  "entries": [
+    { "key": "winter-rest", "category": "winter", "title": "string", "body": "string",
+      "start": "2026-01-01", "end": "2026-02-10", "interval_days": null, "honey": null }
+  ]
+}
+```
+
+`located` is `false` when a country and postal code were given but could not be looked up; the
+dates are then unshifted and a client should say so. There is no `region` object and no `active`
+flag — nobody is signed in, and the questionnaire is not a calendar.
+
+### POST `/public/calendar/feedback`
+
+```json
+{
+  "country": "DE",
+  "postal_code": "20095",
+  "device_id": "a client-generated opaque string, at least 16 characters",
+  "years_keeping": 12,
+  "ratings": [
+    { "key": "winter-rest", "verdict": "fits" },
+    { "key": "candy-feeding", "verdict": "too_early", "shift_days": -7, "note": "Usually mid-February here." }
+  ]
+}
+```
+
+`country` and `postal_code` are **required** — a rating without a place cannot be weighted and is
+worth nothing. `device_id` is required and is hashed before it is stored; it is what makes a
+second submission from the same browser replace the first instead of counting twice.
+`years_keeping` is optional, 0 to 80.
+
+`ratings` holds 1 to 60 entries. `key` must be one of the keys `GET /public/calendar` returned.
+`verdict` is one of:
+
+| verdict | meaning |
+|---|---|
+| `fits` | the dates match what the beekeeper does |
+| `too_early` | it happens later there |
+| `too_late` | it happens earlier there |
+| `wrong` | the entry does not apply there at all |
+
+`shift_days` (-120 to 120) is optional and only meaningful with `too_early` or `too_late`; it is
+the correction the beekeeper proposes. `note` is optional free text, at most 500 characters, and
+is shown to admins only — never to other users.
+
+Response `201`:
+
+```json
+{ "accepted": 12, "replaced": 3, "located": true }
+```
+
+`replaced` counts the entries this device had already rated. `located` is `false` when the postal
+code could not be looked up — the ratings are then **rejected**, because an unplaceable rating is
+the one thing this endpoint cannot use:
+
+```json
+{ "error": { "code": "POSTAL_CODE_NOT_FOUND", "message": "…" } }
+```
+
+Rate limited to 5 submissions per hour per client address.
+
+### How ratings become proposals
+
+Nothing a beekeeper submits changes what anybody sees. A background aggregation groups the ratings
+of one entry by place and offers the result to the admins:
+
+- ratings for the same entry within **150 km** of each other form a group;
+- a group needs at least **5** ratings before it is offered at all;
+- the proposed correction is the **median** of the submitted `shift_days` of the `too_early` and
+  `too_late` ratings in that group, so one strong opinion cannot carry it;
+- a group whose majority says `wrong` proposes hiding the entry in that region instead.
+
+Only an admin decision has an effect. See [Admin](#admin) for the queue.
+
+### GET `/calendar` and the approved corrections
+
+An approved correction is applied on top of `shift_days`, per entry, for callers whose position is
+inside its radius. A calendar entry therefore gains two fields:
+
+```json
+{ "key": "candy-feeding", "regional_shift_days": -7, "rating_count": 11 }
+```
+
+`regional_shift_days` is 0 when no approved correction covers the caller's place. `rating_count` is
+how many ratings the approved correction rests on, so a client can say *"11 beekeepers in your
+region put this a week earlier"*. An entry hidden for a region is left out of `entries` entirely.
 
 ---
 
@@ -2159,6 +2274,63 @@ Permanently deletes the user and all their apiaries, hives, and inspections.
 **Response 204** No Content
 
 ---
+
+### Beekeeping-year proposals
+
+The questionnaire (see [Beekeeping Year](#beekeeping-year)) collects ratings from beekeepers with no
+account. They never change a date by themselves: they are grouped per entry and region and wait
+here for a decision.
+
+#### GET `/admin/year-proposals`
+
+Query: `status` (`pending`, `approved`, `rejected`, `all`; default `pending`).
+
+```json
+[
+  {
+    "id": "uuid",
+    "entry_key": "candy-feeding",
+    "entry_title": "Feed candy if the stores run low",
+    "kind": "shift",
+    "shift_days": -7,
+    "rating_count": 11,
+    "latitude": 53.5,
+    "longitude": 10.0,
+    "radius_km": 150,
+    "country": "DE",
+    "verdict_counts": { "fits": 2, "too_early": 8, "too_late": 1, "wrong": 0 },
+    "shift_days_range": [-14, -3],
+    "notes": ["Usually mid-February here."],
+    "status": "pending",
+    "created_at": "2026-11-03T10:00:00Z",
+    "decided_at": null
+  }
+]
+```
+
+`kind` is `shift` (move the entry by `shift_days`) or `hide` (the entry does not apply in that
+region; `shift_days` is then null). `notes` holds the free-text notes of that group, for reading —
+they are not shown to users anywhere. `shift_days_range` is the smallest and largest correction in
+the group, so an admin can see how much the beekeepers disagree before approving the median.
+
+#### POST `/admin/year-proposals/recompute`
+
+Groups the ratings again and creates proposals that do not exist yet. Existing `approved` and
+`rejected` proposals are left alone, so a decision is never undone by a recompute; a `pending`
+proposal whose group has changed is updated in place.
+
+```json
+{ "created": 3, "updated": 1, "unchanged": 7 }
+```
+
+#### POST `/admin/year-proposals/{id}/approve`, `/reject`
+
+Takes an optional body `{ "shift_days": -5 }` on approve, to approve a different correction than
+the proposed median — an admin who knows the region may overrule it. Returns the proposal.
+
+An approved proposal takes effect immediately for every caller of `GET /calendar` whose position is
+inside its radius. Rejecting is not deleting: the proposal stays, so the same group is not offered
+again at the next recompute.
 
 ## Object Reference
 
