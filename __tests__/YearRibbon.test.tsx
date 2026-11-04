@@ -250,6 +250,77 @@ describe('the year ribbon', () => {
     expect(screen.queryByTestId('year-tip')).not.toBeInTheDocument();
   });
 
+  it('puts the photograph of the job in the tooltip, with the credit its licence asks for', async () => {
+    // A capped queen cell is a thing you recognise or you do not; a drawing of one in a
+    // twelve-pixel icon is a hint, the photograph is the answer.
+    mockGetCalendar.mockResolvedValue(answer([entry({ key: 'swarm-control' })]));
+    render(<YearRibbon year={2026} />);
+    await waitFor(() => expect(screen.getByTestId('year-bar')).toBeInTheDocument());
+
+    fireEvent.mouseEnter(screen.getByTestId('year-bar'));
+
+    const tip = screen.getByTestId('year-tip');
+    const photo = tip.querySelector('img');
+    expect(photo).toHaveAttribute('src', '/year/swarm-control.webp');
+    // Decorative: the title is right beside it and would otherwise be read out twice.
+    expect(photo).toHaveAttribute('alt', '');
+    expect(tip).toHaveTextContent('calendar.photoCredit');
+  });
+
+  it('leaves the tooltip picture out for a job that has none', async () => {
+    mockGetCalendar.mockResolvedValue(answer([entry({ key: 'candy-feeding' })]));
+    render(<YearRibbon year={2026} />);
+    await waitFor(() => expect(screen.getByTestId('year-bar')).toBeInTheDocument());
+
+    fireEvent.mouseEnter(screen.getByTestId('year-bar'));
+
+    const tip = screen.getByTestId('year-tip');
+    expect(tip.querySelector('img')).toBeNull();
+    expect(tip).toHaveTextContent('Swarm control');
+    expect(tip).not.toHaveTextContent('calendar.photoCredit');
+  });
+
+  it('shows the photograph in the phone list too, where there is no hover at all', async () => {
+    atWidth(false);
+    mockGetCalendar.mockResolvedValue(answer([entry({ key: 'migrate-linden' })]));
+    render(<YearRibbon year={2026} />);
+    await waitFor(() => expect(screen.getByTestId('year-vitem')).toBeInTheDocument());
+
+    const thumb = screen.getByTestId('year-vitem').querySelector('img');
+    // The small square copy, not the photograph: the tile is 52 pixels and the list has
+    // thirty of them, which is a megabyte of someone's mobile data for nothing.
+    expect(thumb).toHaveAttribute('src', '/year/thumbs/migrate-linden.webp');
+    expect(thumb).toHaveAttribute('loading', 'lazy');
+  });
+
+  it('keeps the drawn icon in the list for a job without a photograph', async () => {
+    atWidth(false);
+    mockGetCalendar.mockResolvedValue(answer([entry({ key: 'candy-feeding' })]));
+    render(<YearRibbon year={2026} />);
+    await waitFor(() => expect(screen.getByTestId('year-vitem')).toBeInTheDocument());
+
+    const item = screen.getByTestId('year-vitem');
+    expect(item.querySelector('img')).toBeNull();
+    expect(item.querySelector('svg')).toBeInTheDocument();
+  });
+
+  it('credits the photographer where a touch screen can actually read it', async () => {
+    // There is no hover on a phone, so the tooltip credit never appears there. The open entry
+    // is the one place the licence is legible, and it links back to the original.
+    atWidth(false);
+    mockGetCalendar.mockResolvedValue(answer([entry({ key: 'swarm-control' })]));
+    render(<YearRibbon year={2026} />);
+    await waitFor(() => expect(screen.getByTestId('year-vitem')).toBeInTheDocument());
+
+    fireEvent.click(screen.getByTestId('year-vitem'));
+
+    const detail = screen.getByTestId('year-detail');
+    expect(detail.querySelector('img')).toHaveAttribute('src', '/year/swarm-control.webp');
+    const link = detail.querySelector('figcaption a');
+    expect(link).toHaveAttribute('href', expect.stringContaining('commons.wikimedia.org'));
+    expect(link).toHaveTextContent('calendar.photoCredit');
+  });
+
   it('says so when the year cannot be loaded', async () => {
     mockGetCalendar.mockRejectedValue(new Error('nope'));
 

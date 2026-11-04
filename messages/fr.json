@@ -869,6 +869,7 @@
       "viewListHint": "Ce qu’il faut faire maintenant, mois par mois",
       "viewRibbonHint": "Toute l’année en une image",
       "closeEntry": "Fermer",
+      "photoCredit": "Photo : {author} · {licence}",
       "regionalShift": "{count, plural, one {# apiculteur} other {# apiculteurs}} près de vous placent cela {days, plural, one {# jour} other {# jours}} autrement, et c’est pris en compte ici.",
       "ribbonEmpty": "Rien à afficher pour cette année.",
       "categories": {

@@ -6,6 +6,7 @@ import { isKnownForage } from '@/lib/moves';
 import {
   type Bar, monthColumns, rowsFor, seasonSegments, todayPosition,
 } from '@/lib/yearRibbon';
+import { photoFor, type YearPhoto } from '@/lib/yearPhotos';
 import EntryIcon from './EntryIcon';
 
 /**
@@ -24,6 +25,11 @@ import EntryIcon from './EntryIcon';
  *
  * Nothing here loops or drifts. The pictures carry information, and information that moves is
  * harder to read.
+ *
+ * Most jobs also have a photograph of the thing itself -- the flower in bloom, a capped queen
+ * cell, a mite on a bee. The drawn icon says which job this is in the width of a bar; the
+ * photograph says what you are looking for once there is room to show it. Jobs without one
+ * keep the icon alone, and every layout below is built to leave a missing picture out.
  */
 const RIBBON_FROM = '(min-width: 768px)';
 
@@ -130,6 +136,13 @@ export default function YearRibbon({ year }: { year: number }) {
     return isKnownForage(key) ? t(`moves.forages.${key}`) : key;
   }
 
+  // Attribution is not decoration: nearly every photograph is CC BY or CC BY-SA, and the
+  // name and licence are the whole of what those ask in return.
+  const credit = (photo: YearPhoto) =>
+    t('calendar.photoCredit', { author: photo.author, licence: photo.licence });
+  const hoverPhoto = hover ? photoFor(hover.bar.entry.key) : undefined;
+  const openPhoto = open ? photoFor(open.entry.key) : undefined;
+
   if (error) return <div className="dash-error-banner">{t('calendar.loadError')}</div>;
   if (loading) return <div className="dash-panel-spinner" aria-label={t('calendar.loading')} />;
 
@@ -150,6 +163,17 @@ export default function YearRibbon({ year }: { year: number }) {
         <button type="button" className="dash-year-detail-close" onClick={() => setOpen(null)}
                 aria-label={t('calendar.closeEntry')}>×</button>
       </div>
+      {openPhoto && (
+        <figure className="dash-year-detail-photo">
+          {/* No alt text: the title sits beside it and a screen reader would read it twice. */}
+          <img src={openPhoto.file} alt="" width={640} height={427} />
+          <figcaption>
+            <a href={openPhoto.source} target="_blank" rel="noreferrer noopener">
+              {credit(openPhoto)}
+            </a>
+          </figcaption>
+        </figure>
+      )}
       <h3>{open.entry.title}</h3>
       <p>{open.entry.body}</p>
       {open.entry.rating_count > 0 && (
@@ -198,7 +222,10 @@ export default function YearRibbon({ year }: { year: number }) {
                 data-testid="year-vitem"
               >
                 <span className="dash-year-vicon">
-                  <EntryIcon entryKey={bar.entry.key} category={bar.entry.category} />
+                  {photoFor(bar.entry.key)
+                    ? <img className="dash-year-vphoto" src={photoFor(bar.entry.key)!.thumb}
+                           alt="" width={128} height={128} loading="lazy" />
+                    : <EntryIcon entryKey={bar.entry.key} category={bar.entry.category} />}
                 </span>
                 <span className="dash-year-vtext">
                   <span className="dash-year-vdates">
@@ -303,10 +330,17 @@ export default function YearRibbon({ year }: { year: number }) {
           role="presentation"
           data-testid="year-tip"
         >
+          {hoverPhoto && (
+            <img className="dash-year-tip-photo" src={hoverPhoto.file} alt=""
+                 width={640} height={427} />
+          )}
           <span className="dash-year-tip-dates">
             {shortDay(hover.bar.entry.start)} – {shortDay(hover.bar.entry.end)}
           </span>
           <span className="dash-year-tip-title">{hover.bar.entry.title}</span>
+          {hoverPhoto && (
+            <span className="dash-year-tip-credit">{credit(hoverPhoto)}</span>
+          )}
         </div>
       )}
 

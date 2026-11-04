@@ -869,6 +869,7 @@
       "viewListHint": "Was jetzt zu tun ist, Monat für Monat",
       "viewRibbonHint": "Das ganze Jahr in einem Bild",
       "closeEntry": "Schließen",
+      "photoCredit": "Foto: {author} · {licence}",
       "regionalShift": "{count, plural, one {# Imker} other {# Imker}} in deiner Nähe legen das {days, plural, one {# Tag} other {# Tage}} anders, und das ist hier berücksichtigt.",
       "ribbonEmpty": "Für dieses Jahr ist nichts anzuzeigen.",
       "categories": {

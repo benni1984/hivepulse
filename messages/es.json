@@ -869,6 +869,7 @@
       "viewListHint": "Qué hacer ahora, mes a mes",
       "viewRibbonHint": "Todo el año en una imagen",
       "closeEntry": "Cerrar",
+      "photoCredit": "Foto: {author} · {licence}",
       "regionalShift": "{count, plural, one {# apicultor} other {# apicultores}} cerca de ti lo sitúan {days, plural, one {# día} other {# días}} antes o después, y aquí ya está aplicado.",
       "ribbonEmpty": "No hay nada que mostrar para este año.",
       "categories": {
