@@ -51,8 +51,18 @@ export const RIBBON_ROWS: RibbonRow[] = [
 ];
 
 export interface Bar {
-  /** The entry this bar draws, so a click can show it. */
+  /** The entry this bar draws, so a click can show it. For a forage, the move. */
   entry: CalendarEntry;
+  /**
+   * The harvest of this forage, drawn as the tail of the same bar.
+   *
+   * A move and its harvest are one plant: you drive to the rape, and three weeks later you
+   * spin it. As two bars they landed on different lanes and the sequence was something you
+   * had to reconstruct; as one bar it is the shape of the thing.
+   */
+  harvest?: CalendarEntry;
+  /** Where the harvest begins, in percent of this bar's own width. */
+  split?: number;
   /** Distance from the left edge of the ribbon, in percent. */
   left: number;
   /** Width, in percent. Never zero: a one-day entry still has to be clickable. */
@@ -110,11 +120,12 @@ export function dayOffset(iso: string, year: number): number {
  * An entry that reaches past either edge is cut at the edge and says so, rather than being
  * dropped or drawn overflowing: "winter rest" genuinely does start before January.
  */
-export function barFor(entry: CalendarEntry, year: number): Bar | null {
+export function barFor(entry: CalendarEntry, year: number, harvest?: CalendarEntry): Bar | null {
   const total = daysInYear(year);
   const rawStart = dayOffset(entry.start, year);
   // Inclusive end: an entry that ends on the day it starts is one day long, not zero.
-  const rawEnd = dayOffset(entry.end, year) + 1;
+  // A forage runs to the end of its harvest, which is always the later of the two.
+  const rawEnd = dayOffset(harvest ? harvest.end : entry.end, year) + 1;
   if (rawEnd <= 0 || rawStart >= total) return null;
 
   const start = Math.max(0, rawStart);
@@ -122,13 +133,47 @@ export function barFor(entry: CalendarEntry, year: number): Bar | null {
   // A single day is about 0.27% of a year, too thin to hit with a finger; the floor is what makes
   // every bar reachable.
   const width = Math.max(1.1, ((end - start) / total) * 100);
-  return {
+  const bar: Bar = {
     entry,
     left: (start / total) * 100,
     width: Math.min(width, 100 - (start / total) * 100),
     clippedStart: rawStart < 0,
     clippedEnd: rawEnd > total,
   };
+  if (harvest && end > start) {
+    const at = Math.max(0, Math.min(total, dayOffset(harvest.start, year)));
+    bar.harvest = harvest;
+    // Relative to what is actually drawn, so a bar cut off at New Year still splits in the
+    // right place rather than off its own end.
+    bar.split = Math.max(0, Math.min(100, ((at - start) / (end - start)) * 100));
+  }
+  return bar;
+}
+
+/**
+ * Moves and harvests of the same forage, brought together.
+ *
+ * Every harvest of a named forage follows its move: it starts as the flow ends and runs two to
+ * four weeks longer, so the pair is one stretch of time with two halves. A forage with no
+ * harvest entry (chestnut, lavender, sunflower) stays a single bar, and a harvest that belongs
+ * to no plant -- the last one of the season -- stays one too.
+ */
+export function pairForages(entries: CalendarEntry[]): { entry: CalendarEntry; harvest?: CalendarEntry }[] {
+  const harvests = new Map<string, CalendarEntry>();
+  for (const entry of entries) {
+    if (entry.category === 'harvest' && entry.honey) harvests.set(entry.honey, entry);
+  }
+
+  const paired = new Set<CalendarEntry>();
+  const units: { entry: CalendarEntry; harvest?: CalendarEntry }[] = [];
+  for (const entry of entries) {
+    const harvest = entry.category === 'migration' && entry.honey
+      ? harvests.get(entry.honey) : undefined;
+    if (harvest) paired.add(harvest);
+    units.push({ entry, harvest });
+  }
+  // The harvests that were folded into a move are not bars of their own any more.
+  return units.filter(unit => !paired.has(unit.entry));
 }
 
 /**
@@ -143,11 +188,16 @@ export function rowsFor(entries: CalendarEntry[], year: number): Row[] {
   const byRow = new Map<RibbonRow, Bar[]>();
   const seen = new Set<string>();
 
+  const once: CalendarEntry[] = [];
   for (const entry of entries) {
     const identity = `${entry.key}:${entry.start}:${entry.end}`;
     if (seen.has(identity)) continue;
     seen.add(identity);
-    const bar = barFor(entry, year);
+    once.push(entry);
+  }
+
+  for (const { entry, harvest } of pairForages(once)) {
+    const bar = barFor(entry, year, harvest);
     if (bar === null) continue;
     const row = ROW_OF[entry.category] ?? entry.category;
     const bars = byRow.get(row) ?? [];

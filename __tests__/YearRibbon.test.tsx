@@ -332,10 +332,65 @@ describe('the year ribbon', () => {
 
     render(<YearRibbon year={2026} />);
 
-    await waitFor(() => expect(screen.getAllByTestId('year-bar')).toHaveLength(3));
+    // Two bars, not three: the move and the harvest of the rape are one.
+    await waitFor(() => expect(screen.getAllByTestId('year-bar')).toHaveLength(2));
     const rows = screen.getAllByTestId('year-row');
     expect(rows).toHaveLength(1);
     expect(rows[0]).toHaveTextContent('calendar.rows.forage');
+  });
+
+  it('names a forage bar after the plant and marks where the harvest begins', async () => {
+    mockGetCalendar.mockResolvedValue(answer([
+      entry({ key: 'migrate-rapeseed', category: 'migration', honey: 'rapeseed',
+              title: 'Rape: move to the field', start: '2026-04-15', end: '2026-05-05' }),
+      entry({ key: 'harvest-rapeseed', category: 'harvest', honey: 'rapeseed',
+              title: 'Rape honey: spin it at once', start: '2026-05-15', end: '2026-06-05' }),
+    ]));
+
+    render(<YearRibbon year={2026} />);
+
+    await waitFor(() => expect(screen.getByTestId('year-bar')).toBeInTheDocument());
+    const bar = screen.getByTestId('year-bar');
+    // The plant, not the job: the two jobs are in the tooltip and in the open entry.
+    expect(bar).toHaveTextContent('moves.forageNames.rapeseed');
+    expect(bar.className).toContain('dash-year-bar-paired');
+    expect(bar.getAttribute('style')).toContain('--split');
+  });
+
+  it('tells both halves of a forage in the tooltip', async () => {
+    mockGetCalendar.mockResolvedValue(answer([
+      entry({ key: 'migrate-rapeseed', category: 'migration', honey: 'rapeseed',
+              title: 'Rape: move to the field', start: '2026-04-15', end: '2026-05-05' }),
+      entry({ key: 'harvest-rapeseed', category: 'harvest', honey: 'rapeseed',
+              title: 'Rape honey: spin it at once', start: '2026-05-15', end: '2026-06-05' }),
+    ]));
+    render(<YearRibbon year={2026} />);
+    await waitFor(() => expect(screen.getByTestId('year-bar')).toBeInTheDocument());
+
+    fireEvent.mouseEnter(screen.getByTestId('year-bar'));
+
+    const tip = screen.getByTestId('year-tip');
+    expect(tip).toHaveTextContent('Rape: move to the field');
+    expect(tip).toHaveTextContent('Rape honey: spin it at once');
+  });
+
+  it('opens both pieces of advice, because the bar is both', async () => {
+    mockGetCalendar.mockResolvedValue(answer([
+      entry({ key: 'migrate-rapeseed', category: 'migration', honey: 'rapeseed',
+              title: 'Rape: move to the field', body: 'Move at the start of the bloom.',
+              start: '2026-04-15', end: '2026-05-05' }),
+      entry({ key: 'harvest-rapeseed', category: 'harvest', honey: 'rapeseed',
+              title: 'Rape honey: spin it at once', body: 'It sets within days.',
+              start: '2026-05-15', end: '2026-06-05' }),
+    ]));
+    render(<YearRibbon year={2026} />);
+    await waitFor(() => expect(screen.getByTestId('year-bar')).toBeInTheDocument());
+
+    fireEvent.click(screen.getByTestId('year-bar'));
+
+    const detail = screen.getByTestId('year-detail');
+    expect(detail).toHaveTextContent('Move at the start of the bloom.');
+    expect(detail).toHaveTextContent('It sets within days.');
   });
 
   it('keeps each bar of that row its own colour, which is all that tells the three apart', async () => {

@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
-  LANE_GAP, RIBBON_ROWS, barFor, dayOffset, daysInYear, lanesFor, monthColumns, rowsFor,
+  LANE_GAP, RIBBON_ROWS, barFor, dayOffset, daysInYear, lanesFor, monthColumns, pairForages,
+  rowsFor,
   seasonSegments, todayPosition,
 } from '@/lib/yearRibbon';
 import type { CalendarEntry } from '@/lib/api';
@@ -121,6 +122,91 @@ describe('the rows', () => {
     ], 2026);
 
     expect(rows[0].bars.map(bar => bar.entry.category)).toEqual(['migration', 'harvest']);
+  });
+
+  it('draws a forage as one bar from the move to the end of its harvest', () => {
+    // You drive to the rape on 15 April and spin it on 5 June. That is one stretch of time
+    // with two halves, and as two bars it landed on two lanes.
+    const rows = rowsFor([
+      entry({ key: 'migrate-rapeseed', category: 'migration', honey: 'rapeseed',
+              start: '2026-04-15', end: '2026-05-05' }),
+      entry({ key: 'harvest-rapeseed', category: 'harvest', honey: 'rapeseed',
+              start: '2026-05-15', end: '2026-06-05' }),
+    ], 2026);
+
+    expect(rows[0].bars).toHaveLength(1);
+    const bar = rows[0].bars[0];
+    expect(bar.entry.key).toBe('migrate-rapeseed');
+    expect(bar.harvest?.key).toBe('harvest-rapeseed');
+    // 15 April to 5 June inclusive, not 15 April to 5 May.
+    const expected = ((dayOffset('2026-06-05', 2026) + 1 - dayOffset('2026-04-15', 2026))
+      / daysInYear(2026)) * 100;
+    expect(bar.width).toBeCloseTo(expected, 5);
+  });
+
+  it('splits that bar where the harvest begins', () => {
+    const rows = rowsFor([
+      entry({ key: 'migrate-rapeseed', category: 'migration', honey: 'rapeseed',
+              start: '2026-04-15', end: '2026-05-05' }),
+      entry({ key: 'harvest-rapeseed', category: 'harvest', honey: 'rapeseed',
+              start: '2026-05-15', end: '2026-06-05' }),
+    ], 2026);
+
+    // 30 days of the 52 the bar covers are behind it when the harvest starts.
+    expect(rows[0].bars[0].split).toBeCloseTo((30 / 52) * 100, 1);
+  });
+
+  it('leaves a forage with no harvest entry as a bar of its own', () => {
+    // Chestnut, lavender and sunflower have no harvest entry in the calendar.
+    const rows = rowsFor([
+      entry({ key: 'migrate-lavender', category: 'migration', honey: 'lavender',
+              start: '2026-06-15', end: '2026-07-31' }),
+    ], 2026);
+
+    expect(rows[0].bars).toHaveLength(1);
+    expect(rows[0].bars[0].harvest).toBeUndefined();
+    expect(rows[0].bars[0].split).toBeUndefined();
+  });
+
+  it('leaves a harvest that belongs to no plant alone', () => {
+    // The last harvest of the season is not about one forage.
+    const rows = rowsFor([
+      entry({ key: 'final-harvest', category: 'harvest', honey: null,
+              start: '2026-07-20', end: '2026-08-10' }),
+    ], 2026);
+
+    expect(rows[0].bars).toHaveLength(1);
+    expect(rows[0].bars[0].entry.key).toBe('final-harvest');
+  });
+
+  it('does not pair a harvest with a move of a different plant', () => {
+    const units = pairForages([
+      entry({ key: 'migrate-linden', category: 'migration', honey: 'linden' }),
+      entry({ key: 'harvest-heather', category: 'harvest', honey: 'heather' }),
+    ]);
+
+    expect(units).toHaveLength(2);
+    expect(units[0].harvest).toBeUndefined();
+  });
+
+  it('drops a forage pair to five lanes where three rows needed seven', () => {
+    // The whole point of the merge: fewer bars, and every plant on one line.
+    const forages = [
+      ['rapeseed', '2026-04-15', '2026-05-05', '2026-05-15', '2026-06-05'],
+      ['acacia', '2026-05-10', '2026-05-30', '2026-05-28', '2026-06-15'],
+      ['linden', '2026-06-15', '2026-07-10', '2026-07-08', '2026-07-31'],
+      ['fir', '2026-06-01', '2026-07-31', '2026-07-15', '2026-08-31'],
+      ['heather', '2026-08-01', '2026-09-10', '2026-09-05', '2026-09-30'],
+    ];
+    const entries = forages.flatMap(([honey, ms, me, hs, he]) => [
+      entry({ key: `migrate-${honey}`, category: 'migration', honey, start: ms, end: me }),
+      entry({ key: `harvest-${honey}`, category: 'harvest', honey, start: hs, end: he }),
+    ]);
+
+    const rows = rowsFor(entries, 2026);
+
+    expect(rows[0].bars).toHaveLength(5);
+    expect(rows[0].lanes.length).toBeLessThanOrEqual(3);
   });
 
   it('does not merge anything else', () => {

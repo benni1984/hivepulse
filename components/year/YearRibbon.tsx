@@ -1,5 +1,8 @@
 'use client';
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import {
+  type CSSProperties,
+  useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore,
+} from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { getCalendar, type CalendarEntry } from '@/lib/api';
 import { isKnownForage } from '@/lib/moves';
@@ -32,9 +35,10 @@ import EntryIcon from './EntryIcon';
  * keep the icon alone, and every layout below is built to leave a missing picture out.
  *
  * Bloom, migration and harvest share one row, because they are one story about one plant:
- * it flowers, you drive to it, you take the honey off. They keep their own colours inside
- * that row, and an entry that names a forage shows that plant, so the rape field runs along
- * the row from April to May and the sequence can be read in one line.
+ * it flowers, you drive to it, you take the honey off. A move and its harvest are in fact
+ * one bar -- named after the plant, the harvest drawn as its tail -- because they are one
+ * stretch of time with two halves: you drive to the rape in April and spin it in May. As
+ * two bars they landed on different lanes and that sequence had to be reconstructed.
  */
 const RIBBON_FROM = '(min-width: 768px)';
 
@@ -137,8 +141,18 @@ export default function YearRibbon({ year }: { year: number }) {
     setHover({ bar, x: box.left + box.width / 2, y: box.top });
   };
 
+  /** A forage bar is named after the plant; everything else after the job. */
+  function barLabel(bar: Bar) {
+    return bar.entry.honey ? forageLabel(bar.entry.honey) : bar.entry.title;
+  }
+
+  /** The whole stretch a bar covers, which for a forage runs to the end of its harvest. */
+  function barDates(bar: Bar) {
+    return `${shortDay(bar.entry.start)} – ${shortDay((bar.harvest ?? bar.entry).end)}`;
+  }
+
   function forageLabel(key: string) {
-    return isKnownForage(key) ? t(`moves.forages.${key}`) : key;
+    return isKnownForage(key) ? t(`moves.forageNames.${key}`) : key;
   }
 
   // Attribution is not decoration: nearly every photograph is CC BY or CC BY-SA, and the
@@ -164,7 +178,7 @@ export default function YearRibbon({ year }: { year: number }) {
             {t('calendar.interval', { days: open.entry.interval_days })}
           </span>
         )}
-        <span className="dash-cal-dates">{shortDay(open.entry.start)} – {shortDay(open.entry.end)}</span>
+        <span className="dash-cal-dates">{barDates(open)}</span>
         <button type="button" className="dash-year-detail-close" onClick={() => setOpen(null)}
                 aria-label={t('calendar.closeEntry')}>×</button>
       </div>
@@ -179,16 +193,26 @@ export default function YearRibbon({ year }: { year: number }) {
           </figcaption>
         </figure>
       )}
-      <h3>{open.entry.title}</h3>
-      <p>{open.entry.body}</p>
-      {open.entry.rating_count > 0 && (
-        <p className="dash-year-regional" data-testid="year-regional">
-          {t('calendar.regionalShift', {
-            count: open.entry.rating_count,
-            days: Math.abs(open.entry.regional_shift_days),
-          })}
-        </p>
-      )}
+      {[open.entry, open.harvest].filter(Boolean).map((part, index) => (
+        <section key={part!.key} className="dash-year-detail-part">
+          {/* The second half is the harvest, and it has dates of its own. */}
+          {index > 0 && (
+            <span className="dash-cal-dates">
+              {shortDay(part!.start)} – {shortDay(part!.end)}
+            </span>
+          )}
+          <h3>{part!.title}</h3>
+          <p>{part!.body}</p>
+          {part!.rating_count > 0 && (
+            <p className="dash-year-regional" data-testid="year-regional">
+              {t('calendar.regionalShift', {
+                count: part!.rating_count,
+                days: Math.abs(part!.regional_shift_days),
+              })}
+            </p>
+          )}
+        </section>
+      ))}
     </div>
   );
 
@@ -234,10 +258,8 @@ export default function YearRibbon({ year }: { year: number }) {
                     : <EntryIcon entryKey={bar.entry.key} category={bar.entry.category} />}
                 </span>
                 <span className="dash-year-vtext">
-                  <span className="dash-year-vdates">
-                    {shortDay(bar.entry.start)} – {shortDay(bar.entry.end)}
-                  </span>
-                  <span className="dash-year-vtitle">{bar.entry.title}</span>
+                  <span className="dash-year-vdates">{barDates(bar)}</span>
+                  <span className="dash-year-vtitle">{barLabel(bar)}</span>
                 </span>
               </button>
               {sameBar(open, bar) && <div className="dash-year-vdetail">{detail}</div>}
@@ -309,9 +331,13 @@ export default function YearRibbon({ year }: { year: number }) {
                             bar.entry.active ? 'dash-year-bar-active' : '',
                             bar.clippedStart ? 'dash-year-bar-open-start' : '',
                             bar.clippedEnd ? 'dash-year-bar-open-end' : '',
+                            bar.harvest ? 'dash-year-bar-paired' : '',
                             sameBar(open, bar) ? 'dash-year-bar-picked' : '',
                           ].filter(Boolean).join(' ')}
-                          style={{ left: `${bar.left}%`, width: `${bar.width}%` }}
+                          style={{
+                            left: `${bar.left}%`, width: `${bar.width}%`,
+                            ...(bar.harvest ? { '--split': `${bar.split}%` } : {}),
+                          } as CSSProperties}
                           onClick={() => toggle(bar)}
                           onMouseEnter={showTip(bar)}
                           onFocus={showTip(bar)}
@@ -322,7 +348,7 @@ export default function YearRibbon({ year }: { year: number }) {
                         >
                           <EntryIcon entryKey={bar.entry.key} category={bar.entry.category}
                                      className="dash-year-bar-icon" />
-                          <span className="dash-year-bar-text">{bar.entry.title}</span>
+                          <span className="dash-year-bar-text">{barLabel(bar)}</span>
                         </button>
                       ))}
                     </div>
@@ -346,10 +372,15 @@ export default function YearRibbon({ year }: { year: number }) {
             <img className="dash-year-tip-photo" src={hoverPhoto.file} alt=""
                  width={640} height={427} />
           )}
-          <span className="dash-year-tip-dates">
-            {shortDay(hover.bar.entry.start)} – {shortDay(hover.bar.entry.end)}
-          </span>
-          <span className="dash-year-tip-title">{hover.bar.entry.title}</span>
+          <span className="dash-year-tip-dates">{barDates(hover.bar)}</span>
+          <span className="dash-year-tip-title">{barLabel(hover.bar)}</span>
+          {/* A forage bar is named after the plant, so the two jobs it holds are spelled out
+              underneath. A single-job bar is already named after its job. */}
+          {hover.bar.harvest && [hover.bar.entry, hover.bar.harvest].map(part => (
+            <span key={part.key} className="dash-year-tip-part">
+              <em>{shortDay(part.start)} – {shortDay(part.end)}</em> {part.title}
+            </span>
+          ))}
           {hoverPhoto && (
             <span className="dash-year-tip-credit">{credit(hoverPhoto)}</span>
           )}
