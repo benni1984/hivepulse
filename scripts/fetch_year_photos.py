@@ -84,12 +84,7 @@ PICKS: dict[str, str] = {
         "drone-frame-insert":  "Drone - honeybee (8952360114).jpg",
     "drone-brood-cutting": "CSIRO ScienceImage 6961 Worker honey bees removing excess drone brood from the hive.jpg",
     "foulbrood-check":     "AFB in combs.jpg",
-    # The harvest
-    "harvest-rapeseed":    "Honey extractor.jpg",
-    "harvest-acacia":      "Three French monofloral honey jars.jpg",
-    "harvest-linden":      "Honey comb with capped honey.jpg",
-    "harvest-forest":      "Forest honey.jpg",
-    "harvest-heather":     "Honey jars.jpg",
+    # The harvest that belongs to no single forage
     "final-harvest":       "Uncapping honeycomb.jpg",
 }
 
@@ -100,6 +95,24 @@ PICKS: dict[str, str] = {
 # They keep their drawn icon, which the layout allows for -- a missing picture is left out
 # rather than replaced with something that illustrates nothing.
 WITHOUT = ["candy-feeding", "winter-feeding", "foulbrood-sample", "winter-prep", "oxalic-acid"]
+
+# The plant of each forage. In the ribbon the bloom, the move and the harvest of one
+# forage sit on a single row, so they show one picture: the rape field runs from "move to
+# the field" in April through "spin it at once" in May, and a glance down the row is the
+# year of that plant. It is also the picture a beekeeper is actually looking for -- which
+# of two yellow fields is rape -- where a honey extractor looks the same in every month.
+#
+# No extra files: these are the pictures the moves already carry.
+FORAGE_PLANT = {
+    "rapeseed":  "migrate-rapeseed",
+    "acacia":    "migrate-acacia",
+    "chestnut":  "migrate-chestnut",
+    "linden":    "migrate-linden",
+    "fir":       "migrate-fir",
+    "lavender":  "migrate-lavender",
+    "sunflower": "migrate-sunflower",
+    "heather":   "migrate-heather",
+}
 
 
 def text(html: str | None) -> str:
@@ -166,6 +179,13 @@ def crop(raw: bytes, width: int, height: int, quality: int) -> bytes:
 
 def write_manifest(records: dict[str, dict]) -> None:
     ordered = {key: records[key] for key in PICKS if key in records}
+    missing = [f for f, key in FORAGE_PLANT.items() if key not in ordered]
+    if missing:
+        raise SystemExit(f"no plant picture for: {', '.join(missing)}")
+    forage_rows = "\n".join(
+        f"  {json.dumps(forage)}: YEAR_PHOTOS[{json.dumps(key)}],"
+        for forage, key in FORAGE_PLANT.items()
+    )
     rows = "\n".join(
         f"  {json.dumps(key)}: {{\n"
         f"    file: {json.dumps(value['file'])},\n"
@@ -200,8 +220,21 @@ def write_manifest(records: dict[str, dict]) -> None:
         "export const YEAR_PHOTOS: Record<string, YearPhoto> = {\n"
         f"{rows}\n"
         "};\n\n"
-        "/** The photograph for one calendar entry, or undefined when it has none. */\n"
-        "export function photoFor(entryKey: string): YearPhoto | undefined {\n"
+        "/**\n"
+        " * The plant of each forage, so the bloom, the move and the harvest of one forage\n"
+        " * show the same picture and read as one thread through the year.\n"
+        " */\n"
+        "export const FORAGE_PHOTOS: Record<string, YearPhoto> = {\n"
+        f"{forage_rows}\n"
+        "};\n\n"
+        "/**\n"
+        " * The photograph for one calendar entry, or undefined when it has none.\n"
+        " *\n"
+        " * An entry that names a forage shows that plant, whatever the job is. Everything\n"
+        " * else shows the job itself.\n"
+        " */\n"
+        "export function photoFor(entryKey: string, honey?: string | null): YearPhoto | undefined {\n"
+        "  if (honey && FORAGE_PHOTOS[honey]) return FORAGE_PHOTOS[honey];\n"
         "  return YEAR_PHOTOS[entryKey];\n"
         "}\n\n"
         f"/* data: {json.dumps(ordered, ensure_ascii=False)} */\n",
@@ -229,6 +262,14 @@ def write_credits(records: dict[str, dict]) -> None:
             f"| `{key}` | {value['author']} | {licence} | [Commons]({value['source']}) |"
         )
     lines += [
+        "",
+        "## Forages",
+        "",
+        "The bloom, the move and the harvest of one forage share the plant's picture, so the",
+        "merged row of the ribbon reads as one thread through the year:",
+        "",
+        *[f"- `{forage}` -> the picture filed under `{key}`"
+          for forage, key in FORAGE_PLANT.items()],
         "",
         "## Entries without a photograph",
         "",

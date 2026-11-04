@@ -2016,6 +2016,18 @@ button.hornets-action-card { width: 100%; }
 .dash-year-detail h3 { margin: 10px 0 4px; font-size: 16px; }
 .dash-year-detail p { margin: 0; font-size: 14px; color: var(--body-text); }
 
+/* The Liste is the reading view: it already shows the whole text of every entry, so the
+   picture belongs in it at a size worth looking at rather than as a thumbnail. Lower than
+   the one in the opened entry, because here there are thirty-five of them under each other. */
+.dash-cal-photo { margin: 10px 0 2px; }
+.dash-cal-photo img {
+  width: 100%; max-height: 170px; object-fit: cover; display: block;
+  border-radius: 10px; background: var(--slate-tint);
+}
+.dash-cal-photo figcaption { margin-top: 5px; font-size: 11px; color: var(--body-text); }
+.dash-cal-photo a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.dash-cal-photo a:hover { color: var(--amber-ink); }
+
 .dash-year-detail-photo {
   margin: 12px 0 0;
 }

@@ -21,9 +21,33 @@ export function seasonOfMonth(month: number): Season {
   return 'autumn';
 }
 
+/**
+ * A row of the ribbon. Six are a category of their own; `forage` is three of them at once.
+ *
+ * Bloom, migration and harvest are one story told in three steps -- something comes into
+ * flower, you drive the colonies to it, you take the honey off -- and on three separate rows
+ * that story is read across a gap rather than along a line. Rape blooms on 15 April and is
+ * spun on 15 May; on one row those two bars nearly touch and the sequence is obvious.
+ */
+export type RibbonRow =
+  | 'inspection' | 'swarm' | 'forage' | 'varroa' | 'feeding' | 'care' | 'winter';
+
+/** Which row a category is drawn in. */
+export const ROW_OF: Record<CalendarCategory, RibbonRow> = {
+  inspection: 'inspection',
+  swarm: 'swarm',
+  bloom: 'forage',
+  migration: 'forage',
+  harvest: 'forage',
+  varroa: 'varroa',
+  feeding: 'feeding',
+  care: 'care',
+  winter: 'winter',
+};
+
 /** The order the rows appear in: roughly the order a beekeeper meets them through the year. */
-export const RIBBON_CATEGORIES: CalendarCategory[] = [
-  'inspection', 'swarm', 'bloom', 'harvest', 'migration', 'varroa', 'feeding', 'care', 'winter',
+export const RIBBON_ROWS: RibbonRow[] = [
+  'inspection', 'swarm', 'forage', 'varroa', 'feeding', 'care', 'winter',
 ];
 
 export interface Bar {
@@ -39,8 +63,8 @@ export interface Bar {
 }
 
 export interface Row {
-  category: CalendarCategory;
-  /** Every bar of the category, in date order. */
+  row: RibbonRow;
+  /** Every bar of the row, in date order. A bar keeps its own category, which is its colour. */
   bars: Bar[];
   /** The bars stacked into lanes so that none overlaps another. */
   lanes: Bar[][];
@@ -108,7 +132,7 @@ export function barFor(entry: CalendarEntry, year: number): Bar | null {
 }
 
 /**
- * The rows of the ribbon, in `RIBBON_CATEGORIES` order, with the empty ones left out.
+ * The rows of the ribbon, in `RIBBON_ROWS` order, with the empty ones left out.
  *
  * The same entry can arrive twice for one year — the API repeats an entry for every year the
  * window reaches, and a window of thirteen months catches two runs of the same thing. Both are
@@ -116,7 +140,7 @@ export function barFor(entry: CalendarEntry, year: number): Bar | null {
  * duplicate of one run is not.
  */
 export function rowsFor(entries: CalendarEntry[], year: number): Row[] {
-  const byCategory = new Map<CalendarCategory, Bar[]>();
+  const byRow = new Map<RibbonRow, Bar[]>();
   const seen = new Set<string>();
 
   for (const entry of entries) {
@@ -125,16 +149,17 @@ export function rowsFor(entries: CalendarEntry[], year: number): Row[] {
     seen.add(identity);
     const bar = barFor(entry, year);
     if (bar === null) continue;
-    const bars = byCategory.get(entry.category) ?? [];
+    const row = ROW_OF[entry.category] ?? entry.category;
+    const bars = byRow.get(row) ?? [];
     bars.push(bar);
-    byCategory.set(entry.category, bars);
+    byRow.set(row, bars);
   }
 
-  return RIBBON_CATEGORIES
-    .filter(category => (byCategory.get(category)?.length ?? 0) > 0)
-    .map(category => {
-      const bars = (byCategory.get(category) ?? []).sort((a, b) => a.left - b.left);
-      return { category, bars, lanes: lanesFor(bars) };
+  return RIBBON_ROWS
+    .filter(row => (byRow.get(row)?.length ?? 0) > 0)
+    .map(row => {
+      const bars = (byRow.get(row) ?? []).sort((a, b) => a.left - b.left);
+      return { row, bars, lanes: lanesFor(bars) };
     });
 }
 

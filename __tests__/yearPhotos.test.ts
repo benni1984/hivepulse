@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { existsSync, statSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { YEAR_PHOTOS, photoFor } from '@/lib/yearPhotos';
+import { FORAGE_PHOTOS, YEAR_PHOTOS, photoFor } from '@/lib/yearPhotos';
 
 // The photographs come from Wikimedia Commons under CC BY, CC BY-SA or CC0. The first two cost
 // nothing but do require the author's name, the licence and a way back to the original, and an
@@ -66,6 +66,39 @@ describe('the beekeeping-year photographs', () => {
     const total = Object.keys(YEAR_PHOTOS)
       .reduce((sum, key) => sum + statSync(join(THUMBS, `${key}.webp`)).size, 0);
     expect(Math.round(total / 1024), 'KB of tiles').toBeLessThan(250);
+  });
+
+  it('shows the plant of a forage for every entry of that forage', () => {
+      // Bloom, move and harvest of one forage sit on one row of the ribbon, and one picture
+      // running along it is what makes that row readable as the year of that plant.
+    const move = photoFor('migrate-rapeseed', 'rapeseed');
+    const harvest = photoFor('harvest-rapeseed', 'rapeseed');
+
+    expect(harvest).toBeDefined();
+    expect(harvest).toBe(move);
+    expect(harvest!.file).toBe('/year/migrate-rapeseed.webp');
+  });
+
+  it('gives the forest harvest the fir, because its forage is fir', () => {
+    expect(photoFor('harvest-forest', 'fir')!.file).toBe('/year/migrate-fir.webp');
+  });
+
+  it('shows the job itself when an entry names no forage', () => {
+    // The last harvest of the season belongs to no single plant.
+    expect(photoFor('final-harvest', null)!.file).toBe('/year/final-harvest.webp');
+    expect(photoFor('swarm-control', null)!.file).toBe('/year/swarm-control.webp');
+  });
+
+  it('has a plant for every forage the calendar names', () => {
+    // A forage without one would silently fall back to the entry's own picture, which for a
+    // harvest no longer exists -- the bar would lose its photograph without anyone noticing.
+    const forages = ['rapeseed', 'acacia', 'chestnut', 'linden', 'fir', 'lavender',
+                     'sunflower', 'heather'];
+    for (const forage of forages) {
+      expect(FORAGE_PHOTOS[forage], `${forage} has no plant`).toBeDefined();
+      expect(existsSync(join(PUBLIC, FORAGE_PHOTOS[forage].file.replace('/year/', ''))), forage)
+        .toBe(true);
+    }
   });
 
   it('answers with nothing for a job that has no photograph, rather than throwing', () => {

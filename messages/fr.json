@@ -870,6 +870,9 @@
       "viewRibbonHint": "Toute l’année en une image",
       "closeEntry": "Fermer",
       "photoCredit": "Photo : {author} · {licence}",
+      "rows": {
+        "forage": "Miellée"
+      },
       "regionalShift": "{count, plural, one {# apiculteur} other {# apiculteurs}} près de vous placent cela {days, plural, one {# jour} other {# jours}} autrement, et c’est pris en compte ici.",
       "ribbonEmpty": "Rien à afficher pour cette année.",
       "categories": {

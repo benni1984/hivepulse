@@ -30,6 +30,11 @@ import EntryIcon from './EntryIcon';
  * cell, a mite on a bee. The drawn icon says which job this is in the width of a bar; the
  * photograph says what you are looking for once there is room to show it. Jobs without one
  * keep the icon alone, and every layout below is built to leave a missing picture out.
+ *
+ * Bloom, migration and harvest share one row, because they are one story about one plant:
+ * it flowers, you drive to it, you take the honey off. They keep their own colours inside
+ * that row, and an entry that names a forage shows that plant, so the rape field runs along
+ * the row from April to May and the sequence can be read in one line.
  */
 const RIBBON_FROM = '(min-width: 768px)';
 
@@ -140,8 +145,8 @@ export default function YearRibbon({ year }: { year: number }) {
   // name and licence are the whole of what those ask in return.
   const credit = (photo: YearPhoto) =>
     t('calendar.photoCredit', { author: photo.author, licence: photo.licence });
-  const hoverPhoto = hover ? photoFor(hover.bar.entry.key) : undefined;
-  const openPhoto = open ? photoFor(open.entry.key) : undefined;
+  const hoverPhoto = hover ? photoFor(hover.bar.entry.key, hover.bar.entry.honey) : undefined;
+  const openPhoto = open ? photoFor(open.entry.key, open.entry.honey) : undefined;
 
   if (error) return <div className="dash-error-banner">{t('calendar.loadError')}</div>;
   if (loading) return <div className="dash-panel-spinner" aria-label={t('calendar.loading')} />;
@@ -222,8 +227,9 @@ export default function YearRibbon({ year }: { year: number }) {
                 data-testid="year-vitem"
               >
                 <span className="dash-year-vicon">
-                  {photoFor(bar.entry.key)
-                    ? <img className="dash-year-vphoto" src={photoFor(bar.entry.key)!.thumb}
+                  {photoFor(bar.entry.key, bar.entry.honey)
+                    ? <img className="dash-year-vphoto"
+                           src={photoFor(bar.entry.key, bar.entry.honey)!.thumb}
                            alt="" width={128} height={128} loading="lazy" />
                     : <EntryIcon entryKey={bar.entry.key} category={bar.entry.category} />}
                 </span>
@@ -280,8 +286,14 @@ export default function YearRibbon({ year }: { year: number }) {
 
           <div className="dash-year-rows">
             {rows.map(row => (
-              <div key={row.category} className="dash-year-row" data-testid="year-row">
-                <span className="dash-year-row-label">{t(`calendar.categories.${row.category}`)}</span>
+              <div key={row.row} className="dash-year-row" data-testid="year-row">
+                {/* Six rows are a category and are named after it. The seventh is three of
+                    them and needs a name of its own. */}
+                <span className="dash-year-row-label">
+                  {row.row === 'forage'
+                    ? t('calendar.rows.forage')
+                    : t(`calendar.categories.${row.row}`)}
+                </span>
                 {/* One lane per set of jobs that do not clash. Beekeeping overlaps by nature —
                     the swarm season runs through the first harvest — and on a single line those
                     either hide each other or have to be drawn shorter than they are. */}
@@ -293,7 +305,7 @@ export default function YearRibbon({ year }: { year: number }) {
                           key={`${bar.entry.key}-${bar.entry.start}`}
                           type="button"
                           className={[
-                            'dash-year-bar', `dash-year-cat-${row.category}`,
+                            'dash-year-bar', `dash-year-cat-${bar.entry.category}`,
                             bar.entry.active ? 'dash-year-bar-active' : '',
                             bar.clippedStart ? 'dash-year-bar-open-start' : '',
                             bar.clippedEnd ? 'dash-year-bar-open-end' : '',

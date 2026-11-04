@@ -870,6 +870,9 @@
       "viewRibbonHint": "The whole year in one picture",
       "closeEntry": "Close",
       "photoCredit": "Photo: {author} · {licence}",
+      "rows": {
+        "forage": "Forage"
+      },
       "regionalShift": "{count, plural, one {# beekeeper} other {# beekeepers}} near you put this {days, plural, one {# day} other {# days}} differently, and it has been applied.",
       "ribbonEmpty": "Nothing to show for this year.",
       "categories": {

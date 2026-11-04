@@ -870,6 +870,9 @@
       "viewRibbonHint": "Cały rok na jednym obrazie",
       "closeEntry": "Zamknij",
       "photoCredit": "Zdjęcie: {author} · {licence}",
+      "rows": {
+        "forage": "Pożytek"
+      },
       "regionalShift": "{count, plural, one {# pszczelarz} few {# pszczelarze} many {# pszczelarzy} other {# pszczelarza}} w twojej okolicy umieszcza to o {days, plural, one {# dzień} few {# dni} many {# dni} other {# dnia}} inaczej i zostało to tu uwzględnione.",
       "ribbonEmpty": "Brak danych do pokazania dla tego roku.",
       "categories": {

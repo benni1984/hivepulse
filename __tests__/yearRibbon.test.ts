@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  LANE_GAP, RIBBON_CATEGORIES, barFor, dayOffset, daysInYear, lanesFor, monthColumns, rowsFor,
+  LANE_GAP, RIBBON_ROWS, barFor, dayOffset, daysInYear, lanesFor, monthColumns, rowsFor,
   seasonSegments, todayPosition,
 } from '@/lib/yearRibbon';
 import type { CalendarEntry } from '@/lib/api';
@@ -87,7 +87,7 @@ describe('a bar on the ribbon', () => {
 });
 
 describe('the rows', () => {
-  it('keeps the category order and leaves out the categories with nothing in them', () => {
+  it('keeps the row order and leaves out the rows with nothing in them', () => {
     // Distinct keys: one entry cannot be in two categories, and identical key-and-dates is
     // exactly what the deduplication below is there to collapse.
     const rows = rowsFor([
@@ -95,8 +95,42 @@ describe('the rows', () => {
       entry({ key: 'first-check', category: 'inspection' }),
     ], 2026);
 
-    expect(rows.map(row => row.category)).toEqual(['inspection', 'winter']);
-    expect(rows.length).toBeLessThan(RIBBON_CATEGORIES.length);
+    expect(rows.map(row => row.row)).toEqual(['inspection', 'winter']);
+    expect(rows.length).toBeLessThan(RIBBON_ROWS.length);
+  });
+
+  it('draws bloom, migration and harvest on one row', () => {
+    // They are one story about one plant: it flowers, you drive to it, you take the honey
+    // off. On three rows that story has to be read across two gaps.
+    const rows = rowsFor([
+      entry({ key: 'spring-bloom', category: 'bloom', start: '2026-03-15', end: '2026-05-10' }),
+      entry({ key: 'migrate-rapeseed', category: 'migration', start: '2026-04-15', end: '2026-05-05' }),
+      entry({ key: 'harvest-rapeseed', category: 'harvest', start: '2026-05-15', end: '2026-06-05' }),
+    ], 2026);
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0].row).toBe('forage');
+    expect(rows[0].bars).toHaveLength(3);
+  });
+
+  it('leaves every bar its own category, which is the only thing left telling them apart', () => {
+    // Inside the merged row the colour is what says bloom from move from harvest.
+    const rows = rowsFor([
+      entry({ key: 'migrate-linden', category: 'migration', start: '2026-06-15', end: '2026-07-10' }),
+      entry({ key: 'harvest-linden', category: 'harvest', start: '2026-07-08', end: '2026-07-31' }),
+    ], 2026);
+
+    expect(rows[0].bars.map(bar => bar.entry.category)).toEqual(['migration', 'harvest']);
+  });
+
+  it('does not merge anything else', () => {
+    const rows = rowsFor([
+      entry({ key: 'swarm-control', category: 'swarm' }),
+      entry({ key: 'varroa-summer', category: 'varroa' }),
+      entry({ key: 'winter-feeding', category: 'feeding' }),
+    ], 2026);
+
+    expect(rows.map(row => row.row)).toEqual(['swarm', 'varroa', 'feeding']);
   });
 
   it('shows the same run once even though the API repeats it per year', () => {

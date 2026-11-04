@@ -321,6 +321,50 @@ describe('the year ribbon', () => {
     expect(link).toHaveTextContent('calendar.photoCredit');
   });
 
+  it('draws bloom, migration and harvest as one row with a name of its own', async () => {
+    // Three rows made the reader follow one plant across two gaps. One row, and the rape
+    // field runs along it from the move in April to the spin in May.
+    mockGetCalendar.mockResolvedValue(answer([
+      entry({ key: 'spring-bloom', category: 'bloom', start: '2026-03-15', end: '2026-05-10' }),
+      entry({ key: 'migrate-rapeseed', category: 'migration', start: '2026-04-15', end: '2026-05-05', honey: 'rapeseed' }),
+      entry({ key: 'harvest-rapeseed', category: 'harvest', start: '2026-05-15', end: '2026-06-05', honey: 'rapeseed' }),
+    ]));
+
+    render(<YearRibbon year={2026} />);
+
+    await waitFor(() => expect(screen.getAllByTestId('year-bar')).toHaveLength(3));
+    const rows = screen.getAllByTestId('year-row');
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toHaveTextContent('calendar.rows.forage');
+  });
+
+  it('keeps each bar of that row its own colour, which is all that tells the three apart', async () => {
+    mockGetCalendar.mockResolvedValue(answer([
+      entry({ key: 'migrate-linden', category: 'migration', start: '2026-06-15', end: '2026-07-10' }),
+      entry({ key: 'harvest-linden', category: 'harvest', start: '2026-07-08', end: '2026-07-31' }),
+    ]));
+
+    render(<YearRibbon year={2026} />);
+
+    await waitFor(() => expect(screen.getAllByTestId('year-bar')).toHaveLength(2));
+    const classes = screen.getAllByTestId('year-bar').map(bar => bar.className);
+    expect(classes[0]).toContain('dash-year-cat-migration');
+    expect(classes[1]).toContain('dash-year-cat-harvest');
+  });
+
+  it('shows the plant of the forage on a harvest bar, not the extractor', async () => {
+    mockGetCalendar.mockResolvedValue(answer([
+      entry({ key: 'harvest-rapeseed', category: 'harvest', start: '2026-05-15', end: '2026-06-05', honey: 'rapeseed' }),
+    ]));
+    render(<YearRibbon year={2026} />);
+    await waitFor(() => expect(screen.getByTestId('year-bar')).toBeInTheDocument());
+
+    fireEvent.mouseEnter(screen.getByTestId('year-bar'));
+
+    expect(screen.getByTestId('year-tip').querySelector('img'))
+      .toHaveAttribute('src', '/year/migrate-rapeseed.webp');
+  });
+
   it('says so when the year cannot be loaded', async () => {
     mockGetCalendar.mockRejectedValue(new Error('nope'));
 

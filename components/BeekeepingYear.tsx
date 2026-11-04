@@ -7,6 +7,7 @@ import {
   WINDOW_DAYS, addDays, buildTimeline, countryName, firstOfMonth, isoDay, mergeEntries, scrollParent,
 } from '@/lib/calendar';
 import { isKnownForage } from '@/lib/moves';
+import { photoFor } from '@/lib/yearPhotos';
 import YearRibbon from './year/YearRibbon';
 
 /**
@@ -186,6 +187,9 @@ export default function BeekeepingYear() {
                 );
               }
               const entry = item.entry!;
+              // An entry that names a forage shows that plant; everything else shows the job.
+              // Five have no picture at all, and the card simply does without one.
+              const photo = photoFor(entry.key, entry.honey);
               return (
                 <li key={item.id} className={`dash-cal-entry dash-cal-cat-${entry.category}${entry.active ? ' dash-cal-active' : ''}`}
                     data-testid="calendar-entry">
@@ -198,6 +202,20 @@ export default function BeekeepingYear() {
                     )}
                     <span className="dash-cal-dates">{shortDay(entry.start)} – {shortDay(entry.end)}</span>
                   </div>
+                  {photo && (
+                    <figure className="dash-cal-photo">
+                      {/* No alt text: the title is the next thing on the card, and a screen
+                          reader would otherwise read the same entry twice. */}
+                      <img src={photo.file} alt="" width={640} height={427} loading="lazy" />
+                      <figcaption>
+                        <a href={photo.source} target="_blank" rel="noreferrer noopener">
+                          {t('calendar.photoCredit', {
+                            author: photo.author, licence: photo.licence,
+                          })}
+                        </a>
+                      </figcaption>
+                    </figure>
+                  )}
                   <h3>{entry.title}</h3>
                   <p>{entry.body}</p>
                 </li>
