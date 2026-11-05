@@ -524,6 +524,13 @@
     <string name="calendar_category_migration">Trashumancia</string>
     <string name="calendar_category_bloom">Floración</string>
     <string name="calendar_category_care">Cuidado</string>
+    <string name="calendar_view_list">Lista</string>
+    <string name="calendar_view_ribbon">Vista general</string>
+    <string name="calendar_view_list_hint">Qué hacer ahora, mes a mes</string>
+    <string name="calendar_view_ribbon_hint">Todo el año en una imagen</string>
+    <string name="calendar_ribbon_empty">No hay nada que mostrar para este año.</string>
+    <string name="calendar_row_forage">Mielada</string>
+    <string name="calendar_photo_credit">Foto: %1$s · %2$s</string>
     <string name="calendar_category_winter">Invierno</string>
     <string name="region_title">Región para el año apícola</string>
     <string name="region_intro">El país y el código postal adaptan el año apícola a tu lugar: la floración llega antes en el sur y más tarde en el norte. Solo se guarda la posición, no la dirección.</string>

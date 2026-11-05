@@ -568,6 +568,13 @@
 "calendar.category.migration" = "Transhumance";
 "calendar.category.bloom" = "Floraison";
 "calendar.category.care" = "Entretien";
+"calendar.viewList" = "Liste";
+"calendar.viewRibbon" = "Vue d’ensemble";
+"calendar.viewListHint" = "Ce qu’il faut faire maintenant, mois par mois";
+"calendar.viewRibbonHint" = "Toute l’année en une image";
+"calendar.ribbonEmpty" = "Rien à afficher pour cette année.";
+"calendar.rows.forage" = "Miellée";
+"calendar.photoCredit" = "Photo : %@ · %@";
 "calendar.category.winter" = "Hiver";
 "region.title" = "Région pour l’année apicole";
 "region.intro" = "Le pays et le code postal adaptent l’année apicole à votre lieu : la floraison vient plus tôt dans le sud et plus tard dans le nord. Seule la position est conservée, pas l’adresse.";

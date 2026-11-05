@@ -557,6 +557,13 @@
     <string name="calendar_category_migration">Transhumance</string>
     <string name="calendar_category_bloom">Floraison</string>
     <string name="calendar_category_care">Entretien</string>
+    <string name="calendar_view_list">Liste</string>
+    <string name="calendar_view_ribbon">Vue d’ensemble</string>
+    <string name="calendar_view_list_hint">Ce qu’il faut faire maintenant, mois par mois</string>
+    <string name="calendar_view_ribbon_hint">Toute l’année en une image</string>
+    <string name="calendar_ribbon_empty">Rien à afficher pour cette année.</string>
+    <string name="calendar_row_forage">Miellée</string>
+    <string name="calendar_photo_credit">Photo : %1$s · %2$s</string>
     <string name="calendar_category_winter">Hiver</string>
     <string name="region_title">Région pour l’année apicole</string>
     <string name="region_intro">Le pays et le code postal adaptent l’année apicole à votre lieu : la floraison vient plus tôt dans le sud et plus tard dans le nord. Seule la position est conservée, pas l’adresse.</string>

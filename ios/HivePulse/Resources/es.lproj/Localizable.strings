@@ -568,6 +568,13 @@
 "calendar.category.migration" = "Trashumancia";
 "calendar.category.bloom" = "Floración";
 "calendar.category.care" = "Cuidado";
+"calendar.viewList" = "Lista";
+"calendar.viewRibbon" = "Vista general";
+"calendar.viewListHint" = "Qué hacer ahora, mes a mes";
+"calendar.viewRibbonHint" = "Todo el año en una imagen";
+"calendar.ribbonEmpty" = "No hay nada que mostrar para este año.";
+"calendar.rows.forage" = "Mielada";
+"calendar.photoCredit" = "Foto: %@ · %@";
 "calendar.category.winter" = "Invierno";
 "region.title" = "Región para el año apícola";
 "region.intro" = "El país y el código postal adaptan el año apícola a tu lugar: la floración llega antes en el sur y más tarde en el norte. Solo se guarda la posición, no la dirección.";

@@ -1,5 +1,6 @@
 package com.hivepulse.app.screen
 
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -7,7 +8,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
@@ -116,10 +116,72 @@ class ApiaryWithDataTest {
         composeRule.waitUntil(timeoutMillis = 5_000) {
             composeRule.onAllNodesWithText("Make the hives winter-proof").fetchSemanticsNodes().isNotEmpty()
         }
-        // The list opens at today, so the region line above it has scrolled out of view.
-        composeRule.onNodeWithTag("beekeepingYearList").performScrollToIndex(1)
+        // The list opens at today, so the region line above it has scrolled out of view. Scrolled
+        // to by tag and not by index: the rows above the entries have changed twice already (the
+        // view switch was added in front of them), and an index silently scrolls to the wrong one.
+        composeRule.onNodeWithTag("beekeepingYearList")
+            .performScrollToNode(hasTestTag("calendarRegion"))
         composeRule.onNodeWithTag("calendarRegion").assertIsDisplayed()
         composeRule.onNodeWithTag("changeRegionButton").assertIsDisplayed()
+    }
+
+    /**
+     * The year as a ribbon: the switch, a bar, and the entry the bar stands for.
+     *
+     * The dates are built around today rather than written out, because the ribbon draws one
+     * calendar year -- the current one -- and fixed dates would quietly empty the ribbon when the
+     * year turned, leaving a test that passes by asserting nothing.
+     */
+    @Test
+    fun beekeepingYear_showsTheYearAsARibbonAndOpensABar() {
+        val year = java.time.LocalDate.now().year
+        val region = com.hivepulse.app.data.api.RegionOut("DE", "69123", 49.4, 8.7, 0, 2, "postal_code", true)
+        coEvery { apiService.region() } returns region
+        coEvery { apiService.calendar(any(), any(), any()) } returns com.hivepulse.app.data.api.CalendarOut(
+            region, "$year-06-15", "$year-01-01", "$year-12-31",
+            listOf(
+                com.hivepulse.app.data.api.CalendarEntryOut(
+                    "swarm-control", "swarm", "Swarm control: look for queen cells", "Check weekly.",
+                    "$year-04-22", "$year-07-02", 9, null, false,
+                ),
+                // A move and its harvest: one bar on the forage row, named after the plant.
+                com.hivepulse.app.data.api.CalendarEntryOut(
+                    "migrate-rapeseed", "migration", "Move to the rapeseed", "Drive out at dusk.",
+                    "$year-04-15", "$year-05-05", null, "rapeseed", false,
+                ),
+                com.hivepulse.app.data.api.CalendarEntryOut(
+                    "harvest-rapeseed", "harvest", "Spin the rapeseed at once", "It sets in the comb.",
+                    "$year-05-15", "$year-06-05", null, "rapeseed", false,
+                ),
+            ),
+        )
+        waitForApiaryList()
+        composeRule.onNodeWithTag("beekeepingYearButton").performClick()
+
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithTag("yearViewRibbon").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithTag("yearViewRibbon").performClick()
+
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithTag("ribbonBar").fetchSemanticsNodes().isNotEmpty()
+        }
+        // Three entries, two bars: the move and its harvest are one bar.
+        composeRule.onAllNodesWithTag("ribbonBar").assertCountEquals(2)
+
+        // Tapping a bar opens the entry under the ribbon, with the photograph and its credit.
+        composeRule.onAllNodesWithTag("ribbonBar")[0].performClick()
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithTag("ribbonDetail").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithTag("ribbonDetail").assertIsDisplayed()
+        composeRule.onAllNodesWithTag("yearPhotoCredit")[0].assertExists()
+
+        // And back to the list, which is where the screen opens.
+        composeRule.onNodeWithTag("yearViewList").performClick()
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithTag("beekeepingYearList").fetchSemanticsNodes().isNotEmpty()
+        }
     }
 
     @Test

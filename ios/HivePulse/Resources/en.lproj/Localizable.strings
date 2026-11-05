@@ -568,6 +568,13 @@
 "calendar.category.migration" = "Moving";
 "calendar.category.bloom" = "Bloom";
 "calendar.category.care" = "Care";
+"calendar.viewList" = "List";
+"calendar.viewRibbon" = "Overview";
+"calendar.viewListHint" = "What to do now, month by month";
+"calendar.viewRibbonHint" = "The whole year in one picture";
+"calendar.ribbonEmpty" = "Nothing to show for this year.";
+"calendar.rows.forage" = "Forage";
+"calendar.photoCredit" = "Photo: %@ · %@";
 "calendar.category.winter" = "Winter";
 "region.title" = "Region for the beekeeping year";
 "region.intro" = "Country and postal code move the beekeeping year to your place: the bloom comes earlier in the south and later in the north. Only the position is kept, not the address.";

@@ -568,6 +568,13 @@
 "calendar.category.migration" = "Przewóz";
 "calendar.category.bloom" = "Kwitnienie";
 "calendar.category.care" = "Pielęgnacja";
+"calendar.viewList" = "Lista";
+"calendar.viewRibbon" = "Przegląd";
+"calendar.viewListHint" = "Co robić teraz, miesiąc po miesiącu";
+"calendar.viewRibbonHint" = "Cały rok na jednym obrazie";
+"calendar.ribbonEmpty" = "Brak danych do pokazania dla tego roku.";
+"calendar.rows.forage" = "Pożytek";
+"calendar.photoCredit" = "Zdjęcie: %@ · %@";
 "calendar.category.winter" = "Zima";
 "region.title" = "Region dla roku pszczelarskiego";
 "region.intro" = "Kraj i kod pocztowy przesuwają rok pszczelarski na twoje miejsce: na południu kwitnienie zaczyna się wcześniej, na północy później. Zapisywana jest tylko pozycja, nie adres.";
