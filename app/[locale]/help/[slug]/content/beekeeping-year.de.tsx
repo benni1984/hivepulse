@@ -25,6 +25,31 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Zwei Arten, es anzusehen</h2>
+        <p>
+          Auf der Webseite hat das Jahr eine zweite Ansicht. <em>Liste</em> ist die oben beschriebene: was jetzt zu
+          tun ist, Monat für Monat, mit dem ganzen Text jedes Eintrags. <em>Übersicht</em> ist dasselbe Jahr als ein
+          Bild — die zwölf Monate über den Bildschirm, eine Zeile je Thema und ein Balken je Aufgabe. So sieht man,
+          wie das Jahr zusammenhängt: dass die Schwarmkontrolle mitten durch die erste Honigernte läuft, dass die
+          Varroabehandlung in die Lücke nach dem Abnehmen der Honigräume fällt.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li>Die meisten Aufgaben tragen ein Foto der Sache selbst: die Pflanze in Blüte, eine verdeckelte
+            Weiselzelle, die Milbe auf der Biene. Auf einen Balken zeigen, dann erscheint es, mit Zeitraum und
+            vollem Namen der Aufgabe.</li>
+          <li>Was gleichzeitig läuft, steht untereinander statt übereinander, damit nichts verdeckt wird. Im Juni
+            sind fünf Wanderungen gleichzeitig offen.</li>
+          <li>Eine Tracht ist ein Balken, vom Hinfahren bis zur letzten geschleuderten Wabe; der bernsteinfarbene
+            Schwanz ist die Ernte. Ein Klick zeigt beide Ratschläge.</li>
+          <li>Auf dem Handy läuft das Jahr stattdessen senkrecht. Zwölf Monate auf 360 Pixel sind dreißig Pixel je
+            Monat und nicht lesbar, deshalb gibt es das Bild ab Tablet-Breite.</li>
+        </ul>
+        <p>
+          Die Apps zeigen das Jahr vorerst als Liste; das Bild gibt es auf der Webseite.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Die Region festlegen</h2>
         <p>
           Die Termine sind für Mitteldeutschland geschrieben. Die Natur ist im Süden früher und im Norden später dran;

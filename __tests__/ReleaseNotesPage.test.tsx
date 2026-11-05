@@ -31,14 +31,24 @@ describe('ReleaseNotesPage', () => {
     }
   });
 
-  it('sorts a release into added, changed and fixed', () => {
+  it('sorts a release into added, changed and fixed, and shows no empty heading', () => {
+    // This used to assert all three headings on the newest release, which made it a test of
+    // whatever happened to ship last rather than of the page: a release with nothing changed
+    // failed it. What the page owes is that the kinds it shows are the kinds there are.
     const { container } = render(<ReleaseNotesPage />);
-    const newest = container.querySelector('.rn-release')!;
+    const blocks = container.querySelectorAll('.rn-release');
+    expect(blocks).toHaveLength(RELEASES.length);
 
-    expect(within(newest as HTMLElement).getByText('kinds.added')).toBeInTheDocument();
-    expect(within(newest as HTMLElement).getByText('kinds.changed')).toBeInTheDocument();
-    expect(within(newest as HTMLElement).getByText('kinds.fixed')).toBeInTheDocument();
-    expect(newest.querySelectorAll('.rn-kind-added li').length).toBeGreaterThan(1);
+    RELEASES.forEach((release, index) => {
+      const kinds = new Set(release.items.map(item => item.kind));
+      const block = blocks[index] as HTMLElement;
+      for (const kind of ['added', 'changed', 'fixed'] as const) {
+        const shown = within(block).queryByText(`kinds.${kind}`) !== null;
+        expect(shown, `${release.date}: ${kind}`).toBe(kinds.has(kind));
+        expect(block.querySelectorAll(`.rn-kind-${kind} li`))
+          .toHaveLength(release.items.filter(item => item.kind === kind).length);
+      }
+    });
   });
 
   it('lists every feature item of every group', () => {

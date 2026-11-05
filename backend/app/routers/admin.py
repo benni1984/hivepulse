@@ -5,16 +5,21 @@ from typing import Optional
 from fastapi import APIRouter, HTTPException, Query, status
 from sqlalchemy import func, or_, and_
 
+from app import year_feedback
+from app.beekeeping_year import ENTRIES as YEAR_ENTRIES
 from app.deps import CurrentAdmin, DB
 from app.config import settings
 from app.monitoring import send_self_test
-from app.models import Apiary, Hive, Inspection, RefreshToken, User, HornetSighting
+from app.i18n import error
+from app.models import (
+    Apiary, Hive, Inspection, RefreshToken, User, HornetSighting, YearProposal, YearRating,
+)
 from app.utils.accounts import delete_account
 from app.schemas import (
     AdminApiaryOut, AdminPlatformStats, AdminUserDetail, AdminTokenOut,
     AdminTokenStats, HealthSummary, HornetSightingStatusUpdate, InactiveUserOut,
     NoVarroaApiaryOut, PaginatedResponse, SignupDay, SupporterUpdate, UserOut,
-    ZeroInspectionHiveOut,
+    YearProposalApprove, YearProposalOut, YearRecomputeOut, ZeroInspectionHiveOut,
 )
 
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -535,3 +540,165 @@ def set_sighting_status(
         )
     sighting.status = body.status
     db.commit()
+
+
+# ---------------------------------------------------------------------------
+# Beekeeping year: the corrections beekeepers propose, and the decision
+# ---------------------------------------------------------------------------
+#
+# The questionnaire in routers/public_year.py collects ratings from beekeepers with no account.
+# They never move a date by themselves — they are grouped per entry and region and wait here. The
+# grouping and the reasoning behind its numbers live in app/year_feedback.py.
+
+
+def _entry_titles(language: str = "en") -> dict:
+    return {entry.key: entry.title.get(language, entry.key) for entry in YEAR_ENTRIES}
+
+
+def _stored_ratings(db) -> list:
+    return [
+        year_feedback.Rating(
+            entry_key=row.entry_key, verdict=row.verdict, shift_days=row.shift_days,
+            note=row.note, country=row.country, latitude=row.latitude, longitude=row.longitude,
+        )
+        for row in db.query(YearRating).all()
+    ]
+
+
+def _proposal_out(row, titles: dict, group=None) -> YearProposalOut:
+    """A stored proposal, with the live group detail when a recompute has just produced it.
+
+    The counts, the range and the notes are not stored: they are what the ratings say right now,
+    and a stored copy would quietly go stale as more ratings arrive.
+    """
+    return YearProposalOut(
+        id=row.id,
+        entry_key=row.entry_key,
+        entry_title=titles.get(row.entry_key, row.entry_key),
+        kind=row.kind,
+        shift_days=row.shift_days,
+        rating_count=row.rating_count,
+        latitude=row.latitude,
+        longitude=row.longitude,
+        radius_km=row.radius_km,
+        country=row.country,
+        verdict_counts=group.verdict_counts if group else {},
+        shift_days_range=list(group.shift_days_range) if group and group.shift_days_range else None,
+        notes=list(group.notes) if group else [],
+        status=row.status,
+        created_at=row.created_at,
+        decided_at=row.decided_at,
+    )
+
+
+@router.get("/year-proposals", response_model=list[YearProposalOut])
+def list_year_proposals(
+    admin: CurrentAdmin,
+    db: DB,
+    status_filter: str = Query(default="pending", alias="status",
+                               pattern="^(pending|approved|rejected|all)$"),
+) -> list:
+    query = db.query(YearProposal)
+    if status_filter != "all":
+        query = query.filter(YearProposal.status == status_filter)
+    rows = query.order_by(YearProposal.rating_count.desc(), YearProposal.entry_key).all()
+
+    # The ratings are grouped again for the detail, so what an admin reads is current.
+    groups = {
+        (group.entry_key, group.kind, group.latitude, group.longitude): group
+        for group in year_feedback.propose(_stored_ratings(db))
+    }
+    titles = _entry_titles()
+    return [
+        _proposal_out(row, titles, groups.get((row.entry_key, row.kind, row.latitude, row.longitude)))
+        for row in rows
+    ]
+
+
+@router.post("/year-proposals/recompute", response_model=YearRecomputeOut)
+def recompute_year_proposals(admin: CurrentAdmin, db: DB) -> YearRecomputeOut:
+    """Group the ratings again and offer what is new.
+
+    A decision is never undone by a recompute: an approved or rejected row is left exactly as it
+    is, which is also what stops a rejected group being offered over and over. A pending row whose
+    group has grown is brought up to date in place.
+    """
+    created = updated = unchanged = 0
+    for group in year_feedback.propose(_stored_ratings(db)):
+        row = (
+            db.query(YearProposal)
+            .filter(
+                YearProposal.entry_key == group.entry_key,
+                YearProposal.kind == group.kind,
+                YearProposal.latitude == group.latitude,
+                YearProposal.longitude == group.longitude,
+            )
+            .first()
+        )
+        if row is None:
+            db.add(YearProposal(
+                entry_key=group.entry_key, kind=group.kind, shift_days=group.shift_days,
+                rating_count=group.rating_count, latitude=group.latitude,
+                longitude=group.longitude, radius_km=group.radius_km, country=group.country,
+                status="pending",
+            ))
+            created += 1
+            continue
+        if row.status != "pending":
+            unchanged += 1
+            continue
+        if (row.shift_days, row.rating_count) == (group.shift_days, group.rating_count):
+            unchanged += 1
+            continue
+        row.shift_days = group.shift_days
+        row.rating_count = group.rating_count
+        row.country = group.country
+        updated += 1
+    db.commit()
+    return YearRecomputeOut(created=created, updated=updated, unchanged=unchanged)
+
+
+def _proposal_or_404(proposal_id: str, db) -> YearProposal:
+    row = db.query(YearProposal).filter(YearProposal.id == proposal_id).first()
+    if row is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=error("YEAR_PROPOSAL_NOT_FOUND"))
+    return row
+
+
+@router.post("/year-proposals/{proposal_id}/approve", response_model=YearProposalOut)
+def approve_year_proposal(
+    proposal_id: str, body: YearProposalApprove, admin: CurrentAdmin, db: DB
+) -> YearProposalOut:
+    """Approve the correction, optionally a different one than the median.
+
+    An admin who knows the region may overrule the number the ratings produced — the ratings are
+    evidence, not a vote that binds anybody.
+    """
+    row = _proposal_or_404(proposal_id, db)
+    if body.shift_days is not None:
+        if row.kind != "shift":
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail={"code": "VALIDATION_ERROR",
+                        "message": "shift_days cannot be given for a proposal to hide an entry."},
+            )
+        row.shift_days = body.shift_days
+    row.status = "approved"
+    row.decided_at = datetime.utcnow()
+    row.decided_by = admin.id
+    db.commit()
+    db.refresh(row)
+    return _proposal_out(row, _entry_titles())
+
+
+@router.post("/year-proposals/{proposal_id}/reject", response_model=YearProposalOut)
+def reject_year_proposal(proposal_id: str, admin: CurrentAdmin, db: DB) -> YearProposalOut:
+    """Reject it — and keep the row, so the next recompute does not offer the same group again."""
+    row = _proposal_or_404(proposal_id, db)
+    row.status = "rejected"
+    row.decided_at = datetime.utcnow()
+    row.decided_by = admin.id
+    db.commit()
+    db.refresh(row)
+    return _proposal_out(row, _entry_titles())

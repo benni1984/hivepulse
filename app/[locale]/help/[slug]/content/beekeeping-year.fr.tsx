@@ -25,6 +25,30 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Deux façons de la regarder</h2>
+        <p>
+          Sur le site, l’année a une seconde vue. <em>Liste</em> est celle décrite ci-dessus : quoi faire maintenant,
+          mois par mois, avec le texte entier de chaque entrée. <em>Vue d’ensemble</em> est la même année en une image —
+          les douze mois en travers de l’écran, une ligne par sujet et une barre par travail. On voit alors comment
+          l’année tient ensemble : que le contrôle de l’essaimage traverse la première récolte, que le traitement
+          contre le varroa tombe dans le creux après le retrait des hausses.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li>La plupart des travaux portent une photo de la chose même : la plante en fleur, une cellule royale
+            operculée, le varroa sur une abeille. Pointez une barre pour la voir, avec les dates et le nom complet.</li>
+          <li>Ce qui se chevauche est placé les uns sous les autres et non les uns sur les autres, pour que rien ne
+            soit caché. En juin, cinq transhumances sont ouvertes en même temps.</li>
+          <li>Une miellée est une seule barre, du départ au dernier cadre extrait ; la queue ambre est la récolte.
+            Un clic donne les deux conseils.</li>
+          <li>Sur téléphone, l’année défile verticalement. Douze mois sur 360 pixels font trente pixels par mois,
+            illisible : l’image est donc réservée à la largeur d’une tablette et au-delà.</li>
+        </ul>
+        <p>
+          Les applications montrent l’année en liste pour l’instant ; l’image est sur le site.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Indiquer votre région</h2>
         <p>
           Les dates sont écrites pour le centre de l&rsquo;Allemagne. La nature est plus précoce au sud et plus tardive au

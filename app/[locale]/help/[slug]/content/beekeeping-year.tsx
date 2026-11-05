@@ -25,6 +25,30 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Two ways of looking at it</h2>
+        <p>
+          On the website the year has a second view. <em>List</em> is the one described above: what to do now,
+          month by month, with the whole text of every entry. <em>Overview</em> is the same year as one picture —
+          the twelve months across the screen, a row per subject and a bar per job, so you can see how the year
+          hangs together: that swarm control runs straight through the first honey, that the varroa treatment sits
+          in the gap after the supers come off.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li>Most jobs carry a photograph of the thing itself: the plant in flower, a capped queen cell, the mite
+            on a bee. Point at a bar to see it, with the dates and the full name of the job.</li>
+          <li>Jobs that happen at the same time stand under each other rather than on top of each other, so nothing
+            is hidden. In June five moves are open at once.</li>
+          <li>A forage is one bar, from driving out to it to the last frame spun; the amber tail is the harvest.
+            Click it and you get both pieces of advice.</li>
+          <li>On a phone the year runs down the screen instead. Twelve months across 360 pixels is thirty pixels a
+            month, which is unreadable, so the picture is for tablet width and up.</li>
+        </ul>
+        <p>
+          The apps show the year as a list for now; the picture is on the website.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Set your region</h2>
         <p>
           The dates are written for central Germany. Nature runs earlier in the south and later in the north, so you

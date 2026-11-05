@@ -39,6 +39,7 @@
     <string name="action_create_account">Załóż konto</string>
     <string name="action_logout">Wyloguj się</string>
     <string name="action_help">Pomoc i dokumentacja</string>
+    <string name="action_feedback">Prześlij opinię</string>
     <string name="url_help">https://hivepulse.multihead.de/pl/help</string>
     <string name="action_new_apiary">Nowa pasieka</string>
     <string name="action_edit_apiary">Edytuj pasiekę</string>

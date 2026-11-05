@@ -1146,6 +1146,14 @@ export interface CalendarEntry {
   honey: string | null;
   /** Whether today lies within the entry. */
   active: boolean;
+  /**
+   * Days this one entry is moved on top of `region.shift_days`, because beekeepers of this region
+   * said the formula gets it wrong here and an admin approved the correction. 0 when none covers
+   * the place.
+   */
+  regional_shift_days: number;
+  /** How many ratings that correction rests on, so the client can say "11 beekeepers near you". */
+  rating_count: number;
 }
 
 export interface CalendarWindow {

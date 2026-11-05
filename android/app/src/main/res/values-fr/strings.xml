@@ -320,6 +320,7 @@
     <string name="action_download">Télécharger</string>
     <string name="action_export_data">Exporter les données</string>
     <string name="action_help">Aide &amp; documentation</string>
+    <string name="action_feedback">Envoyer un retour</string>
     <string name="action_load_more">Charger plus</string>
     <string name="action_next">Suivant</string>
     <string name="action_prev">Précédent</string>

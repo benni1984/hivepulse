@@ -48,8 +48,12 @@ The announcement card is text the server sends (`announcement_*` settings); ther
 |---------|-------|:-:|:-:|:-:|----------|
 | Endless timeline of what to do when (feeding, inspections, swarm control, drone frames, moving and extracting per honey, varroa, winter), in five languages | Dashboard menu; calendar icon in the apiary list toolbar | ✔ | ✔ | ✔ | Beekeeping Year |
 | Moved to the beekeeper's place by country and postal code (about 4 days per degree of latitude), adjustable by hand | Profile; Settings → Region | ✔ | ✔ | ✔ | Beekeeping Year |
+| The same year as one picture: twelve months across, a row per subject, a bar per job, overlapping jobs stacked into lanes, a photograph of the thing itself on hover; a forage is one bar from the move to the end of its harvest | Beekeeping year → Overview | ✔ | — | — | Beekeeping Year |
+| On a phone the picture is replaced by the year running down the screen, opened at today | Beekeeping year → Overview | ✔ | — | — | Beekeeping Year |
 
 The content is `backend/app/beekeeping_year.py` (dates for central Germany), the arithmetic `backend/app/season.py`.
+The ribbon's arithmetic is `lib/yearRibbon.ts`; its photographs and their credits are `lib/yearPhotos.ts`,
+generated with `scripts/fetch_year_photos.py` and listed in `docs/photo-credits.md`.
 Guide values only; medicines subject to the approvals of the country.
 
 ## Moving hives
@@ -78,9 +82,13 @@ See the help pages `hive-stats`, `community-stats`,
 
 ## Account
 
-Sign in with e-mail, Apple or Google; English, German, French and Spanish; change password (not for
-accounts made through Apple or Google); delete the account and all data (also revokes Apple access);
+Sign in with e-mail, Apple or Google; English, German, French, Spanish and Polish; change password (not
+for accounts made through Apple or Google); delete the account and all data (also revokes Apple access);
 crash reports to an EU-region Sentry; a guided tour.
+
+**Send feedback** sits in Settings under Help on all three clients. On Android it opens the Play listing,
+because feedback sent from there is what reaches the Play Console's testing feedback page; on the iPhone
+and the website it opens a mail with the version and build already in the subject.
 
 ## Navigation (the same on iPhone and Android)
 

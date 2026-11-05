@@ -22,6 +22,32 @@ export function newsText(entry: NewsEntry, locale: string): NewsText {
 
 export const NEWS: NewsEntry[] = [
   {
+    date: '2026-11-05',
+    tag: 'feature',
+    text: {
+      en: {
+        title: 'The Beekeeping Year, as One Picture',
+        body: 'The beekeeping year has been a list: what to do now, month by month. On the website it is now also a ribbon — the whole year across the screen, a row per subject, a bar per job. Every job carries a photograph of the thing itself: the plant in flower, a capped queen cell, the mite on a bee, the wax going into the melter. A plant is one bar, from driving out to it to the last frame spun, and hovering it tells you both halves. On a phone the year runs down the screen instead, because twelve months across 360 pixels is thirty pixels a month. The pictures come from Wikimedia Commons and name their photographer and licence beside them. The apps still show the year as a list for now.',
+      },
+      de: {
+        title: 'Das Imkerjahr als ein Bild',
+        body: 'Das Imkerjahr war eine Liste: was jetzt zu tun ist, Monat für Monat. Auf der Webseite ist es nun auch ein Band — das ganze Jahr über den Bildschirm, eine Zeile je Thema, ein Balken je Aufgabe. Jede Aufgabe trägt ein Foto der Sache selbst: die Pflanze in Blüte, eine verdeckelte Weiselzelle, die Milbe auf der Biene, das Wachs im Schmelzer. Eine Pflanze ist ein Balken, vom Hinfahren bis zur letzten geschleuderten Wabe, und beim Überfahren stehen beide Hälften da. Auf dem Handy läuft das Jahr stattdessen senkrecht, denn zwölf Monate auf 360 Pixel sind dreißig Pixel je Monat. Die Fotos stammen aus Wikimedia Commons und nennen Urheber und Lizenz daneben. Die Apps zeigen das Jahr vorerst weiter als Liste.',
+      },
+      fr: {
+        title: 'L’année apicole en une image',
+        body: 'L’année apicole était une liste : quoi faire maintenant, mois par mois. Sur le site, c’est désormais aussi un ruban — toute l’année en travers de l’écran, une ligne par sujet, une barre par travail. Chaque travail porte une photo de la chose même : la plante en fleur, une cellule royale operculée, le varroa sur une abeille, la cire au fondoir. Une plante est une seule barre, du départ en transhumance au dernier cadre extrait, et le survol en donne les deux moitiés. Sur téléphone, l’année défile verticalement : douze mois sur 360 pixels font trente pixels par mois. Les photos viennent de Wikimedia Commons et citent leur auteur et leur licence. Les applications montrent encore l’année en liste.',
+      },
+      es: {
+        title: 'El año apícola en una imagen',
+        body: 'El año apícola era una lista: qué hacer ahora, mes a mes. En el sitio es ahora también una banda: todo el año a lo ancho de la pantalla, una fila por tema, una barra por tarea. Cada tarea lleva una foto de la cosa misma: la planta en flor, una celda real operculada, el ácaro sobre una abeja, la cera en el fundidor. Una planta es una sola barra, desde el traslado hasta el último cuadro extraído, y al pasar por encima aparecen las dos mitades. En el móvil el año va en vertical: doce meses en 360 píxeles son treinta píxeles por mes. Las fotos vienen de Wikimedia Commons y citan autor y licencia. Las aplicaciones siguen mostrando el año como lista.',
+      },
+      pl: {
+        title: 'Rok pasieczny jako jeden obraz',
+        body: 'Rok pasieczny był listą: co robić teraz, miesiąc po miesiącu. Na stronie jest teraz także wstęgą — cały rok w poprzek ekranu, wiersz na temat, belka na zadanie. Każde zadanie ma zdjęcie samej rzeczy: roślinę w kwiecie, zasklepiony matecznik, roztocza na pszczole, wosk w topiarce. Roślina to jedna belka, od wyjazdu po ostatnią odwirowaną ramkę, a po najechaniu widać obie połowy. Na telefonie rok biegnie pionowo: dwanaście miesięcy na 360 pikselach to trzydzieści pikseli na miesiąc. Zdjęcia pochodzą z Wikimedia Commons i podają autora oraz licencję. Aplikacje na razie nadal pokazują rok jako listę.',
+      },
+    },
+  },
+  {
     date: '2026-10-07',
     tag: 'design',
     text: {

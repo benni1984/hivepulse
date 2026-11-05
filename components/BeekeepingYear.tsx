@@ -7,6 +7,8 @@ import {
   WINDOW_DAYS, addDays, buildTimeline, countryName, firstOfMonth, isoDay, mergeEntries, scrollParent,
 } from '@/lib/calendar';
 import { isKnownForage } from '@/lib/moves';
+import { photoFor } from '@/lib/yearPhotos';
+import YearRibbon from './year/YearRibbon';
 
 /**
  * The beekeeper's year as an endless timeline: what to do when, month by month, moved to the beekeeper's own
@@ -23,6 +25,8 @@ export default function BeekeepingYear() {
   const [error, setError] = useState(false);
   const [busy, setBusy] = useState({ next: false, previous: false });
   const [ready, setReady] = useState(false);
+  // The list is the default: it answers "what do I do now", which is why somebody opens this.
+  const [view, setView] = useState<'list' | 'ribbon'>('list');
 
   const topRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -129,7 +133,19 @@ export default function BeekeepingYear() {
 
   return (
     <div className="dash-cal" data-testid="beekeeping-year">
-      <p className="dash-card-meta">{t('calendar.intro')}</p>
+      <div className="dash-year-switch" role="group" aria-label={t('calendar.title')}>
+        <button type="button" aria-pressed={view === 'list'} onClick={() => setView('list')}
+                data-testid="year-view-list">
+          {t('calendar.viewList')}
+        </button>
+        <button type="button" aria-pressed={view === 'ribbon'} onClick={() => setView('ribbon')}
+                data-testid="year-view-ribbon">
+          {t('calendar.viewRibbon')}
+        </button>
+      </div>
+      <p className="dash-card-meta dash-year-switch-hint">
+        {view === 'list' ? t('calendar.viewListHint') : t('calendar.viewRibbonHint')}
+      </p>
 
       {region && (
         <div className="dash-cal-region" data-testid="calendar-region">
@@ -141,10 +157,12 @@ export default function BeekeepingYear() {
         </div>
       )}
 
-      {error && <div className="dash-error-banner">{t('calendar.loadError')}</div>}
-      {!loaded && !error && <div className="spinner" aria-label={t('calendar.loading')} />}
+      {view === 'ribbon' && <YearRibbon year={new Date(today).getFullYear()} />}
 
-      {loaded && (
+      {view === 'list' && error && <div className="dash-error-banner">{t('calendar.loadError')}</div>}
+      {view === 'list' && !loaded && !error && <div className="spinner" aria-label={t('calendar.loading')} />}
+
+      {view === 'list' && loaded && (
         <>
           <div ref={topRef} className="dash-cal-edge" data-testid="calendar-top">
             {busy.previous ? t('calendar.loadingEarlier') : ''}
@@ -169,6 +187,9 @@ export default function BeekeepingYear() {
                 );
               }
               const entry = item.entry!;
+              // An entry that names a forage shows that plant; everything else shows the job.
+              // Five have no picture at all, and the card simply does without one.
+              const photo = photoFor(entry.key, entry.honey);
               return (
                 <li key={item.id} className={`dash-cal-entry dash-cal-cat-${entry.category}${entry.active ? ' dash-cal-active' : ''}`}
                     data-testid="calendar-entry">
@@ -181,6 +202,20 @@ export default function BeekeepingYear() {
                     )}
                     <span className="dash-cal-dates">{shortDay(entry.start)} – {shortDay(entry.end)}</span>
                   </div>
+                  {photo && (
+                    <figure className="dash-cal-photo">
+                      {/* No alt text: the title is the next thing on the card, and a screen
+                          reader would otherwise read the same entry twice. */}
+                      <img src={photo.file} alt="" width={640} height={427} loading="lazy" />
+                      <figcaption>
+                        <a href={photo.source} target="_blank" rel="noreferrer noopener">
+                          {t('calendar.photoCredit', {
+                            author: photo.author, licence: photo.licence,
+                          })}
+                        </a>
+                      </figcaption>
+                    </figure>
+                  )}
                   <h3>{entry.title}</h3>
                   <p>{entry.body}</p>
                 </li>

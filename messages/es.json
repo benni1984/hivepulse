@@ -418,6 +418,8 @@
       "openMenu": "Abrir menú del panel",
       "closeMenu": "Cerrar menú del panel",
       "releaseNotes": "Notas de versión",
+      "feedback": "Enviar comentarios",
+      "feedbackSubject": "Comentarios de HivePulse",
       "calendar": "Año apícola"
     },
     "overview": {
@@ -864,6 +866,17 @@
       "setRegion": "Indicar la región",
       "changeRegion": "Cambiar la región",
       "disclaimer": "Valores orientativos de la práctica apícola habitual, no normas: la floración y el tiempo deciden, y las fechas cambian con tu lugar. Medicamentos solo según la autorización y las normas de tu país; en caso de duda, pregunta a tu asociación de apicultores o a la autoridad veterinaria.",
+      "viewList": "Lista",
+      "viewRibbon": "Vista general",
+      "viewListHint": "Qué hacer ahora, mes a mes",
+      "viewRibbonHint": "Todo el año en una imagen",
+      "closeEntry": "Cerrar",
+      "photoCredit": "Foto: {author} · {licence}",
+      "rows": {
+        "forage": "Mielada"
+      },
+      "regionalShift": "{count, plural, one {# apicultor} other {# apicultores}} cerca de ti lo sitúan {days, plural, one {# día} other {# días}} antes o después, y aquí ya está aplicado.",
+      "ribbonEmpty": "No hay nada que mostrar para este año.",
       "categories": {
         "inspection": "Revisión",
         "swarm": "Enjambrazón",

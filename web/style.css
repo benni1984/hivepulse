@@ -1802,6 +1802,297 @@ button.hornets-action-card { width: 100%; }
 .dash-cal-cat-feeding, .dash-cal-cat-harvest { border-left-color: var(--amber-mid); }
 .dash-cal-cat-feeding .dash-cal-chip:first-child, .dash-cal-cat-harvest .dash-cal-chip:first-child { background: var(--amber-tint); color: var(--amber-ink); }
 .dash-cal-disclaimer { margin-top: 28px; font-size: 13px; }
+
+/* ── The beekeeping year, as a picture ────────────────────────────────────────────────────────
+   Two layouts rather than one squeezed into both. A phone shows the year running down the
+   screen; twelve months across 360 pixels is thirty pixels a month, which is why the ribbon is
+   for tablet width and up.
+
+   Every entry carries its own icon — a frame of drone cells, a queen cell, a lorry, a press —
+   because the point of a picture here is to say what to do without reading. Nothing loops or
+   drifts: these carry information, and information that moves is harder to read.
+
+   Colours are palette tokens throughout, so dark mode needs no second set of anything. */
+
+.dash-year { margin: 18px 0 0; }
+
+/* ── Phone: the year runs down ─────────────────────────────────────────────────────────────── */
+
+.dash-year-vlist { list-style: none; margin: 0; padding: 0; }
+
+.dash-year-vmonth {
+  margin: 20px 0 8px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--body-text);
+}
+.dash-year-vlist > li:first-child .dash-year-vmonth { margin-top: 4px; }
+
+.dash-year-vtoday {
+  display: flex; align-items: center; gap: 10px;
+  margin: 12px 0; font-size: 12px; font-weight: 700; color: var(--amber-ink);
+}
+.dash-year-vtoday::before,
+.dash-year-vtoday::after { content: ''; height: 2px; background: var(--amber-mid); border-radius: 2px; }
+.dash-year-vtoday::before { width: 14px; }
+.dash-year-vtoday::after { flex: 1; opacity: 0.35; }
+
+.dash-year-vitem {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  margin: 0 0 8px; padding: 10px 12px;
+  border: 1px solid var(--bar-border); border-left: 4px solid var(--bar-border);
+  border-radius: 12px; background: var(--card);
+  font: inherit; text-align: left; cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.dash-year-vitem:focus-visible { outline: 2px solid var(--amber-mid); outline-offset: 2px; }
+.dash-year-vitem-picked { box-shadow: 0 0 0 2px var(--amber-mid); }
+.dash-year-vitem-active { border-left-color: var(--amber-mid); }
+
+.dash-year-vicon {
+  flex: 0 0 52px; width: 52px; height: 52px;
+  display: grid; place-items: center; overflow: hidden;
+  border-radius: 11px; background: var(--bar-fill); color: var(--bar-ink);
+}
+.dash-year-vicon svg { width: 24px; height: 24px; }
+/* A 3:2 photograph in a square tile: filled from the middle, which is where the subject of
+   every one of them is. The tile keeps its size when there is no photograph, so a list of
+   mixed entries does not step in and out. */
+.dash-year-vphoto { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.dash-year-vtext { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dash-year-vdates { font-size: 12px; color: var(--body-text); font-variant-numeric: tabular-nums; }
+.dash-year-vtitle { font-size: 14px; font-weight: 600; color: var(--heading-text, inherit); }
+
+.dash-year-vdetail { margin: 0 0 12px; }
+.dash-year-vdetail .dash-year-detail { margin-top: 0; }
+
+/* ── Tablet and up: the ribbon ─────────────────────────────────────────────────────────────── */
+
+/* The component builds one layout or the other (it watches the same 768px in matchMedia), so
+   these rules only ever style what is actually there. */
+@media (min-width: 768px) {
+  .dash-year-scroll {
+    overflow-x: auto; overflow-y: hidden;
+    border: 1px solid var(--slate-border); border-radius: 14px; background: var(--surface);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .dash-year-canvas { position: relative; min-width: 900px; padding: 0 0 10px; }
+
+  /* A still tint per season. It says winter from summer at a glance and does nothing else. */
+  .dash-year-seasons { position: absolute; inset: 34px 0 10px; pointer-events: none; }
+  .dash-year-season { position: absolute; top: 0; bottom: 0; }
+  .dash-year-season-winter { background: var(--slate-tint); opacity: 0.4; }
+  .dash-year-season-spring { background: var(--green-tint); opacity: 0.4; }
+  .dash-year-season-summer { background: var(--amber-tint); opacity: 0.4; }
+  .dash-year-season-autumn { background: var(--red-tint); opacity: 0.3; }
+
+  .dash-year-months { position: relative; height: 34px; }
+  .dash-year-month {
+    position: absolute; top: 0; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--body-text);
+  }
+  .dash-year-month span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .dash-year-grid { position: absolute; inset: 34px 0 10px; pointer-events: none; }
+  .dash-year-gridline { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--slate-line); }
+
+  .dash-year-now { position: absolute; top: 18px; bottom: 10px; width: 0; pointer-events: none; z-index: 3; }
+  .dash-year-now::before {
+    content: ''; position: absolute; top: 16px; bottom: 0; left: -1px; width: 2px;
+    background: var(--amber-mid);
+  }
+  .dash-year-now-dot {
+    position: absolute; top: 10px; left: -5px; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--amber-mid);
+  }
+  .dash-year-now-label {
+    position: absolute; top: -4px; left: 9px; white-space: nowrap;
+    font-size: 11px; font-weight: 700; color: var(--amber-ink);
+    background: var(--amber-wash); border: 1px solid var(--amber-border);
+    border-radius: 999px; padding: 1px 8px;
+  }
+
+  .dash-year-rows { position: relative; z-index: 2; padding: 8px 0 0; }
+  /* The row is as tall as its lanes need. `align-items: stretch` so the sticky label covers the
+     whole height of a category that has grown to three lanes, not just the first. */
+  .dash-year-row { position: relative; display: flex; align-items: stretch; }
+  .dash-year-row + .dash-year-row { margin-top: 4px; }
+
+  .dash-year-row-label {
+    position: sticky; left: 0; z-index: 4;
+    flex: 0 0 112px; width: 112px; padding: 13px 10px 0;
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+    color: var(--body-text);
+    /* Solid, not a fade: the ribbon scrolls under it, and a bar showing faintly through the
+       label reads as a rendering fault rather than as something scrolled past. */
+    background: var(--surface);
+    box-shadow: 6px 0 6px -4px rgb(0 0 0 / 0.07);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  .dash-year-lanes { display: flex; flex-direction: column; gap: 4px; flex: 1 1 auto; }
+  .dash-year-lane { position: relative; height: 34px; }
+
+  .dash-year-bar {
+    position: absolute; top: 0; height: 34px;
+    display: flex; align-items: center; gap: 6px;
+    border: 1px solid var(--bar-border); border-radius: 9px;
+    background: var(--bar-fill); color: var(--bar-ink);
+    padding: 0 7px; overflow: hidden;
+    font: inherit; font-size: 12.5px; font-weight: 600; text-align: left;
+    cursor: pointer;
+    transition: box-shadow 0.15s ease, filter 0.15s ease;
+  }
+  .dash-year-bar-icon { flex: 0 0 20px; width: 20px; height: 20px; }
+  .dash-year-bar-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dash-year-bar:hover { filter: brightness(0.97); }
+  .dash-year-bar:focus-visible { outline: 2px solid var(--amber-mid); outline-offset: 2px; }
+  .dash-year-bar-picked { box-shadow: 0 0 0 2px var(--amber-mid); }
+  .dash-year-bar-active { border-width: 2px; }
+
+  /* A forage is one bar with two halves: the move, then the harvest from `--split` onwards.
+     The two colours are named rather than inherited because a paired bar is always exactly
+     this pair -- a migration and the harvest that follows it. */
+  .dash-year-bar-paired {
+    background: linear-gradient(to right,
+      var(--slate-tint) 0 var(--split, 60%),
+      var(--amber-tint) var(--split, 60%) 100%);
+  }
+  .dash-year-bar-paired::after {
+    content: ''; position: absolute; top: 0; bottom: 0; left: var(--split, 60%);
+    width: 1px; background: var(--amber-border);
+  }
+
+  /* An entry reaching past the edge of the year is drawn open on that side, rather than looking
+     like something that happens to begin on 1 January. */
+  .dash-year-bar-open-start { border-top-left-radius: 0; border-bottom-left-radius: 0; border-left-style: dashed; }
+  .dash-year-bar-open-end { border-top-right-radius: 0; border-bottom-right-radius: 0; border-right-style: dashed; }
+}
+
+/* A wider screen can give the labels and the months more room before scrolling starts. */
+@media (min-width: 1100px) {
+  .dash-year-canvas { min-width: 1040px; }
+}
+
+/* The full title on hover and on focus. Most bars are a few weeks wide, which is room for an
+   icon and a syllable; the tooltip is where the name of the job actually fits. Fixed rather than
+   absolute, because a bar at the edge of the scrolling ribbon is exactly the one whose tooltip
+   would otherwise be cut off by it. */
+.dash-year-tip {
+  position: fixed; z-index: 60; transform: translate(-50%, calc(-100% - 10px));
+  max-width: min(300px, 80vw); pointer-events: none;
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 7px 11px; border-radius: 9px;
+  background: var(--green); color: #ffffff;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.18);
+}
+.dash-year-tip::after {
+  content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: var(--green);
+}
+/* Under the bar instead of over it, for the lanes near the top of the window. The arrow
+   changes ends with it, or it would point away from what the tooltip is about. */
+.dash-year-tip-below { transform: translate(-50%, 10px); }
+.dash-year-tip-below::after {
+  top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: var(--green);
+}
+.dash-year-tip-dates { font-size: 11px; opacity: 0.75; font-variant-numeric: tabular-nums; }
+.dash-year-tip-title { font-size: 13px; font-weight: 600; line-height: 1.35; }
+/* A fixed box, so the tooltip is the same size before and after the picture arrives and
+   nothing under the pointer jumps. The first hover fetches it; after that it is cached. */
+.dash-year-tip-photo {
+  width: 100%; height: 124px; object-fit: cover; display: block;
+  margin: -1px 0 5px; border-radius: 6px; background: rgb(255 255 255 / 0.12);
+}
+.dash-year-tip-credit { margin-top: 3px; font-size: 10px; opacity: 0.6; line-height: 1.3; }
+/* One line per half of a forage bar: when you drive out, and when you take it off. */
+.dash-year-tip-part { font-size: 11px; line-height: 1.4; opacity: 0.85; }
+.dash-year-tip-part em { font-style: normal; opacity: 0.7; font-variant-numeric: tabular-nums; }
+
+/* ── Shared: the categories and the detail ─────────────────────────────────────────────────── */
+
+/* Nine categories, four colour families. Pairs that never share a row share a family, so no
+   category is left to an ad-hoc colour. */
+.dash-year-cat-inspection, .dash-year-cat-bloom {
+  --bar-fill: var(--green-tint); --bar-border: var(--green-border); --bar-ink: var(--green-ink);
+}
+.dash-year-cat-swarm, .dash-year-cat-varroa {
+  --bar-fill: var(--red-tint); --bar-border: var(--red-border); --bar-ink: var(--red-ink);
+}
+.dash-year-cat-feeding, .dash-year-cat-harvest {
+  --bar-fill: var(--amber-tint); --bar-border: var(--amber-border); --bar-ink: var(--amber-ink);
+}
+.dash-year-cat-migration, .dash-year-cat-care, .dash-year-cat-winter {
+  --bar-fill: var(--slate-tint); --bar-border: var(--slate-border); --bar-ink: var(--slate-ink);
+}
+
+.dash-year-detail {
+  margin: 14px 0 0;
+  border: 1px solid var(--bar-border); border-left: 4px solid var(--bar-border);
+  border-radius: 12px; background: var(--card); padding: 14px 16px;
+}
+.dash-year-detail-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.dash-year-detail h3 { margin: 10px 0 4px; font-size: 16px; }
+/* A forage opens as two pieces of advice -- drive there, then spin it -- with a seam between
+   them, because they are weeks apart and are not one instruction. */
+.dash-year-detail-part + .dash-year-detail-part {
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--slate-line);
+}
+.dash-year-detail p { margin: 0; font-size: 14px; color: var(--body-text); }
+
+/* The Liste is the reading view: it already shows the whole text of every entry, so the
+   picture belongs in it at a size worth looking at rather than as a thumbnail. Lower than
+   the one in the opened entry, because here there are thirty-five of them under each other. */
+.dash-cal-photo { margin: 10px 0 2px; }
+.dash-cal-photo img {
+  width: 100%; max-height: 170px; object-fit: cover; display: block;
+  border-radius: 10px; background: var(--slate-tint);
+}
+.dash-cal-photo figcaption { margin-top: 5px; font-size: 11px; color: var(--body-text); }
+.dash-cal-photo a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.dash-cal-photo a:hover { color: var(--amber-ink); }
+
+.dash-year-detail-photo {
+  margin: 12px 0 0;
+}
+.dash-year-detail-photo img {
+  width: 100%; max-height: 220px; object-fit: cover; display: block;
+  border-radius: 10px; background: var(--bar-fill);
+}
+.dash-year-detail-photo figcaption { margin-top: 5px; font-size: 11px; color: var(--body-text); }
+.dash-year-detail-photo a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.dash-year-detail-photo a:hover { color: var(--amber-ink); }
+
+.dash-year-detail-close {
+  margin-left: auto; border: 0; background: none; cursor: pointer;
+  font-size: 20px; line-height: 1; color: var(--body-text); padding: 0 2px;
+}
+.dash-year-detail-close:hover { color: var(--amber-ink); }
+
+.dash-year-regional {
+  margin-top: 10px !important;
+  background: var(--green-wash); border: 1px solid var(--green-border); border-radius: 9px;
+  padding: 8px 10px; font-size: 13px; color: var(--green-ink);
+}
+
+/* ── The switch between the list and the picture ───────────────────────────────────────────── */
+
+.dash-year-switch {
+  display: inline-flex; gap: 4px; margin: 0 0 4px; padding: 3px;
+  background: var(--slate-wash); border: 1px solid var(--slate-border); border-radius: 999px;
+}
+.dash-year-switch button {
+  border: 0; background: none; cursor: pointer; border-radius: 999px;
+  padding: 6px 16px; font: inherit; font-size: 13px; font-weight: 600; color: var(--slate-ink);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.dash-year-switch button[aria-pressed='true'] { background: var(--amber-mid); color: #ffffff; }
+.dash-year-switch button:focus-visible { outline: 2px solid var(--amber-mid); outline-offset: 2px; }
+
+.dash-year-switch-hint { margin: 0 0 12px; }
 .dash-region-form { display: grid; gap: 12px; }
 .dash-region-form .dash-region-row { display: flex; flex-wrap: wrap; gap: 12px; }
 .dash-region-form .dash-region-row > * { flex: 1 1 180px; }

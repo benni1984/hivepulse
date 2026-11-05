@@ -106,6 +106,8 @@
 "action.saveProfile" = "Profil speichern";
 "action.logout" = "Abmelden";
 "action.help" = "Hilfe & Dokumentation";
+"action.feedback" = "Rückmeldung geben";
+"action.feedbackSubject" = "HivePulse Rückmeldung";
 "action.newBatch" = "Neuer QR-Batch";
 "action.generate" = "Erstellen";
 "action.downloadPDF" = "PDF drucken";

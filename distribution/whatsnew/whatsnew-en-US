@@ -1,13 +1,10 @@
-HivePulse 1.0.0
-
-Scan the QR code on a hive, log the visit, done. Big buttons for gloves, works without a signal.
+HivePulse 1.0.1
 
 New in this build:
-• The beekeeper's year: a timeline of what to do and when, shifted to your location
-• Add a hive by hand, no sticker needed
-• Move a hive from its own page
-• Polish as a fifth language
-• A softer regional health map
-• Fixes for language and Settings
+• Send feedback: in Settings, right under Help
+• Beekeeping year: harvests added for chestnut, lavender and sunflower
+• Beekeeping year: "last harvest of the season" was misleading — more follow it. Now "Supers off: treatment and feeding start now"
 
-Tell us what was confusing: hivepulse@multihead.de
+You are in the closed test: please stay opted in for the 14 days and use the app now and then.
+
+hivepulse@multihead.de

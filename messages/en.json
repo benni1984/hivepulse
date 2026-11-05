@@ -418,6 +418,8 @@
       "openMenu": "Open dashboard menu",
       "closeMenu": "Close dashboard menu",
       "releaseNotes": "Release notes",
+      "feedback": "Send feedback",
+      "feedbackSubject": "HivePulse feedback",
       "calendar": "Beekeeping year"
     },
     "overview": {
@@ -864,6 +866,17 @@
       "setRegion": "Set region",
       "changeRegion": "Change region",
       "disclaimer": "Guide values from usual beekeeping practice, not rules: bloom and weather decide, and the dates move with your place. Medicines only as approved and prescribed in your country; when in doubt, ask your beekeepers’ association or veterinary office.",
+      "viewList": "List",
+      "viewRibbon": "Overview",
+      "viewListHint": "What to do now, month by month",
+      "viewRibbonHint": "The whole year in one picture",
+      "closeEntry": "Close",
+      "photoCredit": "Photo: {author} · {licence}",
+      "rows": {
+        "forage": "Forage"
+      },
+      "regionalShift": "{count, plural, one {# beekeeper} other {# beekeepers}} near you put this {days, plural, one {# day} other {# days}} differently, and it has been applied.",
+      "ribbonEmpty": "Nothing to show for this year.",
       "categories": {
         "inspection": "Inspection",
         "swarm": "Swarm control",

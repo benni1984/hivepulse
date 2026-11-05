@@ -422,3 +422,76 @@ class HornetTrapCatch(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     trap = relationship("HornetTrap", back_populates="catches")
+
+
+# ---------------------------------------------------------------------------
+# Beekeeping year: what beekeepers say about the dates, and what admins approve
+# ---------------------------------------------------------------------------
+
+
+class YearRating(Base):
+    """One beekeeper's verdict on one timeline entry, submitted without an account.
+
+    Deliberately thin: the country and a position rounded to one decimal place (about 11 km —
+    enough to group a region, too coarse to point at an apiary). The postal code is looked up
+    once and dropped, so nothing here says where somebody keeps bees.
+
+    `device_hash` is a hash of a string the client keeps. It is not an identity, it is what makes
+    a second submission from the same browser replace the first instead of counting twice, hence
+    the unique constraint with the entry key.
+    """
+
+    __tablename__ = "year_ratings"
+    __table_args__ = (
+        UniqueConstraint("device_hash", "entry_key", name="uq_year_rating_device_entry"),
+    )
+
+    id = Column(String, primary_key=True, default=_uuid)
+    entry_key = Column(String(80), nullable=False, index=True)
+    verdict = Column(
+        SAEnum("fits", "too_early", "too_late", "wrong", name="year_verdict_enum"), nullable=False
+    )
+    # Only meaningful with too_early / too_late: the correction the beekeeper proposes.
+    shift_days = Column(Integer, nullable=True)
+    # Free text, admins only. Never shown to another user.
+    note = Column(Text, nullable=True)
+    country = Column(String(2), nullable=False)
+    latitude = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
+    years_keeping = Column(Integer, nullable=True)
+    device_hash = Column(String(64), nullable=False, index=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class YearProposal(Base):
+    """A correction the ratings suggest for one entry in one region, waiting for an admin.
+
+    Nothing a beekeeper submits reaches a calendar on its own. A group of ratings close together
+    becomes a row here; only `approved` changes what anybody sees. `rejected` rows are kept on
+    purpose, so a recompute does not offer the same group again.
+    """
+
+    __tablename__ = "year_proposals"
+    __table_args__ = (
+        UniqueConstraint("entry_key", "latitude", "longitude", "kind", name="uq_year_proposal_group"),
+    )
+
+    id = Column(String, primary_key=True, default=_uuid)
+    entry_key = Column(String(80), nullable=False, index=True)
+    # "shift" moves the entry; "hide" means it does not apply in that region at all.
+    kind = Column(SAEnum("shift", "hide", name="year_proposal_kind_enum"), nullable=False)
+    shift_days = Column(Integer, nullable=True)
+    rating_count = Column(Integer, nullable=False, default=0)
+    latitude = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
+    radius_km = Column(Integer, nullable=False, default=150)
+    country = Column(String(2), nullable=True)
+    status = Column(
+        SAEnum("pending", "approved", "rejected", name="year_proposal_status_enum"),
+        nullable=False,
+        default="pending",
+        index=True,
+    )
+    created_at = Column(DateTime, default=datetime.utcnow)
+    decided_at = Column(DateTime, nullable=True)
+    decided_by = Column(String, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)

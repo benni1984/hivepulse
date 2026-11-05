@@ -79,6 +79,16 @@ class SettingsScreenTest {
         composeRule.onNodeWithTag("releaseNotesButton").performScrollTo().assertIsDisplayed()
     }
 
+    /** A closed test with no way of answering is what Google refused the app over. */
+    @Test
+    fun settings_hasFeedbackButtonNextToHelp() {
+        navigateToSettings()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Send feedback").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithTag("feedbackButton").performScrollTo().assertIsDisplayed()
+    }
+
     @Test
     fun settings_showsLanguageSection() {
         navigateToSettings()

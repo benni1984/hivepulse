@@ -26,7 +26,8 @@ const REGION: Region = {
 function entry(key: string, start: string, end: string, overrides: Partial<CalendarEntry> = {}): CalendarEntry {
   return {
     key, category: 'care', title: `Title of ${key}`, body: `Body of ${key}`, start, end,
-    interval_days: null, honey: null, active: false, ...overrides,
+    interval_days: null, honey: null, active: false,
+    regional_shift_days: 0, rating_count: 0, ...overrides,
   };
 }
 
@@ -223,6 +224,45 @@ describe('BeekeepingYear', () => {
     render(<BeekeepingYear />);
 
     await waitFor(() => expect(screen.getByText('calendar.loadError')).toBeTruthy());
+  });
+
+  it('shows the photograph of the job on the card, with its credit', async () => {
+    // The Liste is the reading view: it already carries the whole text of an entry, so this is
+    // where a picture earns the most room.
+    mockGetCalendar.mockResolvedValue(window([
+      entry('swarm-control', '2026-05-01', '2026-06-30', { category: 'swarm' }),
+    ]));
+    render(<BeekeepingYear />);
+
+    await waitFor(() => expect(screen.getByTestId('calendar-entry')).toBeTruthy());
+    const card = screen.getByTestId('calendar-entry');
+    expect(card.querySelector('img')).toHaveAttribute('src', '/year/swarm-control.webp');
+    // Thirty-five entries, and the list loads more as it is scrolled.
+    expect(card.querySelector('img')).toHaveAttribute('loading', 'lazy');
+    const credit = card.querySelector('figcaption a');
+    expect(credit).toHaveAttribute('href', expect.stringContaining('commons.wikimedia.org'));
+    expect(credit?.textContent).toContain('calendar.photoCredit');
+  });
+
+  it('shows the plant on a card that names a forage, not the job', async () => {
+    mockGetCalendar.mockResolvedValue(window([
+      entry('harvest-rapeseed', '2026-05-15', '2026-06-05', { category: 'harvest', honey: 'rapeseed' }),
+    ]));
+    render(<BeekeepingYear />);
+
+    await waitFor(() => expect(screen.getByTestId('calendar-entry')).toBeTruthy());
+    expect(screen.getByTestId('calendar-entry').querySelector('img'))
+      .toHaveAttribute('src', '/year/migrate-rapeseed.webp');
+  });
+
+  it('leaves the card without a picture when the job has none', async () => {
+    mockGetCalendar.mockResolvedValue(window([
+      entry('candy-feeding', '2026-02-01', '2026-03-10', { category: 'feeding' }),
+    ]));
+    render(<BeekeepingYear />);
+
+    await waitFor(() => expect(screen.getByTestId('calendar-entry')).toBeTruthy());
+    expect(screen.getByTestId('calendar-entry').querySelector('img')).toBeNull();
   });
 
   it('says the dates are guide values, not rules', async () => {

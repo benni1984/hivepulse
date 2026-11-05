@@ -34,6 +34,7 @@
     <string name="action_create_account">Crear cuenta</string>
     <string name="action_logout">Cerrar sesión</string>
     <string name="action_help">Ayuda &amp; documentación</string>
+    <string name="action_feedback">Enviar comentarios</string>
     <string name="url_help">https://hivepulse.multihead.de/es/help</string>
     <string name="action_new_apiary">Nuevo colmenar</string>
     <string name="action_edit_apiary">Editar colmenar</string>

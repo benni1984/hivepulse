@@ -78,7 +78,9 @@ the other in the same PR.
   `ExtendedFloatingActionButton`, iOS `.hpFloatingButton(...)`): new apiary, new hive, new inspection, new QR
   batch, new custom field. Never a plus in a toolbar.
 - **Settings order:** custom fields, profile (email, name, language), change password, reminders, region, export, admin,
-  help and tour, diagnostics, log out, danger zone.
+  help, feedback and tour, diagnostics, log out, danger zone. **Feedback** goes to the Play Store page on
+  Android (the only route whose answers reach the Play Console's testing feedback page) and to a mail with
+  the build in the subject on iPhone and web.
 
 ## API Contract
 

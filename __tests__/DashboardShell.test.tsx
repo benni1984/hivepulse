@@ -85,6 +85,18 @@ describe('DashboardShell', () => {
     expect(screen.queryByText('admin.nav.users')).not.toBeInTheDocument();
   });
 
+  it('offers a way to send feedback, with the subject already filled in', () => {
+    // The apps had no feedback entry at all through the whole closed test, which is one of
+    // the two things Google refused production access over. The dashboard carries the same
+    // entry, so a beekeeper finds it in the same place whichever client they are on.
+    render(<DashboardShell>content</DashboardShell>);
+
+    const link = screen.getByTestId('nav-feedback');
+    expect(link).toHaveTextContent('nav.feedback');
+    expect(link.getAttribute('href')).toBe(
+      'mailto:hivepulse@multihead.de?subject=nav.feedbackSubject');
+  });
+
   it('renders My Statistics nav link for regular users', () => {
     mockUseDashboardAuth.mockReturnValue({ user: mockUser, loading: false });
     render(<DashboardShell>content</DashboardShell>);

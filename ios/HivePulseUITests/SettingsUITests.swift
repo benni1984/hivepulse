@@ -38,6 +38,12 @@ final class SettingsUITests: XCTestCase {
         XCTAssertTrue(scrollDownUntilVisible(app.buttons["releaseNotesLink"]))
     }
 
+    /// A closed test with no way of answering is what Google refused the app over; the
+    /// iPhone carries the same entry so the two apps stay the same app.
+    func test_settings_hasFeedbackLinkNextToHelp() {
+        XCTAssertTrue(scrollDownUntilVisible(app.buttons["feedbackLink"]))
+    }
+
     func test_settings_showsChangePasswordSection() {
         XCTAssertTrue(scrollDownUntilVisible(app.staticTexts["Change Password"]))
     }

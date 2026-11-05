@@ -418,6 +418,8 @@
       "openMenu": "Otwórz menu panelu",
       "closeMenu": "Zamknij menu panelu",
       "releaseNotes": "Informacje o wersjach",
+      "feedback": "Prześlij opinię",
+      "feedbackSubject": "Opinia o HivePulse",
       "calendar": "Rok pszczelarski"
     },
     "overview": {
@@ -864,6 +866,17 @@
       "setRegion": "Ustaw region",
       "changeRegion": "Zmień region",
       "disclaimer": "Wartości orientacyjne z zasad dobrej praktyki pszczelarskiej, nie przepisy: o terminach decydują kwitnienie i pogoda, a daty przesuwają się wraz z twoim miejscem. Leki tylko takie, jakie są dopuszczone i zalecone w twoim kraju; w razie wątpliwości zapytaj swój związek pszczelarzy lub urząd weterynaryjny.",
+      "viewList": "Lista",
+      "viewRibbon": "Przegląd",
+      "viewListHint": "Co robić teraz, miesiąc po miesiącu",
+      "viewRibbonHint": "Cały rok na jednym obrazie",
+      "closeEntry": "Zamknij",
+      "photoCredit": "Zdjęcie: {author} · {licence}",
+      "rows": {
+        "forage": "Pożytek"
+      },
+      "regionalShift": "{count, plural, one {# pszczelarz} few {# pszczelarze} many {# pszczelarzy} other {# pszczelarza}} w twojej okolicy umieszcza to o {days, plural, one {# dzień} few {# dni} many {# dni} other {# dnia}} inaczej i zostało to tu uwzględnione.",
+      "ribbonEmpty": "Brak danych do pokazania dla tego roku.",
       "categories": {
         "inspection": "Przegląd",
         "swarm": "Kontrola rójki",

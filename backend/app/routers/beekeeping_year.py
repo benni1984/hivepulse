@@ -8,9 +8,9 @@ from typing import Optional
 
 from fastapi import APIRouter, Header, Query
 
-from app import season
+from app import season, year_feedback
 from app.deps import CurrentUser, DB
-from app.models import Apiary, User
+from app.models import Apiary, User, YearProposal
 from app.schemas import CalendarEntry, CalendarOut, RegionOut, RegionUpdate
 from app.utils.geocoding import forward_geocode_postal
 
@@ -79,6 +79,30 @@ def update_region(body: RegionUpdate, current_user: CurrentUser, db: DB) -> Regi
     return region_of(current_user, db)
 
 
+def _approved_corrections(db, latitude: Optional[float], longitude: Optional[float]) -> dict:
+    """What beekeepers of this place said the formula gets wrong here, after an admin agreed.
+
+    Only `approved` rows are read: a proposal nobody has looked at, and one that was turned down,
+    must not reach a single calendar. Without a position nothing applies — a correction is a
+    statement about somewhere.
+    """
+    if latitude is None or longitude is None:
+        return {}
+    rows = db.query(YearProposal).filter(YearProposal.status == "approved").all()
+    return year_feedback.corrections_for(
+        (
+            year_feedback.ApprovedCorrection(
+                entry_key=row.entry_key, kind=row.kind, shift_days=row.shift_days,
+                rating_count=row.rating_count, latitude=row.latitude, longitude=row.longitude,
+                radius_km=row.radius_km,
+            )
+            for row in rows
+        ),
+        latitude,
+        longitude,
+    )
+
+
 @router.get("/calendar", response_model=CalendarOut)
 def get_calendar(
     current_user: CurrentUser,
@@ -93,7 +117,10 @@ def get_calendar(
     last = first + timedelta(days=days - 1)
     region = region_of(current_user, db)
     language = season.pick_language(lang, accept_language, current_user.locale)
-    items = season.timeline(first, last, region.shift_days, language, today)
+    items = season.timeline(
+        first, last, region.shift_days, language, today,
+        corrections=_approved_corrections(db, region.latitude, region.longitude),
+    )
     return CalendarOut(
         region=region,
         today=today,

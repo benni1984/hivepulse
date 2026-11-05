@@ -25,6 +25,30 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Dos maneras de mirarlo</h2>
+        <p>
+          En el sitio el año tiene una segunda vista. <em>Lista</em> es la descrita arriba: qué hacer ahora, mes a mes,
+          con el texto entero de cada entrada. <em>Vista general</em> es el mismo año como una imagen: los doce meses
+          a lo ancho de la pantalla, una fila por tema y una barra por tarea. Así se ve cómo encaja el año: que el
+          control de la enjambrazón atraviesa la primera cosecha, que el tratamiento contra la varroa cae en el hueco
+          tras retirar las alzas.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li>La mayoría de las tareas llevan una foto de la cosa misma: la planta en flor, una celda real operculada,
+            el ácaro sobre una abeja. Apunta a una barra para verla, con las fechas y el nombre completo.</li>
+          <li>Lo que coincide en el tiempo se coloca una debajo de otra y no encima, para que nada quede oculto. En
+            junio hay cinco traslados abiertos a la vez.</li>
+          <li>Una mielada es una sola barra, desde el traslado hasta el último cuadro extraído; la cola ámbar es la
+            cosecha. Un clic muestra los dos consejos.</li>
+          <li>En el móvil el año va en vertical. Doce meses en 360 píxeles son treinta píxeles por mes, ilegible, así
+            que la imagen es para el ancho de una tableta en adelante.</li>
+        </ul>
+        <p>
+          Las aplicaciones muestran el año como lista por ahora; la imagen está en el sitio.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Indicar tu región</h2>
         <p>
           Las fechas están escritas para el centro de Alemania. La naturaleza va antes en el sur y más tarde en el norte;
