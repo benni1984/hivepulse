@@ -25,6 +25,29 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Dwa sposoby patrzenia</h2>
+        <p>
+          Na stronie rok ma drugi widok. <em>Lista</em> to ten opisany wyżej: co robić teraz, miesiąc po miesiącu, z
+          pełnym tekstem każdego wpisu. <em>Przegląd</em> to ten sam rok jako jeden obraz — dwanaście miesięcy w poprzek
+          ekranu, wiersz na temat i belka na zadanie. Widać wtedy, jak rok się trzyma razem: że kontrola rójki biegnie
+          przez pierwsze miodobranie, że zabieg przeciwko warrozie wypada w lukę po zdjęciu nadstawek.
+        </p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li>Większość zadań ma zdjęcie samej rzeczy: roślinę w kwiecie, zasklepiony matecznik, roztocza na pszczole.
+            Najedź na belkę, a pokaże się razem z datami i pełną nazwą zadania.</li>
+          <li>To, co dzieje się jednocześnie, stoi jedno pod drugim, a nie na sobie, więc nic się nie chowa. W czerwcu
+            pięć wędrówek jest otwartych naraz.</li>
+          <li>Pożytek to jedna belka, od wyjazdu po ostatnią odwirowaną ramkę; bursztynowy ogon to zbiór. Kliknięcie
+            pokazuje obie wskazówki.</li>
+          <li>Na telefonie rok biegnie pionowo. Dwanaście miesięcy na 360 pikselach to trzydzieści pikseli na miesiąc —
+            nieczytelne, więc obraz jest od szerokości tabletu wzwyż.</li>
+        </ul>
+        <p>
+          Aplikacje na razie pokazują rok jako listę; obraz jest na stronie.
+        </p>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Ustaw swój region</h2>
         <p>
           Terminy są zapisane dla środkowych Niemiec. Przyroda budzi się wcześniej na południu i później na północy, więc

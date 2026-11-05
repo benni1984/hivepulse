@@ -35,6 +35,58 @@ export function pick(text: Localized, locale: string): string {
 /** Newest first. */
 export const RELEASES: Release[] = [
   {
+    date: '2026-11-05',
+    title: t(
+      'The beekeeping year as a picture, and a way to tell us things',
+      'Das Imkerjahr als Bild, und ein Weg, uns etwas zu sagen',
+      'L’année apicole en image, et un moyen de nous dire les choses',
+      'El año apícola como imagen, y una forma de decirnos cosas',
+      'Rok pasieczny jako obraz i sposób, by nam coś powiedzieć',
+    ),
+    items: [
+      {
+        kind: 'added',
+        text: t(
+          'Send feedback, in Settings right under Help, on the website and in both apps. On Android it opens the Play listing, on the iPhone and the website a mail with the version already in the subject.',
+          'Rückmeldung geben, in den Einstellungen direkt unter Hilfe, auf der Webseite und in beiden Apps. Auf Android öffnet es den Play-Eintrag, auf dem iPhone und der Webseite eine Mail mit der Version schon im Betreff.',
+          'Envoyer un retour, dans les réglages juste sous l’aide, sur le site et dans les deux applications. Sur Android cela ouvre la fiche Play, sur iPhone et sur le site un courriel avec la version déjà dans l’objet.',
+          'Enviar comentarios, en los ajustes justo debajo de la ayuda, en el sitio y en ambas aplicaciones. En Android abre la ficha de Play; en el iPhone y en el sitio, un correo con la versión ya en el asunto.',
+          'Prześlij opinię, w ustawieniach tuż pod pomocą, na stronie i w obu aplikacjach. Na Androidzie otwiera wpis w Play, na iPhonie i na stronie wiadomość z wersją już w temacie.',
+        ),
+      },
+      {
+        kind: 'added',
+        text: t(
+          'The beekeeping year as a ribbon on the website: the whole year in one picture, a row per subject and a bar per job, with a photograph of the thing itself — the plant in flower, a capped queen cell, the mite on a bee. On a phone the year runs down the screen instead. The apps still show the year as a list.',
+          'Das Imkerjahr als Band auf der Webseite: das ganze Jahr in einem Bild, eine Zeile je Thema und ein Balken je Aufgabe, mit einem Foto der Sache selbst — die Pflanze in Blüte, eine verdeckelte Weiselzelle, die Milbe auf der Biene. Auf dem Handy läuft das Jahr stattdessen senkrecht. Die Apps zeigen das Jahr weiterhin als Liste.',
+          'L’année apicole en ruban sur le site : toute l’année en une image, une ligne par sujet et une barre par travail, avec une photo de la chose même — la plante en fleur, une cellule royale operculée, le varroa sur une abeille. Sur téléphone, l’année défile verticalement. Les applications montrent toujours l’année en liste.',
+          'El año apícola como banda en el sitio: todo el año en una imagen, una fila por tema y una barra por tarea, con una foto de la cosa misma: la planta en flor, una celda real operculada, el ácaro sobre una abeja. En el móvil el año va en vertical. Las aplicaciones siguen mostrando el año como lista.',
+          'Rok pasieczny jako wstęga na stronie: cały rok na jednym obrazie, wiersz na temat i belka na zadanie, ze zdjęciem samej rzeczy — rośliny w kwiecie, zasklepionego matecznika, roztocza na pszczole. Na telefonie rok biegnie pionowo. Aplikacje nadal pokazują rok jako listę.',
+        ),
+      },
+      {
+        kind: 'added',
+        text: t(
+          'The beekeeping year now says when to harvest chestnut, lavender and sunflower honey. Those three were moves with no harvest: the year said where to drive and never what to do with what came of it.',
+          'Das Imkerjahr sagt jetzt, wann Kastanien-, Lavendel- und Sonnenblumenhonig zu ernten ist. Diese drei waren Wanderungen ohne Ernte: Das Jahr sagte, wohin zu fahren ist, und nie, was mit dem wird, was dabei herauskommt.',
+          'L’année apicole dit désormais quand récolter les miels de châtaignier, de lavande et de tournesol. Ces trois-là étaient des transhumances sans récolte : l’année disait où aller et jamais quoi faire de ce qui en venait.',
+          'El año apícola ya dice cuándo cosechar las mieles de castaño, lavanda y girasol. Esas tres eran traslados sin cosecha: el año decía adónde ir y nunca qué hacer con lo que salía de ello.',
+          'Rok pasieczny mówi teraz, kiedy zbierać miód kasztanowy, lawendowy i słonecznikowy. Te trzy były wędrówkami bez zbioru: rok mówił, dokąd jechać, i nigdy, co zrobić z tym, co z tego wyszło.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          '"Last honey harvest of the season" was not the last: lavender, sunflower and heather are all harvested after it. It is called "Supers off: treatment and feeding start now", which is what it is for — it sits in late July because the varroa treatment and the feeding follow it, not because nothing else is harvested.',
+          '„Letzte Honigernte der Saison" war nicht die letzte: Lavendel, Sonnenblume und Heide werden danach geerntet. Sie heißt jetzt „Honigräume ab: jetzt beginnen Behandlung und Fütterung", und das ist auch ihr Zweck — sie steht Ende Juli, weil Varroabehandlung und Fütterung folgen, nicht weil nichts mehr geerntet wird.',
+          '« Dernière récolte de la saison » ne l’était pas : lavande, tournesol et bruyère se récoltent après. Elle s’appelle désormais « Hausses retirées : traitement et nourrissement commencent », ce qui est sa raison d’être — fin juillet parce que le traitement et le nourrissement suivent, non parce que plus rien ne se récolte.',
+          '«Última cosecha de la temporada» no lo era: lavanda, girasol y brezo se cosechan después. Ahora se llama «Alzas fuera: empiezan el tratamiento y la alimentación», que es su razón de ser: está a finales de julio porque el tratamiento y la alimentación vienen después, no porque ya no se coseche nada.',
+          '„Ostatnie miodobranie sezonu" nie było ostatnie: lawendę, słonecznik i wrzos zbiera się po nim. Nazywa się teraz „Nadstawki zdjęte: zaczynają się zabieg i karmienie" — i po to jest: stoi pod koniec lipca, bo po nim następują zabieg i karmienie, a nie dlatego, że nic się już nie zbiera.',
+        ),
+      },
+    ],
+  },
+  {
     date: '2026-10-07',
     title: t(
       'Home screen, treatments, moving hives and working together',
