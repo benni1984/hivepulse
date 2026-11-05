@@ -418,6 +418,8 @@
       "openMenu": "Open dashboard menu",
       "closeMenu": "Close dashboard menu",
       "releaseNotes": "Release notes",
+      "feedback": "Send feedback",
+      "feedbackSubject": "HivePulse feedback",
       "calendar": "Beekeeping year"
     },
     "overview": {

@@ -565,6 +565,29 @@ fun SettingsScreen(
                 ) {
                     Text(stringResource(R.string.action_help))
                 }
+                // A closed test needs a way back, and the app had none. This opens the Play
+                // Store page, because feedback sent from there is what lands on the Play
+                // Console's testing feedback page -- the record Google reads when it judges
+                // whether a closed test was real. A mail would reach us and not the console.
+                OutlinedButton(
+                    onClick = {
+                        val id = context.packageName
+                        val store = android.content.Intent(
+                            android.content.Intent.ACTION_VIEW,
+                            android.net.Uri.parse("market://details?id=$id"))
+                        // A device without the Play Store -- an emulator, a sideloaded build --
+                        // has nothing that answers market:, and the crash would be ours.
+                        runCatching { context.startActivity(store) }.onFailure {
+                            context.startActivity(android.content.Intent(
+                                android.content.Intent.ACTION_VIEW,
+                                android.net.Uri.parse(
+                                    "https://play.google.com/store/apps/details?id=$id")))
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth().testTag("feedbackButton")
+                ) {
+                    Text(stringResource(R.string.action_feedback))
+                }
                 OutlinedButton(
                     onClick  = onGuidedTourClick,
                     modifier = Modifier.fillMaxWidth()

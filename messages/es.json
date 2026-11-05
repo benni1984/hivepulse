@@ -418,6 +418,8 @@
       "openMenu": "Abrir menú del panel",
       "closeMenu": "Cerrar menú del panel",
       "releaseNotes": "Notas de versión",
+      "feedback": "Enviar comentarios",
+      "feedbackSubject": "Comentarios de HivePulse",
       "calendar": "Año apícola"
     },
     "overview": {

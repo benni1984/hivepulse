@@ -418,6 +418,8 @@
       "openMenu": "Dashboard-Menü öffnen",
       "closeMenu": "Dashboard-Menü schließen",
       "releaseNotes": "Release Notes",
+      "feedback": "Rückmeldung geben",
+      "feedbackSubject": "HivePulse Rückmeldung",
       "calendar": "Imkerjahr"
     },
     "overview": {

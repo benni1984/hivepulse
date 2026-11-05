@@ -106,6 +106,8 @@
 "action.saveProfile" = "Save Profile";
 "action.logout" = "Log Out";
 "action.help" = "Help & Documentation";
+"action.feedback" = "Send feedback";
+"action.feedbackSubject" = "HivePulse feedback";
 "action.newBatch" = "New Batch";
 "action.generate" = "Generate";
 "action.downloadPDF" = "Print PDF";

@@ -106,6 +106,8 @@
 "action.saveProfile" = "Zapisz profil";
 "action.logout" = "Wyloguj się";
 "action.help" = "Pomoc i dokumentacja";
+"action.feedback" = "Prześlij opinię";
+"action.feedbackSubject" = "Opinia o HivePulse";
 "action.newBatch" = "Nowa partia";
 "action.generate" = "Generuj";
 "action.downloadPDF" = "Drukuj PDF";

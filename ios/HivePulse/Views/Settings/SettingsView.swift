@@ -195,6 +195,13 @@ struct SettingsView: View {
                 Link(destination: URL(string: "https://hivepulse.multihead.de/\(locale)/help")!) {
                     Label(NSLocalizedString("action.help", comment: ""), systemImage: "questionmark.circle")
                 }
+                // A tester needs a way back, and the app had none. TestFlight's own feedback
+                // cannot be opened from inside an app, so this is a mail with the build
+                // already in it -- otherwise every report starts by asking which one it was.
+                Link(destination: feedbackMail) {
+                    Label(NSLocalizedString("action.feedback", comment: ""), systemImage: "envelope")
+                }
+                .accessibilityIdentifier("feedbackLink")
                 Button {
                     authVM.replayGuidedTour()
                 } label: {
@@ -386,6 +393,19 @@ struct SettingsView: View {
 
     private var appBuild: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "?"
+    }
+
+    /// A mail with the build already in the subject, so a report does not start by asking
+    /// which one it came from. `addingPercentEncoding` cannot fail for this character set,
+    /// but a force-unwrapped URL here would crash Settings, so it falls back to a bare mailto.
+    private var feedbackMail: URL {
+        let subject = String(format: "%@ %@ (%@)",
+                             NSLocalizedString("action.feedbackSubject", comment: ""),
+                             appVersion, appBuild)
+        let encoded = subject.addingPercentEncoding(
+            withAllowedCharacters: .urlQueryAllowed) ?? ""
+        return URL(string: "mailto:hivepulse@multihead.de?subject=\(encoded)")
+            ?? URL(string: "mailto:hivepulse@multihead.de")!
     }
 
     private func sendTestReport() async {

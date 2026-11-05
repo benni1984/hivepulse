@@ -418,6 +418,8 @@
       "openMenu": "Ouvrir le menu du tableau de bord",
       "closeMenu": "Fermer le menu du tableau de bord",
       "releaseNotes": "Notes de version",
+      "feedback": "Envoyer un retour",
+      "feedbackSubject": "Retour HivePulse",
       "calendar": "Année apicole"
     },
     "overview": {
