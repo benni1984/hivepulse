@@ -43,7 +43,9 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
             nieczytelne, więc obraz jest od szerokości tabletu wzwyż.</li>
         </ul>
         <p>
-          Aplikacje na razie pokazują rok jako listę; obraz jest na stronie.
+          Oba widoki są też na iPhonie i na Androidzie, pod tymi samymi dwiema nazwami. Na telefonie
+          aplikacje rysują obraz szerzej niż ekran i rok przeciąga się na boki — czego strona
+          internetowa nie potrafi wygodnie, a aplikacja tak; na tablecie mieści się jak tutaj.
         </p>
       </section>
 

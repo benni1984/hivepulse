@@ -68,7 +68,7 @@ enum YearPhotos {
         "migrate-fir": YearPhoto(
             file: "year-migrate-fir",
             thumb: "year-thumb-migrate-fir",
-            author: "Luis Miguel Bugallo S\u00e1nchez (Lmbuga)",
+            author: "Luis Miguel Bugallo Sánchez (Lmbuga)",
             licence: "CC BY-SA 3.0",
             licenceUrl: "https://creativecommons.org/licenses/by-sa/3.0",
             source: "https://commons.wikimedia.org/wiki/File:Abies_alba,_Les_Pardines,_Andorra_250.jpg"
@@ -84,7 +84,7 @@ enum YearPhotos {
         "migrate-sunflower": YearPhoto(
             file: "year-migrate-sunflower",
             thumb: "year-thumb-migrate-sunflower",
-            author: "Bj\u00f6rn S.",
+            author: "Björn S.",
             licence: "CC BY-SA 3.0",
             licenceUrl: "https://creativecommons.org/licenses/by-sa/3.0",
             source: "https://commons.wikimedia.org/wiki/File:Sunflower_field_-_panoramio_(11).jpg"
@@ -92,7 +92,7 @@ enum YearPhotos {
         "migrate-heather": YearPhoto(
             file: "year-migrate-heather",
             thumb: "year-thumb-migrate-heather",
-            author: "Randi Hausken from B\u00e6rum, Norway",
+            author: "Randi Hausken from Bærum, Norway",
             licence: "CC BY-SA 2.0",
             licenceUrl: "https://creativecommons.org/licenses/by-sa/2.0",
             source: "https://commons.wikimedia.org/wiki/File:Calluna_vulgaris_(3774879800).jpg"

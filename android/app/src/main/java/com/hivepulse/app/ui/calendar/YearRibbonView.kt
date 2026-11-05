@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.hivepulse.app.R
@@ -54,17 +55,38 @@ import java.util.Locale
  * through. At 1100dp a month is 90dp, which is legible on the narrowest phone we support, and on a
  * tablet or in landscape the canvas fills the width and nothing needs dragging at all.
  *
- * The row labels sit above their rows rather than in a column down the left. A column wide enough
- * to read would eat a fifth of a phone's width, and it would eat it from the one thing the screen
- * is for.
+ * The row labels stand in a column that does not scroll, so you still know which row you are
+ * looking at after dragging into August. It costs a fifth of a phone's width, which is worth it:
+ * a label above a row that is being dragged sideways tells you less than it looks like, because
+ * the thing you lose track of is the row, not the subject.
+ *
+ * The iPhone's `YearRibbonView.swift` is laid out the same way, down to the constants.
  */
 
-/** How wide the year is drawn, at the least. Below this a month is too narrow to read. */
-private val MIN_CANVAS = 1100.dp
+/**
+ * How wide the year is drawn, at the least.
+ *
+ * Two things pull against each other here, and the emulator settled it. Wide enough and a month
+ * is comfortable to read; too wide and "the whole year in one picture" shows a quarter of a year
+ * and needs four drags, which is not a picture of anything. At 640dp a month is 53dp -- room for
+ * "Jan" and for a three-week bar to be 37dp, which a gloved finger can hit -- and about six
+ * months are on a phone screen at once, so the year is two drags rather than four.
+ */
+private val MIN_CANVAS = 640.dp
 
 /** The height of one lane of bars, and the gap between two lanes. */
 private val LANE_HEIGHT = 26.dp
 private val LANE_GAP = 4.dp
+
+/** The gap between one row and the next, the height of the month strip, and the label column. */
+private val ROW_SPACING = 14.dp
+private val MONTH_HEIGHT = 24.dp
+
+/**
+ * The row names column. Every point here is a point the year does not get, and on a phone that
+ * is the one thing the screen is for, so it is as narrow as two lines of the longest name allow.
+ */
+private val LABEL_WIDTH = 58.dp
 
 /** A quiet, still tint per season, so winter and summer are tellable at a glance. */
 private fun seasonTint(season: YearRibbon.Season): Color = when (season) {
@@ -160,7 +182,7 @@ fun YearRibbonCanvas(
     val screen = LocalConfiguration.current.screenWidthDp.dp
     // On a tablet or in landscape the year fits, and then it should fill the width rather than
     // sit in a 1100dp block with a gap beside it.
-    val canvas: Dp = maxOf(MIN_CANVAS, screen - 32.dp)
+    val canvas: Dp = maxOf(MIN_CANVAS, screen - 32.dp - LABEL_WIDTH - 8.dp)
     val rows = state.rows
     val todayAt = state.todayAt
     // The grid and the scenery are the same for every row, and both are pure arithmetic over the
@@ -168,14 +190,48 @@ fun YearRibbonCanvas(
     val months = remember(state.year) { YearRibbon.monthColumns(state.year) }
     val seasons = remember(state.year) { YearRibbon.seasonSegments(state.year) }
 
-    Column(modifier = modifier.testTag("yearRibbon"), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+    Row(modifier = modifier.testTag("yearRibbon"), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+
+        // ── The row names, in a column that does not scroll ────────────────────────────────
+        // So that you still know which row you are looking at after dragging into August. The
+        // heights come from the same lane counts as the rows themselves, which is what keeps the
+        // two columns level without either having to measure the other.
+        Column(Modifier.width(LABEL_WIDTH)) {
+            Spacer(Modifier.height(MONTH_HEIGHT))
+            for (row in rows) {
+                Box(
+                    Modifier
+                        .padding(top = ROW_SPACING)
+                        .height(LANE_HEIGHT * row.lanes.size + LANE_GAP * (row.lanes.size - 1)),
+                ) {
+                    Text(
+                        stringResource(rowLabelRes(row.row)),
+                        // Two lines of 11dp fit the 26dp a single-lane row is tall, and the
+                        // longest of these names needs two in every language ("Schwarmkontrolle",
+                        // "Contrôle de l'essaimage"). At the theme's own label size the second
+                        // line did not fit and the name was cut off instead of wrapping.
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 9.sp,
+                            lineHeight = 11.sp,
+                        ),
+                        color = Stone500,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.testTag("ribbonRowLabel"),
+                    )
+                }
+            }
+        }
+
+        Column {
 
         // ── The months, tinted by season ───────────────────────────────────────────────────
         Box(Modifier.horizontalScroll(scroll)) {
             Box(Modifier.width(canvas).clip(RoundedCornerShape(8.dp))) {
                 PercentRow(placements = seasons.map { it.left to it.width }) {
                     for (segment in seasons) {
-                        Box(Modifier.fillMaxWidth().height(24.dp).background(seasonTint(segment.season)))
+                        Box(Modifier.fillMaxWidth().height(MONTH_HEIGHT).background(seasonTint(segment.season)))
                     }
                 }
                 PercentRow(placements = months.map { it.left to it.width }) {
@@ -186,7 +242,7 @@ fun YearRibbonCanvas(
                             color = Stone500,
                             maxLines = 1,
                             overflow = TextOverflow.Clip,
-                            modifier = Modifier.height(24.dp).wrapContentHeight(Alignment.CenterVertically)
+                            modifier = Modifier.height(MONTH_HEIGHT).wrapContentHeight(Alignment.CenterVertically)
                                 .padding(start = 6.dp),
                         )
                     }
@@ -196,12 +252,7 @@ fun YearRibbonCanvas(
 
         // ── A row per subject ──────────────────────────────────────────────────────────────
         for (row in rows) {
-            Text(
-                stringResource(rowLabelRes(row.row)),
-                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                color = Stone500,
-                modifier = Modifier.padding(top = 8.dp, bottom = 2.dp).testTag("ribbonRowLabel"),
-            )
+            Spacer(Modifier.height(ROW_SPACING))
             val rowHeight = LANE_HEIGHT * row.lanes.size + LANE_GAP * (row.lanes.size - 1)
             Box(Modifier.horizontalScroll(scroll)) {
                 Box(Modifier.width(canvas)) {
@@ -230,6 +281,7 @@ fun YearRibbonCanvas(
                     }
                 }
             }
+        }
         }
     }
 }

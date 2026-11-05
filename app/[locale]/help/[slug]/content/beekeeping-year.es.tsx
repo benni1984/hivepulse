@@ -44,7 +44,10 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
             que la imagen es para el ancho de una tableta en adelante.</li>
         </ul>
         <p>
-          Las aplicaciones muestran el año como lista por ahora; la imagen está en el sitio.
+          Las dos vistas están también en el iPhone y en Android, con los mismos dos nombres. En el
+          móvil las aplicaciones dibujan la imagen más ancha que la pantalla y el año se arrastra de
+          lado — algo que una página web no permite con comodidad y una aplicación sí; en una tableta
+          cabe como aquí.
         </p>
       </section>
 

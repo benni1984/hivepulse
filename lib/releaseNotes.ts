@@ -37,6 +37,38 @@ export const RELEASES: Release[] = [
   {
     date: '2026-11-05',
     title: t(
+      'The year as a picture on the iPhone and on Android too',
+      'Das Jahr als Bild auch auf dem iPhone und auf Android',
+      'L’année en image sur iPhone et sur Android aussi',
+      'El año como imagen también en el iPhone y en Android',
+      'Rok jako obraz także na iPhonie i na Androidzie',
+    ),
+    items: [
+      {
+        kind: 'added',
+        text: t(
+          'The beekeeping year as a ribbon in both apps, under the same two names as on the website: List and Overview. On a phone the picture is drawn wider than the screen and the year is dragged sideways — a month gets 90 points instead of 30, which is the difference between readable and not.',
+          'Das Imkerjahr als Band in beiden Apps, unter denselben zwei Namen wie auf der Webseite: Liste und Übersicht. Auf dem Handy wird das Bild breiter als der Bildschirm gezeichnet und das Jahr seitlich durchgezogen — ein Monat bekommt 90 statt 30 Punkte, und das ist der Unterschied zwischen lesbar und nicht.',
+          'L’année apicole en ruban dans les deux applications, sous les mêmes deux noms que sur le site : Liste et Vue d’ensemble. Sur un téléphone, l’image est dessinée plus large que l’écran et l’année se fait glisser latéralement — un mois reçoit 90 points au lieu de 30, ce qui fait la différence entre lisible et non.',
+          'El año apícola como banda en ambas aplicaciones, con los mismos dos nombres que en el sitio: Lista y Vista general. En el móvil la imagen se dibuja más ancha que la pantalla y el año se arrastra de lado: un mes recibe 90 puntos en vez de 30, que es la diferencia entre legible y no.',
+          'Rok pasieczny jako wstęga w obu aplikacjach, pod tymi samymi dwiema nazwami co na stronie: Lista i Przegląd. Na telefonie obraz jest rysowany szerzej niż ekran, a rok przeciąga się na boki — miesiąc dostaje 90 punktów zamiast 30, a to różnica między czytelnym i nieczytelnym.',
+        ),
+      },
+      {
+        kind: 'added',
+        text: t(
+          'The photographs are in both apps as well, in the list and in the picture: the plant in flower, a capped queen cell, the mite on a bee. They are carried inside the app rather than fetched, so they are there at the apiary where there is no signal.',
+          'Die Fotos sind nun auch in beiden Apps, in der Liste und im Bild: die Pflanze in Blüte, eine verdeckelte Weiselzelle, die Milbe auf der Biene. Sie liegen in der App und werden nicht geladen — damit sie am Bienenstand da sind, wo kein Netz ist.',
+          'Les photos sont aussi dans les deux applications, dans la liste et dans l’image : la plante en fleur, une cellule royale operculée, le varroa sur une abeille. Elles sont embarquées dans l’application et non téléchargées, pour être là au rucher où il n’y a pas de réseau.',
+          'Las fotos están también en ambas aplicaciones, en la lista y en la imagen: la planta en flor, una celda real operculada, el ácaro sobre una abeja. Van dentro de la aplicación y no se descargan, para que estén en el colmenar donde no hay cobertura.',
+          'Zdjęcia są też w obu aplikacjach, na liście i na obrazie: roślina w kwiecie, zasklepiony matecznik, roztocz na pszczole. Są w aplikacji, a nie pobierane — żeby były w pasiece, gdzie nie ma sieci.',
+        ),
+      },
+    ],
+  },
+  {
+    date: '2026-11-05',
+    title: t(
       'The beekeeping year as a picture, and a way to tell us things',
       'Das Imkerjahr als Bild, und ein Weg, uns etwas zu sagen',
       'L’année apicole en image, et un moyen de nous dire les choses',
@@ -57,11 +89,11 @@ export const RELEASES: Release[] = [
       {
         kind: 'added',
         text: t(
-          'The beekeeping year as a ribbon on the website: the whole year in one picture, a row per subject and a bar per job, with a photograph of the thing itself — the plant in flower, a capped queen cell, the mite on a bee. On a phone the year runs down the screen instead. The apps still show the year as a list.',
-          'Das Imkerjahr als Band auf der Webseite: das ganze Jahr in einem Bild, eine Zeile je Thema und ein Balken je Aufgabe, mit einem Foto der Sache selbst — die Pflanze in Blüte, eine verdeckelte Weiselzelle, die Milbe auf der Biene. Auf dem Handy läuft das Jahr stattdessen senkrecht. Die Apps zeigen das Jahr weiterhin als Liste.',
-          'L’année apicole en ruban sur le site : toute l’année en une image, une ligne par sujet et une barre par travail, avec une photo de la chose même — la plante en fleur, une cellule royale operculée, le varroa sur une abeille. Sur téléphone, l’année défile verticalement. Les applications montrent toujours l’année en liste.',
-          'El año apícola como banda en el sitio: todo el año en una imagen, una fila por tema y una barra por tarea, con una foto de la cosa misma: la planta en flor, una celda real operculada, el ácaro sobre una abeja. En el móvil el año va en vertical. Las aplicaciones siguen mostrando el año como lista.',
-          'Rok pasieczny jako wstęga na stronie: cały rok na jednym obrazie, wiersz na temat i belka na zadanie, ze zdjęciem samej rzeczy — rośliny w kwiecie, zasklepionego matecznika, roztocza na pszczole. Na telefonie rok biegnie pionowo. Aplikacje nadal pokazują rok jako listę.',
+          'The beekeeping year as a ribbon on the website: the whole year in one picture, a row per subject and a bar per job, with a photograph of the thing itself — the plant in flower, a capped queen cell, the mite on a bee. On a phone the year runs down the screen instead.',
+          'Das Imkerjahr als Band auf der Webseite: das ganze Jahr in einem Bild, eine Zeile je Thema und ein Balken je Aufgabe, mit einem Foto der Sache selbst — die Pflanze in Blüte, eine verdeckelte Weiselzelle, die Milbe auf der Biene. Auf dem Handy läuft das Jahr stattdessen senkrecht.',
+          'L’année apicole en ruban sur le site : toute l’année en une image, une ligne par sujet et une barre par travail, avec une photo de la chose même — la plante en fleur, une cellule royale operculée, le varroa sur une abeille. Sur téléphone, l’année défile verticalement.',
+          'El año apícola como banda en el sitio: todo el año en una imagen, una fila por tema y una barra por tarea, con una foto de la cosa misma: la planta en flor, una celda real operculada, el ácaro sobre una abeja. En el móvil el año va en vertical.',
+          'Rok pasieczny jako wstęga na stronie: cały rok na jednym obrazie, wiersz na temat i belka na zadanie, ze zdjęciem samej rzeczy — rośliny w kwiecie, zasklepionego matecznika, roztocza na pszczole. Na telefonie rok biegnie pionowo.',
         ),
       },
       {

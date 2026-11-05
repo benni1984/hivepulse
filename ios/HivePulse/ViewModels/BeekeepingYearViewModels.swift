@@ -139,3 +139,58 @@ final class RegionViewModel: ObservableObject {
         }
     }
 }
+
+// MARK: - The year as a ribbon
+
+/// What the ribbon draws, kept apart from the view so it can be made in a test without one.
+struct YearRibbonState {
+    var entries: [CalendarEntryOut] = []
+    var today: String = ""
+    var year: Int = Calendar.current.component(.year, from: Date())
+    var isLoaded = false
+    var failed = false
+
+    var rows: [YearRibbon.RibbonRow] { YearRibbon.rows(for: entries, year: year) }
+    /// Every bar of the year in date order: the shape a list reads in.
+    var byDate: [YearRibbon.Bar] { rows.flatMap(\.bars).sorted { $0.left < $1.left } }
+    var todayAt: Double? { YearRibbon.todayPosition(today, year: year) }
+}
+
+/// One whole calendar year at once, which is what a ribbon needs.
+///
+/// The timeline above loads windows of 120 days as it is scrolled, because it is endless. A ribbon
+/// is not: it is one year, bounded, and every bar's width is a fraction of that year. Asking for
+/// it in pieces would redraw every bar each time a piece arrived.
+@MainActor
+final class YearRibbonViewModel: ObservableObject {
+    @Published private(set) var state = YearRibbonState()
+
+    private let service: any CalendarServiceProtocol
+    private let language: String
+
+    init(service: any CalendarServiceProtocol = CalendarService(),
+         language: String = BeekeepingYear.appLanguage,
+         now: Date = Date()) {
+        self.service = service
+        self.language = language
+        var initial = YearRibbonState()
+        initial.today = DayFormat.wireString(from: now)
+        initial.year = Calendar.current.component(.year, from: now)
+        self.state = initial
+    }
+
+    func load() async {
+        state.failed = false
+        let year = state.year
+        do {
+            // A fortnight either side of the year, so an entry that straddles New Year arrives
+            // with its real dates and can be drawn cut off at the edge rather than missing.
+            let window = try await service.calendar(from: "\(year - 1)-12-15", days: 365 + 32, language: language)
+            state.entries = window.entries
+            state.today = window.today
+            state.isLoaded = true
+        } catch {
+            state.failed = true
+        }
+    }
+}

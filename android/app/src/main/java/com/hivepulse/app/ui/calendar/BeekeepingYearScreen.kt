@@ -99,12 +99,12 @@ fun BeekeepingYearScreen(
     var positioned by remember { mutableStateOf(false) }
     var showRegion by remember { mutableStateOf(false) }
 
-    // Opens at today. The view switch, the intro and the region line sit above the entries and
-    // count as the first three rows of the list.
+    // Opens at today. The intro and the region line sit above the entries and count as the first
+    // two rows of the list; the view switch is outside it.
     LaunchedEffect(state.isLoaded) {
         if (state.isLoaded && !positioned) {
             val today = items.indexOfFirst { it is TimelineItem.Today }
-            if (today >= 0) listState.scrollToItem(today + 3)
+            if (today >= 0) listState.scrollToItem(today + 2)
             positioned = true
         }
     }
@@ -140,15 +140,22 @@ fun BeekeepingYearScreen(
             LoadingScreen()
             return@Scaffold
         }
-        LazyColumn(
-            Modifier.padding(padding).testTag("beekeepingYearList"),
+        // The switch is above the list, not the first row of it. The list opens scrolled to
+        // today, a LazyColumn does not compose what is off screen, and as a row the switch was
+        // therefore simply gone -- a beekeeper would have had to scroll back through the year to
+        // find the other view. The emulator found this; neither the compiler nor a unit test can.
+        Column(Modifier.padding(padding)) {
+            YearViewSwitch(
+                view,
+                onView = { view = it },
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
+            )
+            LazyColumn(
+            Modifier.testTag("beekeepingYearList"),
             state = listState,
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            item(key = "switch") {
-                YearViewSwitch(view, onView = { view = it })
-            }
             item(key = "intro") {
                 Text(stringResource(R.string.calendar_intro), style = MaterialTheme.typography.bodySmall, color = Stone500)
             }
@@ -173,6 +180,7 @@ fun BeekeepingYearScreen(
                 Text(stringResource(R.string.calendar_disclaimer), style = MaterialTheme.typography.bodySmall, color = Stone500,
                     modifier = Modifier.padding(top = 12.dp, bottom = 24.dp))
             }
+        }
         }
     }
 
@@ -376,11 +384,19 @@ fun YearViewSwitch(view: YearView, onView: (YearView) -> Unit, modifier: Modifie
 fun YearRibbonPane(vm: YearRibbonViewModel, onView: (YearView) -> Unit, modifier: Modifier = Modifier) {
     val state by vm.state.collectAsState()
     var picked by remember { mutableStateOf<YearRibbon.Bar?>(null) }
+    val scroll = rememberScrollState()
+
+    // The detail opens under the ribbon, which on a phone is under the fold: you tapped a bar and
+    // nothing appeared to happen. Scrolled to, it is the answer to the tap. Only the ribbon and
+    // the disclaimer are below it, so the bottom is where it is.
+    LaunchedEffect(picked) {
+        if (picked != null) scroll.animateScrollTo(scroll.maxValue)
+    }
 
     Column(
         modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(scroll)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {

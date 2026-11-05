@@ -71,7 +71,7 @@ object YearPhotos {
         "migrate-fir" to YearPhoto(
             file = "year/migrate-fir.webp",
             thumb = "year/thumbs/migrate-fir.webp",
-            author = "Luis Miguel Bugallo S\u00e1nchez (Lmbuga)",
+            author = "Luis Miguel Bugallo Sánchez (Lmbuga)",
             licence = "CC BY-SA 3.0",
             licenceUrl = "https://creativecommons.org/licenses/by-sa/3.0",
             source = "https://commons.wikimedia.org/wiki/File:Abies_alba,_Les_Pardines,_Andorra_250.jpg",
@@ -87,7 +87,7 @@ object YearPhotos {
         "migrate-sunflower" to YearPhoto(
             file = "year/migrate-sunflower.webp",
             thumb = "year/thumbs/migrate-sunflower.webp",
-            author = "Bj\u00f6rn S.",
+            author = "Björn S.",
             licence = "CC BY-SA 3.0",
             licenceUrl = "https://creativecommons.org/licenses/by-sa/3.0",
             source = "https://commons.wikimedia.org/wiki/File:Sunflower_field_-_panoramio_(11).jpg",
@@ -95,7 +95,7 @@ object YearPhotos {
         "migrate-heather" to YearPhoto(
             file = "year/migrate-heather.webp",
             thumb = "year/thumbs/migrate-heather.webp",
-            author = "Randi Hausken from B\u00e6rum, Norway",
+            author = "Randi Hausken from Bærum, Norway",
             licence = "CC BY-SA 2.0",
             licenceUrl = "https://creativecommons.org/licenses/by-sa/2.0",
             source = "https://commons.wikimedia.org/wiki/File:Calluna_vulgaris_(3774879800).jpg",

@@ -189,23 +189,33 @@ def crop(raw: bytes, width: int, height: int, quality: int) -> bytes:
     return buffer.getvalue()
 
 
+def quoted(value: str) -> str:
+    """A string literal for TypeScript, Kotlin and Swift alike.
+
+    `json.dumps` would escape a non-ASCII character as \\uXXXX. TypeScript and Kotlin accept
+    that; Swift does not -- it writes \\u{XXXX} -- so an author with an accent in their name
+    produced a Swift file that did not compile. The character itself is right in all three.
+    """
+    return json.dumps(value, ensure_ascii=False)
+
+
 def write_manifest(records: dict[str, dict]) -> None:
     ordered = {key: records[key] for key in PICKS if key in records}
     missing = [f for f, key in FORAGE_PLANT.items() if key not in ordered]
     if missing:
         raise SystemExit(f"no plant picture for: {', '.join(missing)}")
     forage_rows = "\n".join(
-        f"  {json.dumps(forage)}: YEAR_PHOTOS[{json.dumps(key)}],"
+        f"  {quoted(forage)}: YEAR_PHOTOS[{quoted(key)}],"
         for forage, key in FORAGE_PLANT.items()
     )
     rows = "\n".join(
-        f"  {json.dumps(key)}: {{\n"
-        f"    file: {json.dumps(value['file'])},\n"
-        f"    thumb: {json.dumps(value['thumb'])},\n"
-        f"    author: {json.dumps(value['author'])},\n"
-        f"    licence: {json.dumps(value['licence'])},\n"
-        f"    licenceUrl: {json.dumps(value['licenceUrl'])},\n"
-        f"    source: {json.dumps(value['source'])},\n"
+        f"  {quoted(key)}: {{\n"
+        f"    file: {quoted(value['file'])},\n"
+        f"    thumb: {quoted(value['thumb'])},\n"
+        f"    author: {quoted(value['author'])},\n"
+        f"    licence: {quoted(value['licence'])},\n"
+        f"    licenceUrl: {quoted(value['licenceUrl'])},\n"
+        f"    source: {quoted(value['source'])},\n"
         f"  }},"
         for key, value in ordered.items()
     )
@@ -298,18 +308,18 @@ HEADER = (
 def write_android(records: dict[str, dict]) -> None:
     ordered = {key: records[key] for key in PICKS if key in records}
     rows = "\n".join(
-        f'        {json.dumps(key)} to YearPhoto(\n'
-        f'            file = {json.dumps(f"year/{key}.webp")},\n'
-        f'            thumb = {json.dumps(f"year/thumbs/{key}.webp")},\n'
-        f'            author = {json.dumps(value["author"])},\n'
-        f'            licence = {json.dumps(value["licence"])},\n'
-        f'            licenceUrl = {json.dumps(value["licenceUrl"])},\n'
-        f'            source = {json.dumps(value["source"])},\n'
+        f'        {quoted(key)} to YearPhoto(\n'
+        f'            file = {quoted(f"year/{key}.webp")},\n'
+        f'            thumb = {quoted(f"year/thumbs/{key}.webp")},\n'
+        f'            author = {quoted(value["author"])},\n'
+        f'            licence = {quoted(value["licence"])},\n'
+        f'            licenceUrl = {quoted(value["licenceUrl"])},\n'
+        f'            source = {quoted(value["source"])},\n'
         f'        ),'
         for key, value in ordered.items()
     )
     forage_rows = "\n".join(
-        f"        {json.dumps(forage)} to BY_KEY.getValue({json.dumps(key)}),"
+        f"        {quoted(forage)} to BY_KEY.getValue({quoted(key)}),"
         for forage, key in FORAGE_PLANT.items()
     )
     comment = "\n".join(f"// {line}" if line else "//" for line in HEADER.split("\n"))
@@ -359,18 +369,18 @@ def write_android(records: dict[str, dict]) -> None:
 def write_ios(records: dict[str, dict]) -> None:
     ordered = {key: records[key] for key in PICKS if key in records}
     rows = "\n".join(
-        f'        {json.dumps(key)}: YearPhoto(\n'
-        f'            file: {json.dumps(f"year-{key}")},\n'
-        f'            thumb: {json.dumps(f"year-thumb-{key}")},\n'
-        f'            author: {json.dumps(value["author"])},\n'
-        f'            licence: {json.dumps(value["licence"])},\n'
-        f'            licenceUrl: {json.dumps(value["licenceUrl"])},\n'
-        f'            source: {json.dumps(value["source"])}\n'
+        f'        {quoted(key)}: YearPhoto(\n'
+        f'            file: {quoted(f"year-{key}")},\n'
+        f'            thumb: {quoted(f"year-thumb-{key}")},\n'
+        f'            author: {quoted(value["author"])},\n'
+        f'            licence: {quoted(value["licence"])},\n'
+        f'            licenceUrl: {quoted(value["licenceUrl"])},\n'
+        f'            source: {quoted(value["source"])}\n'
         f'        ),'
         for key, value in ordered.items()
     )
     forage_rows = "\n".join(
-        f"        {json.dumps(forage)}: byKey[{json.dumps(key)}]!,"
+        f"        {quoted(forage)}: byKey[{quoted(key)}]!,"
         for forage, key in FORAGE_PLANT.items()
     )
     comment = "\n".join(f"// {line}" if line else "//" for line in HEADER.split("\n"))
