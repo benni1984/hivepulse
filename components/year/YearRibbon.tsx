@@ -68,7 +68,12 @@ export default function YearRibbon({ year }: { year: number }) {
   const [open, setOpen] = useState<Bar | null>(null);
   // Where to put the tooltip, in viewport coordinates. Fixed, so the scrolling ribbon cannot
   // clip it at its edge — which is exactly where the bars that need it most sit.
-  const [hover, setHover] = useState<{ bar: Bar; x: number; y: number } | null>(null);
+  const [hover, setHover] = useState<{ bar: Bar; x: number; top: number; bottom: number } | null>(null);
+  // Above the bar by default. A tall row pushes its first lanes near the top of the window,
+  // and a tooltip with a photograph in it is some 230 pixels tall, so there it has to go under
+  // the bar instead of off the screen.
+  const [tipBelow, setTipBelow] = useState(false);
+  const tip = useRef<HTMLDivElement>(null);
 
   const scroller = useRef<HTMLDivElement>(null);
   const todayRow = useRef<HTMLParagraphElement>(null);
@@ -135,11 +140,30 @@ export default function YearRibbon({ year }: { year: number }) {
     (bar: Bar) => setOpen(current => (sameBar(current, bar) ? null : bar)), [],
   );
 
+  /** Half the tooltip's widest possible self, which is what it may not hang over an edge by. */
+  const TIP_REACH = 154;
+
   // Also on focus, so the tooltip is not a thing only a mouse can reach.
   const showTip = (bar: Bar) => (event: { currentTarget: HTMLButtonElement }) => {
     const box = event.currentTarget.getBoundingClientRect();
-    setHover({ bar, x: box.left + box.width / 2, y: box.top });
+    const middle = box.left + box.width / 2;
+    setHover({
+      bar,
+      // A bar at the very left or right of the window would otherwise have half its tooltip
+      // outside it. Nudged in, the arrow stops pointing exactly at the bar, which is the
+      // lesser fault of the two.
+      x: Math.min(Math.max(middle, TIP_REACH + 8), window.innerWidth - TIP_REACH - 8),
+      top: box.top,
+      bottom: box.bottom,
+    });
   };
+
+  // Measured rather than guessed: the tooltip is taller with a photograph than without, and
+  // taller again for a forage, which carries a line per half.
+  useLayoutEffect(() => {
+    if (!hover || !tip.current) return;
+    setTipBelow(hover.top - tip.current.offsetHeight - 10 < 8);
+  }, [hover]);
 
   /** A forage bar is named after the plant; everything else after the job. */
   function barLabel(bar: Bar) {
@@ -363,8 +387,9 @@ export default function YearRibbon({ year }: { year: number }) {
 
       {hover && (
         <div
-          className="dash-year-tip"
-          style={{ left: `${hover.x}px`, top: `${hover.y}px` }}
+          ref={tip}
+          className={`dash-year-tip${tipBelow ? ' dash-year-tip-below' : ''}`}
+          style={{ left: `${hover.x}px`, top: `${tipBelow ? hover.bottom : hover.top}px` }}
           role="presentation"
           data-testid="year-tip"
         >

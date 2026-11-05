@@ -420,6 +420,70 @@ describe('the year ribbon', () => {
       .toHaveAttribute('src', '/year/migrate-rapeseed.webp');
   });
 
+  it('puts the tooltip under the bar when there is no room for it above', async () => {
+    // A tall row pushes its first lanes near the top of the window, and the tooltip is some
+    // 230 pixels tall with a photograph in it. Above the bar there it is simply cut off.
+    const rect = (top: number, bottom: number) => () => ({
+      top, bottom, left: 400, right: 460, width: 60, height: bottom - top,
+      x: 400, y: top, toJSON: () => ({}),
+    }) as DOMRect;
+    const original = Element.prototype.getBoundingClientRect;
+    Element.prototype.getBoundingClientRect = rect(40, 74);
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', { configurable: true, value: 230 });
+
+    mockGetCalendar.mockResolvedValue(answer([entry()]));
+    render(<YearRibbon year={2026} />);
+    await waitFor(() => expect(screen.getByTestId('year-bar')).toBeInTheDocument());
+
+    fireEvent.mouseEnter(screen.getByTestId('year-bar'));
+
+    const tip = screen.getByTestId('year-tip');
+    expect(tip.className).toContain('dash-year-tip-below');
+    // Anchored to the bottom of the bar, since it now hangs underneath it.
+    expect(tip.getAttribute('style')).toContain('top: 74px');
+    Element.prototype.getBoundingClientRect = original;
+  });
+
+  it('keeps it above the bar when it fits there', async () => {
+    const original = Element.prototype.getBoundingClientRect;
+    Element.prototype.getBoundingClientRect = (() => ({
+      top: 500, bottom: 534, left: 400, right: 460, width: 60, height: 34,
+      x: 400, y: 500, toJSON: () => ({}),
+    })) as unknown as typeof original;
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', { configurable: true, value: 230 });
+
+    mockGetCalendar.mockResolvedValue(answer([entry()]));
+    render(<YearRibbon year={2026} />);
+    await waitFor(() => expect(screen.getByTestId('year-bar')).toBeInTheDocument());
+
+    fireEvent.mouseEnter(screen.getByTestId('year-bar'));
+
+    const tip = screen.getByTestId('year-tip');
+    expect(tip.className).not.toContain('dash-year-tip-below');
+    expect(tip.getAttribute('style')).toContain('top: 500px');
+    Element.prototype.getBoundingClientRect = original;
+  });
+
+  it('does not let a bar at the edge push half the tooltip out of the window', async () => {
+    const original = Element.prototype.getBoundingClientRect;
+    Element.prototype.getBoundingClientRect = (() => ({
+      top: 500, bottom: 534, left: 1010, right: 1024, width: 14, height: 34,
+      x: 1010, y: 500, toJSON: () => ({}),
+    })) as unknown as typeof original;
+
+    mockGetCalendar.mockResolvedValue(answer([entry()]));
+    render(<YearRibbon year={2026} />);
+    await waitFor(() => expect(screen.getByTestId('year-bar')).toBeInTheDocument());
+
+    fireEvent.mouseEnter(screen.getByTestId('year-bar'));
+
+    // jsdom's window is 1024 wide, so the middle of that bar is 1017 and the tooltip, which
+    // is centred on it, would reach past the right edge.
+    const left = Number(/left: (\d+)px/.exec(screen.getByTestId('year-tip').getAttribute('style')!)![1]);
+    expect(left).toBeLessThanOrEqual(window.innerWidth - 154);
+    Element.prototype.getBoundingClientRect = original;
+  });
+
   it('says so when the year cannot be loaded', async () => {
     mockGetCalendar.mockRejectedValue(new Error('nope'));
 

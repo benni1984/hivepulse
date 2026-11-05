@@ -1993,6 +1993,12 @@ button.hornets-action-card { width: 100%; }
   content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
   border: 5px solid transparent; border-top-color: var(--green);
 }
+/* Under the bar instead of over it, for the lanes near the top of the window. The arrow
+   changes ends with it, or it would point away from what the tooltip is about. */
+.dash-year-tip-below { transform: translate(-50%, 10px); }
+.dash-year-tip-below::after {
+  top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: var(--green);
+}
 .dash-year-tip-dates { font-size: 11px; opacity: 0.75; font-variant-numeric: tabular-nums; }
 .dash-year-tip-title { font-size: 13px; font-weight: 600; line-height: 1.35; }
 /* A fixed box, so the tooltip is the same size before and after the picture arrives and
