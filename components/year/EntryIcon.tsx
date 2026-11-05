@@ -240,6 +240,8 @@ const BY_ENTRY: Record<string, string> = {
   'robbing-wasps': 'wasp',
   'winter-prep': 'mouseGuard',
   'winter-work': 'tools',
+  // Filed under care, but the action is still taking the supers off and spinning them.
+  'final-harvest': 'extractor',
 };
 
 /** Every migration is a lorry, every other harvest is the extractor. */

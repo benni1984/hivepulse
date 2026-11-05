@@ -269,6 +269,20 @@ ENTRIES: tuple[Entry, ...] = (
         honey="chestnut",
     ),
     Entry(
+        "harvest-chestnut", "harvest", "07-05", "07-31",
+        _t("Chestnut honey: extract once it is capped",
+           "Kastanienhonig: verdeckelt schleudern",
+           "Miel de châtaignier : extraire une fois operculé",
+           "Miel de castaño: extraer cuando esté operculada",
+           "Miód kasztanowy: odwiruj po zasklepieniu"),
+        _t("Chestnut honey is dark, strongly aromatic and a little bitter, and it stays liquid for a long time. Harvest when the combs are capped and the water content is 18 % or less: chestnut is often wetter than other kinds, so measure before extracting rather than after. Keep it apart from the light honeys, because its taste takes over any blend it lands in.",
+           "Kastanienhonig ist dunkel, kräftig würzig und leicht herb und bleibt lange flüssig. Ernten, wenn die Waben verdeckelt sind und der Wassergehalt höchstens 18 % beträgt: Kastanienhonig ist oft feuchter als andere Sorten, deshalb vor dem Schleudern messen und nicht danach. Von den hellen Sorten getrennt halten, denn sein Geschmack setzt sich in jeder Mischung durch.",
+           "Le miel de châtaignier est foncé, très aromatique et un peu amer, et il reste longtemps liquide. Récolter quand les rayons sont operculés et que la teneur en eau est de 18 % ou moins : le châtaignier est souvent plus humide que les autres miellées, donc mesurer avant d’extraire et non après. Le garder séparé des miels clairs, car son goût domine tout mélange.",
+           "La miel de castaño es oscura, muy aromática y algo amarga, y permanece líquida mucho tiempo. Cosechar cuando los panales estén operculados y el contenido de agua sea del 18 % o menos: el castaño suele ser más húmedo que otras mieladas, así que medir antes de extraer y no después. Mantenerla separada de las mieles claras, porque su sabor domina cualquier mezcla.",
+           "Miód kasztanowy jest ciemny, mocno aromatyczny i lekko gorzkawy, i długo pozostaje płynny. Zbieraj, gdy plastry są zasklepione, a zawartość wody wynosi 18 % lub mniej: kasztan bywa wilgotniejszy niż inne pożytki, więc mierz przed wirowaniem, a nie po. Trzymaj go osobno od jasnych miodów, bo jego smak dominuje w każdej mieszance."),
+        honey="chestnut",
+    ),
+    Entry(
         "migrate-linden", "migration", "06-15", "07-10",
         _t("Linden: move to the linden trees",
            "Linde: zu den Lindenbäumen wandern",
@@ -311,6 +325,20 @@ ENTRIES: tuple[Entry, ...] = (
         honey="lavender",
     ),
     Entry(
+        "harvest-lavender", "harvest", "07-25", "08-15",
+        _t("Lavender honey: harvest soon after the bloom",
+           "Lavendelhonig: zügig nach der Blüte ernten",
+           "Miel de lavande : récolter peu après la floraison",
+           "Miel de lavanda: cosechar poco después de la floración",
+           "Miód lawendowy: zbieraj wkrótce po kwitnieniu"),
+        _t("Lavender honey is light, finely aromatic and sets to a fine grain within a few weeks. Take the supers off at the end of the bloom, once the combs are capped to two thirds and the water content is 18 % or less, and extract while they are still warm from the hive. Left on the colony into the heat of August it goes firm in the comb and will not spin.",
+           "Lavendelhonig ist hell, fein im Aroma und kristallisiert binnen weniger Wochen feinkörnig. Die Honigräume zum Blühende abnehmen, sobald die Waben zu zwei Dritteln verdeckelt sind und der Wassergehalt höchstens 18 % beträgt, und schleudern, solange sie noch warm vom Volk sind. Bleibt er bis in die Augusthitze auf dem Volk, wird er in der Wabe fest und lässt sich nicht mehr schleudern.",
+           "Le miel de lavande est clair, finement aromatique et cristallise en quelques semaines en grain fin. Retirer les hausses à la fin de la floraison, dès que les rayons sont operculés aux deux tiers et que la teneur en eau est de 18 % ou moins, puis extraire tant qu’ils sont encore tièdes. Laissé sur la colonie jusqu’aux chaleurs d’août, il fige dans le rayon et ne s’extrait plus.",
+           "La miel de lavanda es clara, de aroma fino y cristaliza en pocas semanas con grano fino. Retirar las alzas al final de la floración, cuando los panales estén operculados a dos tercios y el contenido de agua sea del 18 % o menos, y extraer mientras siguen tibios de la colmena. Si se deja en la colonia hasta el calor de agosto, cuaja en el panal y ya no se puede extraer.",
+           "Miód lawendowy jest jasny, delikatnie aromatyczny i w ciągu kilku tygodni krystalizuje drobnoziarniście. Zdejmij nadstawki pod koniec kwitnienia, gdy plastry są zasklepione w dwóch trzecich, a zawartość wody wynosi 18 % lub mniej, i wiruj, póki są jeszcze ciepłe od rodziny. Zostawiony na rodzinie do sierpniowych upałów zastyga w plastrze i nie da się go odwirować."),
+        honey="lavender",
+    ),
+    Entry(
         "harvest-linden", "harvest", "07-08", "07-31",
         _t("Linden honey: extract when ripe",
            "Lindenhonig: reif schleudern",
@@ -339,6 +367,20 @@ ENTRIES: tuple[Entry, ...] = (
         honey="sunflower",
     ),
     Entry(
+        "harvest-sunflower", "harvest", "08-05", "08-31",
+        _t("Sunflower honey: spin it without waiting",
+           "Sonnenblumenhonig: ohne Warten schleudern",
+           "Miel de tournesol : extraire sans attendre",
+           "Miel de girasol: extraer sin esperar",
+           "Miód słonecznikowy: wiruj bez zwłoki"),
+        _t("Sunflower honey sets faster than almost any other: a few days after being capped it sits hard in the comb. From the middle of the bloom look at the supers every week and take them off as soon as two thirds are capped and the water content is 18 % or less, without waiting for the last frame. Extract the same day, while the combs are warm. What has set in the comb only comes out after warming it, and that costs the honey its aroma.",
+           "Sonnenblumenhonig wird schneller fest als fast jede andere Sorte: Wenige Tage nach dem Verdeckeln sitzt er hart in der Wabe. Ab Blühmitte die Honigräume wöchentlich ansehen und abnehmen, sobald zwei Drittel verdeckelt sind und der Wassergehalt höchstens 18 % beträgt, ohne auf die letzte Wabe zu warten. Am selben Tag schleudern, solange die Waben warm sind. Was in der Wabe fest geworden ist, geht nur noch mit Anwärmen heraus, und das kostet den Honig sein Aroma.",
+           "Le miel de tournesol fige plus vite que presque tous les autres : quelques jours après l’operculation, il est dur dans le rayon. À partir du milieu de la floraison, regarder les hausses chaque semaine et les retirer dès que deux tiers sont operculés et que la teneur en eau est de 18 % ou moins, sans attendre le dernier cadre. Extraire le jour même, tant que les rayons sont tièdes. Ce qui a figé dans le rayon ne sort plus qu’en le réchauffant, et cela coûte son arôme au miel.",
+           "La miel de girasol cuaja más rápido que casi ninguna otra: pocos días después del operculado está dura en el panal. Desde la mitad de la floración, mirar las alzas cada semana y retirarlas en cuanto dos tercios estén operculados y el contenido de agua sea del 18 % o menos, sin esperar al último cuadro. Extraer el mismo día, mientras los panales están tibios. Lo que ha cuajado en el panal solo sale calentándolo, y eso le cuesta el aroma a la miel.",
+           "Miód słonecznikowy krystalizuje szybciej niż prawie każdy inny: kilka dni po zasklepieniu siedzi twardo w plastrze. Od połowy kwitnienia oglądaj nadstawki co tydzień i zdejmuj je, gdy dwie trzecie są zasklepione, a zawartość wody wynosi 18 % lub mniej, nie czekając na ostatnią ramkę. Wiruj tego samego dnia, póki plastry są ciepłe. To, co zastygło w plastrze, wyjdzie dopiero po podgrzaniu, a to kosztuje miód jego aromat."),
+        honey="sunflower",
+    ),
+    Entry(
         "harvest-forest", "harvest", "07-15", "08-31",
         _t("Forest honey: extract in time, warm",
            "Waldhonig: rechtzeitig und warm schleudern",
@@ -354,17 +396,31 @@ ENTRIES: tuple[Entry, ...] = (
     ),
     # ── Late summer and autumn ────────────────────────────────────────────────────────────
     Entry(
-        "final-harvest", "harvest", "07-20", "08-10",
-        _t("Last honey harvest of the season",
-           "Letzte Honigernte der Saison",
-           "Dernière récolte de miel de la saison",
-           "Última cosecha de miel de la temporada",
-           "Ostatnie miodobranie sezonu"),
-        _t("Take off the last supers once the combs are capped and the water content is 18 % or less; a shake test and a refractometer tell you. Then treat against varroa and start feeding straight away: the winter bees are raised now, and they decide how the colony winters.",
-           "Die letzten Honigräume abnehmen, sobald die Waben verdeckelt sind und der Wassergehalt höchstens 18 % beträgt; Schüttelprobe und Refraktometer zeigen es. Danach sofort gegen Varroa behandeln und mit der Fütterung beginnen: Jetzt entstehen die Winterbienen, und sie entscheiden, wie das Volk überwintert.",
-           "Retirer les dernières hausses quand les rayons sont operculés et que la teneur en eau est de 18 % ou moins ; le test de secouage et le réfractomètre le disent. Traiter ensuite contre le varroa et commencer le nourrissement aussitôt : les abeilles d’hiver naissent maintenant, et elles décident de l’hivernage.",
-           "Quitar las últimas alzas cuando los panales estén operculados y el agua sea del 18 % o menos; la prueba de sacudida y el refractómetro lo dicen. Después tratar contra la varroa y empezar a alimentar enseguida: ahora nacen las abejas de invierno y de ellas depende la invernada.",
-           "Zdejmij ostatnie nadstawki, gdy plastry są zasklepione, a zawartość wody wynosi 18 % lub mniej; powie ci to próba strząsania i refraktometr. Potem od razu zrób zabieg przeciwko warrozie i zacznij karmić: wychowują się teraz pszczoły zimowe, a one decydują o tym, jak rodzina przezimuje."),
+        # Care, not harvest, although the action is taking supers off. Every harvest entry is
+        # the honey of one plant; this one is the handover from the honey year to the winter
+        # preparation, and in the ribbon it belongs beside the two things it sets off rather
+        # than among the plants, where it was the one bar that was not a plant and seemed to
+        # be a harvest filed in the wrong order.
+        #
+        # It sits on 20 July because of what follows it, not because of what precedes it: the
+        # summer varroa treatment starts on 25 July and the feeding on 1 August, and the winter
+        # bees are raised in the weeks after that. Waiting for the heather would cost them.
+        # Lavender, sunflower and heather are harvested after this date, by the colonies that
+        # travel; those are treated and fed when they come back.
+        #
+        # The key stays `final-harvest`: it is shown nowhere, and the questionnaire's ratings
+        # are stored against it.
+        "final-harvest", "care", "07-20", "08-10",
+        _t("Supers off: treatment and feeding start now",
+           "Honigräume ab: jetzt beginnen Behandlung und Fütterung",
+           "Hausses retirées : traitement et nourrissement commencent",
+           "Alzas fuera: empiezan el tratamiento y la alimentación",
+           "Nadstawki zdjęte: zaczynają się zabieg i karmienie"),
+        _t("Take the supers off once the combs are capped and the water content is 18 % or less; a shake test and a refractometer tell you. For most colonies the honey year ends here: treat against varroa and start feeding straight away, because the winter bees are raised now and they decide how the colony winters. Colonies that still go to sunflower or heather are treated and fed when they come back — plan for it, because every week it runs late costs winter bees.",
+           "Die Honigräume abnehmen, sobald die Waben verdeckelt sind und der Wassergehalt höchstens 18 % beträgt; Schüttelprobe und Refraktometer zeigen es. Für die meisten Völker endet damit das Honigjahr: sofort gegen Varroa behandeln und mit der Fütterung beginnen, denn jetzt entstehen die Winterbienen, und sie entscheiden, wie das Volk überwintert. Völker, die noch zur Sonnenblume oder in die Heide gehen, werden nach der Rückkehr behandelt und gefüttert — das einplanen, denn jede Woche Verzug kostet Winterbienen.",
+           "Retirer les hausses quand les rayons sont operculés et que la teneur en eau est de 18 % ou moins ; le test de secouage et le réfractomètre le disent. Pour la plupart des colonies, l’année du miel s’arrête là : traiter contre le varroa et commencer le nourrissement aussitôt, car les abeilles d’hiver naissent maintenant et elles décident de l’hivernage. Les colonies qui partent encore au tournesol ou à la bruyère sont traitées et nourries au retour — le prévoir, car chaque semaine de retard coûte des abeilles d’hiver.",
+           "Retirar las alzas cuando los panales estén operculados y el agua sea del 18 % o menos; la prueba de sacudida y el refractómetro lo dicen. Para la mayoría de las colonias el año de la miel termina aquí: tratar contra la varroa y empezar a alimentar enseguida, porque ahora nacen las abejas de invierno y de ellas depende la invernada. Las colonias que todavía van al girasol o al brezo se tratan y se alimentan al volver — hay que preverlo, porque cada semana de retraso cuesta abejas de invierno.",
+           "Zdejmij nadstawki, gdy plastry są zasklepione, a zawartość wody wynosi 18 % lub mniej; powie ci to próba strząsania i refraktometr. Dla większości rodzin rok miodowy kończy się tutaj: od razu zrób zabieg przeciwko warrozie i zacznij karmić, bo wychowują się teraz pszczoły zimowe i to one decydują o zimowli. Rodziny, które jeszcze jadą na słonecznik albo na wrzos, traktuje się i karmi po powrocie — zaplanuj to, bo każdy tydzień zwłoki kosztuje pszczoły zimowe."),
     ),
     Entry(
         "varroa-summer", "varroa", "07-25", "09-10",

@@ -84,7 +84,8 @@ PICKS: dict[str, str] = {
         "drone-frame-insert":  "Drone - honeybee (8952360114).jpg",
     "drone-brood-cutting": "CSIRO ScienceImage 6961 Worker honey bees removing excess drone brood from the hive.jpg",
     "foulbrood-check":     "AFB in combs.jpg",
-    # The harvest that belongs to no single forage
+    # The handover from the honey year to the winter preparation: supers off, then treat
+    # and feed. Filed under care, and the only entry of that kind with a photograph.
     "final-harvest":       "Uncapping honeycomb.jpg",
 }
 

@@ -73,6 +73,41 @@ def test_honey_entries_use_the_forage_keys_of_the_moves():
             assert entry.honey in forage, f"{entry.key}: {entry.honey} is not a forage key"
 
 
+def test_every_move_has_a_harvest_of_the_same_forage():
+    """You do not drive the colonies to a flow and then leave the honey on them.
+
+    Chestnut, lavender and sunflower were moves without a harvest for a while, which left the
+    year telling a beekeeper where to go and never what to do with what came of it.
+    """
+    moves = {e.honey for e in beekeeping_year.ENTRIES if e.category == "migration" and e.honey}
+    harvests = {e.honey for e in beekeeping_year.ENTRIES if e.category == "harvest" and e.honey}
+
+    assert moves <= harvests, f"no harvest for: {', '.join(sorted(moves - harvests))}"
+
+
+def test_every_harvest_names_a_forage():
+    """A harvest entry is the honey of one plant, and the ribbon relies on it.
+
+    The one entry that was a harvest of nothing in particular -- supers off, then treat and
+    feed -- is filed under care, where it belongs: it is the handover into the winter
+    preparation and not the honey of a plant.
+    """
+    for entry in beekeeping_year.ENTRIES:
+        if entry.category == "harvest":
+            assert entry.honey, f"{entry.key} is a harvest of nothing"
+
+
+def test_a_harvest_does_not_start_before_its_move():
+    """The flow comes first; the honey is taken off as it ends or after it."""
+    moves = {e.honey: e for e in beekeeping_year.ENTRIES if e.category == "migration" and e.honey}
+    for entry in beekeeping_year.ENTRIES:
+        move = moves.get(entry.honey) if entry.category == "harvest" else None
+        if move is None:
+            continue
+        assert entry.start > move.start, f"{entry.key} starts before {move.key}"
+        assert entry.end > move.end, f"{entry.key} ends before {move.key} does"
+
+
 def test_the_texts_use_the_words_of_the_apps():
     german = " ".join(e.title["de"] + " " + e.body["de"] for e in beekeeping_year.ENTRIES)
     french = " ".join(e.title["fr"] + " " + e.body["fr"] for e in beekeeping_year.ENTRIES)

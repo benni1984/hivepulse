@@ -169,14 +169,16 @@ describe('the rows', () => {
   });
 
   it('leaves a harvest that belongs to no plant alone', () => {
-    // The last harvest of the season is not about one forage.
+    // Every harvest in the calendar names a forage today, and a backend test keeps it that
+    // way. This guards the branch anyway: a harvest with no plant must never be folded into
+    // somebody else's move, which is what would happen if the lookup ignored the forage.
     const rows = rowsFor([
-      entry({ key: 'final-harvest', category: 'harvest', honey: null,
+      entry({ key: 'mystery-harvest', category: 'harvest', honey: null,
               start: '2026-07-20', end: '2026-08-10' }),
     ], 2026);
 
     expect(rows[0].bars).toHaveLength(1);
-    expect(rows[0].bars[0].entry.key).toBe('final-harvest');
+    expect(rows[0].bars[0].entry.key).toBe('mystery-harvest');
   });
 
   it('does not pair a harvest with a move of a different plant', () => {
