@@ -7,6 +7,24 @@ export const COUNTRY_CODES = [
   'RS', 'SE', 'SI', 'SK', 'SM', 'TR', 'UA',
 ] as const;
 
+/**
+ * The same countries, in the order a reader of this language expects.
+ *
+ * `COUNTRY_CODES` is in ISO order, which is alphabetical by code and therefore not alphabetical
+ * by anything a person sees: in German the list ran "Albanien, Andorra, Österreich, Belgien",
+ * because Austria is AT. Sorted by the displayed name, with the locale's own collation, so
+ * umlauts and accents land where that language puts them.
+ */
+export function countriesByName(locale: string): { code: string; name: string }[] {
+  const named = COUNTRY_CODES.map((code) => ({ code, name: countryName(code, locale) }));
+  try {
+    const collator = new Intl.Collator(locale);
+    return named.sort((a, b) => collator.compare(a.name, b.name));
+  } catch {
+    return named.sort((a, b) => a.name.localeCompare(b.name));
+  }
+}
+
 /** The name of a country in the language of the page; the code itself when the browser cannot name it. */
 export function countryName(code: string, locale: string): string {
   try {

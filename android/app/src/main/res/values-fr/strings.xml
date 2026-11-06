@@ -549,6 +549,8 @@
     <string name="calendar_set_region">Indiquer la région</string>
     <string name="calendar_change_region">Changer la région</string>
     <string name="calendar_disclaimer">Valeurs indicatives tirées de la pratique apicole habituelle, pas des règles : la floraison et la météo décident, et les dates se décalent selon votre lieu. Médicaments uniquement selon l’autorisation et les règles de votre pays ; en cas de doute, demandez à votre syndicat apicole ou à la direction départementale de la protection des populations.</string>
+    <string name="calendar_rate_hint">Ces dates correspondent-elles à l’endroit où sont vos abeilles ?</string>
+    <string name="calendar_rate_link">Dites-le nous</string>
     <string name="calendar_category_inspection">Visite</string>
     <string name="calendar_category_swarm">Essaimage</string>
     <string name="calendar_category_feeding">Nourrissement</string>
@@ -557,6 +559,13 @@
     <string name="calendar_category_migration">Transhumance</string>
     <string name="calendar_category_bloom">Floraison</string>
     <string name="calendar_category_care">Entretien</string>
+    <string name="calendar_view_list">Liste</string>
+    <string name="calendar_view_ribbon">Vue d’ensemble</string>
+    <string name="calendar_view_list_hint">Ce qu’il faut faire maintenant, mois par mois</string>
+    <string name="calendar_view_ribbon_hint">Toute l’année en une image</string>
+    <string name="calendar_ribbon_empty">Rien à afficher pour cette année.</string>
+    <string name="calendar_row_forage">Miellée</string>
+    <string name="calendar_photo_credit">Photo : %1$s · %2$s</string>
     <string name="calendar_category_winter">Hiver</string>
     <string name="region_title">Région pour l’année apicole</string>
     <string name="region_intro">Le pays et le code postal adaptent l’année apicole à votre lieu : la floraison vient plus tôt dans le sud et plus tard dans le nord. Seule la position est conservée, pas l’adresse.</string>

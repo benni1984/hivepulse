@@ -1192,3 +1192,172 @@ export async function registerPushToken(data: PushTokenRegister): Promise<void> 
   });
   if (!res.ok) throw new Error('Failed to register push token');
 }
+
+// ── The questionnaire: the beekeeping year, rated by anybody, without an account ─────────
+//
+// The 38 entries were written once for central Germany and moved elsewhere by a formula
+// nobody has checked against what beekeepers there actually do. These calls are how they say
+// so. Nothing posted here changes a date: an admin approves the grouped result or does not.
+
+export interface PublicCalendarEntry {
+  key: string;
+  category: CalendarCategory;
+  title: string;
+  body: string;
+  /** YYYY-MM-DD, inside the one reference year the questionnaire asks about. */
+  start: string;
+  end: string;
+  interval_days: number | null;
+  honey: string | null;
+}
+
+export interface PublicCalendar {
+  /** Days the dates were moved for the place that was given, 0 when none was. */
+  shift_days: number;
+  /** False when a country and postal code were given and could not be found. */
+  located: boolean;
+  entries: PublicCalendarEntry[];
+}
+
+/**
+ * What a beekeeper says about one entry.
+ *
+ * `too_early` means *the calendar* is too early -- it happens later there -- and `too_late` the
+ * other way round. Easy to read backwards, so nothing in this client ever writes a sign: see
+ * `yearShiftDays`.
+ */
+export type YearVerdict = 'fits' | 'too_early' | 'too_late' | 'wrong';
+
+export interface YearRatingInput {
+  key: string;
+  verdict: YearVerdict;
+  /** How far off, in days. The direction comes from the verdict; the server replaces the sign. */
+  shift_days?: number | null;
+  /** Shown to admins only, never to other users. */
+  note?: string | null;
+}
+
+export interface YearFeedbackInput {
+  /** Two letters. Required: a rating that cannot be placed cannot be weighted. */
+  country: string;
+  postal_code: string;
+  /** An opaque string the browser keeps, so a second submission replaces the first. */
+  device_id: string;
+  years_keeping?: number | null;
+  ratings: YearRatingInput[];
+}
+
+export interface YearFeedbackResult {
+  accepted: number;
+  /** How many of these entries this browser had rated before. */
+  replaced: number;
+  located: boolean;
+}
+
+/**
+ * The signed correction for a verdict and a size.
+ *
+ * The server normalises this too, so sending it backwards is not fatal -- but a client that
+ * derives the sign instead of asking for one cannot ask the beekeeper a question they would get
+ * wrong ("is a fortnight later -14 or +14?"). Positive moves the entry later, which is what
+ * "the calendar is too early" means.
+ */
+export function yearShiftDays(verdict: YearVerdict, size: number | null): number | null {
+  if (size === null || !Number.isFinite(size)) return null;
+  if (verdict !== 'too_early' && verdict !== 'too_late') return null;
+  const magnitude = Math.abs(Math.round(size));
+  if (magnitude === 0) return null;
+  return verdict === 'too_early' ? magnitude : -magnitude;
+}
+
+/** The whole reference year, unauthenticated, shifted to a place when one is given. */
+export async function getPublicCalendar(
+  lang: string,
+  place?: { country: string; postalCode: string },
+): Promise<PublicCalendar> {
+  const query = new URLSearchParams({ lang });
+  if (place?.country && place?.postalCode) {
+    query.set('country', place.country);
+    query.set('postal_code', place.postalCode);
+  }
+  const res = await fetch(`${BASE}/public/calendar?${query}`);
+  if (!res.ok) throw new Error('Failed to load the calendar');
+  return res.json();
+}
+
+export async function submitYearFeedback(data: YearFeedbackInput): Promise<YearFeedbackResult> {
+  const res = await fetch(`${BASE}/public/calendar/feedback`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    throw new Error(extractDetail(await res.json().catch(() => ({})), 'Failed to send the ratings'));
+  }
+  return res.json();
+}
+
+// ── The admin side: the grouped proposals, and the decision ──────────────────────────────
+
+export type YearProposalKind = 'shift' | 'hide';
+export type YearProposalStatus = 'pending' | 'approved' | 'rejected';
+
+export interface YearProposal {
+  id: string;
+  entry_key: string;
+  entry_title: string;
+  kind: YearProposalKind;
+  /** Null for `hide`. Positive moves the entry later. */
+  shift_days: number | null;
+  rating_count: number;
+  latitude: number;
+  longitude: number;
+  radius_km: number;
+  country: string | null;
+  verdict_counts: Record<YearVerdict, number>;
+  /** The smallest and largest correction in the group, so disagreement is visible. */
+  shift_days_range: [number, number] | null;
+  notes: string[];
+  status: YearProposalStatus;
+  created_at: string;
+  decided_at: string | null;
+}
+
+export interface YearRecomputeResult {
+  created: number;
+  updated: number;
+  unchanged: number;
+}
+
+export async function adminGetYearProposals(
+  status: YearProposalStatus | 'all' = 'pending',
+): Promise<YearProposal[]> {
+  const res = await apiFetch(`/admin/year-proposals?status=${status}`);
+  if (!res.ok) throw new Error('Failed to load the proposals');
+  return res.json();
+}
+
+export async function adminRecomputeYearProposals(): Promise<YearRecomputeResult> {
+  const res = await apiFetch('/admin/year-proposals/recompute', { method: 'POST' });
+  if (!res.ok) throw new Error('Failed to group the ratings again');
+  return res.json();
+}
+
+/** `shiftDays` overrules the proposed median; an admin who knows the region may. */
+export async function adminApproveYearProposal(
+  id: string,
+  shiftDays?: number | null,
+): Promise<YearProposal> {
+  const res = await apiFetch(`/admin/year-proposals/${id}/approve`, {
+    method: 'POST',
+    body: JSON.stringify(shiftDays === null || shiftDays === undefined ? {} : { shift_days: shiftDays }),
+  });
+  if (!res.ok) throw new Error(extractDetail(await res.json().catch(() => ({})), 'Failed to approve'));
+  return res.json();
+}
+
+export async function adminRejectYearProposal(id: string): Promise<YearProposal> {
+  const res = await apiFetch(`/admin/year-proposals/${id}/reject`, { method: 'POST' });
+  if (!res.ok) throw new Error('Failed to reject');
+  return res.json();
+}

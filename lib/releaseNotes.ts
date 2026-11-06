@@ -35,6 +35,80 @@ export function pick(text: Localized, locale: string): string {
 /** Newest first. */
 export const RELEASES: Release[] = [
   {
+    date: '2026-11-06',
+    title: t(
+      'Say whether the beekeeping year fits where you are',
+      'Sag, ob das Imkerjahr bei dir passt',
+      'Dites si l’année apicole correspond chez vous',
+      'Di si el año apícola encaja donde estás',
+      'Powiedz, czy rok pasieczny pasuje u Ciebie',
+    ),
+    items: [
+      {
+        kind: 'added',
+        text: t(
+          'A questionnaire about all 38 entries of the beekeeping year, open to anybody and without an account. Give a country and a postal code and you rate the dates you would actually see, not the ones written for central Germany: it fits, it happens later here, it happens earlier here, it is not done here at all — with a size in days and a note if you have one. Entries you leave alone are not sent.',
+          'Ein Fragebogen zu allen 38 Einträgen des Imkerjahres, offen für alle und ohne Konto. Mit Land und Postleitzahl bewertest du die Daten, die du wirklich sehen würdest, nicht die für Mitteldeutschland geschriebenen: passt, bei mir später, bei mir früher, gilt hier nicht — mit einer Größe in Tagen und einer Anmerkung, wenn du eine hast. Einträge, die du auslässt, werden nicht gesendet.',
+          'Un questionnaire sur les 38 entrées de l’année apicole, ouvert à tous et sans compte. Avec un pays et un code postal, vous évaluez les dates que vous verriez vraiment, et non celles écrites pour le centre de l’Allemagne : ça colle, plus tard ici, plus tôt ici, pas d’usage ici — avec une durée en jours et une remarque si vous en avez une. Les entrées que vous laissez ne sont pas envoyées.',
+          'Un cuestionario sobre las 38 entradas del año apícola, abierto a cualquiera y sin cuenta. Con un país y un código postal valoras las fechas que verías de verdad, no las escritas para el centro de Alemania: encaja, más tarde aquí, más temprano aquí, aquí no se hace — con un tamaño en días y una nota si la tienes. Las entradas que dejes sin marcar no se envían.',
+          'Ankieta o wszystkich 38 wpisach roku pasiecznego, otwarta dla każdego i bez konta. Po podaniu kraju i kodu pocztowego oceniasz daty, które naprawdę byś widział, a nie napisane dla środkowych Niemiec: pasuje, u mnie później, u mnie wcześniej, tu się tego nie robi — z wielkością w dniach i uwagą, jeśli ją masz. Pominięte wpisy nie są wysyłane.',
+        ),
+      },
+      {
+        kind: 'added',
+        text: t(
+          'Both apps ask the question where you are already looking at the dates: under the year, in the list and in the picture, "Do these dates fit where your bees are?" opens the questionnaire in the browser.',
+          'Beide Apps stellen die Frage dort, wo du die Daten schon ansiehst: unter dem Jahr, in der Liste wie im Bild, öffnet „Passen diese Daten dort, wo deine Bienen stehen?" den Fragebogen im Browser.',
+          'Les deux applications posent la question là où vous regardez déjà les dates : sous l’année, en liste comme en image, « Ces dates correspondent-elles à l’endroit où sont vos abeilles ? » ouvre le questionnaire dans le navigateur.',
+          'Ambas aplicaciones hacen la pregunta donde ya estás mirando las fechas: bajo el año, en la lista y en la imagen, «¿Encajan estas fechas donde están tus abejas?» abre el cuestionario en el navegador.',
+          'Obie aplikacje zadają pytanie tam, gdzie już patrzysz na daty: pod rokiem, na liście i na obrazie, „Czy te daty pasują tam, gdzie stoją Twoje pszczoły?" otwiera ankietę w przeglądarce.',
+        ),
+      },
+      {
+        kind: 'added',
+        text: t(
+          'Nothing you send moves a date on its own. Ratings within 150 km of each other are grouped, a group needs at least five beekeepers, and the median correction then waits for somebody who knows the region. Once approved, the timeline says how many beekeepers it rests on.',
+          'Nichts, was du sendest, verschiebt allein ein Datum. Bewertungen im Umkreis von 150 km werden zusammengefasst, eine Gruppe braucht mindestens fünf Imker, und die mittlere Korrektur wartet dann auf jemanden, der die Region kennt. Ist sie freigegeben, nennt der Zeitstrahl, auf wie vielen Imkern sie beruht.',
+          'Rien de ce que vous envoyez ne déplace une date à soi seul. Les avis à moins de 150 km les uns des autres sont regroupés, un groupe a besoin d’au moins cinq apiculteurs, et la correction médiane attend ensuite quelqu’un qui connaît la région. Une fois validée, la chronologie indique sur combien d’apiculteurs elle repose.',
+          'Nada de lo que envíes mueve una fecha por sí solo. Las valoraciones a menos de 150 km entre sí se agrupan, un grupo necesita al menos cinco apicultores, y la corrección mediana espera después a alguien que conozca la región. Una vez aprobada, la cronología dice en cuántos apicultores se apoya.',
+          'Nic, co wyślesz, samo nie przesuwa daty. Oceny w promieniu 150 km od siebie są grupowane, grupa potrzebuje co najmniej pięciu pszczelarzy, a mediana poprawki czeka potem na kogoś, kto zna region. Po zatwierdzeniu oś czasu podaje, na ilu pszczelarzach się opiera.',
+        ),
+      },
+    ],
+  },
+  {
+    date: '2026-11-05',
+    title: t(
+      'The year as a picture on the iPhone and on Android too',
+      'Das Jahr als Bild auch auf dem iPhone und auf Android',
+      'L’année en image sur iPhone et sur Android aussi',
+      'El año como imagen también en el iPhone y en Android',
+      'Rok jako obraz także na iPhonie i na Androidzie',
+    ),
+    items: [
+      {
+        kind: 'added',
+        text: t(
+          'The beekeeping year as a ribbon in both apps, under the same two names as on the website: List and Overview. On a phone the picture is drawn wider than the screen and the year is dragged sideways — a month gets 90 points instead of 30, which is the difference between readable and not.',
+          'Das Imkerjahr als Band in beiden Apps, unter denselben zwei Namen wie auf der Webseite: Liste und Übersicht. Auf dem Handy wird das Bild breiter als der Bildschirm gezeichnet und das Jahr seitlich durchgezogen — ein Monat bekommt 90 statt 30 Punkte, und das ist der Unterschied zwischen lesbar und nicht.',
+          'L’année apicole en ruban dans les deux applications, sous les mêmes deux noms que sur le site : Liste et Vue d’ensemble. Sur un téléphone, l’image est dessinée plus large que l’écran et l’année se fait glisser latéralement — un mois reçoit 90 points au lieu de 30, ce qui fait la différence entre lisible et non.',
+          'El año apícola como banda en ambas aplicaciones, con los mismos dos nombres que en el sitio: Lista y Vista general. En el móvil la imagen se dibuja más ancha que la pantalla y el año se arrastra de lado: un mes recibe 90 puntos en vez de 30, que es la diferencia entre legible y no.',
+          'Rok pasieczny jako wstęga w obu aplikacjach, pod tymi samymi dwiema nazwami co na stronie: Lista i Przegląd. Na telefonie obraz jest rysowany szerzej niż ekran, a rok przeciąga się na boki — miesiąc dostaje 90 punktów zamiast 30, a to różnica między czytelnym i nieczytelnym.',
+        ),
+      },
+      {
+        kind: 'added',
+        text: t(
+          'The photographs are in both apps as well, in the list and in the picture: the plant in flower, a capped queen cell, the mite on a bee. They are carried inside the app rather than fetched, so they are there at the apiary where there is no signal.',
+          'Die Fotos sind nun auch in beiden Apps, in der Liste und im Bild: die Pflanze in Blüte, eine verdeckelte Weiselzelle, die Milbe auf der Biene. Sie liegen in der App und werden nicht geladen — damit sie am Bienenstand da sind, wo kein Netz ist.',
+          'Les photos sont aussi dans les deux applications, dans la liste et dans l’image : la plante en fleur, une cellule royale operculée, le varroa sur une abeille. Elles sont embarquées dans l’application et non téléchargées, pour être là au rucher où il n’y a pas de réseau.',
+          'Las fotos están también en ambas aplicaciones, en la lista y en la imagen: la planta en flor, una celda real operculada, el ácaro sobre una abeja. Van dentro de la aplicación y no se descargan, para que estén en el colmenar donde no hay cobertura.',
+          'Zdjęcia są też w obu aplikacjach, na liście i na obrazie: roślina w kwiecie, zasklepiony matecznik, roztocz na pszczole. Są w aplikacji, a nie pobierane — żeby były w pasiece, gdzie nie ma sieci.',
+        ),
+      },
+    ],
+  },
+  {
     date: '2026-11-05',
     title: t(
       'The beekeeping year as a picture, and a way to tell us things',
@@ -57,11 +131,11 @@ export const RELEASES: Release[] = [
       {
         kind: 'added',
         text: t(
-          'The beekeeping year as a ribbon on the website: the whole year in one picture, a row per subject and a bar per job, with a photograph of the thing itself — the plant in flower, a capped queen cell, the mite on a bee. On a phone the year runs down the screen instead. The apps still show the year as a list.',
-          'Das Imkerjahr als Band auf der Webseite: das ganze Jahr in einem Bild, eine Zeile je Thema und ein Balken je Aufgabe, mit einem Foto der Sache selbst — die Pflanze in Blüte, eine verdeckelte Weiselzelle, die Milbe auf der Biene. Auf dem Handy läuft das Jahr stattdessen senkrecht. Die Apps zeigen das Jahr weiterhin als Liste.',
-          'L’année apicole en ruban sur le site : toute l’année en une image, une ligne par sujet et une barre par travail, avec une photo de la chose même — la plante en fleur, une cellule royale operculée, le varroa sur une abeille. Sur téléphone, l’année défile verticalement. Les applications montrent toujours l’année en liste.',
-          'El año apícola como banda en el sitio: todo el año en una imagen, una fila por tema y una barra por tarea, con una foto de la cosa misma: la planta en flor, una celda real operculada, el ácaro sobre una abeja. En el móvil el año va en vertical. Las aplicaciones siguen mostrando el año como lista.',
-          'Rok pasieczny jako wstęga na stronie: cały rok na jednym obrazie, wiersz na temat i belka na zadanie, ze zdjęciem samej rzeczy — rośliny w kwiecie, zasklepionego matecznika, roztocza na pszczole. Na telefonie rok biegnie pionowo. Aplikacje nadal pokazują rok jako listę.',
+          'The beekeeping year as a ribbon on the website: the whole year in one picture, a row per subject and a bar per job, with a photograph of the thing itself — the plant in flower, a capped queen cell, the mite on a bee. On a phone the year runs down the screen instead.',
+          'Das Imkerjahr als Band auf der Webseite: das ganze Jahr in einem Bild, eine Zeile je Thema und ein Balken je Aufgabe, mit einem Foto der Sache selbst — die Pflanze in Blüte, eine verdeckelte Weiselzelle, die Milbe auf der Biene. Auf dem Handy läuft das Jahr stattdessen senkrecht.',
+          'L’année apicole en ruban sur le site : toute l’année en une image, une ligne par sujet et une barre par travail, avec une photo de la chose même — la plante en fleur, une cellule royale operculée, le varroa sur une abeille. Sur téléphone, l’année défile verticalement.',
+          'El año apícola como banda en el sitio: todo el año en una imagen, una fila por tema y una barra por tarea, con una foto de la cosa misma: la planta en flor, una celda real operculada, el ácaro sobre una abeja. En el móvil el año va en vertical.',
+          'Rok pasieczny jako wstęga na stronie: cały rok na jednym obrazie, wiersz na temat i belka na zadanie, ze zdjęciem samej rzeczy — rośliny w kwiecie, zasklepionego matecznika, roztocza na pszczole. Na telefonie rok biegnie pionowo.',
         ),
       },
       {

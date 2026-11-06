@@ -29,6 +29,7 @@ If `name` is non-empty, `locale` is guaranteed set too (same `if` block).
 - `.hornets-*` — hornet tracker
 - `.site-*` / `.nav-*` — public nav
 - `auth-*` — auth pages
+- `.survey-*` — the public beekeeping-year questionnaire
 
 ## Stat Pills
 

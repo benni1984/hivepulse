@@ -560,6 +560,8 @@
 "calendar.setRegion" = "Indiquer la région";
 "calendar.changeRegion" = "Changer la région";
 "calendar.disclaimer" = "Valeurs indicatives tirées de la pratique apicole habituelle, pas des règles : la floraison et la météo décident, et les dates se décalent selon votre lieu. Médicaments uniquement selon l’autorisation et les règles de votre pays ; en cas de doute, demandez à votre syndicat apicole ou à la direction départementale de la protection des populations.";
+"calendar.rate.hint" = "Ces dates correspondent-elles à l’endroit où sont vos abeilles ?";
+"calendar.rate.link" = "Dites-le nous";
 "calendar.category.inspection" = "Visite";
 "calendar.category.swarm" = "Essaimage";
 "calendar.category.feeding" = "Nourrissement";
@@ -568,6 +570,13 @@
 "calendar.category.migration" = "Transhumance";
 "calendar.category.bloom" = "Floraison";
 "calendar.category.care" = "Entretien";
+"calendar.viewList" = "Liste";
+"calendar.viewRibbon" = "Vue d’ensemble";
+"calendar.viewListHint" = "Ce qu’il faut faire maintenant, mois par mois";
+"calendar.viewRibbonHint" = "Toute l’année en une image";
+"calendar.ribbonEmpty" = "Rien à afficher pour cette année.";
+"calendar.rows.forage" = "Miellée";
+"calendar.photoCredit" = "Photo : %@ · %@";
 "calendar.category.winter" = "Hiver";
 "region.title" = "Région pour l’année apicole";
 "region.intro" = "Le pays et le code postal adaptent l’année apicole à votre lieu : la floraison vient plus tôt dans le sud et plus tard dans le nord. Seule la position est conservée, pas l’adresse.";

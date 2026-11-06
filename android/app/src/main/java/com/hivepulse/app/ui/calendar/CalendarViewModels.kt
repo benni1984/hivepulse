@@ -150,3 +150,49 @@ class RegionViewModel @Inject constructor(
         fun clamp(days: Int): Int = days.coerceIn(-28, 28)
     }
 }
+
+// ── The year as a ribbon ─────────────────────────────────────────────────────────────────────
+
+data class YearRibbonState(
+    val entries: List<CalendarEntryOut> = emptyList(),
+    val today: String = LocalDate.now().toString(),
+    val year: Int = LocalDate.now().year,
+    val isLoaded: Boolean = false,
+    val failed: Boolean = false,
+) {
+    val rows: List<YearRibbon.RibbonRow> get() = YearRibbon.rowsFor(entries, year)
+    /** Every bar of the year in date order: the shape the phone list reads in. */
+    val byDate: List<YearRibbon.Bar> get() = rows.flatMap { it.bars }.sortedBy { it.left }
+    val todayAt: Double? get() = YearRibbon.todayPosition(today, year)
+}
+
+/**
+ * One whole calendar year at once, which is what a ribbon needs.
+ *
+ * The timeline next door loads windows of 120 days as it is scrolled, because it is endless. A
+ * ribbon is not: it is one year, bounded, and every bar's width is a fraction of that year. Asking
+ * for it in pieces would redraw every bar each time a piece arrived.
+ */
+@HiltViewModel
+class YearRibbonViewModel @Inject constructor(
+    private val repo: CalendarRepository,
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(YearRibbonState())
+    val state = _state.asStateFlow()
+
+    init { load(LocalDate.now().year) }
+
+    fun load(year: Int) = viewModelScope.launch {
+        _state.update { it.copy(failed = false, year = year) }
+        // A fortnight either side of the year, so an entry that straddles New Year arrives with
+        // its real dates and can be drawn cut off at the edge rather than missing.
+        runCatching { repo.calendar("${year - 1}-12-15", 365 + 32, appLanguage()) }
+            .onSuccess { window ->
+                _state.update {
+                    it.copy(entries = window.entries, today = window.today, isLoaded = true)
+                }
+            }
+            .onFailure { _state.update { it.copy(failed = true) } }
+    }
+}

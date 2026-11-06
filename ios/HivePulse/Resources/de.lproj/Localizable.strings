@@ -560,6 +560,8 @@
 "calendar.setRegion" = "Region festlegen";
 "calendar.changeRegion" = "Region ändern";
 "calendar.disclaimer" = "Richtwerte aus der üblichen imkerlichen Praxis, keine Vorschriften: Blüte und Wetter entscheiden, und die Termine verschieben sich mit deinem Ort. Arzneimittel nur wie in deinem Land zugelassen und vorgeschrieben; im Zweifel frag deinen Imkerverband oder das Veterinäramt.";
+"calendar.rate.hint" = "Passen diese Daten dort, wo deine Bienen stehen?";
+"calendar.rate.link" = "Sag es uns";
 "calendar.category.inspection" = "Kontrolle";
 "calendar.category.swarm" = "Schwarmkontrolle";
 "calendar.category.feeding" = "Fütterung";
@@ -568,6 +570,13 @@
 "calendar.category.migration" = "Wanderung";
 "calendar.category.bloom" = "Blüte";
 "calendar.category.care" = "Pflege";
+"calendar.viewList" = "Liste";
+"calendar.viewRibbon" = "Übersicht";
+"calendar.viewListHint" = "Was jetzt zu tun ist, Monat für Monat";
+"calendar.viewRibbonHint" = "Das ganze Jahr in einem Bild";
+"calendar.ribbonEmpty" = "Für dieses Jahr ist nichts anzuzeigen.";
+"calendar.rows.forage" = "Tracht";
+"calendar.photoCredit" = "Foto: %@ · %@";
 "calendar.category.winter" = "Winter";
 "region.title" = "Region für das Imkerjahr";
 "region.intro" = "Land und Postleitzahl verschieben das Imkerjahr auf deinen Ort: Die Blüte kommt im Süden früher und im Norden später. Gespeichert wird nur die Position, nicht die Adresse.";

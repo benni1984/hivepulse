@@ -302,6 +302,11 @@
       "title": "🐝 The Hive is on GitHub",
       "desc": "HivePulse is fully open source under the MIT License. Read the code, open issues, fork it, and make it better.",
       "btn": "View on GitHub"
+    },
+    "year": {
+      "title": "Correct the Beekeeping Year",
+      "desc": "The calendar's dates were written for central Germany and estimated for everywhere else. Tell us what really happens where you keep bees — a quarter of an hour, no account.",
+      "link": "Rate the beekeeping year →"
     }
   },
   "fr": {
@@ -502,7 +507,8 @@
         "stats": "Platform Stats",
         "users": "Users",
         "map": "Map",
-        "health": "Health"
+        "health": "Health",
+        "yearProposals": "Year proposals"
       },
       "stats": {
         "title": "Platform Statistics",
@@ -574,6 +580,39 @@
         "defaultSigningKey": "Warning: this server signs logins with the public default key from the source code. Anyone who knows it can forge a token for any account. Set a real SECRET_KEY in the hosting environment.",
         "pushAndroidMissing": "Android push is not configured: reminders never reach an Android phone. Needs FIREBASE_PROJECT_ID and FIREBASE_SERVICE_ACCOUNT_JSON in the hosting environment.",
         "pushIosMissing": "iPhone push is not configured: reminders never reach an iPhone. Needs APNS_KEY_ID, APNS_TEAM_ID and APNS_PRIVATE_KEY_P8 in the hosting environment."
+      },
+      "yearProposals": {
+        "title": "Proposals for the beekeeping year",
+        "lead": "What the questionnaire collected, grouped by entry and region. A group needs five beekeepers within 150 km before it appears here, and the correction is their median. Nothing reaches a calendar until you approve it.",
+        "filterLabel": "Status",
+        "filter": {
+          "pending": "Pending",
+          "approved": "Approved",
+          "rejected": "Rejected",
+          "all": "All"
+        },
+        "recompute": "Group the ratings again",
+        "recomputing": "Grouping…",
+        "recomputed": "{created} new, {updated} updated, {unchanged} unchanged. Decisions already made were left alone.",
+        "recomputeFailed": "The ratings could not be grouped again.",
+        "loadFailed": "The proposals could not be loaded.",
+        "decideFailed": "The decision could not be saved.",
+        "emptyPending": "Nothing to decide. Either no region has five beekeepers agreeing yet, or everything has been decided.",
+        "empty": "Nothing here.",
+        "ratings": "Ratings",
+        "where": "Region",
+        "verdicts": "Answers",
+        "verdictSplit": "{fits} fits · {later} later · {earlier} earlier · {wrong} not here",
+        "spread": "Disagreement",
+        "spreadValue": "{from} to {to} days",
+        "spreadWide": "they do not really agree",
+        "kindHide": "Hide in this region",
+        "kindShift": "Move by {days} days",
+        "override": "Instead of the median",
+        "approve": "Approve",
+        "reject": "Reject",
+        "wasApproved": "Approved — in effect for this region.",
+        "wasRejected": "Rejected — this group is not offered again."
       }
     },
     "apiaries": {
@@ -887,7 +926,9 @@
         "bloom": "Bloom",
         "care": "Care",
         "winter": "Winter"
-      }
+      },
+      "rateHint": "Do these dates fit where your bees are?",
+      "rateLink": "Tell us"
     },
     "home": {
       "title": "Today at a glance",
@@ -1218,7 +1259,9 @@
     "betaTitle": "Join the test",
     "betaDescription": "Try HivePulse before it reaches the stores, and help it get there.",
     "releaseNotesTitle": "Release notes",
-    "releaseNotesDescription": "What has changed and what is new in HivePulse, and the full list of features."
+    "releaseNotesDescription": "What has changed and what is new in HivePulse, and the full list of features.",
+    "surveyTitle": "Rate the beekeeping year",
+    "surveyDescription": "Do the dates of the beekeeping year fit where you keep bees? Rate them in a quarter of an hour, without an account, and help correct the calendar for your region."
   },
   "imprint": {
     "title": "Legal notice",
@@ -1273,5 +1316,43 @@
     "dataBody": "The same as for everybody else: your apiaries are private unless you put them on the public map yourself, nothing is sold or passed on, and there is no advertising. Test builds carry crash reporting, which sends the place in the code and the kind of device — never your notes, your password or your address. You can delete your account and everything in it yourself at any time.",
     "androidNote": "On Android, Google only lets in accounts we have registered beforehand — without an entry the link says “App not available”. Send us your Google account address at",
     "androidNoteSubject": "HivePulse Android test: please add me"
+  },
+  "survey": {
+    "tag": "Help us get it right",
+    "title": "Does the beekeeping year fit where you are?",
+    "subtitle": "A quarter of an hour of your experience, and the calendar gets better for every beekeeper in your region. No account needed.",
+    "why": "The 38 entries of the beekeeping year were written once, for central Germany, and moved elsewhere by a formula: so many days later per degree of latitude, so many per 100 metres of altitude. That formula is an estimate. Nobody has checked it against what beekeepers actually do in Andalusia, in Brittany or in Masuria — and the people who can check it are the people who keep bees there.",
+    "whyNothingChanges": "Nothing you send changes a date by itself. Ratings from the same region are grouped, and only when at least five beekeepers within 150 km agree does the median correction reach somebody who knows the region and can approve it.",
+    "placeLead": "First, where do you keep your bees? The dates you rate are then the dates you would actually see — not the ones written for central Germany.",
+    "country": "Country",
+    "postal": "Postal code",
+    "years": "Years of beekeeping",
+    "yearsOptional": "optional",
+    "privacy": "Stored are the country, your position rounded to about 11 km, and your ratings. The postal code is looked up once and then dropped. No name, no address, no link to an account.",
+    "placeSubmit": "Show me my year",
+    "loading": "Loading…",
+    "loadFailed": "The timeline could not be loaded. Please try again.",
+    "notLocated": "That postal code could not be found, so the dates below are the unshifted ones. You can still rate them, but a correction needs a place — please check the code before sending.",
+    "shifted": "The dates below are moved {days, plural, one {# day} other {# days}} against central Germany, for your place.",
+    "rateLead": "Rate only what you have an opinion about — everything you leave alone is simply not sent. Tap an answer again to take it back.",
+    "verdictFits": "Fits",
+    "verdictLater": "Later here",
+    "verdictEarlier": "Earlier here",
+    "verdictWrong": "Not done here",
+    "sizeLabel": "By about",
+    "sizePlaceholder": "14",
+    "days": "days",
+    "noteLabel": "Anything to add? (optional)",
+    "notePlaceholder": "Usually mid-February here",
+    "counter": "{answered} of {total} rated",
+    "send": "Send my ratings",
+    "sending": "Sending…",
+    "nothingRated": "Nothing is rated yet. Pick an answer for at least one entry.",
+    "sendFailed": "The ratings could not be sent. Please try again.",
+    "doneTitle": "Thank you.",
+    "doneBody": "{accepted, plural, one {# rating arrived.} other {# ratings arrived.}}",
+    "doneReplaced": "{replaced, plural, one {One of them replaced what this browser had said before.} other {# of them replaced what this browser had said before.}}",
+    "doneNext": "Nothing has changed yet. Once five beekeepers near you agree, the correction goes to someone who can approve it.",
+    "doneAgain": "Rate another region"
   }
 }

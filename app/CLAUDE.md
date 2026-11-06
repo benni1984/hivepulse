@@ -13,7 +13,7 @@ Before writing any new UI (components, pages, modals, cards), open **`hivepulse-
 | Border | `#e7e5e4` (`var(--border)`) | Card borders |
 | Font | DM Sans | All UI text |
 
-- CSS namespaces: `.dash-*` dashboard · `.hornets-*` hornet tracker · `.site-*`/`.nav-*` public nav · `auth-*` auth pages
+- CSS namespaces: `.dash-*` dashboard · `.hornets-*` hornet tracker · `.site-*`/`.nav-*` public nav · `auth-*` auth pages · `.survey-*` the beekeeping-year questionnaire
 - Stat pills: two-row layout — `.dash-stat-pill-header` (label + `.dash-stat-icon`) then big number. Never flat.
 - Icon boxes: 52×52px, `var(--amber-light)` bg, `border-radius: 14px`, 24px SVG stroke `var(--amber-dark)`.
 - Do **not** use ad-hoc colours or generic Tailwind defaults — use the palette variables above.
@@ -65,6 +65,7 @@ This ensures `public/docs/screenshots/*.png` and other static files are served d
 | `/members` | Community stats |
 | `/news` | News feed |
 | `/contribute` | Contribute page |
+| `/year-feedback` | Questionnaire about the beekeeping year (no account) |
 | `/privacy` | Privacy policy |
 | `/help` | Help & documentation index |
 | `/help/[slug]` | Individual help article |
@@ -86,6 +87,7 @@ This ensures `public/docs/screenshots/*.png` and other static files are served d
 | `/dashboard/admin/users` | User management |
 | `/dashboard/admin/map` | Admin map |
 | `/dashboard/admin/health` | System health |
+| `/dashboard/admin/year-proposals` | Queue of regional corrections from the questionnaire |
 | `/dashboard/login` | Login page |
 | `/dashboard/register` | Registration page |
 

@@ -984,7 +984,7 @@ control: 9). `honey` is a forage key (`rapeseed`, `acacia`, `linden`, `chestnut`
 
 ### The questionnaire — why it exists
 
-The 35 entries and their dates were written once, for central Germany, and moved elsewhere by a
+The 38 entries and their dates were written once, for central Germany, and moved elsewhere by a
 formula. Nobody has checked them against what beekeepers in those places actually do. The
 questionnaire collects that, from anybody, without an account — a beekeeper who is asked to rate a
 calendar should not have to register first — and the answers turn into corrections an admin
@@ -1030,7 +1030,7 @@ flag — nobody is signed in, and the questionnaire is not a calendar.
   "years_keeping": 12,
   "ratings": [
     { "key": "winter-rest", "verdict": "fits" },
-    { "key": "candy-feeding", "verdict": "too_early", "shift_days": -7, "note": "Usually mid-February here." }
+    { "key": "candy-feeding", "verdict": "too_early", "shift_days": 14, "note": "Usually mid-February here." }
   ]
 }
 ```
@@ -1040,7 +1040,7 @@ worth nothing. `device_id` is required and is hashed before it is stored; it is 
 second submission from the same browser replace the first instead of counting twice.
 `years_keeping` is optional, 0 to 80.
 
-`ratings` holds 1 to 60 entries. `key` must be one of the keys `GET /public/calendar` returned.
+`ratings` holds between 1 and 60 ratings, at most one per entry — they are ratings, not entries, and the two were worth telling apart. `key` must be one of the keys `GET /public/calendar` returned.
 `verdict` is one of:
 
 | verdict | meaning |
@@ -1051,8 +1051,18 @@ second submission from the same browser replace the first instead of counting tw
 | `wrong` | the entry does not apply there at all |
 
 `shift_days` (-120 to 120) is optional and only meaningful with `too_early` or `too_late`; it is
-the correction the beekeeper proposes. `note` is optional free text, at most 500 characters, and
-is shown to admins only — never to other users.
+**how far** the entry is off, in days.
+
+**The direction is the verdict's, not the number's.** `too_early` says the calendar is too early,
+so the entry belongs later: the server reads the number as `+abs(shift_days)` for `too_early` and
+`-abs(shift_days)` for `too_late`, and ignores the sign it was sent. A sign therefore carries no
+information, and a client that has it backwards still sends usable data. That is the point of
+normalising rather than rejecting: the correction is a median, and one client with the sign the
+wrong way round would pull a group that agrees back towards zero — a correction nobody proposed,
+which an admin would be shown and could approve.
+
+`note` is optional free text, at most 500 characters, and is shown to admins only — never to other
+users.
 
 Response `201`:
 
@@ -1078,7 +1088,9 @@ of one entry by place and offers the result to the admins:
 - ratings for the same entry within **150 km** of each other form a group;
 - a group needs at least **5** ratings before it is offered at all;
 - the proposed correction is the **median** of the submitted `shift_days` of the `too_early` and
-  `too_late` ratings in that group, so one strong opinion cannot carry it;
+  `too_late` ratings in that group, so one strong opinion cannot carry it. The signs were already
+  normalised to their verdicts when the ratings were stored, so the median is of numbers that all
+  mean what they say;
 - a group whose majority says `wrong` proposes hiding the entry in that region instead.
 
 Only an admin decision has an effect. See [Admin](#admin) for the queue.
@@ -2292,14 +2304,14 @@ Query: `status` (`pending`, `approved`, `rejected`, `all`; default `pending`).
     "entry_key": "candy-feeding",
     "entry_title": "Feed candy if the stores run low",
     "kind": "shift",
-    "shift_days": -7,
+    "shift_days": 7,
     "rating_count": 11,
     "latitude": 53.5,
     "longitude": 10.0,
     "radius_km": 150,
     "country": "DE",
     "verdict_counts": { "fits": 2, "too_early": 8, "too_late": 1, "wrong": 0 },
-    "shift_days_range": [-14, -3],
+    "shift_days_range": [3, 14],
     "notes": ["Usually mid-February here."],
     "status": "pending",
     "created_at": "2026-11-03T10:00:00Z",
@@ -2325,8 +2337,10 @@ proposal whose group has changed is updated in place.
 
 #### POST `/admin/year-proposals/{id}/approve`, `/reject`
 
-Takes an optional body `{ "shift_days": -5 }` on approve, to approve a different correction than
-the proposed median — an admin who knows the region may overrule it. Returns the proposal.
+Takes an optional body `{ "shift_days": 5 }` on approve, to approve a different correction than
+the proposed median — an admin who knows the region may overrule it. This one *is* signed and is
+taken as given: an admin is deciding, not rating, so there is no verdict to take the direction
+from. Positive moves the entry later. Returns the proposal.
 
 An approved proposal takes effect immediately for every caller of `GET /calendar` whose position is
 inside its radius. Rejecting is not deleting: the proposal stays, so the same group is not offered

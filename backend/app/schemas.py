@@ -230,6 +230,20 @@ class YearRatingIn(BaseModel):
         # verdict that has no direction is not, and silently keeping it would skew the median.
         if self.verdict not in ("too_early", "too_late"):
             self.shift_days = None
+        elif self.shift_days is not None:
+            # The verdict owns the direction; the number is only how far. "too_early" says the
+            # calendar is too early, so the entry belongs later: positive, because `season.
+            # occurrences` adds the shift to the date.
+            #
+            # The sign a client sent is therefore redundant, and we drop it rather than trust it.
+            # Rejecting a contradiction would be stricter and worse: this endpoint needs no
+            # account, so a third-party client with the sign the wrong way round would have every
+            # rating refused and nobody would hear about it. Keeping the sign would be worse
+            # still -- the correction is a median, and five ratings that agree about "a fortnight
+            # later" plus one that typed -14 come out at zero, which is a correction nobody
+            # proposed and which an admin would nonetheless be offered.
+            size = abs(self.shift_days)
+            self.shift_days = size if self.verdict == "too_early" else -size
         return self
 
 

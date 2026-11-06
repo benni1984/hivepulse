@@ -2,10 +2,13 @@ package com.hivepulse.app.ui.calendar
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -15,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -74,16 +78,31 @@ internal fun shortDay(day: String, locale: Locale = Locale.getDefault()): String
  * The beekeeper's year as an endless timeline: what to do when, month by month, moved to the beekeeper's place.
  * It opens at today and loads the next and the previous stretch of the year as it is scrolled.
  */
+/**
+ * Which of the two views of the year is on screen.
+ *
+ * [LIST] answers "what do I do now", month by month, with the whole text of every entry.
+ * [RIBBON] answers what the list cannot: how the year hangs together, as one picture.
+ */
+enum class YearView { LIST, RIBBON }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BeekeepingYearScreen(onBack: () -> Unit, vm: BeekeepingYearViewModel = hiltViewModel(), regionVm: RegionViewModel = hiltViewModel()) {
+fun BeekeepingYearScreen(
+    onBack: () -> Unit,
+    vm: BeekeepingYearViewModel = hiltViewModel(),
+    regionVm: RegionViewModel = hiltViewModel(),
+    ribbonVm: YearRibbonViewModel = hiltViewModel(),
+) {
+    var view by remember { mutableStateOf(YearView.LIST) }
     val state by vm.state.collectAsState()
     val listState = rememberLazyListState()
     val items = state.items
     var positioned by remember { mutableStateOf(false) }
     var showRegion by remember { mutableStateOf(false) }
 
-    // Opens at today. The header row above the list counts as the first two rows.
+    // Opens at today. The intro and the region line sit above the entries and count as the first
+    // two rows of the list; the view switch is outside it.
     LaunchedEffect(state.isLoaded) {
         if (state.isLoaded && !positioned) {
             val today = items.indexOfFirst { it is TimelineItem.Today }
@@ -111,12 +130,30 @@ fun BeekeepingYearScreen(onBack: () -> Unit, vm: BeekeepingYearViewModel = hiltV
             )
         }
     ) { padding ->
+        if (view == YearView.RIBBON) {
+            YearRibbonPane(
+                vm = ribbonVm,
+                onView = { view = it },
+                modifier = Modifier.padding(padding),
+            )
+            return@Scaffold
+        }
         if (!state.isLoaded && !state.failed) {
             LoadingScreen()
             return@Scaffold
         }
-        LazyColumn(
-            Modifier.padding(padding).testTag("beekeepingYearList"),
+        // The switch is above the list, not the first row of it. The list opens scrolled to
+        // today, a LazyColumn does not compose what is off screen, and as a row the switch was
+        // therefore simply gone -- a beekeeper would have had to scroll back through the year to
+        // find the other view. The emulator found this; neither the compiler nor a unit test can.
+        Column(Modifier.padding(padding)) {
+            YearViewSwitch(
+                view,
+                onView = { view = it },
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
+            )
+            LazyColumn(
+            Modifier.testTag("beekeepingYearList"),
             state = listState,
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -143,8 +180,12 @@ fun BeekeepingYearScreen(onBack: () -> Unit, vm: BeekeepingYearViewModel = hiltV
             }
             item(key = "disclaimer") {
                 Text(stringResource(R.string.calendar_disclaimer), style = MaterialTheme.typography.bodySmall, color = Stone500,
-                    modifier = Modifier.padding(top = 12.dp, bottom = 24.dp))
+                    modifier = Modifier.padding(top = 12.dp))
             }
+            item(key = "rate") {
+                YearFeedbackLink(Modifier.padding(top = 10.dp, bottom = 24.dp))
+            }
+        }
         }
     }
 
@@ -224,6 +265,11 @@ private fun EntryCard(entry: CalendarEntryOut) {
         Row(Modifier.height(IntrinsicSize.Min)) {
             Box(Modifier.width(5.dp).fillMaxHeight().background(tint))
             Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                // A photograph of the thing itself, when there is one: the plant in flower, a
+                // capped queen cell, the mite on a bee. The text says what to do; this says what
+                // you are looking for. It comes from the app's own assets, so it is there at the
+                // apiary where there is no signal.
+                YearPhotos.of(entry.key, entry.honey)?.let { YearPhotoFigure(it) }
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     categoryLabel(entry.category)?.let { Chip(stringResource(it), tint) }
                     if (entry.isActive) Chip(stringResource(R.string.calendar_now), Amber500, filled = true)
@@ -296,6 +342,137 @@ fun RegionForm(vm: RegionViewModel) {
             RegionMessage.NOT_LOCATED -> Text(stringResource(R.string.region_not_located), color = Red500, style = MaterialTheme.typography.bodySmall)
             RegionMessage.FAILED -> Text(stringResource(R.string.region_error), color = Red500, style = MaterialTheme.typography.bodySmall)
             null -> {}
+        }
+    }
+}
+
+/**
+ * The two views of the year, as a segmented control with the hint of the chosen one under it.
+ *
+ * Both are the same year; neither is a filter of the other. The hint says which question each
+ * one answers, because "List" and "Overview" on their own do not.
+ */
+/**
+ * "Do these dates fit where your bees are? Tell us."
+ *
+ * The questionnaire is a web page and stays one. It needs no account, it is filled in once, and
+ * it is 35 questions long -- a native copy of it on two platforms would be a large amount of
+ * duplicated screen for something nobody does twice. What the apps are good for is asking the
+ * question in the place where somebody is already looking at the dates and thinking "not here".
+ */
+@Composable
+fun YearFeedbackLink(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val url = "https://hivepulse.multihead.de/${appLanguage()}/year-feedback"
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Text(
+            stringResource(R.string.calendar_rate_hint),
+            style = MaterialTheme.typography.bodySmall, color = Stone500,
+        )
+        Text(
+            stringResource(R.string.calendar_rate_link),
+            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
+            color = Amber600,
+            modifier = Modifier
+                .testTag("yearFeedbackLink")
+                .clickable {
+                    context.startActivity(
+                        android.content.Intent(
+                            android.content.Intent.ACTION_VIEW,
+                            android.net.Uri.parse(url),
+                        )
+                    )
+                },
+        )
+    }
+}
+
+@Composable
+fun YearViewSwitch(view: YearView, onView: (YearView) -> Unit, modifier: Modifier = Modifier) {
+    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
+            SegmentedButton(
+                selected = view == YearView.LIST,
+                onClick = { onView(YearView.LIST) },
+                shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+                modifier = Modifier.testTag("yearViewList"),
+            ) { Text(stringResource(R.string.calendar_view_list)) }
+            SegmentedButton(
+                selected = view == YearView.RIBBON,
+                onClick = { onView(YearView.RIBBON) },
+                shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+                modifier = Modifier.testTag("yearViewRibbon"),
+            ) { Text(stringResource(R.string.calendar_view_ribbon)) }
+        }
+        Text(
+            stringResource(
+                if (view == YearView.LIST) R.string.calendar_view_list_hint
+                else R.string.calendar_view_ribbon_hint,
+            ),
+            style = MaterialTheme.typography.labelSmall, color = Stone500,
+        )
+    }
+}
+
+/**
+ * The ribbon with its own scrolling, the switch above it and the tapped entry under it.
+ *
+ * Vertically it is a plain column and not a lazy list: seven rows is the whole of it, and a lazy
+ * list would recycle the rows out from under a horizontal scroll they all share.
+ */
+@Composable
+fun YearRibbonPane(vm: YearRibbonViewModel, onView: (YearView) -> Unit, modifier: Modifier = Modifier) {
+    val state by vm.state.collectAsState()
+    var picked by remember { mutableStateOf<YearRibbon.Bar?>(null) }
+    val scroll = rememberScrollState()
+
+    // The detail opens under the ribbon, which on a phone is under the fold: you tapped a bar and
+    // nothing appeared to happen. Scrolled to, it is the answer to the tap. Only the ribbon and
+    // the disclaimer are below it, so the bottom is where it is.
+    LaunchedEffect(picked) {
+        if (picked != null) scroll.animateScrollTo(scroll.maxValue)
+    }
+
+    // The switch stays put while the rest scrolls, for the same reason it is not a row of the
+    // list: scrolled away, it is gone. Inside the scrolling column it survived a short screen and
+    // died on a small one -- tapping a bar scrolls to the detail at the bottom, which carried the
+    // switch off the top edge, and a tap on a node outside the viewport lands nowhere. A phone
+    // user would have had to scroll back up to leave the view. CI's emulator found this; the
+    // taller one it was written on did not.
+    Column(modifier.fillMaxSize()) {
+        YearViewSwitch(
+            YearView.RIBBON,
+            onView,
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
+        )
+        Column(
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(scroll)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            if (!state.isLoaded && !state.failed) {
+                LoadingScreen()
+                return@Column
+            }
+            if (state.failed && !state.isLoaded) {
+                Text(stringResource(R.string.calendar_load_error), color = MaterialTheme.colorScheme.error)
+                return@Column
+            }
+            if (state.rows.isEmpty()) {
+                Text(stringResource(R.string.calendar_ribbon_empty), color = Stone500)
+                return@Column
+            }
+
+            YearRibbonCanvas(state = state, picked = picked, onPick = { picked = if (sameBar(picked, it)) null else it })
+            picked?.let { RibbonDetail(it) }
+            Text(
+                stringResource(R.string.calendar_disclaimer),
+                style = MaterialTheme.typography.bodySmall, color = Stone500,
+                modifier = Modifier.padding(top = 6.dp),
+            )
+            YearFeedbackLink(Modifier.padding(bottom = 24.dp))
         }
     }
 }

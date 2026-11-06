@@ -44,7 +44,10 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
             que la imagen es para el ancho de una tableta en adelante.</li>
         </ul>
         <p>
-          Las aplicaciones muestran el año como lista por ahora; la imagen está en el sitio.
+          Las dos vistas están también en el iPhone y en Android, con los mismos dos nombres. En el
+          móvil las aplicaciones dibujan la imagen más ancha que la pantalla y el año se arrastra de
+          lado — algo que una página web no permite con comodidad y una aplicación sí; en una tableta
+          cabe como aquí.
         </p>
       </section>
 
@@ -101,6 +104,20 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
           Una miel está madura cuando los panales están operculados a unos dos tercios (prueba de sacudida: no salta
           nada) y el contenido de agua es del 18 % o menos, medido con un refractómetro.
         </p>
+      </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Aquí las fechas no encajan</h2>
+        <p>Entonces dilo. Las 38 entradas se escribieron para el centro de Alemania y se trasladaron a otros lugares con una fórmula, y si la fórmula acierta en Andalucía solo lo pueden decir los apicultores de Andalucía. El cuestionario <a href="/year-feedback">Valorar el año apícola</a> lleva unos quince minutos y no necesita cuenta.</p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Valoras tus propias fechas.</strong> Primero el país y el código postal: la cronología se desplaza a ese lugar antes de que la veas.</li>
+          <li><strong>Solo lo que conoces.</strong> Cuatro respuestas por entrada &mdash; encaja, más tarde aquí, más temprano aquí, aquí no se hace &mdash; y todo lo que dejes sin marcar no se envía.</li>
+          <li><strong>No se te pregunta nada sobre ti.</strong> Se guardan el país, una posición redondeada a unos 11&nbsp;km y tus respuestas. El código postal se consulta una vez y luego se descarta.</li>
+        </ul>
+        <div className="help-callout info">
+          <i className="fas fa-info-circle" />
+          <p>Tu respuesta no mueve ninguna fecha por sí sola. Las valoraciones a menos de 150 km entre sí se agrupan, un grupo necesita al menos cinco apicultores, y la corrección mediana pasa después a alguien que conoce la región y puede aprobarla. Una vez aprobada, la cronología dice en cuántos apicultores se apoya.</p>
+        </div>
       </section>
 
       <section className="help-section">

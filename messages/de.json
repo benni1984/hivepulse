@@ -302,6 +302,11 @@
       "title": "🐝 Der Bienenstock ist auf GitHub",
       "desc": "HivePulse ist vollständig Open Source unter der MIT-Lizenz.",
       "btn": "Auf GitHub ansehen"
+    },
+    "year": {
+      "title": "Das Imkerjahr korrigieren",
+      "desc": "Die Daten des Kalenders wurden für Mitteldeutschland geschrieben und für alles andere geschätzt. Sag uns, was dort wirklich passiert, wo du Bienen hältst — eine Viertelstunde, ohne Konto.",
+      "link": "Das Imkerjahr bewerten →"
     }
   },
   "fr": {
@@ -502,7 +507,8 @@
         "stats": "Plattform-Statistiken",
         "users": "Benutzer",
         "map": "Karte",
-        "health": "Datenqualität"
+        "health": "Datenqualität",
+        "yearProposals": "Vorschläge zum Jahr"
       },
       "stats": {
         "title": "Plattform-Statistiken",
@@ -574,6 +580,39 @@
         "defaultSigningKey": "Warnung: Dieser Server signiert Anmeldungen mit dem öffentlichen Standardschlüssel aus dem Quelltext. Wer ihn kennt, kann einen Token für jedes Konto fälschen. Setze einen echten SECRET_KEY in der Hosting-Umgebung.",
         "pushAndroidMissing": "Android-Push ist nicht eingerichtet: Erinnerungen erreichen kein Android-Telefon. Dafür braucht es FIREBASE_PROJECT_ID und FIREBASE_SERVICE_ACCOUNT_JSON in der Hosting-Umgebung.",
         "pushIosMissing": "iPhone-Push ist nicht eingerichtet: Erinnerungen erreichen kein iPhone. Dafür braucht es APNS_KEY_ID, APNS_TEAM_ID und APNS_PRIVATE_KEY_P8 in der Hosting-Umgebung."
+      },
+      "yearProposals": {
+        "title": "Vorschläge zum Imkerjahr",
+        "lead": "Was der Fragebogen gesammelt hat, nach Eintrag und Region gruppiert. Eine Gruppe braucht fünf Imker im Umkreis von 150 km, bevor sie hier auftaucht, und die Korrektur ist ihr Median. Nichts erreicht einen Kalender, bevor du es freigibst.",
+        "filterLabel": "Status",
+        "filter": {
+          "pending": "Offen",
+          "approved": "Freigegeben",
+          "rejected": "Abgelehnt",
+          "all": "Alle"
+        },
+        "recompute": "Bewertungen neu gruppieren",
+        "recomputing": "Wird gruppiert…",
+        "recomputed": "{created} neu, {updated} aktualisiert, {unchanged} unverändert. Bereits getroffene Entscheidungen bleiben unberührt.",
+        "recomputeFailed": "Die Bewertungen konnten nicht neu gruppiert werden.",
+        "loadFailed": "Die Vorschläge konnten nicht geladen werden.",
+        "decideFailed": "Die Entscheidung konnte nicht gespeichert werden.",
+        "emptyPending": "Nichts zu entscheiden. Entweder stimmen in keiner Region schon fünf Imker überein, oder alles ist entschieden.",
+        "empty": "Nichts hier.",
+        "ratings": "Bewertungen",
+        "where": "Region",
+        "verdicts": "Antworten",
+        "verdictSplit": "{fits} passt · {later} später · {earlier} früher · {wrong} gilt nicht",
+        "spread": "Streuung",
+        "spreadValue": "{from} bis {to} Tage",
+        "spreadWide": "sie sind sich nicht wirklich einig",
+        "kindHide": "In dieser Region ausblenden",
+        "kindShift": "Um {days} Tage verschieben",
+        "override": "Statt des Medians",
+        "approve": "Freigeben",
+        "reject": "Ablehnen",
+        "wasApproved": "Freigegeben — gilt für diese Region.",
+        "wasRejected": "Abgelehnt — diese Gruppe wird nicht erneut vorgelegt."
       }
     },
     "apiaries": {
@@ -887,7 +926,9 @@
         "bloom": "Blüte",
         "care": "Pflege",
         "winter": "Winter"
-      }
+      },
+      "rateHint": "Passen diese Daten dort, wo deine Bienen stehen?",
+      "rateLink": "Sag es uns"
     },
     "home": {
       "title": "Heute im Überblick",
@@ -1218,7 +1259,9 @@
     "betaTitle": "Am Test teilnehmen",
     "betaDescription": "HivePulse ausprobieren, bevor es in die Stores kommt — und helfen, dass es dort ankommt.",
     "releaseNotesTitle": "Release Notes",
-    "releaseNotesDescription": "Was sich in HivePulse geändert hat und was neu ist, und die vollständige Funktionsliste."
+    "releaseNotesDescription": "Was sich in HivePulse geändert hat und was neu ist, und die vollständige Funktionsliste.",
+    "surveyTitle": "Das Imkerjahr bewerten",
+    "surveyDescription": "Passen die Daten des Imkerjahres dort, wo du Bienen hältst? Bewerte sie in einer Viertelstunde, ohne Konto, und hilf, den Kalender für deine Region zu korrigieren."
   },
   "imprint": {
     "title": "Impressum",
@@ -1273,5 +1316,43 @@
     "dataBody": "Dasselbe wie bei allen anderen: Deine Bienenstände sind privat, solange du sie nicht selbst auf die öffentliche Karte stellst, nichts wird verkauft oder weitergegeben, und Werbung gibt es nicht. Testversionen melden Abstürze, dabei gehen die Stelle im Code und die Art des Geräts mit — nie deine Notizen, dein Passwort oder deine Adresse. Dein Konto und alles darin kannst du jederzeit selbst löschen.",
     "androidNote": "Für Android trägt Google nur Konten ein, die wir vorher angemeldet haben — ohne Eintrag zeigt der Link „App nicht verfügbar“. Schreib uns deine Google-Adresse an",
     "androidNoteSubject": "HivePulse Android-Test: bitte eintragen"
+  },
+  "survey": {
+    "tag": "Hilf uns, es richtig zu machen",
+    "title": "Passt das Imkerjahr bei dir?",
+    "subtitle": "Eine Viertelstunde deiner Erfahrung, und der Kalender wird für alle Imker in deiner Region besser. Ohne Konto.",
+    "why": "Die 38 Einträge des Imkerjahres wurden einmal geschrieben, für Mitteldeutschland, und für andere Orte mit einer Formel verschoben: so viele Tage später je Breitengrad, so viele je 100 Höhenmeter. Diese Formel ist eine Schätzung. Niemand hat sie mit dem verglichen, was Imker in Andalusien, in der Bretagne oder in Masuren wirklich tun — und prüfen können das nur die, die dort Bienen halten.",
+    "whyNothingChanges": "Nichts, was du sendest, verschiebt allein ein Datum. Bewertungen einer Region werden zusammengefasst, und erst wenn mindestens fünf Imker im Umkreis von 150 km übereinstimmen, geht die mittlere Korrektur an jemanden, der die Region kennt und sie freigeben kann.",
+    "placeLead": "Zuerst: wo stehen deine Bienen? Dann sind die Daten, die du bewertest, die, die du wirklich sehen würdest — nicht die für Mitteldeutschland geschriebenen.",
+    "country": "Land",
+    "postal": "Postleitzahl",
+    "years": "Jahre Imkerei",
+    "yearsOptional": "freiwillig",
+    "privacy": "Gespeichert werden das Land, deine Position auf etwa 11 km gerundet, und deine Bewertungen. Die Postleitzahl wird einmal nachgeschlagen und dann verworfen. Kein Name, keine Adresse, keine Verbindung zu einem Konto.",
+    "placeSubmit": "Mein Jahr anzeigen",
+    "loading": "Wird geladen…",
+    "loadFailed": "Der Zeitstrahl konnte nicht geladen werden. Bitte versuche es noch einmal.",
+    "notLocated": "Diese Postleitzahl wurde nicht gefunden, die Daten unten sind daher unverschoben. Du kannst sie trotzdem bewerten, aber eine Korrektur braucht einen Ort — prüfe die Postleitzahl bitte vor dem Senden.",
+    "shifted": "Die Daten unten sind für deinen Ort um {days, plural, one {# Tag} other {# Tage}} gegenüber Mitteldeutschland verschoben.",
+    "rateLead": "Bewerte nur, wozu du eine Meinung hast — alles, was du auslässt, wird einfach nicht gesendet. Tippe eine Antwort nochmal an, um sie zurückzunehmen.",
+    "verdictFits": "Passt",
+    "verdictLater": "Bei mir später",
+    "verdictEarlier": "Bei mir früher",
+    "verdictWrong": "Gilt hier nicht",
+    "sizeLabel": "Um etwa",
+    "sizePlaceholder": "14",
+    "days": "Tage",
+    "noteLabel": "Etwas hinzuzufügen? (freiwillig)",
+    "notePlaceholder": "Hier meist Mitte Februar",
+    "counter": "{answered} von {total} bewertet",
+    "send": "Bewertungen senden",
+    "sending": "Wird gesendet…",
+    "nothingRated": "Noch nichts bewertet. Wähle bei mindestens einem Eintrag eine Antwort.",
+    "sendFailed": "Die Bewertungen konnten nicht gesendet werden. Bitte versuche es noch einmal.",
+    "doneTitle": "Danke.",
+    "doneBody": "{accepted, plural, one {# Bewertung ist angekommen.} other {# Bewertungen sind angekommen.}}",
+    "doneReplaced": "{replaced, plural, one {Eine davon hat ersetzt, was dieser Browser vorher gesagt hatte.} other {# davon haben ersetzt, was dieser Browser vorher gesagt hatte.}}",
+    "doneNext": "Noch hat sich nichts geändert. Sobald fünf Imker in deiner Nähe übereinstimmen, geht die Korrektur an jemanden, der sie freigeben kann.",
+    "doneAgain": "Eine andere Region bewerten"
   }
 }

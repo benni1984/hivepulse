@@ -549,6 +549,8 @@
     <string name="calendar_set_region">Region festlegen</string>
     <string name="calendar_change_region">Region ändern</string>
     <string name="calendar_disclaimer">Richtwerte aus der üblichen imkerlichen Praxis, keine Vorschriften: Blüte und Wetter entscheiden, und die Termine verschieben sich mit deinem Ort. Arzneimittel nur wie in deinem Land zugelassen und vorgeschrieben; im Zweifel frag deinen Imkerverband oder das Veterinäramt.</string>
+    <string name="calendar_rate_hint">Passen diese Daten dort, wo deine Bienen stehen?</string>
+    <string name="calendar_rate_link">Sag es uns</string>
     <string name="calendar_category_inspection">Kontrolle</string>
     <string name="calendar_category_swarm">Schwarmkontrolle</string>
     <string name="calendar_category_feeding">Fütterung</string>
@@ -557,6 +559,13 @@
     <string name="calendar_category_migration">Wanderung</string>
     <string name="calendar_category_bloom">Blüte</string>
     <string name="calendar_category_care">Pflege</string>
+    <string name="calendar_view_list">Liste</string>
+    <string name="calendar_view_ribbon">Übersicht</string>
+    <string name="calendar_view_list_hint">Was jetzt zu tun ist, Monat für Monat</string>
+    <string name="calendar_view_ribbon_hint">Das ganze Jahr in einem Bild</string>
+    <string name="calendar_ribbon_empty">Für dieses Jahr ist nichts anzuzeigen.</string>
+    <string name="calendar_row_forage">Tracht</string>
+    <string name="calendar_photo_credit">Foto: %1$s · %2$s</string>
     <string name="calendar_category_winter">Winter</string>
     <string name="region_title">Region für das Imkerjahr</string>
     <string name="region_intro">Land und Postleitzahl verschieben das Imkerjahr auf deinen Ort: Die Blüte kommt im Süden früher und im Norden später. Gespeichert wird nur die Position, nicht die Adresse.</string>

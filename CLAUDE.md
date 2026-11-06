@@ -54,7 +54,7 @@ Design ground truth: **`hivepulse-redesign/bundle.html`** — open in a browser 
 | Stone 50 | `#fafaf9` | Page backgrounds |
 | Font | DM Sans | All UI text |
 
-**CSS namespaces:** `.dash-*` dashboard, `.hornets-*` hornet tracker, `.site-*` / `.nav-*` public nav, `auth-*` auth pages.
+**CSS namespaces:** `.dash-*` dashboard, `.hornets-*` hornet tracker, `.site-*` / `.nav-*` public nav, `auth-*` auth pages, `.survey-*` the beekeeping-year questionnaire.
 
 **Logo:** Amber hex SVG (inline — no `<use>`). Top nav: icon + "Hive**Pulse**" wordmark. Sidebar: text-only "Hive**Pulse**" + "Hive Inspection Platform" tagline.
 

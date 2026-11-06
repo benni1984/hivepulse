@@ -1,6 +1,6 @@
 """The beekeeping-year questionnaire: open to anybody, no account.
 
-The 35 entries were written for central Germany and moved elsewhere by the formula in
+The 38 entries were written for central Germany and moved elsewhere by the formula in
 `app/season.py`. That formula is a guess, and nobody has checked it against what beekeepers in
 those places actually do. This is how they say so — without registering first, because asking
 somebody to open an account before they may correct your calendar is how you get no corrections.

@@ -551,6 +551,8 @@
     <string name="calendar_set_region">Ustaw region</string>
     <string name="calendar_change_region">Zmień region</string>
     <string name="calendar_disclaimer">Wartości orientacyjne z zasad dobrej praktyki pszczelarskiej, nie przepisy: o terminach decydują kwitnienie i pogoda, a daty przesuwają się wraz z twoim miejscem. Leki tylko takie, jakie są dopuszczone i zalecone w twoim kraju; w razie wątpliwości zapytaj swój związek pszczelarzy lub urząd weterynaryjny.</string>
+    <string name="calendar_rate_hint">Czy te daty pasują tam, gdzie stoją Twoje pszczoły?</string>
+    <string name="calendar_rate_link">Powiedz nam</string>
     <string name="calendar_category_inspection">Przegląd</string>
     <string name="calendar_category_swarm">Kontrola rójki</string>
     <string name="calendar_category_feeding">Karmienie</string>
@@ -559,6 +561,13 @@
     <string name="calendar_category_migration">Przewóz</string>
     <string name="calendar_category_bloom">Kwitnienie</string>
     <string name="calendar_category_care">Pielęgnacja</string>
+    <string name="calendar_view_list">Lista</string>
+    <string name="calendar_view_ribbon">Przegląd</string>
+    <string name="calendar_view_list_hint">Co robić teraz, miesiąc po miesiącu</string>
+    <string name="calendar_view_ribbon_hint">Cały rok na jednym obrazie</string>
+    <string name="calendar_ribbon_empty">Brak danych do pokazania dla tego roku.</string>
+    <string name="calendar_row_forage">Pożytek</string>
+    <string name="calendar_photo_credit">Zdjęcie: %1$s · %2$s</string>
     <string name="calendar_category_winter">Zima</string>
     <string name="region_title">Region dla roku pszczelarskiego</string>
     <string name="region_intro">Kraj i kod pocztowy przesuwają rok pszczelarski na twoje miejsce: na południu kwitnienie zaczyna się wcześniej, na północy później. Zapisywana jest tylko pozycja, nie adres.</string>

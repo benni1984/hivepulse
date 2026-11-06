@@ -6,6 +6,8 @@ and, just as importantly, that saying so changes nothing until an admin agrees.
 
 The geocoder is replaced throughout, so no test reaches the network.
 """
+import re
+from pathlib import Path
 from unittest.mock import patch
 
 import pytest
@@ -30,7 +32,7 @@ def geocoder():
         yield mock
 
 
-def _rating(key=SOME_KEY, verdict="too_early", shift=None, note=None, country="DE",
+def _rating(key=SOME_KEY, verdict="too_late", shift=None, note=None, country="DE",
             latitude=53.5, longitude=10.0):
     return year_feedback.Rating(key, verdict, shift, note, country, latitude, longitude)
 
@@ -80,6 +82,111 @@ def test_the_postal_code_is_looked_up_and_then_not_stored(client, geocoder):
         assert row.device_hash != "d" * 16
     finally:
         db.close()
+
+
+# ── The number of entries, wherever it is written down ───────────────────────────────────
+
+def test_no_text_anywhere_claims_a_wrong_number_of_entries():
+    """"The 38 entries of the beekeeping year" has to stay true, in five languages.
+
+    It said 35 for months -- in this router's own docstring, in the API contract, and from there
+    in the questionnaire's texts, its release notes, its News entry and five help pages. There
+    are 38. A precise number that is wrong is worse than no number: a beekeeper who counts them
+    finds 38 and learns that we do not check what we say.
+
+    So the number is checked rather than trusted. Add an entry and this fails, naming every file
+    whose sentence has to be rewritten -- including the four translations, which is the half
+    somebody would otherwise forget.
+    """
+    root = Path(__file__).resolve().parents[2]
+    files = [
+        root / "docs" / "api-contract.md",
+        root / "docs" / "features.md",
+        root / "lib" / "api.ts",
+        root / "lib" / "news.ts",
+        root / "lib" / "releaseNotes.ts",
+        root / "components" / "YearFeedback.tsx",
+        root / "backend" / "app" / "routers" / "public_year.py",
+    ]
+    files += [root / "messages" / f"{lang}.json" for lang in ("en", "de", "fr", "es", "pl")]
+    files += [
+        root / "app" / "[locale]" / "help" / "[slug]" / "content" / name
+        for name in ("beekeeping-year.tsx", "beekeeping-year.de.tsx", "beekeeping-year.fr.tsx",
+                     "beekeeping-year.es.tsx", "beekeeping-year.pl.tsx")
+    ]
+
+    # The number, immediately followed by the word for "entries" in any of the five languages.
+    counted = re.compile(
+        r"\b(\d+)\s+(entries|Einträge|Einträgen|entrées|entradas|wpisów|wpisach)\b"
+    )
+    wrong: list[str] = []
+    found = 0
+    for path in files:
+        assert path.exists(), f"{path.name} is gone; this test names the files it guards"
+        for match in counted.finditer(path.read_text(encoding="utf-8")):
+            found += 1
+            if int(match.group(1)) != len(ENTRIES):
+                wrong.append(f"{path.name}: \"{match.group(0)}\" but there are {len(ENTRIES)}")
+
+    assert found >= 10, "the sentences that name the count have moved; this test now guards nothing"
+    assert not wrong, "texts naming the wrong number of entries:\n" + "\n".join(wrong)
+
+
+# ── The direction belongs to the verdict ─────────────────────────────────────────────────
+
+@pytest.mark.parametrize("verdict,sent,stored", [
+    # "too early" means the calendar is too early, so the entry belongs later: positive, because
+    # that is what `season.occurrences` adds to the date.
+    ("too_early", 14, 14),
+    ("too_early", -14, 14),
+    ("too_late", 14, -14),
+    ("too_late", -14, -14),
+])
+def test_the_verdict_decides_the_direction_and_the_number_is_only_how_far(
+    client, geocoder, verdict, sent, stored
+):
+    """A signed number whose direction another field already fixes is a number that gets filled in
+    backwards, and the correction is a median: five ratings that agree on "a fortnight later" plus
+    one that typed -14 average out to nothing. So the sign is not trusted -- it is replaced."""
+    response = client.post(f"{API}/public/calendar/feedback", json={
+        "country": "DE", "postal_code": "20095", "device_id": f"sign{verdict}{sent}".ljust(16, "x"),
+        "ratings": [{"key": SOME_KEY, "verdict": verdict, "shift_days": sent}],
+    })
+    assert response.status_code == 201
+
+    from tests.conftest import TestingSession
+    db = TestingSession()
+    try:
+        assert db.query(YearRating).one().shift_days == stored
+    finally:
+        db.close()
+
+
+def test_a_backwards_client_cannot_cancel_out_a_region_that_agrees(client, geocoder):
+    """The reason the sign is normalised rather than refused: this endpoint needs no account, so a
+    third-party client with the sign the wrong way round would have every rating silently refused.
+    Normalised, its ratings still count -- and still count the way its users meant."""
+    for index in range(6):
+        # The last one has it backwards; it must land with the other five, not against them.
+        sent = -14 if index == 5 else 14
+        client.post(f"{API}/public/calendar/feedback", json={
+            "country": "DE", "postal_code": "20095", "device_id": f"agree{index}".ljust(16, "y"),
+            "ratings": [{"key": SOME_KEY, "verdict": "too_early", "shift_days": sent}],
+        })
+
+    from tests.conftest import TestingSession
+    db = TestingSession()
+    try:
+        ratings = [
+            year_feedback.Rating(row.entry_key, row.verdict, row.shift_days, row.note,
+                                 row.country, row.latitude, row.longitude)
+            for row in db.query(YearRating).all()
+        ]
+    finally:
+        db.close()
+
+    proposal = year_feedback.propose(ratings)[0]
+    assert proposal.shift_days == 14, "a backwards sign must not drag the median towards zero"
 
 
 # ── The grouping: nothing moves on one loud opinion ──────────────────────────────────────
@@ -144,7 +251,7 @@ def test_a_group_keeps_the_notes_for_the_admin_to_read():
     proposal = year_feedback.propose(group)[0]
 
     assert proposal.notes == ("Mid-February here.",) * 5
-    assert proposal.verdict_counts == {"fits": 0, "too_early": 5, "too_late": 0, "wrong": 0}
+    assert proposal.verdict_counts == {"fits": 0, "too_early": 0, "too_late": 5, "wrong": 0}
 
 
 # ── An approved correction reaches only the region it was made for ───────────────────────
@@ -226,7 +333,7 @@ def test_a_submission_is_stored_and_counted(client, geocoder):
         "country": "DE", "postal_code": "20095", "device_id": "e" * 16, "years_keeping": 12,
         "ratings": [
             {"key": SOME_KEY, "verdict": "fits"},
-            {"key": ANOTHER_KEY, "verdict": "too_early", "shift_days": -7, "note": "Earlier here."},
+            {"key": ANOTHER_KEY, "verdict": "too_early", "shift_days": 7, "note": "A week later here."},
         ],
     })
 
@@ -250,7 +357,9 @@ def test_the_same_browser_changing_its_mind_replaces_rather_than_counts_twice(cl
     db = TestingSession()
     try:
         row = db.query(YearRating).one()
-        assert (row.verdict, row.shift_days) == ("too_late", 5)
+        # -5, not the 5 that was posted: "too late" means the entry belongs earlier, and the
+        # direction is the verdict's (see the direction tests above).
+        assert (row.verdict, row.shift_days) == ("too_late", -5)
     finally:
         db.close()
 
@@ -328,7 +437,7 @@ def test_posting_ratings_changes_nobody_s_calendar(auth_client, geocoder):
 
     auth_client.post(f"{API}/public/calendar/feedback", json={
         "country": "DE", "postal_code": "20095", "device_id": "k" * 16,
-        "ratings": [{"key": SOME_KEY, "verdict": "too_early", "shift_days": -14}],
+        "ratings": [{"key": SOME_KEY, "verdict": "too_early", "shift_days": 14}],
     })
 
     assert auth_client.get(f"{API}/calendar").json()["entries"] == before

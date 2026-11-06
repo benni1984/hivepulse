@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import FeatureForm from '@/components/FeatureForm';
 
 export default function ContributePage() {
@@ -38,6 +39,14 @@ export default function ContributePage() {
               <h3>{t('docs.title')}</h3>
               <p>{t('docs.desc')}</p>
               <a href="https://github.com/benni1984/hivepulse/tree/main/docs" className="card-link" target="_blank" rel="noopener">{t('docs.link')}</a>
+            </div>
+            {/* The one way to help that needs no code, no GitHub account and no account here:
+                say whether the calendar's dates are right where you keep bees. */}
+            <div className="contribute-card">
+              <i className="fas fa-calendar-check" />
+              <h3>{t('year.title')}</h3>
+              <p>{t('year.desc')}</p>
+              <Link href="/year-feedback" className="card-link">{t('year.link')}</Link>
             </div>
             <div className="contribute-card">
               <i className="fas fa-share-alt" />

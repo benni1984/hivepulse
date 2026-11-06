@@ -560,6 +560,8 @@
 "calendar.setRegion" = "Ustaw region";
 "calendar.changeRegion" = "Zmień region";
 "calendar.disclaimer" = "Wartości orientacyjne z zasad dobrej praktyki pszczelarskiej, nie przepisy: o terminach decydują kwitnienie i pogoda, a daty przesuwają się wraz z twoim miejscem. Leki tylko takie, jakie są dopuszczone i zalecone w twoim kraju; w razie wątpliwości zapytaj swój związek pszczelarzy lub urząd weterynaryjny.";
+"calendar.rate.hint" = "Czy te daty pasują tam, gdzie stoją Twoje pszczoły?";
+"calendar.rate.link" = "Powiedz nam";
 "calendar.category.inspection" = "Przegląd";
 "calendar.category.swarm" = "Kontrola rójki";
 "calendar.category.feeding" = "Karmienie";
@@ -568,6 +570,13 @@
 "calendar.category.migration" = "Przewóz";
 "calendar.category.bloom" = "Kwitnienie";
 "calendar.category.care" = "Pielęgnacja";
+"calendar.viewList" = "Lista";
+"calendar.viewRibbon" = "Przegląd";
+"calendar.viewListHint" = "Co robić teraz, miesiąc po miesiącu";
+"calendar.viewRibbonHint" = "Cały rok na jednym obrazie";
+"calendar.ribbonEmpty" = "Brak danych do pokazania dla tego roku.";
+"calendar.rows.forage" = "Pożytek";
+"calendar.photoCredit" = "Zdjęcie: %@ · %@";
 "calendar.category.winter" = "Zima";
 "region.title" = "Region dla roku pszczelarskiego";
 "region.intro" = "Kraj i kod pocztowy przesuwają rok pszczelarski na twoje miejsce: na południu kwitnienie zaczyna się wcześniej, na północy później. Zapisywana jest tylko pozycja, nie adres.";
