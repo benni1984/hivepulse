@@ -560,6 +560,8 @@
 "calendar.setRegion" = "Ustaw region";
 "calendar.changeRegion" = "Zmień region";
 "calendar.disclaimer" = "Wartości orientacyjne z zasad dobrej praktyki pszczelarskiej, nie przepisy: o terminach decydują kwitnienie i pogoda, a daty przesuwają się wraz z twoim miejscem. Leki tylko takie, jakie są dopuszczone i zalecone w twoim kraju; w razie wątpliwości zapytaj swój związek pszczelarzy lub urząd weterynaryjny.";
+"calendar.rate.hint" = "Czy te daty pasują tam, gdzie stoją Twoje pszczoły?";
+"calendar.rate.link" = "Powiedz nam";
 "calendar.category.inspection" = "Przegląd";
 "calendar.category.swarm" = "Kontrola rójki";
 "calendar.category.feeding" = "Karmienie";

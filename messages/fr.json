@@ -302,6 +302,11 @@
       "title": "🐝 La ruche est sur GitHub",
       "desc": "HivePulse est totalement open source sous la licence MIT.",
       "btn": "Voir sur GitHub"
+    },
+    "year": {
+      "title": "Corriger l’année apicole",
+      "desc": "Les dates du calendrier ont été écrites pour le centre de l’Allemagne et estimées ailleurs. Dites-nous ce qui se passe vraiment là où vous élevez des abeilles — un quart d’heure, sans compte.",
+      "link": "Évaluer l’année apicole →"
     }
   },
   "fr": {
@@ -502,7 +507,8 @@
         "stats": "Statistiques",
         "users": "Utilisateurs",
         "map": "Carte",
-        "health": "Qualité données"
+        "health": "Qualité données",
+        "yearProposals": "Propositions sur l’année"
       },
       "stats": {
         "title": "Statistiques de la plateforme",
@@ -574,6 +580,39 @@
         "defaultSigningKey": "Avertissement : ce serveur signe les connexions avec la clé par défaut publique du code source. Quiconque la connaît peut forger un jeton pour n'importe quel compte. Définissez une vraie valeur SECRET_KEY dans l'environnement d'hébergement.",
         "pushAndroidMissing": "Le push Android n'est pas configuré : les rappels n'atteignent aucun téléphone Android. Il faut FIREBASE_PROJECT_ID et FIREBASE_SERVICE_ACCOUNT_JSON dans l'environnement d'hébergement.",
         "pushIosMissing": "Le push iPhone n'est pas configuré : les rappels n'atteignent aucun iPhone. Il faut APNS_KEY_ID, APNS_TEAM_ID et APNS_PRIVATE_KEY_P8 dans l'environnement d'hébergement."
+      },
+      "yearProposals": {
+        "title": "Propositions pour l’année apicole",
+        "lead": "Ce que le questionnaire a recueilli, regroupé par entrée et par région. Un groupe a besoin de cinq apiculteurs dans un rayon de 150 km pour apparaître ici, et la correction est leur médiane. Rien n’atteint un calendrier avant votre validation.",
+        "filterLabel": "Statut",
+        "filter": {
+          "pending": "En attente",
+          "approved": "Validées",
+          "rejected": "Refusées",
+          "all": "Toutes"
+        },
+        "recompute": "Regrouper les avis",
+        "recomputing": "Regroupement…",
+        "recomputed": "{created} nouvelles, {updated} mises à jour, {unchanged} inchangées. Les décisions déjà prises n’ont pas été touchées.",
+        "recomputeFailed": "Les avis n’ont pas pu être regroupés.",
+        "loadFailed": "Les propositions n’ont pas pu être chargées.",
+        "decideFailed": "La décision n’a pas pu être enregistrée.",
+        "emptyPending": "Rien à décider. Soit aucune région ne compte encore cinq apiculteurs d’accord, soit tout est décidé.",
+        "empty": "Rien ici.",
+        "ratings": "Avis",
+        "where": "Région",
+        "verdicts": "Réponses",
+        "verdictSplit": "{fits} correct · {later} plus tard · {earlier} plus tôt · {wrong} pas ici",
+        "spread": "Dispersion",
+        "spreadValue": "de {from} à {to} jours",
+        "spreadWide": "ils ne sont pas vraiment d’accord",
+        "kindHide": "Masquer dans cette région",
+        "kindShift": "Décaler de {days} jours",
+        "override": "Au lieu de la médiane",
+        "approve": "Valider",
+        "reject": "Refuser",
+        "wasApproved": "Validée — en vigueur pour cette région.",
+        "wasRejected": "Refusée — ce groupe n’est plus proposé."
       }
     },
     "apiaries": {
@@ -887,7 +926,9 @@
         "bloom": "Floraison",
         "care": "Entretien",
         "winter": "Hiver"
-      }
+      },
+      "rateHint": "Ces dates correspondent-elles à l’endroit où sont vos abeilles ?",
+      "rateLink": "Dites-le nous"
     },
     "home": {
       "title": "Aujourd’hui en un coup d’œil",
@@ -1218,7 +1259,9 @@
     "betaTitle": "Participer au test",
     "betaDescription": "Essayer HivePulse avant son arrivée dans les boutiques, et aider à l'y amener.",
     "releaseNotesTitle": "Notes de version",
-    "releaseNotesDescription": "Ce qui a changé et ce qui est nouveau dans HivePulse, et la liste complète des fonctions."
+    "releaseNotesDescription": "Ce qui a changé et ce qui est nouveau dans HivePulse, et la liste complète des fonctions.",
+    "surveyTitle": "Évaluer l’année apicole",
+    "surveyDescription": "Les dates de l’année apicole correspondent-elles là où vous élevez des abeilles ? Évaluez-les en un quart d’heure, sans compte, et aidez à corriger le calendrier de votre région."
   },
   "imprint": {
     "title": "Mentions légales",
@@ -1273,5 +1316,43 @@
     "dataBody": "La même chose que pour tout le monde : vos ruchers restent privés tant que vous ne les placez pas vous-même sur la carte publique, rien n'est vendu ni transmis, et il n'y a aucune publicité. Les versions de test signalent les plantages, avec l'endroit dans le code et le type d'appareil — jamais vos notes, votre mot de passe ou votre adresse. Vous pouvez supprimer votre compte et tout son contenu vous-même, à tout moment.",
     "androidNote": "Sur Android, Google n’admet que les comptes que nous avons inscrits au préalable — sans inscription, le lien affiche « Application non disponible ». Envoie-nous l’adresse de ton compte Google à",
     "androidNoteSubject": "Test Android HivePulse : merci de m’ajouter"
+  },
+  "survey": {
+    "tag": "Aidez-nous à bien faire",
+    "title": "L’année apicole correspond-elle chez vous ?",
+    "subtitle": "Un quart d’heure de votre expérience, et le calendrier s’améliore pour tous les apiculteurs de votre région. Sans compte.",
+    "why": "Les 38 entrées de l’année apicole ont été écrites une fois, pour le centre de l’Allemagne, puis déplacées ailleurs par une formule : tant de jours plus tard par degré de latitude, tant par 100 mètres d’altitude. Cette formule est une estimation. Personne ne l’a confrontée à ce que font vraiment les apiculteurs en Andalousie, en Bretagne ou en Mazurie — et seuls ceux qui y élèvent des abeilles peuvent le faire.",
+    "whyNothingChanges": "Rien de ce que vous envoyez ne déplace une date à soi seul. Les avis d’une même région sont regroupés, et ce n’est qu’à partir de cinq apiculteurs d’accord dans un rayon de 150 km que la correction médiane parvient à quelqu’un qui connaît la région et peut la valider.",
+    "placeLead": "D’abord : où sont vos abeilles ? Les dates que vous évaluerez seront alors celles que vous verriez vraiment, et non celles écrites pour le centre de l’Allemagne.",
+    "country": "Pays",
+    "postal": "Code postal",
+    "years": "Années d’apiculture",
+    "yearsOptional": "facultatif",
+    "privacy": "Sont conservés le pays, votre position arrondie à environ 11 km et vos avis. Le code postal est recherché une fois puis abandonné. Aucun nom, aucune adresse, aucun lien avec un compte.",
+    "placeSubmit": "Afficher mon année",
+    "loading": "Chargement…",
+    "loadFailed": "La chronologie n’a pas pu être chargée. Veuillez réessayer.",
+    "notLocated": "Ce code postal est introuvable ; les dates ci-dessous ne sont donc pas décalées. Vous pouvez quand même les évaluer, mais une correction a besoin d’un lieu — vérifiez le code avant d’envoyer.",
+    "shifted": "Les dates ci-dessous sont décalées de {days, plural, one {# jour} other {# jours}} par rapport au centre de l’Allemagne, pour votre lieu.",
+    "rateLead": "N’évaluez que ce sur quoi vous avez un avis : tout ce que vous laissez n’est tout simplement pas envoyé. Touchez une réponse à nouveau pour la retirer.",
+    "verdictFits": "Ça colle",
+    "verdictLater": "Plus tard ici",
+    "verdictEarlier": "Plus tôt ici",
+    "verdictWrong": "Pas d’usage ici",
+    "sizeLabel": "D’environ",
+    "sizePlaceholder": "14",
+    "days": "jours",
+    "noteLabel": "Quelque chose à ajouter ? (facultatif)",
+    "notePlaceholder": "Ici plutôt mi-février",
+    "counter": "{answered} sur {total} évaluées",
+    "send": "Envoyer mes avis",
+    "sending": "Envoi…",
+    "nothingRated": "Rien n’est encore évalué. Choisissez une réponse pour au moins une entrée.",
+    "sendFailed": "Les avis n’ont pas pu être envoyés. Veuillez réessayer.",
+    "doneTitle": "Merci.",
+    "doneBody": "{accepted, plural, one {# avis est arrivé.} other {# avis sont arrivés.}}",
+    "doneReplaced": "{replaced, plural, one {L’un d’eux a remplacé ce que ce navigateur avait dit auparavant.} other {# d’entre eux ont remplacé ce que ce navigateur avait dit auparavant.}}",
+    "doneNext": "Rien n’a encore changé. Dès que cinq apiculteurs près de vous seront d’accord, la correction partira vers quelqu’un qui peut la valider.",
+    "doneAgain": "Évaluer une autre région"
   }
 }

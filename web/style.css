@@ -2096,3 +2096,164 @@ button.hornets-action-card { width: 100%; }
 .dash-region-form { display: grid; gap: 12px; }
 .dash-region-form .dash-region-row { display: flex; flex-wrap: wrap; gap: 12px; }
 .dash-region-form .dash-region-row > * { flex: 1 1 180px; }
+
+/* ── The questionnaire about the beekeeping year (.survey-*) ──────────────────────────────
+   A public page in the amber of the calendar, not the red of the hornet tracker. Its own
+   namespace because it is neither the dashboard nor the hornets: a long list of cards that
+   each ask one question, and it has to stay readable on a phone, where most of it is read. */
+.survey-page { background: var(--page); }
+
+.survey-hero { padding: 118px 0 36px; background: var(--amber-wash); border-bottom: 1px solid var(--amber-line); }
+.survey-tag {
+  display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--amber-ink); background: var(--amber-tint);
+  border: 1px solid var(--amber-border); border-radius: 999px; padding: 4px 11px; margin-bottom: 12px;
+}
+.survey-hero h1 { font-size: clamp(27px, 3.4vw, 38px); margin: 0 0 8px; color: var(--text); }
+.survey-subtitle { font-size: 16.5px; color: var(--body-text); margin: 0; max-width: 62ch; }
+
+.survey-why { padding: 26px 0 0; }
+.survey-why p { max-width: 70ch; color: var(--body-text); font-size: 15.5px; line-height: 1.6; margin: 0 0 10px; }
+.survey-muted { color: var(--muted); font-size: 14.5px; }
+
+.survey-main { padding: 22px 0 90px; }
+.survey-lead { color: var(--body-text); font-size: 15px; margin: 0 0 16px; max-width: 70ch; }
+
+/* ── Where are you? ───────────────────────────────────────── */
+.survey-place { max-width: 680px; display: flex; flex-direction: column; gap: 14px; }
+.survey-place-row { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 12px; }
+.survey-place label,
+.survey-size,
+.survey-note { display: flex; flex-direction: column; gap: 6px; font-size: 13.5px; font-weight: 600; color: var(--body-text); }
+.survey-input {
+  border: 1px solid var(--field-border); border-radius: 9px; padding: 11px 12px;
+  font-size: 15px; color: var(--text); background: #fff; font-family: inherit;
+  outline: none; transition: border-color .15s, box-shadow .15s; width: 100%; box-sizing: border-box;
+}
+.survey-input:focus { border-color: var(--amber-mid); box-shadow: 0 0 0 3px var(--amber-tint); }
+.survey-privacy { color: var(--muted); font-size: 13.5px; margin: 0; max-width: 70ch; }
+
+.survey-primary {
+  align-self: flex-start; min-height: 44px; padding: 11px 20px; border-radius: 9px;
+  border: 1px solid var(--amber-dark); background: var(--amber); color: #fff;
+  font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .15s;
+}
+.survey-primary:hover:not(:disabled) { background: #d97706; }
+.survey-primary:disabled { opacity: .5; cursor: default; }
+.survey-secondary {
+  min-height: 44px; padding: 10px 18px; border-radius: 9px; border: 1px solid var(--border);
+  background: #fff; color: var(--body-text); font-family: inherit; font-size: 14.5px; cursor: pointer;
+}
+.survey-secondary:hover { border-color: var(--amber-border); color: var(--amber-ink); }
+
+/* ── The list of questions ────────────────────────────────── */
+.survey-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.survey-month {
+  font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted); margin: 18px 0 8px;
+}
+.survey-item:first-child .survey-month { margin-top: 0; }
+
+.survey-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 10px; transition: border-color .15s, background .15s;
+}
+/* An answered card steps back: what is left to do should be what stands out. */
+.survey-card.answered { border-color: var(--amber-border); background: var(--amber-wash); }
+.survey-card-head { display: flex; align-items: flex-start; gap: 11px; }
+.survey-card-head strong { display: block; font-size: 15.5px; color: var(--text); }
+.survey-icon { width: 26px; height: 26px; flex: none; color: var(--amber-dark); margin-top: 1px; }
+.survey-dates { display: block; font-family: var(--font-mono); font-size: 13px; color: var(--muted); margin-top: 2px; }
+.survey-body { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--body-text); }
+
+.survey-verdicts { display: flex; flex-wrap: wrap; gap: 8px; }
+.survey-verdict {
+  min-height: 42px; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--border);
+  background: #fff; color: var(--body-text); font-family: inherit; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: border-color .15s, background .15s, color .15s;
+}
+.survey-verdict:hover { border-color: var(--amber-border); }
+/* Picked answers carry their meaning in colour: it fits (green), it moves (amber), it does not
+   belong here at all (red). The same four colours the rest of the site uses for the same ideas. */
+.survey-verdict.picked.fits { background: var(--green-tint); border-color: var(--green-border); color: var(--green-ink); }
+.survey-verdict.picked.later,
+.survey-verdict.picked.earlier { background: var(--amber-tint); border-color: var(--amber-border); color: var(--amber-ink); }
+.survey-verdict.picked.wrong { background: var(--red-tint); border-color: var(--red-border); color: var(--red-ink); }
+
+.survey-detail { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: end; }
+.survey-size { position: relative; }
+.survey-size-input { width: 92px; padding-right: 44px; font-family: var(--font-mono); }
+.survey-size-unit { position: absolute; right: 12px; bottom: 12px; font-size: 13px; color: var(--muted); font-weight: 400; }
+
+/* ── The bar that says how far you got ────────────────────── */
+.survey-bar {
+  position: sticky; bottom: 0; margin-top: 18px; padding: 12px 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  background: linear-gradient(180deg, rgba(252,252,251,0), var(--page) 36%);
+}
+.survey-count { font-size: 14px; color: var(--body-text); font-weight: 600; }
+
+.survey-error { background: var(--red-wash); color: var(--red-ink); border: 1px solid var(--red-border); border-radius: 10px; padding: 12px 15px; font-size: 14.5px; }
+.survey-warning { background: var(--amber-wash); color: var(--amber-ink); border: 1px solid var(--amber-border); border-radius: 10px; padding: 12px 15px; font-size: 14.5px; margin-bottom: 14px; }
+.survey-shift { font-size: 14px; color: var(--muted); margin: 0 0 12px; }
+
+.survey-done { max-width: 620px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+.survey-done h2 { margin: 0; font-size: 22px; color: var(--text); }
+.survey-done p { margin: 0; font-size: 15px; color: var(--body-text); }
+
+@media (max-width: 720px) {
+  .survey-place-row { grid-template-columns: 1fr; }
+  /* Four pill buttons do not fit a phone's width side by side, and squeezing them would make
+     each one too small to hit with a thumb. Two by two, full height. */
+  .survey-verdicts { display: grid; grid-template-columns: 1fr 1fr; }
+  .survey-verdict { width: 100%; }
+  .survey-detail { grid-template-columns: 1fr; align-items: stretch; }
+  .survey-size-input { width: 100%; }
+  .survey-bar { flex-direction: column; align-items: stretch; }
+  .survey-bar .survey-primary { align-self: stretch; text-align: center; }
+}
+
+/* ── The year-proposal queue (admin) ──────────────────────────────────────────────────────
+   What the questionnaire produced, waiting for a decision. The numbers an admin needs in
+   order to decide are on the card: how many said so, how far apart they were, what they
+   wrote. A median alone would be a number to rubber-stamp. */
+.dash-year-prop-lead { color: var(--body-text); font-size: 15px; margin: 0 0 16px; max-width: 74ch; }
+.dash-year-prop-toolbar { align-items: center; justify-content: space-between; }
+.dash-admin-btn-primary { border-color: var(--amber-dark); background: var(--amber); color: #fff; font-weight: 700; }
+.dash-admin-btn-primary:hover:not(:disabled) { background: #d97706; }
+
+.dash-year-prop-list { display: flex; flex-direction: column; gap: 12px; }
+.dash-year-prop {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 14px 16px; display: flex; flex-direction: column; gap: 11px;
+}
+.dash-year-prop.decided { background: var(--surface); color: var(--muted); }
+.dash-year-prop-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.dash-year-prop-head strong { font-size: 15.5px; color: var(--text); }
+.dash-year-prop-key { display: block; font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+.dash-year-prop-kind {
+  font-size: 13px; font-weight: 700; padding: 4px 11px; border-radius: 999px; white-space: nowrap;
+  background: var(--amber-tint); color: var(--amber-ink); border: 1px solid var(--amber-border);
+}
+.dash-year-prop-kind.hide { background: var(--red-tint); color: var(--red-ink); border-color: var(--red-border); }
+
+.dash-year-prop-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px 18px; margin: 0; }
+.dash-year-prop-facts dt { font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.dash-year-prop-facts dd { margin: 2px 0 0; font-size: 14px; color: var(--body-text); }
+.dash-year-prop-wide { color: var(--red-ink); }
+.dash-year-prop-warn { font-weight: 700; }
+
+.dash-year-prop-notes { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+.dash-year-prop-notes li { font-size: 14px; color: var(--body-text); }
+
+.dash-year-prop-actions { display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; }
+.dash-year-prop-override { display: flex; flex-direction: column; gap: 5px; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.dash-year-prop-days {
+  width: 92px; padding: 8px 11px; border: 1px solid var(--field-border); border-radius: 9px;
+  font-family: var(--font-mono); font-size: 14.5px; background: #fff; color: var(--text); outline: none;
+}
+.dash-year-prop-days:focus { border-color: var(--amber-mid); box-shadow: 0 0 0 3px var(--amber-tint); }
+.dash-year-prop-decided { font-size: 13.5px; color: var(--muted); }
+.dash-cal-rate { margin-top: 6px; }
+.dash-cal-rate-link { color: var(--amber-dark); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+.dash-cal-rate-link:hover { color: var(--amber-ink); }

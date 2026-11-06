@@ -560,6 +560,8 @@
 "calendar.setRegion" = "Region festlegen";
 "calendar.changeRegion" = "Region ändern";
 "calendar.disclaimer" = "Richtwerte aus der üblichen imkerlichen Praxis, keine Vorschriften: Blüte und Wetter entscheiden, und die Termine verschieben sich mit deinem Ort. Arzneimittel nur wie in deinem Land zugelassen und vorgeschrieben; im Zweifel frag deinen Imkerverband oder das Veterinäramt.";
+"calendar.rate.hint" = "Passen diese Daten dort, wo deine Bienen stehen?";
+"calendar.rate.link" = "Sag es uns";
 "calendar.category.inspection" = "Kontrolle";
 "calendar.category.swarm" = "Schwarmkontrolle";
 "calendar.category.feeding" = "Fütterung";

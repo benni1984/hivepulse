@@ -10,6 +10,13 @@ vi.mock('@/components/FeatureForm', () => ({
   default: () => <div data-testid="feature-form" />,
 }));
 
+// The questionnaire card links inside the site, so the page uses the locale-aware Link. Without
+// this the real next-intl navigation module is pulled in and the suite cannot resolve it.
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) =>
+    <a href={href} className={className}>{children}</a>,
+}));
+
 import ContributePage from '@/app/[locale]/contribute/page';
 
 describe('ContributePage', () => {
@@ -24,6 +31,11 @@ describe('ContributePage', () => {
     expect(screen.getByText('code.link')).toHaveAttribute('href', 'https://github.com/benni1984/hivepulse');
     expect(screen.getByText('docs.link')).toHaveAttribute('href', 'https://github.com/benni1984/hivepulse/tree/main/docs');
     expect(screen.getByText('spread.link')).toHaveAttribute('href', '/#download');
+  });
+
+  it('offers the beekeeping-year questionnaire as a way to help without writing code', () => {
+    render(<ContributePage />);
+    expect(screen.getByText('year.link')).toHaveAttribute('href', '/year-feedback');
   });
 
   it('does not render the removed translate/beta-test cards (GitHub Discussions is not set up — 404)', () => {

@@ -549,6 +549,8 @@
     <string name="calendar_set_region">Indiquer la région</string>
     <string name="calendar_change_region">Changer la région</string>
     <string name="calendar_disclaimer">Valeurs indicatives tirées de la pratique apicole habituelle, pas des règles : la floraison et la météo décident, et les dates se décalent selon votre lieu. Médicaments uniquement selon l’autorisation et les règles de votre pays ; en cas de doute, demandez à votre syndicat apicole ou à la direction départementale de la protection des populations.</string>
+    <string name="calendar_rate_hint">Ces dates correspondent-elles à l’endroit où sont vos abeilles ?</string>
+    <string name="calendar_rate_link">Dites-le nous</string>
     <string name="calendar_category_inspection">Visite</string>
     <string name="calendar_category_swarm">Essaimage</string>
     <string name="calendar_category_feeding">Nourrissement</string>

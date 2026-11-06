@@ -551,6 +551,8 @@
     <string name="calendar_set_region">Set region</string>
     <string name="calendar_change_region">Change region</string>
     <string name="calendar_disclaimer">Guide values from usual beekeeping practice, not rules: bloom and weather decide, and the dates move with your place. Medicines only as approved and prescribed in your country; when in doubt, ask your beekeepers’ association or veterinary office.</string>
+    <string name="calendar_rate_hint">Do these dates fit where your bees are?</string>
+    <string name="calendar_rate_link">Tell us</string>
     <string name="calendar_category_inspection">Inspection</string>
     <string name="calendar_category_swarm">Swarm control</string>
     <string name="calendar_category_feeding">Feeding</string>

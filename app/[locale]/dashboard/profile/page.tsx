@@ -7,7 +7,7 @@ import {
   updateMe, deleteMe, getReminderSettings, updateReminderSettings, ReminderSettings,
   getRegion, updateRegion, type Region,
 } from '@/lib/api';
-import { COUNTRY_CODES, countryName } from '@/lib/calendar';
+import { countriesByName, countryName } from '@/lib/calendar';
 import { useDashboardAuth } from '@/hooks/useDashboardAuth';
 
 const MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -399,9 +399,7 @@ export default function ProfilePage() {
                   onChange={e => setRegionCountry(e.target.value)}
                 >
                   <option value="">{t('regionCountryNone')}</option>
-                  {[...COUNTRY_CODES]
-                    .map(code => ({ code, name: countryName(code, siteLocale) }))
-                    .sort((a, b) => a.name.localeCompare(b.name, siteLocale))
+                  {countriesByName(siteLocale)
                     .map(c => <option key={c.code} value={c.code}>{c.name}</option>)}
                 </select>
               </div>

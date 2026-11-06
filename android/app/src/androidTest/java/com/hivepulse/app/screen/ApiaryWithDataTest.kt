@@ -180,11 +180,42 @@ class ApiaryWithDataTest {
         composeRule.onNodeWithTag("ribbonDetail").assertIsDisplayed()
         composeRule.onAllNodesWithTag("yearPhotoCredit")[0].assertExists()
 
-        // And back to the list, which is where the screen opens.
+        // And back to the list, which is where the screen opens. Not a formality: the switch
+        // used to sit inside the scrolling column, so tapping a bar -- which scrolls to the
+        // detail at the bottom -- carried it off the top edge. This click then landed nowhere
+        // and a phone user had to scroll back up to leave the view. Do not make this step
+        // scroll to the switch first; the point is that it does not have to.
         composeRule.onNodeWithTag("yearViewList").performClick()
         composeRule.waitUntil(timeoutMillis = 5_000) {
             composeRule.onAllNodesWithTag("beekeepingYearList").fetchSemanticsNodes().isNotEmpty()
         }
+    }
+
+    @Test
+    fun beekeepingYear_offersTheQuestionnaireUnderTheDates() {
+        // The dates can be wrong where somebody keeps bees, and this is where they are looking
+        // at them. Not clicked: the click opens a browser, and leaving the app mid-test tells us
+        // nothing the presence of the link does not.
+        val year = java.time.LocalDate.now().year
+        val region = com.hivepulse.app.data.api.RegionOut("DE", "69123", 49.4, 8.7, 0, 2, "postal_code", true)
+        coEvery { apiService.region() } returns region
+        coEvery { apiService.calendar(any(), any(), any()) } returns com.hivepulse.app.data.api.CalendarOut(
+            region, "$year-06-15", "$year-01-01", "$year-12-31",
+            listOf(
+                com.hivepulse.app.data.api.CalendarEntryOut(
+                    "swarm-control", "swarm", "Swarm control: look for queen cells", "Check weekly.",
+                    "$year-04-22", "$year-07-02", 9, null, false,
+                ),
+            ),
+        )
+        waitForApiaryList()
+        composeRule.onNodeWithTag("beekeepingYearButton").performClick()
+
+        composeRule.waitUntil(timeoutMillis = 5_000) {
+            composeRule.onAllNodesWithTag("beekeepingYearList").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNode(hasScrollAction()).performScrollToNode(hasTestTag("yearFeedbackLink"))
+        composeRule.onNodeWithTag("yearFeedbackLink").assertIsDisplayed()
     }
 
     @Test

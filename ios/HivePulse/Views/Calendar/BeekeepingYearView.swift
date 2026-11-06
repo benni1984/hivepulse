@@ -62,11 +62,26 @@ struct BeekeepingYearView: View {
     }
 
     /// The ribbon, with the switch above it and the tapped entry under it.
+    ///
+    /// The switch is outside the ScrollView, not the first thing inside it. Inside, tapping a bar
+    /// scrolls to the detail at the bottom and carries the switch off the top edge: on a short
+    /// screen the only way out of the view is to scroll back up, and in a test a tap on a node
+    /// outside the viewport lands nowhere. Android's pane is built the same way, for the same
+    /// reason -- its CI emulator is where this showed up.
     private var ribbonPane: some View {
+        VStack(spacing: 0) {
+            viewSwitch
+                .padding(.horizontal, 16)
+                .padding(.top, 12)
+                .padding(.bottom, 4)
+            ribbonScroll
+        }
+    }
+
+    private var ribbonScroll: some View {
         ScrollViewReader { proxy in
         ScrollView {
             VStack(alignment: .leading, spacing: 10) {
-                viewSwitch
                 if !ribbonVM.state.isLoaded && !ribbonVM.state.failed {
                     ProgressView().frame(maxWidth: .infinity).padding(.vertical, 40)
                 } else if ribbonVM.state.failed && !ribbonVM.state.isLoaded {
@@ -78,6 +93,7 @@ struct BeekeepingYearView: View {
                     if let picked { RibbonDetail(bar: picked).id("ribbonDetail") }
                     Text(NSLocalizedString("calendar.disclaimer", comment: ""))
                         .font(.footnote).foregroundColor(.secondary).padding(.top, 6)
+                    YearFeedbackLink()
                 }
             }
             .padding(16)
@@ -134,6 +150,8 @@ struct BeekeepingYearView: View {
 
                     Text(NSLocalizedString("calendar.disclaimer", comment: ""))
                         .font(.footnote).foregroundColor(.secondary)
+                        .listRowBackground(Color.clear)
+                    YearFeedbackLink()
                         .listRowBackground(Color.clear)
                 }
             }
@@ -199,6 +217,33 @@ struct BeekeepingYearView: View {
 }
 
 /// One entry of the timeline: the kind of task, what it is, when, and what it says.
+/// "Do these dates fit where your bees are? Tell us."
+///
+/// The questionnaire is a web page and stays one: no account, filled in once, 35 questions long.
+/// A native copy on two platforms would be a great deal of duplicated screen for something nobody
+/// does twice. What an app is good for is asking the question where somebody is already looking at
+/// the dates and thinking "not here". Android's `YearFeedbackLink` is the same thing.
+struct YearFeedbackLink: View {
+    private var url: URL {
+        let language = Locale.preferredLanguages.first?.prefix(2).lowercased() ?? "en"
+        let supported = ["en", "de", "fr", "es", "pl"]
+        let locale = supported.contains(language) ? language : "en"
+        return URL(string: "https://hivepulse.multihead.de/\(locale)/year-feedback")!
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(NSLocalizedString("calendar.rate.hint", comment: ""))
+                .font(.footnote).foregroundColor(.secondary)
+            Link(NSLocalizedString("calendar.rate.link", comment: ""), destination: url)
+                .font(.footnote.weight(.bold))
+                .foregroundColor(.hpAmberDark)
+                .accessibilityIdentifier("yearFeedbackLink")
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
 private struct EntryCard: View {
     let entry: CalendarEntryOut
 

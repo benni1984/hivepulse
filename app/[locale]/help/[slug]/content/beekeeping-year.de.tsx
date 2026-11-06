@@ -108,6 +108,20 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Die Daten passen hier nicht</h2>
+        <p>Dann sag es. Die 38 Einträge wurden für Mitteldeutschland geschrieben und mit einer Formel auf andere Orte verschoben, und ob die Formel in Andalusien stimmt, können nur Imker in Andalusien sagen. Der Fragebogen unter <a href="/year-feedback">Das Imkerjahr bewerten</a> dauert etwa eine Viertelstunde und braucht kein Konto.</p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Du bewertest deine eigenen Daten.</strong> Land und Postleitzahl zuerst, dann wird der Zeitstrahl auf diesen Ort verschoben, bevor du ihn siehst.</li>
+          <li><strong>Nur was du kennst.</strong> Vier Antworten je Eintrag &mdash; passt, bei mir später, bei mir früher, gilt hier nicht &mdash; und alles, was du auslässt, wird nicht gesendet.</li>
+          <li><strong>Nach dir wird nicht gefragt.</strong> Gespeichert werden das Land, eine auf etwa 11&nbsp;km gerundete Position und deine Antworten. Die Postleitzahl wird einmal nachgeschlagen und dann verworfen.</li>
+        </ul>
+        <div className="help-callout info">
+          <i className="fas fa-info-circle" />
+          <p>Deine Antwort verschiebt allein kein Datum. Bewertungen im Umkreis von 150 km werden zusammengefasst, eine Gruppe braucht mindestens fünf Imker, und die mittlere Korrektur geht dann an jemanden, der die Region kennt und sie freigeben kann. Ist sie freigegeben, nennt der Zeitstrahl, auf wie vielen Imkern sie beruht.</p>
+        </div>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Gut zu wissen</h2>
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li>Die Termine sind Richtwerte aus der üblichen imkerlichen Praxis, keine Vorschriften: Blüte und Wetter entscheiden.</li>

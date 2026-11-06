@@ -108,6 +108,20 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Les dates ne correspondent pas ici</h2>
+        <p>Alors dites-le. Les 38 entrées ont été écrites pour le centre de l’Allemagne et déplacées ailleurs par une formule&nbsp;; or, savoir si cette formule est juste en Andalousie, seuls les apiculteurs d’Andalousie le peuvent. Le questionnaire <a href="/year-feedback">Évaluer l’année apicole</a> prend environ un quart d’heure et ne demande aucun compte.</p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Vous évaluez vos propres dates.</strong> Indiquez d’abord un pays et un code postal&nbsp;: la chronologie est décalée vers ce lieu avant que vous ne la voyiez.</li>
+          <li><strong>Seulement ce que vous connaissez.</strong> Quatre réponses par entrée &mdash; ça colle, plus tard ici, plus tôt ici, pas d’usage ici &mdash; et tout ce que vous laissez n’est pas envoyé.</li>
+          <li><strong>On ne vous demande rien sur vous.</strong> Sont conservés le pays, une position arrondie à environ 11&nbsp;km et vos réponses. Le code postal est recherché une fois puis abandonné.</li>
+        </ul>
+        <div className="help-callout info">
+          <i className="fas fa-info-circle" />
+          <p>Votre réponse ne déplace aucune date à elle seule. Les avis situés à moins de 150 km les uns des autres sont regroupés, un groupe a besoin d’au moins cinq apiculteurs, et la correction médiane part ensuite vers quelqu’un qui connaît la région et peut la valider. Une fois validée, la chronologie indique sur combien d’apiculteurs elle repose.</p>
+        </div>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Bon à savoir</h2>
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li>Les dates sont des valeurs indicatives tirées de la pratique apicole habituelle, pas des règles : la floraison et la météo décident.</li>

@@ -516,6 +516,8 @@
     <string name="calendar_set_region">Indicar la región</string>
     <string name="calendar_change_region">Cambiar la región</string>
     <string name="calendar_disclaimer">Valores orientativos de la práctica apícola habitual, no normas: la floración y el tiempo deciden, y las fechas cambian con tu lugar. Medicamentos solo según la autorización y las normas de tu país; en caso de duda, pregunta a tu asociación de apicultores o a la autoridad veterinaria.</string>
+    <string name="calendar_rate_hint">¿Encajan estas fechas donde están tus abejas?</string>
+    <string name="calendar_rate_link">Dínoslo</string>
     <string name="calendar_category_inspection">Revisión</string>
     <string name="calendar_category_swarm">Enjambrazón</string>
     <string name="calendar_category_feeding">Alimentación</string>

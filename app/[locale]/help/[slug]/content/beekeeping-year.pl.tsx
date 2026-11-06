@@ -105,6 +105,20 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">Tutaj daty nie pasują</h2>
+        <p>To powiedz. 38 wpisów napisano dla środkowych Niemiec i przesunięto na inne miejsca wzorem, a czy wzór jest trafny w Andaluzji, mogą powiedzieć tylko pszczelarze z Andaluzji. Ankieta <a href="/year-feedback">Oceń rok pasieczny</a> zajmuje około kwadransa i nie wymaga konta.</p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>Oceniasz własne daty.</strong> Najpierw kraj i kod pocztowy &mdash; oś czasu zostanie przesunięta na to miejsce, zanim ją zobaczysz.</li>
+          <li><strong>Tylko to, co znasz.</strong> Cztery odpowiedzi na wpis &mdash; pasuje, u mnie później, u mnie wcześniej, tu się tego nie robi &mdash; a wszystko, co pominiesz, nie zostanie wysłane.</li>
+          <li><strong>O Ciebie nikt nie pyta.</strong> Zapisywane są kraj, pozycja zaokrąglona do około 11&nbsp;km i Twoje odpowiedzi. Kod pocztowy jest sprawdzany raz, a potem odrzucany.</li>
+        </ul>
+        <div className="help-callout info">
+          <i className="fas fa-info-circle" />
+          <p>Twoja odpowiedź sama nie przesuwa żadnej daty. Oceny w promieniu 150 km od siebie są grupowane, grupa potrzebuje co najmniej pięciu pszczelarzy, a mediana poprawki trafia potem do kogoś, kto zna region i może ją zatwierdzić. Po zatwierdzeniu oś czasu podaje, na ilu pszczelarzach się opiera.</p>
+        </div>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Warto wiedzieć</h2>
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li>Terminy to wartości orientacyjne z zasad dobrej praktyki pszczelarskiej, nie przepisy: decydują kwitnienie i pogoda.</li>

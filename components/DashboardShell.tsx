@@ -130,6 +130,7 @@ export default function DashboardShell({ children, adminOnly = false, memberOnly
                 {nav('/dashboard/admin/users',  I.users,  t('admin.nav.users'))}
                 {nav('/dashboard/admin/map',    I.map,    t('admin.nav.map'))}
                 {nav('/dashboard/admin/health', I.health, t('admin.nav.health'))}
+                {nav('/dashboard/admin/year-proposals', I.cal, t('admin.nav.yearProposals'))}
               </>
             )}
           </nav>

@@ -2,6 +2,7 @@ package com.hivepulse.app.ui.calendar
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -178,7 +180,10 @@ fun BeekeepingYearScreen(
             }
             item(key = "disclaimer") {
                 Text(stringResource(R.string.calendar_disclaimer), style = MaterialTheme.typography.bodySmall, color = Stone500,
-                    modifier = Modifier.padding(top = 12.dp, bottom = 24.dp))
+                    modifier = Modifier.padding(top = 12.dp))
+            }
+            item(key = "rate") {
+                YearFeedbackLink(Modifier.padding(top = 10.dp, bottom = 24.dp))
             }
         }
         }
@@ -347,6 +352,41 @@ fun RegionForm(vm: RegionViewModel) {
  * Both are the same year; neither is a filter of the other. The hint says which question each
  * one answers, because "List" and "Overview" on their own do not.
  */
+/**
+ * "Do these dates fit where your bees are? Tell us."
+ *
+ * The questionnaire is a web page and stays one. It needs no account, it is filled in once, and
+ * it is 35 questions long -- a native copy of it on two platforms would be a large amount of
+ * duplicated screen for something nobody does twice. What the apps are good for is asking the
+ * question in the place where somebody is already looking at the dates and thinking "not here".
+ */
+@Composable
+fun YearFeedbackLink(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val url = "https://hivepulse.multihead.de/${appLanguage()}/year-feedback"
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Text(
+            stringResource(R.string.calendar_rate_hint),
+            style = MaterialTheme.typography.bodySmall, color = Stone500,
+        )
+        Text(
+            stringResource(R.string.calendar_rate_link),
+            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
+            color = Amber600,
+            modifier = Modifier
+                .testTag("yearFeedbackLink")
+                .clickable {
+                    context.startActivity(
+                        android.content.Intent(
+                            android.content.Intent.ACTION_VIEW,
+                            android.net.Uri.parse(url),
+                        )
+                    )
+                },
+        )
+    }
+}
+
 @Composable
 fun YearViewSwitch(view: YearView, onView: (YearView) -> Unit, modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -393,34 +433,46 @@ fun YearRibbonPane(vm: YearRibbonViewModel, onView: (YearView) -> Unit, modifier
         if (picked != null) scroll.animateScrollTo(scroll.maxValue)
     }
 
-    Column(
-        modifier
-            .fillMaxSize()
-            .verticalScroll(scroll)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        YearViewSwitch(YearView.RIBBON, onView)
-
-        if (!state.isLoaded && !state.failed) {
-            LoadingScreen()
-            return@Column
-        }
-        if (state.failed && !state.isLoaded) {
-            Text(stringResource(R.string.calendar_load_error), color = MaterialTheme.colorScheme.error)
-            return@Column
-        }
-        if (state.rows.isEmpty()) {
-            Text(stringResource(R.string.calendar_ribbon_empty), color = Stone500)
-            return@Column
-        }
-
-        YearRibbonCanvas(state = state, picked = picked, onPick = { picked = if (sameBar(picked, it)) null else it })
-        picked?.let { RibbonDetail(it) }
-        Text(
-            stringResource(R.string.calendar_disclaimer),
-            style = MaterialTheme.typography.bodySmall, color = Stone500,
-            modifier = Modifier.padding(top = 6.dp, bottom = 24.dp),
+    // The switch stays put while the rest scrolls, for the same reason it is not a row of the
+    // list: scrolled away, it is gone. Inside the scrolling column it survived a short screen and
+    // died on a small one -- tapping a bar scrolls to the detail at the bottom, which carried the
+    // switch off the top edge, and a tap on a node outside the viewport lands nowhere. A phone
+    // user would have had to scroll back up to leave the view. CI's emulator found this; the
+    // taller one it was written on did not.
+    Column(modifier.fillMaxSize()) {
+        YearViewSwitch(
+            YearView.RIBBON,
+            onView,
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
         )
+        Column(
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(scroll)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            if (!state.isLoaded && !state.failed) {
+                LoadingScreen()
+                return@Column
+            }
+            if (state.failed && !state.isLoaded) {
+                Text(stringResource(R.string.calendar_load_error), color = MaterialTheme.colorScheme.error)
+                return@Column
+            }
+            if (state.rows.isEmpty()) {
+                Text(stringResource(R.string.calendar_ribbon_empty), color = Stone500)
+                return@Column
+            }
+
+            YearRibbonCanvas(state = state, picked = picked, onPick = { picked = if (sameBar(picked, it)) null else it })
+            picked?.let { RibbonDetail(it) }
+            Text(
+                stringResource(R.string.calendar_disclaimer),
+                style = MaterialTheme.typography.bodySmall, color = Stone500,
+                modifier = Modifier.padding(top = 6.dp),
+            )
+            YearFeedbackLink(Modifier.padding(bottom = 24.dp))
+        }
     }
 }

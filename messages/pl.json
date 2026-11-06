@@ -302,6 +302,11 @@
       "title": "🐝 Ul jest na GitHubie",
       "desc": "HivePulse jest w pełni open source na licencji MIT. Czytaj kod, zgłaszaj problemy, rób forki i ulepszaj go.",
       "btn": "Zobacz na GitHubie"
+    },
+    "year": {
+      "title": "Popraw rok pasieczny",
+      "desc": "Daty kalendarza napisano dla środkowych Niemiec, a dla reszty oszacowano. Powiedz nam, co dzieje się naprawdę tam, gdzie trzymasz pszczoły — kwadrans, bez konta.",
+      "link": "Oceń rok pasieczny →"
     }
   },
   "fr": {
@@ -502,7 +507,8 @@
         "stats": "Statystyki platformy",
         "users": "Użytkownicy",
         "map": "Mapa",
-        "health": "Kondycja danych"
+        "health": "Kondycja danych",
+        "yearProposals": "Propozycje do roku"
       },
       "stats": {
         "title": "Statystyki platformy",
@@ -574,6 +580,39 @@
         "defaultSigningKey": "Ostrzeżenie: ten serwer podpisuje logowania publicznym kluczem domyślnym z kodu źródłowego. Każdy, kto go zna, może sfałszować token dla dowolnego konta. Ustaw prawdziwy SECRET_KEY w środowisku hostingu.",
         "pushAndroidMissing": "Push dla Androida nie jest skonfigurowany: przypomnienia nigdy nie dotrą do telefonu z Androidem. Wymaga FIREBASE_PROJECT_ID i FIREBASE_SERVICE_ACCOUNT_JSON w środowisku hostingu.",
         "pushIosMissing": "Push dla iPhone'a nie jest skonfigurowany: przypomnienia nigdy nie dotrą do iPhone'a. Wymaga APNS_KEY_ID, APNS_TEAM_ID i APNS_PRIVATE_KEY_P8 w środowisku hostingu."
+      },
+      "yearProposals": {
+        "title": "Propozycje do roku pasiecznego",
+        "lead": "To, co zebrała ankieta, pogrupowane według wpisu i regionu. Grupa potrzebuje pięciu pszczelarzy w promieniu 150 km, aby się tu pojawić, a poprawka to ich mediana. Nic nie trafia do kalendarza, dopóki tego nie zatwierdzisz.",
+        "filterLabel": "Status",
+        "filter": {
+          "pending": "Oczekujące",
+          "approved": "Zatwierdzone",
+          "rejected": "Odrzucone",
+          "all": "Wszystkie"
+        },
+        "recompute": "Pogrupuj oceny ponownie",
+        "recomputing": "Grupowanie…",
+        "recomputed": "{created} nowych, {updated} zaktualizowanych, {unchanged} bez zmian. Już podjęte decyzje pozostały nietknięte.",
+        "recomputeFailed": "Nie udało się ponownie pogrupować ocen.",
+        "loadFailed": "Nie udało się wczytać propozycji.",
+        "decideFailed": "Nie udało się zapisać decyzji.",
+        "emptyPending": "Nic do decyzji. Albo w żadnym regionie nie ma jeszcze pięciu zgodnych pszczelarzy, albo wszystko jest rozstrzygnięte.",
+        "empty": "Nic tutaj.",
+        "ratings": "Oceny",
+        "where": "Region",
+        "verdicts": "Odpowiedzi",
+        "verdictSplit": "{fits} pasuje · {later} później · {earlier} wcześniej · {wrong} nie dotyczy",
+        "spread": "Rozrzut",
+        "spreadValue": "od {from} do {to} dni",
+        "spreadWide": "nie są właściwie zgodni",
+        "kindHide": "Ukryj w tym regionie",
+        "kindShift": "Przesuń o {days} dni",
+        "override": "Zamiast mediany",
+        "approve": "Zatwierdź",
+        "reject": "Odrzuć",
+        "wasApproved": "Zatwierdzona — obowiązuje w tym regionie.",
+        "wasRejected": "Odrzucona — ta grupa nie będzie ponownie proponowana."
       }
     },
     "apiaries": {
@@ -887,7 +926,9 @@
         "bloom": "Kwitnienie",
         "care": "Pielęgnacja",
         "winter": "Zima"
-      }
+      },
+      "rateHint": "Czy te daty pasują tam, gdzie stoją Twoje pszczoły?",
+      "rateLink": "Powiedz nam"
     },
     "home": {
       "title": "Dziś w skrócie",
@@ -1218,7 +1259,9 @@
     "betaTitle": "Dołącz do testów",
     "betaDescription": "Wypróbuj HivePulse, zanim trafi do sklepów, i pomóż mu tam dotrzeć.",
     "releaseNotesTitle": "Informacje o wersjach",
-    "releaseNotesDescription": "Co się zmieniło i co nowego w HivePulse oraz pełna lista funkcji."
+    "releaseNotesDescription": "Co się zmieniło i co nowego w HivePulse oraz pełna lista funkcji.",
+    "surveyTitle": "Oceń rok pasieczny",
+    "surveyDescription": "Czy daty roku pasiecznego pasują tam, gdzie trzymasz pszczoły? Oceń je w kwadrans, bez konta, i pomóż poprawić kalendarz dla Twojego regionu."
   },
   "imprint": {
     "title": "Nota prawna",
@@ -1273,5 +1316,43 @@
     "dataBody": "To samo co u wszystkich: twoje pasieki są prywatne, dopóki sam nie umieścisz ich na mapie publicznej, nic nie jest sprzedawane ani przekazywane dalej i nie ma reklam. Wersje testowe zawierają raportowanie awarii, które wysyła miejsce w kodzie i rodzaj urządzenia, nigdy twoje notatki, hasło ani adres. Możesz w każdej chwili sam usunąć konto i wszystko, co w nim jest.",
     "androidNote": "Na Androidzie Google wpuszcza tylko konta, które zarejestrowaliśmy wcześniej; bez wpisu link pokazuje „Aplikacja niedostępna”. Wyślij nam adres swojego konta Google na",
     "androidNoteSubject": "Test HivePulse na Androida: proszę o dodanie"
+  },
+  "survey": {
+    "tag": "Pomóż nam to poprawić",
+    "title": "Czy rok pasieczny pasuje u Ciebie?",
+    "subtitle": "Kwadrans Twojego doświadczenia i kalendarz stanie się lepszy dla wszystkich pszczelarzy w Twoim regionie. Bez konta.",
+    "why": "38 wpisów roku pasiecznego napisano raz, dla środkowych Niemiec, a dla innych miejsc przesunięto je wzorem: tyle dni później na stopień szerokości geograficznej, tyle na 100 metrów wysokości. Ten wzór to oszacowanie. Nikt nie sprawdził go z tym, co pszczelarze naprawdę robią w Andaluzji, w Bretanii czy na Mazurach — a sprawdzić mogą to tylko ci, którzy tam trzymają pszczoły.",
+    "whyNothingChanges": "Nic, co wyślesz, samo nie przesuwa daty. Oceny z jednego regionu są grupowane i dopiero gdy co najmniej pięciu pszczelarzy w promieniu 150 km jest zgodnych, mediana poprawki trafia do kogoś, kto zna region i może ją zatwierdzić.",
+    "placeLead": "Najpierw: gdzie stoją Twoje pszczoły? Wtedy daty, które ocenisz, będą tymi, które naprawdę byś widział — a nie napisanymi dla środkowych Niemiec.",
+    "country": "Kraj",
+    "postal": "Kod pocztowy",
+    "years": "Lata pszczelarstwa",
+    "yearsOptional": "opcjonalnie",
+    "privacy": "Zapisywane są kraj, Twoja pozycja zaokrąglona do około 11 km i Twoje oceny. Kod pocztowy jest sprawdzany raz, a potem odrzucany. Bez imienia, bez adresu, bez powiązania z kontem.",
+    "placeSubmit": "Pokaż mój rok",
+    "loading": "Wczytywanie…",
+    "loadFailed": "Nie udało się wczytać osi czasu. Spróbuj ponownie.",
+    "notLocated": "Nie znaleziono tego kodu pocztowego, więc daty poniżej są nieprzesunięte. Możesz je ocenić, ale poprawka potrzebuje miejsca — sprawdź kod przed wysłaniem.",
+    "shifted": "Daty poniżej są przesunięte o {days, plural, one {# dzień} few {# dni} many {# dni} other {# dnia}} względem środkowych Niemiec, dla Twojego miejsca.",
+    "rateLead": "Oceniaj tylko to, co znasz — wszystko, co pominiesz, po prostu nie zostanie wysłane. Dotknij odpowiedzi ponownie, aby ją wycofać.",
+    "verdictFits": "Pasuje",
+    "verdictLater": "U mnie później",
+    "verdictEarlier": "U mnie wcześniej",
+    "verdictWrong": "Tu się tego nie robi",
+    "sizeLabel": "O około",
+    "sizePlaceholder": "14",
+    "days": "dni",
+    "noteLabel": "Chcesz coś dodać? (opcjonalnie)",
+    "notePlaceholder": "U nas zwykle w połowie lutego",
+    "counter": "Oceniono {answered} z {total}",
+    "send": "Wyślij oceny",
+    "sending": "Wysyłanie…",
+    "nothingRated": "Nic jeszcze nie ocenione. Wybierz odpowiedź dla co najmniej jednego wpisu.",
+    "sendFailed": "Nie udało się wysłać ocen. Spróbuj ponownie.",
+    "doneTitle": "Dziękujemy.",
+    "doneBody": "{accepted, plural, one {Dotarła # ocena.} few {Dotarły # oceny.} many {Dotarło # ocen.} other {Dotarło # oceny.}}",
+    "doneReplaced": "{replaced, plural, one {Jedna z nich zastąpiła to, co ta przeglądarka powiedziała wcześniej.} few {# z nich zastąpiły to, co ta przeglądarka powiedziała wcześniej.} many {# z nich zastąpiło to, co ta przeglądarka powiedziała wcześniej.} other {# z nich zastąpiło to, co ta przeglądarka powiedziała wcześniej.}}",
+    "doneNext": "Jeszcze nic się nie zmieniło. Gdy pięciu pszczelarzy w Twojej okolicy będzie zgodnych, poprawka trafi do kogoś, kto może ją zatwierdzić.",
+    "doneAgain": "Oceń inny region"
   }
 }

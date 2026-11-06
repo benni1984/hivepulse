@@ -551,6 +551,8 @@
     <string name="calendar_set_region">Ustaw region</string>
     <string name="calendar_change_region">Zmień region</string>
     <string name="calendar_disclaimer">Wartości orientacyjne z zasad dobrej praktyki pszczelarskiej, nie przepisy: o terminach decydują kwitnienie i pogoda, a daty przesuwają się wraz z twoim miejscem. Leki tylko takie, jakie są dopuszczone i zalecone w twoim kraju; w razie wątpliwości zapytaj swój związek pszczelarzy lub urząd weterynaryjny.</string>
+    <string name="calendar_rate_hint">Czy te daty pasują tam, gdzie stoją Twoje pszczoły?</string>
+    <string name="calendar_rate_link">Powiedz nam</string>
     <string name="calendar_category_inspection">Przegląd</string>
     <string name="calendar_category_swarm">Kontrola rójki</string>
     <string name="calendar_category_feeding">Karmienie</string>

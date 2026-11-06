@@ -302,6 +302,11 @@
       "title": "🐝 La colmena está en GitHub",
       "desc": "HivePulse es totalmente open source bajo la licencia MIT.",
       "btn": "Ver en GitHub"
+    },
+    "year": {
+      "title": "Corregir el año apícola",
+      "desc": "Las fechas del calendario se escribieron para el centro de Alemania y se estimaron para el resto. Cuéntanos qué pasa de verdad donde tienes abejas: un cuarto de hora, sin cuenta.",
+      "link": "Valorar el año apícola →"
     }
   },
   "fr": {
@@ -502,7 +507,8 @@
         "stats": "Estadísticas",
         "users": "Usuarios",
         "map": "Mapa",
-        "health": "Calidad datos"
+        "health": "Calidad datos",
+        "yearProposals": "Propuestas del año"
       },
       "stats": {
         "title": "Estadísticas de la plataforma",
@@ -574,6 +580,39 @@
         "defaultSigningKey": "Advertencia: este servidor firma los inicios de sesión con la clave predeterminada pública del código fuente. Quien la conozca puede falsificar un token de cualquier cuenta. Define un SECRET_KEY real en el entorno de alojamiento.",
         "pushAndroidMissing": "El push de Android no está configurado: los recordatorios no llegan a ningún teléfono Android. Hacen falta FIREBASE_PROJECT_ID y FIREBASE_SERVICE_ACCOUNT_JSON en el entorno de alojamiento.",
         "pushIosMissing": "El push de iPhone no está configurado: los recordatorios no llegan a ningún iPhone. Hacen falta APNS_KEY_ID, APNS_TEAM_ID y APNS_PRIVATE_KEY_P8 en el entorno de alojamiento."
+      },
+      "yearProposals": {
+        "title": "Propuestas para el año apícola",
+        "lead": "Lo que ha recogido el cuestionario, agrupado por entrada y región. Un grupo necesita cinco apicultores en 150 km para aparecer aquí, y la corrección es su mediana. Nada llega a un calendario hasta que lo apruebas.",
+        "filterLabel": "Estado",
+        "filter": {
+          "pending": "Pendientes",
+          "approved": "Aprobadas",
+          "rejected": "Rechazadas",
+          "all": "Todas"
+        },
+        "recompute": "Reagrupar las valoraciones",
+        "recomputing": "Reagrupando…",
+        "recomputed": "{created} nuevas, {updated} actualizadas, {unchanged} sin cambios. Las decisiones ya tomadas no se han tocado.",
+        "recomputeFailed": "No se han podido reagrupar las valoraciones.",
+        "loadFailed": "No se han podido cargar las propuestas.",
+        "decideFailed": "No se ha podido guardar la decisión.",
+        "emptyPending": "Nada que decidir. O ninguna región tiene aún cinco apicultores de acuerdo, o todo está decidido.",
+        "empty": "Nada aquí.",
+        "ratings": "Valoraciones",
+        "where": "Región",
+        "verdicts": "Respuestas",
+        "verdictSplit": "{fits} encaja · {later} más tarde · {earlier} más temprano · {wrong} aquí no",
+        "spread": "Dispersión",
+        "spreadValue": "de {from} a {to} días",
+        "spreadWide": "no están realmente de acuerdo",
+        "kindHide": "Ocultar en esta región",
+        "kindShift": "Desplazar {days} días",
+        "override": "En vez de la mediana",
+        "approve": "Aprobar",
+        "reject": "Rechazar",
+        "wasApproved": "Aprobada: vigente para esta región.",
+        "wasRejected": "Rechazada: este grupo no se vuelve a ofrecer."
       }
     },
     "apiaries": {
@@ -887,7 +926,9 @@
         "bloom": "Floración",
         "care": "Cuidado",
         "winter": "Invierno"
-      }
+      },
+      "rateHint": "¿Encajan estas fechas donde están tus abejas?",
+      "rateLink": "Dínoslo"
     },
     "home": {
       "title": "Hoy de un vistazo",
@@ -1218,7 +1259,9 @@
     "betaTitle": "Unirse a la prueba",
     "betaDescription": "Prueba HivePulse antes de que llegue a las tiendas y ayuda a que llegue.",
     "releaseNotesTitle": "Notas de versión",
-    "releaseNotesDescription": "Lo que ha cambiado y lo nuevo en HivePulse, y la lista completa de funciones."
+    "releaseNotesDescription": "Lo que ha cambiado y lo nuevo en HivePulse, y la lista completa de funciones.",
+    "surveyTitle": "Valorar el año apícola",
+    "surveyDescription": "¿Encajan las fechas del año apícola donde tienes abejas? Valóralas en un cuarto de hora, sin cuenta, y ayuda a corregir el calendario de tu región."
   },
   "imprint": {
     "title": "Aviso legal",
@@ -1273,5 +1316,43 @@
     "dataBody": "Lo mismo que para todos: tus colmenares son privados mientras no los pongas tú en el mapa público, nada se vende ni se cede, y no hay publicidad. Las versiones de prueba informan de los fallos, enviando el punto del código y el tipo de dispositivo; nunca tus notas, tu contraseña ni tu dirección. Puedes eliminar tu cuenta y todo su contenido tú mismo en cualquier momento.",
     "androidNote": "En Android, Google solo admite las cuentas que hayamos registrado antes; sin registro, el enlace muestra «Aplicación no disponible». Envíanos la dirección de tu cuenta de Google a",
     "androidNoteSubject": "Prueba Android de HivePulse: por favor, añádeme"
+  },
+  "survey": {
+    "tag": "Ayúdanos a acertar",
+    "title": "¿El año apícola encaja donde estás?",
+    "subtitle": "Un cuarto de hora de tu experiencia y el calendario mejora para todos los apicultores de tu región. Sin cuenta.",
+    "why": "Las 38 entradas del año apícola se escribieron una vez, para el centro de Alemania, y se trasladaron a otros lugares con una fórmula: tantos días más tarde por grado de latitud, tantos por cada 100 metros de altitud. Esa fórmula es una estimación. Nadie la ha comparado con lo que hacen de verdad los apicultores en Andalucía, en Bretaña o en Masuria, y quienes pueden comprobarlo son los que tienen abejas allí.",
+    "whyNothingChanges": "Nada de lo que envíes mueve una fecha por sí solo. Las valoraciones de una misma región se agrupan, y solo cuando al menos cinco apicultores en 150 km coinciden llega la corrección mediana a alguien que conoce la región y puede aprobarla.",
+    "placeLead": "Primero: ¿dónde están tus abejas? Así las fechas que valores serán las que verías de verdad, no las escritas para el centro de Alemania.",
+    "country": "País",
+    "postal": "Código postal",
+    "years": "Años de apicultura",
+    "yearsOptional": "opcional",
+    "privacy": "Se guardan el país, tu posición redondeada a unos 11 km y tus valoraciones. El código postal se consulta una vez y luego se descarta. Sin nombre, sin dirección, sin vínculo con una cuenta.",
+    "placeSubmit": "Mostrar mi año",
+    "loading": "Cargando…",
+    "loadFailed": "No se pudo cargar la cronología. Inténtalo de nuevo.",
+    "notLocated": "No se ha encontrado ese código postal, así que las fechas de abajo no están desplazadas. Puedes valorarlas igualmente, pero una corrección necesita un lugar: comprueba el código antes de enviar.",
+    "shifted": "Las fechas de abajo están desplazadas {days, plural, one {# día} other {# días}} respecto al centro de Alemania, para tu lugar.",
+    "rateLead": "Valora solo aquello sobre lo que tengas una opinión: todo lo que dejes sin marcar simplemente no se envía. Toca una respuesta otra vez para retirarla.",
+    "verdictFits": "Encaja",
+    "verdictLater": "Más tarde aquí",
+    "verdictEarlier": "Más temprano aquí",
+    "verdictWrong": "Aquí no se hace",
+    "sizeLabel": "Unos",
+    "sizePlaceholder": "14",
+    "days": "días",
+    "noteLabel": "¿Algo que añadir? (opcional)",
+    "notePlaceholder": "Aquí suele ser a mediados de febrero",
+    "counter": "{answered} de {total} valoradas",
+    "send": "Enviar mis valoraciones",
+    "sending": "Enviando…",
+    "nothingRated": "Todavía no has valorado nada. Elige una respuesta en al menos una entrada.",
+    "sendFailed": "No se han podido enviar las valoraciones. Inténtalo de nuevo.",
+    "doneTitle": "Gracias.",
+    "doneBody": "{accepted, plural, one {Ha llegado # valoración.} other {Han llegado # valoraciones.}}",
+    "doneReplaced": "{replaced, plural, one {Una de ellas ha sustituido lo que este navegador había dicho antes.} other {# de ellas han sustituido lo que este navegador había dicho antes.}}",
+    "doneNext": "Todavía no ha cambiado nada. Cuando cinco apicultores cerca de ti coincidan, la corrección pasará a alguien que pueda aprobarla.",
+    "doneAgain": "Valorar otra región"
   }
 }

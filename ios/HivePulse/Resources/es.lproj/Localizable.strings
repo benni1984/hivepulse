@@ -560,6 +560,8 @@
 "calendar.setRegion" = "Indicar la región";
 "calendar.changeRegion" = "Cambiar la región";
 "calendar.disclaimer" = "Valores orientativos de la práctica apícola habitual, no normas: la floración y el tiempo deciden, y las fechas cambian con tu lugar. Medicamentos solo según la autorización y las normas de tu país; en caso de duda, pregunta a tu asociación de apicultores o a la autoridad veterinaria.";
+"calendar.rate.hint" = "¿Encajan estas fechas donde están tus abejas?";
+"calendar.rate.link" = "Dínoslo";
 "calendar.category.inspection" = "Revisión";
 "calendar.category.swarm" = "Enjambrazón";
 "calendar.category.feeding" = "Alimentación";

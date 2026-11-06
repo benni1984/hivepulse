@@ -159,6 +159,13 @@ export default function BeekeepingYear() {
 
       {view === 'ribbon' && <YearRibbon year={new Date(today).getFullYear()} />}
 
+      {view === 'ribbon' && (
+        <p className="dash-card-meta dash-cal-rate">
+          {t('calendar.rateHint')}{' '}
+          <Link href="/year-feedback" className="dash-cal-rate-link">{t('calendar.rateLink')}</Link>
+        </p>
+      )}
+
       {view === 'list' && error && <div className="dash-error-banner">{t('calendar.loadError')}</div>}
       {view === 'list' && !loaded && !error && <div className="spinner" aria-label={t('calendar.loading')} />}
 
@@ -228,6 +235,10 @@ export default function BeekeepingYear() {
           </div>
 
           <p className="dash-card-meta dash-cal-disclaimer">{t('calendar.disclaimer')}</p>
+          <p className="dash-card-meta dash-cal-rate">
+            {t('calendar.rateHint')}{' '}
+            <Link href="/year-feedback" className="dash-cal-rate-link">{t('calendar.rateLink')}</Link>
+          </p>
         </>
       )}
     </div>

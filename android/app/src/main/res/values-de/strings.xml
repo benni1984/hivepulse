@@ -549,6 +549,8 @@
     <string name="calendar_set_region">Region festlegen</string>
     <string name="calendar_change_region">Region ändern</string>
     <string name="calendar_disclaimer">Richtwerte aus der üblichen imkerlichen Praxis, keine Vorschriften: Blüte und Wetter entscheiden, und die Termine verschieben sich mit deinem Ort. Arzneimittel nur wie in deinem Land zugelassen und vorgeschrieben; im Zweifel frag deinen Imkerverband oder das Veterinäramt.</string>
+    <string name="calendar_rate_hint">Passen diese Daten dort, wo deine Bienen stehen?</string>
+    <string name="calendar_rate_link">Sag es uns</string>
     <string name="calendar_category_inspection">Kontrolle</string>
     <string name="calendar_category_swarm">Schwarmkontrolle</string>
     <string name="calendar_category_feeding">Fütterung</string>

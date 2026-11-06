@@ -106,6 +106,20 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
       </section>
 
       <section className="help-section">
+        <h2 className="help-section-title">The dates do not fit here</h2>
+        <p>Then say so. The 38 entries were written for central Germany and moved elsewhere by a formula, and the only people who can tell whether the formula is right in Andalusia are beekeepers in Andalusia. The questionnaire at <a href="/year-feedback">Rate the beekeeping year</a> takes about a quarter of an hour and needs no account.</p>
+        <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
+          <li><strong>You rate your own dates.</strong> Give a country and a postal code first, and the timeline is shifted to that place before you see it.</li>
+          <li><strong>Only what you know.</strong> Four answers per entry &mdash; it fits, it happens later here, it happens earlier here, it is not done here at all &mdash; and everything you leave alone is not sent.</li>
+          <li><strong>Nothing is asked about you.</strong> Stored are the country, a position rounded to about 11&nbsp;km, and your answers. The postal code is looked up once and then dropped.</li>
+        </ul>
+        <div className="help-callout info">
+          <i className="fas fa-info-circle" />
+          <p>Your answer changes no date by itself. Ratings within 150 km of each other are grouped, a group needs at least five beekeepers, and the median correction then goes to somebody who knows the region and can approve it. Once approved, the timeline says how many beekeepers it rests on.</p>
+        </div>
+      </section>
+
+      <section className="help-section">
         <h2 className="help-section-title">Good to know</h2>
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li>The dates are guide values from usual beekeeping practice, not rules: bloom and weather decide.</li>

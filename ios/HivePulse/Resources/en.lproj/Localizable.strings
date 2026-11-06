@@ -560,6 +560,8 @@
 "calendar.setRegion" = "Set region";
 "calendar.changeRegion" = "Change region";
 "calendar.disclaimer" = "Guide values from usual beekeeping practice, not rules: bloom and weather decide, and the dates move with your place. Medicines only as approved and prescribed in your country; when in doubt, ask your beekeepers’ association or veterinary office.";
+"calendar.rate.hint" = "Do these dates fit where your bees are?";
+"calendar.rate.link" = "Tell us";
 "calendar.category.inspection" = "Inspection";
 "calendar.category.swarm" = "Swarm control";
 "calendar.category.feeding" = "Feeding";
