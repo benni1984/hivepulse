@@ -110,6 +110,7 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
       <section className="help-section">
         <h2 className="help-section-title">Les dates ne correspondent pas ici</h2>
         <p>Alors dites-le. Les 38 entrées ont été écrites pour le centre de l’Allemagne et déplacées ailleurs par une formule&nbsp;; or, savoir si cette formule est juste en Andalousie, seuls les apiculteurs d’Andalousie le peuvent. Le questionnaire <a href="/year-feedback">Évaluer l’année apicole</a> prend environ un quart d’heure et ne demande aucun compte.</p>
+        <Screenshot src="/docs/screenshots/year-feedback.png" caption="Le questionnaire Évaluer l’année apicole" />
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li><strong>Vous évaluez vos propres dates.</strong> Indiquez d’abord un pays et un code postal&nbsp;: la chronologie est décalée vers ce lieu avant que vous ne la voyiez.</li>
           <li><strong>Seulement ce que vous connaissez.</strong> Quatre réponses par entrée &mdash; ça colle, plus tard ici, plus tôt ici, pas d’usage ici &mdash; et tout ce que vous laissez n’est pas envoyé.</li>

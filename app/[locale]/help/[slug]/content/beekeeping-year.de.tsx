@@ -110,6 +110,7 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
       <section className="help-section">
         <h2 className="help-section-title">Die Daten passen hier nicht</h2>
         <p>Dann sag es. Die 38 Einträge wurden für Mitteldeutschland geschrieben und mit einer Formel auf andere Orte verschoben, und ob die Formel in Andalusien stimmt, können nur Imker in Andalusien sagen. Der Fragebogen unter <a href="/year-feedback">Das Imkerjahr bewerten</a> dauert etwa eine Viertelstunde und braucht kein Konto.</p>
+        <Screenshot src="/docs/screenshots/year-feedback.png" caption="Der Fragebogen unter Das Imkerjahr bewerten" />
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li><strong>Du bewertest deine eigenen Daten.</strong> Land und Postleitzahl zuerst, dann wird der Zeitstrahl auf diesen Ort verschoben, bevor du ihn siehst.</li>
           <li><strong>Nur was du kennst.</strong> Vier Antworten je Eintrag &mdash; passt, bei mir später, bei mir früher, gilt hier nicht &mdash; und alles, was du auslässt, wird nicht gesendet.</li>

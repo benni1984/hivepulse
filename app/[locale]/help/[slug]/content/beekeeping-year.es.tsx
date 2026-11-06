@@ -109,6 +109,7 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
       <section className="help-section">
         <h2 className="help-section-title">Aquí las fechas no encajan</h2>
         <p>Entonces dilo. Las 38 entradas se escribieron para el centro de Alemania y se trasladaron a otros lugares con una fórmula, y si la fórmula acierta en Andalucía solo lo pueden decir los apicultores de Andalucía. El cuestionario <a href="/year-feedback">Valorar el año apícola</a> lleva unos quince minutos y no necesita cuenta.</p>
+        <Screenshot src="/docs/screenshots/year-feedback.png" caption="El cuestionario Valorar el año apícola" />
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li><strong>Valoras tus propias fechas.</strong> Primero el país y el código postal: la cronología se desplaza a ese lugar antes de que la veas.</li>
           <li><strong>Solo lo que conoces.</strong> Cuatro respuestas por entrada &mdash; encaja, más tarde aquí, más temprano aquí, aquí no se hace &mdash; y todo lo que dejes sin marcar no se envía.</li>
