@@ -73,10 +73,15 @@ struct YearRibbonView: View {
                     }
                     .frame(width: canvas, alignment: .topLeading)
                 }
+                // The identifier belongs to the strip that scrolls, not to the whole view. On the
+                // outer frame SwiftUI passed it down to whichever child it felt like -- the test
+                // log shows it resolving to a StaticText -- and a drag across a scrap of text
+                // moves no scroll view, so the year never scrolled and no bar ever came into
+                // reach. Named here, "yearRibbon" is the thing a swipe has to land on.
+                .accessibilityIdentifier("yearRibbon")
             }
         }
         .frame(height: totalHeight)
-        .accessibilityIdentifier("yearRibbon")
     }
 
     /// The whole thing is a fixed height, because it sits inside a vertical scroll view and a

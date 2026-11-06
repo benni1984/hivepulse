@@ -44,7 +44,10 @@ final class YearRibbonUITests: XCTestCase {
         openTheYear()
         app.buttons["yearViewRibbon"].tap()
 
-        let ribbon = element("yearRibbon")
+        // By class, not by "whatever carries this identifier": `.firstMatch` on an identifier
+        // that SwiftUI had handed to several elements picked a StaticText, and dragging that did
+        // nothing at all. The strip is a scroll view, so ask for a scroll view.
+        let ribbon = app.scrollViews["yearRibbon"]
         XCTAssertTrue(ribbon.waitForExistence(timeout: 10))
 
         // Bars are drawn even while they are off to the right, so their existence is worth
@@ -53,22 +56,18 @@ final class YearRibbonUITests: XCTestCase {
         XCTAssertGreaterThan(app.buttons.matching(identifier: "ribbonBar").count, 0,
                              "the ribbon must draw the bars of the year")
 
-        // The year is drawn wider than the screen, so the mocked entries -- all in the second
-        // half -- start off to the right, and a tap at coordinates outside the viewport lands
-        // nowhere. Dragged across the ribbon's own middle rather than `swipeLeft()` on the
-        // element: the identifier sits on the container, whose frame is not the frame of the
-        // scrolling strip inside it, so the gesture went to the wrong place and nothing moved.
+        // The year is drawn wider than the screen and the mocked entries all sit in its second
+        // half, so they start off to the right. Swiped into view rather than tapped where they
+        // are not: a tap at coordinates outside the viewport lands nowhere.
         var bar = firstHittableBar()
-        var drags = 0
-        while bar == nil && drags < 6 {
-            let from = ribbon.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5))
-            let to = ribbon.coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.5))
-            from.press(forDuration: 0.05, thenDragTo: to)
-            drags += 1
+        var swipes = 0
+        while bar == nil && swipes < 6 {
+            ribbon.swipeLeft()
+            swipes += 1
             bar = firstHittableBar()
         }
         guard let bar else {
-            XCTFail("no bar of the year could be dragged into view in \(drags) drags")
+            XCTFail("no bar of the year could be brought into view in \(swipes) swipes")
             return
         }
 
