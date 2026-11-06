@@ -16,7 +16,7 @@ final class YearRibbonUITests: XCTestCase {
     /// the next, and an identified `VStack` is neither, so `app.otherElements[...]` quietly matches
     /// nothing and every assertion about it fails for a reason that has nothing to do with the app.
     private func element(_ identifier: String) -> XCUIElement {
-        app.descendants(matching: .any)[identifier]
+        app.descendants(matching: .any).matching(identifier: identifier).firstMatch
     }
 
     private func openTheYear() {
@@ -90,8 +90,22 @@ final class YearRibbonUITests: XCTestCase {
     func test_theQuestionnaireIsOfferedUnderTheYear() {
         // The dates can be wrong where somebody keeps bees, and the app says so where they are
         // looking at them. The form itself is a web page; this is the invitation to it.
+        //
+        // Checked in the ribbon rather than the list. In both views it sits at the foot, under the
+        // disclaimer, which is where a footnote belongs -- but the list is lazy and opens scrolled
+        // to today, so its foot is a row that has never been built. The ribbon is one screen of
+        // rows, so a swipe or two reaches the bottom.
         openTheYear()
-        XCTAssertTrue(element("yearFeedbackLink").waitForExistence(timeout: 10),
+        app.buttons["yearViewRibbon"].tap()
+        XCTAssertTrue(element("yearRibbon").waitForExistence(timeout: 10))
+
+        let link = element("yearFeedbackLink")
+        var swipes = 0
+        while !link.exists && swipes < 4 {
+            app.swipeUp()
+            swipes += 1
+        }
+        XCTAssertTrue(link.waitForExistence(timeout: 5),
                       "the beekeeping year must offer the questionnaire")
     }
 
