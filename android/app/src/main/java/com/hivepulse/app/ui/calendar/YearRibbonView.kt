@@ -20,6 +20,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -312,7 +315,14 @@ private fun BarBlock(bar: YearRibbon.Bar, picked: Boolean, onPick: (YearRibbon.B
             .clip(RoundedCornerShape(5.dp))
             .background(fill)
             .then(if (picked) Modifier.border(2.dp, Color.White, RoundedCornerShape(5.dp)) else Modifier)
-            .clickable { onPick(bar) }
+            .clickable(role = Role.Button) { onPick(bar) }
+            // What TalkBack says. A coloured rectangle at an x offset is exactly the kind of
+            // thing a screen reader gets nothing from, and the label inside the bar is cut to
+            // one line, so the dates -- the whole point of where the bar sits and how long it
+            // is -- would be lost. The iPhone's `spokenLabel` says the same sentence.
+            .semantics(mergeDescendants = true) {
+                contentDescription = "${bar.entry.title}, ${barDates(bar)}"
+            }
             .testTag("ribbonBar"),
         contentAlignment = Alignment.CenterStart,
     ) {

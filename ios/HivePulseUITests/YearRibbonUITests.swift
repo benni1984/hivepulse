@@ -50,7 +50,7 @@ final class YearRibbonUITests: XCTestCase {
         // Bars are drawn even while they are off to the right, so their existence is worth
         // asserting on its own: it separates "the ribbon drew nothing" from "the ribbon drew the
         // year and the test could not reach it".
-        XCTAssertGreaterThan(app.descendants(matching: .any).matching(identifier: "ribbonBar").count, 0,
+        XCTAssertGreaterThan(app.buttons.matching(identifier: "ribbonBar").count, 0,
                              "the ribbon must draw the bars of the year")
 
         // The year is drawn wider than the screen, so the mocked entries -- all in the second
@@ -120,8 +120,13 @@ final class YearRibbonUITests: XCTestCase {
     }
 
     /// The first bar that is actually on screen, or nil while the year is scrolled past them all.
+    ///
+    /// Buttons, because that is what a bar is: it was a `ZStack` with `.onTapGesture`, which
+    /// SwiftUI gives no accessibility element at all -- VoiceOver could not reach a single bar and
+    /// XCUITest found the identifier in the tree with no hit point, so no amount of dragging ever
+    /// made one "hittable".
     private func firstHittableBar() -> XCUIElement? {
-        let bars = app.descendants(matching: .any).matching(identifier: "ribbonBar")
+        let bars = app.buttons.matching(identifier: "ribbonBar")
         for index in 0..<bars.count where bars.element(boundBy: index).isHittable {
             return bars.element(boundBy: index)
         }

@@ -165,15 +165,19 @@ struct YearRibbonView: View {
                 }
                 ForEach(Array(row.lanes.enumerated()), id: \.offset) { index, lane in
                     ForEach(lane) { bar in
-                        BarBlock(bar: bar, picked: picked?.id == bar.id, height: laneHeight)
-                            .frame(width: max(canvas * bar.width / 100, 1), height: laneHeight)
-                            .offset(
-                                x: canvas * bar.left / 100,
-                                y: CGFloat(index) * (laneHeight + laneSpacing)
-                            )
-                            .onTapGesture {
-                                picked = picked?.id == bar.id ? nil : bar
-                            }
+                        Button {
+                            picked = picked?.id == bar.id ? nil : bar
+                        } label: {
+                            BarBlock(bar: bar, picked: picked?.id == bar.id, height: laneHeight)
+                        }
+                        .buttonStyle(.plain)
+                        .frame(width: max(canvas * bar.width / 100, 1), height: laneHeight)
+                        .offset(
+                            x: canvas * bar.left / 100,
+                            y: CGFloat(index) * (laneHeight + laneSpacing)
+                        )
+                        .accessibilityIdentifier("ribbonBar")
+                        .accessibilityLabel(Self.spokenLabel(for: bar))
                     }
                 }
                 // Today, over the bars rather than under them: it is the one line a beekeeper
@@ -187,6 +191,16 @@ struct YearRibbonView: View {
             }
             .frame(width: canvas, height: rowHeight, alignment: .topLeading)
         }
+    }
+
+    /// "Swarm control, 22 Apr – 2 Jul" -- the two things a bar's position and length mean, for
+    /// somebody who cannot see either. `shortDay` is what the detail card under the ribbon uses.
+    static func spokenLabel(for bar: YearRibbon.Bar) -> String {
+        // A forage reads from the move to the end of its harvest, because that is the one bar it
+        // is drawn as. Android's `barDates` says the same.
+        let from = BeekeepingYear.shortDay(bar.entry.start)
+        let to = BeekeepingYear.shortDay(bar.harvest?.end ?? bar.entry.end)
+        return "\(bar.entry.title), \(from) – \(to)"
     }
 
     private func seasonTint(_ season: YearRibbon.Season) -> Color {
@@ -232,7 +246,7 @@ private struct BarBlock: View {
             RoundedRectangle(cornerRadius: 5)
                 .strokeBorder(Color.white, lineWidth: picked ? 2 : 0)
         )
-        .accessibilityIdentifier("ribbonBar")
+        .accessibilityHidden(true)
     }
 
     private var fill: LinearGradient {
