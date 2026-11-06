@@ -47,18 +47,28 @@ final class YearRibbonUITests: XCTestCase {
         let ribbon = element("yearRibbon")
         XCTAssertTrue(ribbon.waitForExistence(timeout: 10))
 
-        // The year is drawn wider than the screen, so the months after about June are off to the
-        // right. Dragged into view rather than tapped where they are not: a tap at coordinates
-        // outside the viewport lands nowhere.
+        // Bars are drawn even while they are off to the right, so their existence is worth
+        // asserting on its own: it separates "the ribbon drew nothing" from "the ribbon drew the
+        // year and the test could not reach it".
+        XCTAssertGreaterThan(app.descendants(matching: .any).matching(identifier: "ribbonBar").count, 0,
+                             "the ribbon must draw the bars of the year")
+
+        // The year is drawn wider than the screen, so the mocked entries -- all in the second
+        // half -- start off to the right, and a tap at coordinates outside the viewport lands
+        // nowhere. Dragged across the ribbon's own middle rather than `swipeLeft()` on the
+        // element: the identifier sits on the container, whose frame is not the frame of the
+        // scrolling strip inside it, so the gesture went to the wrong place and nothing moved.
         var bar = firstHittableBar()
-        var swipes = 0
-        while bar == nil && swipes < 8 {
-            ribbon.swipeLeft()
-            swipes += 1
+        var drags = 0
+        while bar == nil && drags < 6 {
+            let from = ribbon.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5))
+            let to = ribbon.coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.5))
+            from.press(forDuration: 0.05, thenDragTo: to)
+            drags += 1
             bar = firstHittableBar()
         }
         guard let bar else {
-            XCTFail("no bar of the year could be brought into view in \(swipes) swipes")
+            XCTFail("no bar of the year could be dragged into view in \(drags) drags")
             return
         }
 
