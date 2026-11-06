@@ -69,6 +69,15 @@ const browser = await chromium.launch({ headless: true });
 const ctx  = await browser.newContext({ viewport: { width: 1280, height: 800 } });
 const page = await ctx.newPage();
 
+// The registration form, before signing in -- a help page has shown it since the beginning and
+// no script ever took it, so the picture on disk was captured by hand in June and has been
+// frozen through the whole redesign since. Public, so it costs one page load here.
+await soft('register-form', async () => {
+  await goto(page, `${BASE}/en/dashboard/register`);
+  await page.locator('input[type=email]').first().waitFor({ timeout: 15_000 });
+  await shot(page, 'register-form');
+});
+
 await goto(page, `${BASE}/en/dashboard/login`);
 // Sign-in with Apple or Google comes first; the email form sits behind a toggle once the
 // server reports a provider. With no provider there is no toggle, so only click if present.
@@ -165,6 +174,29 @@ await soft('beekeeping-year', async () => {
   await page.getByTestId('calendar-today').waitFor({ timeout: 15_000 });
   await page.waitForTimeout(1_000); // the list scrolls itself to today
   await shot(page, 'beekeeping-year');
+});
+
+// ── The questionnaire about the year ─────────────────────────────────────────
+//
+// Public, no account -- that is the point of it -- so it needs no sign-in here. Two pictures,
+// because the page has two states worth showing: where you say where your bees are, and the year
+// as it then asks about it. The second needs a postal code to be looked up over the network, so
+// it is best effort on its own: a geocoder that is slow today must not cost the first picture.
+
+await soft('year-feedback', async () => {
+  await goto(page, `${BASE}/en/year-feedback`);
+  await page.getByRole('button', { name: 'Show me my year' }).waitFor({ timeout: 15_000 });
+  await shot(page, 'year-feedback');
+});
+
+await soft('year-feedback-rating', async () => {
+  await goto(page, `${BASE}/en/year-feedback`);
+  await page.getByLabel('Postal code').fill('20095');
+  await page.getByRole('button', { name: 'Show me my year' }).click();
+  // The dates are shifted to that place before they are shown, which means a lookup over the
+  // network; the counter at the foot only exists once the entries are there.
+  await page.getByText(/of \d+ rated$/).waitFor({ timeout: 30_000 });
+  await shot(page, 'year-feedback-rating');
 });
 
 // ── Stats ─────────────────────────────────────────────────────────────────────

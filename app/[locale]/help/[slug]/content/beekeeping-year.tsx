@@ -108,6 +108,7 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
       <section className="help-section">
         <h2 className="help-section-title">The dates do not fit here</h2>
         <p>Then say so. The 38 entries were written for central Germany and moved elsewhere by a formula, and the only people who can tell whether the formula is right in Andalusia are beekeepers in Andalusia. The questionnaire at <a href="/year-feedback">Rate the beekeeping year</a> takes about a quarter of an hour and needs no account.</p>
+        <Screenshot src="/docs/screenshots/year-feedback.png" caption="The questionnaire at Rate the beekeeping year" />
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li><strong>You rate your own dates.</strong> Give a country and a postal code first, and the timeline is shifted to that place before you see it.</li>
           <li><strong>Only what you know.</strong> Four answers per entry &mdash; it fits, it happens later here, it happens earlier here, it is not done here at all &mdash; and everything you leave alone is not sent.</li>
