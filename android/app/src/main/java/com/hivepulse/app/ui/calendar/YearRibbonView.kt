@@ -52,8 +52,8 @@ import java.util.Locale
  * on the web there is no good answer: a sideways-scrolling strip inside a page fights the page's
  * own scrolling. In an app it does not -- swiping a strip sideways is an ordinary gesture -- so
  * here the canvas is simply made wider than the screen ([MIN_CANVAS]) and the year is dragged
- * through. At 1100dp a month is 90dp, which is legible on the narrowest phone we support, and on a
- * tablet or in landscape the canvas fills the width and nothing needs dragging at all.
+ * through, and on a tablet or in landscape the canvas fills the width and nothing needs dragging
+ * at all.
  *
  * The row labels stand in a column that does not scroll, so you still know which row you are
  * looking at after dragging into August. It costs a fifth of a phone's width, which is worth it:
@@ -181,7 +181,7 @@ fun YearRibbonCanvas(
     val scroll: ScrollState = rememberScrollState()
     val screen = LocalConfiguration.current.screenWidthDp.dp
     // On a tablet or in landscape the year fits, and then it should fill the width rather than
-    // sit in a 1100dp block with a gap beside it.
+    // sit in a [MIN_CANVAS] block with a gap beside it.
     val canvas: Dp = maxOf(MIN_CANVAS, screen - 32.dp - LABEL_WIDTH - 8.dp)
     val rows = state.rows
     val todayAt = state.todayAt

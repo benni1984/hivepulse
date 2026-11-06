@@ -14,8 +14,12 @@ import UIKit
 /// on the web there is no good answer: a sideways-scrolling strip inside a page fights the page's
 /// own scrolling. In an app it does not -- swiping a strip sideways is an ordinary gesture -- so
 /// here the canvas is simply made wider than the screen (`minCanvas`) and the year is dragged
-/// through. At 1100 points a month is 90, legible on the narrowest iPhone we support, and on an
-/// iPad or in landscape the canvas fills the width and nothing needs dragging at all.
+/// through, and on an iPad or in landscape the canvas fills the width and nothing needs dragging
+/// at all.
+///
+/// The constants are Android's, which is where they were settled -- on an emulator, by looking at
+/// the thing. The arithmetic is identical on both clients, so a number that reads well there reads
+/// well here, and a divergence would only mean one of the two had never been looked at.
 ///
 /// The row labels stand in a column that does not scroll, so you still know which row you are
 /// looking at after dragging into August. Their heights are computed from the same lane counts as
@@ -25,17 +29,28 @@ struct YearRibbonView: View {
     let state: YearRibbonState
     @Binding var picked: YearRibbon.Bar?
 
-    /// How wide the year is drawn, at the least. Below this a month is too narrow to read.
-    private let minCanvas: CGFloat = 1100
+    /// How wide the year is drawn, at the least.
+    ///
+    /// Two things pull against each other here. Wide enough and a month is comfortable to read;
+    /// too wide and "the whole year in one picture" shows a quarter of a year and needs four
+    /// drags, which is not a picture of anything. At 640 a month is 53 points -- room for "Jan"
+    /// and for a three-week bar to be 37, which a gloved finger can hit -- and about six months
+    /// are on an iPhone screen at once, so the year is two drags rather than four.
+    private let minCanvas: CGFloat = 640
     /// The height of one lane of bars, and the gap between two lanes.
     private let laneHeight: CGFloat = 26
     private let laneSpacing: CGFloat = 4
     /// The gap between one row and the next, and the height of the month strip.
     private let rowSpacing: CGFloat = 14
     private let monthHeight: CGFloat = 24
-    private let labelWidth: CGFloat = 76
+    /// The row names column. Every point here is a point the year does not get, and on a phone
+    /// that is the one thing the screen is for, so it is as narrow as two lines of the longest
+    /// name allow.
+    private let labelWidth: CGFloat = 58
     /// How tall a row label block is, so the label column lines up with the rows beside it.
-    private let labelHeight: CGFloat = 16
+    /// Two lines of 11 points: the longest of these names needs two in every language
+    /// ("Schwarmkontrolle", "Contrôle de l'essaimage"), and at 16 the second was cut off.
+    private let labelHeight: CGFloat = 22
 
     private var rows: [YearRibbon.RibbonRow] { state.rows }
 
@@ -79,7 +94,10 @@ struct YearRibbonView: View {
             ForEach(rows) { row in
                 VStack(alignment: .leading, spacing: 0) {
                     Text(rowLabel(row.row))
-                        .font(.caption2.weight(.bold))
+                        // A fixed size rather than `.caption2`, which grows with the reader's
+                        // text setting: the block it sits in is exactly two lines tall, so a
+                        // label that grew would be cut off instead of wrapping.
+                        .font(.system(size: 9, weight: .bold))
                         .foregroundColor(.hpStone500)
                         .lineLimit(2)
                         .frame(height: labelHeight, alignment: .bottomLeading)
