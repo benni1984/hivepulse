@@ -378,19 +378,34 @@ def install_in_language():
     set_app_language()
     time.sleep(1)
 
-    # A flat sleep after `am start` was enough for the English run and not for the Spanish
-    # one, which reported no login screen at all after 60s — a cold emulator can simply be
-    # slower than any fixed wait. Poll, and give the app one more start before giving up.
-    for attempt in (1, 2):
+    # A flat sleep after `am start` was enough for the English run and not for the Spanish one,
+    # which reported no login screen at all after 60s — a cold emulator can simply be slower than
+    # any fixed wait. So: poll, and start the app again rather than give up on the first attempt.
+    #
+    # Twice sixty seconds was then not enough either. Five of these jobs run at once, and on
+    # 2026-11-06 the Spanish and French emulators both ran out while English, German and Polish
+    # finished; a re-run of the same commit passed both. Nothing was wrong with them but the
+    # minute. Three attempts of ninety: polling costs nothing when the screen is there, so a
+    # longer ceiling is only ever paid on a run that would otherwise have failed.
+    started = time.time()
+    for attempt in (1, 2, 3):
         A.shell("am", "start", "-n", A.MAIN_ACTIVITY)
-        deadline = time.time() + 60
+        deadline = time.time() + 90
         while time.time() < deadline:
             dump = A.get_ui_dump()
             if label_in(dump, "action_login") or label_in(dump, "action_sign_in_with_email"):
+                if attempt > 1:
+                    print(f"  login screen after {time.time() - started:.0f}s "
+                          f"(attempt {attempt})", flush=True)
                 return
             time.sleep(2)
-        print(f"  no login screen {attempt * 60}s after launch — starting the app again", flush=True)
-    raise RuntimeError("The app never reached its login screen")
+        print(f"  no login screen {time.time() - started:.0f}s after the first launch "
+              f"— starting the app again", flush=True)
+    # The elapsed time is in the message because "never" tells the next reader nothing about
+    # whether it was close.
+    raise RuntimeError(
+        f"The app never reached its login screen in {time.time() - started:.0f}s, 3 attempts"
+    )
 
 
 def confirm_the_app_speaks(language: str):

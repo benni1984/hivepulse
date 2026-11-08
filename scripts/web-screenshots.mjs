@@ -74,7 +74,13 @@ const page = await ctx.newPage();
 // frozen through the whole redesign since. Public, so it costs one page load here.
 await soft('register-form', async () => {
   await goto(page, `${BASE}/en/dashboard/register`);
-  await page.locator('input[type=email]').first().waitFor({ timeout: 15_000 });
+  // Same shape as the login page below: with a social provider configured the email form sits
+  // behind a toggle, and waiting for the email field alone timed out -- the first run of this
+  // capture skipped itself for exactly that. Wait for whichever of the two is there.
+  const toggle = page.getByTestId('email-signin-toggle');
+  await toggle.or(page.locator('input[type=email]')).first().waitFor({ timeout: 15_000 });
+  if (await toggle.isVisible()) await toggle.click();
+  await page.locator('input[type=email]').first().waitFor({ timeout: 10_000 });
   await shot(page, 'register-form');
 });
 

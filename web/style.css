@@ -2168,7 +2168,9 @@ button.hornets-action-card { width: 100%; }
 
 .survey-verdicts { display: flex; flex-wrap: wrap; gap: 8px; }
 .survey-verdict {
-  min-height: 42px; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--border);
+  /* 44 is the smallest target Apple asks for and Android asks for 48; a page whose readers are
+     outdoors with a hive tool in the other hand should not be at the bottom of that range. */
+  min-height: 44px; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--border);
   background: #fff; color: var(--body-text); font-family: inherit; font-size: 14px; font-weight: 600;
   cursor: pointer; transition: border-color .15s, background .15s, color .15s;
 }
@@ -2206,7 +2208,10 @@ button.hornets-action-card { width: 100%; }
   /* Four pill buttons do not fit a phone's width side by side, and squeezing them would make
      each one too small to hit with a thumb. Two by two, full height. */
   .survey-verdicts { display: grid; grid-template-columns: 1fr 1fr; }
-  .survey-verdict { width: 100%; }
+  /* On the phone they are the whole interaction, and the phone is where this gets filled in
+     standing at the apiary. 48 is Android's minimum; measured at 375 points it was 42. */
+  .survey-verdict { width: 100%; min-height: 48px; }
+  .survey-input { min-height: 44px; }
   .survey-detail { grid-template-columns: 1fr; align-items: stretch; }
   .survey-size-input { width: 100%; }
   .survey-bar { flex-direction: column; align-items: stretch; }
