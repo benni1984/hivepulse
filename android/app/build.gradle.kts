@@ -77,6 +77,18 @@ android {
                 "proguard-rules.pro",
             )
             signingConfig = signingConfigs.findByName("release")
+
+            // Play warns that the bundle carries native code without debugging symbols, so a
+            // crash or ANR inside it arrives as bare addresses. The native code is not ours --
+            // ML Kit's barcode scanner and Sentry both ship .so files -- but their stack frames
+            // land in our crash reports all the same, and an address tells nobody anything.
+            //
+            // SYMBOL_TABLE, not FULL: the table gives function names, FULL adds files and line
+            // numbers and a great deal of size. Line numbers in somebody else's source are of no
+            // use without that source, so the larger file would buy nothing we could read.
+            ndk {
+                debugSymbolLevel = "SYMBOL_TABLE"
+            }
         }
     }
 
