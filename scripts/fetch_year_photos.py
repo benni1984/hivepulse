@@ -100,12 +100,33 @@ PICKS: dict[str, str] = {
     "final-harvest":       "Uncapping honeycomb.jpg",
 }
 
-# No photograph anyone would recognise exists for these on Commons under a licence we can
-# use: a tub of fondant, a syrup feeder in a hive, a brood sample on its way to the lab, a
-# mouse guard, a colony being dribbled with oxalic acid -- the last two exist but are
-# indistinguishable from any photograph of a hive, which illustrates nothing.
-# They keep their drawn icon, which the layout allows for -- a missing picture is left out
-# rather than replaced with something that illustrates nothing.
+# These five keep their drawn icon. The layout allows for it: a missing picture is left out
+# rather than replaced with one that illustrates nothing.
+#
+# Commons was searched twice -- full text and categories, reading the licence out of
+# `extmetadata` -- and every candidate it produced was downloaded and looked at (issue 412).
+# A reason each, so that nobody repeats the search:
+#
+#   candy-feeding     Nothing at all. No hit for fondant, Futterteig or a candy board, and
+#                     Category:Bee feeders, :Feeding of bees and :Sugar for bees do not exist.
+#   winter-feeding    One hit: a line drawing from the British Bee Journal of 1879, 516x292 --
+#                     below the 640x427 this pipeline crops to, and a drawing besides.
+#   foulbrood-sample  Candidates exist and all show *diseased brood*, but this entry is the
+#                     feed-ring sample: a precaution, not a diagnosis. Recognising the disease
+#                     is `foulbrood-check`, which already carries that picture; the same image
+#                     twice in one row would read as a mistake. `European foulbrood CZ.jpg`
+#                     also has red circles drawn on it and is the wrong foulbrood.
+#   winter-prep       `Beekeeping entrance reducer.jpg` is an entrance reducer, correctly
+#                     titled -- lying on a bedsheet. No hive, no bees, not the job.
+#   oxalic-acid       `Abeilles-bees-treatment-varroa.jpg` says "treatment" and shows bees at
+#                     an entrance in sunshine over green grass. This entry is the winter
+#                     treatment in the brood-free time; a photograph of flying bees beside it
+#                     would suggest the opposite of what it says. The Nassenheider evaporator
+#                     in the same search is formic acid -- wrong acid, wrong season.
+#
+# Three of them we can photograph at our own hives, which sidesteps the licence question and
+# matches the entry exactly: candy on a colony, a mouse guard on an entrance, oxalic acid
+# being trickled. For the two Commons has nothing for, that is the only route.
 WITHOUT = ["candy-feeding", "winter-feeding", "foulbrood-sample", "winter-prep", "oxalic-acid"]
 
 # The plant of each forage. In the ribbon the bloom, the move and the harvest of one
