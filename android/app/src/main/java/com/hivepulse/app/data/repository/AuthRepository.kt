@@ -7,6 +7,14 @@ import com.hivepulse.app.data.sync.SyncScheduler
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Signing in, registering, and the Google identity.
+ *
+ * Every call here goes through [withServerMessage]: the server answers a refusal with a sentence
+ * in the app's language ("Invalid email or password."), and without it a Retrofit `HttpException`
+ * reaches the screen as its own `message` -- "HTTP 401 Unauthorized", which tells the person
+ * nothing and reads like a fault in the app. Issue 422.
+ */
 @Singleton
 class AuthRepository @Inject constructor(
     private val api: ApiService,
@@ -18,21 +26,23 @@ class AuthRepository @Inject constructor(
     val isLoggedIn get() = tokenStore.isLoggedIn
 
     suspend fun register(email: String, password: String, name: String, locale: String): UserOut {
-        val resp = api.register(RegisterRequest(email, password, name, locale))
+        val resp = withServerMessage { api.register(RegisterRequest(email, password, name, locale)) }
         tokenStore.accessToken  = resp.accessToken
         tokenStore.refreshToken = resp.refreshToken
         return resp.user
     }
 
     suspend fun login(email: String, password: String): UserOut {
-        val resp = api.login(LoginRequest(email, password))
+        val resp = withServerMessage { api.login(LoginRequest(email, password)) }
         tokenStore.accessToken  = resp.accessToken
         tokenStore.refreshToken = resp.refreshToken
         return resp.user
     }
 
     suspend fun signInWithGoogle(idToken: String): UserOut {
-        val resp = api.signInWithGoogle(SocialSignInRequest(provider = "google", idToken = idToken))
+        val resp = withServerMessage {
+            api.signInWithGoogle(SocialSignInRequest(provider = "google", idToken = idToken))
+        }
         tokenStore.accessToken  = resp.accessToken
         tokenStore.refreshToken = resp.refreshToken
         return resp.user

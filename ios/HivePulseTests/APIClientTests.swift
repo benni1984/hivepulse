@@ -50,3 +50,52 @@ final class APIClientTests: XCTestCase {
         XCTAssertEqual(url?.query, "page=2&per_page=20")
     }
 }
+
+// MARK: - The body of a refusal (issue 422)
+//
+// The backend answers a refusal with `{"detail": {"code": ..., "message": ...}}` -- FastAPI wraps
+// whatever `HTTPException(detail=...)` was given. `APIErrorEnvelope` decoded `error` instead,
+// which the API contract described and the backend never sent, so `message` was always nil and
+// every refusal on this client read "Unknown error". The contract was the thing that was wrong.
+//
+// No test caught it for the life of the file, because none of them asserted on a message and the
+// mock sends the real shape. These do.
+extension APIClientTests {
+
+    private func envelope(_ json: String) -> APIErrorEnvelope? {
+        try? JSONDecoder().decode(APIErrorEnvelope.self, from: Data(json.utf8))
+    }
+
+    func test_errorBody_readsTheMessageTheBackendActuallySends() {
+        let body = #"{"detail":{"code":"INVALID_CREDENTIALS","message":"Invalid email or password."}}"#
+        XCTAssertEqual(envelope(body)?.message, "Invalid email or password.")
+        XCTAssertEqual(envelope(body)?.code, "INVALID_CREDENTIALS")
+    }
+
+    func test_errorBody_readsAPlainStringDetail() {
+        // The errors FastAPI raises itself carry a string, not an object.
+        XCTAssertEqual(envelope(#"{"detail":"Not Found"}"#)?.message, "Not Found")
+    }
+
+    func test_errorBody_survivesSomethingItCannotRead() {
+        // A proxy answering with HTML must not crash the decode; the caller falls back.
+        XCTAssertNil(envelope(#"{"something":"else"}"#)?.message)
+    }
+
+    // MARK: - A 401 means two different things
+
+    func test_aRefusedSignInSaysWhatWasWrong_notThatTheSessionExpired() {
+        // Nothing expired: the password was wrong. "Session expired. Please log in again." asks
+        // somebody who just typed their password to type it again, which is worse than opaque.
+        let error = APIError.invalidCredentials("Invalid email or password.")
+        XCTAssertEqual(error.errorDescription, "Invalid email or password.")
+    }
+
+    func test_anExpiredSessionStillSaysTheSessionExpired() {
+        // The other half: on a call that carried a token, a 401 does mean the session is over,
+        // and that sentence is the right one. Fixing the first case must not lose this.
+        XCTAssertEqual(APIError.unauthorized.errorDescription,
+                       NSLocalizedString("error.unauthorized", comment: ""))
+        XCTAssertNotEqual(APIError.unauthorized.errorDescription, "Invalid email or password.")
+    }
+}

@@ -67,12 +67,27 @@ The API returns error messages in the language indicated by the `Accept-Language
 
 ```json
 {
-  "error": {
+  "detail": {
     "code": "HIVE_NOT_FOUND",
     "message": "No hive found with the given ID."
   }
 }
 ```
+
+The key is **`detail`**, because FastAPI wraps whatever is given to `HTTPException(detail=...)`
+under that name and there is no exception handler that renames it.
+
+This section said `error` from the beginning and the backend never sent it. The web client and
+Android were written against the wire and read `detail`; the iPhone was written against this
+document, so `message` never decoded and **every refusal there read "Unknown error"** — for two
+years of entries in this file, and no test caught it because none assert on a message. Corrected
+here rather than in the backend: two clients and their tests already speak `detail`, and a
+rename would break them to match a sentence.
+
+A few errors come from FastAPI itself rather than from us, and those carry a plain string:
+`{"detail": "Not Found"}`. A client has to read both shapes.
+
+Every error body in this document uses this shape.
 
 ---
 
@@ -1075,7 +1090,7 @@ code could not be looked up — the ratings are then **rejected**, because an un
 the one thing this endpoint cannot use:
 
 ```json
-{ "error": { "code": "POSTAL_CODE_NOT_FOUND", "message": "…" } }
+{ "detail": { "code": "POSTAL_CODE_NOT_FOUND", "message": "…" } }
 ```
 
 Rate limited to 5 submissions per hour per client address.
