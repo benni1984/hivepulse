@@ -1,10 +1,10 @@
-HivePulse 1.0.2
+HivePulse 1.0.3
 
 New in this build:
-• The beekeeping year as a picture: switch between List and Overview and drag the year sideways
-• Photographs of the work: the plant in flower, a capped queen cell, the mite on a bee
-• Do the dates fit where you keep bees? A link under the year opens a short questionnaire
-• The bars of the year can now be read out by TalkBack
+• The scan tab now shows a frame to aim with and says what it wants
+• Hive type and queen colour are translated instead of reading "Top Bar"
+• A refused sign-in says what was wrong again, instead of "HTTP 401"
+• Six labels are no longer buttons — TalkBack reads them as text
 
 Please stay in the test and use the app now and then.
 

@@ -8,8 +8,12 @@
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundleDisplayName</key>
 	<string>HivePulse</string>
+	<!-- The version beekeepers and store reviewers see. It is NOT raised by the TestFlight
+	     workflow, which only sets CFBundleVersion (the build number) from the run number, so
+	     it has to be edited here for every release. It sat at 1.0.0 while Play went to 1.0.2
+	     (#431); ReleaseNotes.test.ts now pins it against distribution/whatsnew/. -->
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.0</string>
+	<string>1.0.3</string>
 	<key>SENTRY_DSN</key>
 	<string>$(SENTRY_DSN)</string>
 	<key>CFBundleVersion</key>

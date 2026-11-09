@@ -1,11 +1,11 @@
-HivePulse 1.0.2
+HivePulse 1.0.3
 
 Novedades de esta versión:
-• El año apícola como imagen: cambia entre Lista y Vista general y arrastra el año de lado
-• Fotos del trabajo: la planta en flor, una celda real operculada, el ácaro sobre una abeja
-• ¿Encajan las fechas donde tienes abejas? Un enlace bajo el año abre un breve cuestionario
-• TalkBack ya lee las barras del año
+• La pestaña de escaneo muestra un marco para apuntar y dice qué espera
+• Tipo de colmena y color de reina están traducidos, ya no dicen "Top Bar"
+• Un inicio de sesión rechazado vuelve a decir qué falló, ya no "HTTP 401"
+• Seis etiquetas ya no son botones — TalkBack las lee como texto
 
-Sigue en la prueba y usa la aplicación de vez en cuando.
+Por favor, sigue en la prueba y usa la aplicación de vez en cuando.
 
 hivepulse@multihead.de

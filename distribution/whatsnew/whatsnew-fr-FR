@@ -1,10 +1,10 @@
-HivePulse 1.0.2
+HivePulse 1.0.3
 
 Nouveautés de cette version :
-• L'année apicole en image : basculez entre Liste et Vue d'ensemble, faites glisser l'année
-• Des photos du travail : la plante en fleur, une cellule royale operculée, le varroa
-• Les dates correspondent-elles chez vous ? Un lien sous l'année ouvre un court questionnaire
-• TalkBack lit désormais les barres de l'année
+• L'onglet de scan affiche un cadre pour viser et dit ce qu'il attend
+• Type de ruche et couleur de reine sont traduits, plus de "Top Bar"
+• Une connexion refusée dit à nouveau ce qui n'allait pas, plus de "HTTP 401"
+• Six libellés ne sont plus des boutons — TalkBack les lit comme du texte
 
 Merci de rester dans le test et d'utiliser l'application de temps en temps.
 
