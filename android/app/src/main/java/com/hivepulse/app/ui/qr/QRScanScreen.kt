@@ -5,7 +5,10 @@ import android.util.Size
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
@@ -14,7 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
@@ -30,6 +37,50 @@ import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import androidx.camera.core.ExperimentalGetImage
 import java.util.concurrent.Executors
+
+/**
+ * The aiming frame and the line that says what to aim at, drawn over the camera image.
+ *
+ * This used to be a `Surface` with `alpha = 0f` and an empty body (#424): it sat in the right
+ * place in the composition and drew nothing, so the scan screen showed a bare camera picture
+ * from the first release until now. With gloves, in the sun, at the side of a hive, the frame
+ * is the whole affordance -- and the five help pages had been captioning a picture of it for
+ * just as long.
+ *
+ * It takes no camera and no permission, which is what makes it testable on its own.
+ */
+@Composable
+fun ScanViewfinder(modifier: Modifier = Modifier) {
+    Column(
+        modifier.fillMaxSize().padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        val description = stringResource(R.string.scan_viewfinder)
+        Box(
+            Modifier
+                .size(240.dp)
+                .border(
+                    width = 3.dp,
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(20.dp),
+                )
+                .semantics { contentDescription = description }
+        )
+        Spacer(Modifier.height(24.dp))
+        Text(
+            text = stringResource(R.string.scan_instruction),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            color = Color.White,
+            modifier = Modifier
+                // A scrim, not a brand surface: the text sits on whatever the camera happens
+                // to be looking at, so it has to carry its own contrast.
+                .background(Color.Black.copy(alpha = 0.55f), RoundedCornerShape(12.dp))
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+        )
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
@@ -68,13 +119,7 @@ fun QRScanScreen(
                             ErrorBanner(it) { vm.clearError() }
                         }
                     }
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Surface(
-                            tonalElevation = 0.dp,
-                            color = MaterialTheme.colorScheme.surface.copy(alpha = 0f),
-                            modifier = Modifier.size(220.dp)
-                        ) { /* viewfinder overlay hint */ }
-                    }
+                    ScanViewfinder()
                 }
                 cameraPermission.status.shouldShowRationale -> {
                     Column(

@@ -25,6 +25,7 @@ import com.hivepulse.app.data.api.PlannedTreatmentOut
 import com.hivepulse.app.data.api.isOverdue
 import com.hivepulse.app.ui.common.ErrorBanner
 import com.hivepulse.app.ui.moves.DateField
+import com.hivepulse.app.ui.common.StatusBadge
 
 private val Good = Color(0xFF166534)
 private val Warn = Color(0xFFB45309)
@@ -179,7 +180,7 @@ fun LazyListScope.homeSummaryItems(
         item {
             Card(Modifier.fillMaxWidth().testTag("homeAd"), colors = CardDefaults.outlinedCardColors()) {
                 Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    AssistChip(onClick = {}, label = { Text(ad.label) })
+                    StatusBadge(ad.label)
                     Text(ad.title, style = MaterialTheme.typography.titleMedium)
                     Text(ad.body, style = MaterialTheme.typography.bodyMedium)
                     ad.url?.let { url ->

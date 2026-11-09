@@ -96,6 +96,7 @@ You can write test files on any OS and let CI run them — no local macOS needed
 | `-mockQrBatch` | Authenticated + one QR batch (`b-1`) whose PDF can be downloaded |
 | `-guidedTourSeen YES` / `NO` | Overrides the "guided tour already shown" flag for this launch (UserDefaults argument domain) |
 | `-mockServer` | Mock only, no token — starts at Login, auth calls return real-looking responses |
+| `-mockCameraPreview` | Replaces the Scan tab's live camera with a flat colour, so the viewfinder and the instruction over it can be reached in the simulator (`DataScannerViewController` is unsupported there) |
 
 `-resetKeychain` can be combined with the mock arguments — the keychain is cleared first, then the mock token is set (most UI tests do this).
 
@@ -119,8 +120,13 @@ AuthViewModelTests, YearRibbonTests, ApiaryViewModelTests, HiveViewModelTests, I
 
 ## UI Tests (HivePulseUITests/)
 
-LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests, QRBatchDetailUITests, OverviewStatsUITests, ForgotPasswordUITests, GuidedTourUITests, FieldDefinitionsUITests, HornetUITests, MembersUITests, YearRibbonUITests, ScreenshotUITests — all passing in CI.
+LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests, QRBatchDetailUITests, QRScanUITests, OverviewStatsUITests, ForgotPasswordUITests, GuidedTourUITests, FieldDefinitionsUITests, HornetUITests, MembersUITests, YearRibbonUITests, ScreenshotUITests — all passing in CI.
 
 Screens: Login, Register, ApiaryList, ApiaryDetail, ApiaryForm, HiveDetail, HiveInitialize, HiveQR, InspectionForm, InspectionDetail, QRScanner, QRBatchList, QRBatchDetail, HiveStats, OverviewStats, ForgotPassword, GuidedTour, Members (community heatmap), FieldDefinitions (user scope from Settings, apiary scope from the apiary toolbar), Settings.
+
+**The Scan tab opens the camera** — no entry page, no button, no sheet. It was all three until
+#425; Android never had them, and at the hive the tab is itself the request to scan. What the page
+used to say is drawn over the preview by `ScanViewfinder`, whose numbers are pinned against
+Android's by `backend/tests/test_scan_screen_parity.py`.
 
 **Entry points must match Android:** QR batches (`printer`, identifier `qrBatchesButton`) and the statistics overview (`chart.bar`) live in the **ApiaryList toolbar**, like Android's apiary list top bar — not in Settings. UI tests navigate via `app.buttons["qrBatchesButton"]`.

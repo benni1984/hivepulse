@@ -1,10 +1,10 @@
-HivePulse 1.0.2
+HivePulse 1.0.3
 
 Neu in diesem Build:
-• Das Imkerjahr als Bild: zwischen Liste und Übersicht umschalten, das Jahr seitlich durchziehen
-• Fotos zur Arbeit: die Pflanze in Blüte, eine verdeckelte Weiselzelle, die Milbe auf der Biene
-• Passen die Daten bei dir? Ein Link unter dem Jahr öffnet einen kurzen Fragebogen
-• Die Balken des Jahres liest jetzt auch TalkBack vor
+• Der Scan-Reiter zeigt einen Rahmen zum Zielen und sagt, was er will
+• Beutentyp und Königinnenfarbe stehen jetzt auf Deutsch, nicht mehr "Top Bar"
+• Eine abgelehnte Anmeldung sagt wieder, was falsch war, statt "HTTP 401"
+• Sechs Beschriftungen sind keine Schaltflächen mehr — TalkBack liest sie als Text
 
 Bitte bleib im Test und benutz die App immer wieder mal.
 

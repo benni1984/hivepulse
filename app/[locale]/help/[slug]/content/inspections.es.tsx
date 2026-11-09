@@ -46,7 +46,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Guardando una revisión — los campos fecha e infestación de varroa son visibles" />
+        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="El final de la revisión — peso, notas y el botón Guardar" />
       </section>
 
       <section className="help-section">

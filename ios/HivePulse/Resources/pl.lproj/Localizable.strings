@@ -96,7 +96,8 @@
 "action.save" = "Zapisz";
 "action.cancel" = "Anuluj";
 "action.done" = "Gotowe";
-"action.scanQR" = "Skanuj kod QR";
+"scan.title" = "Skanuj kod QR";
+"scan.viewfinder" = "Celownik — umieść kod QR w ramce";
 "action.useMyLocation" = "Użyj mojej lokalizacji";
 "action.editApiary" = "Edytuj pasiekę";
 "action.newApiary" = "Nowa pasieka";

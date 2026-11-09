@@ -2,6 +2,7 @@ package com.hivepulse.app.data.repository
 
 import com.hivepulse.app.data.api.*
 import com.hivepulse.app.data.local.TokenStore
+import retrofit2.HttpException
 import retrofit2.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import io.mockk.*
@@ -30,6 +31,55 @@ class AuthRepositoryTest {
 
     @After
     fun tearDown() = clearAllMocks()
+
+    @Test
+    fun `a refused login carries the sentence the server wrote, not the status line`() = runTest {
+        // The server answers a bad password with a translated sentence. Retrofit's own
+        // HttpException.message is "HTTP 401 Unauthorized", and that is what reached the screen
+        // until these calls went through `withServerMessage` -- it tells a person nothing and
+        // reads like a fault in the app. Issue 422.
+        val body = """{"detail":{"code":"INVALID_CREDENTIALS","message":"Ungültige E-Mail oder Passwort."}}"""
+        coEvery { api.login(any()) } throws
+            HttpException(Response.error<TokenResponse>(401, body.toResponseBody()))
+
+        val failure = runCatching { repo.login("a@b.com", "wrong") }.exceptionOrNull()
+
+        assertEquals("Ungültige E-Mail oder Passwort.", failure?.message)
+    }
+
+    @Test
+    fun `a refused registration does the same`() = runTest {
+        val body = """{"detail":{"code":"EMAIL_TAKEN","message":"Diese E-Mail ist bereits vergeben."}}"""
+        coEvery { api.register(any()) } throws
+            HttpException(Response.error<TokenResponse>(409, body.toResponseBody()))
+
+        val failure = runCatching { repo.register("a@b.com", "secret", "A", "de") }.exceptionOrNull()
+
+        assertEquals("Diese E-Mail ist bereits vergeben.", failure?.message)
+    }
+
+    @Test
+    fun `a refused Google identity does the same`() = runTest {
+        val body = """{"detail":{"code":"INVALID_IDENTITY_TOKEN","message":"Anmeldung fehlgeschlagen."}}"""
+        coEvery { api.signInWithGoogle(any()) } throws
+            HttpException(Response.error<TokenResponse>(401, body.toResponseBody()))
+
+        val failure = runCatching { repo.signInWithGoogle("token") }.exceptionOrNull()
+
+        assertEquals("Anmeldung fehlgeschlagen.", failure?.message)
+    }
+
+    @Test
+    fun `a refusal with no readable body still says something`() = runTest {
+        // A proxy or a gateway answers with HTML or nothing at all. Falling back to the status
+        // is poor, but it is better than an empty banner, and it must not throw.
+        coEvery { api.login(any()) } throws
+            HttpException(Response.error<TokenResponse>(502, "<html>oops</html>".toResponseBody()))
+
+        val failure = runCatching { repo.login("a@b.com", "secret") }.exceptionOrNull()
+
+        assertTrue(failure?.message?.isNotBlank() == true)
+    }
 
     @Test
     fun `login stores tokens and returns user`() = runTest {

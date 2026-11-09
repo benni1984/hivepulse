@@ -300,6 +300,13 @@ def reveal_email_form(timeout=12):
 
 
 def login():
+    # In CI the app is installed fresh every time, so it always starts signed out. Locally it
+    # does not: a second run on the same emulator opens straight into the apiary list, and
+    # waiting for a "Sign In" that will never come wasted a whole run.
+    if "My Apiaries" in get_ui_dump():
+        print("Already signed in — skipping the login.", flush=True)
+        return
+
     print("Logging in…", flush=True)
     reveal_email_form()
     wait_for("Sign In", timeout=30)
@@ -534,6 +541,74 @@ def capture_inspection_frames():
     time.sleep(0.5)
 
 
+def capture_inspection_form_bottom():
+    """The foot of the form: weight, notes, your own fields and the Save button.
+
+    The help page showed a picture taken by hand on 12 June 2026 (#419) with the old three-tab
+    bar and a Save action in the app bar. Neither exists any more -- Save is a button at the
+    foot of the form, which is precisely why the foot is worth a picture of its own.
+    """
+    print("Capturing: android-inspection-form-bottom", flush=True)
+    dump = get_ui_dump()
+    if "Date" not in dump:
+        tap_node(dump, content_desc="New Inspection")
+        wait_for("Date", timeout=15)
+    for _ in range(10):
+        dump = get_ui_dump()
+        if "Notes" in dump and "Save" in dump:
+            break
+        swipe(540, 1800, 540, 700)
+        time.sleep(0.5)
+    else:
+        raise RuntimeError("never reached the foot of the inspection form")
+    time.sleep(0.8)
+    screenshot("android-inspection-form-bottom")
+    keyevent("KEYCODE_BACK")
+    time.sleep(0.5)
+
+
+def capture_qr_scan():
+    """The scan screen: the viewfinder and the line that says what to aim at.
+
+    This was the other half of #419 and was written off as "wants a camera". It does not: the
+    picture worth showing is the viewfinder and the instruction, both drawn over whatever the
+    camera sees, and the emulator's virtual scene is a camera. Before #424 there was nothing
+    to photograph -- the overlay was a Surface with alpha 0 and an empty body.
+    """
+    print("Capturing: android-qr-scan", flush=True)
+    for _ in range(3):
+        if "My Apiaries" in get_ui_dump():
+            break
+        keyevent("KEYCODE_BACK")
+        time.sleep(0.8)
+    # The tab carries the short label; older builds exposed the long one as a description.
+    dump = get_ui_dump()
+    for attempt in ({"content_desc": "Scan QR code"}, {"text": "Scan"},
+                    {"text": "Scan QR code"}):
+        try:
+            tap_node(dump, **attempt)
+            break
+        except RuntimeError:
+            continue
+    else:
+        raise RuntimeError("could not find the Scan tab")
+    # The permission dialog is the system's, not ours, and it only appears on a cold install.
+    time.sleep(1.5)
+    dump = get_ui_dump()
+    for allow in ("While using the app", "Allow", "ALLOW"):
+        if allow in dump:
+            tap_node(dump, text=allow)
+            time.sleep(1.5)
+            break
+    wait_for("Scan QR Code", timeout=20)
+    # CameraX fades the preview in rather than cutting to it, so a picture taken too early gets
+    # a half-faded frame -- washed out, and it looks like a rendering fault rather than a camera.
+    time.sleep(5)
+    screenshot("android-qr-scan")
+    keyevent("KEYCODE_BACK")
+    time.sleep(0.5)
+
+
 def capture_hive_edit():
     """Hive detail → pencil: name, type, acquisition date and notes."""
     print("Capturing: android-hive-edit", flush=True)
@@ -757,6 +832,7 @@ def main():
     navigate_to_hive_detail()
     capture_inspection_form()
     capture_inspection_frames()
+    capture_inspection_form_bottom()
     capture_hive_edit()
     capture_apiary_edit()
 
@@ -769,6 +845,7 @@ def main():
         capture_beekeeping_year,
         capture_settings_screens,
         capture_hornets_and_members,
+        capture_qr_scan,
     ):
         best_effort(extra)
 

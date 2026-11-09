@@ -34,6 +34,7 @@ HELP_IMAGES: dict[str, list[str]] = {
     "25-moves": ["ios-moves"],
     "26-sharing": ["ios-sharing"],
     "27-beekeeping-year": ["ios-beekeeping-year"],
+    "28-qr-scan": ["ios-qr-scan"],
 }
 
 

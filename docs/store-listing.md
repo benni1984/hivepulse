@@ -312,59 +312,74 @@ paragraph says what the app is rather than greeting the reader.
 
 ### What's New — max 4000
 
+The release this describes is **1.0.3**. It is the App Store's release notes; Play takes its own
+from `distribution/whatsnew/` during the automated upload, and those are Android's four lines, not
+these. Keep the two apart: a fix that only happened on one platform belongs only in that
+platform's notes.
+
 **en**
 ```
-Inspections work without a signal now. Record the visit at the hive; the app stores it and sends it as soon as there is a connection. A retry cannot create a duplicate.
+The scan tab opens the camera the moment you reach it — there used to be a page with a button and the scanner behind it in a sheet, which is one tap too many at the hive with gloves on. What that page said is now drawn over the preview, inside an amber frame to aim with.
 
-Brood and honey frames are entered by tapping the number — 0 to 10 as large buttons instead of tiny arrows, so it works with gloves on.
+A sign-in that was refused says what was wrong again. It used to say "Session expired. Please sign in again", which was not true and asked you to do the thing you had just done. Behind it sat a larger fault: the app read the server's error messages from the wrong field, so every refused action — a name already taken, a form it would not accept, a hive that no longer exists — came out as "Unknown error".
 
-Spanish is complete, and a number of German and French texts that had stayed English are translated.
+The colony mood no longer appears in English on a German, French, Spanish or Polish page.
 
-Crashes are now reported, so a problem can be fixed without waiting for someone to write in. The report carries no inspection notes, no passwords and no addresses.
+The German texts now say "du" throughout. A dozen screens had said "Sie", often one screen after another.
+
+And the version number in Settings and TestFlight is the real one: every build so far called itself 1.0.0.
 ```
 
 **de**
 ```
-Durchsichten gehen jetzt ohne Netz. Am Volk erfassen; die App speichert sie und schickt sie los, sobald Verbindung da ist. Ein zweiter Versuch kann keinen Doppeleintrag erzeugen.
+Der Scan-Reiter öffnet die Kamera, sobald du ihn erreichst — vorher war dort eine Seite mit einem Knopf und der Scanner dahinter in einem Blatt, was am Volk mit Handschuhen ein Tipp zu viel ist. Was die Seite sagte, steht jetzt über der Vorschau, in einem amberfarbenen Rahmen zum Zielen.
 
-Brut- und Honigwaben gibst du durch Antippen der Zahl ein — 0 bis 10 als große Knöpfe statt winziger Pfeile, damit es mit Handschuhen funktioniert.
+Eine abgelehnte Anmeldung sagt wieder, was falsch war. Vorher stand da „Sitzung abgelaufen. Bitte erneut anmelden", was nicht stimmte und genau das verlangte, was man gerade getan hatte. Dahinter lag ein größerer Fehler: die App las die Fehlermeldungen des Servers aus dem falschen Feld, also kam jede abgelehnte Handlung — ein Name, der schon vergeben ist, ein Formular, das so nicht angenommen wird, ein Volk, das es nicht mehr gibt — als „Unbekannter Fehler" heraus.
 
-Spanisch ist vollständig, und einige deutsche und französische Texte, die noch englisch waren, sind übersetzt.
+Die Stimmung des Volkes steht nicht länger englisch auf einer deutschen, französischen, spanischen oder polnischen Seite.
 
-Abstürze werden jetzt gemeldet, damit ein Problem behoben werden kann, ohne auf eine Nachricht zu warten. Der Bericht enthält keine Kontroll-Notizen, keine Passwörter und keine Adressen.
+Die deutschen Texte sagen jetzt durchweg „du". Auf einem Dutzend Bildschirmen stand „Sie", oft direkt hintereinander.
+
+Und die Versionsnummer in den Einstellungen und in TestFlight ist die richtige: jeder Build nannte sich bisher 1.0.0.
 ```
 
 **fr**
 ```
-Les visites fonctionnent désormais hors ligne. Saisissez à la ruche ; l'application enregistre et envoie dès qu'il y a du réseau. Une nouvelle tentative ne crée pas de doublon.
+L'onglet de scan ouvre la caméra dès que vous y arrivez — il y avait avant une page avec un bouton et le scanner derrière, dans une feuille, ce qui fait un geste de trop à la ruche avec des gants. Ce que disait cette page est désormais dessiné par-dessus l'aperçu, dans un cadre ambre pour viser.
 
-Les cadres de couvain et de miel se saisissent en touchant le chiffre — de 0 à 10 en grands boutons au lieu de minuscules flèches, utilisable avec des gants.
+Une connexion refusée dit à nouveau ce qui n'allait pas. Elle disait « Session expirée. Veuillez vous reconnecter », ce qui était faux et demandait exactement ce que vous veniez de faire. Derrière se cachait un défaut plus large : l'application lisait les messages d'erreur du serveur dans le mauvais champ, et toute action refusée — un nom déjà pris, un formulaire rejeté, une ruche qui n'existe plus — ressortait en « Erreur inconnue ».
 
-L'espagnol est complet, et plusieurs textes allemands et français restés en anglais sont traduits.
+L'humeur de la colonie n'apparaît plus en anglais sur une page allemande, française, espagnole ou polonaise.
 
-Les plantages sont désormais signalés, afin qu'un problème puisse être corrigé sans attendre un message. Le rapport ne contient aucune note de visite, aucun mot de passe et aucune adresse.
+Les textes allemands emploient désormais le tutoiement partout.
+
+Et le numéro de version dans les réglages et dans TestFlight est le bon : jusqu'ici, chaque version s'appelait 1.0.0.
 ```
 
 **es**
 ```
-Las revisiones funcionan sin cobertura. Anótalas en la colmena; la aplicación las guarda y las envía en cuanto hay conexión. Un segundo intento no crea duplicados.
+La pestaña de escaneo abre la cámara en cuanto llegas a ella — antes había una página con un botón y el escáner detrás, en una hoja, lo que supone un toque de más en el colmenar con guantes. Lo que decía esa página se dibuja ahora sobre la vista previa, dentro de un marco ámbar para apuntar.
 
-Los cuadros de cría y de miel se introducen tocando el número: del 0 al 10 en botones grandes en lugar de flechas diminutas, para que funcione con guantes.
+Un inicio de sesión rechazado vuelve a decir qué falló. Antes decía «Sesión caducada. Vuelve a iniciar sesión», que no era cierto y pedía justo lo que acababas de hacer. Detrás había un fallo mayor: la aplicación leía los mensajes de error del servidor del campo equivocado, así que toda acción rechazada — un nombre ya tomado, un formulario que no se acepta, una colmena que ya no existe — salía como «Error desconocido».
 
-El español está completo y varios textos en alemán y francés que seguían en inglés están traducidos.
+El humor de la colonia ya no aparece en inglés en una página alemana, francesa, española o polaca.
 
-Los fallos ahora se informan, para poder corregir un problema sin esperar un mensaje. El informe no contiene notas de revisión, ni contraseñas, ni direcciones.
+Los textos alemanes ahora tutean en todas partes.
+
+Y el número de versión en los ajustes y en TestFlight es el real: hasta ahora cada compilación se llamaba 1.0.0.
 ```
 
 **pl**
 ```
-Przeglądy działają teraz bez zasięgu. Zapisz przegląd przy ulu; aplikacja go zachowa i wyśle, gdy tylko pojawi się połączenie. Ponowna próba nie utworzy duplikatu.
+Zakładka skanowania otwiera aparat w chwili, gdy do niej przejdziesz — wcześniej była tam strona z przyciskiem, a skaner za nią, w arkuszu, co w pasiece w rękawicach oznacza jedno dotknięcie za dużo. To, co mówiła ta strona, jest teraz narysowane na podglądzie, w bursztynowej ramce do celowania.
 
-Ramki z czerwiem i miodem wpisujesz, dotykając liczby — od 0 do 10 w dużych przyciskach zamiast małych strzałek, więc działa to także w rękawicach.
+Odrzucone logowanie znów mówi, co było nie tak. Wcześniej pisało „Sesja wygasła. Zaloguj się ponownie", co nie było prawdą i żądało dokładnie tego, co właśnie zrobiłeś. Za tym stał większy błąd: aplikacja czytała komunikaty błędów serwera z niewłaściwego pola, więc każde odrzucone działanie — zajęta nazwa, formularz, który nie zostaje przyjęty, rodzina, której już nie ma — wychodziło jako „Nieznany błąd".
 
-Polski jest kompletny, a kilka niemieckich i francuskich tekstów, które zostały po angielsku, zostało przetłumaczonych.
+Nastrój rodziny nie pojawia się już po angielsku na niemieckiej, francuskiej, hiszpańskiej ani polskiej stronie.
 
-Awarie są teraz zgłaszane, aby można było naprawić problem bez czekania na wiadomość. Zgłoszenie nie zawiera notatek z przeglądów, haseł ani adresów.
+Teksty niemieckie zwracają się teraz wszędzie na „du".
+
+A numer wersji w ustawieniach i w TestFlight jest prawdziwy: do tej pory każda kompilacja nazywała się 1.0.0.
 ```
 
 ---

@@ -213,6 +213,8 @@
     <!-- Auth -->
     <string name="login_subtitle">Connectez-vous pour gérer vos ruches</string>
     <string name="permission_camera_rationale">L\'accès à la caméra est nécessaire pour scanner les QR codes sur vos ruches.</string>
+    <string name="scan_instruction">Scannez le code QR sur votre ruche pour ouvrir sa fiche ou la configurer pour la première fois.</string>
+    <string name="scan_viewfinder">Viseur — placez le code QR dans le cadre</string>
 
     <!-- Suivi Frelon -->
     <string name="hornet_title">Suivi Frelon</string>

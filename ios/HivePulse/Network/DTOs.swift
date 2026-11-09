@@ -1067,10 +1067,34 @@ struct SetSupporterRequest: Encodable {
 }
 
 // MARK: - Error
+/// The body the backend sends with a refusal.
+///
+/// FastAPI wraps whatever is given to `HTTPException(detail=...)` under **`detail`**, and ours is
+/// either an object (`{"code": ..., "message": ...}`, from `app/i18n.py`) or a plain string for
+/// the ones FastAPI raises itself (`{"detail": "Not Found"}`).
+///
+/// This used to decode `error` instead, which the API contract describes but the backend has
+/// never sent -- so `message` was always nil and every server refusal reached the screen as
+/// "Unknown error". No test caught it because none of them assert on a message, and the mock
+/// sends the real shape. The web client and Android both read `detail`; the contract was wrong.
 struct APIErrorEnvelope: Decodable {
-    let error: ErrorDetail
-    struct ErrorDetail: Decodable {
-        let code: String
-        let message: String
+    let code: String?
+    let message: String?
+
+    private enum CodingKeys: String, CodingKey { case detail }
+    private struct Detail: Decodable {
+        let code: String?
+        let message: String?
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        if let detail = try? container.decode(Detail.self, forKey: .detail) {
+            code = detail.code
+            message = detail.message
+        } else {
+            code = nil
+            message = try? container.decode(String.self, forKey: .detail)
+        }
     }
 }

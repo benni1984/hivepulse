@@ -96,7 +96,8 @@
 "action.save" ="Guardar";
 "action.cancel" = "Cancelar";
 "action.done" = "Hecho";
-"action.scanQR" = "Escanear código QR";
+"scan.title" = "Escanear código QR";
+"scan.viewfinder" = "Visor — coloca el código QR dentro del marco";
 "action.useMyLocation" = "Usar mi ubicación";
 "action.editApiary" = "Editar colmenar";
 "action.newApiary" = "Nuevo colmenar";

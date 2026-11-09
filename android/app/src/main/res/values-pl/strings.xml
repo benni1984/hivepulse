@@ -210,6 +210,8 @@
     <!-- Auth -->
     <string name="login_subtitle">Zaloguj się, aby zarządzać swoimi rodzinami</string>
     <string name="permission_camera_rationale">Do skanowania kodów QR na ulach potrzebny jest dostęp do aparatu.</string>
+    <string name="scan_instruction">Zeskanuj kod QR na ulu, aby otworzyć jego wpis albo założyć go po raz pierwszy.</string>
+    <string name="scan_viewfinder">Celownik — umieść kod QR w ramce</string>
 
     <!-- Admin -->
     <string name="screen_admin">Panel administratora</string>

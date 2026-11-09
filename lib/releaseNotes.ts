@@ -35,6 +35,98 @@ export function pick(text: Localized, locale: string): string {
 /** Newest first. */
 export const RELEASES: Release[] = [
   {
+    date: '2026-11-09',
+    title: t(
+      'The scanner shows you where to aim',
+      'Der Scanner zeigt, wohin du zielen sollst',
+      'Le scanner montre où viser',
+      'El escáner muestra dónde apuntar',
+      'Skaner pokazuje, gdzie celować',
+    ),
+    items: [
+      {
+        kind: 'fixed',
+        text: t(
+          'The scan screen on Android showed a live camera picture and nothing else: no frame to aim with, and no line saying what it wanted. It now draws an amber frame and the sentence iPhone has always shown. The frame was in the code from the beginning — drawn in a colour with no opacity, so it was never once visible on a phone.',
+          'Der Scan-Bildschirm auf Android zeigte ein Kamerabild und sonst nichts: keinen Rahmen zum Zielen und keinen Satz, der sagt, was er will. Jetzt zeichnet er einen amberfarbenen Rahmen und den Satz, den das iPhone immer schon zeigt. Den Rahmen gab es von Anfang an im Code — in einer Farbe ohne Deckkraft, also war er auf keinem Telefon je zu sehen.',
+          'L’écran de scan sur Android affichait une image de la caméra et rien d’autre : aucun cadre pour viser, aucune phrase disant ce qu’il attendait. Il dessine désormais un cadre ambre et la phrase que l’iPhone affiche depuis toujours. Le cadre était dans le code depuis le début — dessiné dans une couleur sans opacité, donc jamais visible sur un téléphone.',
+          'La pantalla de escaneo en Android mostraba una imagen de la cámara y nada más: ni marco para apuntar, ni una frase que dijera qué quería. Ahora dibuja un marco ámbar y la frase que el iPhone ha mostrado siempre. El marco estaba en el código desde el principio — dibujado en un color sin opacidad, así que nunca llegó a verse en un teléfono.',
+          'Ekran skanowania na Androidzie pokazywał obraz z aparatu i nic poza tym: żadnej ramki do celowania ani zdania mówiącego, czego oczekuje. Teraz rysuje bursztynową ramkę i zdanie, które iPhone pokazuje od zawsze. Ramka była w kodzie od początku — narysowana w kolorze bez krycia, więc nigdy nie pojawiła się na żadnym telefonie.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'Four screens showed a value from the server instead of its translation: the hive type on the Android hive list, the queen colour on an Android inspection, and the colony mood on the iPhone hive page and in its statistics. A German beekeeper read "Top Bar" where the edit dialog on the same screen said "Oberträgerbeute". The translations existed the whole time — nothing looked them up.',
+          'Vier Bildschirme zeigten einen Wert vom Server statt seiner Übersetzung: den Beutentyp in der Android-Volksliste, die Königinnenfarbe in einer Android-Kontrolle und die Stimmung des Volkes auf der iPhone-Volkseite und in deren Statistik. Ein deutscher Imker las „Top Bar“, wo der Bearbeiten-Dialog auf demselben Bildschirm „Oberträgerbeute“ sagte. Die Übersetzungen gab es die ganze Zeit — niemand schlug sie nach.',
+          'Quatre écrans affichaient une valeur du serveur au lieu de sa traduction : le type de ruche dans la liste Android, la couleur de la reine dans une visite Android, et l\'humeur de la colonie sur la page ruche de l\'iPhone et dans ses statistiques. Un apiculteur allemand lisait « Top Bar » là où la boîte d\'édition du même écran disait « Oberträgerbeute ». Les traductions existaient depuis toujours — personne ne les consultait.',
+          'Cuatro pantallas mostraban un valor del servidor en lugar de su traducción: el tipo de colmena en la lista de Android, el color de la reina en una revisión de Android, y el humor de la colonia en la página de colmena del iPhone y en sus estadísticas. Un apicultor alemán leía «Top Bar» donde el diálogo de edición de la misma pantalla decía «Oberträgerbeute». Las traducciones existían desde siempre — nadie las consultaba.',
+          'Cztery ekrany pokazywały wartość z serwera zamiast jej tłumaczenia: typ ula na androidowej liście rodzin, kolor matki w androidowym przeglądzie oraz nastrój rodziny na iPhone\'owej stronie rodziny i w jej statystykach. Niemiecki pszczelarz czytał „Top Bar” tam, gdzie okno edycji na tym samym ekranie mówiło „Oberträgerbeute”. Tłumaczenia istniały przez cały czas — nikt do nich nie sięgał.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'Six labels on Android — hive type, forage, two hornet statuses, an advice label — were drawn as chips, which are buttons. They rippled when tapped and did nothing, and a screen reader offered each one as something to activate. They are labels now, as they always were on iPhone.',
+          'Sechs Beschriftungen auf Android — Beutentyp, Tracht, zwei Hornissen-Status, ein Hinweis-Etikett — waren als Chips gezeichnet, und Chips sind Schaltflächen. Sie reagierten auf einen Tipp und taten nichts, und die Sprachausgabe bot jede davon als etwas zum Auslösen an. Jetzt sind es Beschriftungen, so wie auf dem iPhone immer schon.',
+          'Six libellés sur Android — type de ruche, miellée, deux statuts de frelon, une étiquette de conseil — étaient dessinés comme des chips, c\'est-à-dire des boutons. Ils réagissaient au toucher sans rien faire, et un lecteur d\'écran proposait chacun comme une action. Ce sont désormais des libellés, comme sur iPhone depuis toujours.',
+          'Seis etiquetas en Android — tipo de colmena, floración, dos estados de avispa, una etiqueta de consejo — estaban dibujadas como chips, que son botones. Respondían al toque sin hacer nada, y un lector de pantalla ofrecía cada una como algo que activar. Ahora son etiquetas, como siempre lo fueron en el iPhone.',
+          'Sześć etykiet na Androidzie — typ ula, pożytek, dwa statusy szerszeń, etykieta porady — narysowano jako chipy, czyli przyciski. Reagowały na dotknięcie i nic nie robiły, a czytnik ekranu oferował każdą jako coś do uruchomienia. Teraz są etykietami, tak jak na iPhonie od zawsze.',
+        ),
+      },
+      {
+        kind: 'changed',
+        text: t(
+          'The Scan tab on iPhone opens the camera, as it does on Android. It used to be a page with a glyph, a sentence and a button, with the scanner behind it in a sheet — one tap too many at the hive, in gloves. What the page said is now drawn over the preview.',
+          'Der Scan-Reiter auf dem iPhone öffnet die Kamera, wie auf Android. Er war eine Seite mit Glyphe, Satz und Knopf, den Scanner dahinter in einem Blatt — am Volk, mit Handschuhen, ein Tipp zu viel. Was die Seite sagte, steht jetzt über der Vorschau.',
+          'L\'onglet Scan sur iPhone ouvre la caméra, comme sur Android. C\'était une page avec un glyphe, une phrase et un bouton, le scanner derrière dans une feuille — une tape de trop à la ruche, avec des gants. Ce que disait la page est désormais dessiné sur l\'aperçu.',
+          'La pestaña Escanear en el iPhone abre la cámara, como en Android. Era una página con un glifo, una frase y un botón, con el escáner detrás en una hoja — un toque de más en la colmena, con guantes. Lo que decía la página se dibuja ahora sobre la vista previa.',
+          'Zakładka Skanuj na iPhonie otwiera aparat, tak jak na Androidzie. Była stroną z symbolem, zdaniem i przyciskiem, a skaner czekał za nią w arkuszu — o jedno dotknięcie za dużo przy ulu, w rękawicach. To, co mówiła strona, rysuje się teraz nad podglądem.',
+        ),
+      },
+      {
+        kind: 'changed',
+        text: t(
+          'The German iPhone app said "Sie" on a dozen screens and "du" on the rest, often one after the other. It now says "du" everywhere, as the website and the Android app already did.',
+          'Die deutsche iPhone-App sagte auf einem Dutzend Bildschirmen „Sie" und auf dem Rest „du", oft direkt nacheinander. Jetzt sagt sie überall „du", so wie die Website und die Android-App es schon taten.',
+          'L’application iPhone en allemand disait « Sie » sur une douzaine d’écrans et « du » sur les autres, souvent l’un après l’autre. Elle dit désormais « du » partout, comme le site et l’application Android le faisaient déjà.',
+          'La aplicación de iPhone en alemán decía «Sie» en una docena de pantallas y «du» en el resto, a menudo una tras otra. Ahora dice «du» en todas partes, como ya hacían la web y la aplicación de Android.',
+          'Niemiecka aplikacja na iPhone’a mówiła „Sie" na kilkunastu ekranach i „du" na pozostałych, często jedno po drugim. Teraz wszędzie mówi „du", tak jak strona i aplikacja na Androida już to robiły.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'Two pictures in the help pages had not been retaken since June and showed an interface that no longer exists — a navigation bar with three tabs instead of five. Their captions described fields that were not in the picture. Both are now taken by the same script as the rest, so they cannot fall behind again.',
+          'Zwei Bilder in den Hilfeseiten waren seit Juni nicht neu aufgenommen worden und zeigten eine Oberfläche, die es nicht mehr gibt — eine Navigationsleiste mit drei statt fünf Reitern. Ihre Unterschriften beschrieben Felder, die gar nicht im Bild waren. Beide nimmt jetzt dasselbe Skript auf wie den Rest, damit sie nicht wieder zurückfallen können.',
+          'Deux images des pages d’aide n’avaient pas été reprises depuis juin et montraient une interface qui n’existe plus — une barre de navigation à trois onglets au lieu de cinq. Leurs légendes décrivaient des champs absents de l’image. Les deux sont désormais prises par le même script que les autres et ne peuvent plus prendre de retard.',
+          'Dos imágenes de las páginas de ayuda no se habían vuelto a tomar desde junio y mostraban una interfaz que ya no existe — una barra de navegación con tres pestañas en lugar de cinco. Sus pies describían campos que no estaban en la imagen. Ahora las toma el mismo script que el resto, así que no pueden volver a quedarse atrás.',
+          'Dwa obrazy na stronach pomocy nie były odnawiane od czerwca i pokazywały interfejs, który już nie istnieje — pasek nawigacji z trzema zakładkami zamiast pięciu. Ich podpisy opisywały pola, których na obrazie nie było. Oba wykonuje teraz ten sam skrypt co pozostałe, więc nie mogą znów zostać w tyle.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'A sign-in that was refused said "HTTP 401 Unauthorized" on Android and "Session expired. Please sign in again" on iPhone. The first said nothing at all; the second was untrue and asked you to do the very thing you had just done. Both now show the sentence the server wrote — wrong password, unknown address, a mail that was never confirmed. Behind the iPhone one sat a larger fault: the app looked for the server’s message in a field the backend never sends, so every rejected action came out as "Unknown error", not only at sign-in.',
+          'Eine abgelehnte Anmeldung sagte auf Android „HTTP 401 Unauthorized“ und auf dem iPhone „Sitzung abgelaufen. Bitte erneut anmelden“. Das erste sagte gar nichts; das zweite stimmte nicht und verlangte genau das, was man gerade getan hatte. Beide zeigen jetzt den Satz, den der Server geschrieben hat — falsches Passwort, unbekannte Adresse, eine nie bestätigte Mail. Hinter dem iPhone-Fall lag ein größerer Fehler: die App suchte die Servermeldung in einem Feld, das das Backend nie sendet, also kam jede abgelehnte Handlung als „Unbekannter Fehler“ heraus, nicht nur beim Anmelden.',
+          'Une connexion refusée affichait « HTTP 401 Unauthorized » sur Android et « Session expirée. Veuillez vous reconnecter » sur iPhone. La première ne disait rien ; la seconde était fausse et demandait précisément ce que l’on venait de faire. Les deux affichent désormais la phrase écrite par le serveur — mot de passe erroné, adresse inconnue, courriel jamais confirmé. Derrière le cas iPhone se cachait un défaut plus large : l’application cherchait le message du serveur dans un champ que le backend n’envoie jamais, et toute action refusée ressortait en « Erreur inconnue », pas seulement à la connexion.',
+          'Un inicio de sesión rechazado decía «HTTP 401 Unauthorized» en Android y «Sesión caducada. Vuelve a iniciar sesión» en el iPhone. El primero no decía nada; el segundo no era cierto y pedía justo lo que acababas de hacer. Ambos muestran ahora la frase que escribió el servidor — contraseña incorrecta, dirección desconocida, un correo nunca confirmado. Detrás del caso del iPhone había un fallo mayor: la aplicación buscaba el mensaje del servidor en un campo que el backend nunca envía, así que toda acción rechazada salía como «Error desconocido», y no solo al iniciar sesión.',
+          'Odrzucone logowanie pokazywało „HTTP 401 Unauthorized” na Androidzie i „Sesja wygasła. Zaloguj się ponownie” na iPhonie. Pierwsze nie mówiło nic; drugie było nieprawdą i żądało dokładnie tego, co właśnie zrobiłeś. Oba pokazują teraz zdanie napisane przez serwer — błędne hasło, nieznany adres, niepotwierdzona poczta. Za przypadkiem iPhone’a stał większy błąd: aplikacja szukała komunikatu serwera w polu, którego backend nigdy nie wysyła, więc każde odrzucone działanie wychodziło jako „Nieznany błąd”, nie tylko przy logowaniu.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'The iPhone app called itself 1.0.0 in Settings and in TestFlight, whichever build it was, while Android had reached 1.0.2. Only the build number ever moved; the version a person reads had not been raised since it was first written down. A tester reporting a problem with "1.0.0" was telling us nothing, so the two platforms are now pinned against each other and cannot drift again.',
+          'Die iPhone-App nannte sich in den Einstellungen und in TestFlight 1.0.0, egal welcher Build es war, während Android bei 1.0.2 stand. Bewegt hat sich immer nur die Build-Nummer; die Version, die ein Mensch liest, war seit dem ersten Eintrag nie hochgezählt worden. Ein Tester, der ein Problem mit „1.0.0“ meldet, sagt uns damit nichts, also sind die beiden Plattformen jetzt aneinander festgemacht und können nicht wieder auseinanderlaufen.',
+          'L’application iPhone s’appelait 1.0.0 dans les réglages et dans TestFlight, quelle que soit la version, alors qu’Android était à 1.0.2. Seul le numéro de build bougeait ; la version que lit une personne n’avait jamais été augmentée depuis sa première écriture. Un testeur signalant un problème avec « 1.0.0 » ne nous apprenait rien ; les deux plateformes sont désormais liées et ne peuvent plus diverger.',
+          'La aplicación de iPhone se llamaba 1.0.0 en los ajustes y en TestFlight, fuera la compilación que fuera, mientras Android llegaba a 1.0.2. Solo se movía el número de compilación; la versión que lee una persona no se había subido desde que se escribió por primera vez. Un probador que informa de un problema con «1.0.0» no nos dice nada, así que ambas plataformas están ahora sujetas la una a la otra y no pueden volver a separarse.',
+          'Aplikacja na iPhone’a nazywała się 1.0.0 w ustawieniach i w TestFlight, niezależnie od kompilacji, podczas gdy Android dotarł do 1.0.2. Zmieniał się tylko numer kompilacji; wersja, którą czyta człowiek, nie była podnoszona od pierwszego zapisu. Tester zgłaszający problem z „1.0.0” nie mówił nam nic, więc obie platformy są teraz związane ze sobą i nie mogą się znów rozejść.',
+        ),
+      },
+    ],
+  },
+  {
     date: '2026-11-06',
     title: t(
       'Say whether the beekeeping year fits where you are',

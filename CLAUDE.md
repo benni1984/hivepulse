@@ -74,6 +74,8 @@ the other in the same PR.
   is the amber button at the bottom right, not a toolbar icon.
 - **Apiary page toolbar:** move, share, treatments, custom fields, edit. **Hive page toolbar:** share, edit,
   QR code, statistics; move history and treatments are rows of the page.
+- **The Scan tab opens the camera straight away** on both, with the viewfinder and the instruction
+  drawn over the preview. No entry page and no button in between (#425).
 - **Every "create" action is an amber button with a label at the bottom right** (Android
   `ExtendedFloatingActionButton`, iOS `.hpFloatingButton(...)`): new apiary, new hive, new inspection, new QR
   batch, new custom field. Never a plus in a toolbar.
