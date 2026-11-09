@@ -160,7 +160,7 @@
 
 /* Frelons */
 "tab.hornets" = "Frelons";
-"hornets.title" = "Suivi Frelon";
+"hornets.title" = "Suivi du frelon asiatique";
 "hornets.tab.info" = "Info";
 "hornets.tab.map" = "Carte";
 "hornets.tab.report" = "Signaler";
@@ -281,7 +281,7 @@
 "alert.passwordChanged" = "Mot de passe modifié avec succès.";
 
 /* Rappels de visites */
-"section.reminders" = "Rappels de visites";
+"section.reminders" = "Rappels de visite";
 "reminder.enabled" = "Envoyer des rappels de visite";
 "reminder.intervalFormat" = "Me rappeler tous les %d jours";
 "reminder.seasonStart" = "Début de saison";

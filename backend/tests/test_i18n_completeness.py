@@ -104,3 +104,84 @@ def test_the_check_is_quiet_about_a_label_that_is_looked_up(line):
     module = _checker()
     assert not module.RUNTIME_LABEL["android"].search(line)
     assert not module.RUNTIME_LABEL["ios"].search(line)
+
+
+# ── The two grammar rules that are mechanical ────────────────────────────────
+#
+# Spanish `y`/`e` and French `de`/`d'` both depend only on the sound that follows, so both can be
+# checked. Both were broken: "colmenas e revisiones" nine times across three platforms (#433) and
+# "rappels d\'visite" twice in the Android reminder settings (#434). A key-parity check sees
+# nothing -- the keys exist, the values are filled, the language is right, the grammar is wrong.
+#
+# These feed the checker the real lines that were in the repository, plus the ones that are
+# correct and must stay quiet. A guard nobody has tried to break is not a guard.
+
+
+@pytest.mark.parametrize("value", [
+    "Amplía tus formularios de colmenas e revisiones con campos personalizados.",
+    "Colmenas e revisiones ilimitadas",
+    "Todos tus datos — colmenares, colmenas e revisiones — se eliminarán definitivamente.",
+])
+def test_the_check_sees_e_before_a_consonant(value):
+    module = _checker()
+    module.findings.clear()
+    module.check_grammar("test", "es", {"k": value})
+    assert module.findings, f"should have been flagged: {value}"
+    assert "uses 'y'" in module.findings[0][1]
+
+
+@pytest.mark.parametrize("value", [
+    "Actualice su nombre y idioma, cambie su contraseña.",
+    "nombre de display y idioma preferido",
+])
+def test_the_check_sees_y_before_an_i_sound(value):
+    module = _checker()
+    module.findings.clear()
+    module.check_grammar("test", "es", {"k": value})
+    assert module.findings, f"should have been flagged: {value}"
+    assert "becomes 'e'" in module.findings[0][1]
+
+
+@pytest.mark.parametrize("value", [
+    # `e` is right before an i sound, which is the whole point of the rule.
+    "Comprueba tu red e inténtalo de nuevo.",
+    "Elige un día e intervalos de aviso.",
+    # `y` is right before anything else, including an h that is not followed by i.
+    "Desliza hacia arriba y hacia abajo.",
+    "Regístrate y hazte colaborador.",
+    "Colmenas y revisiones ilimitadas",
+])
+def test_the_check_is_quiet_about_correct_spanish(value):
+    module = _checker()
+    module.findings.clear()
+    module.check_grammar("test", "es", {"k": value})
+    assert not module.findings, f"false positive: {value} -> {module.findings}"
+
+
+@pytest.mark.parametrize("value", [
+    "Rappels d\'visite",
+    "Envoyer des rappels d\'visite",
+])
+def test_the_check_sees_a_french_elision_before_a_consonant(value):
+    module = _checker()
+    module.findings.clear()
+    module.check_grammar("test", "fr", {"k": value})
+    assert module.findings, f"should have been flagged: {value}"
+    assert "only elides" in module.findings[0][1]
+
+
+@pytest.mark.parametrize("value", [
+    # A vowel, so the elision is required rather than wrong.
+    "Rappels d\'inspection",
+    "Code d\'accès",
+    "Impossible d\'obtenir la position GPS",
+    # A mute h takes the elision too.
+    "Pas d\'heure définie",
+    # The typographic apostrophe, which both apps use in places.
+    "Code d\u2019accès",
+])
+def test_the_check_is_quiet_about_correct_french(value):
+    module = _checker()
+    module.findings.clear()
+    module.check_grammar("test", "fr", {"k": value})
+    assert not module.findings, f"false positive: {value} -> {module.findings}"

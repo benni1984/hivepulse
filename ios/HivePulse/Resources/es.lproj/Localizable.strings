@@ -160,7 +160,7 @@
 
 /* Avispas */
 "tab.hornets" = "Avispas";
-"hornets.title" = "Seguimiento de avispas";
+"hornets.title" = "Rastreador de avispa asiática";
 "hornets.tab.info" = "Info";
 "hornets.tab.map" = "Mapa";
 "hornets.tab.report" = "Reportar";
@@ -299,7 +299,7 @@
 "members.gate.desc" = "Hazte supporter para desbloquear las estadísticas de la comunidad y ayudar a mantener HivePulse.";
 "members.stat.avgVarroa" = "Varroa promedio";
 "members.stat.goodMood" = "Buen humor";
-"members.stat.avgBrood" = "Marcos de cría promedio";
+"members.stat.avgBrood" = "Media de cuadros de cría";
 "members.stat.interval" = "Intervalo promedio de revisión";
 "members.becomeSupporter" = "Más información y hazte supporter";
 
@@ -307,7 +307,7 @@
 "section.dangerZone" = "Zona de peligro";
 "action.deleteAccount" = "Eliminar cuenta";
 "alert.deleteAccountConfirm" = "¿Eliminar tu cuenta?";
-"alert.deleteAccountMessage" = "Todos tus datos — colmenares, colmenas e revisiones — serán eliminados permanentemente. Esto no se puede deshacer.";
+"alert.deleteAccountMessage" = "Todos tus datos — colmenares, colmenas y revisiones — serán eliminados permanentemente. Esto no se puede deshacer.";
 "alert.deleteAccountAction" = "Eliminar permanentemente";
 
 /* Statistics overview */
@@ -368,9 +368,9 @@
 
 /* Custom field definitions */
 "fielddefs.title" = "Campos personalizados";
-"fielddefs.subtitle" = "Amplía tus formularios de colmenas e revisiones con campos personalizados.";
-"fielddefs.apiaryTitle" = "Campos del apiario";
-"fielddefs.apiarySubtitle" = "Estos campos sólo se aplican a colmenas e revisiones de este apiario.";
+"fielddefs.subtitle" = "Amplía tus formularios de colmenas y revisiones con campos personalizados.";
+"fielddefs.apiaryTitle" = "Campos de este colmenar";
+"fielddefs.apiarySubtitle" = "Estos campos sólo se aplican a colmenas y revisiones de este colmenar.";
 "fielddefs.empty" = "No hay campos personalizados todavía.";
 "fielddefs.new" = "Nuevo campo";
 "fielddefs.createTitle" = "Nuevo campo personalizado";

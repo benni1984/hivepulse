@@ -160,7 +160,7 @@
 
 /* Hornets */
 "tab.hornets" = "Hornets";
-"hornets.title" = "Hornet Tracker";
+"hornets.title" = "Asian Hornet Tracker";
 "hornets.tab.info" = "Info";
 "hornets.tab.map" = "Map";
 "hornets.tab.report" = "Report";

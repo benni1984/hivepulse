@@ -217,7 +217,7 @@
     <string name="scan_viewfinder">Viseur — placez le code QR dans le cadre</string>
 
     <!-- Suivi Frelon -->
-    <string name="hornet_title">Suivi Frelon</string>
+    <string name="hornet_title">Suivi du frelon asiatique</string>
     <string name="hornet_tab_info">Info</string>
     <string name="hornet_tab_map">Carte</string>
     <string name="hornet_tab_report">Signaler</string>
@@ -261,8 +261,8 @@
     <string name="hornet_traps_back">Retour</string>
 
     <!-- Inspection reminders -->
-    <string name="section_reminders">Rappels d\'visite</string>
-    <string name="reminder_enabled">Envoyer des rappels d\'visite</string>
+    <string name="section_reminders">Rappels de visite</string>
+    <string name="reminder_enabled">Envoyer des rappels de visite</string>
     <string name="reminder_email_enabled">Me notifier aussi par e-mail</string>
     <string name="reminder_email_hint">Les notifications push arrivent dans cette application. Les rappels par e-mail vous parviennent même si vous n\'utilisez que le site web — les deux canaux partagent le même compte, ces réglages s\'appliquent donc partout.</string>
     <string name="reminder_interval_label">Me rappeler tous les</string>

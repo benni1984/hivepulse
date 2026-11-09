@@ -299,7 +299,7 @@
 
     <!-- Hornets -->
     <string name="tab_hornets">Hornets</string>
-    <string name="hornet_title">Hornet Tracker</string>
+    <string name="hornet_title">Asian Hornet Tracker</string>
     <string name="hornet_tab_info">Info</string>
     <string name="hornet_tab_map">Map</string>
     <string name="hornet_tab_report">Report</string>

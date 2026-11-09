@@ -1,7 +1,7 @@
 {
   "nav": {
     "map": "Live-Karte",
-    "hornets": "Hornissentracker",
+    "hornets": "Hornissen-Tracker",
     "news": "Neuigkeiten",
     "contribute": "Mitmachen",
     "members": "Mitglieder",
@@ -1121,7 +1121,7 @@
         "desc": "Ihren Bienenstand mit der HivePulse-Gemeinschaft vergleichen — durchschnittliche Varroa-Zahlen, gute-Stimmung-Raten, Brutwabenzahlen und Kontrollintervalle aller öffentlichen Bienenstände."
       },
       "hornet-tracker": {
-        "title": "Hornissentracker",
+        "title": "Hornissen-Tracker",
         "desc": "Asiatische Hornissenfänge und Nistplatzmeldungen einreichen, Gemeinschaftsfotos bewerten und die Live-Nestkarte anzeigen."
       },
       "hornet-traps": {
@@ -1140,7 +1140,7 @@
   },
   "hornets": {
     "tag": "Bürgerwissenschaft",
-    "title": "Hornissentracker",
+    "title": "Hornissen-Tracker",
     "subtitle": "Schütze Bienen, indem du Vespa velutina — die Asiatische Hornisse — verfolgst. Melde Fänge und Nester, identifiziere Sichtungen und sieh dir die Live-Karte an. Kein Konto nötig.",
     "stats": {
       "caught": "Hornissen gefangen",
@@ -1250,7 +1250,7 @@
     "siteTitle": "HivePulse — gemeinsam Bestäuber schützen",
     "siteDescription": "Die Imker-App, die jede Durchsicht zu weltweiten Daten für den Bienenschutz macht. Kostenlos für iPhone und Android.",
     "helpTitle": "Hilfe & Dokumentation",
-    "helpDescription": "Anleitungen zu allen Bereichen von HivePulse — Bienenstände, Völker, Durchsichten, QR-Codes, Statistiken und Hornissentracker.",
+    "helpDescription": "Anleitungen zu allen Bereichen von HivePulse — Bienenstände, Völker, Durchsichten, QR-Codes, Statistiken und Hornissen-Tracker.",
     "helpSuffix": "HivePulse Hilfe",
     "imprintTitle": "Impressum",
     "imprintDescription": "Wer HivePulse betreibt und wie du uns erreichst.",

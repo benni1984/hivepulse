@@ -114,9 +114,9 @@
     <string name="section_notes">Notas</string>
     <string name="section_custom_fields">Campos personalizados</string>
     <string name="fielddefs_title">Campos personalizados</string>
-    <string name="fielddefs_subtitle">Amplía los formularios de colmena e revisión con tus propios campos.</string>
+    <string name="fielddefs_subtitle">Amplía los formularios de colmena y revisión con tus propios campos.</string>
     <string name="fielddefs_apiary_title">Campos de este colmenar</string>
-    <string name="fielddefs_apiary_subtitle">Estos campos solo se aplican a las colmenas e revisiones de este colmenar.</string>
+    <string name="fielddefs_apiary_subtitle">Estos campos solo se aplican a las colmenas y revisiones de este colmenar.</string>
     <string name="fielddefs_manage">Gestionar campos personalizados</string>
     <string name="fielddefs_empty">Todavía no hay campos personalizados.</string>
     <string name="fielddefs_new">Nuevo campo</string>
@@ -183,7 +183,7 @@
     <string name="alert_password_too_short">La contraseña debe tener al menos 8 caracteres.</string>
     <string name="alert_password_changed">Contraseña cambiada.</string>
     <string name="alert_delete_account_confirm">¿Eliminar tu cuenta?</string>
-    <string name="alert_delete_account_message">Todos tus datos — colmenares, colmenas e revisiones — se eliminarán definitivamente. Esta acción no se puede deshacer.</string>
+    <string name="alert_delete_account_message">Todos tus datos — colmenares, colmenas y revisiones — se eliminarán definitivamente. Esta acción no se puede deshacer.</string>
     <string name="alert_delete_account_action">Eliminar definitivamente</string>
     <string name="empty_apiaries_title">Todavía no hay colmenares.\nToca + para añadir el primero.</string>
     <string name="empty_hives_title">Todavía no hay colmenas en este colmenar.\nToca «Nueva colmena» o escanea el código QR de una colmena.</string>
@@ -269,7 +269,7 @@
     <string name="heatmap_cell_brood">Cría media</string>
     <string name="heatmap_cell_swarm">Celdas de enjambre</string>
     <string name="tab_hornets">Avispones</string>
-    <string name="hornet_title">Rastreador de avispones</string>
+    <string name="hornet_title">Rastreador de avispa asiática</string>
     <string name="hornet_tab_info">Información</string>
     <string name="hornet_tab_map">Mapa</string>
     <string name="hornet_tab_report">Informar</string>

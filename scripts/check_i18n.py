@@ -69,6 +69,50 @@ def compare(area: str, reference: dict[str, str], other: dict[str, str], locale:
                 fail(area, f"{locale}: {key!r} has placeholders {got} but English has {want}")
 
 
+# ── Grammar rules that are mechanical ────────────────────────────────────────
+#
+# Most wording cannot be checked by a machine. Two rules can, and both were broken in ways no
+# parity check could see -- the keys existed, the values were non-empty, and the text was
+# genuinely in the right language. It was simply wrong (#433, #434).
+#
+# Spanish: `y` becomes `e` before an i- or hi- sound, and only there. The repository had
+# "colmenas e revisiones" nine times and "nombre y idioma" twice -- both halves of the same rule
+# broken in opposite directions, from replacing the word after the conjunction and leaving the
+# conjunction alone.
+#
+# French: `de` elides to `d'` before a vowel or a mute h, and only there. The repository had
+# "rappels d'visite" twice, in the reminder settings.
+
+# A word beginning with an i sound: i, í, hi. `hie-`/`hia-` keep `y` ("agua y hielo"), because
+# there the i is a semivowel.
+ES_I_SOUND = re.compile(r"^(?:[ií]|hi(?![ae]))", re.IGNORECASE)
+ES_CONJ = re.compile(r"(?<![\w])([ye])\s+([^\s<>{}\[\]]+)")
+
+FR_VOWEL = re.compile(r"^(?:[aeiouyàâäéèêëîïôöùûüAEIOUY]|h)", re.IGNORECASE)
+FR_ELISION = re.compile(r"(?<![\w])d['\u2019]\s*([a-zA-Zà-ÿ]+)")
+
+
+def check_grammar(area: str, locale: str, strings: dict[str, str]) -> None:
+    """The two rules above, over one platform's strings for one language."""
+    for key, value in strings.items():
+        if not isinstance(value, str):
+            continue
+        if locale == "es":
+            for conj, following in ES_CONJ.findall(value):
+                i_sound = bool(ES_I_SOUND.match(following))
+                if conj.lower() == "e" and not i_sound:
+                    fail(area, f"es: {key!r} has 'e {following}' — Spanish uses 'y' unless the "
+                               f"next word starts with an i or hi sound")
+                if conj.lower() == "y" and i_sound:
+                    fail(area, f"es: {key!r} has 'y {following}' — becomes 'e' before an "
+                               f"i or hi sound")
+        elif locale == "fr":
+            for following in FR_ELISION.findall(value):
+                if not FR_VOWEL.match(following):
+                    fail(area, f"fr: {key!r} has \"d'{following}\" — 'de' only elides before a "
+                               f"vowel or a mute h")
+
+
 # ── web ───────────────────────────────────────────────────────────────────────
 
 def check_web() -> None:
@@ -89,6 +133,7 @@ def check_web() -> None:
     for locale in LOCALES[1:]:
         if locale in messages:
             compare(area, messages["en"], messages[locale], locale, placeholder)
+            check_grammar(area, locale, messages[locale])
 
     # Page metadata must be localized, not a single English string for every locale
     layout = (ROOT / "app/[locale]/layout.tsx")
@@ -130,6 +175,7 @@ def check_ios() -> None:
     for locale in LOCALES[1:]:
         if locale in tables:
             compare(area, tables["en"], tables[locale], locale, placeholder)
+            check_grammar(area, locale, tables[locale])
 
     literal = re.compile(r'(?:Text|Button|Label)\(\s*"([A-Z][A-Za-z ]{3,})"')
     for swift in sorted((ROOT / "ios/HivePulse").rglob("*.swift")):
@@ -206,6 +252,7 @@ def check_android() -> None:
             help_url = tables[locale].get("url_help", "")
             if help_url and f"/{locale}/help" not in help_url:
                 fail(area, f"{locale}: url_help points at {help_url!r}")
+            check_grammar(area, locale, tables[locale])
 
     literal = re.compile(r'(?:contentDescription\s*=\s*|Text\(\s*)"([A-Z][A-Za-z ]{3,})"')
     for kotlin in sorted((ROOT / "android/app/src/main/java/com/hivepulse/app/ui").rglob("*.kt")):
