@@ -57,6 +57,16 @@ export const RELEASES: Release[] = [
       {
         kind: 'changed',
         text: t(
+          'The Scan tab on iPhone opens the camera, as it does on Android. It used to be a page with a glyph, a sentence and a button, with the scanner behind it in a sheet — one tap too many at the hive, in gloves. What the page said is now drawn over the preview.',
+          'Der Scan-Reiter auf dem iPhone öffnet die Kamera, wie auf Android. Er war eine Seite mit Glyphe, Satz und Knopf, den Scanner dahinter in einem Blatt — am Volk, mit Handschuhen, ein Tipp zu viel. Was die Seite sagte, steht jetzt über der Vorschau.',
+          'L\'onglet Scan sur iPhone ouvre la caméra, comme sur Android. C\'était une page avec un glyphe, une phrase et un bouton, le scanner derrière dans une feuille — une tape de trop à la ruche, avec des gants. Ce que disait la page est désormais dessiné sur l\'aperçu.',
+          'La pestaña Escanear en el iPhone abre la cámara, como en Android. Era una página con un glifo, una frase y un botón, con el escáner detrás en una hoja — un toque de más en la colmena, con guantes. Lo que decía la página se dibuja ahora sobre la vista previa.',
+          'Zakładka Skanuj na iPhonie otwiera aparat, tak jak na Androidzie. Była stroną z symbolem, zdaniem i przyciskiem, a skaner czekał za nią w arkuszu — o jedno dotknięcie za dużo przy ulu, w rękawicach. To, co mówiła strona, rysuje się teraz nad podglądem.',
+        ),
+      },
+      {
+        kind: 'changed',
+        text: t(
           'The German iPhone app said "Sie" on a dozen screens and "du" on the rest, often one after the other. It now says "du" everywhere, as the website and the Android app already did.',
           'Die deutsche iPhone-App sagte auf einem Dutzend Bildschirmen „Sie" und auf dem Rest „du", oft direkt nacheinander. Jetzt sagt sie überall „du", so wie die Website und die Android-App es schon taten.',
           'L’application iPhone en allemand disait « Sie » sur une douzaine d’écrans et « du » sur les autres, souvent l’un après l’autre. Elle dit désormais « du » partout, comme le site et l’application Android le faisaient déjà.',
