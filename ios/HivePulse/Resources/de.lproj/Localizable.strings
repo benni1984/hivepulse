@@ -114,18 +114,18 @@
 
 /* Empty states */
 "empty.apiaries.title" = "Keine Bienenstände";
-"empty.apiaries.description" = "Fügen Sie Ihren ersten Bienenstand hinzu.";
+"empty.apiaries.description" = "Füge deinen ersten Bienenstand hinzu.";
 "empty.hives.title" = "Keine Völker";
 "empty.hives.description" = "Tippe auf „Neues Volk“ oder scanne den QR-Code an einem Volk.";
 "empty.inspections" = "Noch keine Kontrollen.";
 "empty.batches.title" = "Keine QR-Batches";
-"empty.batches.description" = "Erstellen Sie QR-Codes zum Drucken und Aufkleben auf Ihre Völker.";
+"empty.batches.description" = "Erstelle QR-Codes zum Drucken und Aufkleben auf deine Völker.";
 
 /* Alerts */
 "alert.error" = "Fehler";
 "error.apiaryHasHives" = "Bitte alle Völker löschen, bevor der Bienenstand gelöscht wird.";
-"alert.logoutConfirm" = "Möchten Sie sich wirklich abmelden?";
-"alert.batchCountHint" = "Geben Sie die Anzahl der QR-Codes ein (1–50).";
+"alert.logoutConfirm" = "Möchtest du dich wirklich abmelden?";
+"alert.batchCountHint" = "Gib die Anzahl der QR-Codes ein (1–50).";
 
 /* Stats */
 "stat.inspections" = "Kontrollen";
@@ -142,7 +142,7 @@
 "stat.to" = "Bis";
 
 /* Scan */
-"scan.instruction" = "Scannen Sie den QR-Code auf Ihrem Volk, um die Akte zu öffnen oder es erstmalig einzurichten.";
+"scan.instruction" = "Scanne den QR-Code auf deinem Volk, um die Akte zu öffnen oder es erstmalig einzurichten.";
 
 /* Export */
 "section.export" = "Datenexport";
@@ -173,11 +173,11 @@
 "hornets.info.problem" = "Die Asiatische Hornisse";
 "hornets.info.problemText" = "Vespa velutina (Asiatische Hornisse) ist ein invasiver Räuber, der Bienenvölker bedroht. Frühe Nestentdeckung und Fang im Frühjahr sind entscheidend.";
 "hornets.info.whyCatch" = "Warum fangen?";
-"hornets.info.whyCatchText" = "Königinnen im Frühjahr vor dem Nestbau zu fangen begrenzt das Wachstum der Kolonien und schützt Bestäuber. Melden Sie Ihre Fänge, um den lokalen Druck zu verfolgen.";
+"hornets.info.whyCatchText" = "Königinnen im Frühjahr vor dem Nestbau zu fangen begrenzt das Wachstum der Kolonien und schützt Bestäuber. Melde deine Fänge, um den lokalen Druck zu verfolgen.";
 "hornets.info.reportNest" = "Nest gefunden?";
-"hornets.info.reportNestText" = "Markieren Sie den genauen Standort, damit Behörden eine professionelle Entfernung beauftragen können. Anonyme Meldungen sind willkommen.";
+"hornets.info.reportNestText" = "Markiere den genauen Standort, damit Behörden eine professionelle Entfernung beauftragen können. Anonyme Meldungen sind willkommen.";
 "hornets.map.noNests" = "Keine Nester gemeldet";
-"hornets.map.hint" = "Seien Sie der Erste, der ein Nest in Ihrer Gegend markiert.";
+"hornets.map.hint" = "Sei die oder der Erste, die ein Nest in deiner Gegend markiert.";
 "hornets.map.status.found" = "Gefunden";
 "hornets.map.status.ordered" = "Vernichtung beauftragt";
 "hornets.map.status.destroyed" = "Vernichtet";
@@ -187,10 +187,10 @@
 "hornets.report.location" = "Standort (optional)";
 "hornets.report.locationRequired" = "GPS-Standort erforderlich";
 "hornets.report.notes" = "Notizen";
-"hornets.report.notesPlaceholder" = "Beschreiben Sie, was Sie gefunden haben…";
-"hornets.report.reporterName" = "Ihr Name (optional)";
+"hornets.report.notesPlaceholder" = "Beschreibe, was du gefunden hast…";
+"hornets.report.reporterName" = "Dein Name (optional)";
 "hornets.report.submit" = "Meldung absenden";
-"hornets.report.success" = "Danke! Ihre Meldung wurde eingereicht.";
+"hornets.report.success" = "Danke! Deine Meldung wurde eingereicht.";
 "hornets.community.empty" = "Noch keine Sichtungen";
 "hornets.community.vote.yes" = "Hornisse ✓";
 "hornets.community.vote.no" = "Keine Hornisse";
@@ -205,7 +205,7 @@
 "hornets.traps.name" = "Fallenname";
 "hornets.traps.namePlaceholder" = "z. B. Gartenfalle beim Bienenstand";
 "hornets.traps.notes" = "Notizen (optional)";
-"hornets.traps.owner" = "Ihr Name (optional)";
+"hornets.traps.owner" = "Dein Name (optional)";
 "hornets.traps.submit" = "Falle registrieren";
 "hornets.traps.success" = "Falle registriert!";
 "hornets.traps.code" = "Zugangscode";
@@ -306,7 +306,7 @@
 "section.dangerZone" = "Gefahrenbereich";
 "action.deleteAccount" = "Konto löschen";
 "alert.deleteAccountConfirm" = "Konto löschen?";
-"alert.deleteAccountMessage" = "Alle Ihre Daten – Bienenstände, Völker und Kontrollen – werden dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.";
+"alert.deleteAccountMessage" = "Alle deine Daten – Bienenstände, Völker und Kontrollen – werden dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.";
 "alert.deleteAccountAction" = "Dauerhaft löschen";
 
 /* Statistics overview */
