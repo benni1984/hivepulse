@@ -108,7 +108,6 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-qr-batches.png" caption="Scanning a hive QR code in the field — the hive opens instantly" />
       </section>
 
       <section className="help-section">

@@ -10,7 +10,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
           Une étiquette QR code sur chaque ruche vous permet de scanner-et-ouvrir en moins de deux secondes — l'écran de détail
           de la bonne ruche s'ouvre instantanément, prêt pour une nouvelle visite.
         </p>
-        <Screenshot android="/docs/screenshots/android-qr-batches.png" web="/docs/screenshots/qr-batch-detail.png" caption="Étiquette QR code sur une ruche, prête à être scannée" />
+        <Screenshot android="/docs/screenshots/android-qr-batches.png" web="/docs/screenshots/qr-batch-detail.png" caption="Liste des lots QR et détail d'un lot — générer et télécharger les étiquettes" />
       </section>
 
       <section className="help-section">

@@ -108,7 +108,6 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-qr-batches.png" caption="Skanowanie kodu QR rodziny w terenie: rodzina otwiera się od razu" />
       </section>
 
       <section className="help-section">

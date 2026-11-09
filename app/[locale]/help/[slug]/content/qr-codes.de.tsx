@@ -10,7 +10,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
           Ein QR-Code-Etikett auf jedem Bienenstock ermöglicht es Ihnen, in unter zwei Sekunden zu scannen und zu öffnen — der korrekte
           Volk-Detailbildschirm öffnet sich sofort, bereit für eine neue Kontrolle.
         </p>
-        <Screenshot android="/docs/screenshots/android-qr-batches.png" web="/docs/screenshots/qr-batch-detail.png" caption="QR-Code-Etikett auf einem Bienenstock, bereit zum Scannen" />
+        <Screenshot android="/docs/screenshots/android-qr-batches.png" web="/docs/screenshots/qr-batch-detail.png" caption="QR-Chargenliste und Chargendetails — Etiketten erzeugen und herunterladen" />
       </section>
 
       <section className="help-section">
