@@ -35,6 +35,48 @@ export function pick(text: Localized, locale: string): string {
 /** Newest first. */
 export const RELEASES: Release[] = [
   {
+    date: '2026-11-09',
+    title: t(
+      'The scanner shows you where to aim',
+      'Der Scanner zeigt, wohin du zielen sollst',
+      'Le scanner montre où viser',
+      'El escáner muestra dónde apuntar',
+      'Skaner pokazuje, gdzie celować',
+    ),
+    items: [
+      {
+        kind: 'fixed',
+        text: t(
+          'The scan screen on Android showed a live camera picture and nothing else: no frame to aim with, and no line saying what it wanted. It now draws an amber frame and the sentence iPhone has always shown. The frame was in the code from the beginning — drawn in a colour with no opacity, so it was never once visible on a phone.',
+          'Der Scan-Bildschirm auf Android zeigte ein Kamerabild und sonst nichts: keinen Rahmen zum Zielen und keinen Satz, der sagt, was er will. Jetzt zeichnet er einen amberfarbenen Rahmen und den Satz, den das iPhone immer schon zeigt. Den Rahmen gab es von Anfang an im Code — in einer Farbe ohne Deckkraft, also war er auf keinem Telefon je zu sehen.',
+          'L’écran de scan sur Android affichait une image de la caméra et rien d’autre : aucun cadre pour viser, aucune phrase disant ce qu’il attendait. Il dessine désormais un cadre ambre et la phrase que l’iPhone affiche depuis toujours. Le cadre était dans le code depuis le début — dessiné dans une couleur sans opacité, donc jamais visible sur un téléphone.',
+          'La pantalla de escaneo en Android mostraba una imagen de la cámara y nada más: ni marco para apuntar, ni una frase que dijera qué quería. Ahora dibuja un marco ámbar y la frase que el iPhone ha mostrado siempre. El marco estaba en el código desde el principio — dibujado en un color sin opacidad, así que nunca llegó a verse en un teléfono.',
+          'Ekran skanowania na Androidzie pokazywał obraz z aparatu i nic poza tym: żadnej ramki do celowania ani zdania mówiącego, czego oczekuje. Teraz rysuje bursztynową ramkę i zdanie, które iPhone pokazuje od zawsze. Ramka była w kodzie od początku — narysowana w kolorze bez krycia, więc nigdy nie pojawiła się na żadnym telefonie.',
+        ),
+      },
+      {
+        kind: 'changed',
+        text: t(
+          'The German iPhone app said "Sie" on a dozen screens and "du" on the rest, often one after the other. It now says "du" everywhere, as the website and the Android app already did.',
+          'Die deutsche iPhone-App sagte auf einem Dutzend Bildschirmen „Sie" und auf dem Rest „du", oft direkt nacheinander. Jetzt sagt sie überall „du", so wie die Website und die Android-App es schon taten.',
+          'L’application iPhone en allemand disait « Sie » sur une douzaine d’écrans et « du » sur les autres, souvent l’un après l’autre. Elle dit désormais « du » partout, comme le site et l’application Android le faisaient déjà.',
+          'La aplicación de iPhone en alemán decía «Sie» en una docena de pantallas y «du» en el resto, a menudo una tras otra. Ahora dice «du» en todas partes, como ya hacían la web y la aplicación de Android.',
+          'Niemiecka aplikacja na iPhone’a mówiła „Sie" na kilkunastu ekranach i „du" na pozostałych, często jedno po drugim. Teraz wszędzie mówi „du", tak jak strona i aplikacja na Androida już to robiły.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'Two pictures in the help pages had not been retaken since June and showed an interface that no longer exists — a navigation bar with three tabs instead of five. Their captions described fields that were not in the picture. Both are now taken by the same script as the rest, so they cannot fall behind again.',
+          'Zwei Bilder in den Hilfeseiten waren seit Juni nicht neu aufgenommen worden und zeigten eine Oberfläche, die es nicht mehr gibt — eine Navigationsleiste mit drei statt fünf Reitern. Ihre Unterschriften beschrieben Felder, die gar nicht im Bild waren. Beide nimmt jetzt dasselbe Skript auf wie den Rest, damit sie nicht wieder zurückfallen können.',
+          'Deux images des pages d’aide n’avaient pas été reprises depuis juin et montraient une interface qui n’existe plus — une barre de navigation à trois onglets au lieu de cinq. Leurs légendes décrivaient des champs absents de l’image. Les deux sont désormais prises par le même script que les autres et ne peuvent plus prendre de retard.',
+          'Dos imágenes de las páginas de ayuda no se habían vuelto a tomar desde junio y mostraban una interfaz que ya no existe — una barra de navegación con tres pestañas en lugar de cinco. Sus pies describían campos que no estaban en la imagen. Ahora las toma el mismo script que el resto, así que no pueden volver a quedarse atrás.',
+          'Dwa obrazy na stronach pomocy nie były odnawiane od czerwca i pokazywały interfejs, który już nie istnieje — pasek nawigacji z trzema zakładkami zamiast pięciu. Ich podpisy opisywały pola, których na obrazie nie było. Oba wykonuje teraz ten sam skrypt co pozostałe, więc nie mogą znów zostać w tyle.',
+        ),
+      },
+    ],
+  },
+  {
     date: '2026-11-06',
     title: t(
       'Say whether the beekeeping year fits where you are',
