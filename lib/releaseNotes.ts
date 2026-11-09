@@ -35,6 +35,78 @@ export function pick(text: Localized, locale: string): string {
 /** Newest first. */
 export const RELEASES: Release[] = [
   {
+    date: '2026-11-10',
+    title: t(
+      'The words the apps use, gone over one by one',
+      'Die Worte der Apps, einmal durchgegangen',
+      'Les mots des applications, repris un par un',
+      'Las palabras de las apps, repasadas una a una',
+      'Słowa aplikacji, przejrzane po kolei',
+    ),
+    items: [
+      {
+        kind: 'fixed',
+        text: t(
+          'Two sentences were not grammatical in the language they were written in. Spanish said “colmenas e revisiones” in nine places — the word for “and” only takes that form before an i sound — and the French reminder settings said “Rappels d’visite” twice. Both came from replacing one word and leaving the one in front of it alone.',
+          'Zwei Sätze waren in ihrer eigenen Sprache nicht richtig. Spanisch sagte an neun Stellen „colmenas e revisiones“ — das Wort für „und“ lautet so nur vor einem i-Laut — und die französischen Erinnerungs-Einstellungen zweimal „Rappels d’visite“. Beides kam davon, ein Wort zu ersetzen und das davor stehen zu lassen.',
+          'Deux phrases n’étaient pas correctes dans leur propre langue. L’espagnol disait « colmenas e revisiones » à neuf endroits — le mot pour « et » ne prend cette forme que devant un son i — et les réglages de rappels en français disaient deux fois « Rappels d’visite ». Dans les deux cas, un mot avait été remplacé sans toucher à celui qui le précédait.',
+          'Dos frases no eran correctas en su propio idioma. En español decía «colmenas e revisiones» en nueve sitios — la «e» solo sustituye a la «y» ante sonido i — y los ajustes de recordatorios en francés decían dos veces «Rappels d’visite». En ambos casos se sustituyó una palabra y se dejó la de delante.',
+          'Dwa zdania były niepoprawne we własnym języku. Hiszpański mówił „colmenas e revisiones” w dziewięciu miejscach — ta forma „i” występuje tylko przed dźwiękiem i — a francuskie ustawienia przypomnień dwukrotnie „Rappels d’visite”. Oba wzięły się z zamiany jednego słowa i pozostawienia tego przed nim.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'The Spanish iPhone app called a hornet a wasp. The whole tab was named “Seguimiento de avispas”, and it is about one hornet species. It also called a frame of brood a picture frame. Android had all of it right, which is how it was found.',
+          'Die spanische iPhone-App nannte eine Hornisse eine Wespe. Der ganze Reiter hieß „Seguimiento de avispas“, und es geht dort um eine Hornissenart. Eine Brutwabe nannte sie einen Bilderrahmen. Android hatte alles richtig — so ist es aufgefallen.',
+          'L’application iPhone en espagnol appelait un frelon une guêpe. L’onglet entier s’appelait « Seguimiento de avispas », alors qu’il traite d’une espèce de frelon. Elle appelait aussi un cadre de couvain un cadre de tableau. Android avait tout juste, ce qui a permis de le voir.',
+          'La aplicación de iPhone en español llamaba avispa a un avispón. La pestaña entera se llamaba «Seguimiento de avispas», y trata de una especie de avispón. También llamaba marco a un cuadro de cría. Android lo tenía todo bien, y así se vio.',
+          'Hiszpańska aplikacja na iPhone’a nazywała szerszenia osą. Cała zakładka nazywała się „Seguimiento de avispas”, a dotyczy jednego gatunku szerszenia. Ramkę z czerwiem nazywała ramą obrazu. Android miał wszystko dobrze — i tak to wyszło.',
+        ),
+      },
+      {
+        kind: 'changed',
+        text: t(
+          'The hornet tracker had a different name on every platform, in every language. On three of the five the apps dropped “Asian”, which is the part that matters: the European hornet is protected and must not be trapped. It is now called the same thing everywhere, and that name says which species it is about.',
+          'Der Hornissen-Tracker hieß auf jeder Plattform anders, in jeder Sprache. In drei von fünf ließen die Apps „asiatisch“ weg, und genau darauf kommt es an: die europäische Hornisse ist geschützt und darf nicht gefangen werden. Jetzt heißt er überall gleich, und der Name sagt, um welche Art es geht.',
+          'Le suivi des frelons portait un nom différent sur chaque plateforme, dans chaque langue. Dans trois langues sur cinq, les applications omettaient « asiatique », ce qui est précisément ce qui compte : le frelon d’Europe est protégé et ne doit pas être piégé. Il porte désormais partout le même nom, et ce nom dit de quelle espèce il s’agit.',
+          'El rastreador de avispas se llamaba distinto en cada plataforma y en cada idioma. En tres de los cinco, las apps omitían «asiática», que es justo lo que importa: el avispón europeo está protegido y no se debe atrapar. Ahora se llama igual en todas partes, y el nombre dice de qué especie se trata.',
+          'Tropiciel szerszeni nazywał się inaczej na każdej platformie i w każdym języku. W trzech z pięciu aplikacje pomijały „azjatycki”, a to właśnie jest istotne: szerszeń europejski jest chroniony i nie wolno go odławiać. Teraz nazywa się wszędzie tak samo, i ta nazwa mówi, o jaki gatunek chodzi.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'Android and the iPhone said different things in 109 places where the English was identical. German used two different words for an inspection, and each app contradicted itself about whether a frame of brood is a comb or a wooden frame — in opposite directions. Polish, for what it is worth, had not a single difference.',
+          'Android und iPhone sagten an 109 Stellen Verschiedenes, wo das Englische identisch war. Deutsch benutzte zwei Wörter für eine Kontrolle, und jede App widersprach sich selbst, ob eine Brutwabe eine Wabe oder ein Rähmchen ist — und zwar jeweils andersherum. Polnisch hatte, der Ordnung halber, keine einzige Abweichung.',
+          'Android et l’iPhone disaient des choses différentes à 109 endroits où l’anglais était identique. L’allemand employait deux mots pour une visite, et chaque application se contredisait sur la nature d’un cadre de couvain — chacune dans l’autre sens. Le polonais, pour mémoire, n’avait pas une seule différence.',
+          'Android y el iPhone decían cosas distintas en 109 sitios donde el inglés era idéntico. El alemán usaba dos palabras para una revisión, y cada aplicación se contradecía sobre qué es un cuadro de cría, cada una al revés de la otra. El polaco, para que quede dicho, no tenía ni una sola diferencia.',
+          'Android i iPhone mówiły co innego w 109 miejscach, gdzie angielski był identyczny. Niemiecki używał dwóch słów na przegląd, a każda aplikacja sama sobie przeczyła, czym jest ramka z czerwiem — każda odwrotnie. Polski, dla porządku, nie miał ani jednej różnicy.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'Every link in the website’s navigation dropped the language. It was invisible in normal use, because a cookie redirected you back; it broke when someone sent you a page in their language and your browser was set to another, and it meant search engines never saw the translated site link to itself.',
+          'Jeder Link in der Navigation der Website verlor die Sprache. Im Alltag war das nicht zu sehen, weil ein Cookie zurückleitete; es brach, wenn jemand dir eine Seite in seiner Sprache schickte und dein Browser auf eine andere stand — und es hieß, dass Suchmaschinen die übersetzte Website nie auf sich selbst verweisen sahen.',
+          'Chaque lien de la navigation du site perdait la langue. Invisible à l’usage, parce qu’un cookie vous ramenait ; cassé dès que quelqu’un vous envoyait une page dans sa langue alors que votre navigateur était dans une autre. Et les moteurs de recherche ne voyaient jamais le site traduit se lier à lui-même.',
+          'Todos los enlaces de la navegación del sitio perdían el idioma. No se notaba en el uso normal, porque una cookie te devolvía; se rompía cuando alguien te enviaba una página en su idioma y tu navegador estaba en otro. Y los buscadores nunca veían el sitio traducido enlazarse a sí mismo.',
+          'Każdy link w nawigacji strony tracił język. W normalnym użyciu nie było tego widać, bo ciasteczko cofało cię z powrotem; psuło się, gdy ktoś przysłał ci stronę w swoim języku, a twoja przeglądarka była w innym. I wyszukiwarki nigdy nie widziały, by przetłumaczona strona linkowała do siebie.',
+        ),
+      },
+      {
+        kind: 'added',
+        text: t(
+          'Eleven public pages now carry a title and a description of their own, in all five languages. They all shared the home page’s before, so a browser with several tabs open showed the same words on each.',
+          'Elf öffentliche Seiten tragen jetzt einen eigenen Titel und eine eigene Beschreibung, in allen fünf Sprachen. Vorher teilten sie den der Startseite — wer mehrere Reiter offen hatte, sah auf jedem dieselben Worte.',
+          'Onze pages publiques ont désormais leur propre titre et leur propre description, dans les cinq langues. Elles partageaient celui de l’accueil : avec plusieurs onglets ouverts, on lisait les mêmes mots sur chacun.',
+          'Once páginas públicas tienen ya título y descripción propios, en los cinco idiomas. Antes compartían el de la portada: con varias pestañas abiertas se leían las mismas palabras en todas.',
+          'Jedenaście publicznych stron ma teraz własny tytuł i opis, we wszystkich pięciu językach. Wcześniej dzieliły tytuł strony głównej — przy kilku otwartych kartach na każdej było to samo.',
+        ),
+      },
+    ],
+  },
+  {
     date: '2026-11-09',
     title: t(
       'The scanner shows you where to aim',
