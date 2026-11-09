@@ -96,7 +96,8 @@
 "action.save" ="Enregistrer";
 "action.cancel" = "Annuler";
 "action.done" = "Terminé";
-"action.scanQR" = "Scanner le code QR";
+"scan.title" = "Scanner le QR code";
+"scan.viewfinder" = "Viseur — placez le code QR dans le cadre";
 "action.useMyLocation" = "Utiliser ma position";
 "action.editApiary" = "Modifier le rucher";
 "action.newApiary" = "Nouveau rucher";

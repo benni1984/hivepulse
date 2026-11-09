@@ -239,6 +239,19 @@ final class ScreenshotUITests: XCTestCase {
         snap("27-beekeeping-year", app)
     }
 
+    /// The Scan tab, which since #425 is the camera with the viewfinder over it.
+    ///
+    /// `-mockCameraPreview` stands in for the live preview, which the simulator cannot give us.
+    /// What the help page is showing is the frame and the sentence, and those are the real views.
+    func test_capture_qr_scan() {
+        let app = launch(["-resetKeychain", "-mockApiaryWithHive",
+                          "-guidedTourSeen", "YES", "-mockCameraPreview"])
+        XCTAssertTrue(app.navigationBars.element.waitForExistence(timeout: 10))
+        app.tabBars.buttons.element(boundBy: 1).tap()
+        XCTAssertTrue(app.staticTexts["scanInstruction"].waitForExistence(timeout: 5))
+        snap("28-qr-scan", app)
+    }
+
     // MARK: - The listing's own pictures
     //
     // The store listing shows the tools that came with the home summary, with something in them: the
