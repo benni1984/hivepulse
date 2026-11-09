@@ -70,12 +70,12 @@
 "section.frames" = "Cadres";
 "section.colony" = "Colonie";
 "section.varroa" = "Varroa";
-"section.treatment" = "Traitement & Nourrissage";
+"section.treatment" = "Traitement & nourrissement";
 "section.weight" = "Poids";
 
 /* Labels */
 "label.hives" = "ruches";
-"label.neverInspected" = "Jamais inspectée";
+"label.neverInspected" = "Jamais visitée";
 "label.queenSeen" = "Reine vue";
 "label.yes" = "Oui";
 "label.no" = "Non";
@@ -106,7 +106,7 @@
 "action.editInspection" = "Modifier la visite";
 "action.saveProfile" = "Enregistrer le profil";
 "action.logout" = "Se déconnecter";
-"action.help" = "Aide & Documentation";
+"action.help" = "Aide & documentation";
 "action.feedback" = "Envoyer un retour";
 "action.feedbackSubject" = "Retour HivePulse";
 "action.newBatch" = "Nouveau lot";
@@ -149,7 +149,7 @@
 "section.export" = "Export de données";
 "action.exportData" = "Exporter les données";
 "action.download" = "Télécharger";
-"label.selectApiary" = "Sélectionner un rucher";
+"label.selectApiary" = "Choisir un rucher";
 "label.selectFormat" = "Format de fichier";
 
 /* Generic actions */
@@ -171,12 +171,12 @@
 "hornets.stats.nests" = "Nids";
 "hornets.stats.destroyed" = "Détruits";
 "hornets.stats.sightings" = "Confirmés";
-"hornets.info.problem" = "Le Frelon Asiatique";
+"hornets.info.problem" = "Le frelon asiatique";
 "hornets.info.problemText" = "Vespa velutina (le frelon asiatique) est un prédateur invasif qui décime les colonies d'abeilles. Détecter les nids et piéger tôt au printemps est crucial.";
 "hornets.info.whyCatch" = "Pourquoi piéger ?";
-"hornets.info.whyCatchText" = "Capturer les reines au printemps avant la construction du nid limite la croissance des colonies et protège les pollinisateurs. Enregistrez vos captures pour suivre la pression locale.";
-"hornets.info.reportNest" = "Nid trouvé ?";
-"hornets.info.reportNestText" = "Marquez l'emplacement exact pour que les autorités locales puissent ordonner une suppression professionnelle. Les signalements anonymes sont les bienvenus.";
+"hornets.info.whyCatchText" = "Piéger les reines au printemps, avant la construction des nids, limite les nouvelles colonies et protège les pollinisateurs. Notez vos captures pour suivre la pression locale.";
+"hornets.info.reportNest" = "Un nid repéré ?";
+"hornets.info.reportNestText" = "Marquez l’emplacement exact pour que les autorités locales puissent faire procéder à une destruction professionnelle. Les signalements anonymes sont les bienvenus.";
 "hornets.map.noNests" = "Aucun nid signalé";
 "hornets.map.hint" = "Soyez le premier à signaler un nid dans votre région.";
 "hornets.map.status.found" = "Trouvé";
@@ -186,13 +186,13 @@
 "hornets.report.nestTab" = "Nid";
 "hornets.report.count" = "Frelons capturés";
 "hornets.report.location" = "Localisation (optionnelle)";
-"hornets.report.locationRequired" = "Localisation GPS requise";
+"hornets.report.locationRequired" = "Position GPS requise";
 "hornets.report.notes" = "Notes";
 "hornets.report.notesPlaceholder" = "Décrivez ce que vous avez trouvé…";
 "hornets.report.reporterName" = "Votre nom (optionnel)";
 "hornets.report.submit" = "Envoyer le signalement";
-"hornets.report.success" = "Merci ! Votre signalement a été envoyé.";
-"hornets.community.empty" = "Aucune observation pour l'instant";
+"hornets.report.success" = "Merci ! Votre signalement a bien été envoyé.";
+"hornets.community.empty" = "Aucune observation pour l’instant";
 "hornets.community.vote.yes" = "Frelon ✓";
 "hornets.community.vote.no" = "Pas un frelon";
 "hornets.community.confirmed" = "Confirmé";
@@ -218,8 +218,8 @@
 "hornets.traps.date" = "Date";
 "hornets.traps.logSubmit" = "Enregistrer";
 "hornets.traps.logSuccess" = "Capture enregistrée !";
-"hornets.traps.logError" = "Impossible d'enregistrer la capture";
-"hornets.traps.searchCode" = "Entrez le code d'accès";
+"hornets.traps.logError" = "Impossible d’enregistrer la capture";
+"hornets.traps.searchCode" = "Entrez le code d’accès";
 "hornets.traps.search" = "Rechercher par code";
 "hornets.traps.notFound" = "Piège introuvable";
 "hornets.traps.nearby" = "Pièges à proximité";
@@ -227,7 +227,7 @@
 "hornets.traps.noNearby" = "Aucun piège dans un rayon de 50 m";
 "hornets.traps.distanceM" = "À {m} m";
 "hornets.traps.gps" = "Utiliser le GPS";
-"hornets.traps.gpsError" = "Impossible d'obtenir la position GPS";
+"hornets.traps.gpsError" = "Impossible d’obtenir la position GPS";
 "hornets.traps.noCatches" = "Aucune capture enregistrée";
 "hornets.traps.history" = "Historique des captures";
 "hornets.traps.backToList" = "Retour";
@@ -258,8 +258,8 @@
 
 "admin.users.search" = "Rechercher par nom ou e-mail";
 "admin.users.supporter" = "Soutien";
-"admin.users.makeSupporter" = "Marquer comme soutien";
-"admin.users.removeSupporter" = "Retirer le statut soutien";
+"admin.users.makeSupporter" = "Nommer soutien";
+"admin.users.removeSupporter" = "Retirer le statut de soutien";
 "admin.users.revokeTokens" = "Révoquer les sessions";
 
 "admin.map.all" = "Tous";
@@ -277,7 +277,7 @@
 "field.confirmPassword" = "Confirmer le nouveau mot de passe";
 "action.changePassword" = "Changer le mot de passe";
 "alert.passwordMismatch" = "Les mots de passe ne correspondent pas.";
-"alert.passwordTooShort" = "Le mot de passe doit contenir au moins 8 caractères.";
+"alert.passwordTooShort" = "Le mot de passe doit comporter au moins 8 caractères.";
 "alert.passwordChanged" = "Mot de passe modifié avec succès.";
 
 /* Rappels de visites */
@@ -286,8 +286,8 @@
 "reminder.intervalFormat" = "Me rappeler tous les %d jours";
 "reminder.seasonStart" = "Début de saison";
 "reminder.seasonEnd" = "Fin de saison";
-"reminder.saveButton" = "Enregistrer les paramètres";
-"reminder.saved" = "Paramètres de rappel enregistrés.";
+"reminder.saveButton" = "Enregistrer les réglages des rappels";
+"reminder.saved" = "Réglages des rappels enregistrés.";
 "reminder.emailEnabled" = "Me notifier aussi par e-mail";
 "reminder.emailHint" = "Les notifications push arrivent dans cette application. Les rappels par e-mail vous parviennent même si vous n’utilisez que le site web — les deux canaux partagent le même compte, ces réglages s’appliquent donc partout.";
 
@@ -295,14 +295,13 @@
 "tab.members" = "Membres";
 "members.title" = "Membres";
 "members.comingSoon" = "D'autres statistiques communautaires arrivent bientôt.";
-"members.gate.title" = "Fonctionnalité Supporter";
-"members.gate.desc" = "Devenez supporter pour débloquer les statistiques communautaires et aider HivePulse à fonctionner.";
-"members.stat.avgVarroa" = "Varroa moyen";
+"members.gate.title" = "Fonction réservée aux soutiens";
+"members.gate.desc" = "Devenez soutien pour débloquer les statistiques communautaires et aider HivePulse à continuer.";
+"members.stat.avgVarroa" = "Varroa moy.";
 "members.stat.goodMood" = "Bonne humeur";
-"members.stat.avgBrood" = "Cadres de couvain moyens";
-"members.stat.interval" = "Intervalle moyen de visite";
-"members.becomeSupporter" = "En savoir plus & devenir supporter";
-
+"members.stat.avgBrood" = "Cadres de couvain moy.";
+"members.stat.interval" = "Intervalle de visite moy.";
+"members.becomeSupporter" = "En savoir plus & devenir soutien";
 /* Suppression du compte */
 "section.dangerZone" = "Zone dangereuse";
 "action.deleteAccount" = "Supprimer le compte";
@@ -335,7 +334,7 @@
 "tour.stats.title" = "Repérez les problèmes tôt";
 "tour.stats.body" = "Les évolutions du varroa, du couvain et du poids par ruche et une vue d’ensemble de tous vos ruchers montrent d’un coup d’œil quelles colonies ont besoin d’attention.";
 "tour.reminders.title" = "Ne manquez plus aucune visite";
-"tour.reminders.body" = "Définissez l’intervalle et la saison — HivePulse vous rappelle par notification push ou e-mail quand des ruches sont à inspecter.";
+"tour.reminders.body" = "Définissez l’intervalle et la saison — HivePulse vous rappelle par notification push ou e-mail quand des ruches sont à visiter.";
 "tour.hornets.title" = "Protégez votre région";
 "tour.hornets.body" = "Signalez les observations et les nids de frelons asiatiques, gérez vos pièges et consultez les données de santé de la communauté pour votre région.";
 
@@ -413,9 +412,8 @@
 "strength.2" = "Moyenne";
 "strength.3" = "Forte";
 "screen.editHive" = "Modifier la ruche";
-"offline.pendingUpload" = "En attente d'envoi";
-"offline.savedLocally" = "Saisi sans connexion. L'envoi se fait tout seul dès que vous êtes en ligne.";
-
+"offline.pendingUpload" = "En attente d’envoi";
+"offline.savedLocally" = "Saisi sans connexion. L’envoi se fait tout seul dès que vous êtes en ligne.";
 /* Diagnostics */
 "diagnostics.title" = "Diagnostic";
 "diagnostics.version" = "Version %@ (%@)";

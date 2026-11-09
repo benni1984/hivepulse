@@ -236,3 +236,78 @@ def test_the_whole_web_app_is_free_of_hardcoded_text():
             for number, text in module.hardcoded_jsx_text(page.read_text(encoding="utf-8")):
                 offenders.append(f"{page.relative_to(REPO).as_posix()}:{number} {text!r}")
     assert not offenders, "hardcoded text on the website:\n  " + "\n  ".join(offenders)
+
+
+# ── The two apps must read alike ─────────────────────────────────────────────
+#
+# 103 strings showed the identical English on both apps and said different things in German,
+# French or Spanish (#436) — including the project's own vocabulary being ignored, and each app
+# contradicting itself about whether a frame of brood is a "Brutwabe" or a "Bruträhmchen".
+#
+# The rule was in CLAUDE.md and in no test. Key names differ by platform, so a key-based check
+# cannot see it; matching on the English value needs no mapping.
+
+
+def test_the_check_sees_two_apps_saying_different_things():
+    module = _checker()
+    module.findings.clear()
+    module.check_app_wording(
+        {"en": {"label_never_inspected": "Never inspected before"},
+         "de": {"label_never_inspected": "Noch nie kontrolliert"}},
+        {"en": {"label.neverInspected": "Never inspected before"},
+         "de": {"label.neverInspected": "Noch nie besucht"}},
+    )
+    assert module.findings, "the drift should have been reported"
+    assert "same English but differ" in module.findings[0][1]
+
+
+def test_the_check_is_quiet_when_they_agree():
+    module = _checker()
+    module.findings.clear()
+    module.check_app_wording(
+        {"en": {"k": "Never inspected before"}, "de": {"k": "Noch nie kontrolliert"}},
+        {"en": {"k.ios": "Never inspected before"}, "de": {"k.ios": "Noch nie kontrolliert"}},
+    )
+    assert not module.findings
+
+
+def test_the_check_ignores_single_words():
+    """"Save" labels twenty buttons; two platforms putting it elsewhere proves nothing."""
+    module = _checker()
+    module.findings.clear()
+    module.check_app_wording(
+        {"en": {"k": "Save"}, "de": {"k": "Speichern"}},
+        {"en": {"k.ios": "Save"}, "de": {"k.ios": "Sichern"}},
+    )
+    assert not module.findings
+
+
+def test_the_check_ignores_an_english_phrase_used_twice_on_one_side():
+    """Two keys with the same English are two different places, not one to compare."""
+    module = _checker()
+    module.findings.clear()
+    module.check_app_wording(
+        {"en": {"a": "Delete this entry", "b": "Delete this entry"},
+         "de": {"a": "Eintrag löschen", "b": "Diesen Eintrag löschen"}},
+        {"en": {"a.ios": "Delete this entry"}, "de": {"a.ios": "Eintrag entfernen"}},
+    )
+    assert not module.findings
+
+
+def test_the_repository_itself_has_no_drift():
+    """The real strings, so a new screen cannot add a difference without failing here."""
+    module = _checker()
+    module.findings.clear()
+    locales = ("en", "de", "fr", "es", "pl")
+    android = {
+        loc: module.load_xml(REPO / "android/app/src/main/res" /
+                             ("values" if loc == "en" else f"values-{loc}") / "strings.xml")
+        for loc in locales
+    }
+    ios = {
+        loc: module.load_strings(REPO / "ios/HivePulse/Resources" / f"{loc}.lproj/Localizable.strings")
+        for loc in locales
+    }
+    module.check_app_wording(android, ios)
+    assert not module.findings, (
+        "Android and the iPhone disagree:\n  " + "\n  ".join(m for _, m in module.findings))

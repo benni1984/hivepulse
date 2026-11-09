@@ -79,7 +79,7 @@
 "label.queenSeen" = "Reina vista";
 "label.yes" = "Sí";
 "label.no" = "No";
-"label.notRecorded" = "No registrado";
+"label.notRecorded" = "Sin registrar";
 "label.unknown" = "Desconocido";
 "label.add" = "Añadir";
 "label.linked" = "vinculados";
@@ -92,7 +92,7 @@
 "forgot.submit" = "Enviar enlace";
 "forgot.sent" = "Si ese correo está registrado, recibirás en breve un enlace para restablecerla. Revisa tu bandeja de entrada.";
 "forgot.back" = "Volver a iniciar sesión";
-"forgot.offline" = "Sin conexión. Revisa tu red e inténtalo de nuevo.";
+"forgot.offline" = "Sin conexión. Comprueba tu red e inténtalo de nuevo.";
 "action.save" ="Guardar";
 "action.cancel" = "Cancelar";
 "action.done" = "Hecho";
@@ -149,7 +149,7 @@
 "section.export" = "Exportar datos";
 "action.exportData" = "Exportar datos";
 "action.download" = "Descargar";
-"label.selectApiary" = "Seleccionar colmenar";
+"label.selectApiary" = "Elegir colmenar";
 "label.selectFormat" = "Formato de archivo";
 
 /* Generic actions */
@@ -174,11 +174,11 @@
 "hornets.info.problem" = "La avispa asiática";
 "hornets.info.problemText" = "Vespa velutina (la avispa asiática) es un depredador invasor que devasta las colonias de abejas. Detectar nidos y atrapar en primavera es crucial.";
 "hornets.info.whyCatch" = "¿Por qué atrapar?";
-"hornets.info.whyCatchText" = "Capturar reinas en primavera antes de la construcción del nido limita el crecimiento de las colonias y protege a los polinizadores.";
-"hornets.info.reportNest" = "¿Encontraste un nido?";
-"hornets.info.reportNestText" = "Marca la ubicación exacta para que las autoridades locales puedan ordenar su eliminación profesional. Se aceptan informes anónimos.";
-"hornets.map.noNests" = "No se han reportado nidos";
-"hornets.map.hint" = "Sé el primero en marcar un nido en tu zona.";
+"hornets.info.whyCatchText" = "Capturar reinas en primavera, antes de que construyan el nido, frena las nuevas colonias y protege a los polinizadores. Anota tus capturas para seguir la presión local.";
+"hornets.info.reportNest" = "¿Has encontrado un nido?";
+"hornets.info.reportNestText" = "Marca el lugar exacto para que las autoridades locales puedan ordenar una retirada profesional. Los avisos anónimos también son bienvenidos.";
+"hornets.map.noNests" = "No hay nidos notificados";
+"hornets.map.hint" = "Sé la primera persona en marcar un nido en tu zona.";
 "hornets.map.status.found" = "Encontrado";
 "hornets.map.status.ordered" = "Destrucción ordenada";
 "hornets.map.status.destroyed" = "Destruido";
@@ -186,25 +186,25 @@
 "hornets.report.nestTab" = "Nido";
 "hornets.report.count" = "Avispas capturadas";
 "hornets.report.location" = "Ubicación (opcional)";
-"hornets.report.locationRequired" = "Se requiere ubicación GPS";
+"hornets.report.locationRequired" = "Se necesita la ubicación GPS";
 "hornets.report.notes" = "Notas";
 "hornets.report.notesPlaceholder" = "Describe lo que encontraste…";
 "hornets.report.reporterName" = "Tu nombre (opcional)";
-"hornets.report.submit" = "Enviar informe";
-"hornets.report.success" = "¡Gracias! Tu informe ha sido enviado.";
-"hornets.community.empty" = "Sin avistamientos todavía";
+"hornets.report.submit" = "Enviar aviso";
+"hornets.report.success" = "¡Gracias! Hemos recibido tu aviso.";
+"hornets.community.empty" = "Todavía no hay avistamientos";
 "hornets.community.vote.yes" = "Avispa ✓";
-"hornets.community.vote.no" = "No es una avispa";
+"hornets.community.vote.no" = "No es una avispa asiática";
 "hornets.community.confirmed" = "Confirmado";
 "hornets.community.pending" = "Pendiente";
 "hornets.community.rejected" = "Rechazado";
 /* Trampas */
 "hornets.traps.title" = "Gestión de trampas";
 "hornets.traps.subtitle" = "Registra trampas, registra capturas diarias y encuentra trampas cercanas.";
-"hornets.traps.hint" = "No se requiere inicio de sesión";
-"hornets.traps.new" = "Registrar trampa";
+"hornets.traps.hint" = "No hace falta iniciar sesión";
+"hornets.traps.new" = "Registrar una trampa";
 "hornets.traps.name" = "Nombre de la trampa";
-"hornets.traps.namePlaceholder" = "ej. Trampa del jardín";
+"hornets.traps.namePlaceholder" = "p. ej. Trampa del jardín junto a las colmenas";
 "hornets.traps.notes" = "Notas (opcional)";
 "hornets.traps.owner" = "Tu nombre (opcional)";
 "hornets.traps.submit" = "Registrar trampa";
@@ -212,7 +212,7 @@
 "hornets.traps.code" = "Código de acceso";
 "hornets.traps.codeCopy" = "Copiar código";
 "hornets.traps.codeCopied" = "¡Copiado!";
-"hornets.traps.total" = "Total capturado";
+"hornets.traps.total" = "Total capturados";
 "hornets.traps.logCatch" = "Registrar captura";
 "hornets.traps.count" = "Cantidad";
 "hornets.traps.date" = "Fecha";
@@ -224,11 +224,11 @@
 "hornets.traps.notFound" = "Trampa no encontrada";
 "hornets.traps.nearby" = "Trampas cercanas";
 "hornets.traps.nearbySearching" = "Buscando cerca…";
-"hornets.traps.noNearby" = "No se encontraron trampas en 50 m";
+"hornets.traps.noNearby" = "No hay trampas a menos de 50 m";
 "hornets.traps.distanceM" = "A {m} m";
 "hornets.traps.gps" = "Usar GPS";
 "hornets.traps.gpsError" = "No se pudo obtener la ubicación GPS";
-"hornets.traps.noCatches" = "Sin capturas registradas";
+"hornets.traps.noCatches" = "Todavía no hay capturas anotadas";
 "hornets.traps.history" = "Historial de capturas";
 "hornets.traps.backToList" = "Atrás";
 
@@ -288,28 +288,25 @@
 "reminder.seasonEnd" = "Fin de temporada";
 "reminder.saveButton" = "Guardar ajustes de recordatorio";
 "reminder.saved" = "Ajustes de recordatorio guardados.";
-"reminder.emailEnabled" = "Avisarme también por correo electrónico";
-"reminder.emailHint" = "Las notificaciones push llegan a esta app. Los recordatorios por correo también te llegan si solo usas la web: ambos canales comparten la misma cuenta, así que estos ajustes se aplican en todas partes.";
-
+"reminder.emailEnabled" = "Avisarme también por correo";
+"reminder.emailHint" = "Las notificaciones push llegan a esta app. Los recordatorios por correo te llegan también si solo usas la web: ambos canales comparten la misma cuenta, así que estos ajustes valen en todas partes.";
 /* Miembros */
 "tab.members" = "Miembros";
 "members.title" = "Miembros";
 "members.comingSoon" = "Próximamente más estadísticas de la comunidad.";
-"members.gate.title" = "Función para Supporters";
-"members.gate.desc" = "Hazte supporter para desbloquear las estadísticas de la comunidad y ayudar a mantener HivePulse.";
-"members.stat.avgVarroa" = "Varroa promedio";
+"members.gate.title" = "Función para colaboradores";
+"members.gate.desc" = "Hazte colaborador para acceder a las estadísticas de la comunidad y ayudar a mantener HivePulse.";
+"members.stat.avgVarroa" = "Varroa media";
 "members.stat.goodMood" = "Buen humor";
 "members.stat.avgBrood" = "Media de cuadros de cría";
-"members.stat.interval" = "Intervalo promedio de revisión";
-"members.becomeSupporter" = "Más información y hazte supporter";
-
+"members.stat.interval" = "Intervalo medio entre revisiones";
+"members.becomeSupporter" = "Más información y hazte colaborador";
 /* Eliminar cuenta */
 "section.dangerZone" = "Zona de peligro";
 "action.deleteAccount" = "Eliminar cuenta";
 "alert.deleteAccountConfirm" = "¿Eliminar tu cuenta?";
-"alert.deleteAccountMessage" = "Todos tus datos — colmenares, colmenas y revisiones — serán eliminados permanentemente. Esto no se puede deshacer.";
-"alert.deleteAccountAction" = "Eliminar permanentemente";
-
+"alert.deleteAccountMessage" = "Todos tus datos — colmenares, colmenas y revisiones — se eliminarán definitivamente. Esta acción no se puede deshacer.";
+"alert.deleteAccountAction" = "Eliminar definitivamente";
 /* Statistics overview */
 "screen.statsOverview" = "Mis estadísticas";
 "overview.period" = "Periodo";
@@ -325,24 +322,23 @@
 "tour.next" = "Siguiente";
 "tour.getStarted" = "Empezar";
 "action.releaseNotes" = "Notas de versión";
-"tour.showAgain" = "Ver de nuevo la guía";
-"tour.welcome.title" = "Bienvenido a HivePulse";
-"tour.welcome.body" = "Tu cuaderno de colmenas en el bolsillo. Aquí tienes un vistazo rápido a lo que HivePulse hace por ti.";
-"tour.qr.title" = "Cada colmena con un escaneo";
-"tour.qr.body" = "Crea colmenares, pega un código QR impreso en cada colmena y escanéalo para abrirla al instante, sin buscar en listas en el colmenar.";
+"tour.showAgain" = "Mostrar de nuevo el recorrido";
+"tour.welcome.title" = "Te damos la bienvenida a HivePulse";
+"tour.welcome.body" = "Tu cuaderno de colmenar en el bolsillo. Aquí tienes un vistazo rápido a lo que HivePulse hace por ti.";
+"tour.qr.title" = "Cada colmena, a un escaneo";
+"tour.qr.body" = "Crea colmenares, pega un código QR impreso en cada colmena y escanéalo para abrirla al instante, sin buscar en listas delante del colmenar.";
 "tour.inspections.title" = "Revisiones en segundos";
 "tour.inspections.body" = "Registra reina, cría, varroa, comportamiento y más con pocos toques. Los campos personalizados cubren todo lo demás.";
-"tour.stats.title" = "Detecta problemas a tiempo";
-"tour.stats.body" = "Las tendencias de varroa, cría y peso por colmena y un resumen de todos tus colmenares muestran de un vistazo qué colonias necesitan atención.";
-"tour.reminders.title" = "No te pierdas ninguna revisión";
-"tour.reminders.body" = "Define el intervalo y la temporada: HivePulse te avisa por notificación push o correo cuando toca inspeccionar.";
+"tour.stats.title" = "Detecta los problemas a tiempo";
+"tour.stats.body" = "Las tendencias de varroa, cría y peso por colmena, junto al resumen de todos tus colmenares, muestran de un vistazo qué colonias necesitan atención.";
+"tour.reminders.title" = "No te saltes ninguna revisión";
+"tour.reminders.body" = "Fija tu intervalo y tu temporada: HivePulse te avisa por notificación push o por correo cuando toca revisar.";
 "tour.hornets.title" = "Protege tu región";
-"tour.hornets.body" = "Informa de avistamientos y nidos de avispón asiático, gestiona tus trampas y consulta datos de salud de la comunidad para tu región.";
-
+"tour.hornets.body" = "Informa de avistamientos y nidos de avispa asiática, gestiona tus trampas y consulta los datos de salud de la comunidad en tu región.";
 /* Community heatmap (members) */
-"heatmap.title" = "Mapa de salud regional";
-"heatmap.empty" = "No hay datos de comunidad disponibles.";
-"heatmap.hint" = "Toca una celda para ver detalles.";
+"heatmap.title" = "Mapa regional de salud";
+"heatmap.empty" = "No hay datos de la comunidad.";
+"heatmap.hint" = "Toca una celda para ver los detalles.";
 "heatmap.overlay.varroa" = "Riesgo de varroa";
 "heatmap.overlay.mood" = "Ánimo de las colonias";
 "heatmap.overlay.swarm" = "Presión de enjambrazón";
@@ -350,13 +346,13 @@
 "heatmap.varroa.low" = "Ninguna / baja (< 1)";
 "heatmap.varroa.medium" = "Media (1–2)";
 "heatmap.varroa.high" = "Alta (≥ 2)";
-"heatmap.mood.good" = "Bueno (≥ 70 % tranquilas)";
+"heatmap.mood.good" = "Bueno (≥ 70 % en calma)";
 "heatmap.mood.fair" = "Regular (40–70 %)";
 "heatmap.mood.low" = "Bajo (< 40 %)";
 "heatmap.swarm.low" = "Bajo (< 10 %)";
-"heatmap.swarm.medium" = "Medio (10–30 %)";
-"heatmap.swarm.high" = "Alto (> 30 %)";
-"heatmap.brood.strong" = "Fuerte (≥ 5 marcos)";
+"heatmap.swarm.medium" = "Media (10–30 %)";
+"heatmap.swarm.high" = "Alta (> 30 %)";
+"heatmap.brood.strong" = "Fuerte (≥ 5 cuadros)";
 "heatmap.brood.fair" = "Regular (3–5)";
 "heatmap.brood.low" = "Bajo (< 3)";
 "heatmap.noData" = "Sin datos";
@@ -368,10 +364,10 @@
 
 /* Custom field definitions */
 "fielddefs.title" = "Campos personalizados";
-"fielddefs.subtitle" = "Amplía tus formularios de colmenas y revisiones con campos personalizados.";
+"fielddefs.subtitle" = "Amplía los formularios de colmena y revisión con tus propios campos.";
 "fielddefs.apiaryTitle" = "Campos de este colmenar";
-"fielddefs.apiarySubtitle" = "Estos campos sólo se aplican a colmenas y revisiones de este colmenar.";
-"fielddefs.empty" = "No hay campos personalizados todavía.";
+"fielddefs.apiarySubtitle" = "Estos campos solo se aplican a las colmenas y revisiones de este colmenar.";
+"fielddefs.empty" = "Todavía no hay campos personalizados.";
 "fielddefs.new" = "Nuevo campo";
 "fielddefs.createTitle" = "Nuevo campo personalizado";
 "fielddefs.editTitle" = "Editar campo";
@@ -391,8 +387,7 @@
 "fielddefs.saveBtn" = "Guardar cambios";
 "fielddefs.createSuccess" = "Campo creado.";
 "fielddefs.saveSuccess" = "Campo guardado.";
-"fielddefs.deleteConfirm" = "¿Eliminar este campo? Los datos existentes se perderán.";
-
+"fielddefs.deleteConfirm" = "¿Eliminar este campo? Se perderán los datos que lo usen.";
 /* Inspection picker values */
 "mood.calm" = "Tranquila";
 "mood.nervous" = "Nerviosa";

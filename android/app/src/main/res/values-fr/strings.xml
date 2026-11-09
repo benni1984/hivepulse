@@ -28,7 +28,7 @@
     <string name="heatmap_osm_attribution">© contributeurs OpenStreetMap</string>
     <string name="heatmap_overlay_varroa">Risque Varroa</string>
     <string name="heatmap_overlay_mood">Humeur des colonies</string>
-    <string name="heatmap_overlay_swarm">Pression d\'essaimage</string>
+    <string name="heatmap_overlay_swarm">Pression d’essaimage</string>
     <string name="heatmap_overlay_brood">Santé du couvain</string>
     <string name="heatmap_varroa_low">Aucune / faible (&lt; 1)</string>
     <string name="heatmap_varroa_medium">Moyenne (1–2)</string>
@@ -60,9 +60,9 @@
     <string name="fielddefs_title">Champs personnalisés</string>
     <string name="fielddefs_subtitle">Ajoutez des champs personnalisés à vos formulaires de ruches et de visites.</string>
     <string name="fielddefs_apiary_title">Champs du rucher</string>
-    <string name="fielddefs_apiary_subtitle">Ces champs s\'appliquent uniquement aux ruches et visites de ce rucher.</string>
+    <string name="fielddefs_apiary_subtitle">Ces champs s’appliquent uniquement aux ruches et visites de ce rucher.</string>
     <string name="fielddefs_manage">Gérer les champs personnalisés</string>
-    <string name="fielddefs_empty">Aucun champ personnalisé pour l\'instant.</string>
+    <string name="fielddefs_empty">Aucun champ personnalisé pour l’instant.</string>
     <string name="fielddefs_new">Nouveau champ</string>
     <string name="fielddefs_create_title">Nouveau champ personnalisé</string>
     <string name="fielddefs_edit_title">Modifier le champ</string>
@@ -247,15 +247,15 @@
     <string name="hornet_traps_date">Date</string>
     <string name="hornet_traps_log_submit">Enregistrer</string>
     <string name="hornet_traps_log_success">Capture enregistrée !</string>
-    <string name="hornet_traps_log_error">Impossible d\'enregistrer la capture</string>
-    <string name="hornet_traps_search_code">Entrez le code d\'accès</string>
+    <string name="hornet_traps_log_error">Impossible d’enregistrer la capture</string>
+    <string name="hornet_traps_search_code">Entrez le code d’accès</string>
     <string name="hornet_traps_search">Rechercher par code</string>
     <string name="hornet_traps_not_found">Piège introuvable</string>
     <string name="hornet_traps_nearby">Pièges à proximité</string>
     <string name="hornet_traps_nearby_searching">Recherche en cours…</string>
     <string name="hornet_traps_no_nearby">Aucun piège dans un rayon de 50 m</string>
     <string name="hornet_traps_gps">Utiliser le GPS</string>
-    <string name="hornet_traps_gps_error">Impossible d\'obtenir la position GPS</string>
+    <string name="hornet_traps_gps_error">Impossible d’obtenir la position GPS</string>
     <string name="hornet_traps_no_catches">Aucune capture enregistrée</string>
     <string name="hornet_traps_history">Historique des captures</string>
     <string name="hornet_traps_back">Retour</string>
@@ -264,12 +264,12 @@
     <string name="section_reminders">Rappels de visite</string>
     <string name="reminder_enabled">Envoyer des rappels de visite</string>
     <string name="reminder_email_enabled">Me notifier aussi par e-mail</string>
-    <string name="reminder_email_hint">Les notifications push arrivent dans cette application. Les rappels par e-mail vous parviennent même si vous n\'utilisez que le site web — les deux canaux partagent le même compte, ces réglages s\'appliquent donc partout.</string>
+    <string name="reminder_email_hint">Les notifications push arrivent dans cette application. Les rappels par e-mail vous parviennent même si vous n’utilisez que le site web — les deux canaux partagent le même compte, ces réglages s’appliquent donc partout.</string>
     <string name="reminder_interval_label">Me rappeler tous les</string>
     <string name="reminder_interval_format">%1$d jours</string>
     <string name="reminder_season_start">Début de saison</string>
     <string name="reminder_season_end">Fin de saison</string>
-    <string name="reminder_save_button">Enregistrer les rappels</string>
+    <string name="reminder_save_button">Enregistrer les réglages des rappels</string>
     <string name="reminder_saved">Réglages des rappels enregistrés.</string>
 
     <!-- Guided tour -->
@@ -281,13 +281,13 @@
     <string name="tour_welcome_title">Bienvenue sur HivePulse</string>
     <string name="tour_welcome_body">Votre carnet de ruches dans la poche. Voici un aperçu rapide de ce que HivePulse fait pour vous.</string>
     <string name="tour_qr_title">Chaque ruche en un scan</string>
-    <string name="tour_qr_body">Créez vos ruchers, collez un QR code imprimé sur chaque ruche et scannez-le pour l\'ouvrir aussitôt — sans chercher dans des listes au rucher.</string>
+    <string name="tour_qr_body">Créez vos ruchers, collez un QR code imprimé sur chaque ruche et scannez-le pour l’ouvrir aussitôt — sans chercher dans des listes au rucher.</string>
     <string name="tour_inspections_title">Des visites en quelques secondes</string>
     <string name="tour_inspections_body">Notez reine, couvain, varroa, humeur et plus encore avec de grands boutons utilisables avec des gants. Ajoutez vos propres champs pour tout le reste.</string>
     <string name="tour_stats_title">Repérez les problèmes tôt</string>
-    <string name="tour_stats_body">Les évolutions du varroa, du couvain et du poids par ruche et une vue d\'ensemble de tous vos ruchers montrent d\'un coup d\'œil quelles colonies ont besoin d\'attention.</string>
+    <string name="tour_stats_body">Les évolutions du varroa, du couvain et du poids par ruche et une vue d’ensemble de tous vos ruchers montrent d’un coup d’œil quelles colonies ont besoin d’attention.</string>
     <string name="tour_reminders_title">Ne manquez plus aucune visite</string>
-    <string name="tour_reminders_body">Définissez l\'intervalle et la saison — HivePulse vous rappelle par notification push ou e-mail quand des ruches sont à visiter.</string>
+    <string name="tour_reminders_body">Définissez l’intervalle et la saison — HivePulse vous rappelle par notification push ou e-mail quand des ruches sont à visiter.</string>
     <string name="tour_hornets_title">Protégez votre région</string>
     <string name="tour_hornets_body">Signalez les observations et les nids de frelons asiatiques, gérez vos pièges et consultez les données de santé de la communauté pour votre région.</string>
     <!-- Inspection picker labels -->
@@ -364,17 +364,17 @@
     <string name="alert_delete_account_confirm">Supprimer votre compte ?</string>
     <string name="alert_delete_account_message">Toutes vos données — ruchers, ruches et visites — seront définitivement supprimées. Cette action est irréversible.</string>
     <string name="alert_delete_apiary_has_hives">&quot;%1$s&quot; contient encore %2$d ruche(s). Supprimez d\'abord toutes les ruches, puis le rucher.</string>
-    <string name="alert_password_changed">Mot de passe modifié.</string>
+    <string name="alert_password_changed">Mot de passe modifié avec succès.</string>
     <string name="alert_password_mismatch">Les mots de passe ne correspondent pas.</string>
     <string name="alert_password_too_short">Le mot de passe doit comporter au moins 8 caractères.</string>
-    <string name="error_apiary_has_hives">Supprimez d\'abord toutes les ruches de ce rucher avant de le supprimer.</string>
+    <string name="error_apiary_has_hives">Veuillez supprimer toutes les ruches de ce rucher avant de le supprimer.</string>
     <string name="field_confirm_password">Confirmer le nouveau mot de passe</string>
     <string name="field_current_password">Mot de passe actuel</string>
     <string name="field_new_password">Nouveau mot de passe</string>
     <string name="field_show_on_public_map">Afficher sur la carte publique</string>
     <string name="field_show_on_public_map_hint">Partager votre rucher avec la communauté mondiale (facultatif)</string>
     <string name="hornet_community_confirmed">Confirmée</string>
-    <string name="hornet_community_empty">Aucune observation</string>
+    <string name="hornet_community_empty">Aucune observation pour l’instant</string>
     <string name="hornet_community_pending">En attente</string>
     <string name="hornet_community_rejected">Rejetée</string>
     <string name="hornet_community_vote_no">Pas un frelon</string>
@@ -382,14 +382,14 @@
     <string name="hornet_info_problem">Le frelon asiatique</string>
     <string name="hornet_info_problem_text">Vespa velutina est un prédateur invasif qui décime les colonies d\'abeilles. Repérer les nids et piéger tôt au printemps est essentiel.</string>
     <string name="hornet_info_report_nest">Un nid repéré ?</string>
-    <string name="hornet_info_report_nest_text">Marquez l\'emplacement exact pour que les autorités puissent faire procéder à une destruction professionnelle. Les signalements anonymes sont les bienvenus.</string>
+    <string name="hornet_info_report_nest_text">Marquez l’emplacement exact pour que les autorités locales puissent faire procéder à une destruction professionnelle. Les signalements anonymes sont les bienvenus.</string>
     <string name="hornet_info_why_catch">Pourquoi piéger ?</string>
     <string name="hornet_info_why_catch_text">Piéger les reines au printemps, avant la construction des nids, limite les nouvelles colonies et protège les pollinisateurs. Notez vos captures pour suivre la pression locale.</string>
     <string name="hornet_map_hint">Soyez le premier à signaler un nid dans votre région.</string>
     <string name="hornet_map_no_nests">Aucun nid signalé</string>
     <string name="hornet_map_status_destroyed">Détruit</string>
     <string name="hornet_map_status_found">Repéré</string>
-    <string name="hornet_map_status_ordered">Destruction demandée</string>
+    <string name="hornet_map_status_ordered">Destruction ordonnée</string>
     <string name="hornet_report_catch_tab">Capture</string>
     <string name="hornet_report_count">Frelons capturés</string>
     <string name="hornet_report_location_required">Position GPS requise</string>
@@ -414,8 +414,8 @@
     <string name="admin_user_summary">%1$d ruchers · %2$d ruches · %3$d visites</string>
     <string name="action_decrease_weight">Diminuer le poids</string>
     <string name="action_increase_weight">Augmenter le poids</string>
-    <string name="offline_pending_upload">En attente d\'envoi</string>
-    <string name="offline_saved_locally">Saisi sans connexion. L\'envoi se fait tout seul dès que vous êtes en ligne.</string>
+    <string name="offline_pending_upload">En attente d’envoi</string>
+    <string name="offline_saved_locally">Saisi sans connexion. L’envoi se fait tout seul dès que vous êtes en ligne.</string>
 
     <!-- Diagnostics -->
     <string name="section_diagnostics">Diagnostic</string>
@@ -476,13 +476,13 @@
     <string name="moves_note">Note (facultatif)</string>
     <string name="moves_submit">Déplacer (%1$d)</string>
     <string name="moves_history_title">Où cette ruche a été</string>
-    <string name="moves_history_empty">Cette ruche n\’a pas encore été déplacée.</string>
-    <string name="moves_no_position">Ce lieu n\’a pas de position, il n\’est donc pas sur la carte.</string>
-    <string name="moves_no_position_at_all">Aucun de ces lieux n\’a encore de position, il n\’y a donc rien à tracer. Donnez une adresse ou une position aux lieux.</string>
+    <string name="moves_history_empty">Cette ruche n’a pas encore été déplacée.</string>
+    <string name="moves_no_position">Ce lieu n’a pas de position, il n’est donc pas sur la carte.</string>
+    <string name="moves_no_position_at_all">Aucun de ces lieux n’a encore de position, il n’y a donc rien à tracer. Donnez une adresse ou une position aux lieux.</string>
     <string name="moves_start">Le voyage a commencé ici</string>
     <string name="moves_overview_title">Carte des déplacements</string>
     <string name="moves_overview_intro">Tous les déplacements de vos ruches, avec le parcours de chaque ruche sur la carte.</string>
-    <string name="moves_overview_empty">Aucune ruche n\’a encore été déplacée.</string>
+    <string name="moves_overview_empty">Aucune ruche n’a encore été déplacée.</string>
     <string name="moves_from">Du</string>
     <string name="moves_to">Au</string>
     <string name="moves_clear">Effacer</string>
