@@ -1,6 +1,21 @@
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { Link } from '@/i18n/navigation';
 import ApiaryDetailClient from '@/components/ApiaryDetailClient';
+import { getTranslations } from 'next-intl/server';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'meta' });
+  return {
+    title: `${t('apiaryTitle')} — HivePulse`,
+    description: t('apiaryDescription'),
+  };
+}
 
 export default function ApiaryPage() {
   return (

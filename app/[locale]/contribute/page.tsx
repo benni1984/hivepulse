@@ -1,6 +1,21 @@
+import type { Metadata } from 'next';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import FeatureForm from '@/components/FeatureForm';
+import { getTranslations } from 'next-intl/server';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'meta' });
+  return {
+    title: `${t('contributeTitle')} — HivePulse`,
+    description: t('contributeDescription'),
+  };
+}
 
 export default function ContributePage() {
   const t = useTranslations('contrib');

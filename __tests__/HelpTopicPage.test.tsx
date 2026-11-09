@@ -26,7 +26,7 @@ describe('HelpTopicPage', () => {
     const jsx = await HelpTopicPage({ params: Promise.resolve({ locale: 'en', slug: 'apiaries' }) });
     const { container } = render(jsx);
 
-    expect(screen.getByText('allTopics')).toHaveAttribute('href', '/en/help');
+    expect(screen.getByText('allTopics')).toHaveAttribute('href', '/help');
     expect(screen.getByText('groups.Managing your apiary')).toBeTruthy();
     expect(screen.getAllByText('topics.apiaries.title').length).toBeGreaterThan(0);
     expect(screen.getByText('topics.apiaries.desc')).toBeTruthy();

@@ -25,13 +25,13 @@ describe('HelpIndexPage', () => {
     expect(screen.getByPlaceholderText('searchPlaceholder')).toBeTruthy();
   });
 
-  it('renders a card for every help topic, linked to its locale-prefixed page', async () => {
+  it('renders a card for every help topic, linked to its page', async () => {
     const jsx = await HelpIndexPage({ params: Promise.resolve({ locale: 'en' }) });
     const { container } = render(jsx);
     expect(container.querySelectorAll('.help-card')).toHaveLength(HELP_TOPICS.length);
 
     const apiariesCard = screen.getByText('topics.apiaries.title').closest('a')!;
-    expect(apiariesCard).toHaveAttribute('href', '/en/help/apiaries');
+    expect(apiariesCard).toHaveAttribute('href', '/help/apiaries');
   });
 
   it('renders a group heading for every group that has topics', async () => {
@@ -53,9 +53,12 @@ describe('HelpIndexPage', () => {
     expect(card.querySelector('.help-card-platform.android')).toBeNull();
   });
 
-  it('honors the locale param in generated links', async () => {
+  it('writes hrefs without the language, and lets the Link add it', async () => {
+    // The page used to build `/${locale}/help/...` by hand. With the locale-aware Link that
+    // produced `/fr/fr/help` (#437), so the hrefs are locale-free now and the Link prefixes
+    // them. The prefixing itself is next-intl's job and is covered by LocaleAwareLinks.test.ts.
     const jsx = await HelpIndexPage({ params: Promise.resolve({ locale: 'de' }) });
     render(jsx);
-    expect(screen.getByText('topics.apiaries.title').closest('a')).toHaveAttribute('href', '/de/help/apiaries');
+    expect(screen.getByText('topics.apiaries.title').closest('a')).toHaveAttribute('href', '/help/apiaries');
   });
 });

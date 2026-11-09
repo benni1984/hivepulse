@@ -1,5 +1,20 @@
+import type { Metadata } from 'next';
 import { useLocale, useTranslations } from 'next-intl';
 import { NEWS, newsText } from '@/lib/news';
+import { getTranslations } from 'next-intl/server';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'meta' });
+  return {
+    title: `${t('newsTitle')} — HivePulse`,
+    description: t('newsDescription'),
+  };
+}
 
 export default function NewsPage() {
   const t = useTranslations('news');

@@ -1,7 +1,21 @@
+import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { getHornetStats } from '@/lib/api';
 import type { HornetStats } from '@/lib/api';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'meta' });
+  return {
+    title: `${t('hornetsTitle')} — HivePulse`,
+    description: t('hornetsDescription'),
+  };
+}
 
 export default async function HornetsPage() {
   const t = await getTranslations('hornets');
