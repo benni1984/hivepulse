@@ -113,6 +113,55 @@ def check_grammar(area: str, locale: str, strings: dict[str, str]) -> None:
                                f"vowel or a mute h")
 
 
+# ── Visible text typed straight into a page ────────────────────────
+#
+# iOS and Android have been scanned for hardcoded English since early on. The web never was,
+# which is how an English back-link came to sit at the foot of the trap page in all five
+# languages (#439).
+#
+# A pattern looking for `>text<` on one line finds nothing, because a JSX child stands on a line
+# of its own:
+#
+#     <Link href="/hornets">
+#       ← Hornets Tracker
+#     </Link>
+#
+# What marks it as prose is the shape: a line holding only text, between a line that ends a tag
+# and a line that opens one.
+
+_TEXT_ONLY = re.compile(r"^\s*(?![/<{}])([^<>{}]+?)\s*$")
+_HAS_WORDS = re.compile(r"[A-Za-z]{3}")
+_NOT_PROSE = re.compile(r"^(import|export|const|let|var|return|function|type|interface|if|"
+                        r"else|for|while|case|default|await|async|new |class |\*|//|/\*|\}|"
+                        r"\)|;|,|:|=)")
+# A ternary inside JSX braces wraps onto its own line and reads as text until you see the
+# operators: `deleteConfirmId === fd.id ? (`. No sentence shown to a reader carries these.
+_CODE_SMELL = re.compile(r"===|!==|=>|&&|\|\||\($")
+# Language names are written in their own language on purpose.
+_ENDONYMS = {"English", "Deutsch", "Polski", "Español", "Français",
+             "HivePulse", "Hive", "Pulse"}
+
+
+def hardcoded_jsx_text(source: str) -> list[tuple[int, str]]:
+    """Lines of one .tsx file that show text to a reader without going through a translation."""
+    lines = source.splitlines()
+    out: list[tuple[int, str]] = []
+    for number, line in enumerate(lines, 1):
+        match = _TEXT_ONLY.match(line)
+        if not match:
+            continue
+        text = match.group(1).strip()
+        if (not _HAS_WORDS.search(text) or _NOT_PROSE.match(text)
+                or _CODE_SMELL.search(text) or text in _ENDONYMS or text.isupper()):
+            continue
+        before = next((lines[i] for i in range(number - 2, -1, -1) if lines[i].strip()), "")
+        after = next((lines[i] for i in range(number, len(lines)) if lines[i].strip()), "")
+        if not before.rstrip().endswith(">") or not after.lstrip().startswith("<"):
+            continue
+        out.append((number, text))
+    return out
+
+
 # ── web ───────────────────────────────────────────────────────────────────────
 
 def check_web() -> None:
@@ -134,6 +183,14 @@ def check_web() -> None:
         if locale in messages:
             compare(area, messages["en"], messages[locale], locale, placeholder)
             check_grammar(area, locale, messages[locale])
+
+    for folder in ("app", "components"):
+        for page in sorted((ROOT / folder).rglob("*.tsx")):
+            if "/content/" in page.as_posix():
+                continue  # help pages are one file per language by design
+            rel = page.relative_to(ROOT).as_posix()
+            for number, text in hardcoded_jsx_text(page.read_text(encoding="utf-8")):
+                fail(area, f"hardcoded text {text!r} in {rel}:{number}")
 
     # Page metadata must be localized, not a single English string for every locale
     layout = (ROOT / "app/[locale]/layout.tsx")

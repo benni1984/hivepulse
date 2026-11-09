@@ -407,7 +407,7 @@ export default function HornetTrapsPage() {
         {/* ── Nav back to hornets ────────────────────────── */}
         <div style={{ marginTop: '48px', paddingTop: '24px', borderTop: '1px solid #e5e7eb' }}>
           <Link href="/hornets" style={{ color: '#16a34a', fontWeight: 600, textDecoration: 'none' }}>
-            ← Hornets Tracker
+            ← {t('title')}
           </Link>
         </div>
       </div>

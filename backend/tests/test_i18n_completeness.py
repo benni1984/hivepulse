@@ -185,3 +185,54 @@ def test_the_check_is_quiet_about_correct_french(value):
     module.findings.clear()
     module.check_grammar("test", "fr", {"k": value})
     assert not module.findings, f"false positive: {value} -> {module.findings}"
+
+
+# ── Visible text typed straight into a web page ──────────────────────────────
+#
+# iOS and Android were scanned for hardcoded English from early on; the web never was, so an
+# English back-link sat at the foot of the trap page in all five languages (#439).
+#
+# The first attempt at a scanner missed it, which is the part worth pinning: a pattern looking
+# for `>text<` on a single line finds nothing, because a JSX child stands on a line of its own.
+
+
+def test_the_check_sees_a_jsx_child_on_its_own_line():
+    module = _checker()
+    source = '<Link href="/hornets">\n  ← Hornets Tracker\n</Link>'
+    assert module.hardcoded_jsx_text(source) == [(2, "← Hornets Tracker")]
+
+
+def test_the_check_sees_prose_in_a_heading():
+    module = _checker()
+    source = "<h2>\n  Manage your hornet traps\n</h2>"
+    assert module.hardcoded_jsx_text(source) == [(2, "Manage your hornet traps")]
+
+
+@pytest.mark.parametrize("source", [
+    # A translated child is the correct form and must stay quiet.
+    '<Link href="/hornets">\n  {t("title")}\n</Link>',
+    # A ternary inside JSX braces wraps onto its own line and reads as text. Both of these are
+    # real lines from the dashboard; they were the only false positives the scan produced.
+    "{deleteConfirmId === fd.id ? (\n  <span>x</span>\n)}",
+    "{deleteFieldConfirmId === fd.id ? (\n  <span>x</span>\n)}",
+    # Language names are written in their own language on purpose.
+    '<option value="de">\n  Deutsch\n</option>',
+    # Text that is not between tags is not shown to a reader.
+    "const title = 'Hornet Tracker';",
+])
+def test_the_check_is_quiet_about_what_it_should_be(source):
+    module = _checker()
+    assert module.hardcoded_jsx_text(source) == []
+
+
+def test_the_whole_web_app_is_free_of_hardcoded_text():
+    """The repository itself, so a new page cannot add one without failing here."""
+    module = _checker()
+    offenders = []
+    for folder in ("app", "components"):
+        for page in sorted((REPO / folder).rglob("*.tsx")):
+            if "/content/" in page.as_posix():
+                continue
+            for number, text in module.hardcoded_jsx_text(page.read_text(encoding="utf-8")):
+                offenders.append(f"{page.relative_to(REPO).as_posix()}:{number} {text!r}")
+    assert not offenders, "hardcoded text on the website:\n  " + "\n  ".join(offenders)
