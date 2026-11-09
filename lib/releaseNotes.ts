@@ -55,6 +55,26 @@ export const RELEASES: Release[] = [
         ),
       },
       {
+        kind: 'fixed',
+        text: t(
+          'Four screens showed a value from the server instead of its translation: the hive type on the Android hive list, the queen colour on an Android inspection, and the colony mood on the iPhone hive page and in its statistics. A German beekeeper read "Top Bar" where the edit dialog on the same screen said "Oberträgerbeute". The translations existed the whole time — nothing looked them up.',
+          'Vier Bildschirme zeigten einen Wert vom Server statt seiner Übersetzung: den Beutentyp in der Android-Volksliste, die Königinnenfarbe in einer Android-Kontrolle und die Stimmung des Volkes auf der iPhone-Volkseite und in deren Statistik. Ein deutscher Imker las „Top Bar“, wo der Bearbeiten-Dialog auf demselben Bildschirm „Oberträgerbeute“ sagte. Die Übersetzungen gab es die ganze Zeit — niemand schlug sie nach.',
+          'Quatre écrans affichaient une valeur du serveur au lieu de sa traduction : le type de ruche dans la liste Android, la couleur de la reine dans une visite Android, et l\'humeur de la colonie sur la page ruche de l\'iPhone et dans ses statistiques. Un apiculteur allemand lisait « Top Bar » là où la boîte d\'édition du même écran disait « Oberträgerbeute ». Les traductions existaient depuis toujours — personne ne les consultait.',
+          'Cuatro pantallas mostraban un valor del servidor en lugar de su traducción: el tipo de colmena en la lista de Android, el color de la reina en una revisión de Android, y el humor de la colonia en la página de colmena del iPhone y en sus estadísticas. Un apicultor alemán leía «Top Bar» donde el diálogo de edición de la misma pantalla decía «Oberträgerbeute». Las traducciones existían desde siempre — nadie las consultaba.',
+          'Cztery ekrany pokazywały wartość z serwera zamiast jej tłumaczenia: typ ula na androidowej liście rodzin, kolor matki w androidowym przeglądzie oraz nastrój rodziny na iPhone\'owej stronie rodziny i w jej statystykach. Niemiecki pszczelarz czytał „Top Bar” tam, gdzie okno edycji na tym samym ekranie mówiło „Oberträgerbeute”. Tłumaczenia istniały przez cały czas — nikt do nich nie sięgał.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'Six labels on Android — hive type, forage, two hornet statuses, an advice label — were drawn as chips, which are buttons. They rippled when tapped and did nothing, and a screen reader offered each one as something to activate. They are labels now, as they always were on iPhone.',
+          'Sechs Beschriftungen auf Android — Beutentyp, Tracht, zwei Hornissen-Status, ein Hinweis-Etikett — waren als Chips gezeichnet, und Chips sind Schaltflächen. Sie reagierten auf einen Tipp und taten nichts, und die Sprachausgabe bot jede davon als etwas zum Auslösen an. Jetzt sind es Beschriftungen, so wie auf dem iPhone immer schon.',
+          'Six libellés sur Android — type de ruche, miellée, deux statuts de frelon, une étiquette de conseil — étaient dessinés comme des chips, c\'est-à-dire des boutons. Ils réagissaient au toucher sans rien faire, et un lecteur d\'écran proposait chacun comme une action. Ce sont désormais des libellés, comme sur iPhone depuis toujours.',
+          'Seis etiquetas en Android — tipo de colmena, floración, dos estados de avispa, una etiqueta de consejo — estaban dibujadas como chips, que son botones. Respondían al toque sin hacer nada, y un lector de pantalla ofrecía cada una como algo que activar. Ahora son etiquetas, como siempre lo fueron en el iPhone.',
+          'Sześć etykiet na Androidzie — typ ula, pożytek, dwa statusy szerszeń, etykieta porady — narysowano jako chipy, czyli przyciski. Reagowały na dotknięcie i nic nie robiły, a czytnik ekranu oferował każdą jako coś do uruchomienia. Teraz są etykietami, tak jak na iPhonie od zawsze.',
+        ),
+      },
+      {
         kind: 'changed',
         text: t(
           'The Scan tab on iPhone opens the camera, as it does on Android. It used to be a page with a glyph, a sentence and a button, with the scanner behind it in a sheet — one tap too many at the hive, in gloves. What the page said is now drawn over the preview.',
