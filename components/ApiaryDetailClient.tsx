@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import dynamic from 'next/dynamic';
 
 const Chart = dynamic(() => import('chart.js/auto').then(m => m.Chart as never), { ssr: false });

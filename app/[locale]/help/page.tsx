@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
 import { HELP_TOPICS, HELP_GROUPS } from '@/lib/helpTopics';
 
@@ -58,7 +58,7 @@ export default async function HelpIndexPage({
                   {topics.map(topic => (
                     <Link
                       key={topic.slug}
-                      href={`/${locale}/help/${topic.slug}`}
+                      href={`/help/${topic.slug}`}
                       className="help-card"
                     >
                       <div className="help-card-icon">

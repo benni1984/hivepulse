@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { getHornetStats } from '@/lib/api';
 import type { HornetStats } from '@/lib/api';
 

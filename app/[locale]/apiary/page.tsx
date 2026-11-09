@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import ApiaryDetailClient from '@/components/ApiaryDetailClient';
 
 export default function ApiaryPage() {

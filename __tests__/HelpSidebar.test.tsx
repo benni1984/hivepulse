@@ -12,14 +12,15 @@ vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }));
 
-vi.mock('next/link', () => ({
-  default: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => (
-    <a href={href} className={className}>{children}</a>
-  ),
-}));
-
 import HelpSidebar from '@/components/HelpSidebar';
 import { HELP_TOPICS, HELP_GROUPS } from '@/lib/helpTopics';
+
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children, className, onClick, style, title, target, rel }: {
+    href: string; children: React.ReactNode; className?: string; onClick?: () => void;
+    style?: React.CSSProperties; title?: string; target?: string; rel?: string;
+  }) => <a href={href} className={className} onClick={onClick} style={style} title={title} target={target} rel={rel}>{children}</a>,
+}));
 
 describe('HelpSidebar', () => {
   it('marks "All Topics" active when on the help index', () => {

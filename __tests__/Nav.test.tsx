@@ -13,13 +13,11 @@ vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }));
 
-vi.mock('next/link', () => ({
-  default: ({ href, children, className, onClick }: {
-    href: string; children: React.ReactNode; className?: string; onClick?: () => void
-  }) => <a href={href} className={className} onClick={onClick}>{children}</a>,
-}));
-
 vi.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children, className, onClick, style, title, target, rel }: {
+    href: string; children: React.ReactNode; className?: string; onClick?: () => void;
+    style?: React.CSSProperties; title?: string; target?: string; rel?: string;
+  }) => <a href={href} className={className} onClick={onClick} style={style} title={title} target={target} rel={rel}>{children}</a>,
   usePathname: () => mockPathnameRef.value,
   useRouter: () => ({ replace: mockReplace }),
 }));

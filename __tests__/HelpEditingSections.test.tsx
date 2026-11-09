@@ -6,12 +6,6 @@ vi.mock('next-intl/server', () => ({
   getTranslations: async () => (key: string) => key,
 }));
 
-vi.mock('next/link', () => ({
-  default: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => (
-    <a href={href} className={className}>{children}</a>
-  ),
-}));
-
 import HelpTopicPage from '@/app/[locale]/help/[slug]/page';
 
 const LOCALES = ['en', 'de', 'fr', 'es', 'pl'] as const;
@@ -23,6 +17,13 @@ async function renderTopic(locale: string, slug: string) {
 
 // The apps gained apiary and hive editing (and the public-map switch), which the help
 // pages did not mention — a user whose community figures stayed at zero had nowhere to look.
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children, className, onClick, style, title, target, rel }: {
+    href: string; children: React.ReactNode; className?: string; onClick?: () => void;
+    style?: React.CSSProperties; title?: string; target?: string; rel?: string;
+  }) => <a href={href} className={className} onClick={onClick} style={style} title={title} target={target} rel={rel}>{children}</a>,
+}));
+
 describe('help covers editing and public visibility', () => {
   const editHints: Record<string, { apiary: RegExp; hive: RegExp; publicSwitch: RegExp }> = {
     en: { apiary: /Editing an apiary/i, hive: /Editing a hive/i, publicSwitch: /Show on public map/i },

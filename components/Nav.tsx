@@ -1,9 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { usePathname, useRouter } from '@/i18n/navigation';
+import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { logout, clearTokens } from '@/lib/api';
 
@@ -143,7 +142,7 @@ export default function Nav({ locale }: { locale: string }) {
         </ul>
 
         <div className="nav-right">
-          <Link href={`/${locale}/help`} className="nav-help-btn" aria-label={t('help')} title={t('help')}>
+          <Link href="/help" className="nav-help-btn" aria-label={t('help')} title={t('help')}>
             <i className="fas fa-question-circle" />
           </Link>
           <div className="lang-switcher" ref={ddRef}>

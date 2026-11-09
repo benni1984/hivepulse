@@ -19,10 +19,6 @@ vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }));
 
-vi.mock('next/link', () => ({
-  default: ({ href, children }: { href: string; children: React.ReactNode }) => <a href={href}>{children}</a>,
-}));
-
 import HornetTrapsPage from '@/app/[locale]/hornets/traps/page';
 
 const mockTrap = {
@@ -37,6 +33,13 @@ const mockTrap = {
   total_caught: 7,
   catches: [{ id: 'c1', trap_id: 't1', count: 4, caught_on: '2026-05-20', created_at: '2026-05-20T10:00:00' }],
 };
+
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children, className, onClick, style, title, target, rel }: {
+    href: string; children: React.ReactNode; className?: string; onClick?: () => void;
+    style?: React.CSSProperties; title?: string; target?: string; rel?: string;
+  }) => <a href={href} className={className} onClick={onClick} style={style} title={title} target={target} rel={rel}>{children}</a>,
+}));
 
 describe('HornetTrapsPage', () => {
   beforeEach(() => {

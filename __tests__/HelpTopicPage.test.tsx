@@ -6,13 +6,14 @@ vi.mock('next-intl/server', () => ({
   getTranslations: async () => (key: string) => key,
 }));
 
-vi.mock('next/link', () => ({
-  default: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => (
-    <a href={href} className={className}>{children}</a>
-  ),
-}));
-
 import HelpTopicPage from '@/app/[locale]/help/[slug]/page';
+
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children, className, onClick, style, title, target, rel }: {
+    href: string; children: React.ReactNode; className?: string; onClick?: () => void;
+    style?: React.CSSProperties; title?: string; target?: string; rel?: string;
+  }) => <a href={href} className={className} onClick={onClick} style={style} title={title} target={target} rel={rel}>{children}</a>,
+}));
 
 describe('HelpTopicPage', () => {
   it('calls notFound() for an unknown slug', async () => {

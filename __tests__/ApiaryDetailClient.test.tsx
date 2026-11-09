@@ -15,6 +15,15 @@ vi.mock('next/navigation', () => ({
 const mockChartInstance = vi.hoisted(() => ({ destroy: vi.fn() }));
 const MockChart = vi.hoisted(() => Object.assign(vi.fn(() => mockChartInstance), { getChart: vi.fn(() => null) }));
 
+// The component takes its Link from @/i18n/navigation so internal links carry the language
+// (#437). Left unmocked, next-intl's createNavigation pulls in next/navigation at import time,
+// which this environment cannot resolve.
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children, className }: {
+    href: string; children: React.ReactNode; className?: string;
+  }) => <a href={href} className={className}>{children}</a>,
+}));
+
 vi.mock('chart.js/auto', () => ({
   Chart: MockChart,
   default: MockChart,
