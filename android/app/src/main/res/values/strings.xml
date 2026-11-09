@@ -210,6 +210,8 @@
     <!-- Auth -->
     <string name="login_subtitle">Sign in to manage your hives</string>
     <string name="permission_camera_rationale">Camera access is required to scan QR codes on your hives.</string>
+    <string name="scan_instruction">Scan the QR code on your hive to open its record or set it up for the first time.</string>
+    <string name="scan_viewfinder">Viewfinder — hold the QR code inside the frame</string>
 
     <!-- Admin -->
     <string name="screen_admin">Admin Dashboard</string>
