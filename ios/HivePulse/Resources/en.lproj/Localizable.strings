@@ -96,7 +96,8 @@
 "action.save" = "Save";
 "action.cancel" = "Cancel";
 "action.done" = "Done";
-"action.scanQR" = "Scan QR Code";
+"scan.title" = "Scan QR Code";
+"scan.viewfinder" = "Viewfinder — hold the QR code inside the frame";
 "action.useMyLocation" = "Use my location";
 "action.editApiary" = "Edit Apiary";
 "action.newApiary" = "New Apiary";

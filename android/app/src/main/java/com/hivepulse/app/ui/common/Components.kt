@@ -8,6 +8,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
@@ -235,6 +236,53 @@ fun ToggleButtonGroup(
     }
 }
 
+/**
+ * The five queen colours of the SICAMM cycle: the value the API stores, the colour it is, and
+ * what the beekeeper reads.
+ *
+ * It is a list and not five literals at the one call site because it was five literals at the
+ * one call site, and the inspection detail screen -- which shows the same colour back -- went on
+ * upper-casing the raw value for months after the form was fixed (#428).
+ */
+internal val QUEEN_COLORS = listOf(
+    Triple("white",  Color.White,       R.string.queen_color_white),
+    Triple("yellow", Color(0xFFFFD700), R.string.queen_color_yellow),
+    Triple("red",    Color(0xFFDC2626), R.string.queen_color_red),
+    Triple("green",  Color(0xFF16A34A), R.string.queen_color_green),
+    Triple("blue",   Color(0xFF2563EB), R.string.queen_color_blue),
+)
+
+/** The translated name of a queen colour, for anywhere the API value has to be shown. */
+internal fun queenColorLabelRes(value: String): Int =
+    QUEEN_COLORS.firstOrNull { it.first == value }?.third ?: R.string.queen_color_white
+
+/**
+ * A label that looks like a chip and is not one.
+ *
+ * `AssistChip` and `SuggestionChip` are buttons. Used with an empty `onClick` -- which is how a
+ * hive type, a forage, a sighting status and an advice label were all drawn -- they still ripple
+ * under a finger, still take a stop in the focus order, and TalkBack still offers them as
+ * something to double-tap to activate. Six promises of an action that was never there (#429).
+ *
+ * The shape is the iPhone's: a tint of the colour at 15 %, 6dp corners, the text in the colour
+ * itself (`HornetCommunityView.swift`, `ApiaryDetailView.swift`).
+ */
+@Composable
+fun StatusBadge(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.primary,
+) {
+    Text(
+        text,
+        style = MaterialTheme.typography.labelMedium,
+        color = color,
+        modifier = modifier
+            .background(color.copy(alpha = 0.15f), RoundedCornerShape(6.dp))
+            .padding(horizontal = 8.dp, vertical = 2.dp),
+    )
+}
+
 /** SICAMM queen color picker — colored circles. */
 @Composable
 fun ColorChipRow(
@@ -242,14 +290,7 @@ fun ColorChipRow(
     selected: String?,
     onSelect: (String) -> Unit,
 ) {
-    // The chip caption used to be the raw API value ("White"), so it stayed English in every locale.
-    val options = listOf(
-        Triple("white",  Color.White,       R.string.queen_color_white),
-        Triple("yellow", Color(0xFFFFD700), R.string.queen_color_yellow),
-        Triple("red",    Color(0xFFDC2626), R.string.queen_color_red),
-        Triple("green",  Color(0xFF16A34A), R.string.queen_color_green),
-        Triple("blue",   Color(0xFF2563EB), R.string.queen_color_blue),
-    )
+    val options = QUEEN_COLORS
     Column {
         Text(label, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(8.dp))

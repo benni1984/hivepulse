@@ -24,6 +24,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.hivepulse.app.ui.common.queenColorLabelRes
 
 @HiltViewModel
 class InspectionDetailViewModel @Inject constructor(
@@ -65,7 +66,7 @@ fun InspectionDetailScreen(
                 Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
                     Column(Modifier.padding(16.dp)) {
                         i.queenSeen?.let      { InfoRow(stringResource(R.string.field_queen_seen), if (it) "✓" else "✗") }
-                        i.queenColor?.let     { InfoRow(stringResource(R.string.field_queen_color), it.replaceFirstChar { c -> c.uppercase() }) }
+                        i.queenColor?.let     { InfoRow(stringResource(R.string.field_queen_color), stringResource(queenColorLabelRes(it))) }
                     }
                 }
             }

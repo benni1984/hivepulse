@@ -52,13 +52,17 @@ function androidScriptTakes(): Set<string> {
 /**
  * Pictures that are referenced, exist on disk, and no script retakes.
  *
- * All three were captured by hand on 12 June 2026 and sat through the redesign unchanged;
- * `register-form` was the third and this test is why it now has a capture. These two need the
- * Android script driven further than it goes today -- to the foot of the inspection form, and
- * into the QR scanner, which wants a camera -- so they are named here rather than quietly
- * tolerated. Delete an entry when its capture lands; do not add one to make this test pass.
+ * **This list is empty, and that is the point.** Three pictures were captured by hand on
+ * 12 June 2026 and sat through the whole redesign unchanged. `register-form` was the first to be
+ * fixed; `android-inspection-form-bottom` and `android-qr-scan` were the other two and are now
+ * captured by `scripts/android-screenshots.py` (#419). The scanner one needed the viewfinder to
+ * be built first -- the overlay was a Surface with alpha 0 and an empty body, so until #424
+ * there was literally nothing on that screen to photograph.
+ *
+ * Do not add an entry to make this test pass. A name here is a picture the help pages show and
+ * nobody retakes, which is how all three went stale without anyone noticing.
  */
-const KNOWN_GAPS = ['android-inspection-form-bottom', 'android-qr-scan'];
+const KNOWN_GAPS: string[] = [];
 
 describe('the pictures the help pages show', () => {
   it('are all taken by a script, so none of them can go stale unnoticed', () => {
@@ -81,6 +85,12 @@ describe('the pictures the help pages show', () => {
     // place where names go to be ignored.
     const names = referenced();
     for (const gap of KNOWN_GAPS) expect(names).toContain(gap);
+  });
+
+  it('takes the two pictures that were frozen since June 2026', () => {
+    const android = androidScriptTakes();
+    expect(android.has('android-inspection-form-bottom')).toBe(true);
+    expect(android.has('android-qr-scan')).toBe(true);
   });
 
   it('includes the questionnaire, which is a page of its own and needed its own capture', () => {

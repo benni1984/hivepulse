@@ -213,6 +213,8 @@
     <!-- Auth -->
     <string name="login_subtitle">Anmelden, um deine Völker zu verwalten</string>
     <string name="permission_camera_rationale">Kamerazugriff ist erforderlich, um QR-Codes auf deinen Völkern zu scannen.</string>
+    <string name="scan_instruction">Scanne den QR-Code auf deinem Volk, um die Akte zu öffnen oder es erstmalig einzurichten.</string>
+    <string name="scan_viewfinder">Sucher — den QR-Code in den Rahmen halten</string>
 
     <!-- Hornissen-Tracker -->
     <string name="hornet_title">Hornissen-Tracker</string>

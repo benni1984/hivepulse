@@ -183,7 +183,7 @@ private struct InspectionRow: View {
             }
             HStack(spacing: 12) {
                 if let mood = inspection.mood {
-                    Label(mood.capitalized, systemImage: moodIcon(mood))
+                    Label(NSLocalizedString("mood.\(mood)", comment: ""), systemImage: moodIcon(mood))
                         .font(.caption).foregroundColor(moodColor(mood))
                 }
                 if let level = inspection.varroaLevel {

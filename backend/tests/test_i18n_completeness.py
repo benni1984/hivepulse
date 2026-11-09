@@ -44,3 +44,63 @@ def test_project_wide_translation_check_passes():
         cwd=REPO, capture_output=True, text=True, encoding="utf-8", errors="replace",
     )
     assert result.returncode == 0, f"translation check failed:\n{result.stdout}\n{result.stderr}"
+
+
+# ── The check for labels assembled at runtime ────────────────────────────────
+#
+# `hiveTypeLabelRes` had a unit test from the day the hive *form* was fixed. The hive *list*
+# went on upper-casing the raw value for months anyway, because the test covered the function
+# and not its use, and no check could see the English: it was never written down, it was built
+# at run time out of something the server sent (#428). These are the tests for the check that
+# can see it -- a guard nobody has tried to break is not a guard.
+
+
+def _checker():
+    """Import scripts/check_i18n.py as a module; it does nothing at import time."""
+    import importlib.util
+
+    path = REPO / "scripts" / "check_i18n.py"
+    spec = importlib.util.spec_from_file_location("check_i18n", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+@pytest.mark.parametrize("line", [
+    'AssistChip(label = { Text(hive.hiveType.replace("_", " ").replaceFirstChar { it.uppercase() }) })',
+    'InfoRow(stringResource(R.string.field_queen_color), it.replaceFirstChar { c -> c.uppercase() })',
+])
+def test_the_check_sees_a_kotlin_label_built_from_a_raw_value(line):
+    module = _checker()
+    assert module.RUNTIME_LABEL["android"].search(line)
+    assert not module.LOCALE_AWARE.search(line)
+
+
+@pytest.mark.parametrize("line", [
+    "Label(mood.capitalized, systemImage: moodIcon(mood))",
+    '.foregroundStyle(by: .value("Mood", entry.key.capitalized))',
+])
+def test_the_check_sees_a_swift_label_built_from_a_raw_value(line):
+    module = _checker()
+    assert module.RUNTIME_LABEL["ios"].search(line)
+    assert not module.LOCALE_AWARE.search(line)
+
+
+@pytest.mark.parametrize("line", [
+    # Formatting a month or a date for the reader is the one legitimate use, and both apps do it.
+    "date.month.getDisplayName(TextStyle.FULL_STANDALONE, locale).replaceFirstChar { it.titlecase(locale) }",
+    "return formatter.string(from: date).capitalized(with: formatter.locale)",
+])
+def test_the_check_leaves_locale_aware_date_formatting_alone(line):
+    module = _checker()
+    assert module.LOCALE_AWARE.search(line), "would be a false positive"
+
+
+@pytest.mark.parametrize("line", [
+    "StatusBadge(stringResource(hiveTypeLabelRes(hive.hiveType)))",
+    'Label(NSLocalizedString("mood.\\(mood)", comment: ""), systemImage: moodIcon(mood))',
+])
+def test_the_check_is_quiet_about_a_label_that_is_looked_up(line):
+    module = _checker()
+    assert not module.RUNTIME_LABEL["android"].search(line)
+    assert not module.RUNTIME_LABEL["ios"].search(line)
