@@ -1,7 +1,13 @@
 import Foundation
 
 enum APIError: LocalizedError {
+    /// A 401 on a call that carried a token: it is no longer good, so the session is over.
     case unauthorized
+    /// A 401 on a call that carried none -- signing in, registering, an identity token. The
+    /// credentials were refused, nothing expired, and the server said why in the app's
+    /// language. Telling this apart from `unauthorized` is the whole point: "Session expired.
+    /// Please log in again." asks somebody who just typed their password to type it again.
+    case invalidCredentials(String)
     case notFound(String)
     case conflict(String)
     case validation(String)
@@ -12,6 +18,7 @@ enum APIError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .unauthorized:     return NSLocalizedString("error.unauthorized", comment: "")
+        case .invalidCredentials(let m): return m
         case .notFound(let m):  return m
         case .conflict(let m):  return m
         case .validation(let m):return m
@@ -100,7 +107,7 @@ final class APIClient {
             (data, resp) = try await execute(req)
         }
         if (200..<300).contains(resp.statusCode) { return data }
-        let msg = (try? decoder.decode(APIErrorEnvelope.self, from: data))?.error.message ?? "Request failed"
+        let msg = (try? decoder.decode(APIErrorEnvelope.self, from: data))?.message ?? "Request failed"
         throw APIError.server(msg)
     }
 
@@ -119,10 +126,10 @@ final class APIClient {
             try await ensureTokenRefreshed()
             req = try buildRequest(method: method, path: path, bodyData: bodyData, requiresAuth: true)
             let (retryData, retryResp) = try await execute(req)
-            return try decode(retryData, statusCode: retryResp.statusCode)
+            return try decode(retryData, statusCode: retryResp.statusCode, requiresAuth: true)
         }
 
-        return try decode(data, statusCode: resp.statusCode)
+        return try decode(data, statusCode: resp.statusCode, requiresAuth: requiresAuth)
     }
 
     private func performVoid(
@@ -134,7 +141,7 @@ final class APIClient {
         let req = try buildRequest(method: method, path: path, bodyData: bodyData, requiresAuth: requiresAuth)
         let (data, resp) = try await execute(req)
         if !(200..<300).contains(resp.statusCode) {
-            let msg = (try? decoder.decode(APIErrorEnvelope.self, from: data))?.error.message ?? "Request failed"
+            let msg = (try? decoder.decode(APIErrorEnvelope.self, from: data))?.message ?? "Request failed"
             throw APIError.server(msg)
         }
     }
@@ -182,14 +189,17 @@ final class APIClient {
         }
     }
 
-    private func decode<T: Decodable>(_ data: Data, statusCode: Int) throws -> T {
+    private func decode<T: Decodable>(_ data: Data, statusCode: Int, requiresAuth: Bool) throws -> T {
         if (200..<300).contains(statusCode) {
             do { return try decoder.decode(T.self, from: data) }
             catch { throw APIError.decoding(error) }
         }
-        let msg = (try? decoder.decode(APIErrorEnvelope.self, from: data))?.error.message ?? "Unknown error"
+        let msg = (try? decoder.decode(APIErrorEnvelope.self, from: data))?.message ?? "Unknown error"
         switch statusCode {
-        case 401: throw APIError.unauthorized
+        // The message was decoded above and used to be thrown away here, so every refused
+        // sign-in read "Session expired" -- see the two cases on `APIError`.
+        case 401 where requiresAuth: throw APIError.unauthorized
+        case 401: throw APIError.invalidCredentials(msg)
         case 404: throw APIError.notFound(msg)
         case 409: throw APIError.conflict(msg)
         case 422: throw APIError.validation(msg)
