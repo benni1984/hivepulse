@@ -18,6 +18,7 @@ import coil.compose.SubcomposeAsyncImageContent
 import com.hivepulse.app.R
 import com.hivepulse.app.data.api.HornetSightingOut
 import com.hivepulse.app.ui.common.LoadingScreen
+import com.hivepulse.app.ui.common.StatusBadge
 
 @Composable
 fun HornetCommunityContent(vm: HornetViewModel) {
@@ -99,11 +100,7 @@ private fun SightingCard(sighting: HornetSightingOut, vm: HornetViewModel) {
                         Text(it, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
                     } ?: Spacer(Modifier.weight(1f))
 
-                    SuggestionChip(
-                        onClick = {},
-                        label = { Text(statusLabel, style = MaterialTheme.typography.labelSmall,
-                            color = statusColor) }
-                    )
+                    StatusBadge(statusLabel, color = statusColor)
                 }
 
                 sighting.reporterName?.let {

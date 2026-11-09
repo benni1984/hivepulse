@@ -36,6 +36,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.hivepulse.app.ui.common.StatusBadge
+import com.hivepulse.app.ui.hives.hiveTypeLabelRes
 
 data class ApiaryDetailState(
     val apiaryName: String = "",
@@ -234,7 +236,7 @@ fun HiveListItem(hive: HiveOut, onClick: () -> Unit, onDelete: (() -> Unit)? = n
         headlineContent  = { Text(hive.name) },
         supportingContent = {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                AssistChip(onClick = {}, label = { Text(hive.hiveType.replace("_", " ").replaceFirstChar { it.uppercase() }) })
+                StatusBadge(stringResource(hiveTypeLabelRes(hive.hiveType)))
                 hive.lastInspectionAt?.let {
                     Text(stringResource(R.string.label_last_inspection, it.take(10)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 } ?: Text(stringResource(R.string.label_never_inspected), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)

@@ -47,6 +47,7 @@ import java.io.File
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
+import com.hivepulse.app.ui.common.StatusBadge
 
 /** The forage as the user should read it: the translated name of a known key, or the text as written. */
 private fun forageText(context: Context, value: String): String =
@@ -357,7 +358,7 @@ private fun MoveListItem(move: HiveMoveOut, showHive: Boolean = false) {
                 }
             }
         },
-        trailingContent = move.forage?.let { forage -> { AssistChip(onClick = {}, label = { Text(forageLabel(forage)) }) } },
+        trailingContent = move.forage?.let { forage -> { StatusBadge(forageLabel(forage)) } },
     )
 }
 

@@ -32,7 +32,7 @@ struct HiveStatsView: View {
                         ChartCard(title: NSLocalizedString("stat.moodDistribution", comment: "")) {
                             Chart(s.moodDistribution.sorted(by: { $0.key < $1.key }), id: \.key) { entry in
                                 SectorMark(angle: .value("Count", entry.value), innerRadius: .ratio(0.6))
-                                    .foregroundStyle(by: .value("Mood", entry.key.capitalized))
+                                    .foregroundStyle(by: .value("Mood", NSLocalizedString("mood.\(entry.key)", comment: "")))
                             }
                             .frame(height: 180)
                         }

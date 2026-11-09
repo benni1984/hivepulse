@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.hivepulse.app.R
 import com.hivepulse.app.data.api.HornetNestProperties
 import com.hivepulse.app.ui.common.LoadingScreen
+import com.hivepulse.app.ui.common.StatusBadge
 
 @Composable
 fun HornetMapContent(vm: HornetViewModel) {
@@ -109,10 +110,7 @@ private fun NestCard(properties: HornetNestProperties) {
                 Text(properties.id.take(8) + "…", style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            SuggestionChip(
-                onClick = {},
-                label = { Text(statusLabel, style = MaterialTheme.typography.labelSmall) }
-            )
+            StatusBadge(statusLabel)
         }
     }
 }

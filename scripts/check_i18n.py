@@ -143,6 +143,41 @@ def check_ios() -> None:
                 if text not in {"HivePulse", "Hive", "Pulse"} and not text.isupper():
                     fail(area, f"hardcoded English {text!r} in {swift.name}:{number}")
 
+    check_runtime_labels(area, sorted((ROOT / "ios/HivePulse/Views").rglob("*.swift")))
+
+
+# ── Labels assembled at runtime ───────────────────────────────────────────────
+#
+# The checks above read the source for English that was typed in. They cannot see a label that
+# is *computed*: the backend sends `top_bar`, the screen swaps the underscore for a space and
+# upper-cases the first letter, and "Top Bar" appears in every language. Nothing English is ever
+# written down, so nothing is ever flagged -- and in English the result is indistinguishable from
+# the real label, so nobody notices either. Four screens did this for months (#428).
+
+# The shape of the mistake, per platform.
+RUNTIME_LABEL = {
+    "ios": re.compile(r"\.capitalized\b|replacingOccurrences\(of:\s*\"_\""),
+    "android": re.compile(r"replaceFirstChar|\.replace\(\"_\",\s*\" \"\)"),
+}
+
+# A locale in the same breath means a date or a month being formatted for the reader, which is
+# the one legitimate use: `getDisplayName(TextStyle.FULL_STANDALONE, locale)`,
+# `capitalized(with: formatter.locale)`.
+LOCALE_AWARE = re.compile(r"locale|Locale|formatter|Formatter|DisplayName")
+
+
+def check_runtime_labels(area: str, files: list[pathlib.Path]) -> None:
+    pattern = RUNTIME_LABEL[area]
+    for path in files:
+        for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            stripped = line.strip()
+            if stripped.startswith(("//", "*", "/*")):
+                continue
+            if not pattern.search(line) or LOCALE_AWARE.search(line):
+                continue
+            fail(area, f"label built from a raw value in {path.name}:{number} — "
+                       f"look the translation up instead")
+
 
 # ── Android ───────────────────────────────────────────────────────────────────
 
@@ -181,6 +216,9 @@ def check_android() -> None:
                 text = match.group(1)
                 if text != "HivePulse" and not text.isupper():
                     fail(area, f"hardcoded English {text!r} in {kotlin.name}:{number}")
+
+    check_runtime_labels(area, sorted((ROOT / "android/app/src/main/java/com/hivepulse/app/ui")
+                                      .rglob("*.kt")))
 
 
 # ── backend ───────────────────────────────────────────────────────────────────

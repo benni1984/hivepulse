@@ -6,6 +6,13 @@ import XCTest
 /// `.capitalized`, so a German beekeeper read "Calm" and "White" in an otherwise German form.
 /// The keys had been translated the whole time — nothing looked them up, which is precisely
 /// what `check_i18n.py` cannot see: the strings are present, they are simply unused.
+///
+/// It happened twice more after this test was written (#428): `HiveDetailView` and
+/// `HiveStatsView` kept `.capitalized`, and Android's hive list kept its own version of the
+/// same line. Which is the lesson — **this file is not the guard.** It asserts the strings are
+/// translated, and they always were. Three screens can go on ignoring them with every test in
+/// here green. The guard is `check_runtime_labels` in `scripts/check_i18n.py`, which reads the
+/// views for the shape of the mistake instead of the strings for their presence.
 final class ColonyLabelLocalizationTests: XCTestCase {
 
     private let moods = ["calm", "nervous", "aggressive"]
