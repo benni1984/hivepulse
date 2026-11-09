@@ -80,7 +80,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-qr-scan.png" caption="Overlay du scanner QR montrant un code en cours de scan et la feuille de confirmation" />
+        <Screenshot src="/docs/screenshots/android-qr-scan.png" caption="L'écran de scan — placez le code QR dans le cadre ambre" />
       </section>
 
       <section className="help-section">
@@ -108,7 +108,6 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-qr-scan.png" caption="Scan d'un QR code de ruche sur le terrain — la ruche s'ouvre instantanément" />
       </section>
 
       <section className="help-section">

@@ -46,7 +46,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Zapisywanie przeglądu: widać pola daty i poziomu Varroa" />
+        <Screenshot src="/docs/screenshots/android-inspection-form-bottom.png" caption="Koniec formularza przeglądu — waga, notatki i przycisk Zapisz" />
       </section>
 
       <section className="help-section">

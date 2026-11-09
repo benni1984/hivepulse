@@ -80,7 +80,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-qr-scan.png" caption="QR scanner overlay showing a code being scanned and the confirmation sheet" />
+        <Screenshot src="/docs/screenshots/android-qr-scan.png" caption="The scan screen — hold the QR code inside the amber frame" />
       </section>
 
       <section className="help-section">

@@ -80,7 +80,7 @@ export default function QrCodesContent({ Screenshot }: { Screenshot: typeof Help
             </div>
           </li>
         </ol>
-        <Screenshot src="/docs/screenshots/android-qr-scan.png" caption="Nakładka skanera QR ze skanowanym kodem i arkuszem potwierdzenia" />
+        <Screenshot src="/docs/screenshots/android-qr-scan.png" caption="Ekran skanowania — umieść kod QR w bursztynowej ramce" />
       </section>
 
       <section className="help-section">
