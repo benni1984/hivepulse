@@ -63,7 +63,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
             <span className="help-stat-card-warn">Actuar: Media o Alta (3+ ácaros por 100)</span>
           </div>
           <div className="help-stat-card">
-            <div className="help-stat-card-name">Estado de ánimo de la colonia</div>
+            <div className="help-stat-card-name">Comportamiento de la colonia</div>
             <div className="help-stat-card-desc">
               Cómo se comportaron las abejas durante la revisión.
               <br /><strong>Tranquila</strong> — las abejas eran dóciles, se movían despacio, pocas picaduras.<br />
@@ -161,7 +161,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
         </div>
         <div className="help-callout tip">
           <i className="fas fa-lightbulb" />
-          <p>Incluso una revisión parcial (solo estado de ánimo y marcos de cría) es valiosa. Los registros parciales consistentes son mejores que los registros perfectos que ocurren una vez al año.</p>
+          <p>Incluso una revisión parcial (solo comportamiento y cuadros de cría) es valiosa. Los registros parciales consistentes son mejores que los registros perfectos que ocurren una vez al año.</p>
         </div>
       </section>
     </>

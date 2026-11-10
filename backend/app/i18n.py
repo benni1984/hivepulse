@@ -342,12 +342,17 @@ MESSAGES = {
     # "Bruträhmchen-Verlauf" next to a field saying "Brutwaben". Settled as Brutrahmen (#447) and
     # renamed everywhere a reader sees it. The historical entries in lib/news.ts and
     # lib/releaseNotes.ts keep the old word on purpose: they record what was on the screen then.
+    #
+    # Honey frames went the same way and only afterwards: this comment named brood and the
+    # rename followed the comment, so "Honigwaben" survived one field over, with Android's
+    # chart still saying "Honigrähmchen-Verlauf" beside it. Both are "…rahmen" now, and the
+    # section header over them is "Rahmen" on both phones (it was "Rähmchen"/"Waben").
     "FIELD_BROOD_FRAMES": {
         "en": "Brood frames", "de": "Brutrahmen", "fr": "Cadres de couvain",
         "es": "Cuadros de cría", "pl": "Ramki z czerwiem",
     },
     "FIELD_HONEY_FRAMES": {
-        "en": "Honey frames", "de": "Honigwaben", "fr": "Cadres de miel",
+        "en": "Honey frames", "de": "Honigrahmen", "fr": "Cadres de miel",
         "es": "Cuadros de miel", "pl": "Ramki z miodem",
     },
     "FIELD_POPULATION_STRENGTH": {
@@ -385,9 +390,13 @@ MESSAGES = {
         "es": "Color de la reina", "pl": "Kolor matki",
     },
     # Read off the screens, not invented: messages/<locale>.json dash.hive.mood and Android's
-    # field_mood agree in English, German, French and Polish. The Spanish differs between the two
-    # clients (web "Comportamiento", Android "Estado de ánimo"); the web's is used here and the
-    # disagreement is #447's to settle.
+    # field_mood agree in English, German, French and Polish. The Spanish disagreed — web
+    # "Comportamiento", Android "Estado de ánimo", and the web's own members page a third
+    # "Buen humor" — and is settled on "comportamiento" everywhere this field or its charts
+    # are named. "ánimo" stays nowhere; "en calma"/"tranquila" remain the VALUES.
+    #
+    # check_app_wording could not see any of it: it compares identical English of 12
+    # characters or more, and this field's English is "Mood".
     "FIELD_MOOD": {
         "en": "Mood", "de": "Stimmung", "fr": "Humeur",
         "es": "Comportamiento", "pl": "Temperament",

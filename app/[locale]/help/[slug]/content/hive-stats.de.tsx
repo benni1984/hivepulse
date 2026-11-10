@@ -63,7 +63,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
               Verfolgt das Volkswachstum über die Saison — Sie erwarten einen Anstieg ab dem Frühling, einen Höhepunkt im
               Frühsommer und dann einen Rückgang zum Herbst hin.
             </div>
-            <span className="help-stat-card-good">Hauptsaison: 6–9 Rähmchen</span>
+            <span className="help-stat-card-good">Hauptsaison: 6–9 Rahmen</span>
           </div>
 
           <div className="help-stat-card">

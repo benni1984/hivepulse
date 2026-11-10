@@ -8,7 +8,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
         <p>
           Los campos personalizados le permiten agregar preguntas adicionales al formulario de revisión que no están en el
           conjunto integrado. Por ejemplo: una casilla para «enjambre artificial realizado», un número para
-          «marcos de reservas», o una lista desplegable para la fuente de néctar actualmente en floración.
+          «cuadros de reservas», o una lista desplegable para la fuente de néctar actualmente en floración.
         </p>
         <p>
           Los campos se gestionan actualmente en el <strong>panel de control web</strong> y aparecen en el

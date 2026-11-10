@@ -102,13 +102,13 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
             <div className="help-stat-card-name">Brutrahmen</div>
             <div className="help-stat-card-desc">
               Anzahl der Waben mit Brut (Eier, Larven oder verdeckelte Zellen). Dies misst das Wachstumspotenzial des Volkes.
-              Ein starkes, gesundes Volk in der Hauptsaison füllt typischerweise 7–9 Rähmchen in einem Standard-Langstroth.
+              Ein starkes, gesundes Volk in der Hauptsaison füllt typischerweise 7–9 Rahmen in einem Standard-Langstroth.
             </div>
             <div className="help-stat-card-desc">In den Apps tippst du die Zahl direkt an — 0 bis 10 als große Knöpfe, passend für Handschuhe. Ein zweiter Tipp auf die gewählte Zahl löscht sie wieder.</div>
-            <span className="help-stat-card-good">Gut (Frühling/Sommer): 6–9 Rähmchen</span>
+            <span className="help-stat-card-good">Gut (Frühling/Sommer): 6–9 Rahmen</span>
           </div>
           <div className="help-stat-card">
-            <div className="help-stat-card-name">Honigwaben</div>
+            <div className="help-stat-card-name">Honigrahmen</div>
             <div className="help-stat-card-desc">
               Anzahl der Waben mit eingelagertem Honig. Wichtig für die Überwachung der Wintervorräte.
               Ein Volk benötigt etwa 15–20 kg Honig, um einen kalten Winter zu überleben.
@@ -117,7 +117,7 @@ export default function InspectionsContent({ Screenshot }: { Screenshot: typeof 
           <div className="help-stat-card">
             <div className="help-stat-card-name">Volksstärke</div>
             <div className="help-stat-card-desc">
-              Ihr Gesamteindruck, wie stark das Volk ist: Schwach, Mittel oder Stark. Nützlich, wenn Sie die relative Population verfolgen möchten, ohne einzelne Rähmchen zu zählen.
+              Ihr Gesamteindruck, wie stark das Volk ist: Schwach, Mittel oder Stark. Nützlich, wenn Sie die relative Population verfolgen möchten, ohne einzelne Rahmen zu zählen.
             </div>
           </div>
         </div>

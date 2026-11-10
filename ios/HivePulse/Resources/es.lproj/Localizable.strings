@@ -340,7 +340,7 @@
 "heatmap.empty" = "No hay datos de la comunidad.";
 "heatmap.hint" = "Toca una celda para ver los detalles.";
 "heatmap.overlay.varroa" = "Riesgo de varroa";
-"heatmap.overlay.mood" = "Ánimo de las colonias";
+"heatmap.overlay.mood" = "Comportamiento de las colonias";
 "heatmap.overlay.swarm" = "Presión de enjambrazón";
 "heatmap.overlay.brood" = "Salud de la cría";
 "heatmap.varroa.low" = "Ninguna / baja (< 1)";
@@ -358,7 +358,7 @@
 "heatmap.noData" = "Sin datos";
 "heatmap.cellSummary" = "%d colmenares · %d revisiones";
 "heatmap.cell.varroa" = "Varroa prom.";
-"heatmap.cell.mood" = "Ánimo tranquilo";
+"heatmap.cell.mood" = "Comportamiento tranquilo";
 "heatmap.cell.brood" = "Cría prom.";
 "heatmap.cell.swarm" = "Celdas de enjambre";
 

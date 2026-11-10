@@ -63,7 +63,7 @@
     },
     "track": {
       "title": "Intelligentes Tracking",
-      "desc": "Verfolge Bruträhmenzahl, Varroabefall, Weiselstand, Honigvorräte und Stimmung über Zeit. Erkenne Trends, bevor sie zu Problemen werden."
+      "desc": "Verfolge Brutrahmenzahl, Varroabefall, Weiselstand, Honigvorräte und Stimmung über Zeit. Erkenne Trends, bevor sie zu Problemen werden."
     },
     "global": {
       "title": "Globaler Datenpool",
@@ -678,7 +678,7 @@
       "mood": "Stimmung",
       "queen": "Königin gesehen",
       "brood": "Brutrahmen",
-      "honey": "Honigwaben",
+      "honey": "Honigrahmen",
       "weight": "Gewicht (kg)",
       "treatmentApplied": "Behandlung",
       "yes": "Ja",
@@ -1110,7 +1110,7 @@
       },
       "inspections": {
         "title": "Eine Kontrolle erfassen",
-        "desc": "Jeden Besuch an einem Volk festhalten: Varroa-Zahl, Volksstimmung, Königinnennachweis, Brutrahmen, Honigwaben, Gewicht, Behandlungen und mehr."
+        "desc": "Jeden Besuch an einem Volk festhalten: Varroa-Zahl, Volksstimmung, Königinnennachweis, Brutrahmen, Honigrahmen, Gewicht, Behandlungen und mehr."
       },
       "data-export": {
         "title": "Daten exportieren",

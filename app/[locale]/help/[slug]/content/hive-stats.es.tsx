@@ -37,7 +37,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           </div>
 
           <div className="help-stat-card">
-            <div className="help-stat-card-name"><i className="fas fa-face-smile" style={{ marginRight: 6, color: '#22c55e' }} />Distribución del estado de ánimo</div>
+            <div className="help-stat-card-name"><i className="fas fa-face-smile" style={{ marginRight: 6, color: '#22c55e' }} />Distribución del comportamiento</div>
             <div className="help-stat-card-desc">
               Un gráfico de rosquilla mostrando la proporción de revisiones Tranquila, Nerviosa y Agresiva.
               La nerviosidad o agresividad persistente puede indicar ausencia de reina, enfermedad o problemas genéticos
@@ -59,7 +59,7 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           <div className="help-stat-card">
             <div className="help-stat-card-name"><i className="fas fa-egg" style={{ marginRight: 6, color: '#8b5cf6' }} />Marcos de cría</div>
             <div className="help-stat-card-desc">
-              Número promedio de marcos de cría registrados por revisión en el período seleccionado.
+              Número promedio de cuadros de cría registrados por revisión en el período seleccionado.
               Rastrea el crecimiento de la colonia durante la temporada — espere un aumento en primavera, un pico en
               comienzos del verano, luego un declive hacia el otoño.
             </div>

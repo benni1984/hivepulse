@@ -141,7 +141,7 @@
     <string name="field_queen_seen">Königin gesehen</string>
     <string name="field_queen_color">Königinnenfarbe</string>
     <string name="field_brood_frames">Brutrahmen</string>
-    <string name="field_honey_frames">Honigwaben</string>
+    <string name="field_honey_frames">Honigrahmen</string>
     <string name="field_mood">Stimmung</string>
     <string name="field_population_strength">Volksstärke</string>
     <string name="field_swarm_cells_seen">Schwarmzellen gesehen</string>
@@ -155,7 +155,7 @@
     <!-- Sections -->
     <string name="section_date">Datum</string>
     <string name="section_queen">Königin</string>
-    <string name="section_frames">Rähmchen</string>
+    <string name="section_frames">Rahmen</string>
     <string name="section_colony">Volk</string>
     <string name="section_varroa">Varroa</string>
     <string name="section_treatment">Behandlung &amp; Fütterung</string>
@@ -190,7 +190,7 @@
     <string name="stat_mood_distribution">Stimmungsverteilung</string>
     <string name="stat_varroa_trend">Varroa-Befall</string>
     <string name="stat_brood_trend">Brutrahmen-Verlauf</string>
-    <string name="stat_honey_trend">Honigrähmchen-Verlauf</string>
+    <string name="stat_honey_trend">Honigrahmen-Verlauf</string>
     <string name="stat_weight_trend">Gewichtsverlauf</string>
     <string name="screen_stats_overview">Meine Statistiken</string>
     <string name="stat_overview_apiaries">Bienenstände</string>

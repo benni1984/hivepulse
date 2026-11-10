@@ -44,7 +44,7 @@
 "field.queenSeen" = "Königin gesehen";
 "field.queenColor" = "Königinfarbe";
 "field.broodFrames" = "Brutrahmen";
-"field.honeyFrames" = "Honigwaben";
+"field.honeyFrames" = "Honigrahmen";
 "field.mood" = "Volksstimmung";
 "field.populationStrength" = "Volksstärke";
 "field.varroaCount" = "Varroa-Zählung";
@@ -67,7 +67,7 @@
 "section.newHive" = "Neues Volk";
 "section.date" = "Datum";
 "section.queen" = "Königin";
-"section.frames" = "Waben";
+"section.frames" = "Rahmen";
 "section.colony" = "Volk";
 "section.varroa" = "Varroa";
 "section.treatment" = "Behandlung & Fütterung";
@@ -136,7 +136,7 @@
 "stat.moodDistribution" = "Volksstimmung";
 "stat.varroaTrend" = "Varroa-Befall";
 "stat.broodFrames" = "Brutrahmen";
-"stat.honeyFrames" = "Honigwaben";
+"stat.honeyFrames" = "Honigrahmen";
 "stat.weight" = "Gewicht (kg)";
 "stat.customRange" = "Eigener Zeitraum";
 "stat.from" = "Von";
