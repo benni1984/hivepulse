@@ -13,6 +13,7 @@ from app.deps import CurrentUser, DB
 from app.models import Apiary, User, YearProposal
 from app.schemas import CalendarEntry, CalendarOut, RegionOut, RegionUpdate
 from app.utils.geocoding import forward_geocode_postal
+from app.clock import today_utc
 
 router = APIRouter(tags=["beekeeping-year"])
 
@@ -112,7 +113,7 @@ def get_calendar(
     lang: Optional[str] = Query(default=None, description="Language of the texts; default: Accept-Language, then the account's"),
     accept_language: Optional[str] = Header(default=None),
 ) -> CalendarOut:
-    today = date.today()
+    today = today_utc()
     first = start or today.replace(day=1)
     last = first + timedelta(days=days - 1)
     region = region_of(current_user, db)

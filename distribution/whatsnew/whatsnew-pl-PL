@@ -1,11 +1,10 @@
-HivePulse 1.0.3
+HivePulse 1.0.4
 
-Nowości w tej wersji:
-• Zakładka skanowania pokazuje ramkę do celowania i mówi, czego oczekuje
-• Typ ula i kolor matki są przetłumaczone, już nie "Top Bar"
-• Odrzucone logowanie znów mówi, co było nie tak, zamiast "HTTP 401"
-• Sześć etykiet nie jest już przyciskami — TalkBack czyta je jako tekst
+Nowe w tej wersji:
+• Wieczorem aplikacja zapisywała pod dniem poprzednim: przeglądy, zgłoszenia szerszeni, wykonane zabiegi
+• Wieczorny odłów z pułapki nadpisywał liczbę z poprzedniego dnia zamiast zapisać własną
+• Przypomnienie dla nigdy nieprzeglądanej rodziny mogło się mylić o dzień
 
-Prosimy, zostań w teście i korzystaj z aplikacji od czasu do czasu.
+Zostań w teście i korzystaj z aplikacji od czasu do czasu.
 
 hivepulse@multihead.de

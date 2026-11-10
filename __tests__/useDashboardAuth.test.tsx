@@ -8,6 +8,10 @@ const mockGetMe = vi.hoisted(() => vi.fn());
 const mockClearTokens = vi.hoisted(() => vi.fn());
 
 vi.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children, className, onClick, style, title, target, rel }: {
+    href: string; children: React.ReactNode; className?: string; onClick?: () => void;
+    style?: React.CSSProperties; title?: string; target?: string; rel?: string;
+  }) => <a href={href} className={className} onClick={onClick} style={style} title={title} target={target} rel={rel}>{children}</a>,
   useRouter: () => mockRouter,
 }));
 

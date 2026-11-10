@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { login, register, logout, getMe, updateMe, deleteMe, getApiaries, createApiary, updateApiary, deleteApiary, createHive, updateHive, deleteHive, getHive, clearTokens, createInspection, updateInspection, deleteInspection, getQrBatches, createQrBatch, getQrBatch, downloadQrBatchPdf, getPublicStats, exportHiveInspections, exportApiaryInspections, getReminderSettings, updateReminderSettings, registerPushToken, forgotPassword, resetPassword, socialSignIn, deleteQrBatch, createShare, getShares, getIncomingShares, acceptShare, declineShare, deleteShare, acceptShareByToken, moveHives, getHiveMoves, getMovesOverview, getHome, getTreatments, createTreatment, markTreatmentDone, reopenTreatment, deleteTreatment } from '@/lib/api';
+import { todayLocal } from '@/lib/dates';
 
 const mockUser = { id: '1', email: 'a@b.com', name: 'Test', locale: 'en', created_at: '2024-01-01' };
 const mockTokens = { access_token: 'access-123', refresh_token: 'refresh-456', user: mockUser };
@@ -115,13 +116,15 @@ describe('home summary and treatments', () => {
     await expect(createTreatment({ apiary_id: 'a-1', product: 'x', due_on: '2026-08-20' })).rejects.toThrow('Only the owner can do this.');
   });
 
-  it('marking done sends a day only when one is given', async () => {
+  it('marking done always sends a day, the reader\'s own', async () => {
+    // Never an empty body: the server would fall back to its UTC day, and from about 22:00 in
+    // Europe that is yesterday — the treatment would be filed a day before it was done (#443).
     vi.mocked(fetch).mockResolvedValueOnce(ok({ id: 't-1' })).mockResolvedValueOnce(ok({ id: 't-1' }));
     await markTreatmentDone('t-1');
     await markTreatmentDone('t-1', '2026-08-21');
 
     expect(call(0)[0]).toContain('/treatments/t-1/done');
-    expect(JSON.parse(call(0)[1]?.body as string)).toEqual({});
+    expect(JSON.parse(call(0)[1]?.body as string)).toEqual({ done_on: todayLocal() });
     expect(JSON.parse(call(1)[1]?.body as string)).toEqual({ done_on: '2026-08-21' });
   });
 

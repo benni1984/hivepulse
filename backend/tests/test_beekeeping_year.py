@@ -10,6 +10,9 @@ from fastapi.testclient import TestClient
 from app import beekeeping_year, season
 from app.utils.geocoding import CityLocation
 from main import app
+# The same clock the endpoints use. With date.today() the test and the code disagree
+# between midnight local and midnight UTC, which is how #443 surfaced.
+from app.clock import today_utc
 
 API = "/api/v1"
 
@@ -311,7 +314,7 @@ def test_the_window_is_bounded(me):
 
 
 def test_each_entry_says_whether_it_is_going_on_today(me):
-    today = date.today()
+    today = today_utc()
     window = me.get(f"{API}/calendar", params={"from": today.replace(day=1).isoformat(), "days": 90}).json()
 
     for entry in window["entries"]:

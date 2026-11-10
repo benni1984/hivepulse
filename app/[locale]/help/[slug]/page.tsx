@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
 import { getTopicBySlug, HELP_TOPICS } from '@/lib/helpTopics';
 import HelpScreenshot from '@/components/HelpScreenshot';
@@ -187,7 +187,7 @@ export default async function HelpTopicPage({
     <>
       {/* Breadcrumb */}
       <nav className="help-breadcrumb" aria-label="Breadcrumb">
-        <Link href={`/${locale}/help`}>{t('allTopics')}</Link>
+        <Link href="/help">{t('allTopics')}</Link>
         <i className="fas fa-chevron-right" style={{ fontSize: '.6rem' }} />
         <span>{t(`groups.${topic.group}`)}</span>
         <i className="fas fa-chevron-right" style={{ fontSize: '.6rem' }} />

@@ -56,8 +56,21 @@ List responses wrap items in:
 
 ### Dates & Times
 
-- Dates: `YYYY-MM-DD`
-- Datetimes: ISO 8601 UTC, e.g. `2026-04-26T14:30:00Z`
+- **Dates:** `YYYY-MM-DD`.
+- **Datetimes:** UTC, ISO 8601, with microseconds and **without a `Z` or an offset** —
+  `2026-09-13T13:18:13.734534`. They are naive: the value is UTC, the string does not say so.
+  Decoding one with a strict ISO-8601 parser fails, which once broke login and every list against
+  production while mock-based tests passed. iPhone uses `.hivePulseBackend`
+  (`Network/BackendDateDecoding.swift`), never `.iso8601`.
+- **The server's "today" is the UTC day.** It has to be: every stored timestamp is UTC, and a
+  "today" from the server's own timezone would make the answer depend on where the process runs
+  (#443). `app/clock.py` is the only place that reads the clock.
+- **The UTC day is not the caller's day.** At 23:30 in Berlin the beekeeper is already on tomorrow
+  and UTC is not. The server has no timezone for the account and does not guess, so **a client
+  sends the day it means** wherever a date can be left out — `done_on`, `moved_on`, an
+  inspection's `date`. The validation allows one day into the future precisely so a client ahead
+  of UTC is never rejected. A server default is the fallback for a caller that sends nothing, not
+  the expected path.
 
 ### Localisation
 
@@ -905,7 +918,9 @@ not visible to the caller.
 { "done_on": "2026-08-21" }
 ```
 
-`done_on` defaults to today and may not lie in the future. Marking it done again changes the day.
+`done_on` may not lie in the future (one day of slack for time zones). Marking it done again
+changes the day. Omitted, it falls back to the server's **UTC** day — so the clients send their own local
+date instead, because after about 22:00 in Europe the two are not the same day (#443).
 **200** with the treatment. To undo, `POST /treatments/{id}/reopen`: **200**, `done_on` becomes `null`.
 
 ### DELETE `/treatments/{id}`
@@ -1155,7 +1170,8 @@ Nothing is moved unless all of it can be.
   coordinates up, as it does for the public map; when that fails the apiary has no position and its
   moves appear in lists but not on the map.
 * `hive_ids`: 1 to 200 hives. Hives that already stand in the target are left alone.
-* `moved_on` defaults to today and may not lie in the future (one day of slack for time zones).
+* `moved_on` may not lie in the future (one day of slack for time zones). Omitted, it falls back
+  to the server's **UTC** day; the clients send their own local date instead (#443).
 * `forage` is free text up to 100 characters. The clients offer these keys and show them in the
   user's language; any other text is shown as written: `acacia`, `rapeseed`, `orchard`, `dandelion`,
   `linden`, `chestnut`, `fir`, `heather`, `sunflower`, `lavender`, `other`.

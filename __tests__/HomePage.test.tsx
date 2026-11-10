@@ -6,12 +6,6 @@ vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }));
 
-vi.mock('next/link', () => ({
-  default: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => (
-    <a href={href} className={className}>{children}</a>
-  ),
-}));
-
 // The download section links to the beta page through the locale-aware Link, which pulls in
 // next-intl's navigation and cannot be resolved under vitest.
 vi.mock('@/i18n/navigation', () => ({

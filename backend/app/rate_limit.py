@@ -1,9 +1,10 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from fastapi import HTTPException, Request, status
 from sqlalchemy.orm import Session
 
 from app.models import RateLimitHit
+from app.clock import now_utc
 
 # Rows older than this are opportunistically purged on every call so the table
 # doesn't grow unbounded — comfortably larger than any window used below.
@@ -40,7 +41,7 @@ def enforce_rate_limit(
     State lives in the database (not process memory) since the backend runs
     as stateless serverless functions.
     """
-    now = datetime.utcnow()
+    now = now_utc()
     db.query(RateLimitHit).filter(RateLimitHit.created_at < now - _MAX_ROW_AGE).delete()
 
     # Counting per client IP stops one caller hammering an endpoint. It does not stop a

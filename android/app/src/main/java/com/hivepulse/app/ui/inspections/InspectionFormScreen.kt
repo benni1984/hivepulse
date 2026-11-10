@@ -33,7 +33,9 @@ import com.hivepulse.app.ui.hives.ExposedDropdownMenuForList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneOffset
 import java.util.*
 import javax.inject.Inject
 
@@ -143,12 +145,20 @@ fun InspectionFormScreen(
     val state by vm.state.collectAsState()
     LaunchedEffect(state.saved) { if (state.saved) onSaved() }
 
-    val df = remember { SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) }
-
     // Date
+    //
+    // java.time, not SimpleDateFormat with Locale.getDefault(): that formatter follows the reader's
+    // calendar, so a phone set to the Thai Buddhist calendar sent the year 2569 to a server that
+    // stores the string as written. LocalDate is always ISO.
+    //
+    // Material's date picker works in UTC midnight by contract, so the millis going in and the
+    // millis coming out are both converted through ZoneOffset.UTC — the same way MoveScreens does
+    // it. Reading the picker's value in local time instead was a day out west of Greenwich.
     var showDatePicker by remember { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState(initialSelectedDateMillis = System.currentTimeMillis())
-    var date by remember { mutableStateOf(df.format(Date())) }
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = LocalDate.now().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli(),
+    )
+    var date by remember { mutableStateOf(LocalDate.now().toString()) }
 
     // Queen
     var queenSeenIdx    by remember { mutableStateOf<Int?>(null) }  // 0=unknown,1=yes,2=no
@@ -188,7 +198,7 @@ fun InspectionFormScreen(
             confirmButton = {
                 TextButton(onClick = {
                     datePickerState.selectedDateMillis?.let { millis ->
-                        date = df.format(Date(millis))
+                        date = Instant.ofEpochMilli(millis).atZone(ZoneOffset.UTC).toLocalDate().toString()
                     }
                     showDatePicker = false
                 }) { Text(stringResource(R.string.action_save)) }

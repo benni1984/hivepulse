@@ -69,6 +69,99 @@ def compare(area: str, reference: dict[str, str], other: dict[str, str], locale:
                 fail(area, f"{locale}: {key!r} has placeholders {got} but English has {want}")
 
 
+# ── Grammar rules that are mechanical ────────────────────────────────────────
+#
+# Most wording cannot be checked by a machine. Two rules can, and both were broken in ways no
+# parity check could see -- the keys existed, the values were non-empty, and the text was
+# genuinely in the right language. It was simply wrong (#433, #434).
+#
+# Spanish: `y` becomes `e` before an i- or hi- sound, and only there. The repository had
+# "colmenas e revisiones" nine times and "nombre y idioma" twice -- both halves of the same rule
+# broken in opposite directions, from replacing the word after the conjunction and leaving the
+# conjunction alone.
+#
+# French: `de` elides to `d'` before a vowel or a mute h, and only there. The repository had
+# "rappels d'visite" twice, in the reminder settings.
+
+# A word beginning with an i sound: i, í, hi. `hie-`/`hia-` keep `y` ("agua y hielo"), because
+# there the i is a semivowel.
+ES_I_SOUND = re.compile(r"^(?:[ií]|hi(?![ae]))", re.IGNORECASE)
+ES_CONJ = re.compile(r"(?<![\w])([ye])\s+([^\s<>{}\[\]]+)")
+
+FR_VOWEL = re.compile(r"^(?:[aeiouyàâäéèêëîïôöùûüAEIOUY]|h)", re.IGNORECASE)
+FR_ELISION = re.compile(r"(?<![\w])d['\u2019]\s*([a-zA-Zà-ÿ]+)")
+
+
+def check_grammar(area: str, locale: str, strings: dict[str, str]) -> None:
+    """The two rules above, over one platform's strings for one language."""
+    for key, value in strings.items():
+        if not isinstance(value, str):
+            continue
+        if locale == "es":
+            for conj, following in ES_CONJ.findall(value):
+                i_sound = bool(ES_I_SOUND.match(following))
+                if conj.lower() == "e" and not i_sound:
+                    fail(area, f"es: {key!r} has 'e {following}' — Spanish uses 'y' unless the "
+                               f"next word starts with an i or hi sound")
+                if conj.lower() == "y" and i_sound:
+                    fail(area, f"es: {key!r} has 'y {following}' — becomes 'e' before an "
+                               f"i or hi sound")
+        elif locale == "fr":
+            for following in FR_ELISION.findall(value):
+                if not FR_VOWEL.match(following):
+                    fail(area, f"fr: {key!r} has \"d'{following}\" — 'de' only elides before a "
+                               f"vowel or a mute h")
+
+
+# ── Visible text typed straight into a page ────────────────────────
+#
+# iOS and Android have been scanned for hardcoded English since early on. The web never was,
+# which is how an English back-link came to sit at the foot of the trap page in all five
+# languages (#439).
+#
+# A pattern looking for `>text<` on one line finds nothing, because a JSX child stands on a line
+# of its own:
+#
+#     <Link href="/hornets">
+#       ← Hornets Tracker
+#     </Link>
+#
+# What marks it as prose is the shape: a line holding only text, between a line that ends a tag
+# and a line that opens one.
+
+_TEXT_ONLY = re.compile(r"^\s*(?![/<{}])([^<>{}]+?)\s*$")
+_HAS_WORDS = re.compile(r"[A-Za-z]{3}")
+_NOT_PROSE = re.compile(r"^(import|export|const|let|var|return|function|type|interface|if|"
+                        r"else|for|while|case|default|await|async|new |class |\*|//|/\*|\}|"
+                        r"\)|;|,|:|=)")
+# A ternary inside JSX braces wraps onto its own line and reads as text until you see the
+# operators: `deleteConfirmId === fd.id ? (`. No sentence shown to a reader carries these.
+_CODE_SMELL = re.compile(r"===|!==|=>|&&|\|\||\($")
+# Language names are written in their own language on purpose.
+_ENDONYMS = {"English", "Deutsch", "Polski", "Español", "Français",
+             "HivePulse", "Hive", "Pulse"}
+
+
+def hardcoded_jsx_text(source: str) -> list[tuple[int, str]]:
+    """Lines of one .tsx file that show text to a reader without going through a translation."""
+    lines = source.splitlines()
+    out: list[tuple[int, str]] = []
+    for number, line in enumerate(lines, 1):
+        match = _TEXT_ONLY.match(line)
+        if not match:
+            continue
+        text = match.group(1).strip()
+        if (not _HAS_WORDS.search(text) or _NOT_PROSE.match(text)
+                or _CODE_SMELL.search(text) or text in _ENDONYMS or text.isupper()):
+            continue
+        before = next((lines[i] for i in range(number - 2, -1, -1) if lines[i].strip()), "")
+        after = next((lines[i] for i in range(number, len(lines)) if lines[i].strip()), "")
+        if not before.rstrip().endswith(">") or not after.lstrip().startswith("<"):
+            continue
+        out.append((number, text))
+    return out
+
+
 # ── web ───────────────────────────────────────────────────────────────────────
 
 def check_web() -> None:
@@ -89,6 +182,15 @@ def check_web() -> None:
     for locale in LOCALES[1:]:
         if locale in messages:
             compare(area, messages["en"], messages[locale], locale, placeholder)
+            check_grammar(area, locale, messages[locale])
+
+    for folder in ("app", "components"):
+        for page in sorted((ROOT / folder).rglob("*.tsx")):
+            if "/content/" in page.as_posix():
+                continue  # help pages are one file per language by design
+            rel = page.relative_to(ROOT).as_posix()
+            for number, text in hardcoded_jsx_text(page.read_text(encoding="utf-8")):
+                fail(area, f"hardcoded text {text!r} in {rel}:{number}")
 
     # Page metadata must be localized, not a single English string for every locale
     layout = (ROOT / "app/[locale]/layout.tsx")
@@ -130,6 +232,7 @@ def check_ios() -> None:
     for locale in LOCALES[1:]:
         if locale in tables:
             compare(area, tables["en"], tables[locale], locale, placeholder)
+            check_grammar(area, locale, tables[locale])
 
     literal = re.compile(r'(?:Text|Button|Label)\(\s*"([A-Z][A-Za-z ]{3,})"')
     for swift in sorted((ROOT / "ios/HivePulse").rglob("*.swift")):
@@ -206,6 +309,7 @@ def check_android() -> None:
             help_url = tables[locale].get("url_help", "")
             if help_url and f"/{locale}/help" not in help_url:
                 fail(area, f"{locale}: url_help points at {help_url!r}")
+            check_grammar(area, locale, tables[locale])
 
     literal = re.compile(r'(?:contentDescription\s*=\s*|Text\(\s*)"([A-Z][A-Za-z ]{3,})"')
     for kotlin in sorted((ROOT / "android/app/src/main/java/com/hivepulse/app/ui").rglob("*.kt")):
@@ -219,6 +323,59 @@ def check_android() -> None:
 
     check_runtime_labels(area, sorted((ROOT / "android/app/src/main/java/com/hivepulse/app/ui")
                                       .rglob("*.kt")))
+
+
+# ── The two apps must read alike ─────────────────────────────
+#
+# The rule in CLAUDE.md is that Android and the iPhone use the same wording. It lived in that
+# file and in nobody's test, so 103 strings had drifted apart (#436): German said both
+# "Durchsicht" and "Kontrolle", each app used "Bruträhmchen" on one screen and "Brutwaben" on
+# another -- and the other way round from each other -- and the iPhone's Spanish called a hornet
+# a wasp.
+#
+# No key-based check can see this: the key names differ by platform (`hornet_title` against
+# `hornets.title`). Matching on the English value needs no mapping at all. If both apps show the
+# identical English sentence, it is the same thing in the same place, and the other four
+# languages should agree too.
+#
+# Polish had zero differences while Spanish had 52, which is what made it worth fixing rather
+# than excusing: one language had been done consistently, so it was possible.
+
+# A platform genuinely needing different words goes here, with the reason. Empty is the goal:
+# every entry is wording a reader sees differently on their phone than on someone else's.
+APP_WORDING_EXCEPTIONS: dict[tuple[str, str], str] = {}
+
+# One English word is not a sentence. "Save" labels twenty different buttons, and two platforms
+# putting it in different places proves nothing, so only phrases are compared.
+MIN_COMPARABLE = 12
+
+
+def check_app_wording(android_tables: dict, ios_tables: dict) -> None:
+    def unique_by_value(table: dict[str, str]) -> dict[str, str]:
+        seen: dict[str, list[str]] = {}
+        for key, value in table.items():
+            seen.setdefault(value.strip(), []).append(key)
+        return {value: keys[0] for value, keys in seen.items() if len(keys) == 1}
+
+    if "en" not in android_tables or "en" not in ios_tables:
+        return
+    by_android = unique_by_value(android_tables["en"])
+    by_ios = unique_by_value(ios_tables["en"])
+    shared = [v for v in sorted(set(by_android) & set(by_ios)) if len(v) >= MIN_COMPARABLE]
+
+    for english in shared:
+        android_key, ios_key = by_android[english], by_ios[english]
+        for locale in LOCALES[1:]:
+            if locale not in android_tables or locale not in ios_tables:
+                continue
+            a = android_tables[locale].get(android_key, "").strip()
+            i = ios_tables[locale].get(ios_key, "").strip()
+            if not a or not i or a == i:
+                continue
+            if (locale, android_key) in APP_WORDING_EXCEPTIONS:
+                continue
+            fail("android", f"{locale}: {android_key!r} and the iPhone's {ios_key!r} show the "
+                            f"same English but differ — Android {a!r}, iPhone {i!r}")
 
 
 # ── backend ───────────────────────────────────────────────────────────────────
@@ -270,6 +427,15 @@ def main() -> int:
 
     for check in (check_web, check_ios, check_android, check_backend):
         check()
+
+    # Needs both platforms at once, so it cannot live inside either one's check.
+    check_app_wording(
+        {loc: load_xml(ROOT / "android/app/src/main/res" /
+                       ("values" if loc == "en" else f"values-{loc}") / "strings.xml")
+         for loc in LOCALES},
+        {loc: load_strings(ROOT / "ios/HivePulse/Resources" / f"{loc}.lproj/Localizable.strings")
+         for loc in LOCALES},
+    )
 
     by_area: dict[str, list[str]] = {}
     for area, message in findings:

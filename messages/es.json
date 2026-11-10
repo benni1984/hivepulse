@@ -1,7 +1,7 @@
 {
   "nav": {
     "map": "Mapa en vivo",
-    "hornets": "Rastreador avispas",
+    "hornets": "Rastreador de avispas",
     "news": "Noticias",
     "contribute": "Contribuir",
     "members": "Miembros",
@@ -160,7 +160,7 @@
   "price": {
     "free": {
       "tier": "Siempre gratis",
-      "f1": "Colmenas e revisiones ilimitadas",
+      "f1": "Colmenas y revisiones ilimitadas",
       "f2": "Escaneo QR y generación de lotes",
       "f3": "Estadísticas básicas por colmena",
       "f4": "Contribución a datos comunitarios",
@@ -346,7 +346,7 @@
     "updated": "Última actualización: octubre de 2026",
     "intro": "HivePulse es una aplicación de apicultura de código abierto. Esta política explica qué datos recopilamos, por qué los recopilamos y las opciones que tienes, incluido cómo controlas si tu colmenar aparece en el mapa público.",
     "s1title": "1. Datos que recopilamos",
-    "s1body": "Al registrarte: tu dirección de correo electrónico, nombre de display y idioma preferido. Al usar la app: nombres de colmenares y coordenadas GPS (si las introduces), detalles de colmenas y registros de revisiones. No recopilamos identificadores de dispositivo, IDs publicitarios ni datos de ubicación precisos sin que tú los introduzcas explícitamente. Si indicas una región para el año apícola: el país y el código postal que escribes. El código postal se busca una vez y solo se conserva la posición obtenida, nunca una dirección.",
+    "s1body": "Al registrarte: tu dirección de correo electrónico, nombre de display e idioma preferido. Al usar la app: nombres de colmenares y coordenadas GPS (si las introduces), detalles de colmenas y registros de revisiones. No recopilamos identificadores de dispositivo, IDs publicitarios ni datos de ubicación precisos sin que tú los introduzcas explícitamente. Si indicas una región para el año apícola: el país y el código postal que escribes. El código postal se busca una vez y solo se conserva la posición obtenida, nunca una dirección.",
     "s2title": "2. Mapa público — opt-in",
     "s2body": "El mapa público muestra marcadores anónimos para visualizar la actividad apícola global. La participación es estrictamente voluntaria (opt-in). Por defecto, cada colmenar que creas es privado. Puedes activar 'Mostrar en el mapa público' por colmenar en los ajustes de la app en cualquier momento. Cuando está activado, el marcador muestra el nombre de tu colmenar, coordenadas GPS y número de colmenas. Nunca se comparte públicamente ninguna identidad ni dato de revisión.",
     "s3title": "3. Cómo usamos tus datos",
@@ -676,7 +676,7 @@
       "varroa": "Varroa",
       "mood": "Comportamiento",
       "queen": "Reina vista",
-      "brood": "Marcos de cría",
+      "brood": "Cuadros de cría",
       "yes": "Sí",
       "no": "No",
       "hiveType": "Tipo de colmena",
@@ -723,7 +723,7 @@
     },
     "fieldDefs": {
       "title": "Campos personalizados",
-      "subtitle": "Amplía tus formularios de colmenas e revisiones con campos personalizados.",
+      "subtitle": "Amplía tus formularios de colmenas y revisiones con campos personalizados.",
       "empty": "No hay campos personalizados todavía.",
       "new": "Nuevo campo",
       "createTitle": "Nuevo campo personalizado",
@@ -754,8 +754,8 @@
       "colType": "Tipo",
       "colRequired": "Obligatorio",
       "colActions": "Acciones",
-      "apiaryTitle": "Campos del apiario",
-      "apiarySubtitle": "Estos campos sólo se aplican a colmenas e revisiones de este apiario."
+      "apiaryTitle": "Campos de este colmenar",
+      "apiarySubtitle": "Estos campos sólo se aplican a colmenas y revisiones de este colmenar."
     },
     "qrBatches": {
       "title": "Lotes de códigos QR",
@@ -788,7 +788,7 @@
       "health": "Promedios de salud",
       "avgVarroa": "Varroa prom. (global)",
       "goodMood": "Colmenas: buen ánimo",
-      "avgBrood": "Marcos de cría prom.",
+      "avgBrood": "Cuadros de cría prom.",
       "interval": "Intervalo de revisión prom.",
       "moodChart": "Ánimo de las colmenas",
       "cityChart": "Colmenas por ciudad (Top 15)",
@@ -800,7 +800,7 @@
       "mapSection": "Mapa de salud regional"
     },
     "traps": {
-      "myTitle": "Mis trampas para avispas",
+      "myTitle": "Mis trampas para avispa asiática",
       "myEmpty": "Aún no tienes trampas registradas.",
       "register": "Registrar trampa",
       "manage": "Gestionar",
@@ -1044,7 +1044,7 @@
     "stat": {
       "avgVarroa": "Varroa prom. (global)",
       "goodMood": "Colmenas: Buen humor",
-      "avgBrood": "Marcos de cría prom.",
+      "avgBrood": "Cuadros de cría prom.",
       "interval": "Intervalo de revisión prom."
     },
     "coming": {
@@ -1106,7 +1106,7 @@
       },
       "inspections": {
         "title": "Registrar una revisión",
-        "desc": "Registre cada visita a una colmena: recuento de varroa, humor de la colonia, avistamiento de la reina, cuadros de cría, cuadros de miel, peso, tratamientos y más."
+        "desc": "Registra cada visita a una colmena: recuento de varroa, humor de la colonia, avistamiento de la reina, cuadros de cría, cuadros de miel, peso, tratamientos y más."
       },
       "data-export": {
         "title": "Exportar sus datos",
@@ -1134,7 +1134,7 @@
       },
       "account": {
         "title": "Cuenta & perfil",
-        "desc": "Actualice su nombre y idioma, cambie su contraseña y elimine permanentemente su cuenta y todos los datos asociados."
+        "desc": "Actualiza tu nombre e idioma, cambia tu contraseña y elimina permanentemente tu cuenta y todos los datos asociados."
       }
     }
   },
@@ -1214,7 +1214,7 @@
     "traps": {
       "title": "Mis trampas",
       "subtitle": "Registra tu trampa una vez — luego registra capturas diarias rápidamente por código de acceso o detección GPS.",
-      "hint": "Gestiona tus trampas de avispas",
+      "hint": "Gestiona tus trampas de avispa asiática",
       "new": "Registrar trampa",
       "name": "Nombre de la trampa",
       "namePlaceholder": "ej. Jardín Norte",
@@ -1247,21 +1247,43 @@
     }
   },
   "meta": {
-    "siteTitle": "HivePulse — protejamos juntos a los polinizadores",
-    "siteDescription": "La app apícola que convierte cada revisión en datos mundiales para la protección de las abejas. Gratis para iPhone y Android.",
-    "helpTitle": "Ayuda y documentación",
+    "apiaryDescription": "Un colmenar público en HivePulse: dónde está, cuántas colmenas tiene y cómo están.",
+    "apiaryTitle": "Colmenar",
+    "betaDescription": "Prueba HivePulse antes de que llegue a las tiendas y ayuda a que llegue.",
+    "betaTitle": "Unirse a la prueba",
+    "contributeDescription": "HivePulse es gratuito y de código abierto. Así puedes ayudar: informar de un fallo, traducir una pantalla o mantener el servidor en marcha.",
+    "contributeTitle": "Colaborar",
+    "deleteAccountDescription": "Cómo eliminar tu cuenta de HivePulse y qué se borra exactamente.",
+    "deleteAccountTitle": "Eliminar la cuenta",
     "helpDescription": "Guías de todas las partes de HivePulse: colmenares, colmenas, revisiones, códigos QR, estadísticas y rastreador de avispones.",
     "helpSuffix": "Ayuda de HivePulse",
-    "imprintTitle": "Aviso legal",
+    "helpTitle": "Ayuda y documentación",
+    "hornetsCommunityDescription": "Ayuda a distinguir la avispa asiática de una avispa común o del avispón europeo. Vota sobre las fotos que envían otras personas.",
+    "hornetsCommunityTitle": "Identificación comunitaria",
+    "hornetsDescription": "Informa de capturas y nidos de avispa asiática, identifica avistamientos en fotos y sigue el mapa en vivo. Sin cuenta.",
+    "hornetsMapDescription": "Todos los nidos de avispa asiática notificados y todas las trampas registradas en un mapa, por color según su estado.",
+    "hornetsMapTitle": "Mapa de nidos y trampas",
+    "hornetsReportDescription": "Anota cuántas avispas asiáticas has capturado, o marca un nido para que las autoridades organicen su retirada. También de forma anónima.",
+    "hornetsReportTitle": "Informar de una captura o un nido",
+    "hornetsTitle": "Rastreador de avispa asiática",
+    "hornetsTrapsDescription": "Registra una trampa con nombre una sola vez y luego anota la captura diaria con su código de acceso o por GPS cuando estés delante.",
+    "hornetsTrapsTitle": "Trampas para avispa asiática",
     "imprintDescription": "Quién gestiona HivePulse y cómo contactar.",
-    "deleteAccountTitle": "Eliminar la cuenta",
-    "deleteAccountDescription": "Cómo eliminar tu cuenta de HivePulse y qué se borra exactamente.",
-    "betaTitle": "Unirse a la prueba",
-    "betaDescription": "Prueba HivePulse antes de que llegue a las tiendas y ayuda a que llegue.",
-    "releaseNotesTitle": "Notas de versión",
+    "imprintTitle": "Aviso legal",
+    "mapDescription": "Los colmenares que sus apicultores han decidido mostrar. Acerca el mapa y mira qué hay cerca de ti.",
+    "mapTitle": "Mapa de colmenares",
+    "membersDescription": "Cómo están las colonias de toda una región: varroa, humor y presión de enjambrazón, agregados para que no se distinga ninguna colmena.",
+    "membersTitle": "Estadísticas de la comunidad",
+    "newsDescription": "Qué hay de nuevo en HivePulse: las funciones en cuanto salen y los fallos que había detrás, contados con detalle.",
+    "newsTitle": "Novedades",
+    "privacyDescription": "Qué guarda HivePulse, por qué, durante cuánto tiempo y qué empresas tratan los datos por encargo nuestro. Escrito para leerse, no para saltárselo.",
+    "privacyTitle": "Privacidad",
     "releaseNotesDescription": "Lo que ha cambiado y lo nuevo en HivePulse, y la lista completa de funciones.",
-    "surveyTitle": "Valorar el año apícola",
-    "surveyDescription": "¿Encajan las fechas del año apícola donde tienes abejas? Valóralas en un cuarto de hora, sin cuenta, y ayuda a corregir el calendario de tu región."
+    "releaseNotesTitle": "Notas de versión",
+    "siteDescription": "La app apícola que convierte cada revisión en datos mundiales para la protección de las abejas. Gratis para iPhone y Android.",
+    "siteTitle": "HivePulse — protejamos juntos a los polinizadores",
+    "surveyDescription": "¿Encajan las fechas del año apícola donde tienes abejas? Valóralas en un cuarto de hora, sin cuenta, y ayuda a corregir el calendario de tu región.",
+    "surveyTitle": "Valorar el año apícola"
   },
   "imprint": {
     "title": "Aviso legal",

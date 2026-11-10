@@ -29,8 +29,11 @@ final class HornetUITests: XCTestCase {
         let tab = app.tabBars.firstMatch.buttons["Hornets"]
         XCTAssertTrue(tab.waitForExistence(timeout: 5))
         tab.tap()
-        // Navigation title should be present
-        XCTAssertTrue(app.navigationBars["Hornet Tracker"].waitForExistence(timeout: 5))
+        // The navigation title, word for word out of en.lproj/Localizable.strings ("hornets.title").
+        // XCUITest matches it exactly, so renaming the screen breaks this line and nothing says so
+        // until the Mac job has run for forty minutes (#444). test_ios_ui_test_wording.py now pins
+        // every navigationBars[...] literal in this folder against that file.
+        XCTAssertTrue(app.navigationBars["Asian Hornet Tracker"].waitForExistence(timeout: 5))
     }
 
     // MARK: - Sub-tabs

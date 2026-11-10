@@ -35,6 +35,120 @@ export function pick(text: Localized, locale: string): string {
 /** Newest first. */
 export const RELEASES: Release[] = [
   {
+    date: '2026-11-10',
+    title: t(
+      'What day it is, asked in one place',
+      'Welcher Tag es ist, an einer Stelle gefragt',
+      'Quel jour on est, demandé en un seul endroit',
+      'Qué día es, preguntado en un solo sitio',
+      'Który jest dzień, pytane w jednym miejscu',
+    ),
+    items: [
+      {
+        kind: 'fixed',
+        text: t(
+          'In the evening the apps and the website filed things under the wrong day. From about ten at night in central Europe, a new inspection, a hornet report and a treatment marked as done were all dated to the day before. The trap catches were the worst of it: there is one count per trap per day, so an evening entry overwrote the previous day’s number instead of recording its own. Every screen now sends the day your own phone or computer shows.',
+          'Abends trugen die Apps und die Website Dinge unter dem falschen Tag ein. Ab etwa zehn Uhr abends bekamen eine neue Kontrolle, eine Hornissen-Meldung und eine als erledigt markierte Behandlung den Tag davor. Am schlimmsten waren die Fallenfänge: es gibt eine Zahl pro Falle und Tag, also überschrieb ein Eintrag am Abend die Zahl des Vortags statt seine eigene zu speichern. Jede Ansicht schickt jetzt den Tag, den dein eigenes Gerät anzeigt.',
+          'Le soir, les applications et le site enregistraient les choses au mauvais jour. À partir de vingt-deux heures environ en Europe centrale, une nouvelle visite, un signalement de frelon et un traitement marqué comme fait étaient datés de la veille. Le pire était les captures de pièges : il y a un comptage par piège et par jour, donc une saisie du soir écrasait le chiffre de la veille au lieu d’enregistrer le sien. Chaque écran envoie désormais le jour qu’affiche votre propre appareil.',
+          'Por la tarde, las apps y la web guardaban las cosas con el día equivocado. A partir de las diez de la noche aproximadamente en Europa central, una revisión nueva, un aviso de avispón y un tratamiento marcado como hecho llevaban la fecha del día anterior. Lo peor eran las capturas de las trampas: hay un recuento por trampa y día, así que una entrada de la tarde sobrescribía la cifra del día anterior en lugar de guardar la suya. Ahora cada pantalla envía el día que muestra tu propio dispositivo.',
+          'Wieczorem aplikacje i strona zapisywały rzeczy pod niewłaściwym dniem. Od około dwudziestej drugiej w Europie środkowej nowy przegląd, zgłoszenie szerszenia i zabieg oznaczony jako wykonany dostawały datę dnia poprzedniego. Najgorzej było z odłowami z pułapek: na pułapkę i dzień przypada jedna liczba, więc wieczorny wpis nadpisywał liczbę z poprzedniego dnia zamiast zapisać własną. Każdy ekran wysyła teraz dzień, który pokazuje twoje własne urządzenie.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'The reminder for a hive that has never been inspected could be a day out. It was worked out from two clocks at once — the day the hive was created, counted in one time zone, and today, counted in another. The one job of that date is to say when, so it now has a single answer.',
+          'Die Erinnerung für ein Volk, das noch nie kontrolliert wurde, konnte einen Tag daneben liegen. Sie wurde aus zwei Uhren zugleich berechnet — der Tag, an dem das Volk angelegt wurde, in einer Zeitzone gezählt, und heute, in einer anderen. Die einzige Aufgabe dieses Datums ist zu sagen, wann — also gibt es jetzt nur noch eine Antwort.',
+          'Le rappel pour une ruche jamais visitée pouvait être décalé d’un jour. Il était calculé à partir de deux horloges à la fois : le jour de création de la ruche, compté dans un fuseau, et aujourd’hui, compté dans un autre. Le seul rôle de cette date est de dire quand, elle n’a donc plus qu’une seule réponse.',
+          'El recordatorio de una colmena que nunca se ha revisado podía fallar por un día. Se calculaba con dos relojes a la vez: el día en que se creó la colmena, contado en una zona horaria, y hoy, contado en otra. La única tarea de esa fecha es decir cuándo, así que ahora tiene una sola respuesta.',
+          'Przypomnienie dla rodziny pszczelej, której nigdy nie przeglądano, mogło się mylić o jeden dzień. Liczono je z dwóch zegarów naraz: dnia utworzenia rodziny, liczonego w jednej strefie czasowej, i dzisiaj, liczonego w innej. Jedynym zadaniem tej daty jest powiedzieć kiedy — ma więc teraz jedną odpowiedź.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'A phone set to a calendar other than the Gregorian one wrote that calendar’s year into the date. On a phone using the Thai Buddhist calendar, today is the year 2569, and that is what was being saved. Dates sent to the server are now always Gregorian, whatever the phone shows.',
+          'Ein Telefon, das auf einen anderen als den gregorianischen Kalender eingestellt ist, schrieb dessen Jahr in das Datum. Auf einem Telefon mit thailändisch-buddhistischem Kalender ist heute das Jahr 2569 — und genau das wurde gespeichert. Daten, die zum Server gehen, sind jetzt immer gregorianisch, egal was das Telefon anzeigt.',
+          'Un téléphone réglé sur un calendrier autre que grégorien inscrivait l’année de ce calendrier dans la date. Sur un téléphone utilisant le calendrier bouddhiste thaï, nous sommes en 2569, et c’est ce qui était enregistré. Les dates envoyées au serveur sont désormais toujours grégoriennes, quoi qu’affiche le téléphone.',
+          'Un teléfono configurado con un calendario distinto del gregoriano escribía el año de ese calendario en la fecha. En un teléfono con el calendario budista tailandés, hoy es el año 2569, y eso es lo que se guardaba. Las fechas que van al servidor son ahora siempre gregorianas, sea lo que sea que muestre el teléfono.',
+          'Telefon ustawiony na kalendarz inny niż grigoriański wpisywał w datę rok tego kalendarza. Na telefonie z tajskim kalendarzem buddyjskim dzisiaj jest rok 2569 — i to było zapisywane. Daty wysyłane na serwer są teraz zawsze grigoriańskie, niezależnie od tego, co pokazuje telefon.',
+        ),
+      },
+    ],
+  },
+  {
+    date: '2026-11-10',
+    title: t(
+      'The words the apps use, gone over one by one',
+      'Die Worte der Apps, einmal durchgegangen',
+      'Les mots des applications, repris un par un',
+      'Las palabras de las apps, repasadas una a una',
+      'Słowa aplikacji, przejrzane po kolei',
+    ),
+    items: [
+      {
+        kind: 'fixed',
+        text: t(
+          'Two sentences were not grammatical in the language they were written in. Spanish said “colmenas e revisiones” in nine places — the word for “and” only takes that form before an i sound — and the French reminder settings said “Rappels d’visite” twice. Both came from replacing one word and leaving the one in front of it alone.',
+          'Zwei Sätze waren in ihrer eigenen Sprache nicht richtig. Spanisch sagte an neun Stellen „colmenas e revisiones“ — das Wort für „und“ lautet so nur vor einem i-Laut — und die französischen Erinnerungs-Einstellungen zweimal „Rappels d’visite“. Beides kam davon, ein Wort zu ersetzen und das davor stehen zu lassen.',
+          'Deux phrases n’étaient pas correctes dans leur propre langue. L’espagnol disait « colmenas e revisiones » à neuf endroits — le mot pour « et » ne prend cette forme que devant un son i — et les réglages de rappels en français disaient deux fois « Rappels d’visite ». Dans les deux cas, un mot avait été remplacé sans toucher à celui qui le précédait.',
+          'Dos frases no eran correctas en su propio idioma. En español decía «colmenas e revisiones» en nueve sitios — la «e» solo sustituye a la «y» ante sonido i — y los ajustes de recordatorios en francés decían dos veces «Rappels d’visite». En ambos casos se sustituyó una palabra y se dejó la de delante.',
+          'Dwa zdania były niepoprawne we własnym języku. Hiszpański mówił „colmenas e revisiones” w dziewięciu miejscach — ta forma „i” występuje tylko przed dźwiękiem i — a francuskie ustawienia przypomnień dwukrotnie „Rappels d’visite”. Oba wzięły się z zamiany jednego słowa i pozostawienia tego przed nim.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'The Spanish iPhone app called a hornet a wasp. The whole tab was named “Seguimiento de avispas”, and it is about one hornet species. It also called a frame of brood a picture frame. Android had all of it right, which is how it was found.',
+          'Die spanische iPhone-App nannte eine Hornisse eine Wespe. Der ganze Reiter hieß „Seguimiento de avispas“, und es geht dort um eine Hornissenart. Eine Brutwabe nannte sie einen Bilderrahmen. Android hatte alles richtig — so ist es aufgefallen.',
+          'L’application iPhone en espagnol appelait un frelon une guêpe. L’onglet entier s’appelait « Seguimiento de avispas », alors qu’il traite d’une espèce de frelon. Elle appelait aussi un cadre de couvain un cadre de tableau. Android avait tout juste, ce qui a permis de le voir.',
+          'La aplicación de iPhone en español llamaba avispa a un avispón. La pestaña entera se llamaba «Seguimiento de avispas», y trata de una especie de avispón. También llamaba marco a un cuadro de cría. Android lo tenía todo bien, y así se vio.',
+          'Hiszpańska aplikacja na iPhone’a nazywała szerszenia osą. Cała zakładka nazywała się „Seguimiento de avispas”, a dotyczy jednego gatunku szerszenia. Ramkę z czerwiem nazywała ramą obrazu. Android miał wszystko dobrze — i tak to wyszło.',
+        ),
+      },
+      {
+        kind: 'changed',
+        text: t(
+          'The hornet tracker had a different name on every platform, in every language. On three of the five the apps dropped “Asian”, which is the part that matters: the European hornet is protected and must not be trapped. It is now called the same thing everywhere, and that name says which species it is about.',
+          'Der Hornissen-Tracker hieß auf jeder Plattform anders, in jeder Sprache. In drei von fünf ließen die Apps „asiatisch“ weg, und genau darauf kommt es an: die europäische Hornisse ist geschützt und darf nicht gefangen werden. Jetzt heißt er überall gleich, und der Name sagt, um welche Art es geht.',
+          'Le suivi des frelons portait un nom différent sur chaque plateforme, dans chaque langue. Dans trois langues sur cinq, les applications omettaient « asiatique », ce qui est précisément ce qui compte : le frelon d’Europe est protégé et ne doit pas être piégé. Il porte désormais partout le même nom, et ce nom dit de quelle espèce il s’agit.',
+          'El rastreador de avispas se llamaba distinto en cada plataforma y en cada idioma. En tres de los cinco, las apps omitían «asiática», que es justo lo que importa: el avispón europeo está protegido y no se debe atrapar. Ahora se llama igual en todas partes, y el nombre dice de qué especie se trata.',
+          'Tropiciel szerszeni nazywał się inaczej na każdej platformie i w każdym języku. W trzech z pięciu aplikacje pomijały „azjatycki”, a to właśnie jest istotne: szerszeń europejski jest chroniony i nie wolno go odławiać. Teraz nazywa się wszędzie tak samo, i ta nazwa mówi, o jaki gatunek chodzi.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'Android and the iPhone said different things in 109 places where the English was identical. German used two different words for an inspection, and each app contradicted itself about whether a frame of brood is a comb or a wooden frame — in opposite directions. Polish, for what it is worth, had not a single difference.',
+          'Android und iPhone sagten an 109 Stellen Verschiedenes, wo das Englische identisch war. Deutsch benutzte zwei Wörter für eine Kontrolle, und jede App widersprach sich selbst, ob eine Brutwabe eine Wabe oder ein Rähmchen ist — und zwar jeweils andersherum. Polnisch hatte, der Ordnung halber, keine einzige Abweichung.',
+          'Android et l’iPhone disaient des choses différentes à 109 endroits où l’anglais était identique. L’allemand employait deux mots pour une visite, et chaque application se contredisait sur la nature d’un cadre de couvain — chacune dans l’autre sens. Le polonais, pour mémoire, n’avait pas une seule différence.',
+          'Android y el iPhone decían cosas distintas en 109 sitios donde el inglés era idéntico. El alemán usaba dos palabras para una revisión, y cada aplicación se contradecía sobre qué es un cuadro de cría, cada una al revés de la otra. El polaco, para que quede dicho, no tenía ni una sola diferencia.',
+          'Android i iPhone mówiły co innego w 109 miejscach, gdzie angielski był identyczny. Niemiecki używał dwóch słów na przegląd, a każda aplikacja sama sobie przeczyła, czym jest ramka z czerwiem — każda odwrotnie. Polski, dla porządku, nie miał ani jednej różnicy.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'Every link in the website’s navigation dropped the language. It was invisible in normal use, because a cookie redirected you back; it broke when someone sent you a page in their language and your browser was set to another, and it meant search engines never saw the translated site link to itself.',
+          'Jeder Link in der Navigation der Website verlor die Sprache. Im Alltag war das nicht zu sehen, weil ein Cookie zurückleitete; es brach, wenn jemand dir eine Seite in seiner Sprache schickte und dein Browser auf eine andere stand — und es hieß, dass Suchmaschinen die übersetzte Website nie auf sich selbst verweisen sahen.',
+          'Chaque lien de la navigation du site perdait la langue. Invisible à l’usage, parce qu’un cookie vous ramenait ; cassé dès que quelqu’un vous envoyait une page dans sa langue alors que votre navigateur était dans une autre. Et les moteurs de recherche ne voyaient jamais le site traduit se lier à lui-même.',
+          'Todos los enlaces de la navegación del sitio perdían el idioma. No se notaba en el uso normal, porque una cookie te devolvía; se rompía cuando alguien te enviaba una página en su idioma y tu navegador estaba en otro. Y los buscadores nunca veían el sitio traducido enlazarse a sí mismo.',
+          'Każdy link w nawigacji strony tracił język. W normalnym użyciu nie było tego widać, bo ciasteczko cofało cię z powrotem; psuło się, gdy ktoś przysłał ci stronę w swoim języku, a twoja przeglądarka była w innym. I wyszukiwarki nigdy nie widziały, by przetłumaczona strona linkowała do siebie.',
+        ),
+      },
+      {
+        kind: 'added',
+        text: t(
+          'Eleven public pages now carry a title and a description of their own, in all five languages. They all shared the home page’s before, so a browser with several tabs open showed the same words on each.',
+          'Elf öffentliche Seiten tragen jetzt einen eigenen Titel und eine eigene Beschreibung, in allen fünf Sprachen. Vorher teilten sie den der Startseite — wer mehrere Reiter offen hatte, sah auf jedem dieselben Worte.',
+          'Onze pages publiques ont désormais leur propre titre et leur propre description, dans les cinq langues. Elles partageaient celui de l’accueil : avec plusieurs onglets ouverts, on lisait les mêmes mots sur chacun.',
+          'Once páginas públicas tienen ya título y descripción propios, en los cinco idiomas. Antes compartían el de la portada: con varias pestañas abiertas se leían las mismas palabras en todas.',
+          'Jedenaście publicznych stron ma teraz własny tytuł i opis, we wszystkich pięciu językach. Wcześniej dzieliły tytuł strony głównej — przy kilku otwartych kartach na każdej było to samo.',
+        ),
+      },
+    ],
+  },
+  {
     date: '2026-11-09',
     title: t(
       'The scanner shows you where to aim',

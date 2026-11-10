@@ -6,13 +6,14 @@ vi.mock('next-intl/server', () => ({
   getTranslations: async () => (key: string) => key,
 }));
 
-vi.mock('next/link', () => ({
-  default: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => (
-    <a href={href} className={className}>{children}</a>
-  ),
-}));
-
 import HelpTopicPage from '@/app/[locale]/help/[slug]/page';
+
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children, className, onClick, style, title, target, rel }: {
+    href: string; children: React.ReactNode; className?: string; onClick?: () => void;
+    style?: React.CSSProperties; title?: string; target?: string; rel?: string;
+  }) => <a href={href} className={className} onClick={onClick} style={style} title={title} target={target} rel={rel}>{children}</a>,
+}));
 
 describe('HelpTopicPage', () => {
   it('calls notFound() for an unknown slug', async () => {
@@ -25,7 +26,7 @@ describe('HelpTopicPage', () => {
     const jsx = await HelpTopicPage({ params: Promise.resolve({ locale: 'en', slug: 'apiaries' }) });
     const { container } = render(jsx);
 
-    expect(screen.getByText('allTopics')).toHaveAttribute('href', '/en/help');
+    expect(screen.getByText('allTopics')).toHaveAttribute('href', '/help');
     expect(screen.getByText('groups.Managing your apiary')).toBeTruthy();
     expect(screen.getAllByText('topics.apiaries.title').length).toBeGreaterThan(0);
     expect(screen.getByText('topics.apiaries.desc')).toBeTruthy();

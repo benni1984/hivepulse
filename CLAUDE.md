@@ -84,6 +84,20 @@ the other in the same PR.
   Android (the only route whose answers reach the Play Console's testing feedback page) and to a mail with
   the build in the subject on iPhone and web.
 
+### The admin area is a desktop place — decided, not a gap
+
+**Administration is web-only on purpose.** The review of regional year proposals
+(`/dashboard/admin/year-proposals`) exists on the website and nowhere else, and that is the
+decision (#441), not an oversight: it wants a map and a table side by side, and the apps are
+complex enough without it. Both apps still *collect* the proposals through the questionnaire they
+link to — only the approving happens at a desk.
+
+So the "same navigation on Android and iOS" rule and the "every change lands on all three clients"
+rule **do not** extend to admin screens. A new admin capability is web work, and the answer to
+"why is this not in the apps" is this paragraph. The existing asymmetries stay as they are: the
+apps have an admin statistics section the web does not, the web has a user list the iPhone does
+not. Do not level them out without asking.
+
 ## API Contract
 
 Source of truth for all endpoints, shapes, and enums: `docs/api-contract.md`. Update it first before adding any endpoint.

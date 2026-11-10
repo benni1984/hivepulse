@@ -12,6 +12,9 @@ from fastapi.testclient import TestClient
 from app.config import settings
 from app.models import Hive, PlannedTreatment
 from main import app
+# The same clock the endpoints use. With date.today() the test and the code disagree
+# between midnight local and midnight UTC, which is how #443 surfaced.
+from app.clock import today_utc
 
 API = "/api/v1"
 
@@ -27,7 +30,7 @@ def _beekeeper(client, email, name):
 
 
 def _day(offset: int) -> str:
-    return (date.today() + timedelta(days=offset)).isoformat()
+    return (today_utc() + timedelta(days=offset)).isoformat()
 
 
 @pytest.fixture
@@ -305,7 +308,7 @@ def test_only_the_five_that_are_due_soonest_are_listed(world):
 
 
 def test_the_season_flag_follows_the_users_reminder_season(world):
-    month = date.today().month
+    month = today_utc().month
     world.alice.put(f"{API}/users/me/reminder", json={"reminder_season_start": month, "reminder_season_end": month})
     assert _home(world.alice)["in_season"] is True
 

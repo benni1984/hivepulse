@@ -11,6 +11,7 @@ import MoveHivesPanel from '@/components/MoveHivesPanel';
 import TreatmentsPanel from '@/components/TreatmentsPanel';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getHive, getHives, getHiveStats, getInspections, updateHive, deleteHive, createInspection, updateInspection, deleteInspection, getUserFieldDefs, getApiaryFieldDefs, exportHiveInspections, type Hive, type HiveStats, type MoveResult, type Inspection, type InspectionInput, type FieldDefinition } from '@/lib/api';
+import { todayLocal } from '@/lib/dates';
 
 function moodPct(dist: { calm: number; nervous: number; aggressive: number }) {
   const total = dist.calm + dist.nervous + dist.aggressive;
@@ -149,7 +150,7 @@ export default function HivePage() {
   function openCreateInspection() {
     setInspectionFormMode('create');
     setEditingInspectionId(null);
-    setInspectionForm({ date: new Date().toISOString().split('T')[0], varroa_level: '', mood: '', queen_seen: '', brood_frames: '' });
+    setInspectionForm({ date: todayLocal(), varroa_level: '', mood: '', queen_seen: '', brood_frames: '' });
     const defaults: Record<string, string> = {};
     for (const fd of inspectionFieldDefs) {
       defaults[fd.id] = fd.default_value != null ? String(fd.default_value) : '';

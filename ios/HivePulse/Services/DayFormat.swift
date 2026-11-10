@@ -2,9 +2,30 @@ import Foundation
 
 /// A day as the server sends it ("2026-05-12", no time) shown in the reader's format, and the other way round.
 ///
-/// Parsing it with the phone's own calendar and noon as the time keeps a hive due on the 12th from reading as due
-/// on the 11th in a time zone west of the server's.
+/// Two traps live here, and both have bitten:
+///
+/// **Time zone.** Parsing "2026-05-12" gives midnight, which west of Greenwich is still the evening of the
+/// 11th: a hive due on the 12th would read as due on the 11th. Noon has no such edge, so that is the hour
+/// a parsed day gets.
+///
+/// **Calendar.** `Calendar.current` and a `DateFormatter` without a locale follow the *reader's* calendar
+/// preference. On a phone set to the Thai Buddhist calendar, today is the year 2569, and
+/// `String(format: "%04d-…", parts.year)` would send `2569-11-10` to a server that stores it as written.
+/// Japanese-imperial and Arabic-Indic digits do the same in their own way. So every conversion that touches
+/// the wire pins the Gregorian calendar and `en_US_POSIX` explicitly, and only the *display* side is allowed
+/// to follow the reader.
+///
+/// The server's own "today" is the UTC day (`app/clock.py`, #443), which after about 22:00 in Europe is
+/// yesterday. So the phone sends the day it means instead of leaving the field out.
 enum DayFormat {
+
+    /// The reader's time zone, but never the reader's calendar: this is what goes on the wire.
+    private static var wireCalendar: Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = .current
+        calendar.locale = Locale(identifier: "en_US_POSIX")
+        return calendar
+    }
 
     private static let wire: DateFormatter = {
         let formatter = DateFormatter()
@@ -27,9 +48,16 @@ enum DayFormat {
         return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: parsed)
     }
 
-    /// The server's format for a date picked on the phone: the phone's own calendar day.
+    /// The server's format for a date picked on the phone: the phone's own calendar day, in the
+    /// Gregorian calendar whatever the phone is set to.
     static func wireString(from date: Date) -> String {
-        let parts = Calendar.current.dateComponents([.year, .month, .day], from: date)
+        let parts = wireCalendar.dateComponents([.year, .month, .day], from: date)
         return String(format: "%04d-%02d-%02d", parts.year ?? 1970, parts.month ?? 1, parts.day ?? 1)
+    }
+
+    /// Today, as the phone's own calendar has it — what to send when the server would otherwise
+    /// fall back to its UTC day.
+    static func today() -> String {
+        wireString(from: Date())
     }
 }

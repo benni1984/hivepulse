@@ -12,6 +12,9 @@ from app.models import Apiary, Hive, HiveMove
 from app.routers import moves as moves_router
 from app.utils.geocoding import CityLocation
 from main import app
+# The same clock the endpoints use. With date.today() the test and the code disagree
+# between midnight local and midnight UTC, which is how #443 surfaced.
+from app.clock import today_utc
 
 API = "/api/v1"
 
@@ -89,7 +92,7 @@ def test_the_date_defaults_to_today_and_the_note_is_kept(world):
 
     move = _move(world.alice, [world.hives[0]["id"]], to_apiary_id=heath["id"], note="  early bloom  ").json()["moves"][0]
 
-    assert move["moved_on"] == date.today().isoformat()
+    assert move["moved_on"] == today_utc().isoformat()
     assert move["note"] == "early bloom"
     assert move["forage"] is None
     assert move["created_by_name"] == "Alice"
@@ -180,11 +183,11 @@ def test_at_least_one_hive_is_required(world):
 
 
 def test_a_move_cannot_lie_in_the_future(world):
-    tomorrow_plus = (date.today() + timedelta(days=3)).isoformat()
+    tomorrow_plus = (today_utc() + timedelta(days=3)).isoformat()
 
     assert _move(world.alice, [world.hives[0]["id"]], new_apiary={"name": "X"}, moved_on=tomorrow_plus).status_code == 422
     # A day of slack for time zones.
-    soon = (date.today() + timedelta(days=1)).isoformat()
+    soon = (today_utc() + timedelta(days=1)).isoformat()
     assert _move(world.alice, [world.hives[0]["id"]], new_apiary={"name": "X"}, moved_on=soon).status_code == 201
 
 

@@ -75,7 +75,7 @@
 
 /* Labels */
 "label.hives" = "Völker";
-"label.neverInspected" = "Noch nie besucht";
+"label.neverInspected" = "Noch nie kontrolliert";
 "label.queenSeen" = "Königin gesehen";
 "label.yes" = "Ja";
 "label.no" = "Nein";
@@ -124,7 +124,7 @@
 
 /* Alerts */
 "alert.error" = "Fehler";
-"error.apiaryHasHives" = "Bitte alle Völker löschen, bevor der Bienenstand gelöscht wird.";
+"error.apiaryHasHives" = "Bitte lösche erst alle Völker in diesem Bienenstand, bevor du ihn löschst.";
 "alert.logoutConfirm" = "Möchtest du dich wirklich abmelden?";
 "alert.batchCountHint" = "Gib die Anzahl der QR-Codes ein (1–50).";
 
@@ -149,7 +149,7 @@
 "section.export" = "Datenexport";
 "action.exportData" = "Daten exportieren";
 "action.download" = "Herunterladen";
-"label.selectApiary" = "Bienenstand auswählen";
+"label.selectApiary" = "Bienenstand wählen";
 "label.selectFormat" = "Dateiformat";
 
 /* Generic actions */
@@ -174,11 +174,11 @@
 "hornets.info.problem" = "Die Asiatische Hornisse";
 "hornets.info.problemText" = "Vespa velutina (Asiatische Hornisse) ist ein invasiver Räuber, der Bienenvölker bedroht. Frühe Nestentdeckung und Fang im Frühjahr sind entscheidend.";
 "hornets.info.whyCatch" = "Warum fangen?";
-"hornets.info.whyCatchText" = "Königinnen im Frühjahr vor dem Nestbau zu fangen begrenzt das Wachstum der Kolonien und schützt Bestäuber. Melde deine Fänge, um den lokalen Druck zu verfolgen.";
+"hornets.info.whyCatchText" = "Königinnen im Frühjahr zu fangen, bevor sie ein Nest bauen, bremst neue Völker und schützt Bestäuber. Trage deine Fänge ein, um den Druck vor Ort zu verfolgen.";
 "hornets.info.reportNest" = "Nest gefunden?";
-"hornets.info.reportNestText" = "Markiere den genauen Standort, damit Behörden eine professionelle Entfernung beauftragen können. Anonyme Meldungen sind willkommen.";
+"hornets.info.reportNestText" = "Markiere den genauen Ort, damit die örtlichen Behörden eine fachgerechte Entfernung veranlassen können. Anonyme Meldungen sind willkommen.";
 "hornets.map.noNests" = "Keine Nester gemeldet";
-"hornets.map.hint" = "Sei die oder der Erste, die ein Nest in deiner Gegend markiert.";
+"hornets.map.hint" = "Melde das erste Nest in deiner Gegend.";
 "hornets.map.status.found" = "Gefunden";
 "hornets.map.status.ordered" = "Vernichtung beauftragt";
 "hornets.map.status.destroyed" = "Vernichtet";
@@ -190,8 +190,8 @@
 "hornets.report.notes" = "Notizen";
 "hornets.report.notesPlaceholder" = "Beschreibe, was du gefunden hast…";
 "hornets.report.reporterName" = "Dein Name (optional)";
-"hornets.report.submit" = "Meldung absenden";
-"hornets.report.success" = "Danke! Deine Meldung wurde eingereicht.";
+"hornets.report.submit" = "Meldung senden";
+"hornets.report.success" = "Danke! Deine Meldung ist angekommen.";
 "hornets.community.empty" = "Noch keine Sichtungen";
 "hornets.community.vote.yes" = "Hornisse ✓";
 "hornets.community.vote.no" = "Keine Hornisse";
@@ -258,7 +258,7 @@
 
 "admin.users.search" = "Nach Name oder E-Mail suchen";
 "admin.users.supporter" = "Unterstützer";
-"admin.users.makeSupporter" = "Als Unterstützer markieren";
+"admin.users.makeSupporter" = "Zu Unterstützer machen";
 "admin.users.removeSupporter" = "Unterstützer entfernen";
 "admin.users.revokeTokens" = "Sitzungen widerrufen";
 
@@ -276,7 +276,7 @@
 "field.newPassword" = "Neues Passwort";
 "field.confirmPassword" = "Neues Passwort bestätigen";
 "action.changePassword" = "Passwort ändern";
-"alert.passwordMismatch" = "Passwörter stimmen nicht überein.";
+"alert.passwordMismatch" = "Die Passwörter stimmen nicht überein.";
 "alert.passwordTooShort" = "Das Passwort muss mindestens 8 Zeichen lang sein.";
 "alert.passwordChanged" = "Passwort erfolgreich geändert.";
 
@@ -297,9 +297,9 @@
 "members.comingSoon" = "Weitere Community-Statistiken folgen bald.";
 "members.gate.title" = "Unterstützer-Funktion";
 "members.gate.desc" = "Werde Unterstützer, um Community-Statistiken freizuschalten und HivePulse am Laufen zu halten.";
-"members.stat.avgVarroa" = "Ø Varroa-Zahl";
+"members.stat.avgVarroa" = "Ø Varroa";
 "members.stat.goodMood" = "Gute Stimmung";
-"members.stat.avgBrood" = "Ø Bruträhmchen";
+"members.stat.avgBrood" = "Ø Brutwaben";
 "members.stat.interval" = "Ø Kontrollintervall";
 "members.becomeSupporter" = "Mehr erfahren & Unterstützer werden";
 
@@ -307,9 +307,8 @@
 "section.dangerZone" = "Gefahrenbereich";
 "action.deleteAccount" = "Konto löschen";
 "alert.deleteAccountConfirm" = "Konto löschen?";
-"alert.deleteAccountMessage" = "Alle deine Daten – Bienenstände, Völker und Kontrollen – werden dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.";
-"alert.deleteAccountAction" = "Dauerhaft löschen";
-
+"alert.deleteAccountMessage" = "Alle deine Daten — Bienenstände, Völker und Kontrollen — werden endgültig gelöscht. Das lässt sich nicht rückgängig machen.";
+"alert.deleteAccountAction" = "Endgültig löschen";
 /* Statistics overview */
 "screen.statsOverview" = "Meine Statistiken";
 "overview.period" = "Zeitraum";
@@ -329,7 +328,7 @@
 "tour.welcome.title" = "Willkommen bei HivePulse";
 "tour.welcome.body" = "Dein Stockbuch für die Hosentasche. Hier ein kurzer Überblick, was HivePulse für dich erledigt.";
 "tour.qr.title" = "Jedes Volk per Scan";
-"tour.qr.body" = "Lege Bienenstände an, klebe einen gedruckten QR-Code auf jedes Volk und scanne es, um es sofort zu öffnen — ohne am Stand durch Listen zu suchen.";
+"tour.qr.body" = "Lege Bienenstände an, klebe einen gedruckten QR-Code auf jedes Volk und scanne ihn, um es sofort zu öffnen — ohne am Stand durch Listen zu suchen.";
 "tour.inspections.title" = "Kontrollen in Sekunden";
 "tour.inspections.body" = "Erfasse Königin, Brut, Varroa, Stimmung und mehr mit wenigen Tipps. Eigene Felder ergänzen alles, was du sonst noch festhalten willst.";
 "tour.stats.title" = "Probleme früh erkennen";

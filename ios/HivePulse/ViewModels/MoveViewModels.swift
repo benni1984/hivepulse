@@ -113,10 +113,9 @@ final class MoveHivesViewModel: ObservableObject {
     }
 
     /// The server's day format, in the phone's own calendar day: a move at 23:30 belongs to that evening.
-    static func dayString(_ date: Date) -> String {
-        let parts = Calendar.current.dateComponents([.year, .month, .day], from: date)
-        return String(format: "%04d-%02d-%02d", parts.year ?? 1970, parts.month ?? 1, parts.day ?? 1)
-    }
+    /// One implementation, in DayFormat — it is the place that pins the Gregorian calendar, so a phone set
+    /// to the Thai Buddhist calendar does not send the year 2569.
+    static func dayString(_ date: Date) -> String { DayFormat.wireString(from: date) }
 
     /// Returns the result when the server took the move, nil (with the reason in `errorMessage`) when not.
     func submit() async -> MoveResult? {

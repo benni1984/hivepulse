@@ -12,6 +12,7 @@ from app.schemas import (
     ApiaryStats, ApiaryStatsSummary, CustomFieldStat, HiveStats, HiveStatsSummary,
     OverviewStats, StatsPeriod, TrendPoint,
 )
+from app.clock import today_utc
 
 router = APIRouter(tags=["stats"])
 
@@ -23,7 +24,7 @@ def _resolve_period(
     from_date: Optional[date],
     to_date: Optional[date],
 ) -> StatsPeriod:
-    today = date.today()
+    today = today_utc()
     if from_date or to_date:
         return StatsPeriod(**{
             "from": from_date or date(2000, 1, 1),
@@ -48,7 +49,7 @@ def _build_hive_stats(hive: Hive, period: StatsPeriod, db: DB) -> HiveStats:
     inspections.sort(key=lambda i: i.date)
 
     count = len(inspections)
-    today = date.today()
+    today = today_utc()
 
     last_date = max((i.date for i in hive.inspections), default=None) if hive.inspections else None
     days_since = (today - last_date).days if last_date else None
@@ -143,7 +144,7 @@ def apiary_stats(
     hives = scope.hives_in(apiary)
 
     period = _resolve_period(preset, from_date, to_date)
-    today = date.today()
+    today = today_utc()
     cutoff_30d = today - timedelta(days=30)
 
     all_inspections = [i for h in hives for i in _filter_inspections(h.inspections, period)]

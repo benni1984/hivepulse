@@ -1,7 +1,9 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+// Both from @/i18n/navigation on purpose: Link adds the language to an href, and this
+// usePathname strips it off again, so the hrefs and the active comparison speak the same
+// locale-free paths. Mixing them with next/navigation's usePathname gave `/fr/fr/help` (#437).
+import { Link, usePathname } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import { HELP_TOPICS, HELP_GROUPS } from '@/lib/helpTopics';
 
@@ -12,8 +14,8 @@ export default function HelpSidebar({ locale }: { locale: string }) {
   return (
     <nav className="help-sidebar" aria-label="Help navigation">
       <Link
-        href={`/${locale}/help`}
-        className={`help-sidebar-link${pathname === `/${locale}/help` ? ' active' : ''}`}
+        href="/help"
+        className={`help-sidebar-link${pathname === '/help' ? ' active' : ''}`}
         style={{ fontWeight: 700, marginBottom: 16 }}
       >
         <i className="fas fa-book icon" />
@@ -26,7 +28,7 @@ export default function HelpSidebar({ locale }: { locale: string }) {
           <div className="help-sidebar-group" key={group}>
             <div className="help-sidebar-title">{t(`groups.${group}`)}</div>
             {topics.map(topic => {
-              const href = `/${locale}/help/${topic.slug}`;
+              const href = `/help/${topic.slug}`;
               const active = pathname === href;
               return (
                 <Link

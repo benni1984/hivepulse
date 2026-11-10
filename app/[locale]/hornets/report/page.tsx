@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { submitHornetCatch, submitHornetNest, addTrapCatch, getMyTraps, type HornetTrap } from '@/lib/api';
+import { todayLocal } from '@/lib/dates';
 
 type Tab = 'catch' | 'nest';
 
@@ -86,7 +87,7 @@ export default function HornetReportPage() {
     try {
       if (catchTrapCode) {
         // Log directly to the user's trap (upserts by date)
-        const today = new Date().toISOString().slice(0, 10);
+        const today = todayLocal();
         await addTrapCatch(catchTrapCode, { count: catchCount, caught_on: today });
       } else {
         await submitHornetCatch({

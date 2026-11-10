@@ -12,6 +12,7 @@ from app.routers.treatments import out as treatment_out, visible_treatments
 from app.schemas import (
     HomeAd, HomeAttention, HomeHealth, HomeInspection, HomeInspections, HomeOut, HomeTreatments,
 )
+from app.clock import today_utc
 
 router = APIRouter(tags=["home"])
 
@@ -81,7 +82,7 @@ def _latest_inspections(db, hive_ids: list[str]) -> dict:
 @router.get("/home", response_model=HomeOut)
 def home(current_user: CurrentUser, db: DB) -> HomeOut:
     scope = Scope(db, current_user)
-    today = date.today()
+    today = today_utc()
     interval = current_user.reminder_interval_days
 
     apiaries = db.query(Apiary).filter(scope.apiary_filter()).all()

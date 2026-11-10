@@ -390,11 +390,9 @@ private struct TrapDetailView: View {
     @EnvironmentObject var vm: HornetViewModel
 
     @State private var count = "1"
-    @State private var date = {
-        let f = DateFormatter()
-        f.dateFormat = "yyyy-MM-dd"
-        return f.string(from: Date())
-    }()
+    // DayFormat, not a bare DateFormatter: without an explicit locale and calendar this wrote the
+    // reader's own calendar onto the wire — 2569 from a phone set to the Thai Buddhist calendar.
+    @State private var date = DayFormat.today()
 
     private static let dateFormatter: DateFormatter = {
         let f = DateFormatter()

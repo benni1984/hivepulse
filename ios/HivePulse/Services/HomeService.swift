@@ -36,6 +36,12 @@ protocol TreatmentServiceProtocol {
 
 private struct TreatmentEmptyBody: Encodable {}
 
+/// Internal rather than private so `DayFormatTests` can check what actually goes on the wire.
+struct TreatmentDoneBody: Encodable {
+    let doneOn: String
+    enum CodingKeys: String, CodingKey { case doneOn = "done_on" }
+}
+
 struct TreatmentService: TreatmentServiceProtocol {
     private let client = APIClient.shared
 
@@ -48,7 +54,9 @@ struct TreatmentService: TreatmentServiceProtocol {
     }
 
     func markDone(_ id: String) async throws -> PlannedTreatmentOut {
-        try await client.post("treatments/" + id + "/done", body: TreatmentEmptyBody())
+        // Send the phone's day. Left out, the server falls back to its UTC day, which from about
+        // 22:00 in Europe is yesterday — the treatment would be filed a day early (#443).
+        try await client.post("treatments/" + id + "/done", body: TreatmentDoneBody(doneOn: DayFormat.today()))
     }
 
     func reopen(_ id: String) async throws -> PlannedTreatmentOut {

@@ -1,11 +1,10 @@
-HivePulse 1.0.3
+HivePulse 1.0.4
 
-Novedades de esta versión:
-• La pestaña de escaneo muestra un marco para apuntar y dice qué espera
-• Tipo de colmena y color de reina están traducidos, ya no dicen "Top Bar"
-• Un inicio de sesión rechazado vuelve a decir qué falló, ya no "HTTP 401"
-• Seis etiquetas ya no son botones — TalkBack las lee como texto
+Nuevo en esta versión:
+• Por la tarde la app guardaba con el día anterior: revisiones, avisos de avispón, tratamientos marcados
+• Una captura de tarde sobrescribía la cifra del día anterior en lugar de guardar la suya
+• El recordatorio de una colmena nunca revisada podía fallar por un día
 
-Por favor, sigue en la prueba y usa la aplicación de vez en cuando.
+Sigue en la prueba y usa la app de vez en cuando, por favor.
 
 hivepulse@multihead.de

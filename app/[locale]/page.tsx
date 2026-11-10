@@ -3,8 +3,7 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
-import { Link as LocaleLink } from '@/i18n/navigation';
+import { Link, Link as LocaleLink } from '@/i18n/navigation';
 import { BETA, hasAnyBetaLink } from '@/lib/beta';
 
 const LiveStats = dynamic(() => import('@/components/LiveStats'), { ssr: false });

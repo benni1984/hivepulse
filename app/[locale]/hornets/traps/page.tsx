@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import {
   createHornetTrap,
@@ -11,6 +11,7 @@ import {
   type HornetTrap,
   type HornetTrapNearby,
 } from '@/lib/api';
+import { todayLocal } from '@/lib/dates';
 
 type Mode = 'home' | 'nearby' | 'search' | 'register' | 'trapDetail';
 
@@ -39,7 +40,7 @@ export default function HornetTrapsPage() {
 
   // Log catch form
   const [logCount, setLogCount] = useState('1');
-  const [logDate, setLogDate] = useState(new Date().toISOString().slice(0, 10));
+  const [logDate, setLogDate] = useState(todayLocal());
   const [logLoading, setLogLoading] = useState(false);
   const [logSuccess, setLogSuccess] = useState('');
   const [logError, setLogError] = useState('');
@@ -407,7 +408,7 @@ export default function HornetTrapsPage() {
         {/* ── Nav back to hornets ────────────────────────── */}
         <div style={{ marginTop: '48px', paddingTop: '24px', borderTop: '1px solid #e5e7eb' }}>
           <Link href="/hornets" style={{ color: '#16a34a', fontWeight: 600, textDecoration: 'none' }}>
-            ← Hornets Tracker
+            ← {t('title')}
           </Link>
         </div>
       </div>

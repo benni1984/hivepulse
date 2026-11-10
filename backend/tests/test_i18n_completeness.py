@@ -104,3 +104,210 @@ def test_the_check_is_quiet_about_a_label_that_is_looked_up(line):
     module = _checker()
     assert not module.RUNTIME_LABEL["android"].search(line)
     assert not module.RUNTIME_LABEL["ios"].search(line)
+
+
+# ── The two grammar rules that are mechanical ────────────────────────────────
+#
+# Spanish `y`/`e` and French `de`/`d'` both depend only on the sound that follows, so both can be
+# checked. Both were broken: "colmenas e revisiones" nine times across three platforms (#433) and
+# "rappels d\'visite" twice in the Android reminder settings (#434). A key-parity check sees
+# nothing -- the keys exist, the values are filled, the language is right, the grammar is wrong.
+#
+# These feed the checker the real lines that were in the repository, plus the ones that are
+# correct and must stay quiet. A guard nobody has tried to break is not a guard.
+
+
+@pytest.mark.parametrize("value", [
+    "Amplía tus formularios de colmenas e revisiones con campos personalizados.",
+    "Colmenas e revisiones ilimitadas",
+    "Todos tus datos — colmenares, colmenas e revisiones — se eliminarán definitivamente.",
+])
+def test_the_check_sees_e_before_a_consonant(value):
+    module = _checker()
+    module.findings.clear()
+    module.check_grammar("test", "es", {"k": value})
+    assert module.findings, f"should have been flagged: {value}"
+    assert "uses 'y'" in module.findings[0][1]
+
+
+@pytest.mark.parametrize("value", [
+    "Actualice su nombre y idioma, cambie su contraseña.",
+    "nombre de display y idioma preferido",
+])
+def test_the_check_sees_y_before_an_i_sound(value):
+    module = _checker()
+    module.findings.clear()
+    module.check_grammar("test", "es", {"k": value})
+    assert module.findings, f"should have been flagged: {value}"
+    assert "becomes 'e'" in module.findings[0][1]
+
+
+@pytest.mark.parametrize("value", [
+    # `e` is right before an i sound, which is the whole point of the rule.
+    "Comprueba tu red e inténtalo de nuevo.",
+    "Elige un día e intervalos de aviso.",
+    # `y` is right before anything else, including an h that is not followed by i.
+    "Desliza hacia arriba y hacia abajo.",
+    "Regístrate y hazte colaborador.",
+    "Colmenas y revisiones ilimitadas",
+])
+def test_the_check_is_quiet_about_correct_spanish(value):
+    module = _checker()
+    module.findings.clear()
+    module.check_grammar("test", "es", {"k": value})
+    assert not module.findings, f"false positive: {value} -> {module.findings}"
+
+
+@pytest.mark.parametrize("value", [
+    "Rappels d\'visite",
+    "Envoyer des rappels d\'visite",
+])
+def test_the_check_sees_a_french_elision_before_a_consonant(value):
+    module = _checker()
+    module.findings.clear()
+    module.check_grammar("test", "fr", {"k": value})
+    assert module.findings, f"should have been flagged: {value}"
+    assert "only elides" in module.findings[0][1]
+
+
+@pytest.mark.parametrize("value", [
+    # A vowel, so the elision is required rather than wrong.
+    "Rappels d\'inspection",
+    "Code d\'accès",
+    "Impossible d\'obtenir la position GPS",
+    # A mute h takes the elision too.
+    "Pas d\'heure définie",
+    # The typographic apostrophe, which both apps use in places.
+    "Code d\u2019accès",
+])
+def test_the_check_is_quiet_about_correct_french(value):
+    module = _checker()
+    module.findings.clear()
+    module.check_grammar("test", "fr", {"k": value})
+    assert not module.findings, f"false positive: {value} -> {module.findings}"
+
+
+# ── Visible text typed straight into a web page ──────────────────────────────
+#
+# iOS and Android were scanned for hardcoded English from early on; the web never was, so an
+# English back-link sat at the foot of the trap page in all five languages (#439).
+#
+# The first attempt at a scanner missed it, which is the part worth pinning: a pattern looking
+# for `>text<` on a single line finds nothing, because a JSX child stands on a line of its own.
+
+
+def test_the_check_sees_a_jsx_child_on_its_own_line():
+    module = _checker()
+    source = '<Link href="/hornets">\n  ← Hornets Tracker\n</Link>'
+    assert module.hardcoded_jsx_text(source) == [(2, "← Hornets Tracker")]
+
+
+def test_the_check_sees_prose_in_a_heading():
+    module = _checker()
+    source = "<h2>\n  Manage your hornet traps\n</h2>"
+    assert module.hardcoded_jsx_text(source) == [(2, "Manage your hornet traps")]
+
+
+@pytest.mark.parametrize("source", [
+    # A translated child is the correct form and must stay quiet.
+    '<Link href="/hornets">\n  {t("title")}\n</Link>',
+    # A ternary inside JSX braces wraps onto its own line and reads as text. Both of these are
+    # real lines from the dashboard; they were the only false positives the scan produced.
+    "{deleteConfirmId === fd.id ? (\n  <span>x</span>\n)}",
+    "{deleteFieldConfirmId === fd.id ? (\n  <span>x</span>\n)}",
+    # Language names are written in their own language on purpose.
+    '<option value="de">\n  Deutsch\n</option>',
+    # Text that is not between tags is not shown to a reader.
+    "const title = 'Hornet Tracker';",
+])
+def test_the_check_is_quiet_about_what_it_should_be(source):
+    module = _checker()
+    assert module.hardcoded_jsx_text(source) == []
+
+
+def test_the_whole_web_app_is_free_of_hardcoded_text():
+    """The repository itself, so a new page cannot add one without failing here."""
+    module = _checker()
+    offenders = []
+    for folder in ("app", "components"):
+        for page in sorted((REPO / folder).rglob("*.tsx")):
+            if "/content/" in page.as_posix():
+                continue
+            for number, text in module.hardcoded_jsx_text(page.read_text(encoding="utf-8")):
+                offenders.append(f"{page.relative_to(REPO).as_posix()}:{number} {text!r}")
+    assert not offenders, "hardcoded text on the website:\n  " + "\n  ".join(offenders)
+
+
+# ── The two apps must read alike ─────────────────────────────────────────────
+#
+# 103 strings showed the identical English on both apps and said different things in German,
+# French or Spanish (#436) — including the project's own vocabulary being ignored, and each app
+# contradicting itself about whether a frame of brood is a "Brutwabe" or a "Bruträhmchen".
+#
+# The rule was in CLAUDE.md and in no test. Key names differ by platform, so a key-based check
+# cannot see it; matching on the English value needs no mapping.
+
+
+def test_the_check_sees_two_apps_saying_different_things():
+    module = _checker()
+    module.findings.clear()
+    module.check_app_wording(
+        {"en": {"label_never_inspected": "Never inspected before"},
+         "de": {"label_never_inspected": "Noch nie kontrolliert"}},
+        {"en": {"label.neverInspected": "Never inspected before"},
+         "de": {"label.neverInspected": "Noch nie besucht"}},
+    )
+    assert module.findings, "the drift should have been reported"
+    assert "same English but differ" in module.findings[0][1]
+
+
+def test_the_check_is_quiet_when_they_agree():
+    module = _checker()
+    module.findings.clear()
+    module.check_app_wording(
+        {"en": {"k": "Never inspected before"}, "de": {"k": "Noch nie kontrolliert"}},
+        {"en": {"k.ios": "Never inspected before"}, "de": {"k.ios": "Noch nie kontrolliert"}},
+    )
+    assert not module.findings
+
+
+def test_the_check_ignores_single_words():
+    """"Save" labels twenty buttons; two platforms putting it elsewhere proves nothing."""
+    module = _checker()
+    module.findings.clear()
+    module.check_app_wording(
+        {"en": {"k": "Save"}, "de": {"k": "Speichern"}},
+        {"en": {"k.ios": "Save"}, "de": {"k.ios": "Sichern"}},
+    )
+    assert not module.findings
+
+
+def test_the_check_ignores_an_english_phrase_used_twice_on_one_side():
+    """Two keys with the same English are two different places, not one to compare."""
+    module = _checker()
+    module.findings.clear()
+    module.check_app_wording(
+        {"en": {"a": "Delete this entry", "b": "Delete this entry"},
+         "de": {"a": "Eintrag löschen", "b": "Diesen Eintrag löschen"}},
+        {"en": {"a.ios": "Delete this entry"}, "de": {"a.ios": "Eintrag entfernen"}},
+    )
+    assert not module.findings
+
+
+def test_the_repository_itself_has_no_drift():
+    """The real strings, so a new screen cannot add a difference without failing here."""
+    module = _checker()
+    module.findings.clear()
+    locales = ("en", "de", "fr", "es", "pl")
+    android = {
+        loc: module.load_xml(REPO / "android/app/src/main/res" /
+                             ("values" if loc == "en" else f"values-{loc}") / "strings.xml")
+        for loc in locales
+    }
+    ios = {
+        loc: module.load_strings(REPO / "ios/HivePulse/Resources" / f"{loc}.lproj/Localizable.strings")
+        for loc in locales
+    }
+    module.check_app_wording(android, ios)
+    assert not module.findings, (
+        "Android and the iPhone disagree:\n  " + "\n  ".join(m for _, m in module.findings))

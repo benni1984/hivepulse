@@ -13,6 +13,7 @@ from app.models import Apiary, Hive, HiveMove
 from app.routers.apiaries import _to_out
 from app.schemas import HiveMoveOut, MoveCreate, MovePlace, MoveResult
 from app.utils.geocoding import forward_geocode
+from app.clock import today_utc
 
 logger = logging.getLogger(__name__)
 
@@ -92,7 +93,7 @@ def move_hives(
 
     _locate(target)
 
-    moved_on = body.moved_on or date.today()
+    moved_on = body.moved_on or today_utc()
     moves: list[HiveMove] = []
     for hive in to_move:
         origin = hive.apiary

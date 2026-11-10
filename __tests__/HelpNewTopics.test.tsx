@@ -11,10 +11,6 @@ import pl from '@/messages/pl.json';
 vi.mock('next-intl/server', () => ({
   getTranslations: async () => (key: string) => key,
 }));
-vi.mock('next/link', () => ({
-  default: ({ href, children }: { href: string; children: React.ReactNode }) => <a href={href}>{children}</a>,
-}));
-
 import HelpTopicPage from '@/app/[locale]/help/[slug]/page';
 
 const NEW_TOPICS = ['sharing', 'moving-hives', 'home-and-treatments', 'beekeeping-year'] as const;
@@ -28,6 +24,13 @@ async function headings(locale: string, slug: string): Promise<string[]> {
   container.remove();
   return out;
 }
+
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children, className, onClick, style, title, target, rel }: {
+    href: string; children: React.ReactNode; className?: string; onClick?: () => void;
+    style?: React.CSSProperties; title?: string; target?: string; rel?: string;
+  }) => <a href={href} className={className} onClick={onClick} style={style} title={title} target={target} rel={rel}>{children}</a>,
+}));
 
 describe('help pages for working together, moving hives and the home screen', () => {
   it('are registered as help topics', () => {
