@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import dynamic from 'next/dynamic';
 import DashboardShell from '@/components/DashboardShell';
+import TourHint from '@/components/TourHint';
 import SharingPanel from '@/components/SharingPanel';
 import HiveMovesSection from '@/components/HiveMovesSection';
 import MoveHivesPanel from '@/components/MoveHivesPanel';
@@ -360,7 +361,10 @@ export default function HivePage() {
                 </>
               )}
               {!showInspectionForm && (
-                <button className="dash-new-btn" onClick={openCreateInspection}>{t('hive.newInspectionBtn')}</button>
+                <>
+                  <button className="dash-new-btn" onClick={openCreateInspection} data-tour="new-inspection">{t('hive.newInspectionBtn')}</button>
+                  <TourHint tour="offline" />
+                </>
               )}
             </span>
           </div>

@@ -1380,5 +1380,8 @@
     "doneReplaced": "{replaced, plural, one {Eine davon hat ersetzt, was dieser Browser vorher gesagt hatte.} other {# davon haben ersetzt, was dieser Browser vorher gesagt hatte.}}",
     "doneNext": "Noch hat sich nichts geändert. Sobald fünf Imker in deiner Nähe übereinstimmen, geht die Korrektur an jemanden, der sie freigeben kann.",
     "doneAgain": "Eine andere Region bewerten"
+  },
+  "tour": {
+    "showMe": "Zeig es mir"
   }
 }

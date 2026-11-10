@@ -1380,5 +1380,8 @@
     "doneReplaced": "{replaced, plural, one {One of them replaced what this browser had said before.} other {# of them replaced what this browser had said before.}}",
     "doneNext": "Nothing has changed yet. Once five beekeepers near you agree, the correction goes to someone who can approve it.",
     "doneAgain": "Rate another region"
+  },
+  "tour": {
+    "showMe": "Show me"
   }
 }

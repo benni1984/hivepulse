@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
+import TourHint from '@/components/TourHint';
 import IncomingInvitations from '@/components/IncomingInvitations';
 import HomeSummary from '@/components/HomeSummary';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
@@ -61,11 +62,13 @@ export default function DashboardPage() {
   return (
     <DashboardShell>
       <div className="dash-page-header">
-        <h1 className="dash-page-title">{t('apiaries.title')}</h1>
+        <h1 className="dash-page-title">
+          {t('apiaries.title')} <TourHint tour="first-steps" />
+        </h1>
         <span className="dash-row-actions">
           <Link href="/dashboard/moves" className="dash-row-btn">{t('moves.openOverview')}</Link>
           {!showCreate && (
-            <button className="dash-new-btn" onClick={openCreate}>
+            <button className="dash-new-btn" onClick={openCreate} data-tour="new-apiary">
               {t('apiaries.new')}
             </button>
           )}
@@ -88,6 +91,7 @@ export default function DashboardPage() {
             <div className="dash-form-group">
               <label htmlFor="apiary-create-name">{t('apiaries.name')}</label>
               <input id="apiary-create-name"
+                data-tour="apiary-name"
                 type="text"
                 value={createForm.name}
                 onChange={e => setCreateForm(f => ({ ...f, name: e.target.value }))}
@@ -119,7 +123,7 @@ export default function DashboardPage() {
               {t('apiaries.isPublic')}
             </label>
             <div className="dash-form-actions">
-              <button className="dash-submit-btn" type="submit" disabled={creating}>
+              <button className="dash-submit-btn" type="submit" disabled={creating} data-tour="apiary-save">
                 {creating ? '…' : t('apiaries.createBtn')}
               </button>
               <button className="dash-cancel-btn" type="button" onClick={() => setShowCreate(false)}>
@@ -137,7 +141,7 @@ export default function DashboardPage() {
       {!loading && apiaries.length > 0 && (
         <div className="dash-card-grid">
           {apiaries.map(a => (
-            <Link key={a.id} href={`/dashboard/apiary/${a.id}`} className="dash-apiary-card">
+            <Link key={a.id} href={`/dashboard/apiary/${a.id}`} className="dash-apiary-card" data-tour="apiary-open">
               <h3>{a.name}</h3>
               <p className="dash-card-meta">
                 🐝 {a.hive_count} {t('apiaries.hives')}

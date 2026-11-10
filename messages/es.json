@@ -1380,5 +1380,8 @@
     "doneReplaced": "{replaced, plural, one {Una de ellas ha sustituido lo que este navegador había dicho antes.} other {# de ellas han sustituido lo que este navegador había dicho antes.}}",
     "doneNext": "Todavía no ha cambiado nada. Cuando cinco apicultores cerca de ti coincidan, la corrección pasará a alguien que pueda aprobarla.",
     "doneAgain": "Valorar otra región"
+  },
+  "tour": {
+    "showMe": "Muéstramelo"
   }
 }

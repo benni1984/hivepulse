@@ -1380,5 +1380,8 @@
     "doneReplaced": "{replaced, plural, one {Jedna z nich zastąpiła to, co ta przeglądarka powiedziała wcześniej.} few {# z nich zastąpiły to, co ta przeglądarka powiedziała wcześniej.} many {# z nich zastąpiło to, co ta przeglądarka powiedziała wcześniej.} other {# z nich zastąpiło to, co ta przeglądarka powiedziała wcześniej.}}",
     "doneNext": "Jeszcze nic się nie zmieniło. Gdy pięciu pszczelarzy w Twojej okolicy będzie zgodnych, poprawka trafi do kogoś, kto może ją zatwierdzić.",
     "doneAgain": "Oceń inny region"
+  },
+  "tour": {
+    "showMe": "Pokaż mi"
   }
 }

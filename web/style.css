@@ -2262,3 +2262,64 @@ button.hornets-action-card { width: 100%; }
 .dash-cal-rate { margin-top: 6px; }
 .dash-cal-rate-link { color: var(--amber-dark); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
 .dash-cal-rate-link:hover { color: var(--amber-ink); }
+
+/* ── Guided tour (#449) ───────────────────────────────────────────────────────
+   The tour points at a real control and waits for a real click, so the overlay
+   must never cover the target. It is drawn as four rectangles *around* it: no
+   sheet with a hole, no pointer-events trickery over the thing the user has to
+   press. The ring is the amber from the palette; the card is a dash card. */
+.tour-shade {
+  position: fixed;
+  background: rgba(15, 45, 28, .62);   /* forest green, so the dark reads as ours */
+  z-index: 9000;
+  pointer-events: none;                /* clicks pass through the dark too, on purpose:
+                                          trapping somebody inside a tour is worse than
+                                          letting them wander off it. */
+}
+.tour-ring {
+  position: fixed;
+  z-index: 9001;
+  border: 2px solid var(--amber-mid);
+  border-radius: 10px;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, .28);
+  pointer-events: none;
+}
+.tour-card {
+  position: fixed;
+  z-index: 9002;
+  max-width: min(340px, calc(100vw - 32px));
+  background: #fff;
+  border: 1px solid var(--field-border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 10px 30px rgba(15, 45, 28, .22);
+  font-size: .92rem;
+  line-height: 1.5;
+}
+/* While the anchor is being looked for, or when it cannot be found: a card with no
+   dimming at all, rather than a dark screen with nothing lit. */
+.tour-card-floating { bottom: 24px; left: 50%; transform: translateX(-50%); }
+.tour-text { margin: 0 0 10px; color: var(--body-text); }
+.tour-actions { display: flex; align-items: center; gap: 10px; }
+.tour-counter { font-size: .78rem; color: var(--tertiary); font-variant-numeric: tabular-nums; margin-right: auto; }
+.tour-btn {
+  border: 0; border-radius: 9px; padding: 7px 13px;
+  background: var(--amber-mid); color: #3f2d06; font-weight: 700; font-size: .85rem; cursor: pointer;
+}
+.tour-btn:hover { background: var(--amber-ink); color: #fff; }
+.tour-btn-quiet { background: transparent; color: var(--tertiary); font-weight: 600; }
+.tour-btn-quiet:hover { background: transparent; color: var(--body-text); }
+.tour-btn:focus-visible, .tour-hint:focus-visible { outline: 2px solid var(--amber-mid); outline-offset: 2px; }
+
+/* The "?" that starts one tour, droppable next to any feature. */
+.tour-hint {
+  border: 1px solid var(--amber-border); background: var(--amber-wash); color: var(--amber-ink);
+  width: 22px; height: 22px; border-radius: 50%;
+  font-size: .78rem; font-weight: 800; line-height: 1; cursor: pointer; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center; vertical-align: middle;
+}
+.tour-hint:hover { background: var(--amber-tint); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tour-shade, .tour-ring, .tour-card { transition: none; }
+}

@@ -324,7 +324,7 @@ export default function ApiaryPage() {
                 <button className="dash-row-btn" onClick={() => setShowMove(true)}>{t('moves.title')}</button>
               )}
               {!showCreateHive && canEdit && (
-                <button className="dash-new-btn" onClick={openCreateHive}>{t('apiary.newHive')}</button>
+                <button className="dash-new-btn" onClick={openCreateHive} data-tour="new-hive">{t('apiary.newHive')}</button>
               )}
             </span>
           </div>
