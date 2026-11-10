@@ -156,9 +156,18 @@ ceilings are generous for any real practice.
 | `weight_kg` | 0–500 |
 | `latitude` | −90 to 90 |
 | `longitude` | −180 to 180 |
-| any date a client sends | 1900-01-01 to tomorrow (UTC) — see **Dates & Times** |
+| a date a client **records** — `date`, `caught_on`, `done_on`, `moved_on`, `acquisition_date` | 1900-01-01 to tomorrow (UTC) — see **Dates & Times** |
+| a date a client **plans** — `due_on` | 1900-01-01 to 31 December fifty years from now |
 | trap catch `count` | 1–500 |
 | hornet sighting `count` | 1–1000 |
+
+A planned day has no ceiling at today: a treatment is due precisely in the future, and the bound
+that is right for a visit would make planning impossible. It keeps the floor, and a far ceiling
+for the same typo in the other direction (`3026` for `2026`).
+
+`acquisition_date` is in the recorded list and was the one this table missed on the first pass: a
+guard that knew four field names by heart passed while it sat unbounded in three schemas. The
+guard now demands that *every* date in a request schema is bounded, or named with its reason.
 
 `latitude` and `longitude` were bounded only on a hive move; an apiary, a sighting and a trap all
 accepted `999` and put it on the **public** community map (#446).

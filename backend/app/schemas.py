@@ -37,9 +37,29 @@ def _plausible_day(value: Optional[date]) -> Optional[date]:
     return value
 
 
-# Use this for every date a client sends. As an Annotated type the error lands on the field, so
-# the message can name it; a model_validator would report it against the whole body.
+# A day that is planned rather than recorded: a treatment is due precisely in the future, so the
+# ceiling that makes sense for a visit would make planning impossible. The floor is the same, and
+# the far ceiling catches the other direction of the same typo -- 3026 for 2026.
+LATEST_PLANNED_YEARS = 50
+
+
+def _plausible_planned_day(value: Optional[date]) -> Optional[date]:
+    """A day a client plans for: not before 1900, not fifty years out."""
+    if value is None:
+        return value
+    if value < EARLIEST_DAY:
+        raise ValueError(f"VALIDATION_DATE_TOO_EARLY:{EARLIEST_DAY.isoformat()}")
+    latest = date(today_utc().year + LATEST_PLANNED_YEARS, 12, 31)
+    if value > latest:
+        raise ValueError(f"VALIDATION_DATE_TOO_LATE:{latest.isoformat()}")
+    return value
+
+
+# Use Day for every day a client *records* and PlannedDay for every day a client *plans*. As
+# Annotated types the error lands on the field, so the message can name it; a model_validator
+# would report it against the whole body.
 Day = Annotated[date, AfterValidator(_plausible_day)]
+PlannedDay = Annotated[date, AfterValidator(_plausible_planned_day)]
 
 # A place on Earth. These were written out by hand on a hive move, a hornet nest and a trap, and
 # simply absent everywhere else: an apiary, a hive, a sighting and a catch all accepted
@@ -607,7 +627,7 @@ class QrBatchSummary(BaseModel):
 class HiveCreate(BaseModel):
     name: str = Field(min_length=1, max_length=200)
     hive_type: str = Field(default="langstroth", pattern="^(langstroth|dadant|top_bar|warre|other)$")
-    acquisition_date: Optional[date] = None
+    acquisition_date: Optional[Day] = None
     notes: Optional[str] = Field(default=None, max_length=2000)
 
 
@@ -618,7 +638,7 @@ class HiveInitialize(BaseModel):
     hive_type: str = Field(default="langstroth", pattern="^(langstroth|dadant|top_bar|warre|other)$")
     latitude: Optional[Latitude] = None
     longitude: Optional[Longitude] = None
-    acquisition_date: Optional[date] = None
+    acquisition_date: Optional[Day] = None
     notes: Optional[str] = Field(default=None, max_length=2000)
     custom_fields: Dict[str, Any] = Field(default_factory=dict)
 
@@ -629,7 +649,7 @@ class HiveUpdate(BaseModel):
     hive_type: Optional[str] = Field(default=None, pattern="^(langstroth|dadant|top_bar|warre|other)$")
     latitude: Optional[Latitude] = None
     longitude: Optional[Longitude] = None
-    acquisition_date: Optional[date] = None
+    acquisition_date: Optional[Day] = None
     notes: Optional[str] = Field(default=None, max_length=2000)
     custom_fields: Optional[Dict[str, Any]] = None
 
@@ -742,7 +762,7 @@ class TreatmentCreate(BaseModel):
     hive_id: Optional[str] = None
     apiary_id: Optional[str] = None
     product: str = Field(min_length=1, max_length=200)
-    due_on: date
+    due_on: PlannedDay
     note: Optional[str] = Field(default=None, max_length=2000)
 
     @model_validator(mode="after")
@@ -756,7 +776,7 @@ class TreatmentCreate(BaseModel):
 
 class TreatmentUpdate(BaseModel):
     product: Optional[str] = Field(default=None, min_length=1, max_length=200)
-    due_on: Optional[date] = None
+    due_on: Optional[PlannedDay] = None
     note: Optional[str] = Field(default=None, max_length=2000)
 
 

@@ -362,7 +362,9 @@ export default function HivePage() {
               <form onSubmit={handleSaveInspection}>
                 <div className="dash-form-group">
                   <label>{t('hive.date')}</label>
-                  <input type="date" value={inspectionForm.date} required
+                  {/* A visit cannot have happened tomorrow. todayLocal() and not the UTC day:
+                      from about 22:00 in Europe those are different days (#443). */}
+                  <input type="date" value={inspectionForm.date} required max={todayLocal()}
                     onChange={e => setInspectionForm(f => ({ ...f, date: e.target.value }))} />
                 </div>
                 <div className="dash-form-group">
@@ -579,6 +581,7 @@ export default function HivePage() {
                   <input
                     type="date"
                     value={editForm.acquisition_date}
+                    max={todayLocal()}
                     onChange={e => setEditForm(f => ({ ...f, acquisition_date: e.target.value }))}
                   />
                 </div>

@@ -348,20 +348,108 @@ def test_every_position_a_client_sends_is_bounded():
     )
 
 
-def test_every_day_a_client_sends_uses_the_bounded_type():
-    # The field names a client fills in with a day. due_on is deliberately absent: a treatment
-    # is planned for a future day, so the future bound must not apply to it.
-    day_fields = ("date", "caught_on", "done_on", "moved_on")
+# Days in a request schema that are deliberately unbounded, each with the reason.
+#
+# This list is the whole point of the guard below. The first version of it knew four field names
+# by heart — date, caught_on, done_on, moved_on — and passed while `acquisition_date` sat
+# unbounded in three schemas, because nobody had thought to add it to the list. A guard that only
+# checks what somebody remembered to enumerate guards nothing. So the rule is inverted: every
+# date in a request schema must be `Day` or `PlannedDay`, and an exception has to be written
+# down here with why.
+DAYS_DELIBERATELY_UNBOUNDED = {
+    ("StatsPeriod", "from_date"): "a filter on a query, not a stored value; a silly year gives an empty result",
+    ("StatsPeriod", "to_date"): "same",
+    ("CalendarEntry", "start"): "built by the server from the regional calendar, not sent by a client",
+    ("CalendarEntry", "end"): "same",
+    ("PublicCalendarEntry", "start"): "same",
+    ("PublicCalendarEntry", "end"): "same",
+    ("HomeInspection", "due_on"): "part of the home summary the server builds",
+    ("HomeInspection", "last_inspection_on"): "same",
+}
+
+
+def test_every_day_a_client_sends_is_bounded():
     loose = []
     for name, block in _input_class_bodies():
         for line in block.splitlines():
             match = re.match(r"\s*(\w+)\s*:\s*(Optional\[)?date\b", line)
-            if match and match.group(1) in day_fields:
-                loose.append(f"{name}: {line.strip()}")
+            if not match:
+                continue
+            field = match.group(1)
+            if (name, field) in DAYS_DELIBERATELY_UNBOUNDED:
+                continue
+            loose.append(f"{name}.{field}: {line.strip()}")
     assert not loose, (
-        "a day a client sends typed as plain `date` rather than `Day`, so the year 3000 goes "
-        "through:\n  " + "\n  ".join(loose)
+        "a day in a request schema typed as plain `date`, so the year 3000 goes through. Use "
+        "`Day` for a day that is recorded, `PlannedDay` for one that is planned, or add it to "
+        "DAYS_DELIBERATELY_UNBOUNDED with the reason:\n  " + "\n  ".join(loose)
     )
+
+
+def test_the_unbounded_day_exemptions_still_exist():
+    """An exemption whose field was renamed stops covering anything and starts hiding the next
+    field that takes its name."""
+    text = SCHEMAS.read_text(encoding="utf-8")
+    for (cls, field), reason in DAYS_DELIBERATELY_UNBOUNDED.items():
+        match = re.search(rf"^class {cls}\(", text, re.MULTILINE)
+        assert match, f"{cls} is exempt but no longer exists — drop the exemption"
+        nxt = re.search(r"^class ", text[match.end():], re.MULTILINE)
+        end = match.end() + nxt.start() if nxt else len(text)
+        assert re.search(rf"^\s+{field}\s*:", text[match.start():end], re.MULTILINE), (
+            f"{cls}.{field} is exempt but no longer exists — drop the exemption ({reason})"
+        )
+
+
+def test_a_colony_cannot_have_been_acquired_in_the_future(auth_client):
+    """This one got past the first version of the guard, which knew four field names by heart and
+    had never heard of acquisition_date — in three schemas."""
+    apiary = auth_client.post("/api/v1/apiaries", json={"name": "Garden"}).json()
+    batch = auth_client.post("/api/v1/qr-batches", json={"count": 1}).json()
+    auth_client.headers.update({"Accept-Language": "de"})
+
+    resp = auth_client.post("/api/v1/hives/initialize", json={
+        "qr_token": batch["tokens"][0]["token"], "apiary_id": apiary["id"],
+        "name": "H1", "acquisition_date": "3000-04-01",
+    })
+
+    assert resp.status_code == 422
+    # Worded as the label above the box words it, taken from messages/de.json.
+    assert _messages(resp) == ["Anschaffungsdatum kann nicht in der Zukunft liegen."]
+
+
+def test_a_colony_acquired_long_ago_still_goes_in(auth_client):
+    apiary = auth_client.post("/api/v1/apiaries", json={"name": "Garden"}).json()
+    batch = auth_client.post("/api/v1/qr-batches", json={"count": 1}).json()
+
+    resp = auth_client.post("/api/v1/hives/initialize", json={
+        "qr_token": batch["tokens"][0]["token"], "apiary_id": apiary["id"],
+        "name": "H1", "acquisition_date": "1985-04-01",
+    })
+
+    assert resp.status_code == 201, resp.json()
+
+
+def test_a_treatment_cannot_be_planned_for_the_year_3000(auth_client):
+    """PlannedDay has no ceiling at today — it would make planning impossible — but a treatment
+    due in a thousand years is the same typo in the other direction."""
+    hive = _hive(auth_client)
+
+    resp = auth_client.post("/api/v1/treatments", json={
+        "hive_id": hive["id"], "product": "Formic acid", "due_on": "3000-07-20",
+    })
+
+    assert resp.status_code == 422
+    assert "cannot be after" in _messages(resp)[0], _messages(resp)
+
+
+def test_a_treatment_cannot_be_planned_for_the_year_1026(auth_client):
+    hive = _hive(auth_client)
+
+    resp = auth_client.post("/api/v1/treatments", json={
+        "hive_id": hive["id"], "product": "Formic acid", "due_on": "1026-07-20",
+    })
+
+    assert resp.status_code == 422
 
 
 def test_a_planned_treatment_may_still_be_due_in_the_future(auth_client):

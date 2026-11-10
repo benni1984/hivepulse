@@ -261,6 +261,15 @@ MESSAGES = {
         "es": "{field} no puede estar en el futuro.",
         "pl": "{field} nie może być w przyszłości.",
     },
+    # For a day that is *meant* to be in the future -- a planned treatment -- where the
+    # ceiling is far rather than today.
+    "VALIDATION_DATE_TOO_LATE": {
+        "en": "{field} cannot be after {limit}.",
+        "de": "{field} kann nicht nach {limit} liegen.",
+        "fr": "{field} ne peut pas être postérieur à {limit}.",
+        "es": "{field} no puede ser posterior a {limit}.",
+        "pl": "{field} nie może być późniejsza niż {limit}.",
+    },
     "VALIDATION_DATE_TOO_EARLY": {
         "en": "{field} cannot be before {limit}.",
         "de": "{field} kann nicht vor {limit} liegen.",
@@ -314,6 +323,11 @@ MESSAGES = {
     #
     # A field with no entry here falls back to its own name with the underscores taken out, which
     # is readable English and better than nothing -- see app/validation.py.
+    "FIELD_ACQUISITION_DATE": {
+        "en": "Acquisition date", "de": "Anschaffungsdatum",
+        "fr": "Date d'acquisition", "es": "Fecha de adquisición",
+        "pl": "Data nabycia",
+    },
     "FIELD_DATE": {
         "en": "Date", "de": "Datum", "fr": "Date", "es": "Fecha", "pl": "Data",
     },

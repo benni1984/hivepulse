@@ -23,11 +23,22 @@ describe('ReleaseNotesPage', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'title' })).toBeInTheDocument();
     expect(screen.getByText('whatsNew')).toBeInTheDocument();
     expect(screen.getByText('allFeatures')).toBeInTheDocument();
+
+    // One scan of the tree, then compare in memory.
+    //
+    // This used to call getByRole('heading', { name }) once per release and once per feature
+    // group. Each of those computes the accessible name of every element in the document, so the
+    // cost was (releases + groups) full passes over the whole page — and the page grows with
+    // every version that ships. It crossed the 5 s timeout and failed, with nothing in the output
+    // to say the test was simply slow rather than the page broken.
+    //
+    // Comparing a set is also the stronger assertion: it would notice a heading rendered twice.
+    const headings = screen.getAllByRole('heading').map(h => h.textContent?.trim());
     for (const release of RELEASES) {
-      expect(screen.getByRole('heading', { name: pick(release.title, 'en') })).toBeInTheDocument();
+      expect(headings).toContain(pick(release.title, 'en'));
     }
     for (const group of FEATURES) {
-      expect(screen.getByRole('heading', { name: pick(group.title, 'en') })).toBeInTheDocument();
+      expect(headings).toContain(pick(group.title, 'en'));
     }
   });
 
