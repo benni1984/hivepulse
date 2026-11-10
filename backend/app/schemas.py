@@ -1,7 +1,55 @@
 from datetime import date, datetime, timedelta
-from typing import Any, Dict, List, Literal, Optional
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
+from typing import Annotated, Any, Dict, List, Literal, Optional
+from pydantic import (
+    AfterValidator,
+    BaseModel,
+    ConfigDict,
+    EmailStr,
+    Field,
+    field_validator,
+    model_validator,
+)
 from app.clock import today_utc
+
+# Nothing a beekeeper did happened before this, and a year this far back is a typo -- 1026 for
+# 2026, 0226 for 2026 -- not a record somebody is migrating. The floor exists to catch that, not
+# to have an opinion about how old a hive log may be.
+EARLIEST_DAY = date(1900, 1, 1)
+
+
+def _plausible_day(value: Optional[date]) -> Optional[date]:
+    """A day a client sent: not after tomorrow, not before 1900.
+
+    The day of slack is deliberate. The server counts days in UTC (app/clock.py) and has no
+    timezone for the account, so a caller east of UTC is legitimately already on tomorrow's date
+    and must not be rejected for it (#443).
+
+    Raises the message code rather than a sentence: app/validation.py turns it into one sentence
+    in the caller's language, naming the field the way the screen names it. A bare ValueError
+    string would reach the user as pydantic's English (#446).
+    """
+    if value is None:
+        return value
+    if value > today_utc() + timedelta(days=1):
+        raise ValueError("VALIDATION_DATE_IN_FUTURE")
+    if value < EARLIEST_DAY:
+        raise ValueError(f"VALIDATION_DATE_TOO_EARLY:{EARLIEST_DAY.isoformat()}")
+    return value
+
+
+# Use this for every date a client sends. As an Annotated type the error lands on the field, so
+# the message can name it; a model_validator would report it against the whole body.
+Day = Annotated[date, AfterValidator(_plausible_day)]
+
+# A place on Earth. These were written out by hand on a hive move, a hornet nest and a trap, and
+# simply absent everywhere else: an apiary, a hive, a sighting and a catch all accepted
+# `latitude: 999`, and apiaries and sightings are drawn on the *public* community map (#446).
+# One definition, so the next schema that takes a position cannot quietly omit it.
+#
+# Response schemas keep a plain float deliberately: a row stored before these bounds existed must
+# still be readable.
+Latitude = Annotated[float, Field(ge=-90, le=90)]
+Longitude = Annotated[float, Field(ge=-180, le=180)]
 
 
 def _validate_photo_url(v: Optional[str]) -> Optional[str]:
@@ -486,8 +534,8 @@ class FieldDefinitionOut(BaseModel):
 class ApiaryCreate(BaseModel):
     name: str = Field(min_length=1, max_length=200)
     description: Optional[str] = Field(default=None, max_length=2000)
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
+    latitude: Optional[Latitude] = None
+    longitude: Optional[Longitude] = None
     address: Optional[str] = Field(default=None, max_length=500)
     is_public: bool = False
 
@@ -495,8 +543,8 @@ class ApiaryCreate(BaseModel):
 class ApiaryUpdate(BaseModel):
     name: Optional[str] = Field(default=None, max_length=200)
     description: Optional[str] = Field(default=None, max_length=2000)
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
+    latitude: Optional[Latitude] = None
+    longitude: Optional[Longitude] = None
     address: Optional[str] = Field(default=None, max_length=500)
     is_public: Optional[bool] = None
 
@@ -568,8 +616,8 @@ class HiveInitialize(BaseModel):
     apiary_id: str
     name: str = Field(min_length=1, max_length=200)
     hive_type: str = Field(default="langstroth", pattern="^(langstroth|dadant|top_bar|warre|other)$")
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
+    latitude: Optional[Latitude] = None
+    longitude: Optional[Longitude] = None
     acquisition_date: Optional[date] = None
     notes: Optional[str] = Field(default=None, max_length=2000)
     custom_fields: Dict[str, Any] = Field(default_factory=dict)
@@ -579,8 +627,8 @@ class HiveUpdate(BaseModel):
     apiary_id: Optional[str] = None
     name: Optional[str] = Field(default=None, max_length=200)
     hive_type: Optional[str] = Field(default=None, pattern="^(langstroth|dadant|top_bar|warre|other)$")
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
+    latitude: Optional[Latitude] = None
+    longitude: Optional[Longitude] = None
     acquisition_date: Optional[date] = None
     notes: Optional[str] = Field(default=None, max_length=2000)
     custom_fields: Optional[Dict[str, Any]] = None
@@ -621,7 +669,7 @@ _Date = date
 
 
 class InspectionCreate(BaseModel):
-    date: date
+    date: Day
     queen_seen: Optional[bool] = None
     queen_color: Optional[str] = Field(default=None, pattern="^(white|yellow|red|green|blue)$")
     brood_frames: Optional[int] = Field(default=None, ge=0, le=10)
@@ -629,12 +677,12 @@ class InspectionCreate(BaseModel):
     mood: Optional[str] = Field(default=None, pattern="^(calm|nervous|aggressive)$")
     population_strength: Optional[int] = Field(default=None, ge=1, le=3)  # 1 weak, 2 medium, 3 strong
     varroa_level: Optional[int] = Field(default=None, ge=0, le=3)  # 0 none, 1 low, 2 medium, 3 high
-    varroa_count: Optional[int] = Field(default=None, ge=0)  # legacy; derives varroa_level when that is absent
+    varroa_count: Optional[int] = Field(default=None, ge=0, le=1000)  # legacy; derives varroa_level when that is absent
     swarm_cells_seen: Optional[bool] = None
     treatment_applied: Optional[str] = Field(default=None, max_length=500)
     feeding_done: Optional[bool] = None
     feeding_type: Optional[str] = Field(default=None, max_length=200)
-    weight_kg: Optional[float] = None
+    weight_kg: Optional[float] = Field(default=None, ge=0, le=500)
     notes: Optional[str] = Field(default=None, max_length=2000)
     custom_fields: Dict[str, Any] = Field(default_factory=dict)
     # Offline clients reuse this across retries so a resend does not duplicate the visit.
@@ -642,7 +690,7 @@ class InspectionCreate(BaseModel):
 
 
 class InspectionUpdate(BaseModel):
-    date: Optional[_Date] = None
+    date: Optional[Day] = None
     queen_seen: Optional[bool] = None
     queen_color: Optional[str] = Field(default=None, pattern="^(white|yellow|red|green|blue)$")
     brood_frames: Optional[int] = Field(default=None, ge=0, le=10)
@@ -650,12 +698,12 @@ class InspectionUpdate(BaseModel):
     mood: Optional[str] = Field(default=None, pattern="^(calm|nervous|aggressive)$")
     population_strength: Optional[int] = Field(default=None, ge=1, le=3)  # 1 weak, 2 medium, 3 strong
     varroa_level: Optional[int] = Field(default=None, ge=0, le=3)  # 0 none, 1 low, 2 medium, 3 high
-    varroa_count: Optional[int] = Field(default=None, ge=0)  # legacy; derives varroa_level when that is absent
+    varroa_count: Optional[int] = Field(default=None, ge=0, le=1000)  # legacy; derives varroa_level when that is absent
     swarm_cells_seen: Optional[bool] = None
     treatment_applied: Optional[str] = Field(default=None, max_length=500)
     feeding_done: Optional[bool] = None
     feeding_type: Optional[str] = Field(default=None, max_length=200)
-    weight_kg: Optional[float] = None
+    weight_kg: Optional[float] = Field(default=None, ge=0, le=500)
     notes: Optional[str] = Field(default=None, max_length=2000)
     custom_fields: Optional[Dict[str, Any]] = None
 
@@ -713,13 +761,9 @@ class TreatmentUpdate(BaseModel):
 
 
 class TreatmentDone(BaseModel):
-    done_on: Optional[date] = None
-
-    @model_validator(mode="after")
-    def not_in_the_future(self):
-        if self.done_on is not None and self.done_on > today_utc() + timedelta(days=1):
-            raise ValueError("done_on cannot be in the future")
-        return self
+    # Was a model_validator raising an English sentence. The Day type does the same check, reports
+    # it against the field so the message can name it, and adds the floor the sentence never had.
+    done_on: Optional[Day] = None
 
 
 class TreatmentTarget(BaseModel):
@@ -805,25 +849,24 @@ class HomeOut(BaseModel):
 class NewApiaryForMove(BaseModel):
     name: str = Field(min_length=1, max_length=200)
     address: Optional[str] = Field(default=None, max_length=500)
-    latitude: Optional[float] = Field(default=None, ge=-90, le=90)
-    longitude: Optional[float] = Field(default=None, ge=-180, le=180)
+    latitude: Optional[Latitude] = None
+    longitude: Optional[Longitude] = None
 
 
 class MoveCreate(BaseModel):
     hive_ids: List[str] = Field(min_length=1, max_length=200)
     to_apiary_id: Optional[str] = None
     new_apiary: Optional[NewApiaryForMove] = None
-    moved_on: Optional[date] = None
+    moved_on: Optional[Day] = None
     forage: Optional[str] = Field(default=None, max_length=100)
     note: Optional[str] = Field(default=None, max_length=2000)
 
     @model_validator(mode="after")
-    def one_target_and_no_future(self):
+    def exactly_one_target(self):
+        # The day itself is checked by the Day type on moved_on; this is the cross-field part,
+        # which has no single field to be reported against.
         if bool(self.to_apiary_id) == bool(self.new_apiary):
             raise ValueError("give exactly one of to_apiary_id and new_apiary")
-        # A day of slack: somebody east of the server may already be on tomorrow's date.
-        if self.moved_on is not None and self.moved_on > today_utc() + timedelta(days=1):
-            raise ValueError("moved_on cannot be in the future")
         return self
 
 
@@ -983,8 +1026,8 @@ class OverviewStats(BaseModel):
 # ---------------------------------------------------------------------------
 
 class HornetCatchCreate(BaseModel):
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
+    latitude: Optional[Latitude] = None
+    longitude: Optional[Longitude] = None
     count: int = Field(default=1, ge=1, le=1000)
     reporter_name: Optional[str] = Field(default=None, max_length=100)
 
@@ -1000,8 +1043,8 @@ class HornetCatchOut(BaseModel):
 
 
 class HornetNestCreate(BaseModel):
-    latitude: float = Field(ge=-90, le=90)
-    longitude: float = Field(ge=-180, le=180)
+    latitude: Latitude
+    longitude: Longitude
     reporter_name: Optional[str] = Field(default=None, max_length=100)
     notes: Optional[str] = Field(default=None, max_length=2000)
     photo_url: Optional[str] = Field(default=None, max_length=2000)
@@ -1030,8 +1073,8 @@ class HornetSightingCreate(BaseModel):
     photo_url: str = Field(max_length=2000)
     description: Optional[str] = Field(default=None, max_length=2000)
     reporter_name: Optional[str] = Field(default=None, max_length=100)
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
+    latitude: Optional[Latitude] = None
+    longitude: Optional[Longitude] = None
 
     @field_validator("photo_url")
     @classmethod
@@ -1077,15 +1120,18 @@ class HornetStatsOut(BaseModel):
 
 class HornetTrapCreate(BaseModel):
     name: str = Field(min_length=1, max_length=200)
-    latitude: float = Field(ge=-90, le=90)
-    longitude: float = Field(ge=-180, le=180)
+    latitude: Latitude
+    longitude: Longitude
     notes: Optional[str] = Field(default=None, max_length=2000)
     owner_name: Optional[str] = Field(default=None, max_length=100)
 
 
 class HornetTrapCatchCreate(BaseModel):
     count: int = Field(default=1, ge=1, le=500)
-    caught_on: date
+    # A catch is one row per trap per day and the server overwrites the existing row for that
+    # day, so a day in the future does not just read wrong: it writes a reading onto a day that
+    # has not happened (#446).
+    caught_on: Day
 
 
 class HornetTrapCatchOut(BaseModel):

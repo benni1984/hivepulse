@@ -218,6 +218,217 @@ MESSAGES = {
         "es": "Este enlace para restablecer la contraseña no es válido o ha caducado.",
         "pl": "Ten link do resetowania hasła jest nieprawidłowy lub wygasł.",
     },
+    # -- Validation (422) -------------------------------------------------------
+    #
+    # A rejected field used to leave the server in pydantic's own English -- "Input should be
+    # less than or equal to 10" -- and lib/api.ts joins those straight into what the beekeeper
+    # reads. So the one place a user is most likely to end up was the one place five languages
+    # did not reach (#446). app/validation.py turns a pydantic error into one of these.
+    #
+    # {field} is filled from the FIELD_* entries below, {limit} from pydantic's own ctx.
+    "VALIDATION_TOO_LARGE": {
+        "en": "{field}: at most {limit}.",
+        "de": "{field}: höchstens {limit}.",
+        "fr": "{field} : au maximum {limit}.",
+        "es": "{field}: como máximo {limit}.",
+        "pl": "{field}: najwyżej {limit}.",
+    },
+    "VALIDATION_TOO_SMALL": {
+        "en": "{field}: at least {limit}.",
+        "de": "{field}: mindestens {limit}.",
+        "fr": "{field} : au minimum {limit}.",
+        "es": "{field}: al menos {limit}.",
+        "pl": "{field}: co najmniej {limit}.",
+    },
+    "VALIDATION_TOO_LONG": {
+        "en": "{field}: at most {limit} characters.",
+        "de": "{field}: höchstens {limit} Zeichen.",
+        "fr": "{field} : au maximum {limit} caractères.",
+        "es": "{field}: como máximo {limit} caracteres.",
+        "pl": "{field}: najwyżej {limit} znaków.",
+    },
+    "VALIDATION_TOO_SHORT": {
+        "en": "{field}: at least {limit} characters.",
+        "de": "{field}: mindestens {limit} Zeichen.",
+        "fr": "{field} : au minimum {limit} caractères.",
+        "es": "{field}: al menos {limit} caracteres.",
+        "pl": "{field}: co najmniej {limit} znaków.",
+    },
+    "VALIDATION_DATE_IN_FUTURE": {
+        "en": "{field} cannot be in the future.",
+        "de": "{field} kann nicht in der Zukunft liegen.",
+        "fr": "{field} ne peut pas être dans le futur.",
+        "es": "{field} no puede estar en el futuro.",
+        "pl": "{field} nie może być w przyszłości.",
+    },
+    "VALIDATION_DATE_TOO_EARLY": {
+        "en": "{field} cannot be before {limit}.",
+        "de": "{field} kann nicht vor {limit} liegen.",
+        "fr": "{field} ne peut pas être antérieur à {limit}.",
+        "es": "{field} no puede ser anterior a {limit}.",
+        "pl": "{field} nie może być wcześniejsza niż {limit}.",
+    },
+    "VALIDATION_REQUIRED": {
+        "en": "{field} is required.",
+        "de": "{field} ist erforderlich.",
+        "fr": "{field} est obligatoire.",
+        "es": "{field} es obligatorio.",
+        "pl": "{field} jest wymagane.",
+    },
+    "VALIDATION_NOT_A_NUMBER": {
+        "en": "{field} must be a number.",
+        "de": "{field} muss eine Zahl sein.",
+        "fr": "{field} doit être un nombre.",
+        "es": "{field} debe ser un número.",
+        "pl": "{field} musi być liczbą.",
+    },
+    # Phrased as a label and not a sentence, because the field this fires on most is itself
+    # called Date: "Date must be a date in the form ..." says it twice.
+    "VALIDATION_NOT_A_DATE": {
+        "en": "{field}: a date in the form YYYY-MM-DD.",
+        "de": "{field}: ein Datum in der Form JJJJ-MM-TT.",
+        "fr": "{field} : une date au format AAAA-MM-JJ.",
+        "es": "{field}: una fecha con el formato AAAA-MM-DD.",
+        "pl": "{field}: data w formacie RRRR-MM-DD.",
+    },
+    "VALIDATION_NOT_ALLOWED": {
+        "en": "{field} has a value that is not allowed.",
+        "de": "{field} hat einen Wert, der nicht zulässig ist.",
+        "fr": "{field} a une valeur non autorisée.",
+        "es": "{field} tiene un valor no permitido.",
+        "pl": "{field} ma niedozwoloną wartość.",
+    },
+    "VALIDATION_INVALID": {
+        "en": "{field} is not valid.",
+        "de": "{field} ist ungültig.",
+        "fr": "{field} n'est pas valide.",
+        "es": "{field} no es válido.",
+        "pl": "{field} jest nieprawidłowe.",
+    },
+
+    # -- Field names, as the screens say them -----------------------------------
+    #
+    # The server has to translate these, because it is the one naming the field in a validation
+    # message. The vocabulary per language is fixed in CLAUDE.md: Bienenstand / Volk / Kontrolle,
+    # rucher / ruche / visite, colmenar / colmena / revisión, pasieka / rodzina pszczela / przegląd.
+    #
+    # A field with no entry here falls back to its own name with the underscores taken out, which
+    # is readable English and better than nothing -- see app/validation.py.
+    "FIELD_DATE": {
+        "en": "Date", "de": "Datum", "fr": "Date", "es": "Fecha", "pl": "Data",
+    },
+    "FIELD_BROOD_FRAMES": {
+        "en": "Brood frames", "de": "Brutwaben", "fr": "Cadres de couvain",
+        "es": "Cuadros de cría", "pl": "Ramki z czerwiem",
+    },
+    "FIELD_HONEY_FRAMES": {
+        "en": "Honey frames", "de": "Honigwaben", "fr": "Cadres de miel",
+        "es": "Cuadros de miel", "pl": "Ramki z miodem",
+    },
+    "FIELD_POPULATION_STRENGTH": {
+        "en": "Colony strength", "de": "Volksstärke", "fr": "Force de la colonie",
+        "es": "Fuerza de la colonia", "pl": "Siła rodziny",
+    },
+    "FIELD_VARROA_LEVEL": {
+        "en": "Varroa level", "de": "Varroa-Belastung", "fr": "Niveau de varroa",
+        "es": "Nivel de varroa", "pl": "Poziom warrozy",
+    },
+    "FIELD_VARROA_COUNT": {
+        "en": "Varroa count", "de": "Varroa-Zahl", "fr": "Nombre de varroas",
+        "es": "Recuento de varroa", "pl": "Liczba warrozy",
+    },
+    "FIELD_WEIGHT_KG": {
+        "en": "Weight", "de": "Gewicht", "fr": "Poids", "es": "Peso", "pl": "Waga",
+    },
+    "FIELD_NOTES": {
+        "en": "Notes", "de": "Notizen", "fr": "Notes", "es": "Notas", "pl": "Notatki",
+    },
+    "FIELD_NOTE": {
+        "en": "Note", "de": "Notiz", "fr": "Note", "es": "Nota", "pl": "Notatka",
+    },
+    "FIELD_TREATMENT_APPLIED": {
+        "en": "Treatment applied", "de": "Behandlung", "fr": "Traitement appliqué",
+        "es": "Tratamiento aplicado", "pl": "Zastosowane leczenie",
+    },
+    "FIELD_FEEDING_TYPE": {
+        "en": "Feed", "de": "Futter", "fr": "Nourrissement", "es": "Alimento", "pl": "Pokarm",
+    },
+    "FIELD_QUEEN_COLOR": {
+        "en": "Queen colour", "de": "Königinnenfarbe", "fr": "Couleur de la reine",
+        "es": "Color de la reina", "pl": "Kolor matki",
+    },
+    "FIELD_MOOD": {
+        "en": "Temperament", "de": "Sanftmut", "fr": "Comportement",
+        "es": "Temperamento", "pl": "Nastrój rodziny",
+    },
+    "FIELD_LATITUDE": {
+        "en": "Latitude", "de": "Breitengrad", "fr": "Latitude",
+        "es": "Latitud", "pl": "Szerokość geograficzna",
+    },
+    "FIELD_LONGITUDE": {
+        "en": "Longitude", "de": "Längengrad", "fr": "Longitude",
+        "es": "Longitud", "pl": "Długość geograficzna",
+    },
+    "FIELD_NAME": {
+        "en": "Name", "de": "Name", "fr": "Nom", "es": "Nombre", "pl": "Nazwa",
+    },
+    "FIELD_DESCRIPTION": {
+        "en": "Description", "de": "Beschreibung", "fr": "Description",
+        "es": "Descripción", "pl": "Opis",
+    },
+    "FIELD_ADDRESS": {
+        "en": "Address", "de": "Adresse", "fr": "Adresse", "es": "Dirección", "pl": "Adres",
+    },
+    "FIELD_COUNT": {
+        "en": "Count", "de": "Anzahl", "fr": "Nombre", "es": "Cantidad", "pl": "Liczba",
+    },
+    "FIELD_CAUGHT_ON": {
+        "en": "Catch date", "de": "Fangdatum", "fr": "Date de capture",
+        "es": "Fecha de captura", "pl": "Data odłowu",
+    },
+    "FIELD_DONE_ON": {
+        "en": "Completion date", "de": "Erledigt am", "fr": "Date de réalisation",
+        "es": "Fecha de realización", "pl": "Data wykonania",
+    },
+    "FIELD_MOVED_ON": {
+        "en": "Move date", "de": "Umzugsdatum", "fr": "Date du déplacement",
+        "es": "Fecha del traslado", "pl": "Data przeniesienia",
+    },
+    "FIELD_DUE_ON": {
+        "en": "Due date", "de": "Fällig am", "fr": "Échéance",
+        "es": "Fecha prevista", "pl": "Termin",
+    },
+    "FIELD_PRODUCT": {
+        "en": "Product", "de": "Mittel", "fr": "Produit", "es": "Producto", "pl": "Preparat",
+    },
+    "FIELD_PASSWORD": {
+        "en": "Password", "de": "Passwort", "fr": "Mot de passe",
+        "es": "Contraseña", "pl": "Hasło",
+    },
+    "FIELD_NEW_PASSWORD": {
+        "en": "New password", "de": "Neues Passwort", "fr": "Nouveau mot de passe",
+        "es": "Nueva contraseña", "pl": "Nowe hasło",
+    },
+    "FIELD_EMAIL": {
+        "en": "Email address", "de": "E-Mail-Adresse", "fr": "Adresse e-mail",
+        "es": "Correo electrónico", "pl": "Adres e-mail",
+    },
+    "FIELD_REPORTER_NAME": {
+        "en": "Your name", "de": "Dein Name", "fr": "Votre nom",
+        "es": "Tu nombre", "pl": "Twoje imię",
+    },
+    "FIELD_POSTAL_CODE": {
+        "en": "Postal code", "de": "Postleitzahl", "fr": "Code postal",
+        "es": "Código postal", "pl": "Kod pocztowy",
+    },
+    "FIELD_YEARS_KEEPING": {
+        "en": "Years of beekeeping", "de": "Jahre Imkererfahrung", "fr": "Années d'apiculture",
+        "es": "Años de apicultura", "pl": "Lata pszczelarstwa",
+    },
+    "FIELD_REMINDER_INTERVAL_DAYS": {
+        "en": "Reminder interval", "de": "Erinnerungsabstand", "fr": "Intervalle de rappel",
+        "es": "Intervalo de recordatorio", "pl": "Odstęp przypomnień",
+    },
 }
 
 

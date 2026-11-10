@@ -1,11 +1,13 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.monitoring import init_monitoring
 from app.database import Base, SessionLocal, engine
+from app.validation import validation_error_handler
 from app.routers import auth, users, field_definitions, apiaries, qr_batches, hives, inspections, stats, public, export
 from app.routers import admin, beekeeping_year, home, hornets, moves, notifications, public_year, shares, treatments
 
@@ -61,6 +63,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# A rejected field answers in the caller's language instead of pydantic's English. The response
+# keeps pydantic's shape, so the clients that already read it keep working — see app/validation.py.
+app.add_exception_handler(RequestValidationError, validation_error_handler)
 
 PREFIX = "/api/v1"
 
