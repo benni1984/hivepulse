@@ -68,13 +68,25 @@ List responses wrap items in:
 - **The UTC day is not the caller's day.** At 23:30 in Berlin the beekeeper is already on tomorrow
   and UTC is not. The server has no timezone for the account and does not guess, so **a client
   sends the day it means** wherever a date can be left out — `done_on`, `moved_on`, an
-  inspection's `date`. The validation allows one day into the future precisely so a client ahead
-  of UTC is never rejected. A server default is the fallback for a caller that sends nothing, not
-  the expected path.
+  inspection's `date`, a trap catch's `caught_on`. A server default is the fallback for a caller
+  that sends nothing, not the expected path.
+- **Every day a client sends is bounded**: not after tomorrow (UTC), not before 1900-01-01. The
+  day of slack is deliberate — a caller east of UTC is already on tomorrow's date and must not be
+  rejected for it. The floor catches a mistyped year (`1026`, `0226`) rather than any real record.
+
+  This paragraph used to say the inspection `date` was validated that way while nothing in the
+  backend checked it: a visit dated in the year 3000 was stored without complaint, and so was one
+  dated 1026 (#446). The contract promised it first and the code followed later, which is the
+  order this file exists to prevent.
 
 ### Localisation
 
-The API returns error messages in the language indicated by the `Accept-Language` request header (`en`, `fr`, `de`, `es`). All other user-facing strings (field names, labels) are managed client-side. The user's preferred locale is stored on the user object.
+The API returns error messages in the language indicated by the `Accept-Language` request header
+(`en`, `fr`, `de`, `es`, `pl` — Polish was missing from this sentence long after it shipped
+everywhere else). An unsupported tag falls back to English. All other user-facing strings (field
+names, labels) are managed client-side, **except** the field names inside a validation message,
+which the server has to translate because it is the one naming the field. The user's preferred
+locale is stored on the user object.
 
 ### Error envelope
 
@@ -101,6 +113,64 @@ A few errors come from FastAPI itself rather than from us, and those carry a pla
 `{"detail": "Not Found"}`. A client has to read both shapes.
 
 Every error body in this document uses this shape.
+
+### Validation errors (422)
+
+A rejected field keeps **pydantic's array shape**, because the web client and Android were
+written against it and read it already:
+
+```json
+{
+  "detail": [
+    {
+      "type": "less_than_equal",
+      "loc": ["body", "brood_frames"],
+      "msg": "Brutrahmen: höchstens 10.",
+      "input": 12,
+      "ctx": {"le": 10}
+    }
+  ]
+}
+```
+
+**`msg` is a finished sentence for the user, in the `Accept-Language` language**, naming the field
+the way the interface names it. It used to be pydantic's own English — *"Input should be less than
+or equal to 10"* — and `lib/api.ts` joins those straight into what the beekeeper reads, so a German
+user who mistyped the frame count was shown an English sentence about input (#446). The rest of the
+item is untouched, so a client that wants to mark the offending field still reads `loc`, and one
+that wants its own wording still reads `type` and `ctx`.
+
+`type` and `ctx` are pydantic's. A client should not parse `msg`.
+
+### Value ranges
+
+Anything outside these is refused with a 422. They exist to catch a typo, not to be clever: the
+ceilings are generous for any real practice.
+
+| Field | Range |
+|---|---|
+| `brood_frames`, `honey_frames` | 0–10 |
+| `population_strength` | 1–3 |
+| `varroa_level` | 0–3 |
+| `varroa_count` | 0–1000 |
+| `weight_kg` | 0–500 |
+| `latitude` | −90 to 90 |
+| `longitude` | −180 to 180 |
+| a date a client **records** — `date`, `caught_on`, `done_on`, `moved_on`, `acquisition_date` | 1900-01-01 to tomorrow (UTC) — see **Dates & Times** |
+| a date a client **plans** — `due_on` | 1900-01-01 to 31 December fifty years from now |
+| trap catch `count` | 1–500 |
+| hornet sighting `count` | 1–1000 |
+
+A planned day has no ceiling at today: a treatment is due precisely in the future, and the bound
+that is right for a visit would make planning impossible. It keeps the floor, and a far ceiling
+for the same typo in the other direction (`3026` for `2026`).
+
+`acquisition_date` is in the recorded list and was the one this table missed on the first pass: a
+guard that knew four field names by heart passed while it sat unbounded in three schemas. The
+guard now demands that *every* date in a request schema is bounded, or named with its reason.
+
+`latitude` and `longitude` were bounded only on a hive move; an apiary, a sighting and a trap all
+accepted `999` and put it on the **public** community map (#446).
 
 ---
 

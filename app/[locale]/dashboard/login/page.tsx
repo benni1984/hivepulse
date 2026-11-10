@@ -73,12 +73,12 @@ export default function LoginPage() {
         {emailFormVisible && (
           <form onSubmit={handleSubmit}>
             <div className="dash-form-group">
-              <label>{t('login.email')}</label>
-              <input type="email" value={email} onChange={e => setEmail(e.target.value)} required autoFocus />
+              <label htmlFor="login-email">{t('login.email')}</label>
+              <input id="login-email" autoComplete="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required autoFocus />
             </div>
             <div className="dash-form-group">
-              <label>{t('login.password')}</label>
-              <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+              <label htmlFor="login-password">{t('login.password')}</label>
+              <input id="login-password" autoComplete="current-password" type="password" value={password} onChange={e => setPassword(e.target.value)} required />
             </div>
             <button className="dash-submit-btn" type="submit" disabled={loading}>
               {loading ? '…' : t('login.submit')}

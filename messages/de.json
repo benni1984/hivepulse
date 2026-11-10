@@ -63,7 +63,7 @@
     },
     "track": {
       "title": "Intelligentes Tracking",
-      "desc": "Verfolge Bruträhmenzahl, Varroabefall, Weiselstand, Honigvorräte und Stimmung über Zeit. Erkenne Trends, bevor sie zu Problemen werden."
+      "desc": "Verfolge Brutrahmenzahl, Varroabefall, Weiselstand, Honigvorräte und Stimmung über Zeit. Erkenne Trends, bevor sie zu Problemen werden."
     },
     "global": {
       "title": "Globaler Datenpool",
@@ -527,6 +527,7 @@
         "title": "Benutzerverwaltung",
         "search": "Nach E-Mail suchen…",
         "all": "Alle",
+        "supporterFilter": "Nach Unterstützer-Status filtern",
         "supportersOnly": "Nur Supporter",
         "email": "E-Mail",
         "name": "Name",
@@ -676,7 +677,10 @@
       "varroa": "Varroa",
       "mood": "Stimmung",
       "queen": "Königin gesehen",
-      "brood": "Bruträhmchen",
+      "brood": "Brutrahmen",
+      "honey": "Honigrahmen",
+      "weight": "Gewicht (kg)",
+      "treatmentApplied": "Behandlung",
       "yes": "Ja",
       "no": "Nein",
       "hiveType": "Beutentyp",
@@ -788,7 +792,7 @@
       "health": "Gesundheitsdurchschnitte",
       "avgVarroa": "Ø Varroa (global)",
       "goodMood": "Völker: gute Stimmung",
-      "avgBrood": "Ø Brutwaben",
+      "avgBrood": "Ø Brutrahmen",
       "interval": "Ø Kontrollintervall",
       "moodChart": "Völkerstimmung",
       "cityChart": "Völker nach Stadt (Top 15)",
@@ -1044,7 +1048,7 @@
     "stat": {
       "avgVarroa": "Durchschn. Varroa (global)",
       "goodMood": "Völker: Gute Stimmung",
-      "avgBrood": "Durchschn. Brutwaben",
+      "avgBrood": "Durchschn. Brutrahmen",
       "interval": "Durchschn. Kontrollintervall"
     },
     "coming": {
@@ -1106,7 +1110,7 @@
       },
       "inspections": {
         "title": "Eine Kontrolle erfassen",
-        "desc": "Jeden Besuch an einem Volk festhalten: Varroa-Zahl, Volksstimmung, Königinnennachweis, Brutwaben, Honigwaben, Gewicht, Behandlungen und mehr."
+        "desc": "Jeden Besuch an einem Volk festhalten: Varroa-Zahl, Volksstimmung, Königinnennachweis, Brutrahmen, Honigrahmen, Gewicht, Behandlungen und mehr."
       },
       "data-export": {
         "title": "Daten exportieren",
@@ -1114,11 +1118,11 @@
       },
       "hive-stats": {
         "title": "Volksstatistiken",
-        "desc": "Die Volksgesundheit im Zeitverlauf verstehen: Varroa-Trenddiagramme, Stimmungsverteilung, Königinnen-Sichtungsrate, Brutwabenzahl und Kontrollintervalle."
+        "desc": "Die Volksgesundheit im Zeitverlauf verstehen: Varroa-Trenddiagramme, Stimmungsverteilung, Königinnen-Sichtungsrate, Brutrahmenzahl und Kontrollintervalle."
       },
       "community-stats": {
         "title": "Gemeinschaftsstatistiken (Mitglieder)",
-        "desc": "Ihren Bienenstand mit der HivePulse-Gemeinschaft vergleichen — durchschnittliche Varroa-Zahlen, gute-Stimmung-Raten, Brutwabenzahlen und Kontrollintervalle aller öffentlichen Bienenstände."
+        "desc": "Ihren Bienenstand mit der HivePulse-Gemeinschaft vergleichen — durchschnittliche Varroa-Zahlen, gute-Stimmung-Raten, Brutrahmenzahlen und Kontrollintervalle aller öffentlichen Bienenstände."
       },
       "hornet-tracker": {
         "title": "Hornissen-Tracker",
@@ -1376,5 +1380,8 @@
     "doneReplaced": "{replaced, plural, one {Eine davon hat ersetzt, was dieser Browser vorher gesagt hatte.} other {# davon haben ersetzt, was dieser Browser vorher gesagt hatte.}}",
     "doneNext": "Noch hat sich nichts geändert. Sobald fünf Imker in deiner Nähe übereinstimmen, geht die Korrektur an jemanden, der sie freigeben kann.",
     "doneAgain": "Eine andere Region bewerten"
+  },
+  "tour": {
+    "showMe": "Zeig es mir"
   }
 }

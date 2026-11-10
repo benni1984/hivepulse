@@ -45,6 +45,26 @@ export const RELEASES: Release[] = [
     ),
     items: [
       {
+        kind: 'added',
+        text: t(
+          'The inspection form on the website now records honey frames, weight, the treatment applied and notes. The apps had them, the help page described them and the server stored them — only the website\u2019s form was missing the four fields.',
+          'Das Kontrollformular auf der Website erfasst jetzt Honigrahmen, Gewicht, die angewandte Behandlung und Notizen. Die Apps hatten sie, die Hilfeseite beschrieb sie und der Server speicherte sie \u2014 nur im Formular der Website fehlten die vier Felder.',
+          'Le formulaire de visite sur le site enregistre maintenant les cadres de miel, le poids, le traitement appliqu\u00e9 et les notes. Les applications les avaient, la page d\u2019aide les d\u00e9crivait et le serveur les stockait \u2014 seul le formulaire du site n\u2019avait pas ces quatre champs.',
+          'El formulario de revisi\u00f3n de la web ahora registra cuadros de miel, peso, el tratamiento aplicado y notas. Las apps los ten\u00edan, la p\u00e1gina de ayuda los describ\u00eda y el servidor los guardaba \u2014 solo faltaban los cuatro campos en el formulario de la web.',
+          'Formularz przegl\u0105du na stronie zapisuje teraz ramki z miodem, wag\u0119, zastosowane leczenie i notatki. Aplikacje je mia\u0142y, strona pomocy je opisywa\u0142a, a serwer je przechowywa\u0142 \u2014 brakowa\u0142o tylko tych czterech p\u00f3l w formularzu strony.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'Every field on the website can now be reached by its label. Of 102 fields, 50 had no name a screen reader could read: clicking the label above a box did nothing, and no password manager offered to fill in or save anything \u2014 not even on the sign-in and sign-up pages. With a mouse the forms looked fine, which is why nobody noticed.',
+          'Jedes Feld auf der Website ist jetzt \u00fcber seine Beschriftung erreichbar. Von 102 Feldern hatten 50 keinen Namen, den ein Screenreader lesen kann: ein Klick auf die Beschriftung \u00fcber einem Kasten tat nichts, und kein Passwortmanager bot an, etwas auszuf\u00fcllen oder zu speichern \u2014 auch nicht beim Anmelden und Registrieren. Mit der Maus sahen die Formulare richtig aus, deshalb fiel es niemandem auf.',
+          'Chaque champ du site est maintenant accessible par son libell\u00e9. Sur 102 champs, 50 n\u2019avaient aucun nom lisible par un lecteur d\u2019\u00e9cran : cliquer sur le libell\u00e9 au-dessus d\u2019une case ne faisait rien, et aucun gestionnaire de mots de passe ne proposait de remplir ou d\u2019enregistrer quoi que ce soit \u2014 m\u00eame pas sur les pages de connexion et d\u2019inscription. \u00c0 la souris, les formulaires avaient l\u2019air corrects, et c\u2019est pourquoi personne ne l\u2019a remarqu\u00e9.',
+          'Ahora se puede acceder a cada campo de la web por su etiqueta. De 102 campos, 50 no ten\u00edan un nombre que un lector de pantalla pudiera leer: pulsar la etiqueta encima de una casilla no hac\u00eda nada, y ning\u00fan gestor de contrase\u00f1as ofrec\u00eda rellenar ni guardar nada \u2014 ni siquiera en las p\u00e1ginas de inicio de sesi\u00f3n y registro. Con el rat\u00f3n los formularios parec\u00edan correctos, y por eso nadie se dio cuenta.',
+          'Do ka\u017cdego pola na stronie mo\u017cna teraz dotrze\u0107 przez jego etykiet\u0119. Z 102 p\u00f3l 50 nie mia\u0142o nazwy, kt\u00f3r\u0105 m\u00f3g\u0142by odczyta\u0107 czytnik ekranu: klikni\u0119cie etykiety nad polem nic nie robi\u0142o, a \u017caden mened\u017cer hase\u0142 nie proponowa\u0142 wype\u0142nienia ani zapisania \u2014 nawet na stronach logowania i rejestracji. Przy myszce formularze wygl\u0105da\u0142y poprawnie, dlatego nikt tego nie zauwa\u017cy\u0142.',
+        ),
+      },
+      {
         kind: 'fixed',
         text: t(
           'In the evening the apps and the website filed things under the wrong day. From about ten at night in central Europe, a new inspection, a hornet report and a treatment marked as done were all dated to the day before. The trap catches were the worst of it: there is one count per trap per day, so an evening entry overwrote the previous day’s number instead of recording its own. Every screen now sends the day your own phone or computer shows.',
@@ -72,6 +92,16 @@ export const RELEASES: Release[] = [
           'Un téléphone réglé sur un calendrier autre que grégorien inscrivait l’année de ce calendrier dans la date. Sur un téléphone utilisant le calendrier bouddhiste thaï, nous sommes en 2569, et c’est ce qui était enregistré. Les dates envoyées au serveur sont désormais toujours grégoriennes, quoi qu’affiche le téléphone.',
           'Un teléfono configurado con un calendario distinto del gregoriano escribía el año de ese calendario en la fecha. En un teléfono con el calendario budista tailandés, hoy es el año 2569, y eso es lo que se guardaba. Las fechas que van al servidor son ahora siempre gregorianas, sea lo que sea que muestre el teléfono.',
           'Telefon ustawiony na kalendarz inny niż grigoriański wpisywał w datę rok tego kalendarza. Na telefonie z tajskim kalendarzem buddyjskim dzisiaj jest rok 2569 — i to było zapisywane. Daty wysyłane na serwer są teraz zawsze grigoriańskie, niezależnie od tego, co pokazuje telefon.',
+        ),
+      },
+      {
+        kind: 'changed',
+        text: t(
+          'Two fields are called the same thing everywhere now. In German, honey frames are “Honigrahmen”, beside brood frames as “Brutrahmen” — the chart next to the field said “Honigrähmchen-Verlauf”, a third word for the same thing. In Spanish the mood field is “Comportamiento” on every platform: Android said “Estado de ánimo”, one page said “Buen humor”, and the help pages called brood frames “marcos de cría” where every screen says “Cuadros de cría”.',
+          'Zwei Felder heißen jetzt überall gleich. Auf Deutsch sind Honigwaben „Honigrahmen“, passend zu „Brutrahmen“ — das Diagramm neben dem Feld sagte „Honigrähmchen-Verlauf“, ein drittes Wort für dieselbe Sache. Auf Spanisch heißt das Stimmungsfeld auf jeder Plattform „Comportamiento“: Android sagte „Estado de ánimo“, eine Seite „Buen humor“, und die Hilfeseiten nannten Brutrahmen „marcos de cría“, während jeder Bildschirm „Cuadros de cría“ sagt.',
+          'Deux champs portent désormais le même nom partout. En allemand, les cadres de miel s’appellent « Honigrahmen », à côté de « Brutrahmen » pour le couvain — le graphique voisin disait « Honigrähmchen-Verlauf », un troisième mot pour la même chose. En espagnol, le champ d’humeur s’appelle « Comportamiento » sur toutes les plateformes : Android disait « Estado de ánimo », une page « Buen humor », et les pages d’aide appelaient les cadres de couvain « marcos de cría » alors que chaque écran dit « Cuadros de cría ».',
+          'Dos campos se llaman ahora igual en todas partes. En alemán, los cuadros de miel son «Honigrahmen», junto a «Brutrahmen» para la cría — el gráfico de al lado decía «Honigrähmchen-Verlauf», una tercera palabra para lo mismo. En español, el campo de comportamiento se llama «Comportamiento» en todas las plataformas: Android decía «Estado de ánimo», una página «Buen humor», y las páginas de ayuda llamaban «marcos de cría» a lo que cada pantalla llama «Cuadros de cría».',
+          'Dwa pola nazywają się teraz wszędzie tak samo. Po niemiecku ramki z miodem to „Honigrahmen”, obok „Brutrahmen” dla czerwiu — wykres obok pola mówił „Honigrähmchen-Verlauf”, trzecie słowo na to samo. Po hiszpańsku pole temperamentu to „Comportamiento” na każdej platformie: Android mówił „Estado de ánimo”, jedna strona „Buen humor”, a strony pomocy nazywały ramki z czerwiem „marcos de cría”, choć każdy ekran mówi „Cuadros de cría”.',
         ),
       },
     ],

@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import React from 'react';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
@@ -57,8 +59,23 @@ describe('Footer', () => {
 
   it('links the legal section to help and privacy', () => {
     render(<Footer />);
-    expect(screen.getByRole('link', { name: /Help/ })).toHaveAttribute('href', '/help');
+    // 'help' is the translation key, as 'privacy' next to it is. It used to be the literal
+    // English "Help & Docs" written into the component, so a German page said "Hilfe" in the top
+    // nav and "Help & Docs" in the footer for the same destination — not a missing translation
+    // but one that existed in all five languages and was walked past (#447).
+    expect(screen.getByRole('link', { name: 'help' })).toHaveAttribute('href', '/help');
     expect(screen.getByRole('link', { name: 'privacy' })).toHaveAttribute('href', '/privacy');
+  });
+
+  it('writes no visible English into the component itself', () => {
+    // Everything a reader sees comes from the catalogue. The exceptions are names that are the
+    // same in every language, and they are listed here so adding one is a decision.
+    const BRAND_NAMES = ['GitHub', 'Ko-fi', 'PayPal', 'Hive', 'Pulse'];
+    const source = readFileSync(join(process.cwd(), 'components', 'Footer.tsx'), 'utf8');
+    const visible = [...source.matchAll(/>([A-Za-z][A-Za-z0-9 &;'.,!?/-]{2,40})</g)]
+      .map(m => m[1].trim())
+      .filter(text => text && !BRAND_NAMES.includes(text));
+    expect(visible, `hardcoded text in Footer.tsx: ${visible.join(', ')}`).toEqual([]);
   });
 
   it('renders the copyright and tagline text', () => {

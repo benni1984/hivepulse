@@ -284,8 +284,8 @@ export default function HornetTrapsPage() {
               <label style={labelStyle}>
                 {t('report.latitude')}
                 <div style={{ display: 'flex', gap: '8px' }}>
-                  <input className="hornets-input" type="number" step="any" value={regLat} onChange={e => setRegLat(e.target.value)} required style={{ flex: 1 }} />
-                  <input className="hornets-input" type="number" step="any" value={regLon} onChange={e => setRegLon(e.target.value)} placeholder={t('report.longitude')} required style={{ flex: 1 }} />
+                  <input className="hornets-input" type="number" step="any" min={-90} max={90} value={regLat} onChange={e => setRegLat(e.target.value)} required style={{ flex: 1 }} />
+                  <input className="hornets-input" type="number" step="any" min={-180} max={180} value={regLon} onChange={e => setRegLon(e.target.value)} placeholder={t('report.longitude')} required style={{ flex: 1 }} />
                   <button type="button" className="hornets-gps-btn" onClick={fillGps} disabled={regGpsLoading} title={t('traps.gps')}>
                     {regGpsLoading ? '…' : '📍'}
                   </button>
@@ -366,7 +366,7 @@ export default function HornetTrapsPage() {
                 </label>
                 <label style={{ ...labelStyle, flex: '1 1 160px' }}>
                   {t('traps.date')}
-                  <input className="hornets-input" type="date" value={logDate} onChange={e => setLogDate(e.target.value)} required />
+                  <input className="hornets-input" type="date" value={logDate} max={todayLocal()} onChange={e => setLogDate(e.target.value)} required />
                 </label>
                 <button className="hornets-submit-btn" type="submit" disabled={logLoading} style={{ alignSelf: 'flex-end' }}>
                   {logLoading ? '…' : t('traps.logSubmit')}

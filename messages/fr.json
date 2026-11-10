@@ -527,6 +527,7 @@
         "title": "Gestion des utilisateurs",
         "search": "Rechercher par e-mail…",
         "all": "Tous",
+        "supporterFilter": "Filtrer par statut de soutien",
         "supportersOnly": "Supporters uniquement",
         "email": "E-mail",
         "name": "Nom",
@@ -677,6 +678,9 @@
       "mood": "Humeur",
       "queen": "Reine vue",
       "brood": "Cadres de couvain",
+      "honey": "Cadres de miel",
+      "weight": "Poids (kg)",
+      "treatmentApplied": "Traitement appliqué",
       "yes": "Oui",
       "no": "Non",
       "hiveType": "Type de ruche",
@@ -1376,5 +1380,8 @@
     "doneReplaced": "{replaced, plural, one {L’un d’eux a remplacé ce que ce navigateur avait dit auparavant.} other {# d’entre eux ont remplacé ce que ce navigateur avait dit auparavant.}}",
     "doneNext": "Rien n’a encore changé. Dès que cinq apiculteurs près de vous seront d’accord, la correction partira vers quelqu’un qui peut la valider.",
     "doneAgain": "Évaluer une autre région"
+  },
+  "tour": {
+    "showMe": "Montrez-moi"
   }
 }

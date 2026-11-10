@@ -43,7 +43,11 @@ struct InspectionFormView: View {
         NavigationStack {
             Form {
                 Section(NSLocalizedString("section.date", comment: "")) {
-                    DatePicker(NSLocalizedString("field.date", comment: ""), selection: $date, displayedComponents: .date)
+                    // A visit cannot have happened tomorrow. The same bound MoveScreens already
+                    // had, and the server now refuses the rest (#446) — but a picker that cannot
+                    // offer the day is better than a refusal after a round trip.
+                    DatePicker(NSLocalizedString("field.date", comment: ""), selection: $date,
+                               in: ...Date(), displayedComponents: .date)
                 }
 
                 Section(NSLocalizedString("section.queen", comment: "")) {

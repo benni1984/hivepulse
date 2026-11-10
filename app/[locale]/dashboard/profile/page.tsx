@@ -200,8 +200,8 @@ export default function ProfilePage() {
           )}
           <form onSubmit={handleProfileSave}>
             <div className="dash-form-group">
-              <label>{t('name')}</label>
-              <input
+              <label htmlFor="profile-name">{t('name')}</label>
+              <input id="profile-name" autoComplete="name"
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
@@ -210,8 +210,8 @@ export default function ProfilePage() {
               />
             </div>
             <div className="dash-form-group">
-              <label>{t('language')}</label>
-              <select
+              <label htmlFor="profile-language">{t('language')}</label>
+              <select id="profile-language"
                 className="dash-profile-select"
                 value={locale}
                 onChange={e => setLocale(e.target.value)}
@@ -242,8 +242,8 @@ export default function ProfilePage() {
             )}
             <form onSubmit={handlePasswordSave}>
               <div className="dash-form-group">
-                <label>{t('currentPassword')}</label>
-                <input
+                <label htmlFor="profile-current-password">{t('currentPassword')}</label>
+                <input id="profile-current-password"
                   type="password"
                   value={currentPw}
                   onChange={e => setCurrentPw(e.target.value)}
@@ -252,8 +252,8 @@ export default function ProfilePage() {
                 />
               </div>
               <div className="dash-form-group">
-                <label>{t('newPassword')}</label>
-                <input
+                <label htmlFor="profile-new-password">{t('newPassword')}</label>
+                <input id="profile-new-password"
                   type="password"
                   value={newPw}
                   onChange={e => setNewPw(e.target.value)}
@@ -263,8 +263,8 @@ export default function ProfilePage() {
                 />
               </div>
               <div className="dash-form-group">
-                <label>{t('confirmPassword')}</label>
-                <input
+                <label htmlFor="profile-confirm-password">{t('confirmPassword')}</label>
+                <input id="profile-confirm-password"
                   type="password"
                   value={confirmPw}
                   onChange={e => setConfirmPw(e.target.value)}
@@ -312,9 +312,9 @@ export default function ProfilePage() {
 
             <div style={{ opacity: reminderEnabled ? 1 : 0.4, pointerEvents: reminderEnabled ? 'auto' : 'none' }}>
               <div className="dash-form-group">
-                <label>{t('reminderInterval')}</label>
+                <label htmlFor="profile-reminder-interval">{t('reminderInterval')}</label>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <input
+                  <input id="profile-reminder-interval"
                     type="number"
                     min={1}
                     max={365}
@@ -329,8 +329,8 @@ export default function ProfilePage() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <div className="dash-form-group">
-                  <label>{t('reminderSeasonStart')}</label>
-                  <select
+                  <label htmlFor="profile-season-start">{t('reminderSeasonStart')}</label>
+                  <select id="profile-season-start"
                     className="dash-profile-select"
                     value={reminderSeasonStart}
                     onChange={e => setReminderSeasonStart(Number(e.target.value))}
@@ -342,8 +342,8 @@ export default function ProfilePage() {
                   </select>
                 </div>
                 <div className="dash-form-group">
-                  <label>{t('reminderSeasonEnd')}</label>
-                  <select
+                  <label htmlFor="profile-season-end">{t('reminderSeasonEnd')}</label>
+                  <select id="profile-season-end"
                     className="dash-profile-select"
                     value={reminderSeasonEnd}
                     onChange={e => setReminderSeasonEnd(Number(e.target.value))}
