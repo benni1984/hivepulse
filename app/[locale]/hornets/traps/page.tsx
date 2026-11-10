@@ -11,6 +11,7 @@ import {
   type HornetTrap,
   type HornetTrapNearby,
 } from '@/lib/api';
+import { todayLocal } from '@/lib/dates';
 
 type Mode = 'home' | 'nearby' | 'search' | 'register' | 'trapDetail';
 
@@ -39,7 +40,7 @@ export default function HornetTrapsPage() {
 
   // Log catch form
   const [logCount, setLogCount] = useState('1');
-  const [logDate, setLogDate] = useState(new Date().toISOString().slice(0, 10));
+  const [logDate, setLogDate] = useState(todayLocal());
   const [logLoading, setLogLoading] = useState(false);
   const [logSuccess, setLogSuccess] = useState('');
   const [logError, setLogError] = useState('');

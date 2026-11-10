@@ -6,6 +6,7 @@ import com.hivepulse.app.data.api.PlannedTreatmentOut
 import com.hivepulse.app.data.api.TreatmentCreateRequest
 import com.hivepulse.app.data.api.withServerMessage
 import retrofit2.Response
+import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,7 +29,10 @@ class TreatmentRepository @Inject constructor(private val api: ApiService) {
     suspend fun create(request: TreatmentCreateRequest): PlannedTreatmentOut =
         withServerMessage { api.createTreatment(request) }
 
-    suspend fun markDone(id: String): PlannedTreatmentOut = withServerMessage { api.markTreatmentDone(id, emptyMap()) }
+    /** Marking something done sends the phone's day. Left out, the server falls back to its UTC day,
+     *  which from about 22:00 in Europe is yesterday — the treatment would be filed a day early (#443). */
+    suspend fun markDone(id: String): PlannedTreatmentOut =
+        withServerMessage { api.markTreatmentDone(id, mapOf("done_on" to LocalDate.now().toString())) }
 
     suspend fun reopen(id: String): PlannedTreatmentOut = withServerMessage { api.reopenTreatment(id) }
 

@@ -140,13 +140,21 @@ class TreatmentRepositoryTest {
     }
 
     @Test
-    fun `marking done sends an empty body so the server uses today`() = runTest {
+    fun `marking done sends the phone's own day, never an empty body`() = runTest {
+        // This test used to assert the opposite, and that is how the bug got in: an empty body lets
+        // the server fall back to its own UTC day. Every stored timestamp is UTC on purpose, but
+        // from about 22:00 in Europe the UTC day is yesterday, so a treatment finished on Friday
+        // evening was filed as Thursday's (#443). The phone knows the day; it sends it.
         val bodies = mutableListOf<Map<String, String>>()
         coEvery { api.markTreatmentDone("t1", capture(bodies)) } returns treatment(doneOn = "2026-10-07")
 
         repo.markDone("t1")
 
-        assertTrue(bodies.single().isEmpty())
+        val body = bodies.single()
+        assertEquals(mapOf("done_on" to LocalDate.now().toString()), body)
+        // LocalDate, not SimpleDateFormat with the default locale: that one follows the reader's
+        // calendar, so a phone set to the Thai Buddhist calendar would send the year 2569.
+        assertTrue(body.getValue("done_on").matches(Regex("""\d{4}-\d{2}-\d{2}""")))
     }
 
     @Test

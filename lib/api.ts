@@ -1,3 +1,5 @@
+import { todayLocal } from './dates';
+
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000/api/v1';
 
 function extractDetail(err: Record<string, unknown>, fallback: string): string {
@@ -374,7 +376,12 @@ export async function createTreatment(input: {
 }
 
 export async function markTreatmentDone(id: string, doneOn?: string): Promise<PlannedTreatment> {
-  const res = await apiFetch(`/treatments/${id}/done`, { method: 'POST', body: JSON.stringify(doneOn ? { done_on: doneOn } : {}) });
+  // Always send a day. Left out, the server falls back to its own UTC day, which from about 22:00
+  // in Europe is yesterday — the treatment would be filed a day before it was done (#443).
+  const res = await apiFetch(`/treatments/${id}/done`, {
+    method: 'POST',
+    body: JSON.stringify({ done_on: doneOn ?? todayLocal() }),
+  });
   if (!res.ok) throw new Error('Failed to mark the treatment as done');
   return res.json();
 }
