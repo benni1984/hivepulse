@@ -37,6 +37,48 @@ export const RELEASES: Release[] = [
   {
     date: '2026-11-10',
     title: t(
+      'What day it is, asked in one place',
+      'Welcher Tag es ist, an einer Stelle gefragt',
+      'Quel jour on est, demandé en un seul endroit',
+      'Qué día es, preguntado en un solo sitio',
+      'Który jest dzień, pytane w jednym miejscu',
+    ),
+    items: [
+      {
+        kind: 'fixed',
+        text: t(
+          'In the evening the apps and the website filed things under the wrong day. From about ten at night in central Europe, a new inspection, a hornet report and a treatment marked as done were all dated to the day before. The trap catches were the worst of it: there is one count per trap per day, so an evening entry overwrote the previous day’s number instead of recording its own. Every screen now sends the day your own phone or computer shows.',
+          'Abends trugen die Apps und die Website Dinge unter dem falschen Tag ein. Ab etwa zehn Uhr abends bekamen eine neue Kontrolle, eine Hornissen-Meldung und eine als erledigt markierte Behandlung den Tag davor. Am schlimmsten waren die Fallenfänge: es gibt eine Zahl pro Falle und Tag, also überschrieb ein Eintrag am Abend die Zahl des Vortags statt seine eigene zu speichern. Jede Ansicht schickt jetzt den Tag, den dein eigenes Gerät anzeigt.',
+          'Le soir, les applications et le site enregistraient les choses au mauvais jour. À partir de vingt-deux heures environ en Europe centrale, une nouvelle visite, un signalement de frelon et un traitement marqué comme fait étaient datés de la veille. Le pire était les captures de pièges : il y a un comptage par piège et par jour, donc une saisie du soir écrasait le chiffre de la veille au lieu d’enregistrer le sien. Chaque écran envoie désormais le jour qu’affiche votre propre appareil.',
+          'Por la tarde, las apps y la web guardaban las cosas con el día equivocado. A partir de las diez de la noche aproximadamente en Europa central, una revisión nueva, un aviso de avispón y un tratamiento marcado como hecho llevaban la fecha del día anterior. Lo peor eran las capturas de las trampas: hay un recuento por trampa y día, así que una entrada de la tarde sobrescribía la cifra del día anterior en lugar de guardar la suya. Ahora cada pantalla envía el día que muestra tu propio dispositivo.',
+          'Wieczorem aplikacje i strona zapisywały rzeczy pod niewłaściwym dniem. Od około dwudziestej drugiej w Europie środkowej nowy przegląd, zgłoszenie szerszenia i zabieg oznaczony jako wykonany dostawały datę dnia poprzedniego. Najgorzej było z odłowami z pułapek: na pułapkę i dzień przypada jedna liczba, więc wieczorny wpis nadpisywał liczbę z poprzedniego dnia zamiast zapisać własną. Każdy ekran wysyła teraz dzień, który pokazuje twoje własne urządzenie.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'The reminder for a hive that has never been inspected could be a day out. It was worked out from two clocks at once — the day the hive was created, counted in one time zone, and today, counted in another. The one job of that date is to say when, so it now has a single answer.',
+          'Die Erinnerung für ein Volk, das noch nie kontrolliert wurde, konnte einen Tag daneben liegen. Sie wurde aus zwei Uhren zugleich berechnet — der Tag, an dem das Volk angelegt wurde, in einer Zeitzone gezählt, und heute, in einer anderen. Die einzige Aufgabe dieses Datums ist zu sagen, wann — also gibt es jetzt nur noch eine Antwort.',
+          'Le rappel pour une ruche jamais visitée pouvait être décalé d’un jour. Il était calculé à partir de deux horloges à la fois : le jour de création de la ruche, compté dans un fuseau, et aujourd’hui, compté dans un autre. Le seul rôle de cette date est de dire quand, elle n’a donc plus qu’une seule réponse.',
+          'El recordatorio de una colmena que nunca se ha revisado podía fallar por un día. Se calculaba con dos relojes a la vez: el día en que se creó la colmena, contado en una zona horaria, y hoy, contado en otra. La única tarea de esa fecha es decir cuándo, así que ahora tiene una sola respuesta.',
+          'Przypomnienie dla rodziny pszczelej, której nigdy nie przeglądano, mogło się mylić o jeden dzień. Liczono je z dwóch zegarów naraz: dnia utworzenia rodziny, liczonego w jednej strefie czasowej, i dzisiaj, liczonego w innej. Jedynym zadaniem tej daty jest powiedzieć kiedy — ma więc teraz jedną odpowiedź.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'A phone set to a calendar other than the Gregorian one wrote that calendar’s year into the date. On a phone using the Thai Buddhist calendar, today is the year 2569, and that is what was being saved. Dates sent to the server are now always Gregorian, whatever the phone shows.',
+          'Ein Telefon, das auf einen anderen als den gregorianischen Kalender eingestellt ist, schrieb dessen Jahr in das Datum. Auf einem Telefon mit thailändisch-buddhistischem Kalender ist heute das Jahr 2569 — und genau das wurde gespeichert. Daten, die zum Server gehen, sind jetzt immer gregorianisch, egal was das Telefon anzeigt.',
+          'Un téléphone réglé sur un calendrier autre que grégorien inscrivait l’année de ce calendrier dans la date. Sur un téléphone utilisant le calendrier bouddhiste thaï, nous sommes en 2569, et c’est ce qui était enregistré. Les dates envoyées au serveur sont désormais toujours grégoriennes, quoi qu’affiche le téléphone.',
+          'Un teléfono configurado con un calendario distinto del gregoriano escribía el año de ese calendario en la fecha. En un teléfono con el calendario budista tailandés, hoy es el año 2569, y eso es lo que se guardaba. Las fechas que van al servidor son ahora siempre gregorianas, sea lo que sea que muestre el teléfono.',
+          'Telefon ustawiony na kalendarz inny niż grigoriański wpisywał w datę rok tego kalendarza. Na telefonie z tajskim kalendarzem buddyjskim dzisiaj jest rok 2569 — i to było zapisywane. Daty wysyłane na serwer są teraz zawsze grigoriańskie, niezależnie od tego, co pokazuje telefon.',
+        ),
+      },
+    ],
+  },
+  {
+    date: '2026-11-10',
+    title: t(
       'The words the apps use, gone over one by one',
       'Die Worte der Apps, einmal durchgegangen',
       'Les mots des applications, repris un par un',

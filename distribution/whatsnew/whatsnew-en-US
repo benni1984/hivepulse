@@ -1,11 +1,10 @@
-HivePulse 1.0.3
+HivePulse 1.0.4
 
 New in this build:
-• The scan tab now shows a frame to aim with and says what it wants
-• Hive type and queen colour are translated instead of reading "Top Bar"
-• A refused sign-in says what was wrong again, instead of "HTTP 401"
-• Six labels are no longer buttons — TalkBack reads them as text
+• In the evening the app filed things under the day before: inspections, hornet reports, treatments ticked off
+• An evening trap catch overwrote the previous day's count instead of saving its own
+• The reminder for a hive never inspected could be a day out
 
-Please stay in the test and use the app now and then.
+Please stay in the test and keep using the app now and then.
 
 hivepulse@multihead.de

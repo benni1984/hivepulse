@@ -312,77 +312,65 @@ paragraph says what the app is rather than greeting the reader.
 
 ### What's New — max 4000
 
-The release this describes is **1.0.3**. It is the App Store's release notes; Play takes its own
+The release this describes is **1.0.4**. It is the App Store's release notes; Play takes its own
 from `distribution/whatsnew/` during the automated upload, and those are Android's four lines, not
 these. Keep the two apart: a fix that only happened on one platform belongs only in that
 platform's notes.
 
 **en**
 ```
-The scan tab opens the camera the moment you reach it — there used to be a page with a button and the scanner behind it in a sheet, which is one tap too many at the hive with gloves on. What that page said is now drawn over the preview, inside an amber frame to aim with.
+In the evening the app was filing things under the wrong day. From about ten at night, a new inspection, a hornet report and a treatment ticked off all came out dated to the day before. The reason is that the server counts the day in UTC, deliberately — every timestamp it keeps is UTC, and anything else would depend on where the machine happens to run — and the app was letting it decide. From 22:00 the server's day and your day are not the same day.
 
-A sign-in that was refused says what was wrong again. It used to say "Session expired. Please sign in again", which was not true and asked you to do the thing you had just done. Behind it sat a larger fault: the app read the server's error messages from the wrong field, so every refused action — a name already taken, a form it would not accept, a hive that no longer exists — came out as "Unknown error".
+On most screens that cost a date in a list. On the hornet traps it cost data: a catch is one count per trap per day, so emptying the traps late wrote the evening's number over the previous day's and left no sign of it. Every screen now sends the day your own phone shows.
 
-The colony mood no longer appears in English on a German, French, Spanish or Polish page.
+The reminder for a hive that has never been inspected could also be a day out. It was worked out from two clocks at once — the day the hive was made, counted one way, and today, counted another. The one job of that date is to say when, so it has a single answer now.
 
-The German texts now say "du" throughout. A dozen screens had said "Sie", often one screen after another.
-
-And the version number in Settings and TestFlight is the real one: every build so far called itself 1.0.0.
+And a phone set to a calendar other than the Gregorian one wrote that calendar's year into the date: on the Thai Buddhist calendar, today is the year 2569. Dates are always Gregorian now, whatever the phone shows.
 ```
 
 **de**
 ```
-Der Scan-Reiter öffnet die Kamera, sobald du ihn erreichst — vorher war dort eine Seite mit einem Knopf und der Scanner dahinter in einem Blatt, was am Volk mit Handschuhen ein Tipp zu viel ist. Was die Seite sagte, steht jetzt über der Vorschau, in einem amberfarbenen Rahmen zum Zielen.
+Abends trug die App Dinge unter dem falschen Tag ein. Ab etwa zweiundzwanzig Uhr bekamen eine neue Kontrolle, eine Hornissen-Meldung und eine abgehakte Behandlung den Tag davor. Der Grund: der Server zählt den Tag in UTC, und das mit Absicht — jeder Zeitstempel, den er behält, ist UTC, alles andere hänge davon ab, wo die Maschine gerade läuft — und die App ließ ihn entscheiden. Ab 22 Uhr sind der Tag des Servers und dein Tag nicht derselbe Tag.
 
-Eine abgelehnte Anmeldung sagt wieder, was falsch war. Vorher stand da „Sitzung abgelaufen. Bitte erneut anmelden", was nicht stimmte und genau das verlangte, was man gerade getan hatte. Dahinter lag ein größerer Fehler: die App las die Fehlermeldungen des Servers aus dem falschen Feld, also kam jede abgelehnte Handlung — ein Name, der schon vergeben ist, ein Formular, das so nicht angenommen wird, ein Volk, das es nicht mehr gibt — als „Unbekannter Fehler" heraus.
+Auf den meisten Ansichten kostet das ein Datum in einer Liste. Bei den Hornissenfallen kostete es Daten: ein Fang ist eine Zahl pro Falle und Tag, wer also spät die Fallen leerte, schrieb die Zahl des Abends über die des Vortags, ohne jede Spur. Jede Ansicht schickt jetzt den Tag, den dein eigenes Telefon anzeigt.
 
-Die Stimmung des Volkes steht nicht länger englisch auf einer deutschen, französischen, spanischen oder polnischen Seite.
+Auch die Erinnerung für ein noch nie kontrolliertes Volk konnte einen Tag daneben liegen. Sie wurde aus zwei Uhren zugleich berechnet — der Tag, an dem das Volk angelegt wurde, so gezählt, und heute, anders gezählt. Die einzige Aufgabe dieses Datums ist zu sagen, wann — also gibt es jetzt nur eine Antwort.
 
-Die deutschen Texte sagen jetzt durchweg „du". Auf einem Dutzend Bildschirmen stand „Sie", oft direkt hintereinander.
-
-Und die Versionsnummer in den Einstellungen und in TestFlight ist die richtige: jeder Build nannte sich bisher 1.0.0.
+Und ein Telefon, das auf einen anderen als den gregorianischen Kalender eingestellt ist, schrieb dessen Jahr in das Datum: im thailändisch-buddhistischen Kalender ist heute das Jahr 2569. Daten sind jetzt immer gregorianisch, egal was das Telefon anzeigt.
 ```
 
 **fr**
 ```
-L'onglet de scan ouvre la caméra dès que vous y arrivez — il y avait avant une page avec un bouton et le scanner derrière, dans une feuille, ce qui fait un geste de trop à la ruche avec des gants. Ce que disait cette page est désormais dessiné par-dessus l'aperçu, dans un cadre ambre pour viser.
+Le soir, l'application enregistrait les choses au mauvais jour. À partir de vingt-deux heures environ, une nouvelle visite, un signalement de frelon et un traitement coché étaient datés de la veille. La raison : le serveur compte le jour en UTC, volontairement — chaque horodatage qu'il conserve est en UTC, et autrement cela dépendrait de l'endroit où tourne la machine — et l'application le laissait décider. À partir de 22 h, le jour du serveur et le vôtre ne sont pas le même.
 
-Une connexion refusée dit à nouveau ce qui n'allait pas. Elle disait « Session expirée. Veuillez vous reconnecter », ce qui était faux et demandait exactement ce que vous veniez de faire. Derrière se cachait un défaut plus large : l'application lisait les messages d'erreur du serveur dans le mauvais champ, et toute action refusée — un nom déjà pris, un formulaire rejeté, une ruche qui n'existe plus — ressortait en « Erreur inconnue ».
+Sur la plupart des écrans, cela coûte une date dans une liste. Sur les pièges à frelons, cela coûtait des données : une capture est un comptage par piège et par jour, donc vider les pièges tard écrivait le chiffre du soir par-dessus celui de la veille, sans laisser de trace. Chaque écran envoie désormais le jour qu'affiche votre téléphone.
 
-L'humeur de la colonie n'apparaît plus en anglais sur une page allemande, française, espagnole ou polonaise.
+Le rappel d'une ruche jamais visitée pouvait aussi être décalé d'un jour. Il était calculé à partir de deux horloges à la fois : le jour de création de la ruche, compté d'une façon, et aujourd'hui, compté d'une autre. Le seul rôle de cette date est de dire quand, elle n'a donc plus qu'une seule réponse.
 
-Les textes allemands emploient désormais le tutoiement partout.
-
-Et le numéro de version dans les réglages et dans TestFlight est le bon : jusqu'ici, chaque version s'appelait 1.0.0.
+Enfin, un téléphone réglé sur un calendrier autre que grégorien inscrivait l'année de ce calendrier dans la date : dans le calendrier bouddhiste thaï, nous sommes en 2569. Les dates sont maintenant toujours grégoriennes.
 ```
 
 **es**
 ```
-La pestaña de escaneo abre la cámara en cuanto llegas a ella — antes había una página con un botón y el escáner detrás, en una hoja, lo que supone un toque de más en el colmenar con guantes. Lo que decía esa página se dibuja ahora sobre la vista previa, dentro de un marco ámbar para apuntar.
+Por la tarde la app guardaba las cosas con el día equivocado. A partir de las diez de la noche aproximadamente, una revisión nueva, un aviso de avispón y un tratamiento marcado llevaban la fecha del día anterior. El motivo: el servidor cuenta el día en UTC, a propósito — cada marca de tiempo que conserva es UTC, y cualquier otra cosa dependería de dónde se ejecute la máquina — y la app le dejaba decidir. Desde las 22:00, el día del servidor y el tuyo no son el mismo día.
 
-Un inicio de sesión rechazado vuelve a decir qué falló. Antes decía «Sesión caducada. Vuelve a iniciar sesión», que no era cierto y pedía justo lo que acababas de hacer. Detrás había un fallo mayor: la aplicación leía los mensajes de error del servidor del campo equivocado, así que toda acción rechazada — un nombre ya tomado, un formulario que no se acepta, una colmena que ya no existe — salía como «Error desconocido».
+En la mayoría de las pantallas eso cuesta una fecha en una lista. En las trampas para avispones costaba datos: una captura es un recuento por trampa y día, así que vaciar las trampas tarde escribía la cifra de la tarde encima de la del día anterior, sin dejar rastro. Ahora cada pantalla envía el día que muestra tu teléfono.
 
-El humor de la colonia ya no aparece en inglés en una página alemana, francesa, española o polaca.
+El recordatorio de una colmena que nunca se ha revisado también podía fallar por un día. Se calculaba con dos relojes a la vez: el día en que se creó la colmena, contado de una forma, y hoy, contado de otra. La única tarea de esa fecha es decir cuándo, así que ahora tiene una sola respuesta.
 
-Los textos alemanes ahora tutean en todas partes.
-
-Y el número de versión en los ajustes y en TestFlight es el real: hasta ahora cada compilación se llamaba 1.0.0.
+Y un teléfono configurado con un calendario distinto del gregoriano escribía el año de ese calendario en la fecha: en el calendario budista tailandés, hoy es el año 2569. Las fechas son ahora siempre gregorianas.
 ```
 
 **pl**
 ```
-Zakładka skanowania otwiera aparat w chwili, gdy do niej przejdziesz — wcześniej była tam strona z przyciskiem, a skaner za nią, w arkuszu, co w pasiece w rękawicach oznacza jedno dotknięcie za dużo. To, co mówiła ta strona, jest teraz narysowane na podglądzie, w bursztynowej ramce do celowania.
+Wieczorem aplikacja zapisywała rzeczy pod niewłaściwym dniem. Od około dwudziestej drugiej nowy przegląd, zgłoszenie szerszenia i odhaczony zabieg dostawały datę dnia poprzedniego. Przyczyna: serwer liczy dzień w UTC, i to celowo — każdy znacznik czasu, który przechowuje, jest w UTC, a inaczej zależałoby to od tego, gdzie akurat działa maszyna — a aplikacja pozwalała mu decydować. Od 22:00 dzień serwera i twój dzień to nie ten sam dzień.
 
-Odrzucone logowanie znów mówi, co było nie tak. Wcześniej pisało „Sesja wygasła. Zaloguj się ponownie", co nie było prawdą i żądało dokładnie tego, co właśnie zrobiłeś. Za tym stał większy błąd: aplikacja czytała komunikaty błędów serwera z niewłaściwego pola, więc każde odrzucone działanie — zajęta nazwa, formularz, który nie zostaje przyjęty, rodzina, której już nie ma — wychodziło jako „Nieznany błąd".
+Na większości ekranów kosztuje to datę na liście. Przy pułapkach na szerszenie kosztowało dane: odłów to jedna liczba na pułapkę i dzień, więc późne opróżnienie pułapek zapisywało wieczorną liczbę na liczbie z poprzedniego dnia, nie zostawiając śladu. Każdy ekran wysyła teraz dzień, który pokazuje twój telefon.
 
-Nastrój rodziny nie pojawia się już po angielsku na niemieckiej, francuskiej, hiszpańskiej ani polskiej stronie.
+Przypomnienie dla rodziny pszczelej, której nigdy nie przeglądano, też mogło się mylić o dzień. Liczono je z dwóch zegarów naraz: dnia utworzenia rodziny, liczonego w jeden sposób, i dzisiaj, liczonego w inny. Jedynym zadaniem tej daty jest powiedzieć kiedy — ma więc teraz jedną odpowiedź.
 
-Teksty niemieckie zwracają się teraz wszędzie na „du".
-
-A numer wersji w ustawieniach i w TestFlight jest prawdziwy: do tej pory każda kompilacja nazywała się 1.0.0.
+A telefon ustawiony na kalendarz inny niż grigoriański wpisywał w datę rok tego kalendarza: w tajskim kalendarzu buddyjskim dzisiaj jest rok 2569. Daty są teraz zawsze grigoriańskie.
 ```
-
----
 
 ## The other fields
 

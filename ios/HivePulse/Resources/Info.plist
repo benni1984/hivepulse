@@ -13,7 +13,7 @@
 	     it has to be edited here for every release. It sat at 1.0.0 while Play went to 1.0.2
 	     (#431); ReleaseNotes.test.ts now pins it against distribution/whatsnew/. -->
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.3</string>
+	<string>1.0.4</string>
 	<key>SENTRY_DSN</key>
 	<string>$(SENTRY_DSN)</string>
 	<key>CFBundleVersion</key>
