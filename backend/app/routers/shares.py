@@ -2,7 +2,6 @@
 import hashlib
 import logging
 import secrets
-from datetime import datetime
 from typing import Optional
 
 from fastapi import APIRouter, Header, HTTPException, Query, Request
@@ -19,6 +18,7 @@ from app.schemas import (
     IncomingShareOut, ShareCreate, ShareOut, ShareTarget, ShareTokenRequest,
 )
 from app.utils.mail import send_email
+from app.clock import now_utc
 
 logger = logging.getLogger(__name__)
 
@@ -167,7 +167,7 @@ def accept_share(
     share = _own_invitation(db, current_user, share_id, accept_language)
     if share.status == "pending":
         share.status = "accepted"
-        share.accepted_at = datetime.utcnow()
+        share.accepted_at = now_utc()
         share.token_hash = None  # a token works once
         db.commit()
 
@@ -214,7 +214,7 @@ def accept_by_token(
 
     share.grantee_user_id = current_user.id
     share.status = "accepted"
-    share.accepted_at = datetime.utcnow()
+    share.accepted_at = now_utc()
     share.token_hash = None
     db.commit()
     db.refresh(share)

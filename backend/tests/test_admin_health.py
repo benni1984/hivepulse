@@ -1,6 +1,9 @@
 """Tests for admin data health endpoints."""
-from datetime import datetime, timedelta
+from datetime import timedelta
 
+# The same clock the endpoint compares against (app/clock.py). datetime.utcnow() is deprecated in
+# Python 3.12 and was the last thing in this suite still raising that warning.
+from app.clock import now_utc
 from app.models import Hive, Inspection, User
 
 
@@ -14,7 +17,7 @@ def _register_and_login(client, email, name="User"):
 
 def _backdate_user(db_session, email, days=31):
     user = db_session.query(User).filter(User.email == email).first()
-    user.created_at = datetime.utcnow() - timedelta(days=days)
+    user.created_at = now_utc() - timedelta(days=days)
     db_session.commit()
 
 

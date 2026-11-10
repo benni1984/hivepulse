@@ -22,6 +22,7 @@ from passlib.context import CryptContext
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
+from app.clock import now_utc
 from app.utils.scales import varroa_level_from_count
 from app.models import (
     Base, User, Apiary, Hive, Inspection, QrBatch, QrToken,
@@ -50,11 +51,14 @@ def _hash(pw: str) -> str:
 def _trap_code() -> str:
     return secrets.token_urlsafe(6)[:8].upper()
 
+# The same clock the application uses (app/clock.py): the rows this writes are compared against
+# now_utc() at runtime, so seeding from the host's local time would put the fixtures a day out on
+# any machine that is not UTC (#443).
 def _ago(days: int) -> datetime:
-    return datetime.utcnow() - timedelta(days=days)
+    return now_utc() - timedelta(days=days)
 
 def _date_ago(days: int) -> date:
-    return (datetime.utcnow() - timedelta(days=days)).date()
+    return (now_utc() - timedelta(days=days)).date()
 
 HIVE_TYPES = ["dadant", "langstroth", "other"]
 QUEEN_COLORS = ["white", "yellow", "red", "green", "blue"]

@@ -2,6 +2,9 @@
 from datetime import datetime, timedelta, timezone
 
 import pytest
+# The same clock the endpoints use. With date.today() the test and the code disagree
+# between midnight local and midnight UTC, which is how #443 surfaced.
+from app.clock import today_utc
 
 
 ENDPOINT = "/api/v1/notifications/send-reminders"
@@ -191,7 +194,7 @@ def test_send_reminders_skips_recently_inspected_hives(auth_client, db_session):
     insp = Inspection(
         id=str(uuid.uuid4()),
         hive_id=hive.id,
-        date=date.today(),
+        date=today_utc(),
         created_at=datetime.now(timezone.utc),
     )
     db_session.add_all([apiary, batch, qr, hive, insp])

@@ -21,6 +21,7 @@ from app.schemas import (
     NoVarroaApiaryOut, PaginatedResponse, SignupDay, SupporterUpdate, UserOut,
     YearProposalApprove, YearProposalOut, YearRecomputeOut, ZeroInspectionHiveOut,
 )
+from app.clock import now_utc
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -185,7 +186,7 @@ def platform_stats(
     db: DB,
     preset: str = Query("30d", pattern="^(30d|90d|365d|all)$"),
 ) -> AdminPlatformStats:
-    now = datetime.utcnow()
+    now = now_utc()
     _days = {"30d": 30, "90d": 90, "365d": 365}
     cutoff: Optional[datetime] = None if preset == "all" else now - timedelta(days=_days[preset])
 
@@ -350,7 +351,7 @@ def _users_with_inspections_sq(db):
 
 
 def _inactive_users_q(db):
-    thirty_days_ago = datetime.utcnow() - timedelta(days=30)
+    thirty_days_ago = now_utc() - timedelta(days=30)
     return (
         db.query(User)
         .filter(User.created_at < thirty_days_ago)
@@ -468,7 +469,7 @@ def health_zero_inspection_hives(admin: CurrentAdmin, db: DB) -> list:
 # ---------------------------------------------------------------------------
 
 def _active_tokens_q(db, user_id: str):
-    now = datetime.utcnow()
+    now = now_utc()
     return (
         db.query(RefreshToken)
         .filter(
@@ -481,7 +482,7 @@ def _active_tokens_q(db, user_id: str):
 
 @router.get("/tokens/stats")
 def token_stats(admin: CurrentAdmin, db: DB) -> AdminTokenStats:
-    now = datetime.utcnow()
+    now = now_utc()
     active_q = db.query(RefreshToken).filter(
         RefreshToken.revoked.is_(False),
         RefreshToken.expires_at > now,
@@ -685,7 +686,7 @@ def approve_year_proposal(
             )
         row.shift_days = body.shift_days
     row.status = "approved"
-    row.decided_at = datetime.utcnow()
+    row.decided_at = now_utc()
     row.decided_by = admin.id
     db.commit()
     db.refresh(row)
@@ -697,7 +698,7 @@ def reject_year_proposal(proposal_id: str, admin: CurrentAdmin, db: DB) -> YearP
     """Reject it — and keep the row, so the next recompute does not offer the same group again."""
     row = _proposal_or_404(proposal_id, db)
     row.status = "rejected"
-    row.decided_at = datetime.utcnow()
+    row.decided_at = now_utc()
     row.decided_by = admin.id
     db.commit()
     db.refresh(row)

@@ -1,6 +1,7 @@
 from datetime import date, datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
+from app.clock import today_utc
 
 
 def _validate_photo_url(v: Optional[str]) -> Optional[str]:
@@ -716,7 +717,7 @@ class TreatmentDone(BaseModel):
 
     @model_validator(mode="after")
     def not_in_the_future(self):
-        if self.done_on is not None and self.done_on > date.today() + timedelta(days=1):
+        if self.done_on is not None and self.done_on > today_utc() + timedelta(days=1):
             raise ValueError("done_on cannot be in the future")
         return self
 
@@ -821,7 +822,7 @@ class MoveCreate(BaseModel):
         if bool(self.to_apiary_id) == bool(self.new_apiary):
             raise ValueError("give exactly one of to_apiary_id and new_apiary")
         # A day of slack: somebody east of the server may already be on tomorrow's date.
-        if self.moved_on is not None and self.moved_on > date.today() + timedelta(days=1):
+        if self.moved_on is not None and self.moved_on > today_utc() + timedelta(days=1):
             raise ValueError("moved_on cannot be in the future")
         return self
 

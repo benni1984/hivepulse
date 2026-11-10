@@ -1,6 +1,5 @@
 """Planned treatments: what is going to happen, for which hive or apiary, by when.
 See "Planned Treatments" in the API contract."""
-from datetime import date
 from typing import Optional
 
 from fastapi import APIRouter, Header, HTTPException, Query
@@ -14,6 +13,7 @@ from app.models import Apiary, Hive, PlannedTreatment
 from app.schemas import (
     PlannedTreatmentOut, TreatmentCreate, TreatmentDone, TreatmentTarget, TreatmentUpdate,
 )
+from app.clock import today_utc
 
 router = APIRouter(prefix="/treatments", tags=["treatments"])
 
@@ -33,7 +33,7 @@ def out(treatment: PlannedTreatment) -> PlannedTreatmentOut:
         due_on=treatment.due_on,
         note=treatment.note,
         done_on=treatment.done_on,
-        overdue=treatment.done_on is None and treatment.due_on < date.today(),
+        overdue=treatment.done_on is None and treatment.due_on < today_utc(),
         created_by_name=treatment.created_by.name if treatment.created_by else None,
         created_at=treatment.created_at,
     )
@@ -148,7 +148,7 @@ def mark_done(
 ):
     # The body is optional: marking something done today needs no more than the click.
     treatment = _get_or_404(db, current_user, treatment_id, accept_language)
-    treatment.done_on = (body.done_on if body else None) or date.today()
+    treatment.done_on = (body.done_on if body else None) or today_utc()
     db.commit()
     db.refresh(treatment)
     return out(treatment)

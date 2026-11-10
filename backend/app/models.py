@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, date
+from datetime import date
 
 from sqlalchemy import (
     Boolean, CheckConstraint, Column, Date, DateTime, Float, ForeignKey,
@@ -8,6 +8,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from app.database import Base
+from app.clock import now_utc
 
 
 def _uuid():
@@ -34,7 +35,7 @@ class User(Base):
     locale = Column(SAEnum("en", "fr", "de", "es", "pl", name="locale_enum"), default="en")
     is_admin = Column(Boolean, default=False, nullable=False)
     is_supporter = Column(Boolean, default=False, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=now_utc)
     # Inspection reminder preferences
     reminder_enabled = Column(Boolean, default=True, nullable=False)
     reminder_interval_days = Column(Integer, default=7, nullable=False)
@@ -71,7 +72,7 @@ class PasswordResetToken(Base):
     token      = Column(String, unique=True, nullable=False, index=True)
     expires_at = Column(DateTime, nullable=False)
     used_at    = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=now_utc)
 
     user = relationship("User")
 
@@ -100,7 +101,7 @@ class RateLimitHit(Base):
 
     id = Column(String, primary_key=True, default=_uuid)
     bucket_key = Column(String, nullable=False, index=True)
-    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+    created_at = Column(DateTime, default=now_utc, index=True)
 
 
 class Apiary(Base):
@@ -117,7 +118,7 @@ class Apiary(Base):
     city_name = Column(String, nullable=True)
     city_latitude = Column(Float, nullable=True)
     city_longitude = Column(Float, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=now_utc)
 
     user = relationship("User", back_populates="apiaries")
     hives = relationship("Hive", back_populates="apiary")
@@ -149,7 +150,7 @@ class QrBatch(Base):
     id = Column(String, primary_key=True, default=_uuid)
     user_id = Column(String, ForeignKey("users.id"), nullable=False)
     count = Column(Integer, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=now_utc)
 
     user = relationship("User", back_populates="qr_batches")
     tokens = relationship("QrToken", back_populates="batch", cascade="all, delete-orphan")
@@ -183,8 +184,8 @@ class Hive(Base):
     acquisition_date = Column(Date, nullable=True)
     notes = Column(Text, nullable=True)
     custom_fields = Column(JSON, default=dict)
-    initialized_at = Column(DateTime, default=datetime.utcnow)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    initialized_at = Column(DateTime, default=now_utc)
+    created_at = Column(DateTime, default=now_utc)
 
     apiary = relationship("Apiary", back_populates="hives")
     qr_token_rel = relationship("QrToken", back_populates="hive")
@@ -228,7 +229,7 @@ class Inspection(Base):
     # Who recorded it, so two people on one hive can see who did what. Empty for records that
     # predate sharing, and when the author's account is gone.
     created_by_id = Column(String, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=now_utc)
 
     hive = relationship("Hive", back_populates="inspections")
     created_by = relationship("User", foreign_keys=[created_by_id])
@@ -264,7 +265,7 @@ class HiveMove(Base):
     to_latitude = Column(Float, nullable=True)
     to_longitude = Column(Float, nullable=True)
     created_by_id = Column(String, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=now_utc)
 
     hive = relationship("Hive", back_populates="moves")
     created_by = relationship("User", foreign_keys=[created_by_id])
@@ -287,7 +288,7 @@ class PlannedTreatment(Base):
     note = Column(Text, nullable=True)
     done_on = Column(Date, nullable=True)
     created_by_id = Column(String, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=now_utc)
 
     hive = relationship("Hive", foreign_keys=[hive_id])
     apiary = relationship("Apiary", foreign_keys=[apiary_id])
@@ -317,7 +318,7 @@ class Share(Base):
     hive_id = Column(String, ForeignKey("hives.id", ondelete="CASCADE"), nullable=True, index=True)
     status = Column(String, nullable=False, default="pending")  # pending | accepted
     token_hash = Column(String, unique=True, nullable=True, index=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=now_utc)
     accepted_at = Column(DateTime, nullable=True)
 
     owner = relationship("User", foreign_keys=[owner_id])
@@ -342,7 +343,7 @@ class HornetCatch(Base):
     longitude = Column(Float, nullable=True)
     count = Column(Integer, default=1, nullable=False)
     reporter_name = Column(String, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=now_utc)
 
 
 class HornetNest(Base):
@@ -359,8 +360,8 @@ class HornetNest(Base):
     reporter_name = Column(String, nullable=True)
     notes = Column(Text, nullable=True)
     photo_url = Column(String, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=now_utc)
+    updated_at = Column(DateTime, default=now_utc, onupdate=now_utc)
 
 
 class HornetSighting(Base):
@@ -379,7 +380,7 @@ class HornetSighting(Base):
     )
     yes_votes = Column(Integer, default=0, nullable=False)
     no_votes = Column(Integer, default=0, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=now_utc)
 
 
 # ---------------------------------------------------------------------------
@@ -406,7 +407,7 @@ class HornetTrap(Base):
     owner_name = Column(String(100), nullable=True)
     # Optional: link to a registered user (nullable — anonymous traps allowed)
     user_id = Column(String, ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=now_utc)
 
     catches = relationship("HornetTrapCatch", back_populates="trap", cascade="all, delete-orphan")
     owner = relationship("User")
@@ -419,7 +420,7 @@ class HornetTrapCatch(Base):
     trap_id = Column(String, ForeignKey("hornet_traps.id", ondelete="CASCADE"), nullable=False, index=True)
     count = Column(Integer, nullable=False, default=1)
     caught_on = Column(Date, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=now_utc)
 
     trap = relationship("HornetTrap", back_populates="catches")
 
@@ -460,7 +461,7 @@ class YearRating(Base):
     longitude = Column(Float, nullable=False)
     years_keeping = Column(Integer, nullable=True)
     device_hash = Column(String(64), nullable=False, index=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=now_utc)
 
 
 class YearProposal(Base):
@@ -492,6 +493,6 @@ class YearProposal(Base):
         default="pending",
         index=True,
     )
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=now_utc)
     decided_at = Column(DateTime, nullable=True)
     decided_by = Column(String, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
