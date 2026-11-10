@@ -43,7 +43,7 @@
 "field.acquisitionDate" = "Anschaffungsdatum";
 "field.queenSeen" = "Königin gesehen";
 "field.queenColor" = "Königinfarbe";
-"field.broodFrames" = "Brutwaben";
+"field.broodFrames" = "Brutrahmen";
 "field.honeyFrames" = "Honigwaben";
 "field.mood" = "Volksstimmung";
 "field.populationStrength" = "Volksstärke";
@@ -135,7 +135,7 @@
 "stat.swarmAlerts" = "Schwarmmeldungen";
 "stat.moodDistribution" = "Volksstimmung";
 "stat.varroaTrend" = "Varroa-Befall";
-"stat.broodFrames" = "Brutwaben";
+"stat.broodFrames" = "Brutrahmen";
 "stat.honeyFrames" = "Honigwaben";
 "stat.weight" = "Gewicht (kg)";
 "stat.customRange" = "Eigener Zeitraum";
@@ -299,7 +299,7 @@
 "members.gate.desc" = "Werde Unterstützer, um Community-Statistiken freizuschalten und HivePulse am Laufen zu halten.";
 "members.stat.avgVarroa" = "Ø Varroa";
 "members.stat.goodMood" = "Gute Stimmung";
-"members.stat.avgBrood" = "Ø Brutwaben";
+"members.stat.avgBrood" = "Ø Brutrahmen";
 "members.stat.interval" = "Ø Kontrollintervall";
 "members.becomeSupporter" = "Mehr erfahren & Unterstützer werden";
 
@@ -362,7 +362,7 @@
 "heatmap.cellSummary" = "%d Standorte · %d Kontrollen";
 "heatmap.cell.varroa" = "Ø Varroa";
 "heatmap.cell.mood" = "Ruhige Stimmung";
-"heatmap.cell.brood" = "Ø Brutwaben";
+"heatmap.cell.brood" = "Ø Brutrahmen";
 "heatmap.cell.swarm" = "Schwarmzellen";
 
 /* Custom field definitions */

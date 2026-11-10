@@ -18,6 +18,7 @@ guarded for all five languages by ``test_i18n_completeness.py``, which is parame
 whatever is in it, and by ``scripts/check_i18n.py`` for placeholder parity. A second dictionary in
 a new module would have needed its own guard, and the one that is missing is the one that rots.
 """
+import re
 from typing import Any, Optional
 
 from fastapi import Request
@@ -33,6 +34,10 @@ from app.i18n import MESSAGES, get_message
 # Both `less_than` and `less_than_equal` map to the same sentence. The off-by-one is real but
 # saying "at most 9" for `lt=10` is more useful to somebody filling in a form than explaining the
 # difference, and no field in this app uses an exclusive bound anyway.
+# email-validator's wording, which pydantic puts in `msg` for a failed EmailStr. Matched on the
+# phrase rather than the whole sentence, because the part after the colon varies with the reason.
+EMAIL_FAILURE = re.compile(r"not a valid email address", re.I)
+
 RULES: dict[str, tuple[str, Optional[str]]] = {
     "less_than_equal": ("VALIDATION_TOO_LARGE", "le"),
     "less_than": ("VALIDATION_TOO_LARGE", "lt"),
@@ -101,6 +106,13 @@ def message_for(error: dict[str, Any], accept_language: Optional[str] = None) ->
         code, _, limit = raised.partition(":")
         if code in MESSAGES:
             return _fill(code, name, limit or None, accept_language)
+        # pydantic's EmailStr is the exception to leaving a value_error alone. It is the second
+        # field of the sign-up form -- the first error a new user can possibly see -- and it
+        # answers "value is not a valid email address: The part after the @-sign is a
+        # special-use or reserved name...", in English, beginning with the word "value" (#447).
+        # Its ctx carries `reason` rather than `error`, so the code above never catches it.
+        if EMAIL_FAILURE.search(error.get("msg", "")):
+            return _fill("VALIDATION_NOT_AN_EMAIL", name, None, accept_language)
         return None
 
     rule = RULES.get(error.get("type", ""))

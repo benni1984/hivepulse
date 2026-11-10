@@ -125,7 +125,7 @@ written against it and read it already:
     {
       "type": "less_than_equal",
       "loc": ["body", "brood_frames"],
-      "msg": "Brutwaben: höchstens 10.",
+      "msg": "Brutrahmen: höchstens 10.",
       "input": 12,
       "ctx": {"le": 10}
     }

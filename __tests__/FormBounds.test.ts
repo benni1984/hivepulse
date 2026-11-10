@@ -47,9 +47,42 @@ function sourceFiles(dir: string): string[] {
   return out;
 }
 
-/** Every `<input …>` in the source, as one string each, newlines and all. */
+/**
+ * Every `<input …>` in the source, as one whole string each.
+ *
+ * Not a regex. `/<input\b[^>]*?>/` looks right and is wrong, because `onChange={e => ...}`
+ * contains a `>`: the tag is cut at the arrow and every attribute after it becomes invisible.
+ * The first version of this file did exactly that, and so did the script that measured how many
+ * fields were missing a label — it reported numbers that were off until a field it had flagged
+ * turned out to have a placeholder all along.
+ *
+ * So walk the characters and track `{}` depth and quotes, and stop at the first `>` that is
+ * really outside the tag's expressions.
+ */
 function inputs(source: string): string[] {
-  return source.match(/<input\b[^>]*?\/?>/gs) ?? [];
+  const out: string[] = [];
+  const open = /<input\b/g;
+  let m: RegExpExecArray | null;
+  while ((m = open.exec(source)) !== null) {
+    let depth = 0;
+    let quote: string | null = null;
+    for (let i = m.index; i < source.length; i++) {
+      const c = source[i];
+      if (quote) {
+        if (c === quote) quote = null;
+      } else if (c === '"' || c === "'") {
+        quote = c;
+      } else if (c === '{') {
+        depth++;
+      } else if (c === '}') {
+        depth--;
+      } else if (c === '>' && depth === 0) {
+        out.push(source.slice(m.index, i + 1));
+        break;
+      }
+    }
+  }
+  return out;
 }
 
 function relative(file: string): string {

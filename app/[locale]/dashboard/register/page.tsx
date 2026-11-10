@@ -74,16 +74,16 @@ export default function RegisterPage() {
         {emailFormVisible && (
           <form onSubmit={handleSubmit}>
             <div className="dash-form-group">
-              <label>{t('register.name')}</label>
-              <input type="text" value={name} onChange={e => setName(e.target.value)} required autoFocus />
+              <label htmlFor="register-name">{t('register.name')}</label>
+              <input id="register-name" autoComplete="name" type="text" value={name} onChange={e => setName(e.target.value)} required autoFocus />
             </div>
             <div className="dash-form-group">
-              <label>{t('register.email')}</label>
-              <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+              <label htmlFor="register-email">{t('register.email')}</label>
+              <input id="register-email" autoComplete="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required />
             </div>
             <div className="dash-form-group">
-              <label>{t('register.password')}</label>
-              <input type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={8} />
+              <label htmlFor="register-password">{t('register.password')}</label>
+              <input id="register-password" autoComplete="new-password" type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={8} />
             </div>
             <button className="dash-submit-btn" type="submit" disabled={loading}>
               {loading ? '…' : t('register.submit')}

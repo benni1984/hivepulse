@@ -293,6 +293,13 @@ MESSAGES = {
     },
     # Phrased as a label and not a sentence, because the field this fires on most is itself
     # called Date: "Date must be a date in the form ..." says it twice.
+    "VALIDATION_NOT_AN_EMAIL": {
+        "en": "{field}: this is not a valid e-mail address.",
+        "de": "{field}: das ist keine gültige E-Mail-Adresse.",
+        "fr": "{field} : ce n'est pas une adresse e-mail valide.",
+        "es": "{field}: esta no es una dirección de correo válida.",
+        "pl": "{field}: to nie jest prawidłowy adres e-mail.",
+    },
     "VALIDATION_NOT_A_DATE": {
         "en": "{field}: a date in the form YYYY-MM-DD.",
         "de": "{field}: ein Datum in der Form JJJJ-MM-TT.",
@@ -331,8 +338,12 @@ MESSAGES = {
     "FIELD_DATE": {
         "en": "Date", "de": "Datum", "fr": "Date", "es": "Fecha", "pl": "Data",
     },
+    # The web said "Bruträhmchen", both apps said "Brutwaben", and one Android chart said
+    # "Bruträhmchen-Verlauf" next to a field saying "Brutwaben". Settled as Brutrahmen (#447) and
+    # renamed everywhere a reader sees it. The historical entries in lib/news.ts and
+    # lib/releaseNotes.ts keep the old word on purpose: they record what was on the screen then.
     "FIELD_BROOD_FRAMES": {
-        "en": "Brood frames", "de": "Brutwaben", "fr": "Cadres de couvain",
+        "en": "Brood frames", "de": "Brutrahmen", "fr": "Cadres de couvain",
         "es": "Cuadros de cría", "pl": "Ramki z czerwiem",
     },
     "FIELD_HONEY_FRAMES": {
@@ -343,9 +354,11 @@ MESSAGES = {
         "en": "Colony strength", "de": "Volksstärke", "fr": "Force de la colonie",
         "es": "Fuerza de la colonia", "pl": "Siła rodziny",
     },
+    # Android spells this out (field_varroa_level) where the web label is the bare word "Varroa".
+    # In a sentence the bare word says too little, so Android's wording is used.
     "FIELD_VARROA_LEVEL": {
-        "en": "Varroa level", "de": "Varroa-Belastung", "fr": "Niveau de varroa",
-        "es": "Nivel de varroa", "pl": "Poziom warrozy",
+        "en": "Varroa infestation", "de": "Varroa-Befall", "fr": "Infestation varroa",
+        "es": "Infestación de varroa", "pl": "Zarażenie Varroa",
     },
     "FIELD_VARROA_COUNT": {
         "en": "Varroa count", "de": "Varroa-Zahl", "fr": "Nombre de varroas",
@@ -371,9 +384,13 @@ MESSAGES = {
         "en": "Queen colour", "de": "Königinnenfarbe", "fr": "Couleur de la reine",
         "es": "Color de la reina", "pl": "Kolor matki",
     },
+    # Read off the screens, not invented: messages/<locale>.json dash.hive.mood and Android's
+    # field_mood agree in English, German, French and Polish. The Spanish differs between the two
+    # clients (web "Comportamiento", Android "Estado de ánimo"); the web's is used here and the
+    # disagreement is #447's to settle.
     "FIELD_MOOD": {
-        "en": "Temperament", "de": "Sanftmut", "fr": "Comportement",
-        "es": "Temperamento", "pl": "Nastrój rodziny",
+        "en": "Mood", "de": "Stimmung", "fr": "Humeur",
+        "es": "Comportamiento", "pl": "Temperament",
     },
     "FIELD_LATITUDE": {
         "en": "Latitude", "de": "Breitengrad", "fr": "Latitude",

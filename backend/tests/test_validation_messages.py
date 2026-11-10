@@ -47,7 +47,7 @@ def _messages(resp):
 
 @pytest.mark.parametrize("locale,expected", [
     ("en", "Brood frames: at most 10."),
-    ("de", "Brutwaben: höchstens 10."),
+    ("de", "Brutrahmen: höchstens 10."),
     ("fr", "Cadres de couvain : au maximum 10."),
     ("es", "Cuadros de cría: como máximo 10."),
     ("pl", "Ramki z czerwiem: najwyżej 10."),
@@ -74,6 +74,46 @@ def test_no_message_is_pydantics_own_english(auth_client):
     for msg in _messages(resp):
         assert "Input should be" not in msg, msg
         assert "Value error" not in msg, msg
+
+
+@pytest.mark.parametrize("locale,expected", [
+    ("en", "Email address: this is not a valid e-mail address."),
+    ("de", "E-Mail-Adresse: das ist keine gültige E-Mail-Adresse."),
+    ("fr", "Adresse e-mail : ce n'est pas une adresse e-mail valide."),
+    ("es", "Correo electrónico: esta no es una dirección de correo válida."),
+    ("pl", "Adres e-mail: to nie jest prawidłowy adres e-mail."),
+])
+def test_a_mistyped_email_is_explained_in_the_callers_language(client, locale, expected):
+    """The first error a new user can possibly see, and it used to be library English.
+
+    `EmailStr` fails with pydantic's `value_error`, which #446 deliberately leaves in the
+    library's own words — that is right for rules we wrote and wrong for this one. It answered
+    "value is not a valid email address: The part after the @-sign is a special-use or reserved
+    name that cannot be used with email." on a German sign-up page, beginning with the word
+    "value" (#447). Found by registering an account in a browser, not by reading the code.
+
+    Its ctx carries `reason` and not `error`, which is why the code-raising branch never saw it.
+    """
+    resp = client.post("/api/v1/auth/register", json={
+        "email": "not-even-an-address", "password": "password123", "name": "X", "locale": "en",
+    }, headers={"Accept-Language": locale})
+
+    assert resp.status_code == 422
+    assert _messages(resp) == [expected]
+
+
+def test_the_reason_from_the_email_library_is_not_shown(client):
+    """Somebody who mistyped their address does not need to be told about special-use top-level
+    domains. They need to be told the address is not one."""
+    resp = client.post("/api/v1/auth/register", json={
+        "email": "someone@localhost.test", "password": "password123", "name": "X", "locale": "en",
+    }, headers={"Accept-Language": "de"})
+
+    assert resp.status_code == 422
+    message = _messages(resp)[0]
+    assert "special-use" not in message, message
+    assert "@-sign" not in message, message
+    assert not message.startswith("value"), message
 
 
 def test_an_unsupported_language_falls_back_to_english(auth_client):
@@ -110,7 +150,7 @@ def test_every_rejected_field_gets_its_own_sentence(auth_client):
 
     messages = _messages(resp)
     assert len(messages) == 2
-    assert any("Brutwaben" in m for m in messages), messages
+    assert any("Brutrahmen" in m for m in messages), messages
     assert any("Gewicht" in m for m in messages), messages
 
 
@@ -261,7 +301,7 @@ def test_a_hornet_sighting_must_be_somewhere_on_earth(auth_client):
 def test_a_field_without_a_label_falls_back_to_readable_english():
     # Better than a sentence with a hole in it, and adding the key is all it takes.
     assert field_label("some_new_field") == "Some new field"
-    assert field_label("brood_frames", "de") == "Brutwaben"
+    assert field_label("brood_frames", "de") == "Brutrahmen"
 
 
 def test_an_error_type_nobody_mapped_keeps_pydantics_wording():
@@ -477,7 +517,7 @@ def test_every_validation_sentence_and_field_name_exists_in_five_languages():
 
 
 def test_every_sentence_with_a_limit_keeps_the_placeholder_in_every_language():
-    """A translation that drops {limit} produces "Brutwaben: höchstens ." and nobody notices
+    """A translation that drops {limit} produces "Brutrahmen: höchstens ." and nobody notices
     until a user hits that exact bound in that exact language."""
     for code, texts in MESSAGES.items():
         if not code.startswith("VALIDATION_"):

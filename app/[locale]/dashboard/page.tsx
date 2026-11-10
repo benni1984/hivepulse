@@ -86,8 +86,8 @@ export default function DashboardPage() {
           <h2>{t('apiaries.createTitle')}</h2>
           <form onSubmit={handleCreate}>
             <div className="dash-form-group">
-              <label>{t('apiaries.name')}</label>
-              <input
+              <label htmlFor="apiary-create-name">{t('apiaries.name')}</label>
+              <input id="apiary-create-name"
                 type="text"
                 value={createForm.name}
                 onChange={e => setCreateForm(f => ({ ...f, name: e.target.value }))}
@@ -96,15 +96,15 @@ export default function DashboardPage() {
               />
             </div>
             <div className="dash-form-group">
-              <label>{t('apiaries.description')}</label>
-              <textarea
+              <label htmlFor="apiary-create-description">{t('apiaries.description')}</label>
+              <textarea id="apiary-create-description"
                 value={createForm.description}
                 onChange={e => setCreateForm(f => ({ ...f, description: e.target.value }))}
               />
             </div>
             <div className="dash-form-group">
-              <label>{t('apiaries.address')}</label>
-              <input
+              <label htmlFor="apiary-create-address">{t('apiaries.address')}</label>
+              <input id="apiary-create-address"
                 type="text"
                 value={createForm.address}
                 onChange={e => setCreateForm(f => ({ ...f, address: e.target.value }))}

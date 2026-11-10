@@ -56,7 +56,13 @@ export default function Footer() {
           <div className="footer-links">
             <h4>{t('legal')}</h4>
             <ul>
-              <li><Link href="/help">Help &amp; Docs</Link></li>
+              {/* Was the literal English "Help & Docs" while the top nav used the translated
+                  nav.help, so a German page said "Hilfe" above and "Help & Docs" below for the
+                  same destination. Not a missing translation — one that existed and was walked
+                  past (#447). It matters more than it looks: for a signed-in user the footer is
+                  the only visible route to the help pages, because the dashboard sidebar has no
+                  entry for them. */}
+              <li><Link href="/help">{tn('help')}</Link></li>
               <li><Link href="/privacy">{t('privacy')}</Link></li>
               {/* Appears once lib/imprint.ts carries the operator's details. */}
               {imprintIsComplete() && <li><Link href="/impressum">{t('imprint')}</Link></li>}
