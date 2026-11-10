@@ -1,1 +1,0 @@
-localStorage.setItem('access_token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjgxNWVkZC03OWFkLTQ4NWYtYTk0ZC1iMjEwYTkxYzJmOTkiLCJ0eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzk0MzI0Mzc2fQ.Wta122q_EMUILZIXqBeoXegFAbpxTMZ-05SKJS86SeQ'); location.href = '/de/dashboard/hive/5346c0e0-af08-4883-9fa7-72f6be5775a8'; 'ok'
