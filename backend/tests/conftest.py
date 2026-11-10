@@ -1,7 +1,21 @@
+import os
+
+# Before anything imports app.config, which freezes settings.database_url at import time.
+#
+# main.py runs `create_all` against the *app's* engine in its lifespan, and the `client` fixture
+# enters `TestClient(app)` as a context manager, so that lifespan fires on every run. Left alone,
+# settings.database_url is the development default `sqlite:///./HivePulse.db` and a test run
+# creates tables in the database the developer is using. Nothing reads from it here — `get_db` is
+# overridden below — so this is tidiness, not correctness, but a test run has no business writing
+# to someone's working database. `sqlite://` is a nameless in-memory database: create_all there
+# costs nothing and touches nothing (#445).
+os.environ["DATABASE_URL"] = "sqlite://"
+
 import pytest
 from unittest.mock import patch
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
+from sqlalchemy.pool import StaticPool
 from sqlalchemy.orm import sessionmaker
 
 from app.database import Base, get_db
@@ -10,8 +24,25 @@ from main import app
 
 _CITY = CityLocation(name="TestCity", latitude=48.1, longitude=11.6)
 
-TEST_DB_URL = "sqlite:///./test.db"
-engine = create_engine(TEST_DB_URL, connect_args={"check_same_thread": False})
+# The test database lives in this process's memory and nowhere else.
+#
+# It used to be `sqlite:///./test.db` — one fixed path, relative to the working directory, shared
+# by every pytest process on the machine. `setup_db` below creates and drops every table around
+# *each* test, so two runs at once interleave their DDL: one drops tables while the other is
+# mid-test. That produced `31 failed, 899 passed, 109 errors` with "table hornet_catches already
+# exists" on tests that touch no database, and nothing in the output said why — the failures read
+# like real bugs in whatever the other run happened to be executing (#445).
+#
+# `:memory:` is per-connection by default, which would give each session its own empty database.
+# StaticPool keeps exactly one connection and hands it to everyone, so all sessions see the same
+# schema and the same rows; `check_same_thread=False` is what lets TestClient's worker thread use
+# it alongside the test's own. Two runs can no longer meet, because neither has a file to meet in,
+# and the per-test create/drop no longer goes to disk.
+engine = create_engine(
+    "sqlite://",
+    connect_args={"check_same_thread": False},
+    poolclass=StaticPool,
+)
 TestingSession = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
