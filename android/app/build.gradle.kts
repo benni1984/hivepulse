@@ -36,6 +36,27 @@ android {
         ?: System.getenv("ANDROID_KEYSTORE_FILE")
     val keystoreFile = keystorePath?.let(::File)?.takeIf { it.isFile }
 
+    // AGP strips the native libraries and extracts their symbol tables with llvm-strip and
+    // llvm-objcopy, which live in the NDK. Without one it prints "Unable to strip the following
+    // libraries, packaging them as they are" and carries on, so `debugSymbolLevel` further down
+    // has no effect whatsoever — which is how version codes 10, 11 and 12 all reached Play with
+    // native code and no symbols after #418 had set it correctly (#451). Nothing failed, so
+    // nobody looked.
+    //
+    // This project declares no NDK of its own because none of the native code is ours: it comes
+    // from ML Kit, Sentry and CameraX. So use whichever NDK the machine already has — the GitHub
+    // runner image points ANDROID_NDK_LATEST_HOME at one, and that directory's name IS the
+    // version AGP wants — and leave AGP's default untouched when there is none, so a developer
+    // machine without an NDK builds exactly as it did before. -PNDK_VERSION pins a specific one.
+    val ndkFromEnvironment: String? =
+        (System.getenv("ANDROID_NDK_LATEST_HOME") ?: System.getenv("ANDROID_NDK_HOME"))
+            ?.let(::File)
+            ?.takeIf { it.isDirectory }
+            ?.name
+            ?.takeIf { it.firstOrNull()?.isDigit() == true }
+    ((project.findProperty("NDK_VERSION") as? String) ?: ndkFromEnvironment)
+        ?.let { ndkVersion = it }
+
     defaultConfig {
         applicationId = "com.hivepulse.app"
         minSdk        = 26
