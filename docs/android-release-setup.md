@@ -131,19 +131,38 @@ Based on what the app actually does:
 Declare crash logs. Sentry is active in release builds, and an undeclared category is a
 common reason for a rejection.
 
-## Two upload warnings that are expected
+## One upload warning that is expected — and please read this before acting on it
 
-Play shows both on every upload, and neither is a problem:
+**"Contains native code without debug symbols"** stays, on every upload, and is not a problem.
+It has now been investigated **four** times, because each time somebody saw the warning rather
+than this page:
 
-**"No deobfuscation file"** — there is none because R8 is off, so no code is obfuscated and
-there is nothing to map back. The message is really an invitation to enable shrinking.
+1. Originally: the native libraries are third-party and arrive already stripped. Tried
+   `ndk { debugSymbolLevel = ... }`, measured the resulting bundle, found zero symbol entries,
+   removed it again — and wrote that down, here.
+2. #418 set `debugSymbolLevel = "SYMBOL_TABLE"` again and closed the issue. Version codes 10,
+   11 and 12 shipped without symbols.
+3. #451 found a genuine second cause: AGP needs the NDK's `llvm-strip` and only *warns* when
+   it cannot find one, so the setting could not have worked even in principle. The runner's NDK
+   is now resolved — and the next bundle still had no symbols.
+4. #455 read the ELF section headers of the six libraries, in the published AARs and in the
+   bundle Play received for 1.0.4: `.dynsym` in every one, `.symtab` in none. `SYMBOL_TABLE`
+   lifts `.symtab`. There is nothing to lift, with or without an NDK. **Decided: the warning
+   stays.**
 
-**"Contains native code without debug symbols"** — the native libraries are third-party and
-arrive already stripped: `libbarhopper_v3.so` (ML Kit, the QR scanner) and `libsentry.so`.
-`ndk { debugSymbolLevel = ... }` does **not** help here; it only covers native code this
-project compiles itself, of which there is none. Tried it, measured the resulting bundle,
-found zero symbol entries, removed it again. Sentry uploads symbols for its own library
-through its own tooling.
+The setting and the NDK resolution are both still in place on purpose, so that native code of
+our own — or a dependency that starts publishing unstripped libraries — produces symbols without
+anybody having to remember. `scripts/check_native_debug_symbols.py` asks each packaged library
+whether it carries a `.symtab` before demanding a symbol file for it, and fails the release only
+when symbols that *could* exist were dropped.
+
+The consequence to accept: a crash inside ML Kit's scanner or inside Sentry's own library reads
+as bare addresses, in Play and in Sentry. Our Kotlin frames are a separate matter — Play reads
+them from the mapping file inside the `.aab`; Sentry does not get that file at all, which is
+#452 and is worth fixing.
+
+**"No deobfuscation file"** no longer appears: R8 has been on since #407 and the mapping file
+travels inside the bundle.
 
 ## A size note, before it alarms somebody
 
