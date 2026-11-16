@@ -16,6 +16,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
+import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import DashboardShell from '@/components/DashboardShell';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import {
@@ -30,6 +31,7 @@ const FILTERS: Filter[] = ['pending', 'approved', 'rejected', 'all'];
 
 export default function AdminYearProposalsPage() {
   const t = useTranslations('dash.admin.yearProposals');
+  useDocumentTitle(t('title'));
   const locale = useLocale();
   const ready = useDashboardReady();
 

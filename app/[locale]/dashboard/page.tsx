@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import TourHint from '@/components/TourHint';
@@ -11,6 +12,7 @@ import { getApiaries, createApiary, type Apiary } from '@/lib/api';
 
 export default function DashboardPage() {
   const t = useTranslations('dash');
+  useDocumentTitle(t('apiaries.title'));
   const ready = useDashboardReady();
   const [apiaries, setApiaries] = useState<Apiary[]>([]);
   const [loading, setLoading] = useState(true);

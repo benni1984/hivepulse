@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
+import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
@@ -14,6 +15,7 @@ const MovesMap = dynamic(() => import('@/components/MovesMap'), { ssr: false });
 /** The map of all journeys: every move of every hive the signed-in beekeeper owns. */
 export default function MovesPage() {
   const t = useTranslations('dash');
+  useDocumentTitle(t('moves.overviewTitle'));
   const ready = useDashboardReady();
   const [moves, setMoves] = useState<HiveMove[]>([]);
   const [loading, setLoading] = useState(true);

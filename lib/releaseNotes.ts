@@ -74,6 +74,16 @@ export const RELEASES: Release[] = [
           'Dwóm hiszpa\u0144skim pytaniom na stronie brakowa\u0142o otwieraj\u0105cego znaku zapytania.',
         ),
       },
+      {
+        kind: 'fixed',
+        text: t(
+          'Every page of the website now says what it is in the browser tab. All but a handful showed the site name instead, so seven open dashboard tabs read the same sentence seven times. An apiary now names itself, a hive does too, and the sign-in and sign-up pages carry a title of their own in all five languages.',
+          'Jede Seite der Website sagt jetzt im Browser-Tab, was sie ist. Bis auf eine Handvoll zeigten alle stattdessen den Namen der Website, sodass sieben offene Dashboard-Tabs siebenmal denselben Satz lasen. Ein Bienenstand nennt sich jetzt selbst, ein Volk ebenso, und Anmeldung und Registrierung tragen in allen fünf Sprachen einen eigenen Titel.',
+          'Chaque page du site dit maintenant ce qu’elle est dans l’onglet du navigateur. À quelques exceptions près, toutes affichaient le nom du site : sept onglets du tableau de bord ouverts, sept fois la même phrase. Un rucher se nomme désormais lui-même, une ruche aussi, et les pages de connexion et d’inscription portent leur propre titre dans les cinq langues.',
+          'Cada página de la web dice ahora en la pestaña del navegador qué es. Salvo unas pocas, todas mostraban el nombre del sitio: siete pestañas del panel abiertas, siete veces la misma frase. Un colmenar se nombra ahora a sí mismo, una colmena también, y las páginas de inicio de sesión y de registro llevan su propio título en los cinco idiomas.',
+          'Każda strona serwisu mówi teraz na karcie przeglądarki, czym jest. Poza kilkoma wszystkie pokazywały nazwę serwisu: siedem otwartych kart panelu, siedem razy to samo zdanie. Pasieka nazywa się teraz sama, rodzina pszczela także, a strony logowania i rejestracji mają własny tytuł we wszystkich pięciu językach.',
+        ),
+      },
     ],
   },
   {

@@ -232,7 +232,8 @@ jobs:
     # Whatever succeeded is committed; a platform that failed stays stale and is retried next time.
     if: |
       always() && needs.plan.result == 'success' &&
-      (needs.web.result == 'success' || needs.android.result == 'success' || needs.store-ios.result == 'success')
+      (needs.web.result == 'success' || needs.android.result == 'success' ||
+       needs.store-ios.result != 'skipped')
 
     runs-on: ubuntu-latest
 
@@ -264,15 +265,23 @@ jobs:
           name: android-screenshots
           path: public/docs/screenshots
 
+      # The iPhone help images are cut from the English set alone (see 2c above). These steps used to
+      # hang on needs.store-ios.result, which is the result of a matrix of five store languages, so a
+      # flaky simulator leg in German lost the iPhone help images for the whole run - and the run
+      # stayed green, because this job's own condition is satisfied by web or Android alone (#462).
+      # Ask the artifact whether there is anything to cut, not the matrix whether all went well.
       - name: Download the English App Store set
-        if: needs.store-ios.result == 'success'
+        id: ios_set
+        if: needs.store-ios.result != 'skipped'
+        continue-on-error: true
         uses: actions/download-artifact@v4
         with:
           name: all-screenshots-en
           path: ${{ runner.temp }}/ios-screenshots
 
       - name: Cut the iPhone help images from it
-        if: needs.store-ios.result == 'success'
+        id: ios_cut
+        if: steps.ios_set.outcome == 'success'
         run: python3 scripts/pick_ios_help_screenshots.py "${{ runner.temp }}/ios-screenshots" public/docs/screenshots
 
       # The status-bar clock and counters like "Days since last inspection" change every run,
@@ -287,7 +296,7 @@ jobs:
         env:
           WEB: ${{ needs.web.result }}
           ANDROID: ${{ needs.android.result }}
-          IOS: ${{ needs.store-ios.result }}
+          IOS: ${{ steps.ios_cut.outcome }}
         run: |
           args=""
           [ "$WEB" = "success" ] && args="$args --platform web"
@@ -307,7 +316,7 @@ jobs:
           delete-branch: true
           title: 'chore(screenshots): auto-update help page screenshots'
           body: |
-            Retaken automatically because the interface changed: web ${{ needs.web.result }}, Android ${{ needs.android.result }}, iPhone ${{ needs.store-ios.result }}.
+            Retaken automatically because the interface changed: web ${{ needs.web.result }}, Android ${{ needs.android.result }}, iPhone ${{ steps.ios_cut.outcome }}.
 
             The store sets (Play and App Store, five languages each) are artifacts of the run:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

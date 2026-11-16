@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
@@ -10,6 +11,7 @@ import { getQrBatch, downloadQrBatchPdf, type QrBatchOut } from '@/lib/api';
 export default function QrBatchDetailPage() {
   const { id } = useParams<{ id: string }>();
   const t = useTranslations('dash');
+  useDocumentTitle(t('qrBatches.detailTitle'));
   const ready = useDashboardReady();
   const [batch, setBatch] = useState<QrBatchOut | null>(null);
   const [loading, setLoading] = useState(true);

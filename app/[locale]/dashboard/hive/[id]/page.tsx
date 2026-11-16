@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import { Link, useRouter } from '@/i18n/navigation';
 import dynamic from 'next/dynamic';
 import DashboardShell from '@/components/DashboardShell';
@@ -40,6 +41,8 @@ export default function HivePage() {
   const ready = useDashboardReady();
 
   const [hive, setHive] = useState<Hive | null>(null);
+  // the tab carries the hive's own name, which exists only after the fetch
+  useDocumentTitle(hive?.name);
   const [stats, setStats] = useState<HiveStats | null>(null);
   const [inspections, setInspections] = useState<Inspection[]>([]);
   const [loading, setLoading] = useState(true);

@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import DashboardShell from '@/components/DashboardShell';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { adminGetApiaries, adminGetFlaggedApiaries, adminSetPrivate, type AdminApiary, type Paginated } from '@/lib/api';
@@ -9,6 +10,7 @@ type Tab = 'all' | 'flagged';
 
 export default function AdminMapPage() {
   const t = useTranslations('dash');
+  useDocumentTitle(t('admin.map.title'));
   const ready = useDashboardReady();
   const [tab, setTab] = useState<Tab>('all');
   const [data, setData] = useState<Paginated<AdminApiary> | null>(null);

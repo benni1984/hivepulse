@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
@@ -11,6 +12,7 @@ type Preset = typeof PRESETS[number];
 
 export default function StatsPage() {
   const t = useTranslations('dash');
+  useDocumentTitle(t('overview.title'));
   const ready = useDashboardReady();
   const [stats, setStats] = useState<OverviewStats | null>(null);
   const [loading, setLoading] = useState(true);

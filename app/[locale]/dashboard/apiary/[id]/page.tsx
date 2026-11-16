@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import { Link, useRouter } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import SharingPanel from '@/components/SharingPanel';
@@ -36,6 +37,8 @@ export default function ApiaryPage() {
   const ready = useDashboardReady();
 
   const [apiary, setApiary] = useState<Apiary | null>(null);
+  // the tab carries the apiary's own name, which exists only after the fetch
+  useDocumentTitle(apiary?.name);
   const [hives, setHives] = useState<Hive[]>([]);
   const [stats, setStats] = useState<ApiaryStats | null>(null);
   const [loading, setLoading] = useState(true);

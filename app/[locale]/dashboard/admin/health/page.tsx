@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import DashboardShell from '@/components/DashboardShell';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import {
@@ -14,6 +15,7 @@ type Section = 'inactive' | 'zeroHives' | 'noVarroa';
 
 export default function AdminHealthPage() {
   const t = useTranslations('dash');
+  useDocumentTitle(t('admin.health.title'));
   const ready = useDashboardReady();
   const [summary, setSummary] = useState<HealthSummary | null>(null);
   const [section, setSection] = useState<Section | null>(null);

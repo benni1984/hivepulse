@@ -1,0 +1,24 @@
+import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
+
+// The page itself is a client component ('use client'), and a client component cannot export
+// metadata. A layout can, so the title and description live here (#438).
+//
+// The one page of the four worth finding in a search: it is where a new beekeeper starts.
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'meta' });
+  return {
+    title: `${t('registerTitle')} — HivePulse`,
+    description: t('registerDescription'),
+  };
+}
+
+export default function RegisterLayout({ children }: { children: React.ReactNode }) {
+  return children;
+}

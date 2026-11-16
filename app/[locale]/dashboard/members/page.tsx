@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
+import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import dynamic from 'next/dynamic';
 import DashboardShell from '@/components/DashboardShell';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
@@ -72,6 +73,7 @@ function SizeChart({ data }: { data: { label: string; count: number }[] }) {
 
 export default function MembersDashboardPage() {
   const t = useTranslations('dash');
+  useDocumentTitle(t('community.title'));
   const ready = useDashboardReady();
   const [stats, setStats] = useState<PublicStats | null>(null);
   const [heatmap, setHeatmap] = useState<CommunityHeatmap | null>(null);
