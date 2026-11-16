@@ -948,6 +948,9 @@
   font-size: 15px;
   color: var(--body-text);
   line-height: 1.65;
+  /* The entries carry their paragraph breaks as newlines in lib/news.ts. Without this they
+     collapse to single spaces and a six-paragraph entry arrives as one block of text. */
+  white-space: pre-line;
 }
 
 @media (max-width: 560px) {
