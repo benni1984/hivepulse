@@ -183,7 +183,7 @@ VER LA TEMPORADA
 Por colmena y por colmenar: cómo ha evolucionado la colonia, cuándo subió el recuento de varroa, qué colmenas llevas tiempo sin visitar. Cosas evidentes en retrospectiva e invisibles en un cuaderno de papel.
 
 LA AVISPA ASIÁTICA
-Un seguimiento de Vespa velutina: informa de una captura, un nido o un avistamiento con foto, mira qué han informado otros cerca de ti y lleva tus propias trampas con nombre y recuento diario. Los avisos con foto los revisa la comunidad, porque una avispa se confunde con facilidad.
+Un seguimiento de Vespa velutina: informa de una captura, un nido o un avistamiento con foto, mira qué han informado otros cerca de ti y lleva tus propias trampas con nombre y recuento diario. Los avisos con foto los revisa la comunidad, porque un avispón se confunde con facilidad.
 
 PRIVADO POR DEFECTO
 Tus colmenares son privados. Si colocas uno en el mapa público, aparece a escala de municipio y nunca en tus coordenadas exactas: la idea es mostrar la actividad apícola, no las ubicaciones. Puedes desactivarlo cuando quieras.
@@ -262,9 +262,9 @@ apiculture,ruche,rucher,visite,varroa,reine,frelon,velutina,miel,essaim,carnet
 
 **es**
 ```
-apicultura,colmena,colmenar,revision,varroa,reina,avispa,velutina,miel,enjambre,cuaderno
+apicultura,colmena,colmenar,revision,varroa,reina,avispa,avispon,velutina,miel,enjambre,cuaderno
 ```
-(88)
+(96)
 
 **pl**
 ```

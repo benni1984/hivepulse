@@ -35,6 +35,48 @@ export function pick(text: Localized, locale: string): string {
 /** Newest first. */
 export const RELEASES: Release[] = [
   {
+    date: '2026-11-16',
+    title: t(
+      'One insect, one name',
+      'Ein Insekt, ein Name',
+      'Un insecte, un nom',
+      'Un insecto, un nombre',
+      'Jeden owad, jedna nazwa',
+    ),
+    items: [
+      {
+        kind: 'fixed',
+        text: t(
+          'In Spanish the iPhone said the app tracks \u2018avispas\u2019 \u2014 common wasps \u2014 on the bottom tab, on the catch counter and on the voting button, while Android said \u2018avispones\u2019 in the same places. The species this app is about is the avispa asi\u00e1tica, and the one that must never be trapped is the avisp\u00f3n europeo, which is protected. A name that does not say which insect is meant is not a matter of style here.',
+          'Auf Spanisch sagte das iPhone, die App verfolge \u201eavispas\u201c \u2014 gew\u00f6hnliche Wespen \u2014, im Tab, beim Fangz\u00e4hler und auf dem Abstimmungsknopf, w\u00e4hrend Android an denselben Stellen \u201eavispones\u201c sagte. Die Art, um die es hier geht, ist die avispa asi\u00e1tica; die, die man niemals fangen darf, ist der avisp\u00f3n europeo, und der ist gesch\u00fctzt. Ein Name, der das Insekt nicht nennt, ist hier keine Stilfrage.',
+          'En espagnol, l\u2019iPhone disait que l\u2019application suit des \u00ab avispas \u00bb \u2014 des gu\u00eapes communes \u2014 sur l\u2019onglet, sur le compteur de captures et sur le bouton de vote, l\u00e0 o\u00f9 Android disait \u00ab avispones \u00bb. L\u2019esp\u00e8ce dont il s\u2019agit est l\u2019avispa asi\u00e1tica, et celle qu\u2019il ne faut jamais pi\u00e9ger est l\u2019avisp\u00f3n europeo, qui est prot\u00e9g\u00e9. Un nom qui ne dit pas de quel insecte il s\u2019agit n\u2019est pas ici une question de style.',
+          'En espa\u00f1ol, el iPhone dec\u00eda que la app sigue \u00abavispas\u00bb en la pesta\u00f1a, en el contador de capturas y en el bot\u00f3n de voto, mientras Android dec\u00eda \u00abavispones\u00bb en los mismos sitios. La especie de la que trata esta app es la avispa asi\u00e1tica, y la que nunca debe atraparse es el avisp\u00f3n europeo, que est\u00e1 protegido. Un nombre que no dice de qu\u00e9 insecto se habla no es aqu\u00ed una cuesti\u00f3n de estilo.',
+          'W hiszpa\u0144skim iPhone mówi\u0142, \u017ce aplikacja \u015bledzi \u201eavispas\u201d \u2014 zwyk\u0142e osy \u2014 na zak\u0142adce, przy liczniku od\u0142owów i na przycisku g\u0142osowania, a Android w tych samych miejscach mówi\u0142 \u201eavispones\u201d. Gatunek, o który tu chodzi, to avispa asi\u00e1tica, a tym, którego nigdy nie wolno \u0142owi\u0107, jest avisp\u00f3n europeo \u2014 i ten jest chroniony. Nazwa, która nie mówi, o jakiego owada chodzi, nie jest tu kwesti\u0105 stylu.',
+        ),
+      },
+      {
+        kind: 'changed',
+        text: t(
+          'The hornet tracker now has one name per language instead of three. The website\u2019s navigation, its page title and its help index each called it something different, and the apps a fourth thing. The name used everywhere is the one that says which species: Asian Hornet Tracker, Suivi du frelon asiatique, Rastreador de avispa asi\u00e1tica, Tropiciel szerszenia azjatyckiego.',
+          'Der Hornissen-Tracker hat jetzt einen Namen pro Sprache statt drei. Die Navigation der Website, ihr Seitentitel und ihr Hilfeverzeichnis nannten ihn jeweils anders, die Apps noch ein viertes Mal. Verwendet wird \u00fcberall der Name, der die Art nennt: Asian Hornet Tracker, Suivi du frelon asiatique, Rastreador de avispa asi\u00e1tica, Tropiciel szerszenia azjatyckiego.',
+          'Le suivi du frelon porte maintenant un seul nom par langue au lieu de trois. La navigation du site, le titre de la page et l\u2019index de l\u2019aide l\u2019appelaient chacun autrement, et les applications une quatri\u00e8me fois. Le nom retenu partout est celui qui nomme l\u2019esp\u00e8ce : Asian Hornet Tracker, Suivi du frelon asiatique, Rastreador de avispa asi\u00e1tica, Tropiciel szerszenia azjatyckiego.',
+          'El rastreador tiene ahora un solo nombre por idioma en lugar de tres. La navegaci\u00f3n de la web, el t\u00edtulo de la p\u00e1gina y el \u00edndice de la ayuda lo llamaban cada uno de otra forma, y las apps de una cuarta. El nombre que se usa en todas partes es el que dice la especie: Asian Hornet Tracker, Suivi du frelon asiatique, Rastreador de avispa asi\u00e1tica, Tropiciel szerszenia azjatyckiego.',
+          'Tropiciel szerszeni ma teraz jedn\u0105 nazw\u0119 na j\u0119zyk zamiast trzech. Nawigacja strony, tytu\u0142 strony i indeks pomocy nazywa\u0142y go ka\u017cde inaczej, a aplikacje po czwarte. Wsz\u0119dzie u\u017cywana jest nazwa, która mówi o gatunku: Asian Hornet Tracker, Suivi du frelon asiatique, Rastreador de avispa asi\u00e1tica, Tropiciel szerszenia azjatyckiego.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'Two Spanish questions on the website were missing their opening question mark.',
+          'Zwei spanischen Fragen auf der Website fehlte das \u00f6ffnende Fragezeichen.',
+          'Deux questions en espagnol sur le site n\u2019avaient pas leur point d\u2019interrogation ouvrant.',
+          'A dos preguntas en espa\u00f1ol de la web les faltaba el signo de interrogaci\u00f3n de apertura.',
+          'Dwóm hiszpa\u0144skim pytaniom na stronie brakowa\u0142o otwieraj\u0105cego znaku zapytania.',
+        ),
+      },
+    ],
+  },
+  {
     date: '2026-11-10',
     title: t(
       'What day it is, asked in one place',

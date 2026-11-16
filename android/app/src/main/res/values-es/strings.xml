@@ -293,7 +293,7 @@
     <string name="hornet_map_status_destroyed">Destruido</string>
     <string name="hornet_report_catch_tab">Captura</string>
     <string name="hornet_report_nest_tab">Nido</string>
-    <string name="hornet_report_count">Avispas capturadas</string>
+    <string name="hornet_report_count">Avispones capturados</string>
     <string name="hornet_report_location_required">Se necesita la ubicación GPS</string>
     <string name="hornet_report_reporter_name">Tu nombre (opcional)</string>
     <string name="hornet_report_submit">Enviar aviso</string>

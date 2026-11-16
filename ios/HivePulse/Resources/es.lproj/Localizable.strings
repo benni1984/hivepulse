@@ -158,8 +158,8 @@
 "action.next" = "Siguiente";
 "action.loadMore" = "Cargar más";
 
-/* Avispas */
-"tab.hornets" = "Avispas";
+/* Avispones */
+"tab.hornets" = "Avispones";
 "hornets.title" = "Rastreador de avispa asiática";
 "hornets.tab.info" = "Info";
 "hornets.tab.map" = "Mapa";
@@ -184,7 +184,7 @@
 "hornets.map.status.destroyed" = "Destruido";
 "hornets.report.catchTab" = "Captura";
 "hornets.report.nestTab" = "Nido";
-"hornets.report.count" = "Avispas capturadas";
+"hornets.report.count" = "Avispones capturados";
 "hornets.report.location" = "Ubicación (opcional)";
 "hornets.report.locationRequired" = "Se necesita la ubicación GPS";
 "hornets.report.notes" = "Notas";
@@ -193,7 +193,7 @@
 "hornets.report.submit" = "Enviar aviso";
 "hornets.report.success" = "¡Gracias! Hemos recibido tu aviso.";
 "hornets.community.empty" = "Todavía no hay avistamientos";
-"hornets.community.vote.yes" = "Avispa ✓";
+"hornets.community.vote.yes" = "Avispón ✓";
 "hornets.community.vote.no" = "No es una avispa asiática";
 "hornets.community.confirmed" = "Confirmado";
 "hornets.community.pending" = "Pendiente";
