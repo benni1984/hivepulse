@@ -312,64 +312,65 @@ paragraph says what the app is rather than greeting the reader.
 
 ### What's New — max 4000
 
-The release this describes is **1.0.4**. It is the App Store's release notes; Play takes its own
+The release this describes is **1.0.5**. It is the App Store's release notes; Play takes its own
 from `distribution/whatsnew/` during the automated upload, and those are Android's four lines, not
 these. Keep the two apart: a fix that only happened on one platform belongs only in that
-platform's notes.
+platform's notes. The guided tour and the website's four new inspection fields are not in here —
+neither happened on the iPhone.
 
 **en**
 ```
-In the evening the app was filing things under the wrong day. From about ten at night, a new inspection, a hornet report and a treatment ticked off all came out dated to the day before. The reason is that the server counts the day in UTC, deliberately — every timestamp it keeps is UTC, and anything else would depend on where the machine happens to run — and the app was letting it decide. From 22:00 the server's day and your day are not the same day.
+The app used to accept an inspection dated in the year 3000, five thousand mites in one colony, and an apiary at 999 degrees north. Not because nobody had thought about limits: the limits that existed each lived inside a single screen. The move form refused a date in the future and the inspection form, two taps away, did not. A limit that holds in one place is not a limit.
 
-On most screens that cost a date in a list. On the hornet traps it cost data: a catch is one count per trap per day, so emptying the traps late wrote the evening's number over the previous day's and left no sign of it. Every screen now sends the day your own phone shows.
+Every date is now bounded where the field itself is defined, so the next screen cannot be built without one, with a day's tolerance for anyone far enough east that their evening is the server's tomorrow. Coordinates have to be real coordinates. Varroa counts stop at a thousand, weight between nothing and five hundred kilograms. The forms carry the same limits, so the phone says no before anything is sent.
 
-The reminder for a hive that has never been inspected could also be a day out. It was worked out from two clocks at once — the day the hive was made, counted one way, and today, counted another. The one job of that date is to say when, so it has a single answer now.
+And when something is refused, the reason now arrives in your language and names the field it means. It used to come straight out of a library, in English: "Input should be less than or equal to 1000" — unreadable, and silent about which of eleven fields it was talking about.
 
-And a phone set to a calendar other than the Gregorian one wrote that calendar's year into the date: on the Thai Buddhist calendar, today is the year 2569. Dates are always Gregorian now, whatever the phone shows.
+Two names changed so that one thing has one name. Honey frames are "Honigrahmen" in German now, standing beside brood frames as "Brutrahmen" rather than against them, and the colony's mood is "Comportamiento" in Spanish on every screen.
 ```
 
 **de**
 ```
-Abends trug die App Dinge unter dem falschen Tag ein. Ab etwa zweiundzwanzig Uhr bekamen eine neue Kontrolle, eine Hornissen-Meldung und eine abgehakte Behandlung den Tag davor. Der Grund: der Server zählt den Tag in UTC, und das mit Absicht — jeder Zeitstempel, den er behält, ist UTC, alles andere hänge davon ab, wo die Maschine gerade läuft — und die App ließ ihn entscheiden. Ab 22 Uhr sind der Tag des Servers und dein Tag nicht derselbe Tag.
+Die App nahm bisher eine Kontrolle im Jahr 3000, fünftausend Milben in einem Volk und einen Bienenstand bei 999 Grad Nord. Nicht, weil niemand an Grenzen gedacht hätte: die Grenzen, die es gab, galten jeweils nur auf einem Bildschirm. Das Umzugsformular lehnte ein Datum in der Zukunft ab, das Kontrollformular zwei Tipper weiter nicht. Eine Grenze, die an einer Stelle gilt, ist keine Grenze.
 
-Auf den meisten Ansichten kostet das ein Datum in einer Liste. Bei den Hornissenfallen kostete es Daten: ein Fang ist eine Zahl pro Falle und Tag, wer also spät die Fallen leerte, schrieb die Zahl des Abends über die des Vortags, ohne jede Spur. Jede Ansicht schickt jetzt den Tag, den dein eigenes Telefon anzeigt.
+Jedes Datum hat seine Grenzen jetzt dort, wo das Feld selbst definiert ist — der nächste Bildschirm kann also nicht ohne gebaut werden —, mit einem Tag Toleranz für alle, die weit genug östlich wohnen, dass ihr Abend der Morgen des Servers ist. Koordinaten müssen Koordinaten sein. Varroa-Zahlen enden bei tausend, das Gewicht zwischen null und fünfhundert Kilogramm. Die Formulare tragen dieselben Grenzen, das Telefon sagt also Nein, bevor überhaupt etwas abgeschickt wird.
 
-Auch die Erinnerung für ein noch nie kontrolliertes Volk konnte einen Tag daneben liegen. Sie wurde aus zwei Uhren zugleich berechnet — der Tag, an dem das Volk angelegt wurde, so gezählt, und heute, anders gezählt. Die einzige Aufgabe dieses Datums ist zu sagen, wann — also gibt es jetzt nur eine Antwort.
+Und wenn etwas abgelehnt wird, kommt der Grund in deiner Sprache und nennt das Feld, um das es geht. Vorher kam er direkt aus einer Bibliothek, auf Englisch: „Input should be less than or equal to 1000" — unlesbar, und ohne zu sagen, welches von elf Feldern gemeint war.
 
-Und ein Telefon, das auf einen anderen als den gregorianischen Kalender eingestellt ist, schrieb dessen Jahr in das Datum: im thailändisch-buddhistischen Kalender ist heute das Jahr 2569. Daten sind jetzt immer gregorianisch, egal was das Telefon anzeigt.
+Zwei Namen haben sich geändert, damit eine Sache einen Namen hat. Honigwaben heißen jetzt Honigrahmen, passend zu den Brutrahmen daneben statt dagegen, und die Volksstimmung heißt auf Spanisch auf jedem Bildschirm „Comportamiento".
 ```
 
 **fr**
 ```
-Le soir, l'application enregistrait les choses au mauvais jour. À partir de vingt-deux heures environ, une nouvelle visite, un signalement de frelon et un traitement coché étaient datés de la veille. La raison : le serveur compte le jour en UTC, volontairement — chaque horodatage qu'il conserve est en UTC, et autrement cela dépendrait de l'endroit où tourne la machine — et l'application le laissait décider. À partir de 22 h, le jour du serveur et le vôtre ne sont pas le même.
+L'application acceptait jusqu'ici une visite datée en l'an 3000, cinq mille varroas dans une ruche et un rucher à 999 degrés nord. Non par oubli : les limites qui existaient ne valaient chacune que sur un écran. Le formulaire de déplacement refusait une date future, celui de visite, à deux touches de là, non. Une limite qui vaut à un endroit n'est pas une limite.
 
-Sur la plupart des écrans, cela coûte une date dans une liste. Sur les pièges à frelons, cela coûtait des données : une capture est un comptage par piège et par jour, donc vider les pièges tard écrivait le chiffre du soir par-dessus celui de la veille, sans laisser de trace. Chaque écran envoie désormais le jour qu'affiche votre téléphone.
+Chaque date porte désormais ses bornes là où le champ lui-même est défini — l'écran suivant ne peut donc plus être écrit sans elles —, avec un jour de tolérance pour qui vit assez à l'est pour que son soir soit le lendemain du serveur. Les coordonnées doivent être des coordonnées. Le comptage de varroas s'arrête à mille, le poids entre zéro et cinq cents kilogrammes. Les formulaires portent les mêmes bornes : le téléphone refuse avant même d'envoyer quoi que ce soit.
 
-Le rappel d'une ruche jamais visitée pouvait aussi être décalé d'un jour. Il était calculé à partir de deux horloges à la fois : le jour de création de la ruche, compté d'une façon, et aujourd'hui, compté d'une autre. Le seul rôle de cette date est de dire quand, elle n'a donc plus qu'une seule réponse.
+Et lorsqu'une saisie est refusée, la raison arrive maintenant dans votre langue et nomme le champ concerné. Elle sortait auparavant telle quelle d'une bibliothèque, en anglais : « Input should be less than or equal to 1000 » — illisible, et muette sur lequel des onze champs était visé.
 
-Enfin, un téléphone réglé sur un calendrier autre que grégorien inscrivait l'année de ce calendrier dans la date : dans le calendrier bouddhiste thaï, nous sommes en 2569. Les dates sont maintenant toujours grégoriennes.
+Deux noms ont changé pour qu'une chose n'en porte qu'un. Les cadres de miel s'appellent « Honigrahmen » en allemand, aux côtés des « Brutrahmen » plutôt que contre eux, et l'humeur de la colonie est « Comportamiento » en espagnol sur tous les écrans.
 ```
 
 **es**
 ```
-Por la tarde la app guardaba las cosas con el día equivocado. A partir de las diez de la noche aproximadamente, una revisión nueva, un aviso de avispón y un tratamiento marcado llevaban la fecha del día anterior. El motivo: el servidor cuenta el día en UTC, a propósito — cada marca de tiempo que conserva es UTC, y cualquier otra cosa dependería de dónde se ejecute la máquina — y la app le dejaba decidir. Desde las 22:00, el día del servidor y el tuyo no son el mismo día.
+Hasta ahora la app aceptaba una revisión fechada en el año 3000, cinco mil varroas en una colmena y un colmenar a 999 grados norte. No por falta de pensarlo: los límites que existían valían cada uno en una sola pantalla. El formulario de traslado rechazaba una fecha futura y el de revisión, a dos toques, no. Un límite que vale en un sitio no es un límite.
 
-En la mayoría de las pantallas eso cuesta una fecha en una lista. En las trampas para avispones costaba datos: una captura es un recuento por trampa y día, así que vaciar las trampas tarde escribía la cifra de la tarde encima de la del día anterior, sin dejar rastro. Ahora cada pantalla envía el día que muestra tu teléfono.
+Cada fecha tiene ahora sus límites donde se define el campo —así la próxima pantalla no puede escribirse sin ellos—, con un día de tolerancia para quien vive lo bastante al este como para que su tarde sea el día siguiente del servidor. Las coordenadas tienen que ser coordenadas. El recuento de varroa acaba en mil, el peso entre cero y quinientos kilogramos. Los formularios llevan los mismos límites, así que el teléfono dice no antes de enviar nada.
 
-El recordatorio de una colmena que nunca se ha revisado también podía fallar por un día. Se calculaba con dos relojes a la vez: el día en que se creó la colmena, contado de una forma, y hoy, contado de otra. La única tarea de esa fecha es decir cuándo, así que ahora tiene una sola respuesta.
+Y cuando algo se rechaza, el motivo llega en tu idioma y nombra el campo. Antes salía tal cual de una biblioteca, en inglés: «Input should be less than or equal to 1000» — ilegible, y sin decir cuál de once campos era.
 
-Y un teléfono configurado con un calendario distinto del gregoriano escribía el año de ese calendario en la fecha: en el calendario budista tailandés, hoy es el año 2569. Las fechas son ahora siempre gregorianas.
+Dos nombres han cambiado para que una cosa tenga un nombre. Los cuadros de miel son «Honigrahmen» en alemán, junto a los «Brutrahmen» en vez de contra ellos, y el comportamiento de la colmena se llama «Comportamiento» en todas las pantallas.
 ```
 
 **pl**
 ```
-Wieczorem aplikacja zapisywała rzeczy pod niewłaściwym dniem. Od około dwudziestej drugiej nowy przegląd, zgłoszenie szerszenia i odhaczony zabieg dostawały datę dnia poprzedniego. Przyczyna: serwer liczy dzień w UTC, i to celowo — każdy znacznik czasu, który przechowuje, jest w UTC, a inaczej zależałoby to od tego, gdzie akurat działa maszyna — a aplikacja pozwalała mu decydować. Od 22:00 dzień serwera i twój dzień to nie ten sam dzień.
+Aplikacja przyjmowała dotąd przegląd z datą w roku 3000, pięć tysięcy warrozy w jednej rodzinie i pasiekę na 999 stopniach północy. Nie dlatego, że nikt nie pomyślał o granicach: te, które istniały, obowiązywały każda na jednym ekranie. Formularz przeniesienia odrzucał datę z przyszłości, a formularz przeglądu, dwa dotknięcia dalej, nie. Granica, która obowiązuje w jednym miejscu, nie jest granicą.
 
-Na większości ekranów kosztuje to datę na liście. Przy pułapkach na szerszenie kosztowało dane: odłów to jedna liczba na pułapkę i dzień, więc późne opróżnienie pułapek zapisywało wieczorną liczbę na liczbie z poprzedniego dnia, nie zostawiając śladu. Każdy ekran wysyła teraz dzień, który pokazuje twój telefon.
+Każda data ma teraz swoje granice tam, gdzie zdefiniowane jest samo pole — następnego ekranu nie da się więc napisać bez nich — z jednym dniem tolerancji dla tych, którzy mieszkają dość daleko na wschód, by ich wieczór był jutrem serwera. Współrzędne muszą być współrzędnymi. Liczba warrozy kończy się na tysiącu, waga między zerem a pięciuset kilogramami. Formularze noszą te same granice, telefon mówi więc nie, zanim cokolwiek zostanie wysłane.
 
-Przypomnienie dla rodziny pszczelej, której nigdy nie przeglądano, też mogło się mylić o dzień. Liczono je z dwóch zegarów naraz: dnia utworzenia rodziny, liczonego w jeden sposób, i dzisiaj, liczonego w inny. Jedynym zadaniem tej daty jest powiedzieć kiedy — ma więc teraz jedną odpowiedź.
+A kiedy coś zostaje odrzucone, powód przychodzi teraz w twoim języku i nazywa pole. Wcześniej wychodził wprost z biblioteki, po angielsku: „Input should be less than or equal to 1000" — nieczytelny i milczący o tym, o które z jedenastu pól chodzi.
 
-A telefon ustawiony na kalendarz inny niż grigoriański wpisywał w datę rok tego kalendarza: w tajskim kalendarzu buddyjskim dzisiaj jest rok 2569. Daty są teraz zawsze grigoriańskie.
+Dwie nazwy się zmieniły, żeby jedna rzecz miała jedną nazwę. Ramki z miodem to po niemiecku „Honigrahmen", obok „Brutrahmen" zamiast przeciw nim, a temperament rodziny to po hiszpańsku „Comportamiento" na każdym ekranie.
 ```
 
 ## The other fields

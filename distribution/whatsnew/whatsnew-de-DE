@@ -1,9 +1,10 @@
-HivePulse 1.0.4
+HivePulse 1.0.5
 
 Neu in diesem Build:
-• Abends trug die App Dinge unter dem Vortag ein — Kontrolle, Hornissen-Meldung, erledigte Behandlung
-• Fallenfänge am Abend überschrieben die Zahl des Vortags statt ihre eigene zu speichern
-• Die Erinnerung für ein noch nie kontrolliertes Volk konnte einen Tag daneben liegen
+• Unmögliche Werte werden abgelehnt, bevor sie gespeichert werden: kein Kontrolldatum im Jahr 3000, keine 5000 Milben, kein Bienenstand bei 999 Grad Nord
+• Die Formulare zeigen ihre Grenzen selbst, statt sie den Server erklären zu lassen
+• Fehlermeldungen kommen in deiner Sprache und nennen das Feld, um das es geht
+• Honigwaben heißen jetzt Honigrahmen, wie die Brutrahmen
 
 Bitte bleib im Test und benutz die App immer wieder mal.
 

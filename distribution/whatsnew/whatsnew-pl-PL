@@ -1,9 +1,10 @@
-HivePulse 1.0.4
+HivePulse 1.0.5
 
 Nowe w tej wersji:
-• Wieczorem aplikacja zapisywała pod dniem poprzednim: przeglądy, zgłoszenia szerszeni, wykonane zabiegi
-• Wieczorny odłów z pułapki nadpisywał liczbę z poprzedniego dnia zamiast zapisać własną
-• Przypomnienie dla nigdy nieprzeglądanej rodziny mogło się mylić o dzień
+• Niemożliwe wartości są odrzucane przed zapisem: żaden przegląd z roku 3000, żadne 5000 warrozy, żadna pasieka na 999 stopniach północy
+• Formularze same pokazują swoje granice, zamiast zostawiać to serwerowi
+• Komunikaty o błędach przychodzą w twoim języku i nazywają pole
+• Jedna nazwa na jedną rzecz, na każdym ekranie
 
 Zostań w teście i korzystaj z aplikacji od czasu do czasu.
 
