@@ -37,6 +37,10 @@ jobs:
           filters: |
             backend:
               - 'backend/**'
+              # test_appstore_metadata.py and test_play_metadata.py read these, so a
+              # listing-only edit has to run the suite that parses it (#459).
+              - 'docs/store-listing.md'
+              - 'distribution/whatsnew/**'
               - '.github/workflows/ci.yml'
             android:
               - 'android/**'
@@ -50,15 +54,29 @@ jobs:
             android_hornets:
               - 'android-hornets/**'
               - '.github/workflows/ci.yml'
+            # This job reports SUCCESS without running anything when nothing here matched,
+            # so the list has to cover everything its tests read — otherwise a green check
+            # means "not tested" and says so to nobody. It was narrower than `deployable`
+            # below, which meant a change to lib/ reached production untested, and
+            # ReleaseNotes.test.ts failed for two releases without a single red check (#459).
             web:
               - 'app/**'
               - 'components/**'
+              - 'hooks/**'
               - 'i18n/**'
+              - 'lib/**'
               - 'messages/**'
               - 'web/**'
+              - 'public/**'
+              - '__tests__/**'
               - 'next.config.ts'
+              - 'proxy.ts'
               - 'package.json'
               - 'package-lock.json'
+              # Read by ReleaseNotes.test.ts, and outside the web tree: the release notes
+              # Play receives, and the version the iPhone calls itself (#458).
+              - 'distribution/whatsnew/**'
+              - 'ios/HivePulse/Resources/Info.plist'
               - '.github/workflows/ci.yml'
             # What the hosting platform actually serves. Deliberately without
             # '.github/workflows/ci.yml': a change to the pipeline has to re-run the tests,
