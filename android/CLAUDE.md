@@ -48,8 +48,15 @@ so a wrong or missing keep rule is invisible to all of them.
   starts by itself for changes to the rules, the build script and `data/api`, and by hand
   (Actions → Android release smoke test) before a release goes to a track.
 - Stack traces: the mapping file travels inside the `.aab`, so Play Console deobfuscates crashes
-  by itself. Sentry gets no mapping yet (crash reporting is off without a DSN); if it is switched
-  on for the release, add its Gradle plugin first or the traces there are unreadable.
+  by itself. **Sentry does not**: crash reporting has been on for the release since 2026-10-01
+  (`android-release.yml` passes `SENTRY_DSN_ANDROID`), the Gradle plugin was never added, and so
+  every Kotlin frame there reads `a.b.c.d()`. The sentence this paragraph used to end with — "if
+  it is switched on for the release, add its Gradle plugin first" — came true and nobody acted on
+  it. It needs a `SENTRY_AUTH_TOKEN` secret, which only a person can create (#452).
+- Native libraries (ML Kit, Sentry, CameraX): their symbols need the NDK's llvm-strip, and AGP
+  only *warns* when it cannot find one, so `debugSymbolLevel` alone did nothing for version codes
+  10 to 12. The release workflow now resolves the runner's NDK and refuses to upload a bundle
+  without symbols (`scripts/check_native_debug_symbols.py`, #451).
 
 ## Design System Reference — IMPORTANT
 

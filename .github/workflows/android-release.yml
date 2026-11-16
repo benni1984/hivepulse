@@ -95,6 +95,26 @@ jobs:
           echo "code=$code" >> "$GITHUB_OUTPUT"
           echo "Version ${{ inputs.version_name }} (code $code)" >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Resolve the NDK that is already on the runner
+        run: |
+          # AGP strips the native libraries and extracts their symbol tables with llvm-strip and
+          # llvm-objcopy, both of which live in the NDK. This project builds no native code of its
+          # own, so it declares no NDK -- and without one AGP prints "Unable to strip the following
+          # libraries" and carries on, which is how version codes 10, 11 and 12 all reached Play
+          # with native code and no symbols (#451).
+          #
+          # Nothing is downloaded: the runner image ships an NDK and names it in this variable,
+          # and that directory's own name is the version AGP wants. Failing here rather than
+          # building a bundle the symbol check would reject three steps later.
+          ndk="${ANDROID_NDK_LATEST_HOME:-$ANDROID_NDK_HOME}"
+          if [ -z "$ndk" ] || [ ! -d "$ndk" ]; then
+            echo "::error::No NDK on this runner: ANDROID_NDK_LATEST_HOME and ANDROID_NDK_HOME are both unset or gone." >&2
+            echo "Without one the bundle ships unstripped libraries and no debug symbols -- see #451." >&2
+            exit 1
+          fi
+          echo "NDK_VERSION=$(basename "$ndk")" >> "$GITHUB_ENV"
+          echo "Using NDK $(basename "$ndk") from $ndk"
+
       - name: Build the app bundle
         env:
           SENTRY_DSN_ANDROID: ${{ secrets.SENTRY_DSN_ANDROID }}
@@ -107,6 +127,7 @@ jobs:
           cd android
           ./gradlew bundleRelease --no-daemon \
             -Dorg.gradle.jvmargs="-Xmx3g -XX:MaxMetaspaceSize=512m" \
+            -PNDK_VERSION="$NDK_VERSION" \
             -PBASE_URL="https://hivepulse.multihead.de/api/v1/" \
             -PVERSION_NAME="${{ inputs.version_name }}" \
             -PVERSION_CODE="${{ steps.version.outputs.code }}"
@@ -125,6 +146,15 @@ jobs:
           # Play only reports this after the upload, in the bundle explorer, where it is easy
           # to miss — 1.0.0 (3) reached Google's review with a 4 KB CameraX library.
           python3 scripts/check_16kb_alignment.py \
+            android/app/build/outputs/bundle/release/app-release.aab
+
+      - name: Confirm the native libraries carry debug symbols
+        run: |
+          # The build file has asked for these since version code 10, and codes 10, 11 and 12
+          # shipped without them regardless: AGP needs the NDK to extract them and only WARNS
+          # when it cannot find one (#451). The setting was right, the effect never arrived, and
+          # the only trace was one line in a 589-line log. So the bundle is asked, not the log.
+          python3 scripts/check_native_debug_symbols.py \
             android/app/build/outputs/bundle/release/app-release.aab
 
       - uses: actions/upload-artifact@v4
