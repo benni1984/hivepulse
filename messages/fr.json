@@ -1,7 +1,7 @@
 {
   "nav": {
     "map": "Carte en direct",
-    "hornets": "Suivi frelons",
+    "hornets": "Suivi du frelon asiatique",
     "news": "Actualités",
     "contribute": "Contribuer",
     "members": "Membres",
@@ -1125,7 +1125,7 @@
         "desc": "Comparer votre rucher à la communauté HivePulse — comptes varroa moyens, taux de bonne humeur, cadres de couvain et intervalles de visite de tous les ruchers publics."
       },
       "hornet-tracker": {
-        "title": "Suivi des frelons",
+        "title": "Suivi du frelon asiatique",
         "desc": "Signaler des captures de frelons asiatiques et des nids, voter sur les photos soumises par la communauté et consulter la carte des nids en direct."
       },
       "hornet-traps": {

@@ -1,7 +1,7 @@
 {
   "nav": {
     "map": "Mapa en vivo",
-    "hornets": "Rastreador de avispas",
+    "hornets": "Rastreador de avispa asiática",
     "news": "Noticias",
     "contribute": "Contribuir",
     "members": "Miembros",
@@ -804,7 +804,7 @@
       "mapSection": "Mapa de salud regional"
     },
     "traps": {
-      "myTitle": "Mis trampas para avispa asiática",
+      "myTitle": "Mis trampas para avispones",
       "myEmpty": "Aún no tienes trampas registradas.",
       "register": "Registrar trampa",
       "manage": "Gestionar",
@@ -1125,7 +1125,7 @@
         "desc": "Compare su colmenar con la comunidad HivePulse — recuentos medios de varroa, tasas de buen humor, cuadros de cría e intervalos de revisión de todos los colmenares públicos."
       },
       "hornet-tracker": {
-        "title": "Rastreador de avispones",
+        "title": "Rastreador de avispa asiática",
         "desc": "Reportar capturas de avispones asiáticos y avistamientos de nidos, votar en envíos fotográficos de la comunidad y ver el mapa de nidos en directo."
       },
       "hornet-traps": {
@@ -1147,7 +1147,7 @@
     "title": "Rastreador de avispa asiática",
     "subtitle": "Ayuda a proteger las abejas rastreando Vespa velutina — la avispa asiática. Reporta capturas y nidos, identifica avistamientos y consulta el mapa en vivo. Sin cuenta necesaria.",
     "stats": {
-      "caught": "Avispas capturadas",
+      "caught": "Avispones capturados",
       "nests": "Nidos reportados",
       "destroyed": "Nidos destruidos",
       "sightings": "Avistamientos confirmados",
@@ -1156,7 +1156,7 @@
     "info": {
       "problem": "La amenaza",
       "problemText": "Vespa velutina (avispa asiática) es un depredador invasor que ataca colonias de abejas, debilita las colmenas y amenaza la seguridad alimentaria. La detección temprana es fundamental.",
-      "whyCatch": "Por qué capturar?",
+      "whyCatch": "¿Por qué capturar?",
       "whyCatchText": "Atrapar reinas en primavera evita la formación de nuevas colonias. Cada reina capturada puede prevenir miles de obreras. La trampa comunitaria marca la diferencia.",
       "reportNest": "Reportar un nido",
       "reportNestText": "Si detectas un nido, no lo molestes. Reporta la ubicación aquí para que las autoridades organicen su retirada segura. Tu reporte salva abejas."
@@ -1177,7 +1177,7 @@
       "title": "Reportar",
       "catchTab": "Reportar captura",
       "nestTab": "Reportar nido",
-      "catchHint": "Cuántas avispas capturaste?",
+      "catchHint": "¿Cuántos avispones capturaste?",
       "count": "Número capturado",
       "countError": "El número debe estar entre 1 y 1000",
       "latitude": "Latitud",
@@ -1208,7 +1208,7 @@
       "submitSuccess": "¡Foto enviada! Aparecerá tras la carga.",
       "vote": {
         "yes": "Vespa velutina",
-        "no": "No es una avispa"
+        "no": "No es un avispón"
       },
       "confirmed": "Confirmado",
       "rejected": "Rechazado",
@@ -1218,7 +1218,7 @@
     "traps": {
       "title": "Mis trampas",
       "subtitle": "Registra tu trampa una vez — luego registra capturas diarias rápidamente por código de acceso o detección GPS.",
-      "hint": "Gestiona tus trampas de avispa asiática",
+      "hint": "Gestiona tus trampas para avispones",
       "new": "Registrar trampa",
       "name": "Nombre de la trampa",
       "namePlaceholder": "ej. Jardín Norte",
@@ -1271,7 +1271,7 @@
     "hornetsReportTitle": "Informar de una captura o un nido",
     "hornetsTitle": "Rastreador de avispa asiática",
     "hornetsTrapsDescription": "Registra una trampa con nombre una sola vez y luego anota la captura diaria con su código de acceso o por GPS cuando estés delante.",
-    "hornetsTrapsTitle": "Trampas para avispa asiática",
+    "hornetsTrapsTitle": "Trampas para avispones",
     "imprintDescription": "Quién gestiona HivePulse y cómo contactar.",
     "imprintTitle": "Aviso legal",
     "mapDescription": "Los colmenares que sus apicultores han decidido mostrar. Acerca el mapa y mira qué hay cerca de ti.",
@@ -1315,9 +1315,9 @@
     "removed3": "Cada revisión que hayas anotado, con notas y campos propios.",
     "removed4": "Tus sesiones y, si habías activado los recordatorios, el identificador del dispositivo usado para enviarlos.",
     "keptTitle": "Qué se conserva",
-    "keptBody": "Los avisos de avispas y las trampas se conservan. Son observaciones sobre el entorno en las que confían otros apicultores, y después dejan de estar vinculadas a tu cuenta: una trampa mantiene su nombre y su ubicación, pero ya no señala a ninguna persona. También se conservan las estadísticas agregadas de la comunidad, porque no contienen datos personales: un número de colmenas por región, nunca una colmena tuya.",
+    "keptBody": "Los avisos de avispones y las trampas se conservan. Son observaciones sobre el entorno en las que confían otros apicultores, y después dejan de estar vinculadas a tu cuenta: una trampa mantiene su nombre y su ubicación, pero ya no señala a ninguna persona. También se conservan las estadísticas agregadas de la comunidad, porque no contienen datos personales: un número de colmenas por región, nunca una colmena tuya.",
     "retentionTitle": "Cuánto tiempo se conserva algo",
-    "retentionBody": "En la base de datos en funcionamiento la eliminación es inmediata: un minuto después no queda nada de tu cuenta. Nuestro proveedor de alojamiento guarda copias de seguridad automáticas durante un máximo de 30 días; una copia solo puede restaurarse por completo, nunca para una sola cuenta, y pasado ese plazo los datos también desaparecen de ahí. Los avisos y trampas de avispas descritos arriba no tienen plazo, porque ya no se refieren a ninguna persona. No mantenemos copias, archivos ni exportaciones aparte.",
+    "retentionBody": "En la base de datos en funcionamiento la eliminación es inmediata: un minuto después no queda nada de tu cuenta. Nuestro proveedor de alojamiento guarda copias de seguridad automáticas durante un máximo de 30 días; una copia solo puede restaurarse por completo, nunca para una sola cuenta, y pasado ese plazo los datos también desaparecen de ahí. Los avisos y trampas de avispones descritos arriba no tienen plazo, porque ya no se refieren a ninguna persona. No mantenemos copias, archivos ni exportaciones aparte.",
     "noAccessTitle": "¿Sin acceso a la aplicación?",
     "noAccessBody": "Si ya no puedes iniciar sesión, escríbenos y eliminaremos la cuenta por ti en un plazo de 30 días. Usa la dirección con la que se registró la cuenta, para que sepamos de cuál se trata:"
   },

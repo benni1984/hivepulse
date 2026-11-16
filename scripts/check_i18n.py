@@ -88,12 +88,21 @@ def compare(area: str, reference: dict[str, str], other: dict[str, str], locale:
 ES_I_SOUND = re.compile(r"^(?:[ií]|hi(?![ae]))", re.IGNORECASE)
 ES_CONJ = re.compile(r"(?<![\w])([ye])\s+([^\s<>{}\[\]]+)")
 
+# The insect this app tracks is the avispa asiática (Vespa velutina). A bare "avispa" is a
+# common wasp, and "avispón europeo" (Vespa crabro) is the protected species a beekeeper must
+# NOT trap -- so naming the wrong one is not a style question. Spanish therefore uses the
+# species name where the name is given and the genus "avispón" in the short slots, and a bare
+# "avispa" only in the deliberate contrasts ("avispa común") that tell the three apart (#435).
+ES_BARE_WASP = re.compile(
+    r"\bavispas?\b(?!\s+(?:asi[aá]tic|com[uú]n|comunes|velutina))", re.IGNORECASE
+)
+
 FR_VOWEL = re.compile(r"^(?:[aeiouyàâäéèêëîïôöùûüAEIOUY]|h)", re.IGNORECASE)
 FR_ELISION = re.compile(r"(?<![\w])d['\u2019]\s*([a-zA-Zà-ÿ]+)")
 
 
 def check_grammar(area: str, locale: str, strings: dict[str, str]) -> None:
-    """The two rules above, over one platform's strings for one language."""
+    """The rules above, over one platform's strings for one language."""
     for key, value in strings.items():
         if not isinstance(value, str):
             continue
@@ -106,6 +115,11 @@ def check_grammar(area: str, locale: str, strings: dict[str, str]) -> None:
                 if conj.lower() == "y" and i_sound:
                     fail(area, f"es: {key!r} has 'y {following}' — becomes 'e' before an "
                                f"i or hi sound")
+            wasp = ES_BARE_WASP.search(value)
+            if wasp:
+                fail(area, f"es: {key!r} says {wasp.group(0)!r} — a bare 'avispa' is a common "
+                           f"wasp. The tracked species is the 'avispa asiática'; its genus, "
+                           f"for the short labels, is 'avispón'")
         elif locale == "fr":
             for following in FR_ELISION.findall(value):
                 if not FR_VOWEL.match(following):
@@ -378,6 +392,68 @@ def check_app_wording(android_tables: dict, ios_tables: dict) -> None:
                             f"same English but differ — Android {a!r}, iPhone {i!r}")
 
 
+# The five bottom tabs are the app's own navigation, and CLAUDE.md fixes them by name and by
+# order. check_app_wording cannot see them: MIN_COMPARABLE skips anything under 12 characters
+# and every tab label is one word. That is the gap #435 came through — Android's tab said
+# "Avispones", the iPhone's said "Avispas", and a reader on one of the two phones was told the
+# app tracks common wasps. Short is exactly why it needs its own check: there is no sentence
+# around a tab label to make the mistake obvious.
+#
+# Android draws the tab from tab_scan_short, not tab_scan — tab_scan is the screen's own title.
+TAB_LABELS = (
+    ("tab_apiaries", "tab.apiaries"),
+    ("tab_scan_short", "tab.scan"),
+    ("tab_hornets", "tab.hornets"),
+    ("tab_members", "tab.members"),
+    ("tab_settings", "tab.settings"),
+)
+
+
+def check_tab_labels(android_tables: dict, ios_tables: dict) -> None:
+    both = [loc for loc in LOCALES if loc in android_tables and loc in ios_tables]
+    for android_key, ios_key in TAB_LABELS:
+        for locale in both:
+            a = android_tables[locale].get(android_key, "").strip()
+            i = ios_tables[locale].get(ios_key, "").strip()
+            if not a:
+                fail("android", f"{locale}: the bottom tab {android_key!r} has no text")
+            if not i:
+                fail("ios", f"{locale}: the bottom tab {ios_key!r} has no text")
+            if a and i and a != i:
+                fail("android", f"{locale}: the bottom tab reads {a!r} on Android and {i!r} on "
+                                f"the iPhone ({android_key} / {ios_key}) — the two apps name "
+                                f"the same place the same way")
+
+
+# One feature, one name per language (#440). The hornet tracker had three per language: the
+# website's navigation, its page title and its help index each said something different, and
+# the apps a fourth thing. The name has to say which species, because the European hornet is
+# protected and must not be trapped — "Hornet Tracker" does not tell a reader which insect the
+# app is about. hornets.title on the website is the reference; everything else follows it.
+FEATURE_NAME_WEB = ("nav.hornets", "meta.hornetsTitle",
+                    "helpIndex.topics.hornet-tracker.title")
+
+
+def check_feature_name(web_tables: dict, android_tables: dict, ios_tables: dict) -> None:
+    for locale in [loc for loc in LOCALES if loc in web_tables]:
+        web = web_tables[locale]
+        reference = web.get("hornets.title", "").strip()
+        if not reference:
+            fail("web", f"{locale}: hornets.title is missing — the feature has no name to follow")
+            continue
+        for key in FEATURE_NAME_WEB:
+            value = web.get(key, "").strip()
+            if value and value != reference:
+                fail("web", f"{locale}: {key!r} calls the hornet tracker {value!r}, hornets.title "
+                            f"calls it {reference!r} — one name per language")
+        for area, tables, key in (("android", android_tables, "hornet_title"),
+                                  ("ios", ios_tables, "hornets.title")):
+            value = tables.get(locale, {}).get(key, "").strip()
+            if value and value != reference:
+                fail(area, f"{locale}: {key!r} calls the hornet tracker {value!r}, the website "
+                           f"calls it {reference!r} — one name per language, on all three clients")
+
+
 # ── backend ───────────────────────────────────────────────────────────────────
 
 def check_backend() -> None:
@@ -428,14 +504,23 @@ def main() -> int:
     for check in (check_web, check_ios, check_android, check_backend):
         check()
 
-    # Needs both platforms at once, so it cannot live inside either one's check.
-    check_app_wording(
-        {loc: load_xml(ROOT / "android/app/src/main/res" /
-                       ("values" if loc == "en" else f"values-{loc}") / "strings.xml")
-         for loc in LOCALES},
-        {loc: load_strings(ROOT / "ios/HivePulse/Resources" / f"{loc}.lproj/Localizable.strings")
-         for loc in LOCALES},
-    )
+    # These need more than one client at once, so they cannot live inside any one check.
+    android_tables = {
+        loc: load_xml(ROOT / "android/app/src/main/res" /
+                      ("values" if loc == "en" else f"values-{loc}") / "strings.xml")
+        for loc in LOCALES
+    }
+    ios_tables = {
+        loc: load_strings(ROOT / "ios/HivePulse/Resources" / f"{loc}.lproj/Localizable.strings")
+        for loc in LOCALES
+    }
+    web_tables = {
+        loc: flatten(json.loads((ROOT / "messages" / f"{loc}.json").read_text(encoding="utf-8")))
+        for loc in LOCALES
+    }
+    check_app_wording(android_tables, ios_tables)
+    check_tab_labels(android_tables, ios_tables)
+    check_feature_name(web_tables, android_tables, ios_tables)
 
     by_area: dict[str, list[str]] = {}
     for area, message in findings:

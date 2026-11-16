@@ -4,6 +4,7 @@ Runs scripts/check_i18n.py, which compares web, iOS, Android and backend transla
 Spanish was missing from Android entirely and from 15 of 16 backend error messages before
 anything noticed, because a missing translation silently falls back to English everywhere.
 """
+import json
 import pathlib
 import subprocess
 import sys
@@ -311,3 +312,178 @@ def test_the_repository_itself_has_no_drift():
     module.check_app_wording(android, ios)
     assert not module.findings, (
         "Android and the iPhone disagree:\n  " + "\n  ".join(m for _, m in module.findings))
+
+
+# ── Short labels, and one feature's name ─────────────────────────────────────
+#
+# check_app_wording compares only phrases of 12 characters or more, because one English word
+# is not a sentence: "Save" labels twenty different buttons. A tab label is one word, so the
+# sweep could never see the bottom navigation — and that is where #435 sat. Android's Spanish
+# tab said "Avispones", the iPhone's said "Avispas", and "avispa" is a common wasp, not the
+# hornet the whole feature is about. Nothing was missing and nothing was empty; one of the two
+# phones simply named the wrong insect, in its most prominent place.
+
+SPANISH_TABS = {
+    "tab_apiaries": "Colmenares", "tab_scan_short": "Escanear", "tab_hornets": "Avispones",
+    "tab_members": "Miembros", "tab_settings": "Ajustes",
+}
+
+
+def _tabs(**overrides):
+    """A complete pair of tab tables, so that an empty label is only ever deliberate."""
+    android = dict(SPANISH_TABS, **{k: v for k, v in overrides.items() if k.startswith("tab_")})
+    ios = {
+        ios_key: overrides.get(ios_key, SPANISH_TABS[android_key])
+        for android_key, ios_key in (("tab_apiaries", "tab.apiaries"),
+                                     ("tab_scan_short", "tab.scan"),
+                                     ("tab_hornets", "tab.hornets"),
+                                     ("tab_members", "tab.members"),
+                                     ("tab_settings", "tab.settings"))
+    }
+    return {"es": android}, {"es": ios}
+
+
+def test_the_check_sees_two_apps_naming_a_tab_differently():
+    module = _checker()
+    module.findings.clear()
+    module.check_tab_labels(*_tabs(**{"tab.hornets": "Avispas"}))
+    assert module.findings, "a tab reading differently on the two apps must be flagged"
+    assert "bottom tab" in module.findings[0][1]
+    assert "Avispas" in module.findings[0][1]
+
+
+def test_the_check_is_quiet_when_the_tabs_agree():
+    module = _checker()
+    module.findings.clear()
+    module.check_tab_labels(*_tabs())
+    assert not module.findings, f"false positive: {module.findings}"
+
+
+def test_the_check_reads_the_android_tab_from_the_short_string():
+    """Android draws the tab from tab_scan_short; tab_scan is the screen's own title."""
+    module = _checker()
+    assert ("tab_scan_short", "tab.scan") in module.TAB_LABELS
+    assert not any(a == "tab_scan" for a, _ in module.TAB_LABELS)
+
+
+def test_the_check_sees_an_empty_tab_label():
+    module = _checker()
+    module.findings.clear()
+    module.check_tab_labels(*_tabs(tab_hornets=""))
+    assert module.findings
+    assert "no text" in module.findings[0][1]
+
+
+# One feature, one name per language (#440). The website carried three names for the hornet
+# tracker — its navigation, its page title and its help index — and the apps a fourth. The
+# name has to say which species: the European hornet is protected and must not be trapped, so
+# a label reading only "hornets" tells a beekeeper nothing about what to catch.
+
+def test_the_check_sees_a_navigation_entry_that_renames_the_feature():
+    module = _checker()
+    module.findings.clear()
+    module.check_feature_name(
+        {"en": {"hornets.title": "Asian Hornet Tracker", "nav.hornets": "Hornet Tracker"}},
+        {}, {},
+    )
+    assert module.findings, "a second name for the same feature must be flagged"
+    assert "one name per language" in module.findings[0][1]
+
+
+def test_the_check_sees_an_app_that_renames_the_feature():
+    module = _checker()
+    module.findings.clear()
+    module.check_feature_name(
+        {"es": {"hornets.title": "Rastreador de avispa asiática"}},
+        {"es": {"hornet_title": "Rastreador de avispones"}},
+        {"es": {"hornets.title": "Seguimiento de avispas"}},
+    )
+    areas = {area for area, _ in module.findings}
+    assert areas == {"android", "ios"}, f"both apps must be named, got {areas}"
+
+
+def test_the_check_is_quiet_when_every_client_agrees():
+    module = _checker()
+    module.findings.clear()
+    name = "Suivi du frelon asiatique"
+    module.check_feature_name(
+        {"fr": {"hornets.title": name, "nav.hornets": name, "meta.hornetsTitle": name,
+                "helpIndex.topics.hornet-tracker.title": name}},
+        {"fr": {"hornet_title": name}}, {"fr": {"hornets.title": name}},
+    )
+    assert not module.findings, f"false positive: {module.findings}"
+
+
+def test_the_check_notices_the_feature_has_no_name_at_all():
+    module = _checker()
+    module.findings.clear()
+    module.check_feature_name({"en": {"nav.hornets": "Hornet Tracker"}}, {}, {})
+    assert module.findings
+    assert "no name to follow" in module.findings[0][1]
+
+
+# The Spanish vocabulary rule, which catches the same mistake from the other side: not by
+# comparing two platforms, but by reading one string. "avispa asiática" is the species this
+# app tracks, "avispón" its genus for the short slots, and "avispa común" the deliberate
+# contrast that tells them apart. A bare "avispa" is none of those.
+
+@pytest.mark.parametrize("value", [
+    "Avispas capturadas",
+    "Rastreador de avispas",
+    "No es una avispa",
+    "¿Cuántas avispas capturaste?",
+])
+def test_the_check_sees_a_bare_spanish_wasp(value):
+    module = _checker()
+    module.findings.clear()
+    module.check_grammar("web", "es", {"k": value})
+    assert module.findings, f"should have been flagged: {value}"
+    assert "common wasp" in module.findings[0][1]
+
+
+@pytest.mark.parametrize("value", [
+    "Rastreador de avispa asiática",
+    "Avispones capturados",
+    "Distingue la avispa asiática de una avispa común o del avispón europeo",
+    "Las avispas asiáticas llegan en otoño",
+    "Un avispero bajo el tejado",
+    "Vespa velutina",
+])
+def test_the_check_is_quiet_about_correct_spanish_hornet_wording(value):
+    module = _checker()
+    module.findings.clear()
+    module.check_grammar("web", "es", {"k": value})
+    assert not module.findings, f"false positive: {value} -> {module.findings}"
+
+
+def test_the_wasp_rule_applies_to_spanish_only():
+    """French "guêpe" and German "Wespe" are nobody's business here."""
+    module = _checker()
+    module.findings.clear()
+    module.check_grammar("web", "fr", {"k": "Piège à guêpes et avispas"})
+    assert not module.findings
+
+
+def test_the_repository_itself_names_the_tracker_once_per_language():
+    """The real strings, so a new screen cannot invent a fifth name without failing here."""
+    module = _checker()
+    module.findings.clear()
+    locales = ("en", "de", "fr", "es", "pl")
+    android = {
+        loc: module.load_xml(REPO / "android/app/src/main/res" /
+                             ("values" if loc == "en" else f"values-{loc}") / "strings.xml")
+        for loc in locales
+    }
+    ios = {
+        loc: module.load_strings(REPO / "ios/HivePulse/Resources" / f"{loc}.lproj/Localizable.strings")
+        for loc in locales
+    }
+    web = {
+        loc: module.flatten(json.loads(
+            (REPO / "messages" / f"{loc}.json").read_text(encoding="utf-8")))
+        for loc in locales
+    }
+    module.check_feature_name(web, android, ios)
+    module.check_tab_labels(android, ios)
+    assert not module.findings, (
+        "the clients disagree:\n  " + "\n  ".join(m for _, m in module.findings))

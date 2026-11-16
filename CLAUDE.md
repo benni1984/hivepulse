@@ -112,6 +112,33 @@ Source of truth for all endpoints, shapes, and enums: `docs/api-contract.md`. Up
 - **Hornet trap** — named physical trap, GPS location, 8-char access code
 - **Trap catch** — daily hornet count (one per trap per day — upsert)
 
+### The hornet tracker's name — decided, and checked (#435, #440)
+
+The feature tracks *Vespa velutina*. The name it is given has to say so, because *Vespa
+crabro* — the European hornet — is protected and must not be trapped, and a label reading
+only "hornets" does not tell a beekeeper which one belongs in the trap.
+
+Two registers, and only two:
+
+| | Full name — page title, meta title, nav, help index, store listing | Short label — the app's bottom tab |
+|---|---|---|
+| en | Asian Hornet Tracker | Hornets |
+| de | Hornissen-Tracker | Hornissen |
+| fr | Suivi du frelon asiatique | Frelons |
+| es | Rastreador de avispa asiática | Avispones |
+| pl | Tropiciel szerszenia azjatyckiego | Szerszenie |
+
+**Spanish, in particular:** the species is the **avispa asiática**, its genus for short
+labels is **avispón**, and *Vespa crabro* is the **avispón europeo**. A bare `avispa` is a
+common wasp and belongs only in the one help sentence that teaches the three apart. German
+is the one full name that does not carry the species; it is at least consistent across all
+three clients and the store, and changing it would move the German listing texts too.
+
+`scripts/check_i18n.py` enforces all of this: `check_feature_name` (one name per language,
+across web, Android and iPhone), `check_tab_labels` (the five bottom tabs read alike on both
+apps — `check_app_wording` cannot see them, it skips anything under 12 characters) and the
+Spanish `avispa` rule in `check_grammar`.
+
 ## Staging
 
 - Staging URL: `apiscan-staging.vercel.app` (not `apiscan-two.vercel.app` — that domain is a stale alias still pointing at the *production* Vercel project, see #242)

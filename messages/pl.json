@@ -1,7 +1,7 @@
 {
   "nav": {
     "map": "Mapa na żywo",
-    "hornets": "Tropiciel szerszeni",
+    "hornets": "Tropiciel szerszenia azjatyckiego",
     "news": "Aktualności",
     "contribute": "Zaangażuj się",
     "members": "Członkowie",
@@ -1125,7 +1125,7 @@
         "desc": "Porównaj swoją pasiekę ze społecznością HivePulse: średnie liczby Varroa, odsetek dobrego temperamentu, liczby ramek z czerwiem i odstępy między przeglądami we wszystkich pasiekach publicznych."
       },
       "hornet-tracker": {
-        "title": "Tropiciel szerszeni",
+        "title": "Tropiciel szerszenia azjatyckiego",
         "desc": "Zgłaszaj odłowy szerszenia azjatyckiego i obserwacje gniazd, głosuj nad zdjęciami od społeczności i oglądaj mapę gniazd na żywo."
       },
       "hornet-traps": {

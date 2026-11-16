@@ -22,8 +22,10 @@ describe('Play release notes', () => {
 
   it('stay within the 500 characters Play allows', () => {
     for (const locale of LOCALES) {
-      const text = readFileSync(join(DIR, `whatsnew-${locale}`), 'utf8');
-      // Characters, not bytes — the French text is 489 characters and 494 bytes.
+      // Characters, not bytes — the French text is 489 characters and 494 bytes. And not
+      // carriage returns: a Windows checkout has CRLF endings, which added 11 phantom
+      // characters and failed this test locally while CI passed.
+      const text = readFileSync(join(DIR, `whatsnew-${locale}`), 'utf8').replace(/\r/g, '');
       expect(text.length, `whatsnew-${locale} is ${text.length} characters`).toBeLessThanOrEqual(500);
     }
   });

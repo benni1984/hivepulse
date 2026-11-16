@@ -1,7 +1,7 @@
 {
   "nav": {
     "map": "Live Map",
-    "hornets": "Hornet Tracker",
+    "hornets": "Asian Hornet Tracker",
     "news": "News",
     "contribute": "Contribute",
     "members": "Members",
@@ -1125,7 +1125,7 @@
         "desc": "Compare your apiary against the HivePulse community — average varroa counts, good-mood rates, brood frame counts, and inspection intervals across all public apiaries."
       },
       "hornet-tracker": {
-        "title": "Hornet Tracker",
+        "title": "Asian Hornet Tracker",
         "desc": "Report Asian hornet catches and nest sightings, vote on community photo submissions, and view the live nest map."
       },
       "hornet-traps": {

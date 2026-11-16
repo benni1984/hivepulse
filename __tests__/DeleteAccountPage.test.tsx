@@ -66,6 +66,7 @@ describe('the deletion texts', () => {
     expect(en.deleteAccount.keptBody).toMatch(/hornet/i);
     expect(de.deleteAccount.keptBody).toMatch(/Hornissen/);
     expect(fr.deleteAccount.keptBody).toMatch(/frelons/i);
-    expect(es.deleteAccount.keptBody).toMatch(/avispas/i);
+    // "avispones", not "avispas": the latter is a common wasp (#435).
+    expect(es.deleteAccount.keptBody).toMatch(/avispones/i);
   });
 });
