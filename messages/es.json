@@ -527,6 +527,7 @@
         "title": "Gestión de usuarios",
         "search": "Buscar por email…",
         "all": "Todos",
+        "supporterFilter": "Filtrar por estado de colaborador",
         "supportersOnly": "Solo supporters",
         "email": "Email",
         "name": "Nombre",
@@ -677,6 +678,9 @@
       "mood": "Comportamiento",
       "queen": "Reina vista",
       "brood": "Cuadros de cría",
+      "honey": "Cuadros de miel",
+      "weight": "Peso (kg)",
+      "treatmentApplied": "Tratamiento aplicado",
       "yes": "Sí",
       "no": "No",
       "hiveType": "Tipo de colmena",
@@ -787,10 +791,10 @@
       "snapshot": "Resumen global",
       "health": "Promedios de salud",
       "avgVarroa": "Varroa prom. (global)",
-      "goodMood": "Colmenas: buen ánimo",
+      "goodMood": "Colmenas: buen comportamiento",
       "avgBrood": "Cuadros de cría prom.",
       "interval": "Intervalo de revisión prom.",
-      "moodChart": "Ánimo de las colmenas",
+      "moodChart": "Comportamiento de las colmenas",
       "cityChart": "Colmenas por ciudad (Top 15)",
       "sizeChart": "Tamaño de colmenares",
       "apiaryTable": "Colmenares públicos",
@@ -1031,7 +1035,7 @@
     },
     "b4": {
       "title": "Mapas de calor regionales",
-      "desc": "Mapas de clusters de enfermedades con riesgo de varroa, ánimo de la colonia, presión de enjambre y salud de la cría — disponibles en el panel de comunidad."
+      "desc": "Mapas de clusters de enfermedades con riesgo de varroa, comportamiento de la colonia, presión de enjambre y salud de la cría — disponibles en el panel de comunidad."
     },
     "b5": {
       "title": "Portal de datos de investigación",
@@ -1043,14 +1047,14 @@
     },
     "stat": {
       "avgVarroa": "Varroa prom. (global)",
-      "goodMood": "Colmenas: Buen humor",
+      "goodMood": "Colmenas: buen comportamiento",
       "avgBrood": "Cuadros de cría prom.",
       "interval": "Intervalo de revisión prom."
     },
     "coming": {
       "tag": "Ya disponible",
       "title": "Panel web para miembros",
-      "desc": "El panel web completo para miembros está en línea. Explora datos globales de salud de colmenas, tendencias de ánimo y colmenares de la comunidad directamente en tu navegador.",
+      "desc": "El panel web completo para miembros está en línea. Explora datos globales de salud de colmenas, tendencias de comportamiento y colmenares de la comunidad directamente en tu navegador.",
       "btn": "Abrir panel"
     }
   },
@@ -1376,5 +1380,8 @@
     "doneReplaced": "{replaced, plural, one {Una de ellas ha sustituido lo que este navegador había dicho antes.} other {# de ellas han sustituido lo que este navegador había dicho antes.}}",
     "doneNext": "Todavía no ha cambiado nada. Cuando cinco apicultores cerca de ti coincidan, la corrección pasará a alguien que pueda aprobarla.",
     "doneAgain": "Valorar otra región"
+  },
+  "tour": {
+    "showMe": "Muéstramelo"
   }
 }

@@ -47,7 +47,7 @@ export default function CustomFieldsContent({ Screenshot }: { Screenshot: typeof
         <div className="help-stat-grid">
           {[
             { name: 'Text', desc: 'Eine Freitexteingabe. Gut für Notizen, Beobachtungen oder jede offene Antwort.' },
-            { name: 'Zahl', desc: 'Eine numerische Eingabe. Als Dezimalzahl gespeichert — nützlich für Messungen wie Rähmchenanzahl oder Gewichte.' },
+            { name: 'Zahl', desc: 'Eine numerische Eingabe. Als Dezimalzahl gespeichert — nützlich für Messungen wie Rahmenanzahl oder Gewichte.' },
             { name: 'Boolean', desc: 'Ein Ja/Nein-Schalter. Am besten für erledigte oder nicht erledigte Aktionen: „heute gefüttert", „neue Waben gezogen".' },
             { name: 'Datum', desc: 'Eine Datumsauswahl. Verwenden Sie es zur Aufzeichnung bestimmter Ereignisse — „letztes Behandlungsdatum", „Königin eingeführt am".' },
             { name: 'Auswahl', desc: 'Eine Dropdown-Liste mit Ihren eigenen Optionen. Nützlich für kategorische Daten — „Nektarquelle", „Behandlungsprodukt".' },

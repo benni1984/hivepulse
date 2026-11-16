@@ -3,15 +3,12 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { getApiaries, getMovesOverview, moveHives, type Apiary, type Hive, type HiveMove, type MoveResult } from '@/lib/api';
 import { FORAGE_KEYS, returnSuggestions } from '@/lib/moves';
+// Was a word-for-word copy of todayLocal() in this file. Correct, but a second implementation of
+// "what day is it" is the one that drifts — the whole point of #443 was to have one.
+import { todayLocal } from '@/lib/dates';
 
 const NEW_APIARY = '__new__';
 const OTHER_FORAGE = '__other__';
-
-function today(): string {
-  const now = new Date();
-  const pad = (n: number) => String(n).padStart(2, '0');
-  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
-}
 
 /**
  * Takes hives from this apiary to another place: several at once, on a date, for a forage.
@@ -37,7 +34,7 @@ export default function MoveHivesPanel({
   const [newAddress, setNewAddress] = useState('');
   const [position, setPosition] = useState<{ lat: number; lon: number } | null>(null);
   const [locating, setLocating] = useState(false);
-  const [movedOn, setMovedOn] = useState(today());
+  const [movedOn, setMovedOn] = useState(todayLocal());
   const [forage, setForage] = useState('');
   const [otherForage, setOtherForage] = useState('');
   const [note, setNote] = useState('');
@@ -200,7 +197,7 @@ export default function MoveHivesPanel({
 
       <div className="dash-form-group">
         <label htmlFor="move-date">{t('moves.date')}</label>
-        <input id="move-date" type="date" value={movedOn} max={today()} onChange={e => setMovedOn(e.target.value)} />
+        <input id="move-date" type="date" value={movedOn} max={todayLocal()} onChange={e => setMovedOn(e.target.value)} />
       </div>
 
       <div className="dash-form-group">

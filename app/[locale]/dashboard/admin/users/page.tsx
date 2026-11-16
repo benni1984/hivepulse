@@ -59,6 +59,9 @@ export default function AdminUsersPage() {
         />
         <select
           className="dash-admin-select"
+          /* The only field in the app with no label at all. Its options say "All" and
+             "Supporters only"; what was missing is what the choice is about. */
+          aria-label={t('admin.users.supporterFilter')}
           value={supporterFilter}
           onChange={e => { setSupporterFilter(e.target.value as 'all' | 'yes'); setPage(1); }}
         >

@@ -142,8 +142,8 @@ export default function FieldDefinitionsPage() {
           <h2>{t('fieldDefs.createTitle')}</h2>
           <form onSubmit={handleCreate}>
             <div className="dash-form-group">
-              <label>{t('fieldDefs.name')}</label>
-              <input
+              <label htmlFor="fielddef-create-name">{t('fieldDefs.name')}</label>
+              <input id="fielddef-create-name"
                 type="text"
                 value={createForm.name}
                 onChange={e => setCreateForm(f => ({ ...f, name: e.target.value }))}
@@ -153,8 +153,8 @@ export default function FieldDefinitionsPage() {
             </div>
             <div className="dash-form-row">
               <div className="dash-form-group">
-                <label>{t('fieldDefs.target')}</label>
-                <select
+                <label htmlFor="fielddef-create-target">{t('fieldDefs.target')}</label>
+                <select id="fielddef-create-target"
                   className="dash-profile-select"
                   value={createForm.target}
                   onChange={e => setCreateForm(f => ({ ...f, target: e.target.value as FieldTarget }))}
@@ -164,8 +164,8 @@ export default function FieldDefinitionsPage() {
                 </select>
               </div>
               <div className="dash-form-group">
-                <label>{t('fieldDefs.type')}</label>
-                <select
+                <label htmlFor="fielddef-create-type">{t('fieldDefs.type')}</label>
+                <select id="fielddef-create-type"
                   className="dash-profile-select"
                   value={createForm.type}
                   onChange={e => setCreateForm(f => ({ ...f, type: e.target.value as FieldType }))}
@@ -180,8 +180,9 @@ export default function FieldDefinitionsPage() {
             </div>
             {createForm.type === 'select' && (
               <div className="dash-form-group">
-                <label>{t('fieldDefs.options')}</label>
+                <label htmlFor="fielddef-create-options">{t('fieldDefs.options')}</label>
                 <textarea
+                  id="fielddef-create-options"
                   value={createForm.options}
                   onChange={e => setCreateForm(f => ({ ...f, options: e.target.value }))}
                   placeholder={'Option 1\nOption 2\nOption 3'}
@@ -261,8 +262,8 @@ export default function FieldDefinitionsPage() {
                       <td colSpan={5}>
                         <form onSubmit={handleSave} className="dash-row-edit-form">
                           <div className="dash-form-group">
-                            <label>{t('fieldDefs.name')}</label>
-                            <input
+                            <label htmlFor="fielddef-edit-name">{t('fieldDefs.name')}</label>
+                            <input id="fielddef-edit-name"
                               type="text"
                               value={editForm.name}
                               onChange={e => setEditForm(f => ({ ...f, name: e.target.value }))}
@@ -272,8 +273,8 @@ export default function FieldDefinitionsPage() {
                           </div>
                           {fd.type === 'select' && (
                             <div className="dash-form-group">
-                              <label>{t('fieldDefs.options')}</label>
-                              <textarea
+                              <label htmlFor="fielddef-edit-options">{t('fieldDefs.options')}</label>
+                              <textarea id="fielddef-edit-options"
                                 value={editForm.options}
                                 onChange={e => setEditForm(f => ({ ...f, options: e.target.value }))}
                                 style={{ minHeight: 56 }}

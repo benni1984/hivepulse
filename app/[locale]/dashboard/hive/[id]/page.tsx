@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import dynamic from 'next/dynamic';
 import DashboardShell from '@/components/DashboardShell';
+import TourHint from '@/components/TourHint';
 import SharingPanel from '@/components/SharingPanel';
 import HiveMovesSection from '@/components/HiveMovesSection';
 import MoveHivesPanel from '@/components/MoveHivesPanel';
@@ -64,7 +65,10 @@ export default function HivePage() {
   const [showInspectionForm, setShowInspectionForm] = useState(false);
   const [inspectionFormMode, setInspectionFormMode] = useState<'create' | 'edit'>('create');
   const [editingInspectionId, setEditingInspectionId] = useState<string | null>(null);
-  const [inspectionForm, setInspectionForm] = useState({ date: '', varroa_level: '', mood: '', queen_seen: '', brood_frames: '' });
+  const [inspectionForm, setInspectionForm] = useState({
+    date: '', varroa_level: '', mood: '', queen_seen: '', brood_frames: '',
+    honey_frames: '', weight_kg: '', treatment_applied: '', notes: '',
+  });
   const [inspectionFieldDefs, setInspectionFieldDefs] = useState<FieldDefinition[]>([]);
   const [customFieldValues, setCustomFieldValues] = useState<Record<string, string>>({});
   const [savingInspection, setSavingInspection] = useState(false);
@@ -150,7 +154,10 @@ export default function HivePage() {
   function openCreateInspection() {
     setInspectionFormMode('create');
     setEditingInspectionId(null);
-    setInspectionForm({ date: todayLocal(), varroa_level: '', mood: '', queen_seen: '', brood_frames: '' });
+    setInspectionForm({
+      date: todayLocal(), varroa_level: '', mood: '', queen_seen: '', brood_frames: '',
+      honey_frames: '', weight_kg: '', treatment_applied: '', notes: '',
+    });
     const defaults: Record<string, string> = {};
     for (const fd of inspectionFieldDefs) {
       defaults[fd.id] = fd.default_value != null ? String(fd.default_value) : '';
@@ -169,6 +176,10 @@ export default function HivePage() {
       mood: ins.mood ?? '',
       queen_seen: ins.queen_seen == null ? '' : ins.queen_seen ? 'true' : 'false',
       brood_frames: ins.brood_frames != null ? String(ins.brood_frames) : '',
+      honey_frames: ins.honey_frames != null ? String(ins.honey_frames) : '',
+      weight_kg: ins.weight_kg != null ? String(ins.weight_kg) : '',
+      treatment_applied: ins.treatment_applied ?? '',
+      notes: ins.notes ?? '',
     });
     const existing: Record<string, string> = {};
     for (const fd of inspectionFieldDefs) {
@@ -203,6 +214,11 @@ export default function HivePage() {
       mood: inspectionForm.mood || null,
       queen_seen: inspectionForm.queen_seen === '' ? null : inspectionForm.queen_seen === 'true',
       brood_frames: inspectionForm.brood_frames !== '' ? parseInt(inspectionForm.brood_frames) : null,
+      honey_frames: inspectionForm.honey_frames !== '' ? parseInt(inspectionForm.honey_frames) : null,
+      // parseFloat, not parseInt: a hive weighs 42.5 kg as readily as 42.
+      weight_kg: inspectionForm.weight_kg !== '' ? parseFloat(inspectionForm.weight_kg) : null,
+      treatment_applied: inspectionForm.treatment_applied || null,
+      notes: inspectionForm.notes || null,
       custom_fields: Object.keys(custom_fields).length > 0 ? custom_fields : undefined,
     };
     try {
@@ -345,7 +361,10 @@ export default function HivePage() {
                 </>
               )}
               {!showInspectionForm && (
-                <button className="dash-new-btn" onClick={openCreateInspection}>{t('hive.newInspectionBtn')}</button>
+                <>
+                  <button className="dash-new-btn" onClick={openCreateInspection} data-tour="new-inspection">{t('hive.newInspectionBtn')}</button>
+                  <TourHint tour="offline" />
+                </>
               )}
             </span>
           </div>
@@ -361,13 +380,15 @@ export default function HivePage() {
               <h2>{inspectionFormMode === 'create' ? t('hive.addInspectionTitle') : t('hive.editInspectionTitle')}</h2>
               <form onSubmit={handleSaveInspection}>
                 <div className="dash-form-group">
-                  <label>{t('hive.date')}</label>
-                  <input type="date" value={inspectionForm.date} required
+                  <label htmlFor="inspection-date">{t('hive.date')}</label>
+                  {/* A visit cannot have happened tomorrow. todayLocal() and not the UTC day:
+                      from about 22:00 in Europe those are different days (#443). */}
+                  <input id="inspection-date" type="date" value={inspectionForm.date} required max={todayLocal()}
                     onChange={e => setInspectionForm(f => ({ ...f, date: e.target.value }))} />
                 </div>
                 <div className="dash-form-group">
-                  <label>{t('hive.varroa')}</label>
-                  <select className="dash-profile-select" value={inspectionForm.varroa_level}
+                  <label htmlFor="inspection-varroa">{t('hive.varroa')}</label>
+                  <select id="inspection-varroa" className="dash-profile-select" value={inspectionForm.varroa_level}
                     onChange={e => setInspectionForm(f => ({ ...f, varroa_level: e.target.value }))}>
                     <option value="">—</option>
                     {VARROA_LEVELS.map(level => (
@@ -376,8 +397,8 @@ export default function HivePage() {
                   </select>
                 </div>
                 <div className="dash-form-group">
-                  <label>{t('hive.mood')}</label>
-                  <select className="dash-profile-select" value={inspectionForm.mood}
+                  <label htmlFor="inspection-mood">{t('hive.mood')}</label>
+                  <select id="inspection-mood" className="dash-profile-select" value={inspectionForm.mood}
                     onChange={e => setInspectionForm(f => ({ ...f, mood: e.target.value }))}>
                     <option value="">—</option>
                     <option value="calm">{t('hive.moodCalm')}</option>
@@ -386,8 +407,8 @@ export default function HivePage() {
                   </select>
                 </div>
                 <div className="dash-form-group">
-                  <label>{t('hive.queen')}</label>
-                  <select className="dash-profile-select" value={inspectionForm.queen_seen}
+                  <label htmlFor="inspection-queen">{t('hive.queen')}</label>
+                  <select id="inspection-queen" className="dash-profile-select" value={inspectionForm.queen_seen}
                     onChange={e => setInspectionForm(f => ({ ...f, queen_seen: e.target.value }))}>
                     <option value="">{t('hive.queenNotRecorded')}</option>
                     <option value="true">{t('hive.yes')}</option>
@@ -395,30 +416,52 @@ export default function HivePage() {
                   </select>
                 </div>
                 <div className="dash-form-group">
-                  <label>{t('hive.brood')}</label>
-                  <input type="number" min="0" max="10" value={inspectionForm.brood_frames}
+                  <label htmlFor="inspection-brood">{t('hive.brood')}</label>
+                  <input id="inspection-brood" type="number" min="0" max="10" value={inspectionForm.brood_frames}
                     onChange={e => setInspectionForm(f => ({ ...f, brood_frames: e.target.value }))} />
+                </div>
+                {/* These four were in docs/features.md with a tick for the web long before they
+                    were in this form. The bounds are the server's own (#446). */}
+                <div className="dash-form-group">
+                  <label htmlFor="inspection-honey">{t('hive.honey')}</label>
+                  <input id="inspection-honey" type="number" min="0" max="10" value={inspectionForm.honey_frames}
+                    onChange={e => setInspectionForm(f => ({ ...f, honey_frames: e.target.value }))} />
+                </div>
+                <div className="dash-form-group">
+                  <label htmlFor="inspection-weight">{t('hive.weight')}</label>
+                  <input id="inspection-weight" type="number" min="0" max="500" step="0.1" value={inspectionForm.weight_kg}
+                    onChange={e => setInspectionForm(f => ({ ...f, weight_kg: e.target.value }))} />
+                </div>
+                <div className="dash-form-group">
+                  <label htmlFor="inspection-treatment">{t('hive.treatmentApplied')}</label>
+                  <input id="inspection-treatment" type="text" maxLength={500} value={inspectionForm.treatment_applied}
+                    onChange={e => setInspectionForm(f => ({ ...f, treatment_applied: e.target.value }))} />
+                </div>
+                <div className="dash-form-group">
+                  <label htmlFor="inspection-notes">{t('hive.notes')}</label>
+                  <textarea id="inspection-notes" maxLength={2000} value={inspectionForm.notes}
+                    onChange={e => setInspectionForm(f => ({ ...f, notes: e.target.value }))} />
                 </div>
                 {inspectionFieldDefs.length > 0 && (
                   <>
                     <h3 className="dash-section-title" style={{ margin: '16px 0 8px', fontSize: '.85rem' }}>{t('fieldDefs.title')}</h3>
                     {inspectionFieldDefs.map(fd => (
                       <div key={fd.id} className="dash-form-group">
-                        <label>{fd.name}{fd.required && ' *'}</label>
+                        <label htmlFor={`cf-${fd.id}`}>{fd.name}{fd.required && ' *'}</label>
                         {fd.type === 'text' && (
-                          <input type="text" value={customFieldValues[fd.id] ?? ''} required={fd.required}
+                          <input id={`cf-${fd.id}`} type="text" value={customFieldValues[fd.id] ?? ''} required={fd.required}
                             onChange={e => setCustomFieldValues(v => ({ ...v, [fd.id]: e.target.value }))} />
                         )}
                         {fd.type === 'number' && (
-                          <input type="number" value={customFieldValues[fd.id] ?? ''} required={fd.required}
+                          <input id={`cf-${fd.id}`} type="number" value={customFieldValues[fd.id] ?? ''} required={fd.required}
                             onChange={e => setCustomFieldValues(v => ({ ...v, [fd.id]: e.target.value }))} />
                         )}
                         {fd.type === 'date' && (
-                          <input type="date" value={customFieldValues[fd.id] ?? ''} required={fd.required}
+                          <input id={`cf-${fd.id}`} type="date" value={customFieldValues[fd.id] ?? ''} required={fd.required}
                             onChange={e => setCustomFieldValues(v => ({ ...v, [fd.id]: e.target.value }))} />
                         )}
                         {fd.type === 'boolean' && (
-                          <select className="dash-profile-select" value={customFieldValues[fd.id] ?? ''} required={fd.required}
+                          <select id={`cf-${fd.id}`} className="dash-profile-select" value={customFieldValues[fd.id] ?? ''} required={fd.required}
                             onChange={e => setCustomFieldValues(v => ({ ...v, [fd.id]: e.target.value }))}>
                             {!fd.required && <option value="">—</option>}
                             <option value="true">{t('hive.yes')}</option>
@@ -426,7 +469,7 @@ export default function HivePage() {
                           </select>
                         )}
                         {fd.type === 'select' && (
-                          <select className="dash-profile-select" value={customFieldValues[fd.id] ?? ''} required={fd.required}
+                          <select id={`cf-${fd.id}`} className="dash-profile-select" value={customFieldValues[fd.id] ?? ''} required={fd.required}
                             onChange={e => setCustomFieldValues(v => ({ ...v, [fd.id]: e.target.value }))}>
                             {!fd.required && <option value="">—</option>}
                             {fd.options.map(opt => (
@@ -553,8 +596,8 @@ export default function HivePage() {
               <h2>{t('hive.editTitle')}</h2>
               <form onSubmit={handleSave}>
                 <div className="dash-form-group">
-                  <label>{t('apiaries.name')}</label>
-                  <input
+                  <label htmlFor="hive-edit-name">{t('apiaries.name')}</label>
+                  <input id="hive-edit-name"
                     type="text"
                     value={editForm.name}
                     onChange={e => setEditForm(f => ({ ...f, name: e.target.value }))}
@@ -563,8 +606,8 @@ export default function HivePage() {
                   />
                 </div>
                 <div className="dash-form-group">
-                  <label>{t('hive.hiveType')}</label>
-                  <select
+                  <label htmlFor="hive-edit-type">{t('hive.hiveType')}</label>
+                  <select id="hive-edit-type"
                     className="dash-profile-select"
                     value={editForm.hive_type}
                     onChange={e => setEditForm(f => ({ ...f, hive_type: e.target.value }))}
@@ -575,16 +618,17 @@ export default function HivePage() {
                   </select>
                 </div>
                 <div className="dash-form-group">
-                  <label>{t('hive.acquisitionDate')}</label>
-                  <input
+                  <label htmlFor="hive-edit-acquisition">{t('hive.acquisitionDate')}</label>
+                  <input id="hive-edit-acquisition"
                     type="date"
                     value={editForm.acquisition_date}
+                    max={todayLocal()}
                     onChange={e => setEditForm(f => ({ ...f, acquisition_date: e.target.value }))}
                   />
                 </div>
                 <div className="dash-form-group">
-                  <label>{t('hive.notes')}</label>
-                  <textarea
+                  <label htmlFor="hive-edit-notes">{t('hive.notes')}</label>
+                  <textarea id="hive-edit-notes"
                     value={editForm.notes}
                     onChange={e => setEditForm(f => ({ ...f, notes: e.target.value }))}
                   />

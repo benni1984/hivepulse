@@ -19,7 +19,7 @@
     <string name="members_gate_desc">Werde Unterstützer, um Community-Statistiken freizuschalten und HivePulse am Laufen zu halten.</string>
     <string name="members_stat_avg_varroa">Ø Varroa</string>
     <string name="members_stat_good_mood">Gute Stimmung</string>
-    <string name="members_stat_avg_brood">Ø Brutwaben</string>
+    <string name="members_stat_avg_brood">Ø Brutrahmen</string>
     <string name="members_stat_avg_interval">Ø Kontrollintervall</string>
     <string name="members_become_supporter">Mehr erfahren &amp; Unterstützer werden</string>
     <string name="heatmap_section_title">Regionale Gesundheitskarte</string>
@@ -46,7 +46,7 @@
     <string name="heatmap_cell_summary">%1$d Standorte · %2$d Kontrollen</string>
     <string name="heatmap_cell_varroa">Ø Varroa</string>
     <string name="heatmap_cell_mood">Ruhige Stimmung</string>
-    <string name="heatmap_cell_brood">Ø Brutwaben</string>
+    <string name="heatmap_cell_brood">Ø Brutrahmen</string>
     <string name="heatmap_cell_swarm">Schwarmzellen</string>
 
     <!-- Tabs / Navigation -->
@@ -140,8 +140,8 @@
     <string name="field_notes">Notizen</string>
     <string name="field_queen_seen">Königin gesehen</string>
     <string name="field_queen_color">Königinnenfarbe</string>
-    <string name="field_brood_frames">Brutwaben</string>
-    <string name="field_honey_frames">Honigwaben</string>
+    <string name="field_brood_frames">Brutrahmen</string>
+    <string name="field_honey_frames">Honigrahmen</string>
     <string name="field_mood">Stimmung</string>
     <string name="field_population_strength">Volksstärke</string>
     <string name="field_swarm_cells_seen">Schwarmzellen gesehen</string>
@@ -155,7 +155,7 @@
     <!-- Sections -->
     <string name="section_date">Datum</string>
     <string name="section_queen">Königin</string>
-    <string name="section_frames">Rähmchen</string>
+    <string name="section_frames">Rahmen</string>
     <string name="section_colony">Volk</string>
     <string name="section_varroa">Varroa</string>
     <string name="section_treatment">Behandlung &amp; Fütterung</string>
@@ -189,8 +189,8 @@
     <string name="stat_swarm_cells">Schwarmzellen-Ereignisse</string>
     <string name="stat_mood_distribution">Stimmungsverteilung</string>
     <string name="stat_varroa_trend">Varroa-Befall</string>
-    <string name="stat_brood_trend">Bruträhmchen-Verlauf</string>
-    <string name="stat_honey_trend">Honigrähmchen-Verlauf</string>
+    <string name="stat_brood_trend">Brutrahmen-Verlauf</string>
+    <string name="stat_honey_trend">Honigrahmen-Verlauf</string>
     <string name="stat_weight_trend">Gewichtsverlauf</string>
     <string name="screen_stats_overview">Meine Statistiken</string>
     <string name="stat_overview_apiaries">Bienenstände</string>

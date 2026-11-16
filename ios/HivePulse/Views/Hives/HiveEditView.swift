@@ -63,8 +63,10 @@ struct HiveEditView: View {
                     }
                     Toggle(NSLocalizedString("field.acquisitionDate", comment: ""), isOn: $hasAcquisitionDate)
                     if hasAcquisitionDate {
+                        // A colony cannot have been acquired in the future (#446).
                         DatePicker(NSLocalizedString("field.acquisitionDate", comment: ""),
-                                   selection: $acquisitionDate, displayedComponents: .date)
+                                   selection: $acquisitionDate, in: ...Date(),
+                                   displayedComponents: .date)
                             .labelsHidden()
                     }
                 }

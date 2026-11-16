@@ -33,11 +33,11 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           </div>
 
           <div className="help-stat-card">
-            <div className="help-stat-card-name">% Buen estado de ánimo</div>
+            <div className="help-stat-card-name">% Buen comportamiento</div>
             <div className="help-stat-card-desc">
               Porcentaje de revisiones en todos los colmenares públicos calificadas como «Tranquila». Una alta
               tasa de calma comunitaria sugiere buena genética regional y condiciones de bajo estrés
-              (buen forraje, baja presión de plagas). Una tendencia decreciente del buen estado de ánimo puede señalar una temporada difícil
+              (buen forraje, baja presión de plagas). Una tendencia decreciente del buen comportamiento puede señalar una temporada difícil
               para las abejas en su región.
             </div>
             <span className="help-stat-card-good">Por encima del 75% = una temporada tranquila en toda la comunidad</span>
@@ -46,8 +46,8 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           <div className="help-stat-card">
             <div className="help-stat-card-name">Marcos de cría promedio</div>
             <div className="help-stat-card-desc">
-              Número promedio de marcos de cría registrados en todas las revisiones públicas. En primavera,
-              este número sube; en otoño baja. Comparar su recuento de marcos de cría con este
+              Número promedio de cuadros de cría registrados en todas las revisiones públicas. En primavera,
+              este número sube; en otoño baja. Comparar su recuento de cuadros de cría con este
               promedio puede revelar si sus colonias se están desarrollando más rápido o más lento que otras
               en la comunidad.
             </div>

@@ -115,7 +115,7 @@ Bees do not read release notes. The app tries to stay out of the way while you w
 ```
 HivePulse macht aus einer Durchsicht eine halbe Minute Tippen.
 
-Kleb einen QR-Code auf jedes Volk. Scannen, und die App öffnet genau dieses Volk — kein Scrollen durch eine Liste mit kalten Händen. Erfasse, was du gesehen hast: Brut- und Honigwaben, Königin gesehen, Sanftmut, Varroa-Zahl, Behandlungen, Futter, eigene Notizen. Zahlen von 0 bis 10 sind große Knöpfe statt winziger Pfeile, damit das Formular auch mit Handschuhen funktioniert.
+Kleb einen QR-Code auf jedes Volk. Scannen, und die App öffnet genau dieses Volk — kein Scrollen durch eine Liste mit kalten Händen. Erfasse, was du gesehen hast: Brut- und Honigrahmen, Königin gesehen, Sanftmut, Varroa-Zahl, Behandlungen, Futter, eigene Notizen. Zahlen von 0 bis 10 sind große Knöpfe statt winziger Pfeile, damit das Formular auch mit Handschuhen funktioniert.
 
 GEHT AUCH OHNE NETZ
 Bienenstände stehen selten da, wo der Empfang ist. Durchsichten, die du offline erfasst, liegen auf dem Handy und gehen raus, sobald wieder Verbindung da ist. Nichts geht verloren, und ein zweiter Versuch kann keinen Doppeleintrag erzeugen.

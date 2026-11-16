@@ -76,8 +76,8 @@ export default function QrBatchesPage() {
           <h2>{t('qrBatches.createTitle')}</h2>
           <form onSubmit={handleCreate}>
             <div className="dash-form-group">
-              <label>{t('qrBatches.count')}</label>
-              <input
+              <label htmlFor="qr-batch-count">{t('qrBatches.count')}</label>
+              <input id="qr-batch-count"
                 type="number"
                 min={1}
                 max={50}

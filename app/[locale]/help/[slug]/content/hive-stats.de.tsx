@@ -57,13 +57,13 @@ export default function HiveStatsContent({ Screenshot }: { Screenshot: typeof He
           </div>
 
           <div className="help-stat-card">
-            <div className="help-stat-card-name"><i className="fas fa-egg" style={{ marginRight: 6, color: '#8b5cf6' }} />Brutwaben</div>
+            <div className="help-stat-card-name"><i className="fas fa-egg" style={{ marginRight: 6, color: '#8b5cf6' }} />Brutrahmen</div>
             <div className="help-stat-card-desc">
-              Durchschnittliche Anzahl der pro Kontrolle im ausgewählten Zeitraum aufgezeichneten Brutwaben.
+              Durchschnittliche Anzahl der pro Kontrolle im ausgewählten Zeitraum aufgezeichneten Brutrahmen.
               Verfolgt das Volkswachstum über die Saison — Sie erwarten einen Anstieg ab dem Frühling, einen Höhepunkt im
               Frühsommer und dann einen Rückgang zum Herbst hin.
             </div>
-            <span className="help-stat-card-good">Hauptsaison: 6–9 Rähmchen</span>
+            <span className="help-stat-card-good">Hauptsaison: 6–9 Rahmen</span>
           </div>
 
           <div className="help-stat-card">

@@ -155,8 +155,16 @@ fun InspectionFormScreen(
     // millis coming out are both converted through ZoneOffset.UTC — the same way MoveScreens does
     // it. Reading the picker's value in local time instead was a day out west of Greenwich.
     var showDatePicker by remember { mutableStateOf(false) }
+    // A visit cannot have happened tomorrow (#446). The same bound MoveScreens already had; the
+    // server refuses the rest, but a calendar that cannot offer the day is better than a refusal
+    // after a round trip. endOfToday is the last millisecond of today in UTC, because the picker
+    // works in UTC midnight by contract — the same reason the conversions above use ZoneOffset.UTC.
+    val endOfToday = LocalDate.now().plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli() - 1
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = LocalDate.now().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli(),
+        selectableDates = object : SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long) = utcTimeMillis <= endOfToday
+        },
     )
     var date by remember { mutableStateOf(LocalDate.now().toString()) }
 

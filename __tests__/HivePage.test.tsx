@@ -83,7 +83,9 @@ describe('HivePage', () => {
   function setupMocks({
     hive = { id: 'hive-1', name: 'Hive Alpha', hive_type: 'langstroth', apiary_id: 'apiary-1' },
     stats = { inspection_count: 0, varroa_trend: [] as { date: string; value: number }[], mood_distribution: { calm: 0, nervous: 0, aggressive: 0 } },
-    inspections = [] as { id: string; date: string; varroa_level?: number; mood?: string; queen_seen?: boolean; brood_frames?: number; custom_fields?: Record<string, unknown> }[],
+    inspections = [] as { id: string; date: string; varroa_level?: number; mood?: string;
+      queen_seen?: boolean; brood_frames?: number; honey_frames?: number; weight_kg?: number;
+      treatment_applied?: string; notes?: string; custom_fields?: Record<string, unknown> }[],
   } = {}) {
     mockGetHive.mockResolvedValueOnce(hive);
     mockGetHiveStats.mockResolvedValueOnce(stats);
@@ -271,6 +273,80 @@ describe('HivePage', () => {
     await waitFor(() => expect(screen.getByText('hive.varroaLevel1')).toBeInTheDocument());
     expect(screen.queryByText('hive.addInspectionTitle')).not.toBeInTheDocument();
     expect(screen.getByText('hive.inspectionSaveSuccess')).toBeInTheDocument();
+  });
+
+  it('records honey frames, weight, treatment and notes — the four the web was missing', async () => {
+    // docs/features.md claimed the web recorded these, with a tick, while the form had five
+    // fields: date, varroa, mood, queen, brood frames. Either four fields were missing or the
+    // table had a tick too many (#447); these are the four.
+    setupMocks();
+    mockCreateInspection.mockResolvedValueOnce({ id: 'i-new', date: '2024-08-01' });
+    render(<HivePage />);
+    await waitFor(() => screen.getByText('Hive Alpha'));
+    fireEvent.click(screen.getByText('hive.newInspectionBtn'));
+
+    fireEvent.change(screen.getByLabelText('hive.honey'), { target: { value: '4' } });
+    fireEvent.change(screen.getByLabelText('hive.weight'), { target: { value: '42.5' } });
+    fireEvent.change(screen.getByLabelText('hive.treatmentApplied'), { target: { value: 'Formic acid 60%' } });
+    fireEvent.change(screen.getByLabelText('hive.notes'), { target: { value: 'Calm, two frames of stores.' } });
+    fireEvent.submit(screen.getByText('hive.inspectionSaveBtn').closest('form')!);
+
+    await waitFor(() => expect(mockCreateInspection).toHaveBeenCalledWith('hive-1', expect.objectContaining({
+      honey_frames: 4,
+      // parseFloat, not parseInt: a hive weighs 42.5 kg as readily as 42.
+      weight_kg: 42.5,
+      treatment_applied: 'Formic acid 60%',
+      notes: 'Calm, two frames of stores.',
+    })));
+  });
+
+  it('sends null rather than an empty string for the four it was given', async () => {
+    // "" would reach the server as a value and fail its own validation; the other fields in this
+    // form already send null, and these must not be the exception.
+    setupMocks();
+    mockCreateInspection.mockResolvedValueOnce({ id: 'i-new', date: '2024-08-01' });
+    render(<HivePage />);
+    await waitFor(() => screen.getByText('Hive Alpha'));
+    fireEvent.click(screen.getByText('hive.newInspectionBtn'));
+    fireEvent.submit(screen.getByText('hive.inspectionSaveBtn').closest('form')!);
+
+    await waitFor(() => expect(mockCreateInspection).toHaveBeenCalledWith('hive-1', expect.objectContaining({
+      honey_frames: null, weight_kg: null, treatment_applied: null, notes: null,
+    })));
+  });
+
+  it('every field in the inspection form has a label pointing at it', async () => {
+    // getByLabelText only finds a field whose label is actually connected — which is the point.
+    // Before #447 the house pattern was a <label> with no htmlFor next to the input, so this
+    // would have found nothing while the form looked perfectly normal on screen.
+    setupMocks();
+    render(<HivePage />);
+    await waitFor(() => screen.getByText('Hive Alpha'));
+    fireEvent.click(screen.getByText('hive.newInspectionBtn'));
+
+    for (const label of ['hive.date', 'hive.varroa', 'hive.mood', 'hive.queen', 'hive.brood',
+                         'hive.honey', 'hive.weight', 'hive.treatmentApplied', 'hive.notes']) {
+      expect(screen.getByLabelText(label), `${label} has no connected label`).toBeInTheDocument();
+    }
+  });
+
+  it('loads the four back into the form when an inspection is edited', async () => {
+    setupMocks({
+      inspections: [{
+        id: 'i-1', date: '2024-06-01', varroa_level: 2, mood: 'calm', queen_seen: true,
+        brood_frames: 5, honey_frames: 3, weight_kg: 38.5,
+        treatment_applied: 'Thymol', notes: 'Queen marked.',
+      }],
+    });
+    render(<HivePage />);
+    await waitFor(() => screen.getByText('Hive Alpha'));
+
+    fireEvent.click(screen.getByText('hive.inspectionEditBtn'));
+
+    await waitFor(() => expect(screen.getByLabelText('hive.honey')).toHaveValue(3));
+    expect(screen.getByLabelText('hive.weight')).toHaveValue(38.5);
+    expect(screen.getByLabelText('hive.treatmentApplied')).toHaveValue('Thymol');
+    expect(screen.getByLabelText('hive.notes')).toHaveValue('Queen marked.');
   });
 
   it('shows error banner when createInspection fails', async () => {

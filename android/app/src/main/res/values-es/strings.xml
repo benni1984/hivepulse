@@ -83,7 +83,7 @@
     <string name="field_queen_color">Color de la reina</string>
     <string name="field_brood_frames">Cuadros de cría</string>
     <string name="field_honey_frames">Cuadros de miel</string>
-    <string name="field_mood">Estado de ánimo</string>
+    <string name="field_mood">Comportamiento</string>
     <string name="field_population_strength">Fuerza de la colonia</string>
     <string name="field_swarm_cells_seen">Celdas de enjambre vistas</string>
     <string name="field_varroa_count">Recuento de varroa</string>
@@ -163,7 +163,7 @@
     <string name="stat_days_since">Días desde la última revisión</string>
     <string name="stat_queen_seen_rate">Frecuencia con que se vio la reina</string>
     <string name="stat_swarm_cells">Celdas de enjambre</string>
-    <string name="stat_mood_distribution">Reparto del estado de ánimo</string>
+    <string name="stat_mood_distribution">Distribución del comportamiento</string>
     <string name="stat_varroa_trend">Infestación de varroa</string>
     <string name="stat_brood_trend">Evolución de los cuadros de cría</string>
     <string name="stat_honey_trend">Evolución de los cuadros de miel</string>
@@ -238,7 +238,7 @@
     <string name="members_gate_title">Función para colaboradores</string>
     <string name="members_gate_desc">Hazte colaborador para acceder a las estadísticas de la comunidad y ayudar a mantener HivePulse.</string>
     <string name="members_stat_avg_varroa">Varroa media</string>
-    <string name="members_stat_good_mood">Buen ánimo</string>
+    <string name="members_stat_good_mood">Buen comportamiento</string>
     <string name="members_stat_avg_brood">Media de cuadros de cría</string>
     <string name="members_stat_avg_interval">Intervalo medio entre revisiones</string>
     <string name="members_become_supporter">Más información y hazte colaborador</string>
@@ -247,7 +247,7 @@
     <string name="heatmap_hint">Toca una celda para ver los detalles.</string>
     <string name="heatmap_osm_attribution">© Colaboradores de OpenStreetMap</string>
     <string name="heatmap_overlay_varroa">Riesgo de varroa</string>
-    <string name="heatmap_overlay_mood">Ánimo de la colonia</string>
+    <string name="heatmap_overlay_mood">Comportamiento de las colonias</string>
     <string name="heatmap_overlay_swarm">Presión de enjambrazón</string>
     <string name="heatmap_overlay_brood">Salud de la cría</string>
     <string name="heatmap_varroa_low">Ninguna / baja (&lt; 1)</string>
@@ -265,7 +265,7 @@
     <string name="heatmap_level_no_data">Sin datos</string>
     <string name="heatmap_cell_summary">%1$d colmenares · %2$d revisiones</string>
     <string name="heatmap_cell_varroa">Varroa media</string>
-    <string name="heatmap_cell_mood">Ánimo tranquilo</string>
+    <string name="heatmap_cell_mood">Comportamiento tranquilo</string>
     <string name="heatmap_cell_brood">Cría media</string>
     <string name="heatmap_cell_swarm">Celdas de enjambre</string>
     <string name="tab_hornets">Avispones</string>
@@ -345,7 +345,7 @@
     <string name="tour_qr_title">Cada colmena, a un escaneo</string>
     <string name="tour_qr_body">Crea colmenares, pega un código QR impreso en cada colmena y escanéalo para abrirla al instante, sin buscar en listas delante del colmenar.</string>
     <string name="tour_inspections_title">Revisiones en segundos</string>
-    <string name="tour_inspections_body">Registra reina, cría, varroa, estado de ánimo y más con botones grandes pensados para guantes. Añade tus propios campos para todo lo demás que quieras anotar.</string>
+    <string name="tour_inspections_body">Registra reina, cría, varroa, comportamiento y más con botones grandes pensados para guantes. Añade tus propios campos para todo lo demás que quieras anotar.</string>
     <string name="tour_stats_title">Detecta los problemas a tiempo</string>
     <string name="tour_stats_body">Las tendencias de varroa, cría y peso por colmena, junto al resumen de todos tus colmenares, muestran de un vistazo qué colonias necesitan atención.</string>
     <string name="tour_reminders_title">No te saltes ninguna revisión</string>

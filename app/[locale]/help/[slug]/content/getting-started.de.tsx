@@ -8,7 +8,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
         <p>
           HivePulse ist eine Imkerei-Kontroll und Community-Plattform für iOS, Android und das Web.
           Sie können jeden Bienenstockbesuch dokumentieren — Varroazählung, Volksstimmung, Königinnensichtungen,
-          Brutwaben und mehr — und diese Daten in Diagramme und Trendanalysen über Zeit umwandeln.
+          Brutrahmen und mehr — und diese Daten in Diagramme und Trendanalysen über Zeit umwandeln.
         </p>
         <p>
           Jede Kontrolle, die Sie aufzeichnen, trägt (anonym) zur plattformweiten Statistik bei,

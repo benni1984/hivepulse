@@ -617,6 +617,7 @@ export interface Hive {
 export interface Inspection {
   id: string; date: string; varroa_level?: number | null; varroa_count?: number | null; mood?: string;
   queen_seen?: boolean; brood_frames?: number; honey_frames?: number;
+  weight_kg?: number | null; treatment_applied?: string | null; notes?: string | null;
   custom_fields?: Record<string, unknown>;
   created_by_name?: string | null;
 }
@@ -667,6 +668,11 @@ export interface InspectionInput {
   mood?: string | null;
   queen_seen?: boolean | null;
   brood_frames?: number | null;
+  honey_frames?: number | null;
+  /** Kilograms. The backend bounds it to 0-500 (#446). */
+  weight_kg?: number | null;
+  treatment_applied?: string | null;
+  notes?: string | null;
   custom_fields?: Record<string, unknown>;
 }
 export interface QrToken { token: string; linked_hive_id: string | null; }

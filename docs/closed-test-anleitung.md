@@ -41,7 +41,7 @@ Nicht an einem Stück — über die zwei Wochen verteilt ist besser.
 - [ ] Bienenstand anlegen, mit Ort
 - [ ] Volk anlegen und einem Bienenstand zuordnen
 - [ ] QR-Code an einem Volk scannen (oder einen QR-Batch erzeugen und ausdrucken)
-- [ ] Eine Kontrolle erfassen: Brutwaben, Varroa-Zahl, Stimmung, Notiz
+- [ ] Eine Kontrolle erfassen: Brutrahmen, Varroa-Zahl, Stimmung, Notiz
 - [ ] Dieselbe Kontrolle noch einmal ansehen und bearbeiten
 - [ ] Statistik eines Volkes und die Übersicht über alle ansehen
 - [ ] Imkerjahr öffnen und durch die Monate gehen

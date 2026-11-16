@@ -193,11 +193,11 @@ export default function HornetReportPage() {
           <div className="hornets-location-row" style={catchTrapCode ? { opacity: 0.4, pointerEvents: 'none' } : undefined}>
             <label>
               {t('report.latitude')}
-              <input type="number" step="any" value={catchLat} onChange={e => setCatchLat(e.target.value)} placeholder="48.8566" />
+              <input type="number" step="any" min={-90} max={90} value={catchLat} onChange={e => setCatchLat(e.target.value)} placeholder="48.8566" />
             </label>
             <label>
               {t('report.longitude')}
-              <input type="number" step="any" value={catchLon} onChange={e => setCatchLon(e.target.value)} placeholder="2.3522" />
+              <input type="number" step="any" min={-180} max={180} value={catchLon} onChange={e => setCatchLon(e.target.value)} placeholder="2.3522" />
             </label>
             <button type="button" className="hornets-loc-btn" onClick={fillGps}>📍 GPS</button>
           </div>
@@ -218,11 +218,11 @@ export default function HornetReportPage() {
           <div className="hornets-location-row">
             <label>
               {t('report.latitude')} *
-              <input type="number" step="any" value={nestLat} onChange={e => setNestLat(e.target.value)} placeholder="48.8566" required />
+              <input type="number" step="any" min={-90} max={90} value={nestLat} onChange={e => setNestLat(e.target.value)} placeholder="48.8566" required />
             </label>
             <label>
               {t('report.longitude')} *
-              <input type="number" step="any" value={nestLon} onChange={e => setNestLon(e.target.value)} placeholder="2.3522" required />
+              <input type="number" step="any" min={-180} max={180} value={nestLon} onChange={e => setNestLon(e.target.value)} placeholder="2.3522" required />
             </label>
             <button type="button" className="hornets-loc-btn" onClick={fillGps}>📍 GPS</button>
           </div>

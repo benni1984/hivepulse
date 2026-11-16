@@ -7,7 +7,7 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
         <h2 className="help-section-title">¿Qué es HivePulse?</h2>
         <p>
           HivePulse es una plataforma de revisión apícola y comunidad para iOS, Android y la web.
-          Le permite registrar cada visita a la colmena — conteos de varroa, estado de ánimo de la colonia, avistamientos de reina, marcos de cría,
+          Le permite registrar cada visita a la colmena — conteos de varroa, comportamiento de la colonia, avistamientos de reina, cuadros de cría,
           y más — y convierte esos datos en gráficos y análisis de tendencias a lo largo del tiempo.
         </p>
         <p>

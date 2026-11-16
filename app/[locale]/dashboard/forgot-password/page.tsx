@@ -54,8 +54,8 @@ export default function ForgotPasswordPage() {
             </p>
             <form onSubmit={handleSubmit}>
               <div className="dash-form-group">
-                <label>{t('login.email')}</label>
-                <input
+                <label htmlFor="forgot-email">{t('login.email')}</label>
+                <input id="forgot-email" autoComplete="email"
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}

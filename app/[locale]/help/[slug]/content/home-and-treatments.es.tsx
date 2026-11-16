@@ -17,7 +17,7 @@ export default function HomeAndTreatmentsContent({ Screenshot }: { Screenshot: t
           </li>
           <li>
             <strong>Estado de las colmenas.</strong> Bien, a vigilar, alerta o desconocido, según la última revisión:
-            <em> alerta</em> por varroa alta, celdas de enjambre o ánimo agresivo; <em>a vigilar</em> por varroa media, ánimo
+            <em> alerta</em> por varroa alta, celdas de enjambre o comportamiento agresivo; <em>a vigilar</em> por varroa media, comportamiento
             nervioso o reina no vista; <em>desconocido</em> para colmenas nunca revisadas. Las que necesitan atención se
             listan con el motivo.
           </li>

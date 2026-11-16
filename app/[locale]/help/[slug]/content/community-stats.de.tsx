@@ -43,10 +43,10 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
           </div>
 
           <div className="help-stat-card">
-            <div className="help-stat-card-name">Durchschn. Brutwaben</div>
+            <div className="help-stat-card-name">Durchschn. Brutrahmen</div>
             <div className="help-stat-card-desc">
-              Durchschnittliche Anzahl der Brutwaben, die über alle öffentlichen Kontrollen aufgezeichnet wurden. Im Frühling steigt
-              diese Zahl; im Herbst fällt sie. Der Vergleich Ihrer Brutwabenanzahl mit diesem Durchschnitt
+              Durchschnittliche Anzahl der Brutrahmen, die über alle öffentlichen Kontrollen aufgezeichnet wurden. Im Frühling steigt
+              diese Zahl; im Herbst fällt sie. Der Vergleich Ihrer Brutrahmenanzahl mit diesem Durchschnitt
               kann zeigen, ob sich Ihre Völker schneller oder langsamer entwickeln als andere in der Community.
             </div>
           </div>

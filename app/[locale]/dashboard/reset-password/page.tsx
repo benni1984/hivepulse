@@ -58,8 +58,8 @@ function ResetPasswordForm() {
           {error && <div className="dash-error-banner">{error}</div>}
           <form onSubmit={handleSubmit}>
             <div className="dash-form-group">
-              <label>{t('resetPassword.newPassword')}</label>
-              <input
+              <label htmlFor="reset-new-password">{t('resetPassword.newPassword')}</label>
+              <input id="reset-new-password" autoComplete="new-password"
                 type="password"
                 value={newPassword}
                 onChange={e => setNewPassword(e.target.value)}
@@ -69,8 +69,8 @@ function ResetPasswordForm() {
               />
             </div>
             <div className="dash-form-group">
-              <label>{t('resetPassword.confirmPassword')}</label>
-              <input
+              <label htmlFor="reset-confirm-password">{t('resetPassword.confirmPassword')}</label>
+              <input id="reset-confirm-password" autoComplete="new-password"
                 type="password"
                 value={confirmPassword}
                 onChange={e => setConfirmPassword(e.target.value)}

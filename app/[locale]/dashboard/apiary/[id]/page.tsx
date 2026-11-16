@@ -324,7 +324,7 @@ export default function ApiaryPage() {
                 <button className="dash-row-btn" onClick={() => setShowMove(true)}>{t('moves.title')}</button>
               )}
               {!showCreateHive && canEdit && (
-                <button className="dash-new-btn" onClick={openCreateHive}>{t('apiary.newHive')}</button>
+                <button className="dash-new-btn" onClick={openCreateHive} data-tour="new-hive">{t('apiary.newHive')}</button>
               )}
             </span>
           </div>
@@ -344,8 +344,8 @@ export default function ApiaryPage() {
               <h2>{t('apiary.createHiveTitle')}</h2>
               <form onSubmit={handleCreateHive}>
                 <div className="dash-form-group">
-                  <label>{t('hive.hiveType')}</label>
-                  <select
+                  <label htmlFor="hive-create-type">{t('hive.hiveType')}</label>
+                  <select id="hive-create-type"
                     className="dash-profile-select"
                     value={hiveForm.hive_type}
                     onChange={e => setHiveForm(f => ({ ...f, hive_type: e.target.value }))}
@@ -356,8 +356,8 @@ export default function ApiaryPage() {
                   </select>
                 </div>
                 <div className="dash-form-group">
-                  <label>{t('apiaries.name')}</label>
-                  <input
+                  <label htmlFor="hive-create-name">{t('apiaries.name')}</label>
+                  <input id="hive-create-name"
                     type="text"
                     value={hiveForm.name}
                     onChange={e => setHiveForm(f => ({ ...f, name: e.target.value }))}
@@ -411,8 +411,8 @@ export default function ApiaryPage() {
               <h2>{t('apiary.editTitle')}</h2>
               <form onSubmit={handleSave}>
                 <div className="dash-form-group">
-                  <label>{t('apiaries.name')}</label>
-                  <input
+                  <label htmlFor="apiary-edit-name">{t('apiaries.name')}</label>
+                  <input id="apiary-edit-name"
                     type="text"
                     value={editForm.name}
                     onChange={e => setEditForm(f => ({ ...f, name: e.target.value }))}
@@ -421,15 +421,15 @@ export default function ApiaryPage() {
                   />
                 </div>
                 <div className="dash-form-group">
-                  <label>{t('apiaries.description')}</label>
-                  <textarea
+                  <label htmlFor="apiary-edit-description">{t('apiaries.description')}</label>
+                  <textarea id="apiary-edit-description"
                     value={editForm.description}
                     onChange={e => setEditForm(f => ({ ...f, description: e.target.value }))}
                   />
                 </div>
                 <div className="dash-form-group">
-                  <label>{t('apiaries.address')}</label>
-                  <input
+                  <label htmlFor="apiary-edit-address">{t('apiaries.address')}</label>
+                  <input id="apiary-edit-address"
                     type="text"
                     value={editForm.address}
                     onChange={e => setEditForm(f => ({ ...f, address: e.target.value }))}
@@ -522,20 +522,20 @@ export default function ApiaryPage() {
                 <h2>{t('fieldDefs.createTitle')}</h2>
                 <form onSubmit={handleCreateField}>
                   <div className="dash-form-group">
-                    <label>{t('fieldDefs.name')}</label>
-                    <input type="text" value={createFieldForm.name} onChange={e => setCreateFieldForm(f => ({ ...f, name: e.target.value }))} required autoFocus />
+                    <label htmlFor="apiary-field-create-name">{t('fieldDefs.name')}</label>
+                    <input id="apiary-field-create-name" type="text" value={createFieldForm.name} onChange={e => setCreateFieldForm(f => ({ ...f, name: e.target.value }))} required autoFocus />
                   </div>
                   <div className="dash-form-row">
                     <div className="dash-form-group">
-                      <label>{t('fieldDefs.target')}</label>
-                      <select className="dash-profile-select" value={createFieldForm.target} onChange={e => setCreateFieldForm(f => ({ ...f, target: e.target.value as FieldTarget }))}>
+                      <label htmlFor="apiary-field-create-target">{t('fieldDefs.target')}</label>
+                      <select id="apiary-field-create-target" className="dash-profile-select" value={createFieldForm.target} onChange={e => setCreateFieldForm(f => ({ ...f, target: e.target.value as FieldTarget }))}>
                         <option value="inspection">{t('fieldDefs.targetInspection')}</option>
                         <option value="hive">{t('fieldDefs.targetHive')}</option>
                       </select>
                     </div>
                     <div className="dash-form-group">
-                      <label>{t('fieldDefs.type')}</label>
-                      <select className="dash-profile-select" value={createFieldForm.type} onChange={e => setCreateFieldForm(f => ({ ...f, type: e.target.value as FieldType }))}>
+                      <label htmlFor="apiary-field-create-type">{t('fieldDefs.type')}</label>
+                      <select id="apiary-field-create-type" className="dash-profile-select" value={createFieldForm.type} onChange={e => setCreateFieldForm(f => ({ ...f, type: e.target.value as FieldType }))}>
                         <option value="text">{t('fieldDefs.typeText')}</option>
                         <option value="number">{t('fieldDefs.typeNumber')}</option>
                         <option value="boolean">{t('fieldDefs.typeBoolean')}</option>
@@ -546,8 +546,8 @@ export default function ApiaryPage() {
                   </div>
                   {createFieldForm.type === 'select' && (
                     <div className="dash-form-group">
-                      <label>{t('fieldDefs.options')}</label>
-                      <textarea value={createFieldForm.options} onChange={e => setCreateFieldForm(f => ({ ...f, options: e.target.value }))} placeholder={'Option 1\nOption 2'} />
+                      <label htmlFor="apiary-field-create-options">{t('fieldDefs.options')}</label>
+                      <textarea id="apiary-field-create-options" value={createFieldForm.options} onChange={e => setCreateFieldForm(f => ({ ...f, options: e.target.value }))} placeholder={'Option 1\nOption 2'} />
                     </div>
                   )}
                   <label className="dash-inline-checkbox">
@@ -600,13 +600,13 @@ export default function ApiaryPage() {
                             <td colSpan={5}>
                               <form onSubmit={handleSaveField} className="dash-row-edit-form">
                                 <div className="dash-form-group">
-                                  <label>{t('fieldDefs.name')}</label>
-                                  <input type="text" value={editFieldForm.name} onChange={e => setEditFieldForm(f => ({ ...f, name: e.target.value }))} required autoFocus />
+                                  <label htmlFor="apiary-field-edit-name">{t('fieldDefs.name')}</label>
+                                  <input id="apiary-field-edit-name" type="text" value={editFieldForm.name} onChange={e => setEditFieldForm(f => ({ ...f, name: e.target.value }))} required autoFocus />
                                 </div>
                                 {fd.type === 'select' && (
                                   <div className="dash-form-group">
-                                    <label>{t('fieldDefs.options')}</label>
-                                    <textarea value={editFieldForm.options} onChange={e => setEditFieldForm(f => ({ ...f, options: e.target.value }))} style={{ minHeight: 56 }} />
+                                    <label htmlFor="apiary-field-edit-options">{t('fieldDefs.options')}</label>
+                                    <textarea id="apiary-field-edit-options" value={editFieldForm.options} onChange={e => setEditFieldForm(f => ({ ...f, options: e.target.value }))} style={{ minHeight: 56 }} />
                                   </div>
                                 )}
                                 <label className="dash-inline-checkbox">
