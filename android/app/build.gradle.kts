@@ -39,9 +39,12 @@ android {
     // AGP strips the native libraries and extracts their symbol tables with llvm-strip and
     // llvm-objcopy, which live in the NDK. Without one it prints "Unable to strip the following
     // libraries, packaging them as they are" and carries on, so `debugSymbolLevel` further down
-    // has no effect whatsoever — which is how version codes 10, 11 and 12 all reached Play with
-    // native code and no symbols after #418 had set it correctly (#451). Nothing failed, so
-    // nobody looked.
+    // cannot work at all (#451).
+    //
+    // Resolving it does not produce symbols here: the libraries are vendor-stripped and have
+    // none to give (#455, and the comment on `debugSymbolLevel` below). What it does buy is a
+    // build log that says what it means, and extraction that works by itself the moment
+    // something extractable turns up.
     //
     // This project declares no NDK of its own because none of the native code is ours: it comes
     // from ML Kit, Sentry and CameraX. So use whichever NDK the machine already has — the GitHub
@@ -101,8 +104,15 @@ android {
 
             // Play warns that the bundle carries native code without debugging symbols, so a
             // crash or ANR inside it arrives as bare addresses. The native code is not ours --
-            // ML Kit's barcode scanner and Sentry both ship .so files -- but their stack frames
-            // land in our crash reports all the same, and an address tells nobody anything.
+            // ML Kit's barcode scanner, Sentry and CameraX ship the .so files -- but their stack
+            // frames land in our crash reports all the same.
+            //
+            // This setting currently achieves nothing, and is kept deliberately: all six of those
+            // libraries arrive already stripped from their vendors (.dynsym, no .symtab), so
+            // there is nothing for AGP to extract and the warning cannot be cleared. Measured,
+            // not assumed -- see #455 and android/CLAUDE.md. It stays because the day this app
+            // ships native code of its own, or a dependency starts publishing unstripped
+            // libraries, the symbols then travel without anybody remembering to ask for them.
             //
             // SYMBOL_TABLE, not FULL: the table gives function names, FULL adds files and line
             // numbers and a great deal of size. Line numbers in somebody else's source are of no

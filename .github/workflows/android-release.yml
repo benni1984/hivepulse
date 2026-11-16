@@ -148,21 +148,27 @@ jobs:
           python3 scripts/check_16kb_alignment.py \
             android/app/build/outputs/bundle/release/app-release.aab
 
-      - name: Confirm the native libraries carry debug symbols
-        run: |
-          # The build file has asked for these since version code 10, and codes 10, 11 and 12
-          # shipped without them regardless: AGP needs the NDK to extract them and only WARNS
-          # when it cannot find one (#451). The setting was right, the effect never arrived, and
-          # the only trace was one line in a 589-line log. So the bundle is asked, not the log.
-          python3 scripts/check_native_debug_symbols.py \
-            android/app/build/outputs/bundle/release/app-release.aab
-
       - uses: actions/upload-artifact@v4
         with:
           name: hivepulse-${{ inputs.version_name }}-${{ steps.version.outputs.code }}-aab
           path: android/app/build/outputs/bundle/release/app-release.aab
           retention-days: 30
           if-no-files-found: error
+
+      # After the artifact, before Play: Play is the upload that cannot be taken back, and a
+      # failing check should still leave a bundle to open. #455 was diagnosed by downloading
+      # the 1.0.4 artifact and reading its libraries — the run that failed the check had kept
+      # nothing, because the check sat one step too early.
+      - name: Confirm the native libraries carry the symbols they can carry
+        run: |
+          # The build file has asked for symbols since version code 10 and never got any. Two
+          # separate reasons, found in that order: no NDK, so AGP could not extract and only
+          # WARNED (#451) — and then, with the NDK in place, still nothing, because all six
+          # libraries come from vendors who publish them stripped (#455). So the check asks each
+          # library whether it has a symbol table before it demands a symbol file, and the
+          # bundle is asked rather than the log.
+          python3 scripts/check_native_debug_symbols.py \
+            android/app/build/outputs/bundle/release/app-release.aab
 
       # ── Upload to Play, only when a track was chosen ───────────────────────────
       - name: Check the service account secret is present

@@ -53,10 +53,25 @@ so a wrong or missing keep rule is invisible to all of them.
   every Kotlin frame there reads `a.b.c.d()`. The sentence this paragraph used to end with — "if
   it is switched on for the release, add its Gradle plugin first" — came true and nobody acted on
   it. It needs a `SENTRY_AUTH_TOKEN` secret, which only a person can create (#452).
-- Native libraries (ML Kit, Sentry, CameraX): their symbols need the NDK's llvm-strip, and AGP
-  only *warns* when it cannot find one, so `debugSymbolLevel` alone did nothing for version codes
-  10 to 12. The release workflow now resolves the runner's NDK and refuses to upload a bundle
-  without symbols (`scripts/check_native_debug_symbols.py`, #451).
+- **Play's "contains native code, and you've not uploaded debug symbols" warning cannot be
+  cleared. Decided, not open (#455).** Three attempts went into it, so do not start a fourth:
+  #418 set `debugSymbolLevel = "SYMBOL_TABLE"`, #451 found that AGP needs the NDK's `llvm-strip`
+  and only *warns* when it cannot find one — and with the NDK resolved, the bundle still had no
+  symbols. The reason is upstream: this app compiles no native code of its own, and all six
+  libraries arrive **already stripped** from their vendors. Read from the published AARs and from
+  the bundle Play received for 1.0.4, each of `libbarhopper_v3.so` (ML Kit), `libsentry.so` and
+  `libsentry-android.so`, `libandroidx.graphics.path.so`, `libimage_processing_util_jni.so` and
+  `libsurface_util_jni.so` (CameraX) carries `.dynsym` and no `.symtab`. `SYMBOL_TABLE` lifts
+  `.symtab`; where there is none, nothing can be lifted, NDK or no NDK. A crash *inside* those
+  six therefore reads as bare addresses in Play and in Sentry, and that is the end of it.
+  - What the release still does: it resolves the runner's NDK (nothing is downloaded, the image
+    ships one) so extraction works the moment there is anything to extract, and
+    `scripts/check_native_debug_symbols.py` asks each packaged library whether it has a
+    `.symtab` **before** demanding a symbol file for it. Add native code of our own, or take a
+    dependency that publishes unstripped libraries, and the symbols either arrive or the release
+    fails. Until then the check reports what it saw and lets the release through.
+  - Our own Kotlin frames are a different matter and are *not* fine: see the mapping note above
+    and #452.
 
 ## Design System Reference — IMPORTANT
 
