@@ -1220,5 +1220,15 @@ class SubscriptionOut(BaseModel):
     hive_limit: Optional[int] = None
 
 
+class WebCheckoutOut(BaseModel):
+    """Where to buy on the web (api-contract.md, Subscriptions).
+
+    One field on purpose. A client opens it and nothing else; the moment it tried to take the URL
+    apart to add something, the reason the server builds it would be gone.
+    """
+
+    url: str
+
+
 # Resolve forward references
 TokenResponse.model_rebuild()

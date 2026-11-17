@@ -248,3 +248,95 @@ def test_the_admin_grant_still_works(admin_client, db_session):
     assert resp.status_code == 200
     db_session.expire_all()
     assert db_session.get(User, user_id).is_supporter is True
+
+
+# --------------------------------------------------------------------------------------------
+# Where somebody buys it on the web (#479)
+# --------------------------------------------------------------------------------------------
+
+class TestWebCheckout:
+    """The account id is a *path segment* of the purchase link, and a link without it answers 404
+    rather than selling anonymously. Worse, a link with the *wrong* id takes real money and
+    attaches it to nobody. These tests are about that one string."""
+
+    def test_nothing_configured_says_not_yet_rather_than_failing(self, auth_client):
+        """The normal state of a deployment whose store side is not set up, and of every test run
+        before this class sets a token. A page must be able to say "not yet"."""
+        resp = auth_client.get("/api/v1/subscriptions/web-checkout")
+
+        assert resp.status_code == 503
+        assert resp.json()["detail"]["code"] == "WEB_CHECKOUT_UNCONFIGURED"
+
+    def test_the_link_carries_this_accounts_own_id_as_a_path_segment(
+            self, auth_client, db_session, monkeypatch):
+        from app.config import settings
+        from app.models import User
+        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "tok123")
+        user = db_session.query(User).filter(User.email == "test@example.com").first()
+
+        url = auth_client.get("/api/v1/subscriptions/web-checkout").json()["url"]
+
+        assert url.startswith(f"https://pay.rev.cat/tok123/{user.id}"), url
+        assert f"?email=" in url, "so nobody retypes their address at the till"
+
+    def test_the_address_is_escaped_rather_than_pasted_in(self, client, monkeypatch):
+        """A + in an address is a space once it is in a query string. Nobody would notice until a
+        receipt went to the wrong mailbox."""
+        from app.config import settings
+        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "tok123")
+        client.post("/api/v1/auth/register", json={
+            "email": "bee+keeper@example.com", "password": "password123",
+            "name": "Plus", "locale": "en"})
+        token = client.post("/api/v1/auth/login", json={
+            "email": "bee+keeper@example.com", "password": "password123"}).json()["access_token"]
+
+        url = client.get("/api/v1/subscriptions/web-checkout",
+                         headers={"Authorization": f"Bearer {token}"}).json()["url"]
+
+        assert "bee%2Bkeeper%40example.com" in url
+        assert "bee+keeper@" not in url
+
+    def test_a_sandbox_token_wins_so_staging_cannot_take_real_money(self, auth_client, monkeypatch):
+        from app.config import settings
+        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "live-token")
+        monkeypatch.setattr(settings, "revenuecat_web_purchase_token_sandbox", "sandbox-token")
+
+        url = auth_client.get("/api/v1/subscriptions/web-checkout").json()["url"]
+
+        assert "sandbox-token" in url
+        assert "live-token" not in url
+
+    def test_two_accounts_never_receive_the_same_link(self, client, monkeypatch):
+        """The failure this guards is a payment credited to the wrong beekeeper."""
+        from app.config import settings
+        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "tok123")
+        links = []
+        for who in ("one", "two"):
+            client.post("/api/v1/auth/register", json={
+                "email": f"{who}@example.com", "password": "password123",
+                "name": who, "locale": "en"})
+            tok = client.post("/api/v1/auth/login", json={
+                "email": f"{who}@example.com", "password": "password123"}).json()["access_token"]
+            links.append(client.get("/api/v1/subscriptions/web-checkout",
+                                    headers={"Authorization": f"Bearer {tok}"}).json()["url"])
+
+        assert links[0] != links[1]
+
+    def test_there_is_no_link_without_an_account(self, client, monkeypatch):
+        """A purchase link only means anything attached to somebody, so an anonymous caller must
+        not receive one at all. (422 rather than 401 is how this whole API answers a *missing*
+        Authorization header — an invalid one gives 401. Asserted as "refused and no url" so this
+        test is about the link, not about that wart.)"""
+        from app.config import settings
+        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "tok123")
+
+        resp = client.get("/api/v1/subscriptions/web-checkout")
+
+        assert resp.status_code >= 400
+        assert "url" not in resp.json()
+
+    def test_the_message_is_translated(self, auth_client):
+        resp = auth_client.get("/api/v1/subscriptions/web-checkout",
+                               headers={"Accept-Language": "de"})
+
+        assert "noch nicht gekauft werden" in resp.json()["detail"]["message"]

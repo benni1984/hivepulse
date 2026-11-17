@@ -2526,6 +2526,45 @@ than a ratio. `hives_used` may **exceed** `hive_limit` — somebody whose subscr
 every colony they had (see *What the subscription includes*), so `7 of 10` and `15 of 10` are both
 states a client has to display without clipping or scolding.
 
+### GET `/subscriptions/web-checkout`
+
+Requires `Authorization: Bearer <access_token>`. **For the website only** — see the note below.
+
+Returns where this account buys the subscription on the web.
+
+**Response 200**
+```json
+{ "url": "https://pay.rev.cat/abc123xyz/9f8e7d6c-...?email=someone%40example.com" }
+```
+
+**Response 503** — `WEB_CHECKOUT_UNCONFIGURED`. No purchase link is configured on this
+deployment. A page must treat this as "cannot be bought here yet" and say so, not as a failure:
+it is the normal state of a deployment whose store side is not set up, and of every test run.
+
+#### Why the server builds this URL
+
+The link's shape is `https://pay.rev.cat/<token>/<url-encoded app_user_id>`, and the account id
+is a **path segment, not a query parameter**. Three reasons it is not assembled in a client:
+
+1. **Leaving the id out does not fall back to an anonymous purchase — the page 404s.** A client
+   that got the encoding wrong would show a dead link rather than a degraded one.
+2. RevenueCat's own pages disagree on the parameter's name (`app_user_id` on the purchase-link
+   page, `rc_app_user_id` on the paywall page). Getting it wrong produces a *successful payment
+   attached to no account*, which is the worst failure this feature has.
+3. `app_user_id` must be the HivePulse `user.id` and nothing else, because the webhook matches on
+   it. One place decides that.
+
+`email` is passed along so nobody retypes it at the till. The success redirect is configured in
+the RevenueCat dashboard rather than per request, and carries `app_user_id` back as a query
+parameter.
+
+#### Why the apps must not call this
+
+Buying inside the iPhone and Android apps goes through StoreKit and Play Billing. A web purchase
+link shown in an app is a store-review rejection, so this endpoint exists for the website and the
+apps ignore it. The entitlement that a web purchase grants is of course honoured everywhere — that
+is the whole point of deriving `is_supporter` on the server.
+
 ### POST `/subscriptions/sync`
 
 Requires `Authorization: Bearer <access_token>`. Empty body.
@@ -2676,4 +2715,5 @@ the right answer. `PUT /admin/users/{id}/supporter` is unchanged and writes a `m
 | `INVALID_VOTE` | 422 | `vote` must be `yes` or `no` |
 | `INVALID_SIGHTING_STATUS` | 422 | `status` must be `confirmed` or `rejected` |
 | `WEBHOOK_UNAUTHORIZED` | 401 | Subscription webhook called without the shared secret |
+| `WEB_CHECKOUT_UNCONFIGURED` | 503 | No web purchase link is configured on this deployment |
 | `FREE_HIVE_LIMIT_REACHED` | 403 | Ten colonies without a subscription; nothing already kept is affected |

@@ -1,6 +1,13 @@
 from typing import Optional
 
 MESSAGES = {
+    "WEB_CHECKOUT_UNCONFIGURED": {
+        "en": "The subscription cannot be bought on this site yet.",
+        "fr": "L’abonnement n’est pas encore disponible à l’achat sur ce site.",
+        "de": "Das Abo kann auf dieser Seite noch nicht gekauft werden.",
+        "es": "La suscripción todavía no se puede comprar en este sitio.",
+        "pl": "Abonamentu nie można jeszcze kupić w tym serwisie.",
+    },
     "FREE_HIVE_LIMIT_REACHED": {
         "en": "Up to 10 colonies are free. A supporter subscription lifts the limit \u2014 nothing you already keep is affected.",
         "fr": "Jusqu\u2019\u00e0 10 ruches sont gratuites. L\u2019abonnement Supporter l\u00e8ve la limite \u2014 rien de ce que vous avez d\u00e9j\u00e0 n\u2019est touch\u00e9.",

@@ -17,6 +17,13 @@ class Settings(BaseSettings):
     revenuecat_api_key: str = ""        # server key, for POST /subscriptions/sync
     revenuecat_webhook_secret: str = "" # the Authorization header RevenueCat is told to send
     revenuecat_entitlement: str = "supporter"
+    #: The token of the Web Purchase Link, i.e. the "abc123" of
+    #: https://pay.rev.cat/abc123/<app_user_id>. Empty means the website cannot sell yet
+    #: and says so, which is the normal state of a deployment and of every test run.
+    revenuecat_web_purchase_token: str = ""
+    #: Sandbox links are a separate token. Never both at once; this one wins when set, so a
+    #: staging deployment cannot accidentally take real money.
+    revenuecat_web_purchase_token_sandbox: str = ""
     # Push — Android (FCM HTTP v1). The legacy server key was retired by Google in 2024,
     # so delivery needs a service account; push is skipped while these are empty.
     firebase_project_id: str = ""
