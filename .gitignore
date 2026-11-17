@@ -49,6 +49,10 @@ android/keystore/
 
 # Databases
 *.db
+# A dated copy of a database does not end in .db, so the line above misses it. This repository is
+# public, and a stray `git add -A` would publish real data.
+*.db.bak*
+*.db-backup*
 *.sqlite
 *.sqlite3
 
