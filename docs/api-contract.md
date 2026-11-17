@@ -2489,7 +2489,9 @@ Always returns an object, never `null`: an account without a subscription has
   "current_period_end": "2027-11-17T09:14:22.108431",
   "will_renew": true,
   "store_managed": true,
-  "manage_url": null
+  "manage_url": null,
+  "hives_used": 7,
+  "hive_limit": 10
 }
 ```
 
@@ -2501,9 +2503,28 @@ Always returns an object, never `null`: an account without a subscription has
 | `will_renew` | What the store last said about auto-renewal. False after a cancellation that has not yet lapsed. |
 | `store_managed` | `true` for `apple` and `google`: **the app cannot cancel it** and must send the user to the store. |
 | `manage_url` | Where a web subscriber manages or cancels. Present only for `source: "web"`. |
+| `hives_used` | Colonies this account **owns**. Colonies shared *with* it count against their owner. |
+| `hive_limit` | How many it may own, or `null` for no limit. |
 
 `status: "grace"` means the store is retrying payment and access **continues** — do not gate on
 `active` alone.
+
+#### The two counters, and why they are here
+
+`hives_used` and `hive_limit` exist so a client can say "7 of 10" and explain the limit **before**
+somebody fills in a form, instead of letting them name a colony and then refusing it. That is the
+difference between a limit and a rejection.
+
+**The number lives only on the server.** No client hardcodes 10 — four copies of a number that is a
+product decision would drift the first time it moves, and the one in the error message is already
+pinned to it by a test. A client that finds `hive_limit` missing from an older response treats it
+as "no limit known" and simply lets the server answer, which is the behaviour before this field
+existed.
+
+`hive_limit` is `null`, not a large number, for a supporter: a client must render "unlimited" rather
+than a ratio. `hives_used` may **exceed** `hive_limit` — somebody whose subscription lapsed keeps
+every colony they had (see *What the subscription includes*), so `7 of 10` and `15 of 10` are both
+states a client has to display without clipping or scolding.
 
 ### POST `/subscriptions/sync`
 

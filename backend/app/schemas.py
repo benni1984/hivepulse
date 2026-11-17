@@ -1211,6 +1211,13 @@ class SubscriptionOut(BaseModel):
     store_managed: bool = False
     #: Where a web subscriber manages or cancels. Only ever set for `source: "web"`.
     manage_url: Optional[str] = None
+    #: Colonies this account owns. So a client can say "7 of 10" *before* somebody fills in a
+    #: form, rather than letting them name a colony and then refusing it (#478).
+    hives_used: int = 0
+    #: How many it may own, or None for no limit. None rather than a large number, so a client
+    #: renders "unlimited" instead of a ratio. `hives_used` may exceed this: a lapsed subscriber
+    #: keeps everything they had, so "15 of 10" is a state a client must display without scolding.
+    hive_limit: Optional[int] = None
 
 
 # Resolve forward references

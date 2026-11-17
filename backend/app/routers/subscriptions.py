@@ -10,11 +10,13 @@ import secrets
 from typing import Optional
 
 from fastapi import APIRouter, Header, HTTPException
+from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.deps import CurrentUser, DB
 from app.models import Subscription, User
 from app.schemas import SubscriptionOut
+from app import limits
 from app.utils import entitlements, revenuecat
 
 log = logging.getLogger(__name__)
@@ -25,9 +27,6 @@ router = APIRouter(prefix="/subscriptions", tags=["subscriptions"])
 #: the store. Saying so here keeps the three clients from each deciding for themselves what they
 #: may offer.
 STORE_MANAGED = {"apple", "google"}
-
-NONE = SubscriptionOut(status="none")
-
 
 def _manage_url(row: Subscription) -> Optional[str]:
     """Where a web subscriber cancels. RevenueCat puts it in the subscriber body."""
@@ -40,9 +39,23 @@ def _manage_url(row: Subscription) -> Optional[str]:
     return (body.get("subscriber") or {}).get("management_url")
 
 
-def _out(row: Optional[Subscription]) -> SubscriptionOut:
+def _out(db: Session, user: User, row: Optional[Subscription]) -> SubscriptionOut:
+    """The stored state, plus what the account currently holds against its allowance (#478).
+
+    The account is not optional. An earlier version let it default to None so that the
+    "never bought anything" case could be a module constant, and the counters would then have
+    silently read 0 of nothing for a real account — the kind of mistake that shows up as a
+    paywall that never appears. Both callers have the account in hand; they pass it.
+
+    The counters come from `app.limits`, never from a number repeated here: the limit is a product
+    decision and the moment it exists in two places one of them is wrong.
+    """
+    counters = {
+        "hives_used": limits.hive_count(db, user),
+        "hive_limit": None if user.is_supporter else limits.FREE_HIVE_LIMIT,
+    }
     if row is None:
-        return NONE
+        return SubscriptionOut(status="none", **counters)
     return SubscriptionOut(
         status=row.status,
         source=row.source,
@@ -51,12 +64,13 @@ def _out(row: Optional[Subscription]) -> SubscriptionOut:
         will_renew=bool(row.will_renew),
         store_managed=row.source in STORE_MANAGED,
         manage_url=_manage_url(row),
+        **counters,
     )
 
 
 @router.get("/me", response_model=SubscriptionOut)
 def my_subscription(current_user: CurrentUser, db: DB):
-    return _out(entitlements.current_for(db, current_user.id))
+    return _out(db, current_user, entitlements.current_for(db, current_user.id))
 
 
 @router.post("/sync", response_model=SubscriptionOut)
@@ -77,7 +91,7 @@ def sync(current_user: CurrentUser, db: DB):
             event.pop("app_user_id", None)
             entitlements.apply_event(db, user=current_user, **event)
             db.commit()
-    return _out(entitlements.current_for(db, current_user.id))
+    return _out(db, current_user, entitlements.current_for(db, current_user.id))
 
 
 @router.post("/webhook")

@@ -256,3 +256,79 @@ def test_every_language_names_the_real_limit(locale):
     from app.i18n import get_message
 
     assert str(limits.FREE_HIVE_LIMIT) in get_message("FREE_HIVE_LIMIT_REACHED", locale)
+
+
+# --------------------------------------------------------------------------------------------
+# What a client needs in order to say "7 of 10" before anybody fills in a form
+# --------------------------------------------------------------------------------------------
+
+def test_the_account_reports_what_it_holds_against_its_allowance(auth_client, apiary):
+    _hives(auth_client, apiary, 7)
+
+    body = auth_client.get("/api/v1/subscriptions/me").json()
+
+    assert body["hives_used"] == 7
+    assert body["hive_limit"] == limits.FREE_HIVE_LIMIT
+
+
+def test_an_account_that_never_bought_anything_still_reports_its_counters(auth_client, apiary):
+    """The "none" case used to be a module constant with the counters at their defaults, which
+    would have read 0 of nothing for every free account — a paywall that never appears."""
+    _hives(auth_client, apiary, 3)
+
+    body = auth_client.get("/api/v1/subscriptions/me").json()
+
+    assert body["status"] == "none"
+    assert body["hives_used"] == 3
+    assert body["hive_limit"] == limits.FREE_HIVE_LIMIT
+
+
+def test_a_supporter_has_no_limit_to_report(auth_client, apiary, db_session):
+    _supporter(db_session)
+    _hives(auth_client, apiary, 2)
+
+    body = auth_client.get("/api/v1/subscriptions/me").json()
+
+    assert body["hive_limit"] is None, "null, so a client says 'unlimited' and not a ratio"
+    assert body["hives_used"] == 2
+
+
+def test_a_lapsed_supporter_reports_more_than_the_limit_without_apology(auth_client, apiary,
+                                                                       db_session):
+    """"15 of 10" is a real state, because nothing is ever taken away. A client has to render it
+    without clipping the number or scolding anybody for it."""
+    _supporter(db_session)
+    _hives(auth_client, apiary, limits.FREE_HIVE_LIMIT + 5)
+    user = db_session.query(User).filter(User.email == "test@example.com").first()
+    user.is_supporter = False
+    db_session.commit()
+
+    body = auth_client.get("/api/v1/subscriptions/me").json()
+
+    assert body["hives_used"] == limits.FREE_HIVE_LIMIT + 5
+    assert body["hive_limit"] == limits.FREE_HIVE_LIMIT
+
+
+def test_colonies_shared_with_an_account_count_against_their_owner(auth_client, client,
+                                                                  db_session):
+    """A guest's allowance is not spent by the apiary they were invited onto. Otherwise accepting
+    an invitation would quietly use up somebody's free ten."""
+    from tests.conftest import make_supporter
+
+    client.post("/api/v1/auth/register", json={
+        "email": "owner@example.com", "password": "password123", "name": "Owner", "locale": "en"})
+    make_supporter("owner@example.com")
+    token = client.post("/api/v1/auth/login", json={
+        "email": "owner@example.com", "password": "password123"}).json()["access_token"]
+    owner = {"Authorization": f"Bearer {token}"}
+    stand = client.post("/api/v1/apiaries", json={"name": "Theirs", "address": "X"},
+                        headers=owner).json()["id"]
+    for i in range(4):
+        client.post(f"/api/v1/apiaries/{stand}/hives",
+                    json={"name": f"H{i}", "hive_type": "langstroth"}, headers=owner)
+    client.post("/api/v1/shares", json={"apiary_id": stand, "email": "test@example.com"},
+                headers=owner)
+
+    body = auth_client.get("/api/v1/subscriptions/me").json()
+
+    assert body["hives_used"] == 0, "none of them are this account's"
