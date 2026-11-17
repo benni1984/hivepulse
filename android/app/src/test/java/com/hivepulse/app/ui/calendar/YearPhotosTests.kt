@@ -99,10 +99,26 @@ class YearPhotosTests {
 
     @Test
     fun `an entry with no picture asks for none`() {
-        // Five jobs have no usable photograph (see WITHOUT in the generator, and issue 412). The
+        // Two jobs have no usable photograph (see WITHOUT in the generator, and issue 412). The
         // layouts draw the icon instead, so null is the expected answer and not a failure.
-        for (key in listOf("candy-feeding", "winter-feeding", "foulbrood-sample", "winter-prep", "oxalic-acid")) {
+        //
+        // It was five until the search was run again with the right category name: Commons calls
+        // it `Feeding bees`, and the first survey had looked for three names that do not exist.
+        // These two are what is genuinely not there -- candy on a colony and a hive being made
+        // winter-proof -- and both are things we can photograph ourselves.
+        for (key in listOf("candy-feeding", "winter-prep")) {
             assertNull("$key unexpectedly has a picture", YearPhotos.of(key))
+        }
+    }
+
+    @Test
+    fun `the three that were found carry their picture on this platform too`() {
+        // The generator writes the web manifest, this one and the iPhone's from one list, and
+        // copies the files into all three. A picture that reached the website and not the app
+        // would be the kind of half-done change that is only noticed by somebody scrolling the
+        // year on a phone.
+        for (key in listOf("winter-feeding", "oxalic-acid", "foulbrood-sample")) {
+            assertNotNull("$key has no picture on Android", YearPhotos.of(key))
         }
     }
 
