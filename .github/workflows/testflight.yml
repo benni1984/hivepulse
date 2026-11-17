@@ -230,6 +230,27 @@ jobs:
             -authenticationKeyID "$ASC_KEY_ID" \
             -authenticationKeyIssuerID "$ASC_ISSUER_ID"
 
+      # Sentry needs the debug symbols, or every frame from a release build is a bare address.
+      # App Store Connect receives its own copy of them, but that copy is Apple's and Sentry never
+      # sees it -- the same shape as the Android mapping file, which Play deobfuscates by itself
+      # while Sentry reads a.b.c.d() (#452).
+      #
+      # Deliberately placed *after* the App Store upload: that upload is the one that cannot be
+      # taken back, and a hiccup at Sentry must never cost a release. Just as deliberately **not**
+      # continue-on-error -- a symbol upload that fails quietly is exactly how this went unnoticed
+      # for six weeks. If it fails the job goes red, the build is already on its way, and somebody
+      # looks.
+      - name: Upload debug symbols to Sentry
+        if: steps.secrets.outputs.ready == 'true' && secrets.SENTRY_AUTH_TOKEN != ''
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: multihead-9n
+          SENTRY_PROJECT: hivepulse-ios
+          # The account is in Sentry's EU region; the default is the US one.
+          SENTRY_URL: https://de.sentry.io
+        run: |
+          npx --yes @sentry/cli@3.8.2 debug-files upload             "$RUNNER_TEMP/HivePulse.xcarchive/dSYMs"
+
       - name: Summary
         if: steps.secrets.outputs.ready == 'true'
         run: |

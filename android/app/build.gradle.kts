@@ -5,10 +5,47 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
     id("com.google.gms.google-services")
+    id("io.sentry.android.gradle")
 }
 
 configurations.all {
     resolutionStrategy.force("androidx.tracing:tracing:1.3.0-alpha02")
+}
+
+// The token that lets a release upload its mapping file to Sentry. It exists only in the release
+// workflow; CI and every local build run without one, and must keep building exactly as before.
+val sentryAuthToken: String = (project.findProperty("SENTRY_AUTH_TOKEN") as? String)
+    ?: System.getenv("SENTRY_AUTH_TOKEN") ?: ""
+
+// Sentry gets the R8 mapping, so a crash from a release build reads as our own names instead of
+// a.b.c.d(). Crash reporting has been on for the release since 2026-10-01 and every Kotlin frame
+// has been unreadable since -- the reports existed, were counted, and said nothing, which is
+// worse than no reports because the dashboard looks healthy (#452).
+//
+// Everything else this plugin can do is switched off on purpose. The SDK is declared by hand in
+// `dependencies`, and bytecode instrumentation would change what is built; this is meant to add
+// an upload step and nothing more.
+sentry {
+    org.set("multihead-9n")
+    projectName.set("hivepulse-android")
+    // The account is in Sentry's EU region. Without this the plugin talks to the US one and the
+    // upload is refused for an organisation that does not exist there.
+    url.set("https://de.sentry.io")
+
+    includeProguardMapping.set(true)
+    // No token, no upload -- and no failure either.
+    autoUploadProguardMapping.set(sentryAuthToken.isNotBlank())
+    authToken.set(sentryAuthToken)
+
+    autoInstallation { enabled.set(false) }
+    tracingInstrumentation { enabled.set(false) }
+    includeSourceContext.set(false)
+    // Not needed to read a stack trace, and it puts an 8 KB inventory of every dependency into
+    // the bundle and sends it along. The UUID in assets/sentry-debug-meta.properties is the one
+    // file that has to be there: it is what matches a crash to the mapping uploaded above.
+    includeDependenciesReport.set(false)
+    telemetry.set(false)
+    ignoredBuildTypes.set(setOf("debug"))
 }
 
 android {
