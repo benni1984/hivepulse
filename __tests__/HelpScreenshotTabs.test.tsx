@@ -7,7 +7,7 @@ import HelpScreenshotTabs, { iosCounterpart } from '@/components/HelpScreenshotT
 // The components ask next-intl which language the page is in, to look for that language's
 // screenshot first (#475). Vitest allows a factory to close over a variable whose name begins
 // with `mock`, which is how a test changes the language.
-let mockLocale = 'en';
+const mockLocale = 'en';
 vi.mock('next-intl', () => ({ useLocale: () => mockLocale }));
 
 describe('HelpScreenshotTabs', () => {
