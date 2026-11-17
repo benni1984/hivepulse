@@ -1,4 +1,5 @@
 import type HelpScreenshot from '@/components/HelpScreenshot';
+import { Link } from '@/i18n/navigation';
 
 export default function BeekeepingYearContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -109,7 +110,7 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
 
       <section className="help-section">
         <h2 className="help-section-title">Les dates ne correspondent pas ici</h2>
-        <p>Alors dites-le. Les 38 entrées ont été écrites pour le centre de l’Allemagne et déplacées ailleurs par une formule&nbsp;; or, savoir si cette formule est juste en Andalousie, seuls les apiculteurs d’Andalousie le peuvent. Le questionnaire <a href="/year-feedback">Évaluer l’année apicole</a> prend environ un quart d’heure et ne demande aucun compte.</p>
+        <p>Alors dites-le. Les 38 entrées ont été écrites pour le centre de l’Allemagne et déplacées ailleurs par une formule&nbsp;; or, savoir si cette formule est juste en Andalousie, seuls les apiculteurs d’Andalousie le peuvent. Le questionnaire <Link href="/year-feedback">Évaluer l’année apicole</Link> prend environ un quart d’heure et ne demande aucun compte.</p>
         <Screenshot src="/docs/screenshots/year-feedback.png" caption="Le questionnaire Évaluer l’année apicole" />
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li><strong>Vous évaluez vos propres dates.</strong> Indiquez d’abord un pays et un code postal&nbsp;: la chronologie est décalée vers ce lieu avant que vous ne la voyiez.</li>

@@ -1,3 +1,4 @@
+import { Link } from '@/i18n/navigation';
 ﻿import type HelpScreenshot from '@/components/HelpScreenshot';
 
 export default function CommunityStatsContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
@@ -98,7 +99,7 @@ export default function CommunityStatsContent({ Screenshot }: { Screenshot: type
         </p>
         <div className="help-callout info">
           <i className="fas fa-info-circle" />
-          <p>L'achat intégré Supporter arrive bientôt. En attendant, visitez la <a href="/contribute">page Contribuer</a> pour savoir comment soutenir le projet.</p>
+          <p>L'achat intégré Supporter arrive bientôt. En attendant, visitez la <Link href="/contribute">page Contribuer</Link> pour savoir comment soutenir le projet.</p>
         </div>
       </section>
     </>

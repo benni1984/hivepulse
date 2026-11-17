@@ -28,9 +28,11 @@ export default [
       'next-env.d.ts',
       // Not ours, and not TypeScript: the design ground truth is a self-contained prototype.
       'hivepulse-redesign/**',
-      // A local working copy of the design-system bundle, not tracked by git at all. It carries a
-      // vendored React build, which alone accounted for 1194 of the first run's 1602 findings.
+      // Local working copies of the design-system tooling, neither of them tracked by git. The
+      // bundle carries a vendored React build, which alone accounted for 1194 of the first run's
+      // 1602 findings.
       'ds-bundle/**',
+      '.ds-sync/**',
       // The other platforms have their own toolchains.
       'android/**',
       'ios/**',
@@ -77,6 +79,22 @@ export default [
        * what a first lint pass is for (#472).
        */
       '@typescript-eslint/no-explicit-any': 'warn',
+
+      /**
+       * A leading underscore is how this codebase already says "this one is deliberately not
+       * used": `(_importFn, _opts) =>` for a mock that has to match a signature it ignores. And
+       * `const { [key]: _gone, ...rest }` is the ordinary way to drop a key from an object -- the
+       * binding exists precisely so that it is left behind.
+       *
+       * Without this the rule reports the convention itself, and the only way to satisfy it would
+       * be to write the code worse.
+       */
+      '@typescript-eslint/no-unused-vars': ['warn', {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+        ignoreRestSiblings: true,
+      }],
     },
   },
 ];
