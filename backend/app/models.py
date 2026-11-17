@@ -496,3 +496,57 @@ class YearProposal(Base):
     created_at = Column(DateTime, default=now_utc)
     decided_at = Column(DateTime, nullable=True)
     decided_by = Column(String, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+
+
+class Subscription(Base):
+    """Where a supporter's access comes from.
+
+    `User.is_supporter` keeps its place and its meaning for all three clients; this table is where
+    it now gets its value. The column stays a cache rather than being replaced by a join, because
+    every client already reads it out of the user object and a hive list has no business querying
+    subscriptions.
+
+    One row per source. A person who buys on the iPhone and later on the website has two, and the
+    derivation in `app.utils.entitlements` takes the most generous of them -- which is the honest
+    answer, since they paid twice.
+    """
+
+    __tablename__ = "subscriptions"
+    __table_args__ = (
+        # One purchase, one account. Without this the same receipt could be handed to a second
+        # account, which is the oldest trick there is.
+        UniqueConstraint("source", "store_txn_id", name="uq_subscription_source_txn"),
+    )
+
+    id = Column(String, primary_key=True, default=_uuid)
+    user_id = Column(String, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+
+    source = Column(
+        SAEnum("apple", "google", "web", "manual", name="subscription_source_enum"),
+        nullable=False,
+    )
+    # No "none" here: an account without a subscription has no row. The API adds that value so the
+    # three clients decode one shape instead of a sometimes-absent body (api-contract.md).
+    status = Column(
+        SAEnum("active", "grace", "expired", "refunded", "revoked",
+               name="subscription_status_enum"),
+        nullable=False,
+    )
+
+    product_id = Column(String(120), nullable=True)
+    # Null for `manual`, which does not expire.
+    current_period_end = Column(DateTime, nullable=True)
+    will_renew = Column(Boolean, nullable=False, default=False)
+
+    store_txn_id = Column(String(255), nullable=True)
+    # What the provider said, kept so a disputed access can be reconstructed rather than argued
+    # about. Never sent to a client.
+    raw = Column(Text, nullable=True)
+    # The provider's own event time. Webhooks retry and arrive out of order; an event older than
+    # what is stored is dropped instead of applied.
+    event_at = Column(DateTime, nullable=True)
+
+    created_at = Column(DateTime, default=now_utc)
+    updated_at = Column(DateTime, default=now_utc, onupdate=now_utc)
+
+    user = relationship("User", backref="subscriptions")
