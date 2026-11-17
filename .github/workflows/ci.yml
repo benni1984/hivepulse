@@ -469,6 +469,14 @@ jobs:
         # Deleting it forces npm to resolve all optional deps for the current OS.
         run: rm -f package-lock.json && npm install
 
+      # There was no lint step here at all, while the root CLAUDE.md listed lint among the
+      # quality gates and `npm run lint` had been a broken command since the Next 16 upgrade
+      # (#466). It fails on errors; the warnings it still reports are a named backlog (#472),
+      # not noise, and deliberately do not block a merge yet.
+      - name: Lint (ESLint)
+        if: needs.changes.outputs.web == 'true'
+        run: npm run lint
+
       - name: Run unit tests (Vitest)
         if: needs.changes.outputs.web == 'true'
         run: npm test

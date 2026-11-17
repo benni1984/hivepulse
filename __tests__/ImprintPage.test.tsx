@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import React from 'react';
 
 vi.mock('next-intl/server', () => ({
   getTranslations: async () => (key: string, values?: Record<string, unknown>) =>
@@ -27,7 +26,7 @@ vi.mock('@/lib/imprint', async () => {
 });
 
 import ImprintPage from '@/app/[locale]/impressum/page';
-import { IMPRINT, imprintIsComplete, missingImprintFields } from '@/lib/imprint';
+import { imprintIsComplete } from '@/lib/imprint';
 
 const FILLED = {
   name: 'Beispiel Imkerei',

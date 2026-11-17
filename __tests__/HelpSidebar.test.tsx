@@ -24,19 +24,19 @@ vi.mock('@/i18n/navigation', () => ({
 describe('HelpSidebar', () => {
   it('marks "All Topics" active when on the help index', () => {
     mockPathname.value = '/help';
-    render(<HelpSidebar locale="en" />);
+    render(<HelpSidebar />);
     expect(screen.getByText('allTopics').closest('a')).toHaveClass('active');
   });
 
   it('does not mark "All Topics" active on a topic page', () => {
     mockPathname.value = '/help/apiaries';
-    render(<HelpSidebar locale="en" />);
+    render(<HelpSidebar />);
     expect(screen.getByText('allTopics').closest('a')).not.toHaveClass('active');
   });
 
   it('renders a group heading for every group with topics', () => {
     mockPathname.value = '/help';
-    render(<HelpSidebar locale="en" />);
+    render(<HelpSidebar />);
     const groupsWithTopics = HELP_GROUPS.filter(g => HELP_TOPICS.some(t => t.group === g));
     for (const group of groupsWithTopics) {
       expect(screen.getByText(`groups.${group}`)).toBeTruthy();
@@ -45,7 +45,7 @@ describe('HelpSidebar', () => {
 
   it('links each topic to its help page and marks the current one active', () => {
     mockPathname.value = '/help/apiaries';
-    render(<HelpSidebar locale="en" />);
+    render(<HelpSidebar />);
     const link = screen.getByText('topics.apiaries.title').closest('a')!;
     expect(link).toHaveAttribute('href', '/help/apiaries');
     expect(link).toHaveClass('active');
@@ -57,7 +57,7 @@ describe('HelpSidebar', () => {
 
   it('renders links for every topic', () => {
     mockPathname.value = '/help';
-    render(<HelpSidebar locale="en" />);
+    render(<HelpSidebar />);
     for (const topic of HELP_TOPICS) {
       expect(screen.getByText(`topics.${topic.slug}.title`)).toBeTruthy();
     }

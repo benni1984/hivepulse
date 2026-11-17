@@ -370,10 +370,24 @@ final class YearRibbonTests: XCTestCase {
     }
 
     func testAnEntryWithNoPictureAsksForNone() {
-        // Five jobs have no usable photograph (see WITHOUT in the generator, and issue 412). The
+        // Two jobs have no usable photograph (see WITHOUT in the generator, and issue 412). The
         // layouts draw the icon instead, so nil is the expected answer and not a failure.
-        for key in ["candy-feeding", "winter-feeding", "foulbrood-sample", "winter-prep", "oxalic-acid"] {
+        //
+        // It was five until the search was run again with the right category name: Commons calls
+        // it `Feeding bees`, and the first survey had looked for three names that do not exist.
+        // These two are what is genuinely not there -- candy on a colony and a hive being made
+        // winter-proof -- and both are things we can photograph ourselves.
+        for key in ["candy-feeding", "winter-prep"] {
             XCTAssertNil(YearPhotos.of(key), "\(key) unexpectedly has a picture")
+        }
+    }
+
+    func testTheThreeThatWereFoundCarryTheirPictureHereToo() {
+        // One generator writes the web manifest, Android's and this one, and copies the files
+        // into all three. A picture that reached the website and not the phone would be the kind
+        // of half-done change only somebody scrolling the year on a phone would notice.
+        for key in ["winter-feeding", "oxalic-acid", "foulbrood-sample"] {
+            XCTAssertNotNil(YearPhotos.of(key), "\(key) has no picture on iPhone")
         }
     }
 

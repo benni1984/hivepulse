@@ -67,7 +67,7 @@ export default function ContributePage() {
               <i className="fas fa-share-alt" />
               <h3>{t('spread.title')}</h3>
               <p>{t('spread.desc')}</p>
-              <a href="/#download" className="card-link">{t('spread.link')}</a>
+              <Link href="/#download" className="card-link">{t('spread.link')}</Link>
             </div>
           </div>
 

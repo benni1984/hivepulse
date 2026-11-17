@@ -24,7 +24,7 @@
  * would make the whole exercise worse than not asking.
  */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import {
   getPublicCalendar, submitYearFeedback, yearShiftDays,
@@ -253,7 +253,18 @@ export default function YearFeedback() {
 
   // ── The year, as this beekeeper would see it ───────────────────────────────────────────
   const entries = [...calendar.entries].sort((a, b) => a.start.localeCompare(b.start));
-  let lastMonth = 0;
+  // Which entries open a new month, worked out before the render rather than by writing to a
+  // variable from inside the map below. That was a mutation during render: React renders a
+  // component twice in development, and with the second pass starting from the first pass's
+  // leftover value every month heading disappeared. It happened to work only because the two
+  // passes agreed; the lint gate added in #466 is what named it.
+  const monthHeadings = new Map<string, string>();
+  let previousMonth = 0;
+  for (const entry of entries) {
+    const month = MONTH_OF(entry.start);
+    if (month !== previousMonth) monthHeadings.set(entry.key, monthName(month));
+    previousMonth = month;
+  }
 
   return (
     <div className="survey-rate" data-testid="survey-rate">
@@ -266,9 +277,7 @@ export default function YearFeedback() {
 
       <ol className="survey-list">
         {entries.map((entry) => {
-          const month = MONTH_OF(entry.start);
-          const heading = month !== lastMonth ? monthName(month) : null;
-          lastMonth = month;
+          const heading = monthHeadings.get(entry.key) ?? null;
           const answer = answers[entry.key];
           const wantsSize = answer?.verdict === 'too_early' || answer?.verdict === 'too_late';
           return (

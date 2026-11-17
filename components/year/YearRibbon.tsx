@@ -209,6 +209,9 @@ export default function YearRibbon({ year }: { year: number }) {
       {openPhoto && (
         <figure className="dash-year-detail-photo">
           {/* No alt text: the title sits beside it and a screen reader would read it twice. */}
+          {/* eslint-disable-next-line @next/next/no-img-element -- scripts/fetch_year_photos.py
+              writes this file as WebP at exactly 640x427, the size it is shown at. next/image
+              would add a loader and a round trip to produce what is already there. */}
           <img src={openPhoto.file} alt="" width={640} height={427} />
           <figcaption>
             <a href={openPhoto.source} target="_blank" rel="noreferrer noopener">
@@ -276,6 +279,8 @@ export default function YearRibbon({ year }: { year: number }) {
               >
                 <span className="dash-year-vicon">
                   {photoFor(bar.entry.key, bar.entry.honey)
+                    /* eslint-disable-next-line @next/next/no-img-element -- a generated 128x128
+                       WebP tile, shown at 128x128. */
                     ? <img className="dash-year-vphoto"
                            src={photoFor(bar.entry.key, bar.entry.honey)!.thumb}
                            alt="" width={128} height={128} loading="lazy" />
@@ -394,6 +399,8 @@ export default function YearRibbon({ year }: { year: number }) {
           data-testid="year-tip"
         >
           {hoverPhoto && (
+            /* eslint-disable-next-line @next/next/no-img-element -- generated WebP at exactly
+               640x427; see the detail photo above for the same reasoning. */
             <img className="dash-year-tip-photo" src={hoverPhoto.file} alt=""
                  width={640} height={427} />
           )}

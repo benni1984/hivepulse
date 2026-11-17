@@ -7,7 +7,7 @@ import { Link, usePathname } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import { HELP_TOPICS, HELP_GROUPS } from '@/lib/helpTopics';
 
-export default function HelpSidebar({ locale }: { locale: string }) {
+export default function HelpSidebar() {
   const pathname = usePathname();
   const t = useTranslations('helpIndex');
 

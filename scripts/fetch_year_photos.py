@@ -95,39 +95,55 @@ PICKS: dict[str, str] = {
         "drone-frame-insert":  "Drone - honeybee (8952360114).jpg",
     "drone-brood-cutting": "CSIRO ScienceImage 6961 Worker honey bees removing excess drone brood from the hive.jpg",
     "foulbrood-check":     "AFB in combs.jpg",
+    # The same photograph as foulbrood-check, deliberately. The two entries are the two halves
+    # of one job -- recognising the disease and taking the feed-ring sample that looks for it --
+    # and a beekeeper opening either one is looking for the same thing: what infected brood
+    # looks like. Commons has no picture of a sample being taken, and the alternatives all show
+    # diseased brood too, so a second, different disease photograph would only be the same
+    # subject in worse focus.
+    "foulbrood-sample":    "AFB in combs.jpg",
+    # Autumn at the apiary: brown leaves, modern boxes, a jerrycan of syrup on the ground and
+    # the feeder going on. The season is legible in the picture, which is most of the point.
+    "winter-feeding":      "Nourrissage d'hiver.JPG",
+    # Two drop boards after a treatment. Not the trickling itself -- Commons has no photograph
+    # of that -- but what the treatment produces and what the beekeeper goes out to read a few
+    # days later. It says "varroa treatment" without saying anything untrue.
+    "oxalic-acid":         "Varroa mite drop after treatment.jpg",
     # The handover from the honey year to the winter preparation: supers off, then treat
     # and feed. Filed under care, and the only entry of that kind with a photograph.
     "final-harvest":       "Uncapping honeycomb.jpg",
 }
 
-# These five keep their drawn icon. The layout allows for it: a missing picture is left out
+# These two keep their drawn icon. The layout allows for it: a missing picture is left out
 # rather than replaced with one that illustrates nothing.
 #
-# Commons was searched twice -- full text and categories, reading the licence out of
-# `extmetadata` -- and every candidate it produced was downloaded and looked at (issue 412).
-# A reason each, so that nobody repeats the search:
+# Commons was searched three times for these -- full text, categories, and the categories'
+# own members -- and every candidate that was free enough and large enough was downloaded and
+# looked at rather than judged by its title (issue 412).
 #
-#   candy-feeding     Nothing at all. No hit for fondant, Futterteig or a candy board, and
-#                     Category:Bee feeders, :Feeding of bees and :Sugar for bees do not exist.
-#   winter-feeding    One hit: a line drawing from the British Bee Journal of 1879, 516x292 --
-#                     below the 640x427 this pipeline crops to, and a drawing besides.
-#   foulbrood-sample  Candidates exist and all show *diseased brood*, but this entry is the
-#                     feed-ring sample: a precaution, not a diagnosis. Recognising the disease
-#                     is `foulbrood-check`, which already carries that picture; the same image
-#                     twice in one row would read as a mistake. `European foulbrood CZ.jpg`
-#                     also has red circles drawn on it and is the wrong foulbrood.
-#   winter-prep       `Beekeeping entrance reducer.jpg` is an entrance reducer, correctly
-#                     titled -- lying on a bedsheet. No hive, no bees, not the job.
-#   oxalic-acid       `Abeilles-bees-treatment-varroa.jpg` says "treatment" and shows bees at
-#                     an entrance in sunshine over green grass. This entry is the winter
-#                     treatment in the brood-free time; a photograph of flying bees beside it
-#                     would suggest the opposite of what it says. The Nassenheider evaporator
-#                     in the same search is formic acid -- wrong acid, wrong season.
+# The second search found what the first had missed, and the reason is worth keeping: the
+# category is **Category:Feeding bees**. The first survey had looked for "Bee feeders",
+# "Feeding of bees" and "Sugar for bees", none of which exist, and concluded from that there
+# was nothing. There were twenty files. That is how `winter-feeding` got its photograph, and
+# it is the argument for searching by category membership and not only by words.
 #
-# Three of them we can photograph at our own hives, which sidesteps the licence question and
-# matches the entry exactly: candy on a colony, a mouse guard on an entrance, oxalic acid
-# being trickled. For the two Commons has nothing for, that is the only route.
-WITHOUT = ["candy-feeding", "winter-feeding", "foulbrood-sample", "winter-prep", "oxalic-acid"]
+# What is still missing, and why:
+#
+#   candy-feeding   Nothing, on any of the three axes. Category:Feeding bees has no
+#                   subcategories and nothing in it is candy or fondant; full text in German,
+#                   English and French returns only scanned books -- "Soft candy for bees"
+#                   (1924) among them, a PDF. Candy is a winter subject photographed by few
+#                   people, and it shows.
+#   winter-prep     Nothing of the job. `Beekeeping mouse guard.jpg` is correctly titled and
+#                   is a strip of perforated metal lying on a blue bedsheet -- no hive, no
+#                   entrance, no bees, and its author field is empty, so a CC BY-SA picture
+#                   could not even be credited. Category:Hive entrances holds 60 files and
+#                   every usable one is a summer entrance with bees flying in and out, which
+#                   next to "make the hives winter-proof" would say the opposite.
+#
+# Both are things we can photograph at our own hives, which sidesteps the licence question and
+# matches the entry exactly: candy on a colony in February, a mouse guard on an entrance now.
+WITHOUT = ["candy-feeding", "winter-prep"]
 
 # The plant of each forage. In the ribbon the bloom, the move and the harvest of one
 # forage sit on a single row, so they show one picture: the rape field runs from "move to

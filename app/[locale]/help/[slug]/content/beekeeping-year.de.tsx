@@ -1,4 +1,5 @@
 import type HelpScreenshot from '@/components/HelpScreenshot';
+import { Link } from '@/i18n/navigation';
 
 export default function BeekeepingYearContent({ Screenshot }: { Screenshot: typeof HelpScreenshot }) {
   return (
@@ -109,7 +110,7 @@ export default function BeekeepingYearContent({ Screenshot }: { Screenshot: type
 
       <section className="help-section">
         <h2 className="help-section-title">Die Daten passen hier nicht</h2>
-        <p>Dann sag es. Die 38 Einträge wurden für Mitteldeutschland geschrieben und mit einer Formel auf andere Orte verschoben, und ob die Formel in Andalusien stimmt, können nur Imker in Andalusien sagen. Der Fragebogen unter <a href="/year-feedback">Das Imkerjahr bewerten</a> dauert etwa eine Viertelstunde und braucht kein Konto.</p>
+        <p>Dann sag es. Die 38 Einträge wurden für Mitteldeutschland geschrieben und mit einer Formel auf andere Orte verschoben, und ob die Formel in Andalusien stimmt, können nur Imker in Andalusien sagen. Der Fragebogen unter <Link href="/year-feedback">Das Imkerjahr bewerten</Link> dauert etwa eine Viertelstunde und braucht kein Konto.</p>
         <Screenshot src="/docs/screenshots/year-feedback.png" caption="Der Fragebogen unter Das Imkerjahr bewerten" />
         <ul style={{ paddingLeft: 20, color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '.9rem' }}>
           <li><strong>Du bewertest deine eigenen Daten.</strong> Land und Postleitzahl zuerst, dann wird der Zeitstrahl auf diesen Ort verschoben, bevor du ihn siehst.</li>

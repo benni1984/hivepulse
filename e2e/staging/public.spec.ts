@@ -20,8 +20,6 @@ test('map page renders the Leaflet container', async ({ page }) => {
 
 test('members page loads live global stats', async ({ page }) => {
   await page.goto('/members');
-  // Stat block should contain at least one non-placeholder number
-  const statNums = page.locator('.live-num, .stat-num, [data-stat]');
   // Members page may use different selectors — just verify no application error
   await expect(page.locator('body')).not.toContainText('Application error');
   await expect(page.locator('body')).not.toContainText('Internal Server Error');

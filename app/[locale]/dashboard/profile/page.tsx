@@ -8,7 +8,7 @@ import {
   updateMe, deleteMe, getReminderSettings, updateReminderSettings, ReminderSettings,
   getRegion, updateRegion, type Region,
 } from '@/lib/api';
-import { countriesByName, countryName } from '@/lib/calendar';
+import { countriesByName } from '@/lib/calendar';
 import { useDashboardAuth } from '@/hooks/useDashboardAuth';
 
 const MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
