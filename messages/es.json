@@ -425,7 +425,8 @@
       "releaseNotes": "Notas de versión",
       "feedback": "Enviar comentarios",
       "feedbackSubject": "Comentarios de HivePulse",
-      "calendar": "Año apícola"
+      "calendar": "Año apícola",
+      "subscription": "Suscripción"
     },
     "overview": {
       "title": "Mis estadísticas",
@@ -666,7 +667,8 @@
       "loadError": "No se pudieron cargar los datos del colmenar.",
       "backToMap": "Volver al mapa",
       "sharedNote": "Este colmenar pertenece a {name}. Puedes anotar revisiones y editar colmenas.",
-      "partialNote": "{name} ha compartido contigo algunas colmenas de este colmenar."
+      "partialNote": "{name} ha compartido contigo algunas colmenas de este colmenar.",
+      "limitSeeSubscription": "Ver la suscripción"
     },
     "hive": {
       "inspections": "Revisiones",
@@ -982,6 +984,35 @@
       "doneOn": "hecho el {date}",
       "reopen": "Reabrir",
       "errorGeneric": "No ha funcionado. Inténtalo de nuevo."
+    },
+    "subscription": {
+      "activeBody": "Gracias. Todo lo que incluye la suscripción está desbloqueado en la web y en ambas aplicaciones.",
+      "buy": "Suscribirse — 19,99 € al año",
+      "endsOn": "Válida hasta el {date} y no se renueva. Nada de lo que has registrado desaparece después.",
+      "errorGeneric": "No ha funcionado. Inténtalo de nuevo.",
+      "freeStays": "Gratis en cualquier caso, y así seguirá: el rastreador de avispa asiática, el año apícola, los códigos QR, las revisiones sin conexión y la exportación de tus propios datos.",
+      "graceBody": "Se está reintentando el pago. Mientras tanto no se bloquea nada: mantienes el acceso completo.",
+      "hivesUnlimited": "{used} colmenas, sin límite.",
+      "hivesUsed": "{used} de {limit} colmenas.",
+      "includeFields": "Tus propios campos en colmenas y revisiones.",
+      "includeHistory": "Todo el historial de estadísticas en lugar del último año.",
+      "includeHives": "Tantas colmenas como tengas.",
+      "includeMembers": "El mapa sanitario regional, en Miembros.",
+      "includeSharing": "Invitar a alguien a trabajar contigo en un colmenar o en una sola colmena.",
+      "includesTitle": "Qué incluye la suscripción",
+      "manage": "Gestionar la suscripción",
+      "manageInAppStore": "Comprada en la App Store. La renovación y la cancelación se gestionan allí, en Ajustes → tu nombre → Suscripciones; este sitio no puede cambiarlo.",
+      "manageInPlayStore": "Comprada en Google Play. La renovación y la cancelación se gestionan allí, en Pagos y suscripciones; este sitio no puede cambiarlo.",
+      "manualBody": "Este acceso se concedió directamente y no caduca.",
+      "noneBody": "HivePulse es gratuito hasta 10 colmenas. Una suscripción quita el límite y añade lo siguiente.",
+      "notSellingYet": "La suscripción todavía no se puede comprar aquí. Se está configurando.",
+      "overLimit": "Por encima del límite gratuito, y todas se quedan. Una suscripción que termina nunca quita nada; solo no puedes añadir otra colmena hasta que se reanude.",
+      "refresh": "Comprobar de nuevo",
+      "renewsOn": "Se renueva el {date}.",
+      "stateActive": "Eres supporter",
+      "stateNone": "Sin suscripción",
+      "thanks": "Gracias. Tu suscripción está activa.",
+      "title": "Suscripción"
     }
   },
   "hiveTypes": {

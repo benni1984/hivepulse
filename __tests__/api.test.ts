@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { login, register, logout, getMe, updateMe, deleteMe, getApiaries, createApiary, updateApiary, deleteApiary, createHive, updateHive, deleteHive, getHive, clearTokens, createInspection, updateInspection, deleteInspection, getQrBatches, createQrBatch, getQrBatch, downloadQrBatchPdf, getPublicStats, exportHiveInspections, exportApiaryInspections, getReminderSettings, updateReminderSettings, registerPushToken, forgotPassword, resetPassword, socialSignIn, deleteQrBatch, createShare, getShares, getIncomingShares, acceptShare, declineShare, deleteShare, acceptShareByToken, moveHives, getHiveMoves, getMovesOverview, getHome, getTreatments, createTreatment, markTreatmentDone, reopenTreatment, deleteTreatment } from '@/lib/api';
+import { ApiError, getSubscription, syncSubscription, getWebCheckoutUrl, grantsAccess }
+  from '@/lib/api';
 import { todayLocal } from '@/lib/dates';
 
 const mockUser = { id: '1', email: 'a@b.com', name: 'Test', locale: 'en', created_at: '2024-01-01' };
@@ -813,12 +815,103 @@ describe('resetPassword', () => {
 
 
 // ---------------------------------------------------------------------------------------------
+// The subscription (#17, #479)
+// ---------------------------------------------------------------------------------------------
+
+const noSub = {
+  status: 'none', source: null, product_id: null, current_period_end: null,
+  will_renew: false, store_managed: false, manage_url: null, hives_used: 2, hive_limit: 10,
+};
+
+describe('ApiError', () => {
+  it('keeps the server’s code, not only its sentence', async () => {
+    // Everything on the paywall depends on this: the message exists in five languages, so the
+    // page can only tell an offer from a fault by the code.
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(
+      ok({ detail: { code: 'FREE_HIVE_LIMIT_REACHED', message: 'Up to 10 colonies are free.' } }, 403));
+
+    await expect(createHive('ap-1', { name: 'Eleventh', hive_type: 'langstroth' }))
+      .rejects.toMatchObject({ code: 'FREE_HIVE_LIMIT_REACHED', status: 403 });
+  });
+
+  it('is an Error, so every existing catch keeps working', async () => {
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(
+      ok({ detail: { code: 'X', message: 'Nope.' } }, 400));
+
+    const err = await createHive('ap-1', { name: 'n', hive_type: 'langstroth' }).catch(e => e);
+
+    expect(err).toBeInstanceOf(Error);
+    expect(err.message).toBe('Nope.');
+  });
+
+  it('survives a body that is not the usual shape', async () => {
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(
+      new Response('<html>502</html>', { status: 502 }));
+
+    const err = await createHive('ap-1', { name: 'n', hive_type: 'langstroth' }).catch(e => e);
+
+    expect(err).toBeInstanceOf(ApiError);
+    expect(err.code).toBeUndefined();
+  });
+});
+
+describe('subscription', () => {
+  it('reads the state and the allowance', async () => {
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(ok(noSub));
+
+    expect(await getSubscription()).toMatchObject({ hives_used: 2, hive_limit: 10 });
+  });
+
+  it('syncs with a POST, because it changes stored state', async () => {
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ ...noSub, status: 'active' }));
+
+    await syncSubscription();
+
+    expect(vi.mocked(fetch).mock.calls[0][1]).toMatchObject({ method: 'POST' });
+  });
+
+  it('treats an unconfigured purchase link as null, not as a failure', async () => {
+    // The normal state of a deployment whose store side is not set up. A page says "not yet"
+    // instead of showing somebody an error they can do nothing about.
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ detail: { code: 'WEB_CHECKOUT_UNCONFIGURED' } }, 503));
+
+    expect(await getWebCheckoutUrl()).toBeNull();
+  });
+
+  it('still throws when the purchase link fails for any other reason', async () => {
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ detail: { code: 'BOOM' } }, 500));
+
+    await expect(getWebCheckoutUrl()).rejects.toBeInstanceOf(ApiError);
+  });
+});
+
+describe('grantsAccess', () => {
+  it('counts a grace period as access', () => {
+    // Gating on "active" alone locks somebody out over a card that expired.
+    expect(grantsAccess({ ...noSub, status: 'grace' })).toBe(true);
+  });
+
+  it.each(['none', 'expired', 'refunded', 'revoked'] as const)('does not grant on %s', (status) => {
+    expect(grantsAccess({ ...noSub, status })).toBe(false);
+  });
+});
+
+
+// ---------------------------------------------------------------------------------------------
 // The language the server answers in (#480)
 // ---------------------------------------------------------------------------------------------
 
 describe('Accept-Language', () => {
   it('asks the server for the language the page is in', async () => {
     // Without this the backend answers in English, and its five translations are never seen.
+    // It matters most where it is worst: a long sentence somebody decides whether to pay on.
     document.documentElement.lang = 'de';
     localStorage.setItem('access_token', 'tok');
     vi.mocked(fetch).mockResolvedValueOnce(ok({ items: [], total: 0, page: 1, per_page: 100 }));

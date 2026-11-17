@@ -425,7 +425,8 @@
       "releaseNotes": "Release Notes",
       "feedback": "Rückmeldung geben",
       "feedbackSubject": "HivePulse Rückmeldung",
-      "calendar": "Imkerjahr"
+      "calendar": "Imkerjahr",
+      "subscription": "Abo"
     },
     "overview": {
       "title": "Meine Statistiken",
@@ -666,7 +667,8 @@
       "loadError": "Bienenstand-Daten konnten nicht geladen werden.",
       "backToMap": "Zurück zur Karte",
       "sharedNote": "Dieser Bienenstand gehört {name}. Du kannst Kontrollen erfassen und Völker bearbeiten.",
-      "partialNote": "{name} hat einzelne Völker dieses Bienenstands mit dir geteilt."
+      "partialNote": "{name} hat einzelne Völker dieses Bienenstands mit dir geteilt.",
+      "limitSeeSubscription": "Abo ansehen"
     },
     "hive": {
       "inspections": "Kontrollen",
@@ -982,6 +984,35 @@
       "doneOn": "erledigt {date}",
       "reopen": "Wieder öffnen",
       "errorGeneric": "Das hat nicht geklappt. Bitte versuche es erneut."
+    },
+    "subscription": {
+      "activeBody": "Danke. Alles, was zum Abo gehört, ist auf der Webseite und in beiden Apps freigeschaltet.",
+      "buy": "Abo abschließen — 19,99 € im Jahr",
+      "endsOn": "Läuft bis zum {date} und verlängert sich nicht. Nichts von dem, was du erfasst hast, verschwindet danach.",
+      "errorGeneric": "Das hat nicht geklappt. Bitte versuche es noch einmal.",
+      "freeStays": "So oder so kostenlos, und das bleibt auch so: der Tracker für die Asiatische Hornisse, das Imkerjahr, QR-Codes, Kontrollen ohne Netz und der Export deiner eigenen Daten.",
+      "graceBody": "Die Zahlung wird noch einmal versucht. In dieser Zeit ist nichts gesperrt — du behältst den vollen Zugang.",
+      "hivesUnlimited": "{used} Völker, ohne Grenze.",
+      "hivesUsed": "{used} von {limit} Völkern.",
+      "includeFields": "Eigene Felder an Völkern und Kontrollen.",
+      "includeHistory": "Die ganze Statistik-Historie statt nur des letzten Jahres.",
+      "includeHives": "So viele Völker, wie du führst.",
+      "includeMembers": "Die regionale Gesundheitskarte unter Mitglieder.",
+      "includeSharing": "Jemanden einladen, der mit dir an einem Bienenstand oder an einem einzelnen Volk arbeitet.",
+      "includesTitle": "Was zum Abo gehört",
+      "manage": "Abo verwalten",
+      "manageInAppStore": "Über den App Store gekauft. Verlängerung und Kündigung laufen dort, in Einstellungen → dein Name → Abos — diese Seite kann daran nichts ändern.",
+      "manageInPlayStore": "Über Google Play gekauft. Verlängerung und Kündigung laufen dort, unter Zahlungen und Abos — diese Seite kann daran nichts ändern.",
+      "manualBody": "Dieser Zugang wurde direkt vergeben und läuft nicht ab.",
+      "noneBody": "HivePulse ist bis zu 10 Völkern kostenlos. Ein Abo hebt die Grenze auf und bringt das, was unten steht.",
+      "notSellingYet": "Das Abo kann hier noch nicht gekauft werden. Es wird gerade eingerichtet.",
+      "overLimit": "Mehr als die kostenlose Grenze — und alle bleiben. Ein endendes Abo nimmt nie etwas weg; du kannst nur kein weiteres Volk anlegen, bis es wieder läuft.",
+      "refresh": "Noch einmal prüfen",
+      "renewsOn": "Verlängert sich am {date}.",
+      "stateActive": "Du bist Supporter",
+      "stateNone": "Kein Abo",
+      "thanks": "Danke. Dein Abo ist aktiv.",
+      "title": "Abo"
     }
   },
   "hiveTypes": {

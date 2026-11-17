@@ -1379,6 +1379,17 @@ tr:last-child td { border-bottom: none; }
   background: var(--green-wash); border: 1px solid var(--green-border); border-radius: 10px;
   color: var(--green-ink); padding: 11px 14px; font-size: 14px; margin-bottom: 16px;
 }
+/* Reaching the free colony limit (#478). Amber, never red: nothing has gone wrong and nothing
+   has been taken away — it is an offer, and a red box would say the opposite. */
+.dash-limit-banner {
+  background: var(--amber-wash); border: 1px solid var(--amber-border); border-radius: 10px;
+  color: var(--amber-ink); padding: 14px; font-size: 14px; margin-bottom: 16px;
+}
+.dash-limit-banner p { margin: 0 0 12px; }
+/* The shared submit button is width:100%, which inside a notice turns into a bar across the
+   whole box and reads like the page's main action rather than a way out of a message. */
+.dash-limit-banner .dash-submit-btn { display: inline-block; width: auto; text-decoration: none; }
+
 .dash-profile-danger { margin-top: 28px; border-top: 1px solid var(--divider); padding-top: 24px; }
 .dash-profile-danger-desc { font-size: 14.5px; color: var(--body-text); margin-bottom: 14px; }
 .dash-profile-danger-confirm { margin-top: 12px; }

@@ -10,6 +10,7 @@ import MoveHivesPanel from '@/components/MoveHivesPanel';
 import TreatmentsPanel from '@/components/TreatmentsPanel';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import {
+  ApiError,
   getApiary, getHives, getApiaryStats, updateApiary, deleteApiary, createHive,
   getApiaryFieldDefs, createApiaryFieldDef, updateApiaryFieldDef, deleteApiaryFieldDef,
   exportApiaryInspections,
@@ -56,7 +57,7 @@ export default function ApiaryPage() {
   const [showCreateHive, setShowCreateHive] = useState(false);
   const [creatingHive, setCreatingHive] = useState(false);
   const [hiveForm, setHiveForm] = useState({ name: '', hive_type: 'langstroth' });
-  const [hiveMessage, setHiveMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
+  const [hiveMessage, setHiveMessage] = useState<{ type: 'ok' | 'err' | 'limit'; text: string } | null>(null);
 
   const [apiaryFields, setApiaryFields] = useState<FieldDefinition[]>([]);
   const [showCreateField, setShowCreateField] = useState(false);
@@ -235,7 +236,14 @@ export default function ApiaryPage() {
       setShowCreateHive(false);
       setHiveMessage({ type: 'ok', text: t('apiary.createHiveSuccess') });
     } catch (err) {
-      setHiveMessage({ type: 'err', text: err instanceof Error ? err.message : t('apiary.errorGeneric') });
+      // Reaching the free limit is an offer, not a fault, and it gets its own box with a way
+      // out instead of a red banner. Told apart by the server's code, never by its sentence —
+      // that sentence exists in five languages (#478).
+      if (err instanceof ApiError && err.code === 'FREE_HIVE_LIMIT_REACHED') {
+        setHiveMessage({ type: 'limit', text: err.message });
+      } else {
+        setHiveMessage({ type: 'err', text: err instanceof Error ? err.message : t('apiary.errorGeneric') });
+      }
     } finally {
       setCreatingHive(false);
     }
@@ -332,7 +340,15 @@ export default function ApiaryPage() {
             </span>
           </div>
 
-          {hiveMessage && (
+          {hiveMessage?.type === 'limit' && (
+            <div className="dash-limit-banner" data-testid="hive-limit-reached">
+              <p>{hiveMessage.text}</p>
+              <Link href="/dashboard/subscription" className="dash-submit-btn">
+                {t('apiary.limitSeeSubscription')}
+              </Link>
+            </div>
+          )}
+          {hiveMessage && hiveMessage.type !== 'limit' && (
             <div className={hiveMessage.type === 'ok' ? 'dash-success-banner' : 'dash-error-banner'}>
               {hiveMessage.text}
             </div>

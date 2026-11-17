@@ -38,7 +38,11 @@ vi.mock('@/hooks/useDashboardAuth', () => ({
   useDashboardReady: () => true,
 }));
 
-vi.mock('@/lib/api', () => ({
+vi.mock('@/lib/api', async () => ({
+  // The real class, not a stand-in: the page asks `err instanceof ApiError`, and a mock that
+  // handed back something else would make the limit case silently fall through to a red banner
+  // while every test still passed.
+  ApiError: (await vi.importActual<typeof import('@/lib/api')>('@/lib/api')).ApiError,
   getApiary: mockGetApiary,
   getHives: mockGetHives,
   getApiaryStats: mockGetApiaryStats,
@@ -249,6 +253,42 @@ describe('ApiaryPage', () => {
     fireEvent.submit(screen.getByText('apiary.createHiveBtn').closest('form')!);
 
     await waitFor(() => expect(screen.getByText('Create failed')).toBeInTheDocument());
+  });
+
+  it('answers the free colony limit with an offer, not a red banner', async () => {
+    // Reaching the limit is the one failure of this form that is not a fault. It gets its own
+    // amber box and a way out; a red "Create failed" would tell somebody the app is broken.
+    const { ApiError } = await vi.importActual<typeof import('@/lib/api')>('@/lib/api');
+    setupMocks();
+    mockCreateHive.mockRejectedValueOnce(
+      new ApiError('Up to 10 colonies are free.', 403, 'FREE_HIVE_LIMIT_REACHED'));
+    render(<ApiaryPage />);
+    await waitFor(() => screen.getByText('My Apiary'));
+
+    fireEvent.click(screen.getByText('apiary.newHive'));
+    fireEvent.change(screen.getByDisplayValue(''), { target: { value: 'Eleventh' } });
+    fireEvent.submit(screen.getByText('apiary.createHiveBtn').closest('form')!);
+
+    const box = await screen.findByTestId('hive-limit-reached');
+    expect(box.textContent).toContain('Up to 10 colonies are free.');
+    expect(box.querySelector('a')?.getAttribute('href')).toBe('/dashboard/subscription');
+    expect(document.querySelector('.dash-error-banner')).toBeNull();
+  });
+
+  it('still shows a red banner for an ordinary failure', async () => {
+    // The other half of the same decision: only this one code is an offer.
+    const { ApiError } = await vi.importActual<typeof import('@/lib/api')>('@/lib/api');
+    setupMocks();
+    mockCreateHive.mockRejectedValueOnce(new ApiError('Name already taken', 409, 'DUPLICATE'));
+    render(<ApiaryPage />);
+    await waitFor(() => screen.getByText('My Apiary'));
+
+    fireEvent.click(screen.getByText('apiary.newHive'));
+    fireEvent.change(screen.getByDisplayValue(''), { target: { value: 'Twin' } });
+    fireEvent.submit(screen.getByText('apiary.createHiveBtn').closest('form')!);
+
+    await waitFor(() => expect(screen.getByText('Name already taken')).toBeInTheDocument());
+    expect(screen.queryByTestId('hive-limit-reached')).toBeNull();
   });
 
   it('shows has-hives error on 409 without redirecting', async () => {

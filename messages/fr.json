@@ -425,7 +425,8 @@
       "releaseNotes": "Notes de version",
       "feedback": "Envoyer un retour",
       "feedbackSubject": "Retour HivePulse",
-      "calendar": "Année apicole"
+      "calendar": "Année apicole",
+      "subscription": "Abonnement"
     },
     "overview": {
       "title": "Mes statistiques",
@@ -666,7 +667,8 @@
       "loadError": "Impossible de charger les données du rucher.",
       "backToMap": "Retour à la carte",
       "sharedNote": "Ce rucher appartient à {name}. Vous pouvez saisir des visites et modifier les ruches.",
-      "partialNote": "{name} a partagé quelques ruches de ce rucher avec vous."
+      "partialNote": "{name} a partagé quelques ruches de ce rucher avec vous.",
+      "limitSeeSubscription": "Voir l’abonnement"
     },
     "hive": {
       "inspections": "Visites",
@@ -982,6 +984,35 @@
       "doneOn": "fait le {date}",
       "reopen": "Rouvrir",
       "errorGeneric": "Cela n’a pas fonctionné. Veuillez réessayer."
+    },
+    "subscription": {
+      "activeBody": "Merci. Tout ce que comprend l’abonnement est débloqué sur le site et dans les deux applications.",
+      "buy": "S’abonner — 19,99 € par an",
+      "endsOn": "Valable jusqu’au {date}, sans renouvellement. Rien de ce que vous avez saisi ne disparaît ensuite.",
+      "errorGeneric": "Cela n’a pas fonctionné. Veuillez réessayer.",
+      "freeStays": "Gratuits dans tous les cas, et cela ne changera pas : le suivi du frelon asiatique, l’année apicole, les QR codes, les visites hors ligne et l’export de vos propres données.",
+      "graceBody": "Le paiement est en cours de nouvelle tentative. Rien n’est bloqué pendant ce temps : vous gardez l’accès complet.",
+      "hivesUnlimited": "{used} ruches, sans limite.",
+      "hivesUsed": "{used} ruches sur {limit}.",
+      "includeFields": "Vos propres champs sur les ruches et les visites.",
+      "includeHistory": "Tout l’historique des statistiques au lieu de la dernière année.",
+      "includeHives": "Autant de ruches que vous en avez.",
+      "includeMembers": "La carte sanitaire régionale, dans Membres.",
+      "includeSharing": "Inviter quelqu’un à travailler avec vous sur un rucher ou sur une seule ruche.",
+      "includesTitle": "Ce que comprend l’abonnement",
+      "manage": "Gérer l’abonnement",
+      "manageInAppStore": "Acheté via l’App Store. Le renouvellement et la résiliation s’y font, dans Réglages → votre nom → Abonnements — ce site ne peut rien y changer.",
+      "manageInPlayStore": "Acheté via Google Play. Le renouvellement et la résiliation s’y font, dans Paiements et abonnements — ce site ne peut rien y changer.",
+      "manualBody": "Cet accès a été accordé directement et n’expire pas.",
+      "noneBody": "HivePulse est gratuit jusqu’à 10 ruches. Un abonnement lève la limite et ajoute ce qui suit.",
+      "notSellingYet": "L’abonnement n’est pas encore disponible à l’achat ici. Sa mise en place est en cours.",
+      "overLimit": "Au-delà de la limite gratuite — et toutes restent. Un abonnement qui se termine ne retire jamais rien ; vous ne pouvez simplement plus ajouter de ruche tant qu’il n’est pas repris.",
+      "refresh": "Vérifier à nouveau",
+      "renewsOn": "Se renouvelle le {date}.",
+      "stateActive": "Vous êtes supporter",
+      "stateNone": "Aucun abonnement",
+      "thanks": "Merci. Votre abonnement est actif.",
+      "title": "Abonnement"
     }
   },
   "hiveTypes": {

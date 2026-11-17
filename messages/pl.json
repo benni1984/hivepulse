@@ -425,7 +425,8 @@
       "releaseNotes": "Informacje o wersjach",
       "feedback": "Prześlij opinię",
       "feedbackSubject": "Opinia o HivePulse",
-      "calendar": "Rok pszczelarski"
+      "calendar": "Rok pszczelarski",
+      "subscription": "Abonament"
     },
     "overview": {
       "title": "Moje statystyki",
@@ -666,7 +667,8 @@
       "loadError": "Nie udało się wczytać danych pasieki.",
       "backToMap": "Wróć do mapy",
       "sharedNote": "Ta pasieka należy do: {name}. Możesz zapisywać przeglądy i edytować rodziny.",
-      "partialNote": "{name} udostępnia ci część rodzin z tej pasieki."
+      "partialNote": "{name} udostępnia ci część rodzin z tej pasieki.",
+      "limitSeeSubscription": "Zobacz abonament"
     },
     "hive": {
       "inspections": "Przeglądy",
@@ -982,6 +984,35 @@
       "doneOn": "zrobiono {date}",
       "reopen": "Otwórz ponownie",
       "errorGeneric": "To się nie udało. Spróbuj ponownie."
+    },
+    "subscription": {
+      "activeBody": "Dziękujemy. Wszystko, co obejmuje abonament, jest odblokowane w serwisie i w obu aplikacjach.",
+      "buy": "Wykup abonament — 19,99 € rocznie",
+      "endsOn": "Ważny do {date} i nie odnawia się. Nic z tego, co zapisałeś, potem nie znika.",
+      "errorGeneric": "Nie udało się. Spróbuj ponownie.",
+      "freeStays": "Bezpłatne tak czy inaczej i takie pozostaną: tropiciel szerszenia azjatyckiego, rok pszczelarski, kody QR, przeglądy bez sieci i eksport własnych danych.",
+      "graceBody": "Płatność jest ponawiana. W tym czasie nic nie jest zablokowane — zachowujesz pełny dostęp.",
+      "hivesUnlimited": "{used} rodzin pszczelich, bez limitu.",
+      "hivesUsed": "{used} z {limit} rodzin pszczelich.",
+      "includeFields": "Własne pola przy rodzinach i przeglądach.",
+      "includeHistory": "Cała historia statystyk zamiast ostatniego roku.",
+      "includeHives": "Tyle rodzin pszczelich, ile prowadzisz.",
+      "includeMembers": "Regionalna mapa zdrowia w sekcji Członkowie.",
+      "includeSharing": "Zaproszenie kogoś do wspólnej pracy nad pasieką lub nad pojedynczą rodziną.",
+      "includesTitle": "Co obejmuje abonament",
+      "manage": "Zarządzaj abonamentem",
+      "manageInAppStore": "Kupiony w App Store. Odnowienie i rezygnacja odbywają się tam, w Ustawienia → twoje imię → Subskrypcje — ten serwis nic tu nie zmieni.",
+      "manageInPlayStore": "Kupiony w Google Play. Odnowienie i rezygnacja odbywają się tam, w Płatności i subskrypcje — ten serwis nic tu nie zmieni.",
+      "manualBody": "Ten dostęp został przyznany bezpośrednio i nie wygasa.",
+      "noneBody": "HivePulse jest bezpłatny do 10 rodzin pszczelich. Abonament znosi limit i dodaje to, co poniżej.",
+      "notSellingYet": "Abonamentu nie można tu jeszcze kupić. Trwa konfiguracja.",
+      "overLimit": "Powyżej bezpłatnego limitu — i wszystkie zostają. Kończący się abonament nigdy niczego nie zabiera; po prostu nie możesz dodać kolejnej rodziny, dopóki go nie wznowisz.",
+      "refresh": "Sprawdź ponownie",
+      "renewsOn": "Odnawia się {date}.",
+      "stateActive": "Jesteś supporterem",
+      "stateNone": "Brak abonamentu",
+      "thanks": "Dziękujemy. Twój abonament jest aktywny.",
+      "title": "Abonament"
     }
   },
   "hiveTypes": {

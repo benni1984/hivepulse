@@ -2,6 +2,40 @@ import { todayLocal } from './dates';
 
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000/api/v1';
 
+/**
+ * An error that kept the server's error code, not only its sentence.
+ *
+ * `extractDetail` deliberately returns a human sentence, already translated by the server, and
+ * for almost every failure that is the whole story. A few are different: the free-colony limit
+ * is not a fault but an offer, and the page has to answer it with an explanation and a way to
+ * subscribe rather than a red banner. Telling those apart by reading the message would mean
+ * matching translated prose in five languages, so the code travels with the error instead.
+ *
+ * It extends Error, so every existing `catch (err) { err instanceof Error ? err.message : … }`
+ * keeps behaving exactly as it did.
+ */
+export class ApiError extends Error {
+  readonly code?: string;
+  readonly status: number;
+  constructor(message: string, status: number, code?: string) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+    this.code = code;
+  }
+}
+
+/** Reads a failed response once and throws it with its code attached. */
+async function failure(res: Response, fallback: string): Promise<never> {
+  const err = await res.json().catch(() => ({}));
+  const detail = (err as Record<string, unknown>).detail;
+  const code = detail && typeof detail === 'object' && !Array.isArray(detail)
+    ? (detail as Record<string, unknown>).code
+    : undefined;
+  throw new ApiError(extractDetail(err as Record<string, unknown>, fallback), res.status,
+                     typeof code === 'string' ? code : undefined);
+}
+
 function extractDetail(err: Record<string, unknown>, fallback: string): string {
   const d = err.detail;
   if (!d) return fallback;
@@ -269,10 +303,8 @@ export async function deleteApiary(id: string): Promise<void> {
 
 export async function createHive(apiaryId: string, data: { name: string; hive_type: string; acquisition_date?: string; notes?: string }): Promise<Hive> {
   const res = await apiFetch(`/apiaries/${apiaryId}/hives`, { method: 'POST', body: JSON.stringify(data) });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(extractDetail(err, 'Create failed'));
-  }
+  // Keeps the code, because FREE_HIVE_LIMIT_REACHED is an offer and not a fault (#478).
+  if (!res.ok) await failure(res, 'Create failed');
   return res.json();
 }
 
@@ -1395,4 +1427,66 @@ export async function adminRejectYearProposal(id: string): Promise<YearProposal>
   const res = await apiFetch(`/admin/year-proposals/${id}/reject`, { method: 'POST' });
   if (!res.ok) throw new Error('Failed to reject');
   return res.json();
+}
+
+
+// ---------------------------------------------------------------------------------------------
+// The supporter subscription (#17, #479)
+// ---------------------------------------------------------------------------------------------
+
+export type SubscriptionStatus = 'none' | 'active' | 'grace' | 'expired' | 'refunded' | 'revoked';
+export type SubscriptionSource = 'apple' | 'google' | 'web' | 'manual';
+
+export interface Subscription {
+  status: SubscriptionStatus;
+  source?: SubscriptionSource | null;
+  product_id?: string | null;
+  current_period_end?: string | null;
+  will_renew: boolean;
+  /** True for the App Store and Google Play: **this site cannot cancel it**, the store must. */
+  store_managed: boolean;
+  /** Where a web subscriber manages or cancels. Only ever set for `source: 'web'`. */
+  manage_url?: string | null;
+  /** Colonies this account owns. Ones shared *with* it count against their owner. */
+  hives_used: number;
+  /** How many it may own, or null for no limit. May be *below* hives_used — see below. */
+  hive_limit: number | null;
+}
+
+/**
+ * Does this subscription currently grant access?
+ *
+ * `grace` means the store is retrying a payment and access **continues**. Gating on `active`
+ * alone would lock somebody out over a card that expired, on the day they are most likely to
+ * give up on the whole thing.
+ */
+export function grantsAccess(s: Subscription): boolean {
+  return s.status === 'active' || s.status === 'grace';
+}
+
+export async function getSubscription(): Promise<Subscription> {
+  const res = await apiFetch('/subscriptions/me');
+  if (!res.ok) await failure(res, 'Could not load the subscription');
+  return res.json();
+}
+
+/** Asks the provider now instead of waiting for the webhook. Used after coming back from paying. */
+export async function syncSubscription(): Promise<Subscription> {
+  const res = await apiFetch('/subscriptions/sync', { method: 'POST' });
+  if (!res.ok) await failure(res, 'Could not refresh the subscription');
+  return res.json();
+}
+
+/**
+ * Where this account buys on the web.
+ *
+ * Returns null when the deployment has no purchase link configured (503
+ * WEB_CHECKOUT_UNCONFIGURED) — the normal state before the store side is set up, and not
+ * something to show as an error. Every other failure still throws.
+ */
+export async function getWebCheckoutUrl(): Promise<string | null> {
+  const res = await apiFetch('/subscriptions/web-checkout');
+  if (res.status === 503) return null;
+  if (!res.ok) await failure(res, 'Could not start the purchase');
+  return (await res.json()).url as string;
 }

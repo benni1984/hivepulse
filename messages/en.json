@@ -425,7 +425,8 @@
       "releaseNotes": "Release notes",
       "feedback": "Send feedback",
       "feedbackSubject": "HivePulse feedback",
-      "calendar": "Beekeeping year"
+      "calendar": "Beekeeping year",
+      "subscription": "Subscription"
     },
     "overview": {
       "title": "My Statistics",
@@ -666,7 +667,8 @@
       "loadError": "Could not load apiary data.",
       "backToMap": "Back to map",
       "sharedNote": "This apiary belongs to {name}. You can record inspections and edit hives.",
-      "partialNote": "{name} shared some hives of this apiary with you."
+      "partialNote": "{name} shared some hives of this apiary with you.",
+      "limitSeeSubscription": "See the subscription"
     },
     "hive": {
       "inspections": "Inspections",
@@ -982,6 +984,35 @@
       "doneOn": "done {date}",
       "reopen": "Reopen",
       "errorGeneric": "That did not work. Please try again."
+    },
+    "subscription": {
+      "activeBody": "Thank you. Everything the subscription includes is unlocked on the website and in both apps.",
+      "buy": "Subscribe — €19.99 a year",
+      "endsOn": "Runs until {date} and does not renew. Nothing you have recorded is removed after that.",
+      "errorGeneric": "That did not work. Please try again.",
+      "freeStays": "Free either way, and staying that way: the Asian hornet tracker, the beekeeping year, QR codes, offline inspections and the export of your own data.",
+      "graceBody": "The payment is being retried. Nothing is locked while that happens — you keep full access.",
+      "hivesUnlimited": "{used} colonies, with no limit.",
+      "hivesUsed": "{used} of {limit} colonies.",
+      "includeFields": "Your own fields on hives and inspections.",
+      "includeHistory": "The whole statistics history instead of the last year.",
+      "includeHives": "As many colonies as you keep.",
+      "includeMembers": "The regional health map under Members.",
+      "includeSharing": "Inviting somebody to work on an apiary or a single hive with you.",
+      "includesTitle": "What the subscription includes",
+      "manage": "Manage the subscription",
+      "manageInAppStore": "Bought through the App Store. Renewal and cancellation are managed there, in Settings → your name → Subscriptions — this site cannot change it.",
+      "manageInPlayStore": "Bought through Google Play. Renewal and cancellation are managed there, under Payments & subscriptions — this site cannot change it.",
+      "manualBody": "This access was granted directly and does not expire.",
+      "noneBody": "HivePulse is free for up to 10 colonies. A subscription lifts the limit and adds the things below.",
+      "notSellingYet": "The subscription cannot be bought here yet. It is being set up.",
+      "overLimit": "More than the free limit, and all of them stay. A subscription that ends never takes anything away — you simply cannot add another colony until it is renewed.",
+      "refresh": "Check again",
+      "renewsOn": "Renews on {date}.",
+      "stateActive": "You are a supporter",
+      "stateNone": "No subscription",
+      "thanks": "Thank you. Your subscription is active.",
+      "title": "Subscription"
     }
   },
   "hiveTypes": {
