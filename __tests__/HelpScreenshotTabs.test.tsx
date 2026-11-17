@@ -1,8 +1,14 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import React from 'react';
 
 import HelpScreenshotTabs, { iosCounterpart } from '@/components/HelpScreenshotTabs';
+
+// The components ask next-intl which language the page is in, to look for that language's
+// screenshot first (#475). Vitest allows a factory to close over a variable whose name begins
+// with `mock`, which is how a test changes the language.
+let mockLocale = 'en';
+vi.mock('next-intl', () => ({ useLocale: () => mockLocale }));
 
 describe('HelpScreenshotTabs', () => {
   it('shows the android screenshot by default with the App tab active', () => {
