@@ -106,6 +106,25 @@ extension MockURLProtocol {
     ]
 
     // Unauthenticated tests that need a working mock server (Register / Login success paths).
+    /// A session the server no longer accepts: every call answers 401, and so does the refresh
+    /// the client tries in response. That is what a refresh token looks like once it is past its
+    /// thirty days.
+    ///
+    /// Before #467 this left the app sitting on an empty apiary list with the server's sentence
+    /// about credentials in an alert, still apparently signed in. It must return to sign-in.
+    static let expiredSessionHandlers: [(String, Int, String)] = [
+        ("auth/refresh", 401, tokenInvalidJSON),
+        ("users/me",     401, tokenInvalidJSON),
+        ("apiaries",     401, tokenInvalidJSON),
+        // Answered so the sign-in form appears at once instead of after its own timeout: the
+        // test is about arriving there, not about how long the providers call waits.
+        ("auth/providers", 200, #"{"apple": false, "google": false}"#),
+    ]
+
+    static let tokenInvalidJSON = """
+    {"detail":{"code":"TOKEN_INVALID","message":"Could not validate credentials."}}
+    """
+
     static let unauthenticatedHandlers: [(String, Int, String)] = [
         ("auth/register", 200, tokenResponseJSON),
         ("auth/login",    200, tokenResponseJSON),

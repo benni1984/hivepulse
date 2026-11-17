@@ -1,5 +1,12 @@
 import Foundation
 
+extension Notification.Name {
+    /// The stored session is over: the refresh token was refused, not merely one request. Posted
+    /// rather than called, because APIClient knows nothing about view models and is swapped out
+    /// wholesale in UI tests.
+    static let sessionExpired = Notification.Name("hivepulse.sessionExpired")
+}
+
 enum APIError: LocalizedError {
     /// A 401 on a call that carried a token: it is no longer good, so the session is over.
     case unauthorized
@@ -207,16 +214,37 @@ final class APIClient {
         }
     }
 
+    /// Said once, so whatever is on screen can return to sign-in instead of showing an error the
+    /// user cannot act on.
+    private static func announceSessionExpired() {
+        NotificationCenter.default.post(name: .sessionExpired, object: nil)
+    }
+
     private func ensureTokenRefreshed() async throws {
         if let existing = refreshTask {
             return try await existing.value
         }
         let task = Task<Void, Error> {
             defer { self.refreshTask = nil }
-            guard let refresh = KeychainService.shared.refreshToken else { throw APIError.unauthorized }
+            guard let refresh = KeychainService.shared.refreshToken else {
+                Self.announceSessionExpired()
+                throw APIError.unauthorized
+            }
             let body = RefreshRequest(refreshToken: refresh)
-            let resp: AccessTokenResponse = try await postNoAuth("auth/refresh", body: body)
-            KeychainService.shared.accessToken = resp.accessToken
+            do {
+                let resp: AccessTokenResponse = try await postNoAuth("auth/refresh", body: body)
+                KeychainService.shared.accessToken = resp.accessToken
+            } catch APIError.invalidCredentials {
+                // This call carries no Authorization header, so `decode` reads its 401 the way it
+                // reads a refused sign-in and hands back the server's sentence about tokens. It is
+                // the one request where that is wrong: nobody typed anything, the stored session
+                // simply ran out, and the user is shown "Could not validate credentials" with no
+                // idea what to do about it (#467).
+                Self.announceSessionExpired()
+                throw APIError.unauthorized
+            }
+            // Every other failure leaves the session alone. At the apiary there is usually no
+            // signal, and being offline must never sign a beekeeper out.
         }
         refreshTask = task
         try await task.value

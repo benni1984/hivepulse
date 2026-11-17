@@ -12,6 +12,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import com.hivepulse.app.data.local.OfflineCache
+import com.hivepulse.app.data.local.OfflineOwner
 import com.hivepulse.app.data.repository.OfflineInspectionQueue
 import com.hivepulse.app.data.sync.SyncScheduler
 
@@ -20,13 +21,14 @@ class AuthRepositoryTest {
     private val api = mockk<ApiService>()
     private val tokenStore = mockk<TokenStore>(relaxed = true)
     private val cache = mockk<OfflineCache>(relaxed = true)
+    private val owner = mockk<OfflineOwner>(relaxed = true)
     private val queue = mockk<OfflineInspectionQueue>(relaxed = true)
     private val syncScheduler = mockk<SyncScheduler>(relaxed = true)
     private lateinit var repo: AuthRepository
 
     @Before
     fun setUp() {
-        repo = AuthRepository(api, tokenStore, cache, queue, syncScheduler)
+        repo = AuthRepository(api, tokenStore, cache, owner, queue, syncScheduler)
     }
 
     @After
@@ -254,4 +256,63 @@ class AuthRepositoryTest {
         pushTokenApns        = null,
         pushTokenFcm         = null
     )
+
+    // MARK: - Whose offline data this is (#469)
+    //
+    // Until now the only thing keeping one beekeeper's hives and queued visits from the next was
+    // that signing out cleared them. That holds exactly as long as everybody signs out, and #467
+    // is the case where nobody does: the session simply runs out. So the data carries an owner
+    // and is cleared when a *different* account signs in -- which is also what lets an expired
+    // session keep it, and a queued inspection recorded at a hive with no signal exists nowhere
+    // else until it uploads.
+
+    @Test
+    fun `a different account signing in finds nothing left by the previous one`() = runTest {
+        every { owner.userId } returns "somebody-else"
+        coEvery { api.login(any()) } returns TokenResponse("at", "rt", user())
+
+        repo.login("a@b.com", "secret")
+
+        coVerify { cache.clear() }
+        coVerify { queue.clear() }
+        verify { owner.userId = "u1" }
+    }
+
+    @Test
+    fun `the same account signing in keeps its queued visits`() = runTest {
+        every { owner.userId } returns "u1"
+        coEvery { api.login(any()) } returns TokenResponse("at", "rt", user())
+
+        repo.login("a@b.com", "secret")
+
+        coVerify(exactly = 0) { cache.clear() }
+        coVerify(exactly = 0) { queue.clear() }
+    }
+
+    @Test
+    fun `data from before anybody was recorded belongs to whoever signs in`() = runTest {
+        // An install updating into this change has data and no owner. It was written by the
+        // account signing in -- the only one this device has had -- so taking it away would be
+        // the loss this whole arrangement exists to avoid.
+        every { owner.userId } returns null
+        coEvery { api.login(any()) } returns TokenResponse("at", "rt", user())
+
+        repo.login("a@b.com", "secret")
+
+        coVerify(exactly = 0) { cache.clear() }
+        verify { owner.userId = "u1" }
+    }
+
+    @Test
+    fun `registering and a Google identity claim the data the same way`() = runTest {
+        // Three ways in; all three go through one place, so none of them can forget.
+        every { owner.userId } returns "somebody-else"
+        coEvery { api.register(any()) } returns TokenResponse("at", "rt", user())
+        coEvery { api.signInWithGoogle(any()) } returns TokenResponse("at", "rt", user())
+
+        repo.register("a@b.com", "secret", "Alice", "en")
+        repo.signInWithGoogle("identity-token")
+
+        coVerify(exactly = 2) { cache.clear() }
+    }
 }

@@ -131,6 +131,27 @@ final class AuthViewModel: ObservableObject {
         showGuidedTour = false
     }
 
+    /// The session ended without anybody ending it: the refresh token was refused, which after
+    /// thirty days is simply what happens.
+    ///
+    /// Everything `logout()` does to the keychain, and nothing it does to the offline data. The
+    /// same beekeeper is about to sign back in, and an inspection waiting in the queue was
+    /// recorded at a hive with no signal and exists nowhere else -- it must survive an expiry it
+    /// had nothing to do with. What keeps it from the *next* account is `OfflineStore.adopt`,
+    /// which wipes the directory when a different user signs in (#469).
+    ///
+    /// The message is `error.unauthorized`: "Session expired. Please log in again." It has been
+    /// written and translated into five languages all along, and until #467 it was shown to
+    /// nobody -- the server's sentence about credentials took its place.
+    func sessionExpired() {
+        guard isAuthenticated else { return }
+        KeychainService.shared.clearAll()
+        currentUser = nil
+        isAuthenticated = false
+        showGuidedTour = false
+        errorMessage = APIError.unauthorized.errorDescription
+    }
+
     func loadProfile() async {
         do {
             currentUser = try await service.getMe()
@@ -210,6 +231,10 @@ final class AuthViewModel: ObservableObject {
     }
 
     private func store(_ resp: TokenResponse) {
+        // Before anything is read or uploaded: data left by a different account goes, data left
+        // by this one stays (#469). This is what keeps one beekeeper's hives from the next now
+        // that signing out is no longer the only way a session ends.
+        OfflineStore.shared.adopt(userId: resp.user.id)
         KeychainService.shared.accessToken  = resp.accessToken
         KeychainService.shared.refreshToken = resp.refreshToken
         currentUser = resp.user
