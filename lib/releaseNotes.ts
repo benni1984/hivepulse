@@ -35,6 +35,28 @@ export function pick(text: Localized, locale: string): string {
 /** Newest first. */
 export const RELEASES: Release[] = [
   {
+    date: '2026-11-17',
+    title: t(
+      'The session that would not end',
+      'Die Sitzung, die nicht enden wollte',
+      'La session qui ne voulait pas finir',
+      'La sesión que no quería terminar',
+      'Sesja, która nie chciała się skończyć',
+    ),
+    items: [
+      {
+        kind: 'fixed',
+        text: t(
+          'After about a month the app would stop working without saying so usefully: the apiary list stayed empty behind a message about credentials, while the app still believed it was signed in. The only way out was finding Sign out in Settings. A session that has run out now ends properly — the app says so and returns to the sign-in screen.',
+          'Nach etwa einem Monat hörte die App auf zu arbeiten, ohne es brauchbar zu sagen: die Liste der Bienenstände blieb leer hinter einer Meldung über Anmeldedaten, während die App sich weiter für angemeldet hielt. Heraus kam man nur über Abmelden in den Einstellungen. Eine abgelaufene Sitzung endet jetzt richtig — die App sagt es und führt zur Anmeldung zurück.',
+          'Au bout d’un mois environ, l’application cessait de fonctionner sans le dire utilement : la liste des ruchers restait vide derrière un message sur les identifiants, alors que l’application se croyait toujours connectée. La seule issue était de trouver Déconnexion dans les réglages. Une session expirée se termine désormais correctement : l’application le dit et ramène à l’écran de connexion.',
+          'Al cabo de un mes aproximadamente, la app dejaba de funcionar sin decirlo de forma útil: la lista de colmenares se quedaba vacía detrás de un mensaje sobre credenciales, mientras la app seguía creéndose con la sesión iniciada. La única salida era encontrar Cerrar sesión en los ajustes. Una sesión caducada ahora termina como debe: la app lo dice y vuelve a la pantalla de inicio de sesión.',
+          'Po mniej więcej miesiącu aplikacja przestawała działać, nie mówiąc tego w sposób przydatny: lista pasiek zostawała pusta za komunikatem o danych logowania, a aplikacja wciąż uważała się za zalogowaną. Jedynym wyjściem było znalezienie Wyloguj w ustawieniach. Wygasła sesja kończy się teraz jak należy — aplikacja mówi o tym i wraca do ekranu logowania.',
+        ),
+      },
+    ],
+  },
+  {
     date: '2026-11-16',
     title: t(
       'One insect, one name',

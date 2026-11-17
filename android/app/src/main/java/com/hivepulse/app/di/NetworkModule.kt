@@ -1,21 +1,15 @@
 package com.hivepulse.app.di
 
 import com.hivepulse.app.data.api.ApiService
-import com.hivepulse.app.data.api.RefreshRequest
 import com.hivepulse.app.data.local.TokenStore
+import com.hivepulse.app.data.session.SessionAuthenticator
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.runBlocking
-import okhttp3.Authenticator
 import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import okhttp3.Route
 import okhttp3.logging.HttpLoggingInterceptor
 import com.hivepulse.app.BuildConfig
 import retrofit2.Retrofit
@@ -27,7 +21,12 @@ import javax.inject.Singleton
 object NetworkModule {
 
     @Provides @Singleton
-    fun provideOkHttpClient(tokenStore: TokenStore, apiService: Lazy<ApiService>): OkHttpClient =
+    fun provideOkHttpClient(
+        tokenStore: TokenStore,
+        // Its own class now: an anonymous object here was unreachable for any test, and the
+        // instrumented tests uninstall this module outright (#467).
+        sessionAuthenticator: SessionAuthenticator,
+    ): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor { chain ->
                 // The server words its error messages in the language it is asked for, and a
@@ -37,18 +36,7 @@ object NetworkModule {
                 tokenStore.accessToken?.let { builder.header("Authorization", "Bearer $it") }
                 chain.proceed(builder.build())
             }
-            .authenticator(object : Authenticator {
-                override fun authenticate(route: Route?, response: Response): Request? {
-                    if (response.code != 401) return null
-                    val refresh = tokenStore.refreshToken ?: return null
-                    val newToken = runBlocking {
-                        try { apiService.get().refresh(RefreshRequest(refresh)).accessToken }
-                        catch (e: Exception) { null }
-                    } ?: return null
-                    tokenStore.accessToken = newToken
-                    return response.request.newBuilder().header("Authorization", "Bearer $newToken").build()
-                }
-            })
+            .authenticator(sessionAuthenticator)
             .addInterceptor(HttpLoggingInterceptor().apply {
                 // BODY logging includes the Authorization: Bearer header — never ship
                 // that to Logcat in a release build.

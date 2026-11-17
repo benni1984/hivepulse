@@ -69,6 +69,32 @@ final class OfflineStore {
     }
 
     /// Signing out must not leave the previous account's hives on the device.
+    // MARK: - Whose data this is
+
+    /// The account these files belong to, written beside them so the data and the name of its
+    /// owner can only be lost together (#469).
+    ///
+    /// Nothing here used to say. What kept one beekeeper's hives from the next was that signing
+    /// out cleared the directory -- which holds exactly as long as everybody signs out, and a
+    /// session can end without anybody doing anything (#467).
+    private static let ownerKey = "owner-user-id"
+
+    var owner: String? { load(String.self, for: Self.ownerKey) }
+
+    /// Called when somebody signs in.
+    ///
+    /// A different account finds an empty directory: nothing can be read and, more importantly,
+    /// nothing queued can be uploaded under the wrong name. The *same* account finds its data
+    /// where it left it, which is the whole point -- an inspection recorded at an apiary with no
+    /// signal exists nowhere else until it uploads, and an access token that merely aged past
+    /// thirty days must not cost a beekeeper a visit they really made.
+    func adopt(userId: String) {
+        if let existing = owner, existing != userId {
+            clear()
+        }
+        save(userId, for: Self.ownerKey)
+    }
+
     func clear() {
         queue.sync {
             let contents = (try? FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)) ?? []

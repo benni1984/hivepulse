@@ -580,4 +580,5 @@
     <string name="region_saved">Région enregistrée.</string>
     <string name="region_error">La région n’a pas pu être enregistrée.</string>
     <string name="region_not_located">Ce code postal n’a pas été trouvé ; les dates suivent donc votre premier rucher ou le centre de l’Allemagne.</string>
+    <string name="session_expired">Session expirée. Veuillez vous reconnecter.</string>
 </resources>

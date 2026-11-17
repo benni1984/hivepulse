@@ -582,4 +582,5 @@
     <string name="region_saved">Region saved.</string>
     <string name="region_error">The region could not be saved.</string>
     <string name="region_not_located">That postal code was not found, so the dates follow your first apiary or central Germany.</string>
+    <string name="session_expired">Session expired. Please log in again.</string>
 </resources>

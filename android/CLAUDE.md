@@ -21,7 +21,17 @@ At the apiary there is usually no signal, so the field path works without one:
   constraint, exponential backoff) uploads what is waiting.
 - Queued visits appear in the hive's list marked "Waiting to upload" (`offline_pending_upload`), cannot be
   opened or deleted, and carry the id prefix `pending:` (`InspectionOut.isPending()`).
-- Signing out clears cache and queue — the next account must not see them.
+- **Signing out** clears cache and queue. **A session that ends by itself does not** (#467, #469):
+  the refresh token simply ran out, the same beekeeper is about to sign back in, and a queued
+  inspection exists nowhere else. What keeps one account's data from the next is `OfflineOwner`,
+  checked in `AuthRepository.store()` on every way in — it clears both when a *different* user signs
+  in. The owner has its own preferences file, never `TokenStore`, which is cleared the moment a
+  session ends.
+- `SessionAuthenticator` (its own class, so a test can reach it — the instrumented tests uninstall
+  `NetworkModule`) renews the access token and tells a dead session apart from a bad connection: a
+  **401 from the refresh call** clears the tokens and emits `SessionEvents.expired`, which
+  `MainActivity` turns into a message and a return to the sign-in screen. Any other failure leaves
+  the session alone, because at the apiary there is usually no signal.
 - Tests: `OfflineInspectionQueueTest`, `OfflineFallbackTest` (unit) and `OfflineInspectionTest`
   (instrumented, real Room, network mocked as offline).
 - Build: `./gradlew assembleDebug` (from `android/`)

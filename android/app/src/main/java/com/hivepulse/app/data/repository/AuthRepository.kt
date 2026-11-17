@@ -2,6 +2,7 @@ package com.hivepulse.app.data.repository
 
 import com.hivepulse.app.data.api.*
 import com.hivepulse.app.data.local.OfflineCache
+import com.hivepulse.app.data.local.OfflineOwner
 import com.hivepulse.app.data.local.TokenStore
 import com.hivepulse.app.data.sync.SyncScheduler
 import javax.inject.Inject
@@ -20,6 +21,7 @@ class AuthRepository @Inject constructor(
     private val api: ApiService,
     private val tokenStore: TokenStore,
     private val cache: OfflineCache,
+    private val owner: OfflineOwner,
     private val queue: OfflineInspectionQueue,
     private val syncScheduler: SyncScheduler,
 ) {
@@ -27,25 +29,48 @@ class AuthRepository @Inject constructor(
 
     suspend fun register(email: String, password: String, name: String, locale: String): UserOut {
         val resp = withServerMessage { api.register(RegisterRequest(email, password, name, locale)) }
-        tokenStore.accessToken  = resp.accessToken
-        tokenStore.refreshToken = resp.refreshToken
-        return resp.user
+        return store(resp)
     }
 
     suspend fun login(email: String, password: String): UserOut {
         val resp = withServerMessage { api.login(LoginRequest(email, password)) }
-        tokenStore.accessToken  = resp.accessToken
-        tokenStore.refreshToken = resp.refreshToken
-        return resp.user
+        return store(resp)
     }
 
     suspend fun signInWithGoogle(idToken: String): UserOut {
         val resp = withServerMessage {
             api.signInWithGoogle(SocialSignInRequest(provider = "google", idToken = idToken))
         }
+        return store(resp)
+    }
+
+    /**
+     * What every way in has to do, in one place so none of them can forget the first line.
+     */
+    private suspend fun store(resp: TokenResponse): UserOut {
+        adoptOfflineData(resp.user.id)
         tokenStore.accessToken  = resp.accessToken
         tokenStore.refreshToken = resp.refreshToken
         return resp.user
+    }
+
+    /**
+     * Data left by a *different* account is removed before this one can read or upload any of it;
+     * data left by the same account stays where it is (#469).
+     *
+     * This replaces "signing out clears everything" as the thing that keeps one beekeeper's hives
+     * from the next, and it is a stronger guarantee, because it does not depend on the previous
+     * person having signed out at all -- a session can simply run out (#467). It is also what
+     * lets an expired session keep the queue: an inspection recorded at a hive with no signal
+     * exists nowhere else until it uploads.
+     */
+    private suspend fun adoptOfflineData(userId: String) {
+        val previous = owner.userId
+        if (previous != null && previous != userId) {
+            cache.clear()
+            queue.clear()
+        }
+        owner.userId = userId
     }
 
     /**

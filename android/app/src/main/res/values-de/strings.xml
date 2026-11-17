@@ -580,4 +580,5 @@
     <string name="region_saved">Region gespeichert.</string>
     <string name="region_error">Die Region konnte nicht gespeichert werden.</string>
     <string name="region_not_located">Diese Postleitzahl wurde nicht gefunden, die Termine richten sich deshalb nach deinem ersten Bienenstand oder Mitteldeutschland.</string>
+    <string name="session_expired">Sitzung abgelaufen. Bitte erneut anmelden.</string>
 </resources>

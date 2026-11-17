@@ -2,6 +2,7 @@ package com.hivepulse.app
 
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,12 +17,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.hivepulse.app.data.local.AppLanguage
 import com.hivepulse.app.data.local.TokenStore
+import com.hivepulse.app.data.session.SessionEvents
 import com.hivepulse.app.ui.navigation.HivePulseNavGraph
 import com.hivepulse.app.ui.navigation.Routes
 import com.hivepulse.app.ui.theme.Amber500
@@ -35,6 +38,7 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject lateinit var tokenStore: TokenStore
+    @Inject lateinit var sessionEvents: SessionEvents
 
     // Android 12 and older have no language per app; there it is applied here.
     override fun attachBaseContext(newBase: Context) {
@@ -54,6 +58,20 @@ class MainActivity : ComponentActivity() {
                 val isSettingsSection = currentRoute == Routes.SETTINGS
                 val isScanSection    = currentRoute == Routes.QR_SCAN
                 val isGuidedTour     = currentRoute.startsWith("guided_tour")
+
+                // The session can end while the app is open: after thirty days the server stops
+                // accepting the refresh token, and until #467 that showed as an alert about
+                // credentials over an empty apiary list, with no way out but Settings. The tokens
+                // are already gone by the time this arrives; what is left is to say so and go
+                // back to the form. The offline data stays - the same beekeeper is usually about
+                // to sign back in (#469).
+                val context = LocalContext.current
+                LaunchedEffect(Unit) {
+                    sessionEvents.expired.collect {
+                        Toast.makeText(context, R.string.session_expired, Toast.LENGTH_LONG).show()
+                        navController.navigate(Routes.LOGIN) { popUpTo(0) { inclusive = true } }
+                    }
+                }
 
                 Scaffold(
                     bottomBar = {

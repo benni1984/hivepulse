@@ -582,4 +582,5 @@
     <string name="region_saved">Region zapisany.</string>
     <string name="region_error">Nie udało się zapisać regionu.</string>
     <string name="region_not_located">Nie znaleziono tego kodu pocztowego, więc terminy opierają się na twojej pierwszej pasiece albo na środkowych Niemczech.</string>
+    <string name="session_expired">Sesja wygasła. Zaloguj się ponownie.</string>
 </resources>

@@ -190,4 +190,57 @@ final class AuthViewModelTests: XCTestCase {
         // Should be silent — push token registration is best-effort
         XCTAssertNil(vm.errorMessage)
     }
+
+    // MARK: - A session that ends without anybody ending it (#467)
+
+    func test_sessionExpired_clearsTheTokensAndReturnsToSignIn() async {
+        await vm.login(email: "a@b.com", password: "pass")
+        XCTAssertTrue(vm.isAuthenticated)
+
+        vm.sessionExpired()
+
+        XCTAssertFalse(vm.isAuthenticated)
+        XCTAssertNil(vm.currentUser)
+        XCTAssertNil(KeychainService.shared.accessToken)
+        XCTAssertNil(KeychainService.shared.refreshToken)
+    }
+
+    func test_sessionExpired_saysTheSessionExpired_notWhatTheServerSaidAboutTokens() async {
+        await vm.login(email: "a@b.com", password: "pass")
+
+        vm.sessionExpired()
+
+        // This sentence was written and translated into five languages and, until #467, shown to
+        // nobody: the backend's "Could not validate credentials." took its place, which describes
+        // a token the reader cannot do anything about.
+        XCTAssertEqual(vm.errorMessage, NSLocalizedString("error.unauthorized", comment: ""))
+        XCTAssertNotEqual(vm.errorMessage, "Could not validate credentials.")
+    }
+
+    func test_sessionExpired_doesNothingWhenNobodyIsSignedIn() {
+        // It is posted from the network layer, where several calls can fail at once, and it can
+        // arrive after the user has already signed out by hand.
+        vm.sessionExpired()
+
+        XCTAssertFalse(vm.isAuthenticated)
+        XCTAssertNil(vm.errorMessage)
+    }
+
+    func test_sessionExpired_keepsTheOfflineData() async {
+        // The opposite of logout(), and deliberately so: the same beekeeper is about to sign back
+        // in, and a visit waiting in the queue exists nowhere else (#469). What keeps it from the
+        // next account is the owner check at sign-in, not this.
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("AuthViewModelTests-\(UUID().uuidString)", isDirectory: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let store = OfflineStore(directory: directory)
+        store.adopt(userId: "u-1")
+        store.save(["a visit recorded with no signal"], for: OfflineStore.Key.pendingInspections)
+
+        await vm.login(email: "a@b.com", password: "pass")
+        vm.sessionExpired()
+
+        XCTAssertEqual(store.load([String].self, for: OfflineStore.Key.pendingInspections),
+                       ["a visit recorded with no signal"])
+    }
 }

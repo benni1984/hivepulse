@@ -44,6 +44,13 @@ struct HivePulseApp: App {
             if args.contains("-mockStoreData") { handlers = MockURLProtocol.storeDataHandlers + handlers }
             MockURLProtocol.configure(handlers)
             APIClient.shared = .forUITesting()
+        } else if args.contains("-mockSessionExpired") {
+            // Signed in as far as this device knows, with tokens the server has forgotten.
+            KeychainService.shared.clearAll()
+            KeychainService.shared.accessToken = "ui-test-token-the-server-forgot"
+            KeychainService.shared.refreshToken = "ui-test-refresh-the-server-forgot"
+            MockURLProtocol.configure(MockURLProtocol.expiredSessionHandlers)
+            APIClient.shared = .forUITesting()
         } else if args.contains("-mockAuthenticatedSupporter") {
             KeychainService.shared.clearAll()
             KeychainService.shared.accessToken = "ui-test-token"
@@ -131,6 +138,12 @@ struct HivePulseApp: App {
                     .font(.dmSans(17))
                     .id(languageOverride)
                 }
+            }
+            // On the container, not on either branch: the session can run out while the tabs are
+            // up, and the view that notices has to survive the switch back to the login screen
+            // it is about to cause (#467).
+            .onReceive(NotificationCenter.default.publisher(for: .sessionExpired)) { _ in
+                authVM.sessionExpired()
             }
             .fullScreenCover(isPresented: $authVM.showGuidedTour) {
                 GuidedTourView { authVM.finishGuidedTour() }

@@ -23,7 +23,16 @@ At the apiary there is usually no signal, so the field path works without one:
   background upload while the app is closed.
 - Queued visits carry the id prefix `pending:` (`InspectionOut.isPending`), show "Waiting to upload" in
   the hive list, and cannot be opened or deleted.
-- Signing out clears store and queue.
+- **Signing out** clears store and queue. **A session that ends by itself does not** (#467, #469):
+  the refresh token simply ran out, the same beekeeper is about to sign back in, and a queued
+  inspection exists nowhere else. What keeps one account's data from the next is `OfflineStore.adopt`,
+  called from `AuthViewModel.store(_:)` on every way in — it wipes the directory when a *different*
+  user signs in. The owner lives beside the files, never in the keychain, which is cleared the moment
+  a session ends.
+- A 401 from `/auth/refresh` means the session is over, not that a password was wrong. The call
+  carries no `Authorization` header, so `decode` would read it as `invalidCredentials` and show the
+  backend's sentence about tokens; `ensureTokenRefreshed` catches that, posts `.sessionExpired` and
+  throws `.unauthorized`. Everything else — no connection, a 500 — leaves the session alone.
 - Tests: `OfflineInspectionQueueTests`, `OfflineFallbackTests` (unit) and `OfflineInspectionUITests`
   (UI, launch argument `-mockApiaryOffline`: reads succeed, writes fail like a missing connection).
 - Build: open `ios/HivePulse.xcodeproj` in Xcode (requires macOS)
@@ -95,6 +104,7 @@ You can write test files on any OS and let CI run them — no local macOS needed
 | `-mockAuthenticatedSupporter` | Authenticated supporter; Members shows the community heatmap with two mock cells |
 | `-mockQrBatch` | Authenticated + one QR batch (`b-1`) whose PDF can be downloaded |
 | `-guidedTourSeen YES` / `NO` | Overrides the "guided tour already shown" flag for this launch (UserDefaults argument domain) |
+| `-mockSessionExpired` | Tokens the server has forgotten: every call 401s, including the refresh. The app must land on Login (`SessionExpiryUITests`) |
 | `-mockServer` | Mock only, no token — starts at Login, auth calls return real-looking responses |
 | `-mockCameraPreview` | Replaces the Scan tab's live camera with a flat colour, so the viewfinder and the instruction over it can be reached in the simulator (`DataScannerViewController` is unsupported there) |
 

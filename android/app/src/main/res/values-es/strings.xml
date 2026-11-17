@@ -547,4 +547,5 @@
     <string name="region_saved">Región guardada.</string>
     <string name="region_error">No se pudo guardar la región.</string>
     <string name="region_not_located">No se encontró ese código postal, así que las fechas siguen tu primer colmenar o el centro de Alemania.</string>
+    <string name="session_expired">Sesión caducada. Por favor, inicia sesión de nuevo.</string>
 </resources>
