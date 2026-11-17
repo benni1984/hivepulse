@@ -121,6 +121,10 @@ jobs:
       - name: Build the app bundle
         env:
           SENTRY_DSN_ANDROID: ${{ secrets.SENTRY_DSN_ANDROID }}
+          # Lets the Gradle plugin upload the R8 mapping, so a crash from this bundle reads as our
+          # own names in Sentry rather than a.b.c.d(). Absent, the build is exactly what it was
+          # before and nothing is uploaded (#452).
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}

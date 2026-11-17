@@ -58,11 +58,21 @@ so a wrong or missing keep rule is invisible to all of them.
   starts by itself for changes to the rules, the build script and `data/api`, and by hand
   (Actions → Android release smoke test) before a release goes to a track.
 - Stack traces: the mapping file travels inside the `.aab`, so Play Console deobfuscates crashes
-  by itself. **Sentry does not**: crash reporting has been on for the release since 2026-10-01
-  (`android-release.yml` passes `SENTRY_DSN_ANDROID`), the Gradle plugin was never added, and so
-  every Kotlin frame there reads `a.b.c.d()`. The sentence this paragraph used to end with — "if
-  it is switched on for the release, add its Gradle plugin first" — came true and nobody acted on
-  it. It needs a `SENTRY_AUTH_TOKEN` secret, which only a person can create (#452).
+  by itself. **Sentry needs its own copy**, and for six weeks it had none — crash reporting has
+  been on for the release since 2026-10-01 and every Kotlin frame read `a.b.c.d()`. Since #452 the
+  Sentry Gradle plugin (`io.sentry.android.gradle`) uploads the mapping, configured in
+  `app/build.gradle.kts` for org `multihead-9n`, project `hivepulse-android`, region
+  `https://de.sentry.io`.
+  - **The upload is gated on `SENTRY_AUTH_TOKEN`**, which `android-release.yml` passes from a
+    secret. Without it nothing is uploaded and nothing fails: CI builds the release variant on
+    every push and has no token, and that build must stay byte-for-byte what it was.
+  - Everything else the plugin can do is off on purpose — `autoInstallation` would pick its own
+    SDK version over the one in `dependencies`, and `tracingInstrumentation` rewrites bytecode.
+    This adds an upload step and nothing else. `backend/tests/test_sentry_symbolication.py`
+    pins all of it, including that a failed upload is never silent.
+  - The iPhone has the same arrangement in `testflight.yml`: the dSYMs go to `hivepulse-ios`
+    after the App Store upload, so Sentry can never cost a release, and deliberately without
+    `continue-on-error`, because a quiet failure is how this went unnoticed in the first place.
 - **Play's "contains native code, and you've not uploaded debug symbols" warning cannot be
   cleared. Decided, not open (#455).** Three attempts went into it, so do not start a fourth:
   #418 set `debugSymbolLevel = "SYMBOL_TABLE"`, #451 found that AGP needs the NDK's `llvm-strip`
