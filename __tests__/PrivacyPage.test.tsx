@@ -8,6 +8,15 @@ vi.mock('next-intl', () => ({
 
 import PrivacyPage from '@/app/[locale]/privacy/page';
 import en from '@/messages/en.json';
+import de from '@/messages/de.json';
+import fr from '@/messages/fr.json';
+import es from '@/messages/es.json';
+import pl from '@/messages/pl.json';
+
+/** A missing translation never fails at runtime, it silently falls back to English — which on a
+ *  privacy policy would mean a German reader is told about processors in a language they may not
+ *  read. So the disclosures are checked in every language, not only in English. */
+const ALL = { en, de, fr, es, pl };
 
 describe('PrivacyPage', () => {
   it('renders the title, updated date, and intro', () => {
@@ -46,5 +55,25 @@ describe('PrivacyPage', () => {
     for (const forbidden of ['inspection notes', 'passwords', 'IP address']) {
       expect(en.privacy.s5body).toContain(forbidden);
     }
+  });
+
+  it('names the two companies a payment passes through, in every language', () => {
+    // A deliberate reversal of this project's habit, and that is exactly why it is pinned.
+    // The paragraph above had Cloudflare *removed* from it once the icons moved to our own
+    // servers; a subscription cannot be sold without a payment provider, so two names go back
+    // in — in writing, in all five languages, rather than being noticed afterwards.
+    for (const [locale, messages] of Object.entries(ALL)) {
+      expect(messages.privacy.s4body, `${locale} must name the verification service`)
+        .toMatch(/RevenueCat/);
+      expect(messages.privacy.s4body, `${locale} must name who takes the money`)
+        .toMatch(/Paddle/);
+    }
+  });
+
+  it('says that payment details never reach us, because they do not', () => {
+    // Paddle is the seller of record and the card is entered there. The server stores which
+    // subscription is running and nothing else — claiming less than that would be false
+    // modesty, and claiming more would be a disclosure of something that does not happen.
+    expect(en.privacy.s4body).toMatch(/payment details are entered at Paddle and never reach/);
   });
 });
