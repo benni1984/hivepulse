@@ -43,6 +43,9 @@ jobs:
     name: Build signed app bundle
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # Only for the tag at the end; everything else here reads.
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
@@ -215,6 +218,30 @@ jobs:
           status: ${{ inputs.status }}
           whatsNewDirectory: distribution/whatsnew
           changesNotSentForReview: ${{ inputs.changes_not_sent_for_review }}
+
+      # Until now the version existed only as the string somebody typed into this form. Nothing in
+      # the repository said which commit was 1.0.4, and six releases had gone out that way before
+      # anybody noticed (#463). The tag is written here, after Play has accepted the upload, so a
+      # tag only ever marks a bundle that really went out - a build with track "none" is a build,
+      # not a release.
+      - name: Tag the commit this bundle was built from
+        if: inputs.track != 'none'
+        env:
+          VERSION: ${{ inputs.version_name }}
+          CODE: ${{ steps.version.outputs.code }}
+          TRACK: ${{ inputs.track }}
+        run: |
+          tag="v$VERSION"
+          # A re-run of a release must not fail on the tag it wrote the first time.
+          if git rev-parse "$tag" >/dev/null 2>&1; then
+            echo "- \`$tag\` already exists, left alone" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git tag -a "$tag" -m "HivePulse $VERSION (Play version code $CODE), uploaded to the $TRACK track."
+          git push origin "$tag"
+          echo "- Tagged \`$tag\`" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Summary
         if: inputs.track != 'none'

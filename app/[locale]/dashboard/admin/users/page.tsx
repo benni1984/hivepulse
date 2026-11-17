@@ -1,12 +1,14 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
+import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import DashboardShell from '@/components/DashboardShell';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { adminGetUsers, adminSetSupporter, adminDeleteUser, adminRevokeTokens, type AdminUser, type Paginated } from '@/lib/api';
 
 export default function AdminUsersPage() {
   const t = useTranslations('dash');
+  useDocumentTitle(t('admin.users.title'));
   const ready = useDashboardReady();
   const [data, setData] = useState<Paginated<AdminUser> | null>(null);
   const [loading, setLoading] = useState(true);

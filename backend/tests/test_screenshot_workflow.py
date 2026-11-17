@@ -84,6 +84,41 @@ def test_the_iphone_help_images_come_from_the_english_store_set():
     assert "pick_ios_help_screenshots.py" in commit
 
 
+def test_the_iphone_help_images_do_not_hang_on_the_other_four_store_languages():
+    """Cut from the English set alone - but the steps that do it were gated on
+    needs.store-ios.result, the result of a matrix of five store languages. A flaky simulator leg
+    in German therefore lost the iPhone help images for a whole run, and the run stayed green,
+    because this job's own condition is satisfied by web or Android alone (#462, run
+    43953941991). The gate has to ask whether the English set arrived, nothing else."""
+    commit = _workflow("update-help-screenshots")["jobs"]["commit"]
+    steps = {s.get("name"): s for s in commit["steps"]}
+
+    download = steps["Download the English App Store set"]
+    cut = steps["Cut the iPhone help images from it"]
+    record = steps["Record what the pictures were taken from"]
+
+    # "Was it attempted at all", not "did all five go well".
+    assert download["if"] == "needs.store-ios.result != 'skipped'"
+    assert download["continue-on-error"] is True, "a missing English set must not fail the job"
+    # And everything after it asks the step before, not the matrix.
+    assert cut["if"] == "steps." + download["id"] + ".outcome == 'success'"
+    assert record["env"]["IOS"] == "${{ steps." + cut["id"] + ".outcome }}"
+
+    for step in (download, cut, record):
+        assert "needs.store-ios.result == 'success'" not in str(step), (
+            repr(step.get("name")) + " is tied to all five store languages again")
+
+
+def test_the_commit_job_still_runs_when_one_store_language_failed():
+    """The other half of #462: when the iPhone was the only stale platform and one of its five
+    languages failed, the old condition skipped this job altogether, and the English set was
+    thrown away with the runner that held it."""
+    commit = _workflow("update-help-screenshots")["jobs"]["commit"]
+
+    assert "needs.store-ios.result != 'skipped'" in commit["if"]
+    assert "needs.store-ios.result == 'success'" not in commit["if"]
+
+
 def test_what_was_retaken_is_recorded_in_the_manifest_in_the_same_pull_request():
     commit = _text("update-help-screenshots")
 

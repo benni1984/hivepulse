@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
+import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import { useRouter } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import {
@@ -14,6 +15,7 @@ const MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export default function ProfilePage() {
   const t = useTranslations('dash.profile');
+  useDocumentTitle(t('title'));
   const siteLocale = useLocale();
   const { user, loading } = useDashboardAuth();
   const router = useRouter();

@@ -1,5 +1,6 @@
 'use client';
 import { useTranslations } from 'next-intl';
+import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import BeekeepingYear from '@/components/BeekeepingYear';
@@ -8,6 +9,7 @@ import { useDashboardReady } from '@/hooks/useDashboardAuth';
 /** The beekeeper's year: what to do when, as an endless timeline for the beekeeper's own place. */
 export default function CalendarPage() {
   const t = useTranslations('dash');
+  useDocumentTitle(t('calendar.title'));
   const ready = useDashboardReady();
 
   return (
