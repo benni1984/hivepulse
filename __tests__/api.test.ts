@@ -810,3 +810,45 @@ describe('resetPassword', () => {
     );
   });
 });
+
+
+// ---------------------------------------------------------------------------------------------
+// The language the server answers in (#480)
+// ---------------------------------------------------------------------------------------------
+
+describe('Accept-Language', () => {
+  it('asks the server for the language the page is in', async () => {
+    // Without this the backend answers in English, and its five translations are never seen.
+    document.documentElement.lang = 'de';
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ items: [], total: 0, page: 1, per_page: 100 }));
+
+    await getApiaries();
+
+    const headers = vi.mocked(fetch).mock.calls[0][1]?.headers as Record<string, string>;
+    expect(headers['Accept-Language']).toBe('de');
+  });
+
+  it('sends it on the sign-in form too, which does not go through apiFetch', async () => {
+    // The auth forms post without a token and have their own fetch calls. They are also where
+    // somebody is most likely to meet a server message at all.
+    document.documentElement.lang = 'fr';
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ detail: 'Identifiants invalides' }, 401));
+
+    await login('a@b.com', 'wrong').catch(() => {});
+
+    const headers = vi.mocked(fetch).mock.calls[0][1]?.headers as Record<string, string>;
+    expect(headers['Accept-Language']).toBe('fr');
+  });
+
+  it('falls back to English rather than sending an empty header', async () => {
+    document.documentElement.lang = '';
+    localStorage.setItem('access_token', 'tok');
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ items: [], total: 0, page: 1, per_page: 100 }));
+
+    await getApiaries();
+
+    const headers = vi.mocked(fetch).mock.calls[0][1]?.headers as Record<string, string>;
+    expect(headers['Accept-Language']).toBe('en');
+  });
+});
