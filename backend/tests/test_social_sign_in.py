@@ -16,6 +16,7 @@ from jose import jwt
 from app.config import settings
 from app.models import User
 from app.utils import social_identity
+from tests.conftest import make_supporter
 
 GOOGLE_AUDIENCE = "hivepulse-test.apps.googleusercontent.com"
 APPLE_AUDIENCE = "com.hivepulse.app"
@@ -352,6 +353,9 @@ def _alice_invites(client, monkeypatch, email):
         "email": "alice-owner@example.com", "password": "password123"}).json()["access_token"]
     headers = {"Authorization": f"Bearer {token}"}
     apiary = client.post("/api/v1/apiaries", json={"name": "Garden"}, headers=headers).json()
+    # The inviter needs the subscription; the person being invited does not, which is the whole
+    # point of these tests (#478).
+    make_supporter("alice-owner@example.com")
     r = client.post("/api/v1/shares", json={"email": email, "apiary_id": apiary["id"]}, headers=headers)
     assert r.status_code == 201
 

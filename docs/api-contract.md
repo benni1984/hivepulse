@@ -2541,6 +2541,54 @@ Authorization: Bearer <REVENUECAT_WEBHOOK_SECRET>
 **Response 401** — `WEBHOOK_UNAUTHORIZED`, missing or wrong secret. No body detail: an endpoint
 open to the internet says as little as possible about why it refused.
 
+### What the subscription includes
+
+Decided while the application had no users, because a quantity limit cannot be introduced once
+people have crossed it (#478).
+
+| Free, permanently | With a subscription |
+|---|---|
+| up to **10 colonies**; apiaries unlimited | unlimited |
+| QR codes, scanning, offline inspections | the treatment record and yearly report |
+| the beekeeping year, moves, reminders | **inviting** somebody to an apiary or a hive |
+| the hornet tracker, in full | custom fields |
+| statistics for the last 365 days | the whole history, and the regional health map |
+| the raw data export | |
+
+Three rules that the endpoints above enforce and that a client must not work around:
+
+1. **Reaching a limit never closes what already exists.** `FREE_HIVE_LIMIT_REACHED` is returned by
+   `POST /apiaries/{id}/hives` and `POST /hives/initialize` and by nothing else. Every read, every
+   inspection and every edit goes on unchanged, including for an account that was a supporter and
+   is not any more.
+2. **The person who invites needs it; the guest does not.** `POST /shares` requires it —
+   *after* the ownership check, so somebody pointing at an apiary that is not theirs is told it
+   does not exist rather than sold a subscription. `POST /shares/{id}/accept` and
+   `/shares/accept-by-token` require nothing.
+3. **An apiary's custom fields go by its owner's subscription**, not the caller's. A collaborator
+   invited by a supporter may add and remove them; charging them separately would make "working
+   together" mean "working together, separately".
+
+Statistics are **narrowed, not refused**: a free account's window may not begin earlier than 365
+days ago, and asking for more answers `200` with a shorter window rather than an error. A page that
+answers 403 teaches somebody the app is broken; one that shows a year teaches them what the
+subscription is for.
+
+The narrowing applies to the **window**, not to the `preset` label, so every way of asking is
+covered — including the two that are easy to miss:
+
+| asked for | a free account receives |
+|---|---|
+| `preset=30d`, `90d`, `365d` | exactly that |
+| `preset=all` | `period.preset` = `365d`, `period.from` = today − 365 days |
+| no parameters at all | the same as `preset=all`, because the default *is* everything |
+| `from=2000-01-01` | `period.preset` = `custom`, `period.from` pulled forward to today − 365 days |
+| `from` within the last year | exactly as asked — narrowing only ever pulls the start forward |
+
+`period` in the response is therefore always the window that was really used, and a client should
+read it rather than assume it got what it asked for. A client that wants to explain the smaller
+number compares `period.from` against what it sent.
+
 ### How `is_supporter` is derived
 
 The field keeps its place in the user object and its meaning for every client; only its origin
@@ -2607,3 +2655,4 @@ the right answer. `PUT /admin/users/{id}/supporter` is unchanged and writes a `m
 | `INVALID_VOTE` | 422 | `vote` must be `yes` or `no` |
 | `INVALID_SIGHTING_STATUS` | 422 | `status` must be `confirmed` or `rejected` |
 | `WEBHOOK_UNAUTHORIZED` | 401 | Subscription webhook called without the shared secret |
+| `FREE_HIVE_LIMIT_REACHED` | 403 | Ten colonies without a subscription; nothing already kept is affected |

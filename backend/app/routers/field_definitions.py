@@ -3,8 +3,9 @@ from fastapi import APIRouter, Header, HTTPException
 from app.access import apiary_or_404
 from app.deps import CurrentUser, DB
 from app.i18n import error
-from app.models import FieldDefinition
+from app.models import FieldDefinition, User
 from app.schemas import FieldDefinitionCreate, FieldDefinitionOut, FieldDefinitionUpdate
+from app import limits
 
 router = APIRouter(tags=["field-definitions"])
 
@@ -40,7 +41,9 @@ def create_user_field_definition(
     body: FieldDefinitionCreate,
     current_user: CurrentUser,
     db: DB,
+    accept_language: Optional[str] = Header(default=None),
 ):
+    limits.require_supporter(current_user, accept_language)
     fd = FieldDefinition(
         user_id=current_user.id,
         scope="user",
@@ -105,7 +108,11 @@ def create_apiary_field_definition(
     db: DB,
     accept_language: Optional[str] = Header(default=None),
 ):
-    apiary_or_404(db, current_user, apiary_id, accept_language, need="edit")
+    apiary, _, _ = apiary_or_404(db, current_user, apiary_id, accept_language, need="edit")
+    # The *owner's* subscription, not the caller's. A collaborator was invited onto this apiary by
+    # somebody who is paying; making them buy their own to add a field would be charging twice for
+    # one apiary, and it would make "working together" mean "working together, separately" (#478).
+    limits.require_supporter(db.get(User, apiary.user_id) or current_user, accept_language)
     fd = FieldDefinition(
         user_id=current_user.id,
         scope="apiary",

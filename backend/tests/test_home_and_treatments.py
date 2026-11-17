@@ -15,6 +15,7 @@ from main import app
 # The same clock the endpoints use. With date.today() the test and the code disagree
 # between midnight local and midnight UTC, which is how #443 surfaced.
 from app.clock import today_utc
+from tests.conftest import make_supporter
 
 API = "/api/v1"
 
@@ -39,6 +40,8 @@ def world(client):
     alice = _beekeeper(client, "alice@example.com", "Alice")
     bob = _beekeeper(client, "bob@example.com", "Bob")
     carol = _beekeeper(client, "carol@example.com", "Carol")
+    # Alice invites, and inviting is part of the subscription (#478).
+    make_supporter("alice@example.com")
     apiary = alice.post(f"{API}/apiaries", json={"name": "Garden"}).json()
     h1 = alice.post(f"{API}/apiaries/{apiary['id']}/hives", json={"name": "Hive 1", "hive_type": "langstroth"}).json()
     h2 = alice.post(f"{API}/apiaries/{apiary['id']}/hives", json={"name": "Hive 2", "hive_type": "langstroth"}).json()

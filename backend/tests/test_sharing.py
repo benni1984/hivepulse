@@ -13,6 +13,7 @@ from fastapi.testclient import TestClient
 from app.models import Apiary, Hive, Inspection, QrToken, Share, User
 from app.routers import notifications, shares as shares_router
 from main import app
+from tests.conftest import make_supporter
 
 API = "/api/v1"
 
@@ -27,6 +28,7 @@ def _beekeeper(client, email, name):
     return c
 
 
+
 @pytest.fixture
 def world(client, monkeypatch):
     """Alice owns the apiary "Garden" with two hives; Bob and Carol have accounts."""
@@ -36,6 +38,10 @@ def world(client, monkeypatch):
     alice = _beekeeper(client, "alice@example.com", "Alice")
     bob = _beekeeper(client, "bob@example.com", "Bob")
     carol = _beekeeper(client, "carol@example.com", "Carol")
+    # Alice is the one who invites, and inviting is part of the subscription (#478). Bob and
+    # Carol stay free on purpose: a guest who had to pay to accept would make this a feature that
+    # sells to nobody, and these tests are where that stays true.
+    make_supporter("alice@example.com")
 
     apiary = alice.post(f"{API}/apiaries", json={"name": "Garden"}).json()
     h1 = alice.post(f"{API}/apiaries/{apiary['id']}/hives", json={"name": "Hive 1", "hive_type": "langstroth"}).json()

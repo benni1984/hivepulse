@@ -1,5 +1,8 @@
-def test_create_user_field_definition(auth_client):
-    r = auth_client.post("/api/v1/field-definitions", json={
+"""Custom fields are part of the supporter subscription since #478, so every test here acts
+as one. What they are testing -- scope, targets, ordering, deletion -- is unchanged.
+"""
+def test_create_user_field_definition(auth_client_supporter):
+    r = auth_client_supporter.post("/api/v1/field-definitions", json={
         "target": "inspection",
         "name": "Nectar Source",
         "type": "text",
@@ -14,35 +17,35 @@ def test_create_user_field_definition(auth_client):
     assert data["apiary_id"] is None
 
 
-def test_list_user_field_definitions(auth_client):
-    auth_client.post("/api/v1/field-definitions", json={
+def test_list_user_field_definitions(auth_client_supporter):
+    auth_client_supporter.post("/api/v1/field-definitions", json={
         "target": "inspection", "name": "Field A", "type": "number",
         "options": [], "required": False, "sort_order": 0
     })
-    auth_client.post("/api/v1/field-definitions", json={
+    auth_client_supporter.post("/api/v1/field-definitions", json={
         "target": "hive", "name": "Field B", "type": "boolean",
         "options": [], "required": True, "sort_order": 1
     })
-    r = auth_client.get("/api/v1/field-definitions")
+    r = auth_client_supporter.get("/api/v1/field-definitions")
     assert r.status_code == 200
     assert len(r.json()) == 2
 
 
-def test_delete_user_field_definition(auth_client):
-    r = auth_client.post("/api/v1/field-definitions", json={
+def test_delete_user_field_definition(auth_client_supporter):
+    r = auth_client_supporter.post("/api/v1/field-definitions", json={
         "target": "inspection", "name": "Temp", "type": "text",
         "options": [], "required": False, "sort_order": 0
     })
     fid = r.json()["id"]
-    r2 = auth_client.delete(f"/api/v1/field-definitions/{fid}")
+    r2 = auth_client_supporter.delete(f"/api/v1/field-definitions/{fid}")
     assert r2.status_code == 204
-    r3 = auth_client.get("/api/v1/field-definitions")
+    r3 = auth_client_supporter.get("/api/v1/field-definitions")
     assert len(r3.json()) == 0
 
 
-def test_create_apiary_field_definition(auth_client):
-    apiary = auth_client.post("/api/v1/apiaries", json={"name": "North Field"}).json()
-    r = auth_client.post(f"/api/v1/apiaries/{apiary['id']}/field-definitions", json={
+def test_create_apiary_field_definition(auth_client_supporter):
+    apiary = auth_client_supporter.post("/api/v1/apiaries", json={"name": "North Field"}).json()
+    r = auth_client_supporter.post(f"/api/v1/apiaries/{apiary['id']}/field-definitions", json={
         "target": "hive",
         "name": "Plot Number",
         "type": "number",
@@ -56,19 +59,19 @@ def test_create_apiary_field_definition(auth_client):
     assert data["apiary_id"] == apiary["id"]
 
 
-def test_list_apiary_field_definitions(auth_client):
-    apiary = auth_client.post("/api/v1/apiaries", json={"name": "A"}).json()
-    auth_client.post(f"/api/v1/apiaries/{apiary['id']}/field-definitions", json={
+def test_list_apiary_field_definitions(auth_client_supporter):
+    apiary = auth_client_supporter.post("/api/v1/apiaries", json={"name": "A"}).json()
+    auth_client_supporter.post(f"/api/v1/apiaries/{apiary['id']}/field-definitions", json={
         "target": "inspection", "name": "Temp", "type": "number",
         "options": [], "required": False, "sort_order": 0
     })
-    r = auth_client.get(f"/api/v1/apiaries/{apiary['id']}/field-definitions")
+    r = auth_client_supporter.get(f"/api/v1/apiaries/{apiary['id']}/field-definitions")
     assert r.status_code == 200
     assert len(r.json()) == 1
 
 
-def test_select_type_with_options(auth_client):
-    r = auth_client.post("/api/v1/field-definitions", json={
+def test_select_type_with_options(auth_client_supporter):
+    r = auth_client_supporter.post("/api/v1/field-definitions", json={
         "target": "inspection",
         "name": "Condition",
         "type": "select",
@@ -95,8 +98,8 @@ def test_field_definitions_isolated_between_users(client):
     assert len(r.json()) == 0
 
 
-def test_field_definition_update_delete_isolated_across_users(auth_client, auth_client2):
-    fd_id = auth_client.post("/api/v1/field-definitions", json={
+def test_field_definition_update_delete_isolated_across_users(auth_client_supporter, auth_client2):
+    fd_id = auth_client_supporter.post("/api/v1/field-definitions", json={
         "target": "inspection", "name": "Secret", "type": "text",
         "options": [], "required": False, "sort_order": 0,
     }).json()["id"]
@@ -106,4 +109,4 @@ def test_field_definition_update_delete_isolated_across_users(auth_client, auth_
     r = auth_client2.delete(f"/api/v1/field-definitions/{fd_id}")
     assert r.status_code == 404
 
-    assert auth_client.get("/api/v1/field-definitions").json()[0]["name"] == "Secret"
+    assert auth_client_supporter.get("/api/v1/field-definitions").json()[0]["name"] == "Secret"

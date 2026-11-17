@@ -1,6 +1,20 @@
 from typing import Optional
 
 MESSAGES = {
+    "FREE_HIVE_LIMIT_REACHED": {
+        "en": "Up to 10 colonies are free. A supporter subscription lifts the limit \u2014 nothing you already keep is affected.",
+        "fr": "Jusqu\u2019\u00e0 10 ruches sont gratuites. L\u2019abonnement Supporter l\u00e8ve la limite \u2014 rien de ce que vous avez d\u00e9j\u00e0 n\u2019est touch\u00e9.",
+        "de": "Bis zu 10 V\u00f6lker sind kostenlos. Mit einem Supporter-Abo entf\u00e4llt die Grenze \u2014 an dem, was du schon f\u00fchrst, \u00e4ndert sich nichts.",
+        "es": "Hasta 10 colmenas son gratuitas. La suscripci\u00f3n Supporter quita el l\u00edmite; nada de lo que ya tienes se ve afectado.",
+        "pl": "Do 10 rodzin pszczelich jest za darmo. Abonament Supporter znosi limit \u2014 to, co ju\u017c prowadzisz, pozostaje bez zmian.",
+    },
+    "SUPPORTER_REQUIRED": {
+        "en": "This is part of the supporter subscription.",
+        "fr": "Cela fait partie de l\u2019abonnement Supporter.",
+        "de": "Das geh\u00f6rt zum Supporter-Abo.",
+        "es": "Esto forma parte de la suscripci\u00f3n Supporter.",
+        "pl": "To cz\u0119\u015b\u0107 abonamentu Supporter.",
+    },
     "INVALID_CREDENTIALS": {
         "en": "Invalid email or password.",
         "fr": "Email ou mot de passe invalide.",

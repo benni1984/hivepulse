@@ -19,6 +19,7 @@ from app.schemas import (
 )
 from app.utils.mail import send_email
 from app.clock import now_utc
+from app import limits
 
 logger = logging.getLogger(__name__)
 
@@ -85,6 +86,11 @@ def create_share(
     else:
         hive, _, _ = hive_or_404(db, current_user, body.hive_id, accept_language, need="owner")
         target_name, filters = hive.name, {"hive_id": hive.id}
+
+    # After the ownership check, never before it: somebody pointing at an apiary that is not
+    # theirs must be told it does not exist, not sold a subscription. The order of these two
+    # lines is the difference between a 404 and an admission that the thing is real (#478).
+    limits.require_supporter(current_user, accept_language)
 
     email = body.email.strip().lower()
     if email == current_user.email.strip().lower():

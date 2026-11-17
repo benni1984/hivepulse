@@ -15,6 +15,7 @@ from main import app
 # The same clock the endpoints use. With date.today() the test and the code disagree
 # between midnight local and midnight UTC, which is how #443 surfaced.
 from app.clock import today_utc
+from tests.conftest import make_supporter
 
 API = "/api/v1"
 
@@ -40,6 +41,9 @@ def world(client, monkeypatch):
 
     monkeypatch.setattr(moves_router, "forward_geocode", fake_lookup)
     alice = _beekeeper(client, "alice@example.com", "Alice")
+    # Alice invites people in these tests, and inviting is part of the subscription (#478).
+    # Bob and Carol stay free accounts on purpose: a guest never has to pay to be a guest.
+    make_supporter("alice@example.com")
     bob = _beekeeper(client, "bob@example.com", "Bob")
     carol = _beekeeper(client, "carol@example.com", "Carol")
     home = alice.post(f"{API}/apiaries", json={"name": "Home", "latitude": 48.1, "longitude": 8.0}).json()
