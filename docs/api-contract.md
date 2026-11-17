@@ -23,11 +23,13 @@ All endpoints require `Authorization: Bearer <access_token>` unless marked **pub
 13. [Moving Hives](#moving-hives)
 14. [Sharing](#sharing)
 15. [Stats](#stats)
-16. [Public Dashboard](#public-dashboard)
-17. [Hornet Tracker](#hornet-tracker)
-18. [Admin](#admin)
-19. [Object Reference](#object-reference)
-20. [Error Codes](#error-codes)
+16. [Export](#export)
+17. [Public Dashboard](#public-dashboard)
+18. [Hornet Tracker](#hornet-tracker)
+19. [Admin](#admin)
+20. [Subscriptions](#subscriptions)
+21. [Object Reference](#object-reference)
+22. [Error Codes](#error-codes)
 
 ---
 
@@ -2447,13 +2449,114 @@ An approved proposal takes effect immediately for every caller of `GET /calendar
 inside its radius. Rejecting is not deleting: the proposal stays, so the same group is not offered
 again at the next recompute.
 
+## Subscriptions
+
+The supporter tier. Until #17 `is_supporter` was a flag an admin set by hand (see
+[Admin](#admin)); it is now **derived** from the records described here, and the manual grant
+becomes one source among four rather than the only one.
+
+**The clients do not verify purchases.** RevenueCat does — for the App Store, for Google Play and
+for the web — and tells this API through a signed webhook. A client's only job is to buy through
+the RevenueCat SDK and then ask for a refresh, so the unlock is immediate rather than
+webhook-fast.
+
+**The binding that matters:** every client sets RevenueCat's `app_user_id` to the HivePulse
+`user.id`. Without it a purchase cannot be attributed to an account, and the point of the whole
+arrangement — buy on the iPhone, use it on the website — falls apart.
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/subscriptions/me` | What the signed-in account is entitled to |
+| POST | `/subscriptions/sync` | Refresh this account's entitlement from the provider now |
+| POST | `/subscriptions/webhook` | RevenueCat events: renewal, cancellation, refund, expiry |
+
+### GET `/subscriptions/me`
+
+Requires `Authorization: Bearer <access_token>`.
+
+Always returns an object, never `null`: an account without a subscription has
+`"status": "none"`. One shape is easier to decode on three platforms than a sometimes-absent body.
+
+**Response 200**
+```json
+{
+  "status": "active",
+  "source": "apple",
+  "product_id": "supporter_yearly",
+  "current_period_end": "2027-11-17T09:14:22.108431",
+  "will_renew": true,
+  "store_managed": true,
+  "manage_url": null
+}
+```
+
+| Field | Meaning |
+|-------|---------|
+| `status` | See the `subscription_status` enum. `none` when the account has never bought anything. |
+| `source` | Where it came from; `null` when `status` is `none`. |
+| `current_period_end` | When access lapses if nothing renews. `null` for `manual`, which does not expire. |
+| `will_renew` | What the store last said about auto-renewal. False after a cancellation that has not yet lapsed. |
+| `store_managed` | `true` for `apple` and `google`: **the app cannot cancel it** and must send the user to the store. |
+| `manage_url` | Where a web subscriber manages or cancels. Present only for `source: "web"`. |
+
+`status: "grace"` means the store is retrying payment and access **continues** — do not gate on
+`active` alone.
+
+### POST `/subscriptions/sync`
+
+Requires `Authorization: Bearer <access_token>`. Empty body.
+
+Called by a client right after a purchase completes. The server asks the provider for this
+account's current entitlement and writes it, rather than waiting for the webhook — which usually
+arrives within seconds but is not something a person should watch a spinner for.
+
+Idempotent: calling it when nothing changed rewrites the same row. Safe to call on app start.
+
+**Response 200** — the same object as `GET /subscriptions/me`.
+
+### POST `/subscriptions/webhook`
+
+**Not authenticated as a user.** RevenueCat sends the shared secret in an `Authorization` header,
+compared in constant time, the same way `/notifications/send-reminders` checks `X-Cron-Secret`.
+
+This is the authoritative path for everything a client never sees: a renewal while the phone is
+off, a cancellation made in the App Store, a refund granted weeks later, a payment that failed.
+
+**Must be idempotent.** RevenueCat retries on any non-2xx, and events can arrive out of order; an
+event older than the row it would overwrite is dropped rather than applied.
+
+**Request headers**
+```
+Authorization: Bearer <REVENUECAT_WEBHOOK_SECRET>
+```
+
+**Response 200**
+```json
+{ "handled": true }
+```
+
+**Response 401** — `WEBHOOK_UNAUTHORIZED`, missing or wrong secret. No body detail: an endpoint
+open to the internet says as little as possible about why it refused.
+
+### How `is_supporter` is derived
+
+The field keeps its place in the user object and its meaning for every client; only its origin
+changes. It is `true` when the account has a subscription whose `status` is `active` or `grace`,
+or a `manual` grant, and `false` otherwise.
+
+`manual` exists for two reasons that are not negotiable: **the store review account** must see the
+paid feature, or a review fails with "we could not test it", and a comped account is occasionally
+the right answer. `PUT /admin/users/{id}/supporter` is unchanged and writes a `manual` record.
+
+---
+
 ## Object Reference
 
 ### Enums
 
 | Enum | Values |
 |------|--------|
-| `locale` | `en`, `fr`, `de`, `es` |
+| `locale` | `en`, `fr`, `de`, `es`, `pl` |
 | `hive_type` | `langstroth`, `dadant`, `top_bar`, `warre`, `other` |
 | `queen_color` | `white`, `yellow`, `red`, `green`, `blue` |
 | `mood` | `calm`, `nervous`, `aggressive` |
@@ -2463,6 +2566,8 @@ again at the next recompute.
 | `stats_preset` | `30d`, `90d`, `365d`, `all` |
 | `nest_status` | `found`, `destruction_ordered`, `destroyed` |
 | `sighting_status` | `pending`, `confirmed`, `rejected` |
+| `subscription_source` | `apple`, `google`, `web`, `manual` |
+| `subscription_status` | `none`, `active`, `grace`, `expired`, `refunded`, `revoked` |
 
 ---
 
@@ -2498,3 +2603,4 @@ again at the next recompute.
 | `HORNET_NEST_NOT_FOUND` | 404 | — |
 | `INVALID_VOTE` | 422 | `vote` must be `yes` or `no` |
 | `INVALID_SIGHTING_STATUS` | 422 | `status` must be `confirmed` or `rejected` |
+| `WEBHOOK_UNAUTHORIZED` | 401 | Subscription webhook called without the shared secret |
