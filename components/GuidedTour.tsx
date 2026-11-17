@@ -112,7 +112,9 @@ function TourOverlay({
   const step: TourStep = tour.steps[index];
   const [rect, setRect] = useState<DOMRect | null>(null);
   const [lost, setLost] = useState(false);
-  const startedAt = useRef(Date.now());
+  // Set in the effect below, before the timer that reads it; a pure render cannot call
+  // Date.now(), and the initial value is never the one that is used.
+  const startedAt = useRef(0);
 
   // Escape leaves, from anywhere, always.
   useEffect(() => {
@@ -170,6 +172,10 @@ function TourOverlay({
 
   // A step whose control opens a page ends when the page changes.
   const firstPath = useRef(pathname);
+  // On purpose, and adding `pathname` would break it: this captures the path at the moment
+  // the step changes, so the effect below can tell that a navigation happened. With pathname
+  // in the deps the two would always be equal and a route step would never advance.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { firstPath.current = pathname; }, [index]);
   useEffect(() => {
     if ((step.advance ?? 'click') !== 'route') return;

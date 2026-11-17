@@ -14,7 +14,7 @@ import nextTypescript from 'eslint-config-next/typescript';
  * been written for a year without one. Rules worth adding are worth adding later, one at a time,
  * with the fixes in the same change.
  */
-export default [
+const config = [
   {
     ignores: [
       '.next/**',
@@ -57,7 +57,7 @@ export default [
 
       /**
        * Warnings, not errors, and deliberately so: these are a real backlog, written down rather
-       * than switched off (#472).
+       * than switched off (#474).
        *
        * They come from React's newer compiler-aware rules, which this codebase has never been
        * held to. `set-state-in-effect` alone accounts for thirteen, and every one of them is the
@@ -76,7 +76,7 @@ export default [
       /**
        * The six of these are Leaflet: a map library loaded dynamically, whose handles have no
        * useful type at the point they are held. Typing them properly is worth doing and is not
-       * what a first lint pass is for (#472).
+       * what a first lint pass is for (#474).
        */
       '@typescript-eslint/no-explicit-any': 'warn',
 
@@ -98,3 +98,5 @@ export default [
     },
   },
 ];
+
+export default config;

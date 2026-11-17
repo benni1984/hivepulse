@@ -213,6 +213,8 @@ export default function BeekeepingYear() {
                     <figure className="dash-cal-photo">
                       {/* No alt text: the title is the next thing on the card, and a screen
                           reader would otherwise read the same entry twice. */}
+                      {/* eslint-disable-next-line @next/next/no-img-element -- generated WebP,
+                          already exactly 640x427; see YearRibbon for the same reasoning. */}
                       <img src={photo.file} alt="" width={640} height={427} loading="lazy" />
                       <figcaption>
                         <a href={photo.source} target="_blank" rel="noreferrer noopener">

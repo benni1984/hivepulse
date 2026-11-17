@@ -149,7 +149,6 @@ interface Labels {
 export default function MapClient({ labels }: { labels: Labels }) {
   const mapRef = useRef<HTMLDivElement>(null);
   const [stats, setStats] = useState({ apiaries: '—', hives: '—', inspections: '—' });
-  const [hasHeatmap, setHasHeatmap] = useState(false);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -246,7 +245,6 @@ export default function MapClient({ labels }: { labels: Labels }) {
           };
           legend.addTo(map);
 
-          setHasHeatmap(true);
         }
       }).catch(() => {});
 
@@ -254,6 +252,9 @@ export default function MapClient({ labels }: { labels: Labels }) {
     });
 
     return () => { destroyed = true; };
+    // The map is built once. The labels it is given are read at that moment; re-running this
+    // would tear the map down and rebuild it whenever a string changed.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

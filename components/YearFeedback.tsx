@@ -24,7 +24,7 @@
  * would make the whole exercise worse than not asking.
  */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import {
   getPublicCalendar, submitYearFeedback, yearShiftDays,

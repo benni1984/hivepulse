@@ -53,12 +53,6 @@ vi.mock('leaflet/dist/leaflet.css', () => ({}));
 
 import CommunityMap from '@/components/CommunityMap';
 
-type MockLayer = { bindTooltip: ReturnType<typeof vi.fn> };
-type GeoJSONOptions = {
-  style: (feature: CommunityHeatmapFeature) => { fillColor: string; fillOpacity: number; color: string; weight: number };
-  onEachFeature: (feature: CommunityHeatmapFeature, layer: MockLayer) => void;
-};
-
 function makeFeature(props: Partial<CommunityHeatmapProperties>): CommunityHeatmapFeature {
   return {
     type: 'Feature',

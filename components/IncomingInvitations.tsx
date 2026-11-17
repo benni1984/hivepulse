@@ -43,6 +43,7 @@ export default function IncomingInvitations({ onChange }: { onChange?: () => voi
     })();
     return () => { cancelled = true; };
     // Runs once per visit: onChange only reloads the page's own list.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function respond(invitation: IncomingShare, accept: boolean) {

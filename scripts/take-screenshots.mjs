@@ -16,19 +16,6 @@ async function shot(page, name) {
   console.log('✓', name);
 }
 
-async function shotEl(page, name, selector) {
-  const file = path.join(OUT, name + '.png');
-  try {
-    const el = page.locator(selector).first();
-    await el.waitFor({ state: 'visible', timeout: 5000 });
-    await el.screenshot({ path: file });
-    console.log('✓', name, '(cropped)');
-  } catch {
-    await page.screenshot({ path: file });
-    console.log('✓', name, '(fallback full page)');
-  }
-}
-
 const browser = await chromium.launch({ headless: true });
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
 const page = await ctx.newPage();

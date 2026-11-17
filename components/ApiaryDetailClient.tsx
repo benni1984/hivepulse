@@ -4,9 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
-import dynamic from 'next/dynamic';
 
-const Chart = dynamic(() => import('chart.js/auto').then(m => m.Chart as never), { ssr: false });
 
 // Second copy of the legend bug: the label was the raw API value capitalised, so the doughnut
 // stayed English in every locale (`MoodChart` had the same defect).

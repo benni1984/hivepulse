@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import React from 'react';
 
 vi.mock('next-intl/server', () => ({
   getTranslations: async () => (key: string) => key,

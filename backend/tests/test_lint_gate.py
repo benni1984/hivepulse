@@ -80,5 +80,6 @@ def test_every_rule_that_was_turned_down_says_why():
     for rule in ("react/no-unescaped-entities", "react-hooks/set-state-in-effect",
                  "@typescript-eslint/no-explicit-any"):
         assert f"'{rule}'" in text, f"{rule} is no longer accounted for"
-    # The backlog has a number, so it cannot quietly become the status quo.
-    assert "#472" in text
+    # The backlog has a number, so it cannot quietly become the status quo. #472 was the first
+    # pass, which took it from 126 to 25; #474 carries what is left.
+    assert "#474" in text

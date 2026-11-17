@@ -56,6 +56,9 @@ export default function TreatmentsPanel({ type, id }: { type: 'hive' | 'apiary';
       }
     })();
     return () => { cancelled = true; };
+    // Reloads when the thing being shown changes, which is what `type` and `id` are. `reload`
+    // and `t` are new on every render, so including them would fetch in a loop.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, id]);
 
   async function run(action: () => Promise<unknown>) {

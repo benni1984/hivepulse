@@ -85,7 +85,6 @@ await page.waitForTimeout(600);
 
 // Data export — try CSV button
 const exportCsvBtn = page.locator('button').filter({ hasText: /export csv/i }).first();
-const exportJsonBtn = page.locator('button').filter({ hasText: /export json/i }).first();
 if (await exportCsvBtn.count() > 0) {
   // scroll to find it
   await exportCsvBtn.scrollIntoViewIfNeeded();
@@ -99,7 +98,6 @@ if (await exportCsvBtn.count() > 0) {
 await page.goto(STAGING + '/en/dashboard/qr-batches');
 await page.waitForLoadState('networkidle');
 await page.waitForTimeout(1000);
-const batchViewBtn = page.locator('a').filter({ hasText: /view/i }).first();
 const batchLink2 = page.locator('[href*="/qr-batches/"]').first();
 if (await batchLink2.count() > 0) {
   await batchLink2.click();
