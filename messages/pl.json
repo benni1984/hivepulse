@@ -1170,6 +1170,10 @@
       "account": {
         "title": "Konto i profil",
         "desc": "Zmień nazwę wyświetlaną i język, zmień hasło oraz trwale usuń konto i wszystkie powiązane dane."
+      },
+      "subscription": {
+        "title": "Abonament",
+        "desc": "Do 10 rodzin pszczelich jest za darmo. Co obejmuje abonament Supporter, czego osiągnięcie limitu nigdy nie robi i gdzie zrezygnować."
       }
     }
   },

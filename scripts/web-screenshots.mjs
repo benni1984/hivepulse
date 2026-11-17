@@ -237,6 +237,14 @@ if (await newFieldBtn.count() > 0) {
   await page.keyboard.press('Escape');
 }
 
+// ── Subscription ──────────────────────────────────────────────────────────────
+
+// The demo account is a supporter, so this shows the "you have it" state rather than the
+// offer. That is the honest picture for a help page: what somebody sees once it is running.
+await goto(page, `${BASE}/en/dashboard/subscription`);
+await page.waitForTimeout(1_000);
+await shot(page, 'subscription');
+
 // ── Community / members ───────────────────────────────────────────────────────
 
 await goto(page, `${BASE}/en/dashboard/members`);

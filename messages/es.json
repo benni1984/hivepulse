@@ -1170,6 +1170,10 @@
       "account": {
         "title": "Cuenta & perfil",
         "desc": "Actualiza tu nombre e idioma, cambia tu contraseña y elimina permanentemente tu cuenta y todos los datos asociados."
+      },
+      "subscription": {
+        "title": "Suscripción",
+        "desc": "Hasta 10 colmenas son gratuitas. Qué incluye la suscripción Supporter, qué no hace nunca alcanzar el límite y dónde cancelar."
       }
     }
   },

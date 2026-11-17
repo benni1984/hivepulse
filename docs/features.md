@@ -149,6 +149,23 @@ has), QR codes and scanning (the moment the app makes sense), and the raw export
 data (a position, not a feature — and in the EU a right). What is sold is the *document*, not the
 data.
 
+### Buying it
+
+`/dashboard/subscription` on the website shows the state, the renewal or expiry date, the colony
+counter, what the subscription includes and where to cancel. The purchase link is built **on the
+server** (`GET /subscriptions/web-checkout`): the account id is a path segment of it, a link
+without one answers 404 rather than selling anonymously, and a link with the *wrong* one takes
+money and attaches it to nobody. Buying inside the apps goes through StoreKit and Play Billing, as
+those stores require; whichever way it is bought, the entitlement is derived on the server and
+works on all three clients.
+
+A subscription sold by Apple or Google can only be cancelled there. The server says so
+(`store_managed`), so the three clients do not each decide for themselves what they may offer.
+
+Reaching the limit is answered with an amber notice and a way to the subscription page, never a red
+error banner — it is an offer, not a fault. A client tells the two apart by the error **code**,
+never by the sentence, which exists in five languages.
+
 ## Account
 
 Sign in with e-mail, Apple or Google; English, German, French, Spanish and Polish; change password (not

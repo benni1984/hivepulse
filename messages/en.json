@@ -1170,6 +1170,10 @@
       "account": {
         "title": "Account & profile",
         "desc": "Update your display name and language, change your password, and permanently delete your account and all associated data."
+      },
+      "subscription": {
+        "title": "Subscription",
+        "desc": "Up to 10 colonies are free. What the supporter subscription includes, what reaching the limit never does, and where to cancel."
       }
     }
   },

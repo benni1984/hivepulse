@@ -35,6 +35,48 @@ export function pick(text: Localized, locale: string): string {
 /** Newest first. */
 export const RELEASES: Release[] = [
   {
+    date: '2026-11-18',
+    title: t(
+      'What HivePulse costs, and what it never does',
+      'Was HivePulse kostet \u2014 und was es niemals tut',
+      'Ce que co\u00fbte HivePulse, et ce qu\u2019il ne fera jamais',
+      'Lo que cuesta HivePulse y lo que nunca hace',
+      'Ile kosztuje HivePulse \u2014 i czego nigdy nie robi',
+    ),
+    items: [
+      {
+        kind: 'added',
+        text: t(
+          'Up to 10 colonies stay free, with as many apiaries as you like. A supporter subscription of \u20ac19.99 a year lifts the limit and adds inviting somebody onto an apiary, your own fields, the whole statistics history and the regional health map. The hornet tracker, the beekeeping year, QR codes, offline inspections and the export of your own data stay free and are meant to.',
+          'Bis zu 10 V\u00f6lker bleiben kostenlos, mit beliebig vielen Bienenst\u00e4nden. Ein Supporter-Abo f\u00fcr 19,99 \u20ac im Jahr hebt die Grenze auf und bringt dazu: jemanden auf einen Bienenstand einladen, eigene Felder, die ganze Statistik-Historie und die regionale Gesundheitskarte. Der Hornissen-Tracker, das Imkerjahr, QR-Codes, Kontrollen ohne Netz und der Export der eigenen Daten bleiben kostenlos, und das ist so gewollt.',
+          'Jusqu\u2019\u00e0 10 ruches restent gratuites, avec autant de ruchers que vous voulez. Un abonnement Supporter \u00e0 19,99 \u20ac par an l\u00e8ve la limite et ajoute\u00a0: inviter quelqu\u2019un sur un rucher, vos propres champs, tout l\u2019historique des statistiques et la carte sanitaire r\u00e9gionale. Le suivi du frelon asiatique, l\u2019ann\u00e9e apicole, les QR codes, les visites hors ligne et l\u2019export de vos donn\u00e9es restent gratuits, et c\u2019est voulu.',
+          'Hasta 10 colmenas siguen siendo gratuitas, con todos los colmenares que quieras. Una suscripci\u00f3n Supporter de 19,99 \u20ac al a\u00f1o quita el l\u00edmite y a\u00f1ade: invitar a alguien a un colmenar, tus propios campos, todo el historial de estad\u00edsticas y el mapa sanitario regional. El rastreador de avispa asi\u00e1tica, el a\u00f1o ap\u00edcola, los c\u00f3digos QR, las revisiones sin conexi\u00f3n y la exportaci\u00f3n de tus datos siguen siendo gratuitos, y as\u00ed debe ser.',
+          'Do 10 rodzin pszczelich pozostaje bezp\u0142atnie, przy dowolnej liczbie pasiek. Abonament Supporter za 19,99 \u20ac rocznie znosi limit i dodaje: zaproszenie kogo\u015b do pasieki, w\u0142asne pola, ca\u0142\u0105 histori\u0119 statystyk i regionaln\u0105 map\u0119 zdrowia. Tropiciel szerszenia azjatyckiego, rok pszczelarski, kody QR, przegl\u0105dy bez sieci i eksport w\u0142asnych danych pozostaj\u0105 bezp\u0142atne \u2014 i tak ma by\u0107.',
+        ),
+      },
+      {
+        kind: 'added',
+        text: t(
+          'Reaching the limit never closes what is already there. Nothing is hidden, nothing becomes read-only, nothing is deleted \u2014 the only thing that stops is adding the eleventh colony. Somebody whose subscription ends keeps every colony they had.',
+          'Eine erreichte Grenze schlie\u00dft nie, was schon da ist. Nichts wird versteckt, nichts nur lesbar, nichts gel\u00f6scht \u2014 es stoppt einzig das elfte Volk. Wessen Abo endet, beh\u00e4lt alle V\u00f6lker, die er hatte.',
+          'Atteindre la limite ne ferme jamais ce qui existe d\u00e9j\u00e0. Rien n\u2019est cach\u00e9, rien ne passe en lecture seule, rien n\u2019est supprim\u00e9\u00a0: seule s\u2019arr\u00eate l\u2019ajout de la onzi\u00e8me ruche. Qui voit son abonnement se terminer garde toutes ses ruches.',
+          'Alcanzar el l\u00edmite nunca cierra lo que ya existe. Nada se oculta, nada pasa a solo lectura, nada se borra: lo \u00fanico que se detiene es a\u00f1adir la und\u00e9cima colmena. Quien termina su suscripci\u00f3n conserva todas las colmenas que ten\u00eda.',
+          'Osi\u0105gni\u0119cie limitu nigdy nie zamyka tego, co ju\u017c jest. Nic nie znika, nic nie staje si\u0119 tylko do odczytu, nic nie jest usuwane \u2014 zatrzymuje si\u0119 wy\u0142\u0105cznie dodanie jedenastej rodziny. Kto ko\u0144czy abonament, zachowuje wszystkie rodziny, które mia\u0142.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'The website never asked the server which language to answer in, so its error messages arrived in English however the page was set. They were translated into all five languages the whole time and were simply never asked for.',
+          'Die Webseite hat den Server nie nach einer Sprache gefragt, also kamen seine Meldungen auf Englisch an, egal worauf die Seite stand. \u00dcbersetzt waren sie die ganze Zeit in alle f\u00fcnf Sprachen \u2014 sie wurden nur nie angefordert.',
+          'Le site ne demandait jamais au serveur dans quelle langue r\u00e9pondre\u00a0: ses messages arrivaient donc en anglais quelle que soit la langue de la page. Ils \u00e9taient traduits dans les cinq langues depuis toujours, et n\u2019\u00e9taient simplement jamais demand\u00e9s.',
+          'La web nunca le ped\u00eda al servidor en qu\u00e9 idioma responder, as\u00ed que sus mensajes llegaban en ingl\u00e9s fuera cual fuera el idioma de la p\u00e1gina. Estaban traducidos a los cinco idiomas desde siempre; sencillamente nunca se ped\u00edan.',
+          'Serwis nigdy nie pyta\u0142 serwera, w jakim j\u0119zyku ma odpowiada\u0107, wi\u0119c jego komunikaty przychodzi\u0142y po angielsku niezale\u017cnie od ustawienia strony. Przez ca\u0142y czas by\u0142y przet\u0142umaczone na pi\u0119\u0107 j\u0119zyków \u2014 po prostu nikt o nie nie prosi\u0142.',
+        ),
+      },
+    ],
+  },
+  {
     date: '2026-11-17',
     title: t(
       'The session that would not end',
@@ -966,6 +1008,40 @@ export const FEATURES: FeatureGroup[] = [
         'Pas de régie publicitaire et pas de suivi de ce que vous faites.',
         'Sin red publicitaria y sin rastrear lo que haces.',
         'Bez sieci reklamowej i bez śledzenia tego, co robisz.',
+      ),
+    ],
+  },
+  {
+    id: 'subscription',
+    title: t('Subscription', 'Abo', 'Abonnement', 'Suscripción', 'Abonament'),
+    items: [
+      t(
+        'Free for up to 10 colonies, with as many apiaries as you like.',
+        'Kostenlos bis zu 10 Völkern, mit beliebig vielen Bienenständen.',
+        'Gratuit jusqu’à 10 ruches, avec autant de ruchers que vous voulez.',
+        'Gratuito hasta 10 colmenas, con todos los colmenares que quieras.',
+        'Bezpłatnie do 10 rodzin pszczelich, przy dowolnej liczbie pasiek.',
+      ),
+      t(
+        'A supporter subscription of €19.99 a year: unlimited colonies, inviting somebody onto an apiary, your own fields, the whole statistics history and the regional health map.',
+        'Ein Supporter-Abo für 19,99 € im Jahr: unbegrenzt Völker, jemanden auf einen Bienenstand einladen, eigene Felder, die ganze Statistik-Historie und die regionale Gesundheitskarte.',
+        'Un abonnement Supporter à 19,99 € par an : ruches illimitées, inviter quelqu’un sur un rucher, vos propres champs, tout l’historique des statistiques et la carte sanitaire régionale.',
+        'Una suscripción Supporter de 19,99 € al año: colmenas ilimitadas, invitar a alguien a un colmenar, tus propios campos, todo el historial de estadísticas y el mapa sanitario regional.',
+        'Abonament Supporter za 19,99 € rocznie: nieograniczona liczba rodzin, zaproszenie kogoś do pasieki, własne pola, cała historia statystyk i regionalna mapa zdrowia.',
+      ),
+      t(
+        'Reaching the limit never closes what already exists — nothing is hidden, nothing becomes read-only, nothing is deleted.',
+        'Eine erreichte Grenze schließt nie, was schon da ist — nichts wird versteckt, nichts nur lesbar, nichts gelöscht.',
+        'Atteindre la limite ne ferme jamais ce qui existe déjà — rien n’est caché, rien ne passe en lecture seule, rien n’est supprimé.',
+        'Alcanzar el límite nunca cierra lo que ya existe: nada se oculta, nada pasa a solo lectura, nada se borra.',
+        'Osiągnięcie limitu nigdy nie zamyka tego, co już jest — nic nie znika, nic nie staje się tylko do odczytu, nic nie jest usuwane.',
+      ),
+      t(
+        'Bought on the website, on the iPhone or on Android — it belongs to the account and works everywhere you sign in.',
+        'Gekauft auf der Webseite, am iPhone oder auf Android — es hängt am Konto und gilt überall, wo du dich anmeldest.',
+        'Acheté sur le site, sur iPhone ou sur Android — il appartient au compte et vaut partout où vous vous connectez.',
+        'Comprada en la web, en el iPhone o en Android: pertenece a la cuenta y vale donde inicies sesión.',
+        'Kupiony w serwisie, na iPhonie lub na Androidzie — należy do konta i działa wszędzie, gdzie się zalogujesz.',
       ),
     ],
   },

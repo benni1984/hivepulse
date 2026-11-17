@@ -1170,6 +1170,10 @@
       "account": {
         "title": "Compte & profil",
         "desc": "Mettre à jour votre nom d'affichage et votre langue, changer votre mot de passe et supprimer définitivement votre compte et toutes les données associées."
+      },
+      "subscription": {
+        "title": "Abonnement",
+        "desc": "Jusqu’à 10 ruches sont gratuites. Ce que comprend l’abonnement Supporter, ce qu’atteindre la limite ne fait jamais, et où résilier."
       }
     }
   },

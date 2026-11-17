@@ -146,6 +146,14 @@ export const HELP_TOPICS: HelpTopic[] = [
     group: 'Account & settings',
   },
   {
+    slug: 'subscription',
+    title: 'Subscription',
+    description: 'Up to 10 colonies are free. What the supporter subscription includes, what reaching the limit never does, and where to cancel.',
+    icon: 'fa-heart',
+    platforms: ['web', 'ios', 'android'],
+    group: 'Account & settings',
+  },
+  {
     slug: 'account',
     title: 'Account & profile',
     description: 'Update your display name and language, change your password, and permanently delete your account and all associated data.',

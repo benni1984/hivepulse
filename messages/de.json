@@ -1170,6 +1170,10 @@
       "account": {
         "title": "Konto & Profil",
         "desc": "Anzeigename und Sprache aktualisieren, Passwort ändern und das Konto mit allen zugehörigen Daten dauerhaft löschen."
+      },
+      "subscription": {
+        "title": "Abo",
+        "desc": "Bis zu 10 Völker sind kostenlos. Was zum Supporter-Abo gehört, was eine erreichte Grenze niemals tut, und wo man kündigt."
       }
     }
   },
