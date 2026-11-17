@@ -19,6 +19,7 @@ from typing import Optional
 
 from app.access import Scope
 from app.config import settings
+from app.utils import entitlements
 from app.notifications_i18n import reminder_email, reminder_push
 from app.utils.push import PushResult, send_apns, send_fcm
 from app.database import get_db
@@ -185,9 +186,18 @@ def send_reminders(request: Request, db: DB) -> ReminderSendResult:
                 _send_reminder_email(user.email, overdue, user.locale)
             sent += 1
 
+    # The same daily run closes the gap a lost subscription webhook leaves. It lives here rather
+    # than in a cron of its own because this one already runs every day and an extra schedule is
+    # an extra thing to forget; the cost is that this endpoint does slightly more than its name
+    # says (#17).
+    lapsed = entitlements.sweep_expired(db)
+    if lapsed:
+        db.commit()
+
     return ReminderSendResult(
         sent=sent,
         skipped_off_season=skipped_off_season,
         skipped_disabled=skipped_disabled,
         skipped_no_channel=skipped_no_channel,
+        subscriptions_lapsed=lapsed,
     )

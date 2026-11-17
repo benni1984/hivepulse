@@ -433,6 +433,10 @@ class ReminderSendResult(BaseModel):
     skipped_off_season: int
     skipped_disabled: int
     skipped_no_channel: int
+    #: Supporters whose subscription had quietly ended. Everything about entitlements is
+    #: event-driven, which works until an event does not arrive; this is the backstop, and a
+    #: number nobody can see is a backstop nobody notices has rusted (#17).
+    subscriptions_lapsed: int = 0
 
 
 # ---------------------------------------------------------------------------
@@ -1186,6 +1190,27 @@ class HornetTrapNearbyOut(BaseModel):
     longitude: float
     distance_m: int
     total_caught: int
+
+
+
+class SubscriptionOut(BaseModel):
+    """What the signed-in account is entitled to (api-contract.md, Subscriptions).
+
+    Always an object, never null: an account that has never bought anything has `status: "none"`.
+    One shape is easier to decode on three platforms than a sometimes-absent body.
+    """
+
+    status: str
+    source: Optional[str] = None
+    product_id: Optional[str] = None
+    current_period_end: Optional[datetime] = None
+    will_renew: bool = False
+    #: True for the App Store and Google Play: **the app cannot cancel it** and has to send the
+    #: person to the store. Saying so here means the three clients do not each decide for
+    #: themselves what they are allowed to offer.
+    store_managed: bool = False
+    #: Where a web subscriber manages or cancels. Only ever set for `source: "web"`.
+    manage_url: Optional[str] = None
 
 
 # Resolve forward references

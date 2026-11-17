@@ -10,6 +10,13 @@ class Settings(BaseSettings):
     admin_email: str = ""
     ci_setup_token: str = ""
     cron_secret: str = ""           # X-Cron-Secret header for POST /notifications/send-reminders
+    # Supporter subscriptions (#17). RevenueCat verifies purchases for the App Store, Google
+    # Play and the web; it is never asked at request time whether somebody has access -- its
+    # webhook writes into `subscriptions`, and that table answers. Empty keys are the normal
+    # state in CI and on a development machine: nothing is uploaded, nothing fails.
+    revenuecat_api_key: str = ""        # server key, for POST /subscriptions/sync
+    revenuecat_webhook_secret: str = "" # the Authorization header RevenueCat is told to send
+    revenuecat_entitlement: str = "supporter"
     # Push — Android (FCM HTTP v1). The legacy server key was retired by Google in 2024,
     # so delivery needs a service account; push is skipped while these are empty.
     firebase_project_id: str = ""

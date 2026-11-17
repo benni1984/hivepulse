@@ -9,7 +9,7 @@ from app.monitoring import init_monitoring
 from app.database import Base, SessionLocal, engine
 from app.validation import validation_error_handler
 from app.routers import auth, users, field_definitions, apiaries, qr_batches, hives, inspections, stats, public, export
-from app.routers import admin, beekeeping_year, home, hornets, moves, notifications, public_year, shares, treatments
+from app.routers import admin, beekeeping_year, home, hornets, moves, notifications, public_year, shares, treatments, subscriptions
 
 
 @asynccontextmanager
@@ -72,6 +72,7 @@ PREFIX = "/api/v1"
 
 app.include_router(auth.router, prefix=PREFIX)
 app.include_router(users.router, prefix=PREFIX)
+app.include_router(subscriptions.router, prefix=PREFIX)
 app.include_router(field_definitions.router, prefix=PREFIX)
 app.include_router(apiaries.router, prefix=PREFIX)
 app.include_router(qr_batches.router, prefix=PREFIX)

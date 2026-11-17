@@ -496,9 +496,12 @@ X-Cron-Secret: <secret>
   "sent": 3,
   "skipped_off_season": 12,
   "skipped_disabled": 1,
-  "skipped_no_channel": 5
+  "skipped_no_channel": 5,
+  "subscriptions_lapsed": 0
 }
 ```
+
+`subscriptions_lapsed`: supporters whose subscription had quietly ended. Everything about entitlements is event-driven, which works until an event does not arrive — a deploy at the wrong moment is enough — so this run also checks the cached flag against the records. It lives on this endpoint rather than a cron of its own because this one already runs daily and an extra schedule is an extra thing to forget; the cost is that the endpoint does slightly more than its name says. See [Subscriptions](#subscriptions).
 
 `skipped_no_channel` (renamed from `skipped_no_token`): counts users who are enabled and in-season but have neither a push token nor `reminder_email_enabled`, so there is no channel to notify them through.
 
