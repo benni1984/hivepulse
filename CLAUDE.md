@@ -177,7 +177,11 @@ on every push, nobody ever opened it, and staging does the same job better with 
 URL and its own database.
 
 **Push to main**, in order:
-1. **Quality gates** — TypeScript, lint, `npm test`, `pytest`, the app suites
+1. **Quality gates** — TypeScript (through `next build`), ESLint, `npm test`, `pytest`, the
+   app suites. The lint step is new as of #466: before it there was none, and the `lint`
+   script had been a command Next 16 removed. It fails on errors only; its remaining
+   warnings are a named backlog (#472), and `eslint.config.mjs` says of each rule why it
+   is where it is.
 2. **deploy-staging** — the separate `hivepulse-staging` project, which exists because the
    E2E suite registers accounts and writes data, and that must not touch production
 3. **e2e-staging** — Playwright against `apiscan-staging.vercel.app`

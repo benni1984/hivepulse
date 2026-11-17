@@ -36,8 +36,13 @@ describe('PrivacyPage', () => {
     expect(en.privacy.s4body).toMatch(/OpenStreetMap/);
     // Analytics runs on production, so it belongs here whether or not it uses cookies.
     expect(en.privacy.s4body).toMatch(/Umami/);
-    // Font Awesome still comes from Cloudflare, so visitors' addresses go there too.
-    expect(en.privacy.s4body).toMatch(/Cloudflare/);
+    // Font Awesome used to come from Cloudflare's cdnjs, and this paragraph said so because
+    // visitors' addresses really did go there. Since #465 the icons ship with the site, so the
+    // sentence would now be a disclosure of something that does not happen — which is its own
+    // kind of wrong on a page whose job is to be accurate.
+    expect(en.privacy.s4body, 'the icons are served from our own origin now')
+      .not.toMatch(/Cloudflare|cdnjs/);
+    expect(en.privacy.s4body).toMatch(/Fonts and icons are served from our own servers/);
     for (const forbidden of ['inspection notes', 'passwords', 'IP address']) {
       expect(en.privacy.s5body).toContain(forbidden);
     }

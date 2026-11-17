@@ -9,6 +9,7 @@ import Footer from '@/components/Footer';
 import AosInit from '@/components/AosInit';
 import 'aos/dist/aos.css';
 import '@/web/fonts.css';
+import '@/web/icons.css';
 import '@/web/style.css';
 import '@/web/landing.css';
 import '@/web/help.css';
@@ -47,9 +48,6 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossOrigin="anonymous" />
-      </head>
       <body>
         <NextIntlClientProvider messages={messages}>
           <Nav locale={locale} />

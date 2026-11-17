@@ -217,6 +217,30 @@ enum YearPhotos {
             licenceUrl: "https://creativecommons.org/licenses/by-sa/4.0",
             source: "https://commons.wikimedia.org/wiki/File:AFB_in_combs.jpg"
         ),
+        "foulbrood-sample": YearPhoto(
+            file: "year-foulbrood-sample",
+            thumb: "year-thumb-foulbrood-sample",
+            author: "Dalibor Titera (Beedol.cz)",
+            licence: "CC BY-SA 4.0",
+            licenceUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+            source: "https://commons.wikimedia.org/wiki/File:AFB_in_combs.jpg"
+        ),
+        "winter-feeding": YearPhoto(
+            file: "year-winter-feeding",
+            thumb: "year-thumb-winter-feeding",
+            author: "Lubman04",
+            licence: "CC BY-SA 3.0",
+            licenceUrl: "https://creativecommons.org/licenses/by-sa/3.0",
+            source: "https://commons.wikimedia.org/wiki/File:Nourrissage_d%27hiver.JPG"
+        ),
+        "oxalic-acid": YearPhoto(
+            file: "year-oxalic-acid",
+            thumb: "year-thumb-oxalic-acid",
+            author: "Einebillion",
+            licence: "CC BY 4.0",
+            licenceUrl: "https://creativecommons.org/licenses/by/4.0",
+            source: "https://commons.wikimedia.org/wiki/File:Varroa_mite_drop_after_treatment.jpg"
+        ),
         "final-harvest": YearPhoto(
             file: "year-final-harvest",
             thumb: "year-thumb-final-harvest",
