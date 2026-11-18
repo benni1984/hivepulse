@@ -1,4 +1,5 @@
 import { todayLocal } from './dates';
+import type { MoodDistribution } from './mood';
 
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000/api/v1';
 
@@ -681,13 +682,13 @@ export interface QrBatchOut { id: string; count: number; created_at: string; tok
 export interface HiveStats {
   inspection_count: number;
   varroa_trend: { date: string; value: number }[];
-  mood_distribution: { calm: number; nervous: number; aggressive: number };
+  mood_distribution: MoodDistribution;
 }
 export interface ApiaryStats {
   hive_count: number;
   inspections_total: number;
   average_varroa?: number;
-  mood_distribution: { calm: number; nervous: number; aggressive: number };
+  mood_distribution: MoodDistribution;
 }
 export interface Paginated<T> { items: T[]; total: number; page: number; per_page: number; pages: number; }
 
