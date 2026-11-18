@@ -983,7 +983,11 @@
       "doneTitle": "Fait",
       "doneOn": "fait le {date}",
       "reopen": "Rouvrir",
-      "errorGeneric": "Cela n’a pas fonctionné. Veuillez réessayer."
+      "errorGeneric": "Cela n’a pas fonctionné. Veuillez réessayer.",
+      "amount": "Quantité",
+      "amountHint": "2 × 15 ml par ruche",
+      "withdrawal": "Temps d’attente (jours)",
+      "colonies": "{count} ruches"
     },
     "subscription": {
       "activeBody": "Merci. Tout ce que comprend l’abonnement est débloqué sur le site et dans les deux applications.",
@@ -1013,6 +1017,13 @@
       "stateNone": "Aucun abonnement",
       "thanks": "Merci. Votre abonnement est actif.",
       "title": "Abonnement"
+    },
+    "record": {
+      "download": "Créer le registre",
+      "intro": "Tous les traitements effectués dans ce rucher sur une année, sous forme de document à imprimer et à conserver. Il est constitué à partir de ce qui est déjà saisi — médicament, quantité, nombre de ruches, dates — avec les relevés varroa qui expliquent pourquoi un traitement a eu lieu.",
+      "keep": "Le registre des médicaments vétérinaires est obligatoire pour les animaux producteurs de denrées alimentaires, ce que sont les abeilles. Conservez le document imprimé cinq ans et présentez-le sur demande.",
+      "title": "Registre des traitements",
+      "year": "Année"
     }
   },
   "hiveTypes": {

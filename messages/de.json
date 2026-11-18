@@ -983,7 +983,11 @@
       "doneTitle": "Erledigt",
       "doneOn": "erledigt {date}",
       "reopen": "Wieder öffnen",
-      "errorGeneric": "Das hat nicht geklappt. Bitte versuche es erneut."
+      "errorGeneric": "Das hat nicht geklappt. Bitte versuche es erneut.",
+      "amount": "Menge",
+      "amountHint": "2 × 15 ml je Volk",
+      "withdrawal": "Wartezeit (Tage)",
+      "colonies": "{count} Völker"
     },
     "subscription": {
       "activeBody": "Danke. Alles, was zum Abo gehört, ist auf der Webseite und in beiden Apps freigeschaltet.",
@@ -1013,6 +1017,13 @@
       "stateNone": "Kein Abo",
       "thanks": "Danke. Dein Abo ist aktiv.",
       "title": "Abo"
+    },
+    "record": {
+      "download": "Bestandsbuch erstellen",
+      "intro": "Alle Behandlungen eines Jahres an diesem Bienenstand, als Dokument zum Ausdrucken und Aufbewahren. Es entsteht aus dem, was ohnehin erfasst ist — Arzneimittel, Menge, Anzahl der Völker, die Daten — zusammen mit den Varroa-Befunden, die erklären, warum behandelt wurde.",
+      "keep": "Das Bestandsbuch über Tierarzneimittel ist für Lebensmittel liefernde Tiere vorgeschrieben, und Bienen gehören dazu. Bewahre das ausgedruckte Dokument fünf Jahre auf und lege es auf Verlangen vor.",
+      "title": "Bestandsbuch",
+      "year": "Jahr"
     }
   },
   "hiveTypes": {

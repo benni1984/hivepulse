@@ -420,6 +420,7 @@ export async function getTreatments(
 
 export async function createTreatment(input: {
   hive_id?: string; apiary_id?: string; product: string; due_on: string; note?: string;
+  amount?: string; withdrawal_days?: number | null;
 }): Promise<PlannedTreatment> {
   const res = await apiFetch('/treatments', { method: 'POST', body: JSON.stringify(input) });
   if (!res.ok) {
@@ -609,6 +610,18 @@ export async function exportApiaryInspections(apiaryId: string, format: 'json' |
   return res.blob();
 }
 
+/**
+ * The year's treatments as a PDF to print and keep (#477).
+ *
+ * Part of the supporter subscription, judged by the apiary's owner, so a 403 here means the
+ * owner does not have one — worth saying rather than showing a failed download.
+ */
+export async function getTreatmentRecord(apiaryId: string, year: number): Promise<Blob> {
+  const res = await apiFetch(`/apiaries/${apiaryId}/treatment-record?year=${year}`);
+  if (!res.ok) await failure(res, 'Could not create the record');
+  return res.blob();
+}
+
 export async function getPublicStats(): Promise<PublicStats> {
   const res = await fetch(`${BASE}/public/stats`, { headers: { 'Accept-Language': acceptLanguage() } });
   if (!res.ok) throw new Error('Failed to fetch public stats');
@@ -679,6 +692,18 @@ export interface TreatmentTarget { type: 'hive' | 'apiary'; id: string; name: st
 export interface PlannedTreatment {
   id: string; target: TreatmentTarget; apiary_name: string | null; product: string; due_on: string;
   note: string | null; done_on: string | null; overdue: boolean; created_by_name: string | null; created_at: string;
+  /** The quantity given, as free text — a dose is written the way the product is applied (#477). */
+  amount: string | null;
+  /** Days before the honey may be taken. Null where a product has none. */
+  withdrawal_days: number | null;
+  /**
+   * How many colonies this covered, frozen when it was marked done. Null while it is still open.
+   *
+   * Never recompute this from today's hive list: somebody who treated ten colonies in August and
+   * gave three away in October would be shown seven, in a number that goes into a document an
+   * authority may ask to see.
+   */
+  hive_count_treated: number | null;
 }
 export interface HomeSummary {
   today: string; in_season: boolean; apiary_count: number; hive_count: number;

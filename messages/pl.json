@@ -983,7 +983,11 @@
       "doneTitle": "Zrobione",
       "doneOn": "zrobiono {date}",
       "reopen": "Otwórz ponownie",
-      "errorGeneric": "To się nie udało. Spróbuj ponownie."
+      "errorGeneric": "To się nie udało. Spróbuj ponownie.",
+      "amount": "Ilość",
+      "amountHint": "2 × 15 ml na rodzinę",
+      "withdrawal": "Okres karencji (dni)",
+      "colonies": "rodziny: {count}"
     },
     "subscription": {
       "activeBody": "Dziękujemy. Wszystko, co obejmuje abonament, jest odblokowane w serwisie i w obu aplikacjach.",
@@ -1013,6 +1017,13 @@
       "stateNone": "Brak abonamentu",
       "thanks": "Dziękujemy. Twój abonament jest aktywny.",
       "title": "Abonament"
+    },
+    "record": {
+      "download": "Utwórz książkę",
+      "intro": "Wszystkie zabiegi wykonane w tej pasiece w ciągu roku, jako dokument do wydrukowania i przechowania. Powstaje z tego, co i tak jest zapisane — lek, ilość, liczba rodzin, daty — wraz z pomiarami warrozy, które tłumaczą, dlaczego do zabiegu doszło.",
+      "keep": "Książka leczenia zwierząt jest wymagana dla zwierząt służących do produkcji żywności, a pszczoły do nich należą. Przechowuj wydrukowany dokument przez pięć lat i okaż go na żądanie.",
+      "title": "Książka leczenia",
+      "year": "Rok"
     }
   },
   "hiveTypes": {

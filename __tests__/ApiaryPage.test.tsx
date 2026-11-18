@@ -11,6 +11,7 @@ const mockDeleteApiary = vi.hoisted(() => vi.fn());
 const mockCreateHive = vi.hoisted(() => vi.fn());
 const mockGetApiaryFieldDefs = vi.hoisted(() => vi.fn());
 const mockExportApiaryInspections = vi.hoisted(() => vi.fn());
+const mockGetTreatmentRecord = vi.hoisted(() => vi.fn());
 
 // Sharing has its own tests; these pages only need it out of the way.
 vi.mock('@/components/SharingPanel', () => ({ default: () => null }));
@@ -54,6 +55,7 @@ vi.mock('@/lib/api', async () => ({
   updateApiaryFieldDef: vi.fn(),
   deleteApiaryFieldDef: vi.fn(),
   exportApiaryInspections: mockExportApiaryInspections,
+  getTreatmentRecord: mockGetTreatmentRecord,
 }));
 
 const paginated = <T,>(items: T[]) => ({ items, total: items.length, page: 1, per_page: 100 });
@@ -358,5 +360,39 @@ describe('ApiaryPage', () => {
     await waitFor(() => screen.getByText('hive.exportJson'));
     fireEvent.click(screen.getByText('hive.exportJson'));
     await waitFor(() => expect(mockExportApiaryInspections).toHaveBeenCalledWith('apiary-1', 'json'));
+  });
+
+  // ── The treatment record (#477) ────────────────────────────────────────────────────────────
+
+  it('downloads the record for the chosen year', async () => {
+    setupMocks();
+    mockGetTreatmentRecord.mockResolvedValue(new Blob(['%PDF-'], { type: 'application/pdf' }));
+    const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
+    URL.createObjectURL = vi.fn(() => 'blob:x');
+    URL.revokeObjectURL = vi.fn();
+    render(<ApiaryPage />);
+    await waitFor(() => screen.getByText('My Apiary'));
+
+    fireEvent.change(screen.getByLabelText('record.year'), { target: { value: '2025' } });
+    fireEvent.click(screen.getByTestId('treatment-record-download'));
+
+    await waitFor(() => expect(mockGetTreatmentRecord).toHaveBeenCalledWith('apiary-1', 2025));
+    click.mockRestore();
+  });
+
+  it('says why when the record is refused instead of failing silently', async () => {
+    // It is part of the subscription. A download that simply does nothing is the worst way to
+    // learn that, so the server's own sentence is shown.
+    const { ApiError } = await vi.importActual<typeof import('@/lib/api')>('@/lib/api');
+    setupMocks();
+    mockGetTreatmentRecord.mockRejectedValue(
+      new ApiError('This is part of the supporter subscription.', 403, 'SUPPORTER_REQUIRED'));
+    render(<ApiaryPage />);
+    await waitFor(() => screen.getByText('My Apiary'));
+
+    fireEvent.click(screen.getByTestId('treatment-record-download'));
+
+    await waitFor(() =>
+      expect(screen.getByText('This is part of the supporter subscription.')).toBeInTheDocument());
   });
 });

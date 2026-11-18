@@ -30,6 +30,11 @@ export default function TreatmentsPanel({ type, id }: { type: 'hive' | 'apiary';
   const [product, setProduct] = useState('');
   const [dueOn, setDueOn] = useState(inDays(7));
   const [note, setNote] = useState('');
+  // Both go into the treatment record (#477). The amount is free text on purpose: a dose is
+  // written the way the product is applied — "2 × 15 ml per colony", "60 g" — and a number with
+  // a unit would either lose that or be filled in wrongly.
+  const [amount, setAmount] = useState('');
+  const [withdrawal, setWithdrawal] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -76,9 +81,16 @@ export default function TreatmentsPanel({ type, id }: { type: 'hive' | 'apiary';
     setSaving(true);
     setError(null);
     try {
-      await createTreatment({ ...target, product: product.trim(), due_on: dueOn, note: note.trim() || undefined });
+      await createTreatment({
+        ...target,
+        product: product.trim(),
+        due_on: dueOn,
+        note: note.trim() || undefined,
+        amount: amount.trim() || undefined,
+        withdrawal_days: withdrawal.trim() === '' ? undefined : Number(withdrawal),
+      });
       setProduct('');
-      setNote('');
+      setNote(''); setAmount(''); setWithdrawal('');
       setDueOn(inDays(7));
       setShowForm(false);
       await reload();
@@ -116,6 +128,19 @@ export default function TreatmentsPanel({ type, id }: { type: 'hive' | 'apiary';
           <div className="dash-form-group">
             <label htmlFor={`treatment-due-${id}`}>{t('treatments.dueOn')}</label>
             <input id={`treatment-due-${id}`} type="date" value={dueOn} onChange={e => setDueOn(e.target.value)} required />
+          </div>
+          <div className="dash-form-row">
+            <div className="dash-form-group">
+              <label htmlFor={`treatment-amount-${id}`}>{t('treatments.amount')}</label>
+              <input id={`treatment-amount-${id}`} type="text" maxLength={100} value={amount}
+                placeholder={t('treatments.amountHint')}
+                onChange={e => setAmount(e.target.value)} />
+            </div>
+            <div className="dash-form-group">
+              <label htmlFor={`treatment-withdrawal-${id}`}>{t('treatments.withdrawal')}</label>
+              <input id={`treatment-withdrawal-${id}`} type="number" min={0} max={365}
+                value={withdrawal} onChange={e => setWithdrawal(e.target.value)} />
+            </div>
           </div>
           <div className="dash-form-group">
             <label htmlFor={`treatment-note-${id}`}>{t('treatments.note')}</label>
@@ -156,7 +181,13 @@ export default function TreatmentsPanel({ type, id }: { type: 'hive' | 'apiary';
             {done.map(item => (
               <li key={item.id}>
                 {item.product}
-                <span className="dash-card-meta"> · {t('treatments.doneOn', { date: formatDay(item.done_on) })}</span>{' '}
+                <span className="dash-card-meta"> · {t('treatments.doneOn', { date: formatDay(item.done_on) })}</span>
+                {item.amount && <span className="dash-card-meta"> · {item.amount}</span>}
+                {/* The frozen count, shown as the record will print it. Never recomputed from
+                    today's hive list — see the type in lib/api.ts (#477). */}
+                {item.hive_count_treated !== null && (
+                  <span className="dash-card-meta"> · {t('treatments.colonies', { count: item.hive_count_treated })}</span>
+                )}{' '}
                 <button className="dash-home-btn" onClick={() => run(() => reopenTreatment(item.id))}>{t('treatments.reopen')}</button>
               </li>
             ))}

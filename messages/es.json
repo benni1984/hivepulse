@@ -983,7 +983,11 @@
       "doneTitle": "Hechos",
       "doneOn": "hecho el {date}",
       "reopen": "Reabrir",
-      "errorGeneric": "No ha funcionado. Inténtalo de nuevo."
+      "errorGeneric": "No ha funcionado. Inténtalo de nuevo.",
+      "amount": "Cantidad",
+      "amountHint": "2 × 15 ml por colmena",
+      "withdrawal": "Tiempo de espera (días)",
+      "colonies": "{count} colmenas"
     },
     "subscription": {
       "activeBody": "Gracias. Todo lo que incluye la suscripción está desbloqueado en la web y en ambas aplicaciones.",
@@ -1013,6 +1017,13 @@
       "stateNone": "Sin suscripción",
       "thanks": "Gracias. Tu suscripción está activa.",
       "title": "Suscripción"
+    },
+    "record": {
+      "download": "Crear el libro",
+      "intro": "Todos los tratamientos realizados en este colmenar durante un año, como documento para imprimir y conservar. Se compone de lo que ya está registrado — medicamento, cantidad, número de colmenas, fechas — junto con los recuentos de varroa que explican por qué se trató.",
+      "keep": "El libro de registro de medicamentos veterinarios es obligatorio para los animales productores de alimentos, y las abejas lo son. Conserva el documento impreso cinco años y muéstralo cuando te lo pidan.",
+      "title": "Libro de tratamientos",
+      "year": "Año"
     }
   },
   "hiveTypes": {

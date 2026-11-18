@@ -20,7 +20,9 @@ vi.mock('@/lib/api', () => ({ getHome: mockGetHome, markTreatmentDone: mockMarkD
 
 const treatment = (over: Record<string, unknown> = {}) => ({
   id: 't-1', target: { type: 'hive' as const, id: 'h-1', name: 'Hive 1' }, apiary_name: 'Garden', product: 'Formic acid',
-  due_on: '2026-08-20', note: null, done_on: null, overdue: false, created_by_name: 'Alice', created_at: '2026-08-01T00:00:00', ...over,
+  due_on: '2026-08-20', note: null, done_on: null, overdue: false, created_by_name: 'Alice',
+  amount: null, withdrawal_days: null, hive_count_treated: null,
+  created_at: '2026-08-01T00:00:00', ...over,
 });
 
 function summary(over: Partial<Summary> = {}): Summary {

@@ -983,7 +983,11 @@
       "doneTitle": "Done",
       "doneOn": "done {date}",
       "reopen": "Reopen",
-      "errorGeneric": "That did not work. Please try again."
+      "errorGeneric": "That did not work. Please try again.",
+      "amount": "Amount",
+      "amountHint": "2 × 15 ml per colony",
+      "withdrawal": "Withdrawal (days)",
+      "colonies": "{count} colonies"
     },
     "subscription": {
       "activeBody": "Thank you. Everything the subscription includes is unlocked on the website and in both apps.",
@@ -1013,6 +1017,13 @@
       "stateNone": "No subscription",
       "thanks": "Thank you. Your subscription is active.",
       "title": "Subscription"
+    },
+    "record": {
+      "download": "Create the record",
+      "intro": "Every treatment carried out at this apiary in one year, as a document to print and keep. It is assembled from what is already logged — product, amount, how many colonies, the dates — together with the varroa readings that explain why a treatment happened.",
+      "keep": "Keeping the record of veterinary medicines is required for food-producing animals, and bees are. Keep the printed document for five years and show it on request.",
+      "title": "Treatment record",
+      "year": "Year"
     }
   },
   "hiveTypes": {
