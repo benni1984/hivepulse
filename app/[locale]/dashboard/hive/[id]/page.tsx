@@ -14,17 +14,7 @@ import TreatmentsPanel from '@/components/TreatmentsPanel';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getHive, getHives, getHiveStats, getInspections, updateHive, deleteHive, createInspection, updateInspection, deleteInspection, getUserFieldDefs, getApiaryFieldDefs, exportHiveInspections, type Hive, type HiveStats, type MoveResult, type Inspection, type InspectionInput, type FieldDefinition } from '@/lib/api';
 import { todayLocal } from '@/lib/dates';
-
-function moodPct(dist: { calm: number; nervous: number; aggressive: number }) {
-  const total = dist.calm + dist.nervous + dist.aggressive;
-  if (total === 0) return null;
-  return {
-    calm: dist.calm, nervous: dist.nervous, aggressive: dist.aggressive,
-    calmPct: Math.round((dist.calm / total) * 100),
-    nervousPct: Math.round((dist.nervous / total) * 100),
-    aggressivePct: Math.round((dist.aggressive / total) * 100),
-  };
-}
+import { moodPct } from '@/lib/mood';
 
 const VarroaChart = dynamic(() => import('@/components/VarroaChart'), { ssr: false });
 

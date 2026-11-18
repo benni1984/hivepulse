@@ -1532,6 +1532,8 @@ Stats can be filtered by a preset window or an explicit date range. Both query p
 
 `trend` is returned for `number` and `date` types. `distribution` is returned for `boolean` and `select` types. `text` fields are omitted from stats.
 
+`mood_distribution` holds **raw counts per recorded mood, and only the moods that were recorded** — it is built from the inspections that set `mood`, so a mood nobody recorded is absent and a hive or apiary without inspections gets `{}`, not three zeroes. Clients must treat every key as optional and guard the total before computing a share (see `lib/mood.ts` on the web; #483).
+
 ### ApiaryStats object
 
 ```json
@@ -1550,6 +1552,8 @@ Stats can be filtered by a preset window or an explicit date range. Both query p
   "per_hive": [ /* array of HiveStats summary */ ]
 }
 ```
+
+`mood_distribution` is sparse here too — see the note under HiveStats above.
 
 ### OverviewStats object
 

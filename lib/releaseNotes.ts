@@ -35,6 +35,28 @@ export function pick(text: Localized, locale: string): string {
 /** Newest first. */
 export const RELEASES: Release[] = [
   {
+    date: '2026-11-18',
+    title: t(
+      'NaN% calm',
+      'NaN % ruhig',
+      'NaN % calmes',
+      'NaN % tranquilas',
+      'NaN% spokojnych',
+    ),
+    items: [
+      {
+        kind: 'fixed',
+        text: t(
+          'A new apiary showed its mood distribution as “Calm NaN% ()” until the first inspection was recorded — on the apiary page and on the hive page. Both now show “No mood data yet.”, the same sentence the varroa trend already used, until there is something to divide.',
+          'Ein neuer Bienenstand zeigte seine Stimmungsverteilung als „Ruhig NaN% ()“, bis die erste Kontrolle erfasst war — auf der Seite des Bienenstands und auf der des Volks. Beide zeigen jetzt „Noch keine Stimmungsdaten.“, denselben Satz wie schon der Varroa-Verlauf, solange es nichts zu teilen gibt.',
+          'Un nouveau rucher affichait sa répartition des humeurs comme « Calmes NaN % () » jusqu’à la première visite enregistrée — sur la page du rucher comme sur celle de la ruche. Les deux affichent désormais « Pas encore de données d’humeur. », la même phrase que la courbe varroa, tant qu’il n’y a rien à diviser.',
+          'Un colmenar nuevo mostraba su distribución de comportamiento como «Tranquilas NaN% ()» hasta que se registraba la primera revisión — tanto en la página del colmenar como en la de la colmena. Ahora las dos muestran «Aún no hay datos de comportamiento.», la misma frase que ya usaba la evolución de varroa, mientras no haya nada que dividir.',
+          'Nowa pasieka pokazywała rozkład temperamentu jako „Spokojne NaN% ()” do pierwszego zapisanego przeglądu — i na stronie pasieki, i na stronie rodziny. Obie pokazują teraz „Brak jeszcze danych o temperamencie.”, to samo zdanie, które miał już przebieg warrozy, dopóki nie ma czego dzielić.',
+        ),
+      },
+    ],
+  },
+  {
     date: '2026-11-17',
     title: t(
       'The session that would not end',
