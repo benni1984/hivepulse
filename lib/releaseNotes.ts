@@ -35,6 +35,38 @@ export function pick(text: Localized, locale: string): string {
 /** Newest first. */
 export const RELEASES: Release[] = [
   {
+    date: '2026-11-19',
+    title: t(
+      'The record you have to keep, out of what you already logged',
+      'Das Bestandsbuch — aus dem, was du ohnehin erfasst',
+      'Le registre à tenir, à partir de ce que vous saisissez déjà',
+      'El libro que hay que llevar, con lo que ya registras',
+      'Książka, którą trzeba prowadzić — z tego, co już zapisujesz',
+    ),
+    items: [
+      {
+        kind: 'added',
+        text: t(
+          'Every treatment carried out at an apiary in one year, as a PDF to print and keep: product, amount, how many colonies, the planned and the actual date, who recorded it, and the year’s varroa readings beside them. Part of the supporter subscription.',
+          'Alle Behandlungen eines Bienenstands in einem Jahr als PDF zum Ausdrucken und Aufbewahren: Arzneimittel, Menge, Anzahl der Völker, geplantes und tatsächliches Datum, wer es eingetragen hat, und daneben die Varroa-Befunde des Jahres. Gehört zum Supporter-Abo.',
+          'Tous les traitements d’un rucher sur une année, en PDF à imprimer et conserver : médicament, quantité, nombre de ruches, date prévue et date réelle, qui l’a saisi, et les relevés varroa de l’année à côté. Compris dans l’abonnement Supporter.',
+          'Todos los tratamientos de un colmenar en un año, en PDF para imprimir y conservar: medicamento, cantidad, cuántas colmenas, fecha prevista y real, quién lo anotó, y al lado los recuentos de varroa del año. Incluido en la suscripción Supporter.',
+          'Wszystkie zabiegi w pasiece w ciągu roku jako PDF do wydrukowania i przechowania: lek, ilość, liczba rodzin, data planowana i rzeczywista, kto zanotował, a obok pomiary warrozy z tego roku. W ramach abonamentu Supporter.',
+        ),
+      },
+      {
+        kind: 'added',
+        text: t(
+          'Treatments now take the amount — free text, so you can write it the way the product is applied — and a withdrawal period. The number of colonies a treatment covered is frozen when you mark it done, so a record never claims you treated fewer colonies than you did.',
+          'Behandlungen nehmen jetzt die Menge auf — als Textfeld, damit du sie so schreiben kannst, wie das Mittel angewendet wird — und eine Wartezeit. Die Anzahl der behandelten Völker wird beim Abhaken eingefroren, damit das Bestandsbuch nie weniger Völker behauptet, als du behandelt hast.',
+          'Les traitements acceptent désormais la quantité — en texte libre, pour l’écrire comme le produit s’applique — et un temps d’attente. Le nombre de ruches traitées est figé au moment où vous cochez le traitement, pour que le registre n’indique jamais moins de ruches que vous n’en avez traité.',
+          'Los tratamientos ahora admiten la cantidad — texto libre, para escribirla como se aplica el producto — y un tiempo de espera. El número de colmenas tratadas se congela al marcar el tratamiento, para que el libro nunca diga menos colmenas de las que trataste.',
+          'Zabiegi przyjmują teraz ilość — tekst dowolny, aby zapisać ją tak, jak lek się podaje — oraz okres karencji. Liczba leczonych rodzin zostaje zamrożona przy odhaczeniu zabiegu, żeby książka nigdy nie podawała mniej rodzin, niż leczyłeś.',
+        ),
+      },
+    ],
+  },
+  {
     date: '2026-11-18',
     title: t(
       'What HivePulse costs, and what it never does',

@@ -527,6 +527,14 @@
     <string name="treatments_plan">Behandlung planen</string>
     <string name="treatments_product">Mittel</string>
     <string name="treatments_due_on">Fällig am</string>
+    <string name="treatments_amount">Menge</string>
+    <string name="treatments_amount_hint">2 × 15 ml je Volk</string>
+    <string name="treatments_withdrawal">Wartezeit (Tage)</string>
+    <string name="treatments_colonies">%1$d Völker</string>
+    <string name="record_title">Bestandsbuch</string>
+    <string name="record_year_value">Jahr %1$d</string>
+    <string name="record_download">Bestandsbuch erstellen</string>
+    <string name="record_keep">Das Bestandsbuch über Tierarzneimittel ist für Lebensmittel liefernde Tiere vorgeschrieben, und Bienen gehören dazu. Bewahre das Dokument fünf Jahre auf und lege es auf Verlangen vor.</string>
     <string name="treatments_note">Notiz (optional)</string>
     <string name="treatments_empty">Nichts geplant.</string>
     <string name="treatments_overdue">fällig seit %1$s</string>

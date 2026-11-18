@@ -58,11 +58,20 @@ private final class MockTreatmentService: TreatmentServiceProtocol {
         if let actionError { throw actionError }
         deletedIds.append(id)
     }
+
+    var recordError: Error?
+    private(set) var recordCalls: [(apiaryId: String, year: Int)] = []
+    func record(apiaryId: String, year: Int) async throws -> Data {
+        if let recordError { throw recordError }
+        recordCalls.append((apiaryId, year))
+        return Data("%PDF-1.4 pretend".utf8)
+    }
 }
 
 private func makeTreatment(id: String = "t-1", product: String = "Formic acid", overdue: Bool = false) -> PlannedTreatmentOut {
     PlannedTreatmentOut(id: id, target: TreatmentTarget(type: "hive", id: "h-1", name: "Hive 1"), apiaryName: "Garden",
-                        product: product, dueOn: "2026-08-20", note: nil, doneOn: nil, overdue: overdue,
+                        product: product, dueOn: "2026-08-20", note: nil, amount: nil, withdrawalDays: nil,
+                        doneOn: nil, hiveCountTreated: nil, overdue: overdue,
                         createdByName: "Alice", createdAt: Date())
 }
 
@@ -471,5 +480,87 @@ final class HomeDTOTests: XCTestCase {
         XCTAssertEqual(json["due_on"] as? String, "2026-08-20")
         XCTAssertNil(json["apiary_id"])
         XCTAssertNil(json["note"])
+    }
+}
+
+// MARK: - The treatment record (#477)
+
+@MainActor
+final class TreatmentRecordTests: XCTestCase {
+
+    private var service: MockTreatmentService!
+
+    override func setUp() {
+        super.setUp()
+        service = MockTreatmentService()
+    }
+
+    private func vm(_ target: TreatmentTargetKind) -> TreatmentsViewModel {
+        TreatmentsViewModel(target: target, service: service)
+    }
+
+    func testAmountAndWithdrawalAreSent() {
+        // The quantity is what the record of veterinary medicines asks for by name.
+        let model = vm(.apiary("a-1"))
+        model.product = "Formic acid 60%"
+        model.amount = "2 × 15 ml per colony"
+        model.withdrawalDays = "0"
+
+        let request = model.request()
+
+        XCTAssertEqual(request.amount, "2 × 15 ml per colony")
+        XCTAssertEqual(request.withdrawalDays, 0)
+    }
+
+    func testEmptyFieldsAreLeftOutRatherThanSentBlank() {
+        // "nothing written down" is not the same as "nothing given".
+        let model = vm(.apiary("a-1"))
+        model.product = "Oxalic acid"
+        model.amount = "   "
+        model.withdrawalDays = ""
+
+        let request = model.request()
+
+        XCTAssertNil(request.amount)
+        XCTAssertNil(request.withdrawalDays)
+    }
+
+    func testOnlyAnApiaryHasARecord() {
+        // A single hive is not a holding: a record names a place and the colonies standing there.
+        XCTAssertNil(vm(.hive("h-1")).apiaryId)
+        XCTAssertEqual(vm(.apiary("a-1")).apiaryId, "a-1")
+    }
+
+    func testMakingTheRecordAsksForTheChosenYearAndWritesAFile() async {
+        let model = vm(.apiary("a-1"))
+        model.recordYear = 2025
+
+        await model.makeRecord()
+
+        XCTAssertEqual(service.recordCalls.first?.apiaryId, "a-1")
+        XCTAssertEqual(service.recordCalls.first?.year, 2025)
+        XCTAssertNotNil(model.recordURL)
+        XCTAssertFalse(model.isMakingRecord)
+    }
+
+    func testAHiveNeverAsksForARecord() async {
+        let model = vm(.hive("h-1"))
+
+        await model.makeRecord()
+
+        XCTAssertTrue(service.recordCalls.isEmpty)
+        XCTAssertNil(model.recordURL)
+    }
+
+    func testARefusalIsSaidOutLoud() async {
+        // The record is part of the subscription, so this can be a 403 with a sentence worth
+        // reading. A download that silently does nothing is the worst way to learn that.
+        service.recordError = APIError.server("This is part of the supporter subscription.")
+        let model = vm(.apiary("a-1"))
+
+        await model.makeRecord()
+
+        XCTAssertNil(model.recordURL)
+        XCTAssertNotNil(model.errorMessage)
     }
 }

@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import com.google.gson.Gson
 import com.hivepulse.app.data.api.*
 import com.hivepulse.app.data.repository.HomeRepository
+import com.hivepulse.app.data.repository.ExportRepository
+import com.hivepulse.app.data.repository.SavedDownload
 import com.hivepulse.app.data.repository.TreatmentRepository
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
@@ -28,9 +30,24 @@ private fun treatment(
     dueOn: String = "2026-12-01",
     overdue: Boolean? = false,
     doneOn: String? = null,
+    amount: String? = null,
+    hiveCountTreated: Int? = null,
 ) = PlannedTreatmentOut(
-    id, TreatmentTargetOut("hive", "h1", "Hive 1"), "Garden", product, dueOn, null, doneOn, overdue,
-    "Alice", "2026-01-01T00:00:00",
+    // Named, because this list grows: a positional call silently shifts every argument along
+    // when a field is inserted in the middle, which is how the amount would end up in the note.
+    id = id,
+    target = TreatmentTargetOut("hive", "h1", "Hive 1"),
+    apiaryName = "Garden",
+    product = product,
+    dueOn = dueOn,
+    note = null,
+    amount = amount,
+    withdrawalDays = null,
+    doneOn = doneOn,
+    hiveCountTreated = hiveCountTreated,
+    overdue = overdue,
+    createdByName = "Alice",
+    createdAt = "2026-01-01T00:00:00",
 )
 
 private fun summary(hiveCount: Int = 2, treatments: List<PlannedTreatmentOut> = emptyList()) = HomeSummaryOut(
@@ -257,6 +274,7 @@ class HomeSummaryViewModelTest {
 class TreatmentsViewModelTest {
 
     private val repo = mockk<TreatmentRepository>()
+    private val exports = mockk<ExportRepository>(relaxed = true)
 
     @Before fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
@@ -265,8 +283,8 @@ class TreatmentsViewModelTest {
     }
     @After fun tearDown() { Dispatchers.resetMain(); clearAllMocks() }
 
-    private fun hiveVm() = TreatmentsViewModel(SavedStateHandle(mapOf("type" to "hive", "id" to "h1")), repo)
-    private fun apiaryVm() = TreatmentsViewModel(SavedStateHandle(mapOf("type" to "apiary", "id" to "a1")), repo)
+    private fun hiveVm() = TreatmentsViewModel(SavedStateHandle(mapOf("type" to "hive", "id" to "h1")), repo, exports)
+    private fun apiaryVm() = TreatmentsViewModel(SavedStateHandle(mapOf("type" to "apiary", "id" to "a1")), repo, exports)
 
     @Test
     fun `a hive screen lists the treatments of that hive`() = runTest {
@@ -371,5 +389,102 @@ class TreatmentsViewModelTest {
         assertEquals("Gone already.", vm.state.value.error)
         vm.clearError()
         assertNull(vm.state.value.error)
+    }
+}
+
+// ── The treatment record (#477) ──────────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalCoroutinesApi::class)
+class TreatmentRecordTest {
+
+    private val repo = mockk<TreatmentRepository>()
+    private val exports = mockk<ExportRepository>()
+
+    @Before fun setUp() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        coEvery { repo.open(any(), any()) } returns emptyList()
+        coEvery { repo.done(any(), any()) } returns emptyList()
+    }
+    @After fun tearDown() { Dispatchers.resetMain(); clearAllMocks() }
+
+    private fun hiveVm() = TreatmentsViewModel(SavedStateHandle(mapOf("type" to "hive", "id" to "h1")), repo, exports)
+    private fun apiaryVm() = TreatmentsViewModel(SavedStateHandle(mapOf("type" to "apiary", "id" to "a1")), repo, exports)
+
+    @Test
+    fun `the amount and the withdrawal period are sent`() = runTest {
+        // The quantity is what the record of veterinary medicines asks for by name.
+        val vm = apiaryVm()
+        vm.setProduct("Formic acid 60%")
+        vm.setAmount("2 x 15 ml per colony")
+        vm.setWithdrawalDays("0")
+
+        val request = vm.request()
+
+        assertEquals("2 x 15 ml per colony", request.amount)
+        assertEquals(0, request.withdrawalDays)
+    }
+
+    @Test
+    fun `empty fields are left out rather than sent blank`() = runTest {
+        // "nothing written down" is not the same as "nothing given".
+        val vm = apiaryVm()
+        vm.setProduct("Oxalic acid")
+        vm.setAmount("   ")
+
+        val request = vm.request()
+
+        assertNull(request.amount)
+        assertNull(request.withdrawalDays)
+    }
+
+    @Test
+    fun `the withdrawal field refuses anything that is not a number`() = runTest {
+        val vm = apiaryVm()
+        vm.setWithdrawalDays("3 Tage")
+
+        assertEquals("3", vm.state.value.withdrawalDays)
+    }
+
+    @Test
+    fun `only an apiary has a record`() = runTest {
+        // A single hive is not a holding: a record names a place and the colonies standing there.
+        assertNull(hiveVm().recordApiaryId)
+        assertEquals("a1", apiaryVm().recordApiaryId)
+    }
+
+    @Test
+    fun `making the record asks for the chosen year`() = runTest {
+        coEvery { exports.downloadTreatmentRecord(any(), any()) } returns SavedDownload("r.pdf", "content://r")
+        val vm = apiaryVm()
+        vm.setRecordYear(2025)
+
+        vm.makeRecord()
+
+        coVerify { exports.downloadTreatmentRecord("a1", 2025) }
+        assertEquals("r.pdf", vm.state.value.recordFile?.name)
+        assertFalse(vm.state.value.isMakingRecord)
+    }
+
+    @Test
+    fun `a hive never asks for a record`() = runTest {
+        val vm = hiveVm()
+
+        vm.makeRecord()
+
+        coVerify(exactly = 0) { exports.downloadTreatmentRecord(any(), any()) }
+    }
+
+    @Test
+    fun `a refusal is said out loud`() = runTest {
+        // The record is part of the subscription, so this can be a 403 with a sentence worth
+        // reading. A download that silently does nothing is the worst way to learn that.
+        coEvery { exports.downloadTreatmentRecord(any(), any()) } throws
+            RuntimeException("This is part of the supporter subscription.")
+        val vm = apiaryVm()
+
+        vm.makeRecord()
+
+        assertNull(vm.state.value.recordFile)
+        assertEquals("This is part of the supporter subscription.", vm.state.value.error)
     }
 }

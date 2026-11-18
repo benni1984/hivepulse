@@ -63,6 +63,16 @@ final class TreatmentsViewModel: ObservableObject {
     @Published var product = ""
     @Published var dueOn = Calendar.current.date(byAdding: .day, value: 7, to: Date()) ?? Date()
     @Published var note = ""
+    /// Free text, not a number with a unit: a dose is written the way the product is applied —
+    /// "2 × 15 ml per colony", "60 g" — and a number would lose that (#477).
+    @Published var amount = ""
+    @Published var withdrawalDays = ""
+
+    // The treatment record. Only an apiary has one; a single hive is not a holding.
+    @Published var isMakingRecord = false
+    /// Set once the record is on disk; the view shows it with Quick Look, which can print and share.
+    @Published var recordURL: URL?
+    @Published var recordYear = Calendar.current.component(.year, from: Date())
 
     let target: TreatmentTargetKind
     private let service: any TreatmentServiceProtocol
@@ -95,8 +105,33 @@ final class TreatmentsViewModel: ObservableObject {
 
     var canPlan: Bool { !product.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !isSaving }
 
+    /// Only an apiary has a record: it names a place and the colonies standing there.
+    var apiaryId: String? {
+        if case .apiary(let id) = target { return id }
+        return nil
+    }
+
+    func makeRecord() async {
+        guard let apiaryId else { return }
+        isMakingRecord = true
+        errorMessage = nil
+        defer { isMakingRecord = false }
+        do {
+            let data = try await service.record(apiaryId: apiaryId, year: recordYear)
+            let url = FileManager.default.temporaryDirectory
+                .appendingPathComponent("HivePulse-treatment-record-\(recordYear).pdf")
+            try data.write(to: url, options: .atomic)
+            recordURL = url
+        } catch {
+            // It is part of the subscription, so this can be a 403 with a sentence worth reading.
+            // A download that silently does nothing is the worst way to learn that.
+            errorMessage = error.localizedDescription
+        }
+    }
+
     func request() -> TreatmentCreateRequest {
         let trimmedNote = note.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedAmount = amount.trimmingCharacters(in: .whitespacesAndNewlines)
         var hiveId: String?
         var apiaryId: String?
         switch target {
@@ -107,7 +142,10 @@ final class TreatmentsViewModel: ObservableObject {
             hiveId: hiveId, apiaryId: apiaryId,
             product: product.trimmingCharacters(in: .whitespacesAndNewlines),
             dueOn: DayFormat.wireString(from: dueOn),
-            note: trimmedNote.isEmpty ? nil : trimmedNote
+            note: trimmedNote.isEmpty ? nil : trimmedNote,
+            // Left out rather than sent as "": "nothing written down" is not "nothing given".
+            amount: trimmedAmount.isEmpty ? nil : trimmedAmount,
+            withdrawalDays: Int(withdrawalDays.trimmingCharacters(in: .whitespaces))
         )
     }
 
@@ -121,6 +159,8 @@ final class TreatmentsViewModel: ObservableObject {
             _ = try await service.create(request())
             product = ""
             note = ""
+            amount = ""
+            withdrawalDays = ""
             dueOn = Calendar.current.date(byAdding: .day, value: 7, to: Date()) ?? Date()
             await load()
             return true

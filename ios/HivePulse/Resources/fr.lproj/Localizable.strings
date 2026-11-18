@@ -534,6 +534,14 @@
 "treatments.plan" = "Planifier un traitement";
 "treatments.product" = "Produit";
 "treatments.dueOn" = "À faire le";
+"treatments.amount" = "Quantité";
+"treatments.amountHint" = "2 × 15 ml par ruche";
+"treatments.withdrawal" = "Temps d’attente (jours)";
+"treatments.colonies" = "%lld ruches";
+"record.title" = "Registre des traitements";
+"record.yearValue" = "Année %lld";
+"record.download" = "Créer le registre";
+"record.keep" = "Le registre des médicaments vétérinaires est obligatoire pour les animaux producteurs de denrées alimentaires, ce que sont les abeilles. Conservez le document cinq ans et présentez-le sur demande.";
 "treatments.note" = "Note (facultatif)";
 "treatments.empty" = "Rien de prévu.";
 "treatments.overdue" = "prévu depuis le %@";

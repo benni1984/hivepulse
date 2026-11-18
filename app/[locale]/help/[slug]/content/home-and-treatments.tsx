@@ -71,6 +71,26 @@ export default function HomeAndTreatmentsContent({ Screenshot }: { Screenshot: t
         </div>
         <Screenshot android="/docs/screenshots/android-treatments.png" web="/docs/screenshots/treatments-panel.png" caption="Plan a treatment and tick it off" />
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">The treatment record</h2>
+        <p>Every treatment carried out at one apiary in one year, as a document to print and keep. It is assembled from what you have already logged — the product, the amount, how many colonies, the planned and the actual date, who recorded it — together with the varroa readings from that year, which are the reason a treatment happened.</p>
+        <ol className="help-steps">
+          <li>
+            <span className="help-step-num">1</span>
+            <div className="help-step-body"><strong>Record the amount while you treat.</strong> The quantity is the field the record asks for by name. It is free text, so write it the way the product is applied: <em>2 × 15 ml per colony</em>, <em>60 g</em>, <em>one strip per 5 frames</em>.</div>
+          </li>
+          <li>
+            <span className="help-step-num">2</span>
+            <div className="help-step-body"><strong>Open the apiary and choose <em>Create the record</em></strong>, with the year you need. On the website it sits on the apiary page; in the apps it is at the bottom of the apiary’s treatments screen. A year with nothing treated still produces a document — “nothing was treated here” is also an answer.</div>
+          </li>
+        </ol>
+        <div className="help-callout info">
+          <i className="fas fa-info-circle" />
+          <p><strong>The number of colonies is frozen on the day you mark a treatment done.</strong> If you treat ten colonies in August and give three away in October, the record still says ten, because ten is what you treated. That is why marking a treatment done matters more than it looks.</p>
+        </div>
+        <p>Keeping a record of veterinary medicines is required for food-producing animals, and bees are. Keep the printed document for five years and show it on request. HivePulse produces the document; it does not claim to be the record itself.</p>
+      </section>
     </>
   );
 }

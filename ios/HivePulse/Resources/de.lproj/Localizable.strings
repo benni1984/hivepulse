@@ -535,6 +535,14 @@
 "treatments.plan" = "Behandlung planen";
 "treatments.product" = "Mittel";
 "treatments.dueOn" = "Fällig am";
+"treatments.amount" = "Menge";
+"treatments.amountHint" = "2 × 15 ml je Volk";
+"treatments.withdrawal" = "Wartezeit (Tage)";
+"treatments.colonies" = "%lld Völker";
+"record.title" = "Bestandsbuch";
+"record.yearValue" = "Jahr %lld";
+"record.download" = "Bestandsbuch erstellen";
+"record.keep" = "Das Bestandsbuch über Tierarzneimittel ist für Lebensmittel liefernde Tiere vorgeschrieben, und Bienen gehören dazu. Bewahre das Dokument fünf Jahre auf und lege es auf Verlangen vor.";
 "treatments.note" = "Notiz (optional)";
 "treatments.empty" = "Nichts geplant.";
 "treatments.overdue" = "fällig seit %@";

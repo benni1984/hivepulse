@@ -71,6 +71,26 @@ export default function HomeAndTreatmentsContent({ Screenshot }: { Screenshot: t
         </div>
         <Screenshot android="/docs/screenshots/android-treatments.png" web="/docs/screenshots/treatments-panel.png" caption="Planificar un tratamiento y marcarlo" />
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">El libro de tratamientos</h2>
+        <p>Todos los tratamientos realizados en un colmenar durante un año, como documento para imprimir y conservar. Se compone de lo que ya has registrado — el medicamento, la cantidad, cuántas colmenas, la fecha prevista y la real, quién lo anotó — junto con los recuentos de varroa del año, que son la razón por la que se trató.</p>
+        <ol className="help-steps">
+          <li>
+            <span className="help-step-num">1</span>
+            <div className="help-step-body"><strong>Anota la cantidad mientras tratas.</strong> Es el campo que el libro de registro exige por su nombre. Es texto libre: escríbelo como se aplica el producto — <em>2 × 15 ml por colmena</em>, <em>60 g</em>, <em>una tira por cada 5 cuadros</em>.</div>
+          </li>
+          <li>
+            <span className="help-step-num">2</span>
+            <div className="help-step-body"><strong>Abre el colmenar y elige <em>Crear el libro</em></strong>, con el año que necesites. En la web está en la página del colmenar; en las apps, al final de la pantalla de tratamientos del colmenar. Un año sin tratamientos también genera un documento: «aquí no se trató» también es una respuesta.</div>
+          </li>
+        </ol>
+        <div className="help-callout info">
+          <i className="fas fa-info-circle" />
+          <p><strong>El número de colmenas se congela el día en que marcas un tratamiento como realizado.</strong> Si tratas diez colmenas en agosto y cedes tres en octubre, el libro sigue diciendo diez, porque diez es lo que trataste. Por eso marcar un tratamiento importa más de lo que parece.</p>
+        </div>
+        <p>Llevar un registro de medicamentos veterinarios es obligatorio para los animales productores de alimentos, y las abejas lo son. Conserva el documento impreso cinco años y muéstralo cuando te lo pidan. HivePulse produce el documento; no afirma ser el registro en sí.</p>
+      </section>
     </>
   );
 }

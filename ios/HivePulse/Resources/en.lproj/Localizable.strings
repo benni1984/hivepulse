@@ -536,6 +536,14 @@
 "treatments.plan" = "Plan a treatment";
 "treatments.product" = "Product";
 "treatments.dueOn" = "Due on";
+"treatments.amount" = "Amount";
+"treatments.amountHint" = "2 × 15 ml per colony";
+"treatments.withdrawal" = "Withdrawal (days)";
+"treatments.colonies" = "%lld colonies";
+"record.title" = "Treatment record";
+"record.yearValue" = "Year %lld";
+"record.download" = "Create the record";
+"record.keep" = "Keeping the record of veterinary medicines is required for food-producing animals, and bees are. Keep the document for five years and show it on request.";
 "treatments.note" = "Note (optional)";
 "treatments.empty" = "Nothing planned.";
 "treatments.overdue" = "due since %@";

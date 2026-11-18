@@ -102,6 +102,40 @@ in the Members tab, drawn as soft round patches that blend into each other — t
 See the help pages `hive-stats`, `community-stats`,
 `data-export`, `hornet-tracker`, `hornet-traps`.
 
+### The treatment record
+
+`GET /apiaries/{id}/treatment-record?year=YYYY` returns a PDF: every treatment carried out at that
+apiary in that year, with the product, the amount, how many colonies, the planned and the actual
+date and who recorded it, and the year's varroa readings beside them. Part of the subscription,
+judged by the apiary's **owner**, so somebody invited onto an apiary can print the paperwork for
+work they did.
+
+Beekeepers in the EU must record the veterinary medicines they use, because bees are
+food-producing animals (Art. 108(5) of Regulation (EU) 2019/6; in Germany §§ 1–2
+Tierhalter-Arzneimittelanwendungs- und Nachweisverordnung and § 95a(3) TAMG). Five years, shown
+on request.
+
+Three things decide whether the document is any good:
+
+* **The amount is free text, not a number with a unit.** A dose is written the way the product is
+  applied — "2 × 15 ml per colony", "60 g", "one strip per 5 frames".
+* **The number of colonies is frozen when a treatment is marked done.** Counting them when the
+  record is printed would count the colonies that exist *then*: ten treated in August and three
+  given away in October would read as seven, which is a false statement in a document an authority
+  may ask to see.
+* **It is a document to keep, not a claim of compliance.** The regulation allows an electronic
+  record only where the data cannot be altered afterwards, which a document regenerated from
+  editable rows is not — but it allows loose leaves. So HivePulse prints the sheet, dated, and the
+  beekeeper keeps it. Nothing in the product says more, and nothing should start to.
+
+A missing amount prints as a dash and the document says in its own line how many entries are
+incomplete. A year with nothing treated still produces a PDF: "nothing was treated here in 2026"
+is exactly what somebody may need to show.
+
+The PDF is typeset with DM Sans, which lives in `backend/app/assets/fonts/` because ReportLab's
+own fonts cannot draw `ą ę ż ś ń ź` — four languages would have looked perfect while Polish
+quietly fell apart.
+
 ## What the supporter subscription includes
 
 Decided while the application had no users at all, because a quantity limit cannot be introduced

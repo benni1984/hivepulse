@@ -32,6 +32,8 @@ protocol TreatmentServiceProtocol {
     func markDone(_ id: String) async throws -> PlannedTreatmentOut
     func reopen(_ id: String) async throws -> PlannedTreatmentOut
     func delete(_ id: String) async throws
+    /// The year's treatments as a PDF to keep. Part of the supporter subscription (#477).
+    func record(apiaryId: String, year: Int) async throws -> Data
 }
 
 private struct TreatmentEmptyBody: Encodable {}
@@ -65,5 +67,9 @@ struct TreatmentService: TreatmentServiceProtocol {
 
     func delete(_ id: String) async throws {
         try await client.delete("treatments/" + id)
+    }
+
+    func record(apiaryId: String, year: Int) async throws -> Data {
+        try await client.getRawData("apiaries/\(apiaryId)/treatment-record?year=\(year)")
     }
 }

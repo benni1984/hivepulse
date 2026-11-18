@@ -198,6 +198,10 @@ interface ApiService {
     suspend fun deleteShare(@Path("id") id: String): Response<Unit>
 
     @Streaming
+    /** The year's treatments as a PDF to keep. Part of the supporter subscription (#477). */
+    @GET("apiaries/{id}/treatment-record")
+    suspend fun treatmentRecord(@Path("id") id: String, @Query("year") year: Int): ResponseBody
+
     @GET("qr-batches/{id}/pdf")
     suspend fun downloadQrBatchPdf(@Path("id") id: String): ResponseBody
 

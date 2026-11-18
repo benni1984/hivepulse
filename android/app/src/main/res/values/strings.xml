@@ -529,6 +529,14 @@
     <string name="treatments_plan">Plan a treatment</string>
     <string name="treatments_product">Product</string>
     <string name="treatments_due_on">Due on</string>
+    <string name="treatments_amount">Amount</string>
+    <string name="treatments_amount_hint">2 × 15 ml per colony</string>
+    <string name="treatments_withdrawal">Withdrawal (days)</string>
+    <string name="treatments_colonies">%1$d colonies</string>
+    <string name="record_title">Treatment record</string>
+    <string name="record_year_value">Year %1$d</string>
+    <string name="record_download">Create the record</string>
+    <string name="record_keep">Keeping the record of veterinary medicines is required for food-producing animals, and bees are. Keep the document for five years and show it on request.</string>
     <string name="treatments_note">Note (optional)</string>
     <string name="treatments_empty">Nothing planned.</string>
     <string name="treatments_overdue">due since %1$s</string>

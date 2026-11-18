@@ -71,6 +71,26 @@ export default function HomeAndTreatmentsContent({ Screenshot }: { Screenshot: t
         </div>
         <Screenshot android="/docs/screenshots/android-treatments.png" web="/docs/screenshots/treatments-panel.png" caption="Zaplanuj zabieg i odhacz go" />
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Książka leczenia</h2>
+        <p>Wszystkie zabiegi wykonane w jednej pasiece w ciągu roku, jako dokument do wydrukowania i przechowania. Powstaje z tego, co już zapisałeś — lek, ilość, liczba rodzin, data planowana i rzeczywista, kto to zanotował — wraz z pomiarami warrozy z tego roku, które tłumaczą, dlaczego do zabiegu doszło.</p>
+        <ol className="help-steps">
+          <li>
+            <span className="help-step-num">1</span>
+            <div className="help-step-body"><strong>Zapisuj ilość podczas zabiegu.</strong> To pole, którego książka leczenia wymaga wprost. Jest to tekst dowolny — zapisz go tak, jak lek się podaje: <em>2 × 15 ml na rodzinę</em>, <em>60 g</em>, <em>jeden pasek na 5 ramek</em>.</div>
+          </li>
+          <li>
+            <span className="help-step-num">2</span>
+            <div className="help-step-body"><strong>Otwórz pasiekę i wybierz <em>Utwórz książkę</em></strong>, z potrzebnym rokiem. W serwisie jest to na stronie pasieki, w aplikacjach — na dole ekranu zabiegów pasieki. Rok bez zabiegów też daje dokument: „tutaj nie leczono” to również odpowiedź.</div>
+          </li>
+        </ol>
+        <div className="help-callout info">
+          <i className="fas fa-info-circle" />
+          <p><strong>Liczba rodzin zostaje zamrożona w dniu, w którym oznaczasz zabieg jako wykonany.</strong> Jeśli w sierpniu potraktujesz dziesięć rodzin, a w październiku oddasz trzy, w książce nadal będzie dziesięć — bo dziesięć leczyłeś. Dlatego odhaczenie zabiegu znaczy więcej, niż wygląda.</p>
+        </div>
+        <p>Prowadzenie książki leczenia zwierząt jest wymagane dla zwierząt służących do produkcji żywności, a pszczoły do nich należą. Przechowuj wydrukowany dokument przez pięć lat i okaż go na żądanie. HivePulse tworzy dokument; nie twierdzi, że sam jest tą książką.</p>
+      </section>
     </>
   );
 }

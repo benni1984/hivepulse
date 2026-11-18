@@ -529,6 +529,14 @@
     <string name="treatments_plan">Zaplanuj zabieg</string>
     <string name="treatments_product">Preparat</string>
     <string name="treatments_due_on">Termin</string>
+    <string name="treatments_amount">Ilość</string>
+    <string name="treatments_amount_hint">2 × 15 ml na rodzinę</string>
+    <string name="treatments_withdrawal">Okres karencji (dni)</string>
+    <string name="treatments_colonies">rodziny: %1$d</string>
+    <string name="record_title">Książka leczenia</string>
+    <string name="record_year_value">Rok %1$d</string>
+    <string name="record_download">Utwórz książkę</string>
+    <string name="record_keep">Książka leczenia zwierząt jest wymagana dla zwierząt służących do produkcji żywności, a pszczoły do nich należą. Przechowuj dokument przez pięć lat i okaż go na żądanie.</string>
     <string name="treatments_note">Notatka (opcjonalnie)</string>
     <string name="treatments_empty">Nic nie zaplanowano.</string>
     <string name="treatments_overdue">zaległy od %1$s</string>
