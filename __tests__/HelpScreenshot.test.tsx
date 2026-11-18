@@ -2,6 +2,12 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import React from 'react';
 
+// The components ask next-intl which language the page is in, to look for that language's
+// screenshot first (#475). Vitest allows a factory to close over a variable whose name begins
+// with `mock`, which is how a test changes the language.
+const mockLocale = 'en';
+vi.mock('next-intl', () => ({ useLocale: () => mockLocale }));
+
 vi.mock('@/components/HelpScreenshotTabs', () => ({
   default: (props: { android: string; web: string; caption: string }) => (
     <div data-testid="screenshot-tabs" data-android={props.android} data-web={props.web} data-caption={props.caption} />

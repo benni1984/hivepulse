@@ -1,6 +1,8 @@
 import { render } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import React from 'react';
+import { NextIntlClientProvider } from 'next-intl';
+
 
 vi.mock('next-intl/server', () => ({
   getTranslations: async () => (key: string) => key,
@@ -8,11 +10,18 @@ vi.mock('next-intl/server', () => ({
 
 import HelpTopicPage from '@/app/[locale]/help/[slug]/page';
 
+// HelpScreenshot asks next-intl for the current locale so it can show the picture in the
+// reader's language (#475). These tests render the page component on its own, outside the locale
+// layout that normally provides it, so they bring their own provider. Mocking the hook away would
+// pass just as well and would stop exercising the very thing the localised screenshots rely on.
+const withLocale = (locale: string, jsx: React.ReactNode) =>
+  <NextIntlClientProvider locale={locale}>{jsx}</NextIntlClientProvider>;
+
 const LOCALES = ['en', 'de', 'fr', 'es', 'pl'] as const;
 
 async function renderTopic(locale: string, slug: string) {
   const jsx = await HelpTopicPage({ params: Promise.resolve({ locale, slug }) });
-  return render(jsx);
+  return render(withLocale(locale, jsx));
 }
 
 // The apps gained apiary and hive editing (and the public-map switch), which the help
