@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 
 # Needed to run the test suite, never imported by the application itself.
-TEST_ONLY = {"pytest", "pytest-asyncio"}
+TEST_ONLY = {"pytest", "pytest-asyncio", "pytest-xdist"}
 
 # Extras the deployed list leaves out on purpose.
 DELIBERATELY_WITHOUT_EXTRAS = {
