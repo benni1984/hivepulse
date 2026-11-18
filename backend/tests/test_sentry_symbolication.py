@@ -139,7 +139,39 @@ def test_a_failed_symbol_upload_is_not_quiet():
 
 
 def test_it_is_skipped_rather_than_failed_when_there_is_no_token():
+    """Skipped in the shell, not in the `if:` — see the test below for why that matters."""
     job = _testflight_job()
     step = _step("testflight", job, "Upload debug symbols to Sentry")
 
-    assert "secrets.SENTRY_AUTH_TOKEN != ''" in step["if"]
+    assert "SENTRY_AUTH_TOKEN" in step["env"]
+    assert '-z "$SENTRY_AUTH_TOKEN"' in step["run"], "the check belongs in the shell"
+    assert "exit 0" in step["run"], "a missing token skips, it does not fail"
+
+
+def test_no_workflow_reaches_for_a_secret_in_a_condition():
+    """The bug this file failed to catch, pinned as the class it belongs to (#488).
+
+    A step's or job's `if:` may use github, needs, strategy, matrix, job, runner, env, vars,
+    steps and inputs. **`secrets` is not among them.** An unrecognised name there does not fail
+    the step: GitHub rejects the entire workflow before any job starts, which produces no job,
+    no step and no log — only a red run listed under the file path instead of the workflow's
+    name. TestFlight was dead for a day that way (#488), and this very file passed throughout,
+    because the test it had asserted the broken expression rather than whether GitHub would
+    accept the file. A test that pins the wrong thing is worse than no test: it defends the bug.
+
+    `steps.secrets.outputs.ready` is fine and appears a dozen times — that is a step *named*
+    "secrets", not the context.
+    """
+    import re
+
+    offenders = []
+    for path in sorted(WORKFLOWS.glob("*.yml")):
+        for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            stripped = line.strip()
+            if not stripped.startswith("if:"):
+                continue
+            masked = stripped.replace("steps.secrets.", "steps.STEP_ID.")
+            if re.search(r"(?<![.\w])secrets\.", masked):
+                offenders.append(f"{path.name}:{number}  {stripped}")
+
+    assert not offenders, "secrets are not readable from an if-condition: " + "; ".join(offenders)
