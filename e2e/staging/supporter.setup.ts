@@ -92,12 +92,39 @@ setup('authenticate as a supporter', async ({ page, request }) => {
   }
 
   const hives = await request.get(`/api/v1/apiaries/${apiaryId}/hives`, { headers: supporterHeaders });
-  if ((((await hives.json()).items ?? []).length) === 0) {
+  let hiveId = ((await hives.json()).items ?? [])[0]?.id;
+  if (!hiveId) {
     const made = await request.post(`/api/v1/apiaries/${apiaryId}/hives`, {
       data: { name: 'E2E Hive', hive_type: 'langstroth' },
       headers: supporterHeaders,
     });
     expect(made.ok(), 'creating the fixture hive must succeed').toBeTruthy();
+    hiveId = (await made.json()).id;
+  }
+
+  // And one inspection, so the hive has an inspection *table* at all.
+  //
+  // The first version of this fixture stopped at the hive, on the reasoning that the two
+  // navigating tests tolerate an empty history. That was true of the mood test, which accepts
+  // "No mood data yet" — and wrong about the load-more test, which asserts
+  // `table.dash-inspection-table` unconditionally and only guards the button. With no
+  // inspections there is no table, and it failed on main.
+  //
+  // One is enough: the table appears, the load-more button does not, and the test's own
+  // `if (await loadMoreBtn.isVisible())` takes it from there.
+  const inspections = await request.get(`/api/v1/hives/${hiveId}/inspections`, {
+    headers: supporterHeaders,
+  });
+  if ((((await inspections.json()).items ?? []).length) === 0) {
+    const made = await request.post(`/api/v1/hives/${hiveId}/inspections`, {
+      data: {
+        date: new Date().toISOString().slice(0, 10),
+        mood: 'calm',
+        notes: 'Fixture inspection for the staging E2E suite.',
+      },
+      headers: supporterHeaders,
+    });
+    expect(made.ok(), 'creating the fixture inspection must succeed').toBeTruthy();
   }
 
   fs.mkdirSync(path.dirname(AUTH_FILE), { recursive: true });
