@@ -445,4 +445,4 @@ def test_an_announcement_without_a_link_carries_none(world, monkeypatch):
 
 
 def test_the_summary_needs_a_signed_in_user(client):
-    assert client.get(f"{API}/home").status_code in (401, 422)
+    assert client.get(f"{API}/home").status_code == 401

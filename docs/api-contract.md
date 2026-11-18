@@ -4,6 +4,13 @@ Base URL: `http://<host>:8000/api/v1`
 
 All endpoints require `Authorization: Bearer <access_token>` unless marked **public**.
 
+A request without that header is refused with **401 `TOKEN_INVALID`**, in the error-envelope shape
+below, exactly as a request carrying an invalid one is — the two are indistinguishable to a client,
+so the one rule "refresh the token on 401" covers both. It used to be 422 with pydantic's array of
+validation errors, because the header was declared as a required request field and FastAPI's own
+validation answered before the dependency ran; a client refreshing on 401 sailed straight past it
+(#482). An **expired** token is 401 `TOKEN_EXPIRED`.
+
 ---
 
 ## Table of Contents
@@ -141,6 +148,9 @@ item is untouched, so a client that wants to mark the offending field still read
 that wants its own wording still reads `type` and `ctx`.
 
 `type` and `ctx` are pydantic's. A client should not parse `msg`.
+
+**Authentication never arrives in this shape.** A missing, malformed, invalid or expired
+`Authorization` header is a 401 with the error envelope above, not a 422 (#482).
 
 ### Value ranges
 

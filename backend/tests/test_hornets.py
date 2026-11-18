@@ -411,12 +411,12 @@ def test_admin_set_status_not_found(admin_client):
 
 
 def test_admin_set_status_requires_admin(client):
-    """Unauthenticated request: missing Authorization header → 422 (required header).
-    This matches the existing backend behaviour for all protected endpoints."""
+    """Unauthenticated request: missing Authorization header → 401 (#482).
+    This matches the behaviour of every other protected endpoint."""
     sid = _create_sighting(client)
     r = client.put(f"/api/v1/admin/hornets/sightings/{sid}/status", json={"status": "confirmed"})
-    # Missing Authorization header → FastAPI header-validation error (422)
-    assert r.status_code == 422
+    assert r.status_code == 401
+    assert r.json()["detail"]["code"] == "TOKEN_INVALID"
 
 
 # ---------------------------------------------------------------------------
@@ -609,9 +609,9 @@ def test_create_trap_links_user_when_authenticated(auth_client):
 
 
 def test_list_my_traps_requires_auth(client):
-    """GET /hornets/traps without auth should return 401/422."""
+    """GET /hornets/traps without auth should return 401."""
     r = client.get("/api/v1/hornets/traps")
-    assert r.status_code in (401, 422)
+    assert r.status_code == 401
 
 
 def test_list_my_traps_empty(auth_client):

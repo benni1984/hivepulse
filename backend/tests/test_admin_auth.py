@@ -15,9 +15,10 @@ def test_ping_as_regular_user_returns_403(auth_client):
     assert resp.json()["detail"]["code"] == "FORBIDDEN"
 
 
-def test_ping_unauthenticated_returns_422(client):
+def test_ping_unauthenticated_returns_401(client):
     resp = client.get("/api/v1/admin/ping")
-    assert resp.status_code == 422
+    assert resp.status_code == 401
+    assert resp.json()["detail"]["code"] == "TOKEN_INVALID"
 
 
 def test_user_out_includes_admin_fields(auth_client):
