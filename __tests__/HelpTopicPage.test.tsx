@@ -1,12 +1,21 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import React from 'react';
+import { NextIntlClientProvider } from 'next-intl';
+
 
 vi.mock('next-intl/server', () => ({
   getTranslations: async () => (key: string) => key,
 }));
 
 import HelpTopicPage from '@/app/[locale]/help/[slug]/page';
+
+// HelpScreenshot asks next-intl for the current locale so it can show the picture in the
+// reader's language (#475). These tests render the page component on its own, outside the locale
+// layout that normally provides it, so they bring their own provider. Mocking the hook away would
+// pass just as well and would stop exercising the very thing the localised screenshots rely on.
+const withLocale = (locale: string, jsx: React.ReactNode) =>
+  <NextIntlClientProvider locale={locale}>{jsx}</NextIntlClientProvider>;
 
 vi.mock('@/i18n/navigation', () => ({
   Link: ({ href, children, className, onClick, style, title, target, rel }: {
@@ -24,7 +33,7 @@ describe('HelpTopicPage', () => {
 
   it('renders the breadcrumb, title, description, and platform badges for a valid topic', async () => {
     const jsx = await HelpTopicPage({ params: Promise.resolve({ locale: 'en', slug: 'apiaries' }) });
-    const { container } = render(jsx);
+    const { container } = render(withLocale('en', jsx));
 
     expect(screen.getByText('allTopics')).toHaveAttribute('href', '/help');
     expect(screen.getByText('groups.Managing your apiary')).toBeTruthy();
@@ -38,7 +47,7 @@ describe('HelpTopicPage', () => {
 
   it('shows only the web platform badge for a web-only topic', async () => {
     const jsx = await HelpTopicPage({ params: Promise.resolve({ locale: 'en', slug: 'custom-fields' }) });
-    const { container } = render(jsx);
+    const { container } = render(withLocale('en', jsx));
     expect(container.querySelector('.help-platform-badge.web')).toBeTruthy();
     expect(container.querySelector('.help-platform-badge.ios')).toBeNull();
     expect(container.querySelector('.help-platform-badge.android')).toBeNull();
@@ -46,7 +55,7 @@ describe('HelpTopicPage', () => {
 
   it('renders the topic content module, wired to the real HelpScreenshot component', async () => {
     const jsx = await HelpTopicPage({ params: Promise.resolve({ locale: 'en', slug: 'apiaries' }) });
-    const { container } = render(jsx);
+    const { container } = render(withLocale('en', jsx));
     // The "apiaries" content module renders several <Screenshot> figures.
     expect(container.querySelectorAll('.help-screenshot').length).toBeGreaterThan(0);
     expect(container.querySelectorAll('.help-section').length).toBeGreaterThan(0);
@@ -56,7 +65,7 @@ describe('HelpTopicPage', () => {
     // CONTENT falls back to CONTENT.en[slug] when a locale-specific module is unavailable;
     // exercise this via a locale that isn't one of the 4 configured ones.
     const jsx = await HelpTopicPage({ params: Promise.resolve({ locale: 'xx', slug: 'apiaries' }) });
-    const { container } = render(jsx);
+    const { container } = render(withLocale('xx', jsx));
     expect(container.querySelectorAll('.help-section').length).toBeGreaterThan(0);
   });
 });
