@@ -354,3 +354,73 @@ def test_the_address_cap_is_not_fooled_by_capitalisation(client):
     r = client.post("/api/v1/auth/forgot-password", json={"email": "MiXeD@Example.COM"},
                     headers={"X-Forwarded-For": "192.0.2.77"})
     assert r.status_code == 429
+
+
+# ---------------------------------------------------------------------------
+# A missing Authorization header is an authentication failure, not a validation
+# error (#482). It used to come out of FastAPI's request validation as 422 with
+# pydantic's list of errors, which a client refreshing its token on 401 would
+# sail straight past.
+# ---------------------------------------------------------------------------
+
+#: Endpoints behind each of the three auth dependencies in app/deps.py.
+_PROTECTED = [
+    "/api/v1/users/me",            # get_current_user
+    "/api/v1/users/me/reminder",   # get_current_user
+    "/api/v1/admin/ping",          # get_current_admin
+    "/api/v1/stats/community-heatmap",  # get_current_supporter
+]
+
+
+def _assert_unauthorized_body(response):
+    """401 with the project's error body: an object with a code and a sentence."""
+    assert response.status_code == 401, response.text
+    detail = response.json()["detail"]
+    assert isinstance(detail, dict), f"expected the project's error object, got {detail!r}"
+    assert detail["code"] == "TOKEN_INVALID"
+    assert detail["message"] == "Could not validate credentials."
+
+
+def test_missing_authorization_header_returns_401(client):
+    for path in _PROTECTED:
+        _assert_unauthorized_body(client.get(path))
+
+
+def test_invalid_authorization_header_returns_401(client):
+    for path in _PROTECTED:
+        _assert_unauthorized_body(client.get(path, headers={"Authorization": "Bearer nonsense"}))
+
+
+def test_missing_and_invalid_header_answer_the_same(client):
+    """The two have to be indistinguishable to a client, body shape included."""
+    for path in _PROTECTED:
+        missing = client.get(path)
+        invalid = client.get(path, headers={"Authorization": "Bearer nonsense"})
+        assert missing.status_code == invalid.status_code == 401
+        assert missing.json() == invalid.json()
+
+
+def test_header_without_bearer_prefix_returns_401(client):
+    _assert_unauthorized_body(client.get("/api/v1/users/me", headers={"Authorization": "nonsense"}))
+    _assert_unauthorized_body(client.get("/api/v1/users/me", headers={"Authorization": ""}))
+
+
+def test_missing_header_401_is_translated(client):
+    """Same route through app.i18n as every other error body."""
+    r = client.get("/api/v1/users/me", headers={"Accept-Language": "de"})
+    assert r.status_code == 401
+    assert r.json()["detail"] == {
+        "code": "TOKEN_INVALID",
+        "message": "Anmeldeinformationen konnten nicht überprüft werden.",
+    }
+
+
+def test_a_valid_token_still_gets_through(client):
+    """The header is optional to FastAPI now, so prove it is still read."""
+    data = _register(client, email="still-works@example.com")
+    r = client.get(
+        "/api/v1/users/me",
+        headers={"Authorization": f"Bearer {data['access_token']}"},
+    )
+    assert r.status_code == 200
+    assert r.json()["email"] == "still-works@example.com"
