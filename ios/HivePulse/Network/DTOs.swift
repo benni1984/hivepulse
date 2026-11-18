@@ -373,15 +373,27 @@ struct PlannedTreatmentOut: Codable, Identifiable {
     /// "YYYY-MM-DD"
     let dueOn: String
     let note: String?
+    /// The quantity given, as free text — a dose is written the way the product is applied (#477).
+    let amount: String?
+    /// Days before the honey may be taken. Null where a product has none.
+    let withdrawalDays: Int?
     let doneOn: String?
+    /// How many colonies this covered, frozen when it was marked done; nil while it is open.
+    ///
+    /// **Never recompute this from today's hive list.** Somebody who treated ten colonies in
+    /// August and gave three away in October would be shown seven, in a number that goes into a
+    /// document an authority may ask to see (#477).
+    let hiveCountTreated: Int?
     let overdue: Bool
     let createdByName: String?
     let createdAt: Date
     enum CodingKeys: String, CodingKey {
-        case id, target, product, note, overdue
+        case id, target, product, note, overdue, amount
         case apiaryName = "apiary_name"
         case dueOn = "due_on"
         case doneOn = "done_on"
+        case withdrawalDays = "withdrawal_days"
+        case hiveCountTreated = "hive_count_treated"
         case createdByName = "created_by_name"
         case createdAt = "created_at"
     }
@@ -393,11 +405,16 @@ struct TreatmentCreateRequest: Encodable {
     let product: String
     let dueOn: String
     let note: String?
+    /// Both feed the treatment record and are optional — "nothing written down" is not the same
+    /// as "nothing given", so an empty field is left out rather than sent as "" (#477).
+    var amount: String? = nil
+    var withdrawalDays: Int? = nil
     enum CodingKeys: String, CodingKey {
-        case product, note
+        case product, note, amount
         case hiveId = "hive_id"
         case apiaryId = "apiary_id"
         case dueOn = "due_on"
+        case withdrawalDays = "withdrawal_days"
     }
 }
 

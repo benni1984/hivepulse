@@ -494,6 +494,14 @@
     <string name="treatments_plan">Planificar un tratamiento</string>
     <string name="treatments_product">Producto</string>
     <string name="treatments_due_on">Para el</string>
+    <string name="treatments_amount">Cantidad</string>
+    <string name="treatments_amount_hint">2 × 15 ml por colmena</string>
+    <string name="treatments_withdrawal">Tiempo de espera (días)</string>
+    <string name="treatments_colonies">%1$d colmenas</string>
+    <string name="record_title">Libro de tratamientos</string>
+    <string name="record_year_value">Año %1$d</string>
+    <string name="record_download">Crear el libro</string>
+    <string name="record_keep">El libro de registro de medicamentos veterinarios es obligatorio para los animales productores de alimentos, y las abejas lo son. Conserva el documento cinco años y muéstralo cuando te lo pidan.</string>
     <string name="treatments_note">Nota (opcional)</string>
     <string name="treatments_empty">Nada planificado.</string>
     <string name="treatments_overdue">toca desde el %1$s</string>

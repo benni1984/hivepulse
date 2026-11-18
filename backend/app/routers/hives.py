@@ -12,6 +12,7 @@ from app.deps import CurrentUser, DB
 from app.i18n import error
 from app.models import Hive, PlannedTreatment, QrBatch, QrToken
 from app.schemas import HiveCreate, HiveInitialize, HiveOut, HiveUpdate, PaginatedResponse, QrScanUnlinked
+from app import limits
 
 router = APIRouter(tags=["hives"])
 
@@ -79,6 +80,8 @@ def create_hive(
     accept_language: Optional[str] = Header(default=None),
 ):
     _, _, scope = apiary_or_404(db, current_user, apiary_id, accept_language, need="edit")
+    # Before the batch, so a refused attempt leaves no half-made QR code behind (#478).
+    limits.require_room_for_a_hive(db, current_user, accept_language)
 
     batch = QrBatch(user_id=current_user.id, count=1)
     db.add(batch)
@@ -115,6 +118,8 @@ def initialize_hive(
         raise HTTPException(404, detail=error("QR_TOKEN_NOT_FOUND", accept_language))
     if qr.hive is not None:
         raise HTTPException(409, detail=error("QR_TOKEN_ALREADY_LINKED", accept_language))
+    # The other way in: the first scan of a sticker that is not attached to anything yet.
+    limits.require_room_for_a_hive(db, current_user, accept_language)
 
     _, _, scope = apiary_or_404(db, current_user, body.apiary_id, accept_language, need="edit")
 

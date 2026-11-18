@@ -352,7 +352,7 @@
     "s3title": "3. Cómo usamos tus datos",
     "s3body": "Tus datos se usan únicamente para el funcionamiento de la app y, solo si aceptas, para mostrar tu marcador en el mapa público y contribuir a las estadísticas globales. No vendemos, intercambiamos ni alquilamos datos personales. No los usamos para publicidad.",
     "s4title": "4. Proveedores de servicios",
-    "s4body": "El funcionamiento de HivePulse implica a algunas empresas que tratan datos por nuestra cuenta, en cada caso mediante un contrato de encargo del tratamiento. Alojamiento y sitio web: Vercel. Base de datos: Neon (servidores en la UE). Correos de restablecimiento de contraseña: Resend. Informes de fallos: Sentry (servidores en la UE, véase la sección siguiente). Notificaciones push, solo si activas los recordatorios: Google Firebase para dispositivos Android y Apple para iPhone, que reciben un token de dispositivo y el texto de la notificación. Los mapas base provienen de la OpenStreetMap Foundation, cuyos servidores reciben tu dirección IP al abrir un mapa. Las tipografías y los iconos se sirven desde nuestros propios servidores, por lo que ningún tercero se entera de nada. Estadísticas de visitas: Umami Cloud, que según su proveedor no utiliza cookies ni identificadores publicitarios y no almacena direcciones IP completas; registra las páginas vistas, el sitio de procedencia, el país y el tipo de dispositivo. La base legal es nuestro interés legítimo en saber si el sitio se usa (art. 6.1.f del RGPD). Búsqueda de un código postal (y de una dirección que escribes para un colmenar): el servicio de búsqueda Nominatim de la Fundación OpenStreetMap, que solo recibe ese código postal y país o esa dirección y nada de los datos de tu cuenta.",
+    "s4body": "El funcionamiento de HivePulse implica a algunas empresas que tratan datos por nuestra cuenta, en cada caso mediante un contrato de encargo del tratamiento. Alojamiento y sitio web: Vercel. Base de datos: Neon (servidores en la UE). Correos de restablecimiento de contraseña: Resend. Informes de fallos: Sentry (servidores en la UE, véase la sección siguiente). Notificaciones push, solo si activas los recordatorios: Google Firebase para dispositivos Android y Apple para iPhone, que reciben un token de dispositivo y el texto de la notificación. Los mapas base provienen de la OpenStreetMap Foundation, cuyos servidores reciben tu dirección IP al abrir un mapa. Las tipografías y los iconos se sirven desde nuestros propios servidores, por lo que ningún tercero se entera de nada. Pago de la suscripción Supporter, solo si contratas una: RevenueCat, que comprueba la compra e informa de ella a nuestro servidor, y Paddle, que gestiona el pago en sí y es el vendedor a efectos de esa operación: tus datos de pago se introducen en Paddle y nunca llegan hasta nosotros, y solo guardamos qué suscripción está activa, de dónde viene y cuándo termina. Si compras en la App Store o en Google Play, el cobro lo hacen Apple o Google, y por RevenueCat nos enteramos igual de poco. Estadísticas de visitas: Umami Cloud, que según su proveedor no utiliza cookies ni identificadores publicitarios y no almacena direcciones IP completas; registra las páginas vistas, el sitio de procedencia, el país y el tipo de dispositivo. La base legal es nuestro interés legítimo en saber si el sitio se usa (art. 6.1.f del RGPD). Búsqueda de un código postal (y de una dirección que escribes para un colmenar): el servicio de búsqueda Nominatim de la Fundación OpenStreetMap, que solo recibe ese código postal y país o esa dirección y nada de los datos de tu cuenta.",
     "s5title": "5. Informes de fallos",
     "s5body": "Cuando la aplicación o el servidor encuentra un error inesperado, se envía un informe a Sentry para poder corregirlo. Incluye el punto del código, la versión y el tipo de dispositivo. A propósito no incluye ninguno de tus contenidos: ninguna nota de revisión, ninguna contraseña, ninguna dirección de correo, ninguna dirección IP, ninguna captura de pantalla y ningún registro de lo que escribes. Un informe identifica tu cuenta solo por su número interno. Los informes se guardan en la UE y se eliminan a los 30 días. La base legal es nuestro interés legítimo en una aplicación que funcione y sea segura (art. 6.1.f del RGPD).",
     "s6title": "6. Base legal (RGPD y LPD suiza)",
@@ -425,7 +425,8 @@
       "releaseNotes": "Notas de versión",
       "feedback": "Enviar comentarios",
       "feedbackSubject": "Comentarios de HivePulse",
-      "calendar": "Año apícola"
+      "calendar": "Año apícola",
+      "subscription": "Suscripción"
     },
     "overview": {
       "title": "Mis estadísticas",
@@ -666,7 +667,8 @@
       "loadError": "No se pudieron cargar los datos del colmenar.",
       "backToMap": "Volver al mapa",
       "sharedNote": "Este colmenar pertenece a {name}. Puedes anotar revisiones y editar colmenas.",
-      "partialNote": "{name} ha compartido contigo algunas colmenas de este colmenar."
+      "partialNote": "{name} ha compartido contigo algunas colmenas de este colmenar.",
+      "limitSeeSubscription": "Ver la suscripción"
     },
     "hive": {
       "inspections": "Revisiones",
@@ -981,7 +983,47 @@
       "doneTitle": "Hechos",
       "doneOn": "hecho el {date}",
       "reopen": "Reabrir",
-      "errorGeneric": "No ha funcionado. Inténtalo de nuevo."
+      "errorGeneric": "No ha funcionado. Inténtalo de nuevo.",
+      "amount": "Cantidad",
+      "amountHint": "2 × 15 ml por colmena",
+      "withdrawal": "Tiempo de espera (días)",
+      "colonies": "{count} colmenas"
+    },
+    "subscription": {
+      "activeBody": "Gracias. Todo lo que incluye la suscripción está desbloqueado en la web y en ambas aplicaciones.",
+      "buy": "Suscribirse — 19,99 € al año",
+      "endsOn": "Válida hasta el {date} y no se renueva. Nada de lo que has registrado desaparece después.",
+      "errorGeneric": "No ha funcionado. Inténtalo de nuevo.",
+      "freeStays": "Gratis en cualquier caso, y así seguirá: el rastreador de avispa asiática, el año apícola, los códigos QR, las revisiones sin conexión y la exportación de tus propios datos.",
+      "graceBody": "Se está reintentando el pago. Mientras tanto no se bloquea nada: mantienes el acceso completo.",
+      "hivesUnlimited": "{used} colmenas, sin límite.",
+      "hivesUsed": "{used} de {limit} colmenas.",
+      "includeFields": "Tus propios campos en colmenas y revisiones.",
+      "includeHistory": "Todo el historial de estadísticas en lugar del último año.",
+      "includeHives": "Tantas colmenas como tengas.",
+      "includeMembers": "El mapa sanitario regional, en Miembros.",
+      "includeSharing": "Invitar a alguien a trabajar contigo en un colmenar o en una sola colmena.",
+      "includesTitle": "Qué incluye la suscripción",
+      "manage": "Gestionar la suscripción",
+      "manageInAppStore": "Comprada en la App Store. La renovación y la cancelación se gestionan allí, en Ajustes → tu nombre → Suscripciones; este sitio no puede cambiarlo.",
+      "manageInPlayStore": "Comprada en Google Play. La renovación y la cancelación se gestionan allí, en Pagos y suscripciones; este sitio no puede cambiarlo.",
+      "manualBody": "Este acceso se concedió directamente y no caduca.",
+      "noneBody": "HivePulse es gratuito hasta 10 colmenas. Una suscripción quita el límite y añade lo siguiente.",
+      "notSellingYet": "La suscripción todavía no se puede comprar aquí. Se está configurando.",
+      "overLimit": "Por encima del límite gratuito, y todas se quedan. Una suscripción que termina nunca quita nada; solo no puedes añadir otra colmena hasta que se reanude.",
+      "refresh": "Comprobar de nuevo",
+      "renewsOn": "Se renueva el {date}.",
+      "stateActive": "Eres supporter",
+      "stateNone": "Sin suscripción",
+      "thanks": "Gracias. Tu suscripción está activa.",
+      "title": "Suscripción"
+    },
+    "record": {
+      "download": "Crear el libro",
+      "intro": "Todos los tratamientos realizados en este colmenar durante un año, como documento para imprimir y conservar. Se compone de lo que ya está registrado — medicamento, cantidad, número de colmenas, fechas — junto con los recuentos de varroa que explican por qué se trató.",
+      "keep": "El libro de registro de medicamentos veterinarios es obligatorio para los animales productores de alimentos, y las abejas lo son. Conserva el documento impreso cinco años y muéstralo cuando te lo pidan.",
+      "title": "Libro de tratamientos",
+      "year": "Año"
     }
   },
   "hiveTypes": {
@@ -1139,6 +1181,10 @@
       "account": {
         "title": "Cuenta & perfil",
         "desc": "Actualiza tu nombre e idioma, cambia tu contraseña y elimina permanentemente tu cuenta y todos los datos asociados."
+      },
+      "subscription": {
+        "title": "Suscripción",
+        "desc": "Hasta 10 colmenas son gratuitas. Qué incluye la suscripción Supporter, qué no hace nunca alcanzar el límite y dónde cancelar."
       }
     }
   },

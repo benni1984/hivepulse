@@ -32,11 +32,21 @@ def out(treatment: PlannedTreatment) -> PlannedTreatmentOut:
         product=treatment.product,
         due_on=treatment.due_on,
         note=treatment.note,
+        amount=treatment.amount,
+        withdrawal_days=treatment.withdrawal_days,
         done_on=treatment.done_on,
+        hive_count_treated=treatment.hive_count_treated,
         overdue=treatment.done_on is None and treatment.due_on < today_utc(),
         created_by_name=treatment.created_by.name if treatment.created_by else None,
         created_at=treatment.created_at,
     )
+
+
+def _colonies_covered(db: Session, treatment: PlannedTreatment) -> int:
+    """How many colonies a treatment covers *today*. Only ever called while marking it done."""
+    if treatment.hive_id:
+        return 1
+    return db.query(Hive).filter(Hive.apiary_id == treatment.apiary_id).count()
 
 
 def visible_treatments(db: Session, scope: Scope) -> SAQuery:
@@ -82,6 +92,8 @@ def create_treatment(
         product=body.product.strip(),
         due_on=body.due_on,
         note=(body.note or "").strip() or None,
+        amount=(body.amount or "").strip() or None,
+        withdrawal_days=body.withdrawal_days,
         created_by_id=current_user.id,
     )
     db.add(treatment)
@@ -133,6 +145,10 @@ def update_treatment(
         treatment.due_on = changes["due_on"]
     if "note" in changes:
         treatment.note = (changes["note"] or "").strip() or None
+    if "amount" in changes:
+        treatment.amount = (changes["amount"] or "").strip() or None
+    if "withdrawal_days" in changes:
+        treatment.withdrawal_days = changes["withdrawal_days"]
     db.commit()
     db.refresh(treatment)
     return out(treatment)
@@ -149,6 +165,11 @@ def mark_done(
     # The body is optional: marking something done today needs no more than the click.
     treatment = _get_or_404(db, current_user, treatment_id, accept_language)
     treatment.done_on = (body.done_on if body else None) or today_utc()
+    # Freeze how many colonies this covered, now, while it is still true (#477). Counting them
+    # when the record is printed would count the colonies that exist *then*: ten treated in
+    # August and three given away in October would read as seven, in a document an authority may
+    # ask to see. The count has to be taken on the day of the treatment or not at all.
+    treatment.hive_count_treated = _colonies_covered(db, treatment)
     db.commit()
     db.refresh(treatment)
     return out(treatment)
@@ -163,6 +184,9 @@ def reopen(
 ):
     treatment = _get_or_404(db, current_user, treatment_id, accept_language)
     treatment.done_on = None
+    # The count only ever means anything beside a date. Without one it would be a number from a
+    # day that, as far as the record is concerned, did not happen.
+    treatment.hive_count_treated = None
     db.commit()
     db.refresh(treatment)
     return out(treatment)

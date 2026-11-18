@@ -352,7 +352,7 @@
     "s3title": "3. Jak używamy twoich danych",
     "s3body": "Twoje dane służą wyłącznie do działania aplikacji (uwierzytelnianie, zapisywanie i wyświetlanie twoich zapisów) oraz, tylko jeśli się na to zgodzisz, do pokazania pinezki twojej pasieki na mapie publicznej i do zliczania w globalnych statystykach (łączna liczba pasiek, rodzin, przeglądów). Nie sprzedajemy, nie wymieniamy ani nie wynajmujemy danych osobowych. Nie używamy ich do reklam.",
     "s4title": "4. Dostawcy usług",
-    "s4body": "Działanie HivePulse wymaga kilku firm, które przetwarzają dane w naszym imieniu, w każdym przypadku na podstawie umowy powierzenia przetwarzania. Hosting i strona internetowa: Vercel. Baza danych: Neon (serwery w UE). E-maile z resetem hasła: Resend. Raporty o awariach: Sentry (serwery w UE, zob. następną sekcję). Powiadomienia push, tylko jeśli włączysz przypomnienia: Google Firebase dla urządzeń z Androidem i Apple dla iPhone'ów, które otrzymują token urządzenia i treść powiadomienia. Kafelki map pochodzą od Fundacji OpenStreetMap, więc po otwarciu mapy trafia do nich twój adres IP. Czcionki i ikony są serwowane z naszych własnych serwerów, więc żadna strona trzecia nic się z nich nie dowiaduje. Statystyki odwiedzin: Umami Cloud, które według operatora nie używa plików cookie ani identyfikatorów reklamowych i nie przechowuje pełnych adresów IP; rejestruje odsłony, stronę odsyłającą, kraj i typ urządzenia. Podstawą prawną jest nasz uzasadniony interes w sprawdzaniu, czy strona jest w ogóle używana (art. 6 ust. 1 lit. f RODO). Wyszukiwanie kodu pocztowego (i adresu wpisanego dla pasieki): usługa wyszukiwania Nominatim Fundacji OpenStreetMap, która otrzymuje wyłącznie ten kod pocztowy i kraj albo ten adres, a żadnych danych twojego konta.",
+    "s4body": "Działanie HivePulse wymaga kilku firm, które przetwarzają dane w naszym imieniu, w każdym przypadku na podstawie umowy powierzenia przetwarzania. Hosting i strona internetowa: Vercel. Baza danych: Neon (serwery w UE). E-maile z resetem hasła: Resend. Raporty o awariach: Sentry (serwery w UE, zob. następną sekcję). Powiadomienia push, tylko jeśli włączysz przypomnienia: Google Firebase dla urządzeń z Androidem i Apple dla iPhone'ów, które otrzymują token urządzenia i treść powiadomienia. Kafelki map pochodzą od Fundacji OpenStreetMap, więc po otwarciu mapy trafia do nich twój adres IP. Czcionki i ikony są serwowane z naszych własnych serwerów, więc żadna strona trzecia nic się z nich nie dowiaduje. Płatność za abonament Supporter, tylko jeśli go wykupisz: RevenueCat, który sprawdza zakup i informuje o nim nasz serwer, oraz Paddle, które obsługuje samą płatność i jest w niej sprzedawcą — dane płatnicze podajesz w Paddle i nigdy do nas nie trafiają, a my zapisujemy tylko, który abonament działa, skąd pochodzi i kiedy się kończy. Jeśli kupujesz w App Store lub Google Play, płatność przyjmują Apple lub Google, a przez RevenueCat dowiadujemy się równie mało. Statystyki odwiedzin: Umami Cloud, które według operatora nie używa plików cookie ani identyfikatorów reklamowych i nie przechowuje pełnych adresów IP; rejestruje odsłony, stronę odsyłającą, kraj i typ urządzenia. Podstawą prawną jest nasz uzasadniony interes w sprawdzaniu, czy strona jest w ogóle używana (art. 6 ust. 1 lit. f RODO). Wyszukiwanie kodu pocztowego (i adresu wpisanego dla pasieki): usługa wyszukiwania Nominatim Fundacji OpenStreetMap, która otrzymuje wyłącznie ten kod pocztowy i kraj albo ten adres, a żadnych danych twojego konta.",
     "s5title": "5. Raporty o awariach",
     "s5body": "Gdy aplikacja lub serwer napotka nieoczekiwany błąd, raport trafia do Sentry, aby można było go naprawić. Zawiera miejsce w kodzie, wersję i rodzaj urządzenia. Celowo nie zawiera niczego z twoich treści: żadnych notatek z przeglądów, haseł, adresu e-mail, adresu IP, zrzutów ekranu ani zapisu wpisywanego tekstu. Raport identyfikuje twoje konto tylko wewnętrznym numerem. Raporty są przechowywane w UE przez 30 dni. Podstawą prawną jest nasz uzasadniony interes w sprawnej i bezpiecznej aplikacji (art. 6 ust. 1 lit. f RODO).",
     "s6title": "6. Podstawa prawna (RODO i szwajcarska FADP)",
@@ -425,7 +425,8 @@
       "releaseNotes": "Informacje o wersjach",
       "feedback": "Prześlij opinię",
       "feedbackSubject": "Opinia o HivePulse",
-      "calendar": "Rok pszczelarski"
+      "calendar": "Rok pszczelarski",
+      "subscription": "Abonament"
     },
     "overview": {
       "title": "Moje statystyki",
@@ -666,7 +667,8 @@
       "loadError": "Nie udało się wczytać danych pasieki.",
       "backToMap": "Wróć do mapy",
       "sharedNote": "Ta pasieka należy do: {name}. Możesz zapisywać przeglądy i edytować rodziny.",
-      "partialNote": "{name} udostępnia ci część rodzin z tej pasieki."
+      "partialNote": "{name} udostępnia ci część rodzin z tej pasieki.",
+      "limitSeeSubscription": "Zobacz abonament"
     },
     "hive": {
       "inspections": "Przeglądy",
@@ -981,7 +983,47 @@
       "doneTitle": "Zrobione",
       "doneOn": "zrobiono {date}",
       "reopen": "Otwórz ponownie",
-      "errorGeneric": "To się nie udało. Spróbuj ponownie."
+      "errorGeneric": "To się nie udało. Spróbuj ponownie.",
+      "amount": "Ilość",
+      "amountHint": "2 × 15 ml na rodzinę",
+      "withdrawal": "Okres karencji (dni)",
+      "colonies": "rodziny: {count}"
+    },
+    "subscription": {
+      "activeBody": "Dziękujemy. Wszystko, co obejmuje abonament, jest odblokowane w serwisie i w obu aplikacjach.",
+      "buy": "Wykup abonament — 19,99 € rocznie",
+      "endsOn": "Ważny do {date} i nie odnawia się. Nic z tego, co zapisałeś, potem nie znika.",
+      "errorGeneric": "Nie udało się. Spróbuj ponownie.",
+      "freeStays": "Bezpłatne tak czy inaczej i takie pozostaną: tropiciel szerszenia azjatyckiego, rok pszczelarski, kody QR, przeglądy bez sieci i eksport własnych danych.",
+      "graceBody": "Płatność jest ponawiana. W tym czasie nic nie jest zablokowane — zachowujesz pełny dostęp.",
+      "hivesUnlimited": "{used} rodzin pszczelich, bez limitu.",
+      "hivesUsed": "{used} z {limit} rodzin pszczelich.",
+      "includeFields": "Własne pola przy rodzinach i przeglądach.",
+      "includeHistory": "Cała historia statystyk zamiast ostatniego roku.",
+      "includeHives": "Tyle rodzin pszczelich, ile prowadzisz.",
+      "includeMembers": "Regionalna mapa zdrowia w sekcji Członkowie.",
+      "includeSharing": "Zaproszenie kogoś do wspólnej pracy nad pasieką lub nad pojedynczą rodziną.",
+      "includesTitle": "Co obejmuje abonament",
+      "manage": "Zarządzaj abonamentem",
+      "manageInAppStore": "Kupiony w App Store. Odnowienie i rezygnacja odbywają się tam, w Ustawienia → twoje imię → Subskrypcje — ten serwis nic tu nie zmieni.",
+      "manageInPlayStore": "Kupiony w Google Play. Odnowienie i rezygnacja odbywają się tam, w Płatności i subskrypcje — ten serwis nic tu nie zmieni.",
+      "manualBody": "Ten dostęp został przyznany bezpośrednio i nie wygasa.",
+      "noneBody": "HivePulse jest bezpłatny do 10 rodzin pszczelich. Abonament znosi limit i dodaje to, co poniżej.",
+      "notSellingYet": "Abonamentu nie można tu jeszcze kupić. Trwa konfiguracja.",
+      "overLimit": "Powyżej bezpłatnego limitu — i wszystkie zostają. Kończący się abonament nigdy niczego nie zabiera; po prostu nie możesz dodać kolejnej rodziny, dopóki go nie wznowisz.",
+      "refresh": "Sprawdź ponownie",
+      "renewsOn": "Odnawia się {date}.",
+      "stateActive": "Jesteś supporterem",
+      "stateNone": "Brak abonamentu",
+      "thanks": "Dziękujemy. Twój abonament jest aktywny.",
+      "title": "Abonament"
+    },
+    "record": {
+      "download": "Utwórz książkę",
+      "intro": "Wszystkie zabiegi wykonane w tej pasiece w ciągu roku, jako dokument do wydrukowania i przechowania. Powstaje z tego, co i tak jest zapisane — lek, ilość, liczba rodzin, daty — wraz z pomiarami warrozy, które tłumaczą, dlaczego do zabiegu doszło.",
+      "keep": "Książka leczenia zwierząt jest wymagana dla zwierząt służących do produkcji żywności, a pszczoły do nich należą. Przechowuj wydrukowany dokument przez pięć lat i okaż go na żądanie.",
+      "title": "Książka leczenia",
+      "year": "Rok"
     }
   },
   "hiveTypes": {
@@ -1139,6 +1181,10 @@
       "account": {
         "title": "Konto i profil",
         "desc": "Zmień nazwę wyświetlaną i język, zmień hasło oraz trwale usuń konto i wszystkie powiązane dane."
+      },
+      "subscription": {
+        "title": "Abonament",
+        "desc": "Do 10 rodzin pszczelich jest za darmo. Co obejmuje abonament Supporter, czego osiągnięcie limitu nigdy nie robi i gdzie zrezygnować."
       }
     }
   },

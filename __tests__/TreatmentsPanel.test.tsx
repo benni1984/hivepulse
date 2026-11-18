@@ -23,7 +23,9 @@ vi.mock('@/lib/api', () => ({
 
 const treatment = (id: string, over: Record<string, unknown> = {}) => ({
   id, target: { type: 'hive', id: 'h-1', name: 'Hive 1' }, apiary_name: 'Garden', product: `Product ${id}`,
-  due_on: '2026-08-20', note: null, done_on: null, overdue: false, created_by_name: 'Alice', created_at: '2026-08-01T00:00:00', ...over,
+  due_on: '2026-08-20', note: null, done_on: null, overdue: false, created_by_name: 'Alice',
+  amount: null, withdrawal_days: null, hive_count_treated: null,
+  created_at: '2026-08-01T00:00:00', ...over,
 });
 
 /** The server answers open and done separately; the panel asks for both. */
@@ -199,5 +201,70 @@ describe('TreatmentsPanel', () => {
       '.dash-row-btn', '.dash-row-btn-danger', '.dash-profile-select', 'table']) {
       expect(container.querySelector(clashing), clashing).toBeNull();
     }
+  });
+});
+
+// ------------------------------------------------------------------------------------------------
+// What the treatment record needs from this form (#477)
+// ------------------------------------------------------------------------------------------------
+
+describe('TreatmentsPanel and the treatment record', () => {
+  beforeEach(() => {
+    mockGet.mockReset(); mockCreate.mockReset();
+    mockDone.mockReset(); mockReopen.mockReset(); mockDelete.mockReset();
+  });
+
+  it('sends the amount and the withdrawal period when they are filled in', async () => {
+    // The quantity is what the record of veterinary medicines asks for by name.
+    serve([]);
+    mockCreate.mockResolvedValue(treatment('t-new'));
+    render(<TreatmentsPanel type="apiary" id="a-1" />);
+    await waitFor(() => screen.getByText('treatments.empty'));
+    fireEvent.click(screen.getByText('treatments.plan'));
+
+    fireEvent.change(screen.getByLabelText('treatments.product'), { target: { value: 'Formic acid 60%' } });
+    fireEvent.change(screen.getByLabelText('treatments.dueOn'), { target: { value: '2026-08-20' } });
+    fireEvent.change(screen.getByLabelText('treatments.amount'), { target: { value: '2 × 15 ml' } });
+    fireEvent.change(screen.getByLabelText('treatments.withdrawal'), { target: { value: '0' } });
+    fireEvent.submit(screen.getByText('treatments.save').closest('form')!);
+
+    await waitFor(() => expect(mockCreate).toHaveBeenCalledWith(
+      expect.objectContaining({ amount: '2 × 15 ml', withdrawal_days: 0 })));
+  });
+
+  it('leaves them out rather than sending empty values', async () => {
+    // They are optional, and an empty string is not the same as "none recorded".
+    serve([]);
+    mockCreate.mockResolvedValue(treatment('t-new'));
+    render(<TreatmentsPanel type="apiary" id="a-1" />);
+    await waitFor(() => screen.getByText('treatments.empty'));
+    fireEvent.click(screen.getByText('treatments.plan'));
+
+    fireEvent.change(screen.getByLabelText('treatments.product'), { target: { value: 'Oxalic acid' } });
+    fireEvent.change(screen.getByLabelText('treatments.dueOn'), { target: { value: '2026-12-27' } });
+    fireEvent.submit(screen.getByText('treatments.save').closest('form')!);
+
+    await waitFor(() => expect(mockCreate).toHaveBeenCalled());
+    const sent = mockCreate.mock.calls[0][0];
+    expect(sent.amount).toBeUndefined();
+    expect(sent.withdrawal_days).toBeUndefined();
+  });
+
+  it('shows a finished treatment with the number of colonies it covered', async () => {
+    // Shown exactly as the record will print it, and never recomputed from today's hive list:
+    // that number was frozen on the day of the treatment and must not drift (#477).
+    serve([], [treatment('t-1', { done_on: '2026-08-21', amount: '60 g', hive_count_treated: 9 })]);
+    render(<TreatmentsPanel type="apiary" id="a-1" />);
+
+    expect(await screen.findByText(/treatments.colonies/)).toBeTruthy();
+    expect(screen.getByText(/60 g/)).toBeTruthy();
+  });
+
+  it('says nothing about colonies while a treatment is still open', async () => {
+    serve([treatment('t-1')]);
+    render(<TreatmentsPanel type="apiary" id="a-1" />);
+
+    await screen.findByText('Product t-1');
+    expect(screen.queryByText(/treatments.colonies/)).toBeNull();
   });
 });

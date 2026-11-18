@@ -230,7 +230,19 @@ data class PlannedTreatmentOut(
     /** YYYY-MM-DD */
     @SerializedName("due_on")          val dueOn: String,
     val note: String?,
+    /** The quantity given, as free text — a dose is written the way the product is applied (#477). */
+    val amount: String? = null,
+    /** Days before the honey may be taken. Null where a product has none. */
+    @SerializedName("withdrawal_days") val withdrawalDays: Int? = null,
     @SerializedName("done_on")         val doneOn: String?,
+    /**
+     * How many colonies this covered, frozen when it was marked done; null while it is open.
+     *
+     * **Never recompute this from today's hive list.** Ten colonies treated in August and three
+     * given away in October would read as seven, in a number that goes into a document an
+     * authority may ask to see (#477).
+     */
+    @SerializedName("hive_count_treated") val hiveCountTreated: Int? = null,
     val overdue: Boolean?,
     @SerializedName("created_by_name") val createdByName: String?,
     @SerializedName("created_at")      val createdAt: String?,
@@ -244,6 +256,10 @@ data class TreatmentCreateRequest(
     val product: String,
     @SerializedName("due_on")    val dueOn: String,
     val note: String? = null,
+    /** Both feed the treatment record and are optional: an empty field is left out, not sent
+     *  as "", because "nothing written down" is not the same as "nothing given" (#477). */
+    val amount: String? = null,
+    @SerializedName("withdrawal_days") val withdrawalDays: Int? = null,
 )
 data class HomeInspectionOut(
     @SerializedName("hive_id")            val hiveId: String,

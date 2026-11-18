@@ -11,6 +11,7 @@ const mockDeleteApiary = vi.hoisted(() => vi.fn());
 const mockCreateHive = vi.hoisted(() => vi.fn());
 const mockGetApiaryFieldDefs = vi.hoisted(() => vi.fn());
 const mockExportApiaryInspections = vi.hoisted(() => vi.fn());
+const mockGetTreatmentRecord = vi.hoisted(() => vi.fn());
 
 // Sharing has its own tests; these pages only need it out of the way.
 vi.mock('@/components/SharingPanel', () => ({ default: () => null }));
@@ -38,7 +39,11 @@ vi.mock('@/hooks/useDashboardAuth', () => ({
   useDashboardReady: () => true,
 }));
 
-vi.mock('@/lib/api', () => ({
+vi.mock('@/lib/api', async () => ({
+  // The real class, not a stand-in: the page asks `err instanceof ApiError`, and a mock that
+  // handed back something else would make the limit case silently fall through to a red banner
+  // while every test still passed.
+  ApiError: (await vi.importActual<typeof import('@/lib/api')>('@/lib/api')).ApiError,
   getApiary: mockGetApiary,
   getHives: mockGetHives,
   getApiaryStats: mockGetApiaryStats,
@@ -50,6 +55,7 @@ vi.mock('@/lib/api', () => ({
   updateApiaryFieldDef: vi.fn(),
   deleteApiaryFieldDef: vi.fn(),
   exportApiaryInspections: mockExportApiaryInspections,
+  getTreatmentRecord: mockGetTreatmentRecord,
 }));
 
 const paginated = <T,>(items: T[]) => ({ items, total: items.length, page: 1, per_page: 100 });
@@ -251,6 +257,42 @@ describe('ApiaryPage', () => {
     await waitFor(() => expect(screen.getByText('Create failed')).toBeInTheDocument());
   });
 
+  it('answers the free colony limit with an offer, not a red banner', async () => {
+    // Reaching the limit is the one failure of this form that is not a fault. It gets its own
+    // amber box and a way out; a red "Create failed" would tell somebody the app is broken.
+    const { ApiError } = await vi.importActual<typeof import('@/lib/api')>('@/lib/api');
+    setupMocks();
+    mockCreateHive.mockRejectedValueOnce(
+      new ApiError('Up to 10 colonies are free.', 403, 'FREE_HIVE_LIMIT_REACHED'));
+    render(<ApiaryPage />);
+    await waitFor(() => screen.getByText('My Apiary'));
+
+    fireEvent.click(screen.getByText('apiary.newHive'));
+    fireEvent.change(screen.getByDisplayValue(''), { target: { value: 'Eleventh' } });
+    fireEvent.submit(screen.getByText('apiary.createHiveBtn').closest('form')!);
+
+    const box = await screen.findByTestId('hive-limit-reached');
+    expect(box.textContent).toContain('Up to 10 colonies are free.');
+    expect(box.querySelector('a')?.getAttribute('href')).toBe('/dashboard/subscription');
+    expect(document.querySelector('.dash-error-banner')).toBeNull();
+  });
+
+  it('still shows a red banner for an ordinary failure', async () => {
+    // The other half of the same decision: only this one code is an offer.
+    const { ApiError } = await vi.importActual<typeof import('@/lib/api')>('@/lib/api');
+    setupMocks();
+    mockCreateHive.mockRejectedValueOnce(new ApiError('Name already taken', 409, 'DUPLICATE'));
+    render(<ApiaryPage />);
+    await waitFor(() => screen.getByText('My Apiary'));
+
+    fireEvent.click(screen.getByText('apiary.newHive'));
+    fireEvent.change(screen.getByDisplayValue(''), { target: { value: 'Twin' } });
+    fireEvent.submit(screen.getByText('apiary.createHiveBtn').closest('form')!);
+
+    await waitFor(() => expect(screen.getByText('Name already taken')).toBeInTheDocument());
+    expect(screen.queryByTestId('hive-limit-reached')).toBeNull();
+  });
+
   it('shows has-hives error on 409 without redirecting', async () => {
     setupMocks();
     mockDeleteApiary.mockRejectedValueOnce(new Error('has_hives'));
@@ -341,5 +383,39 @@ describe('ApiaryPage', () => {
     await waitFor(() => screen.getByText('hive.exportJson'));
     fireEvent.click(screen.getByText('hive.exportJson'));
     await waitFor(() => expect(mockExportApiaryInspections).toHaveBeenCalledWith('apiary-1', 'json'));
+  });
+
+  // ── The treatment record (#477) ────────────────────────────────────────────────────────────
+
+  it('downloads the record for the chosen year', async () => {
+    setupMocks();
+    mockGetTreatmentRecord.mockResolvedValue(new Blob(['%PDF-'], { type: 'application/pdf' }));
+    const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
+    URL.createObjectURL = vi.fn(() => 'blob:x');
+    URL.revokeObjectURL = vi.fn();
+    render(<ApiaryPage />);
+    await waitFor(() => screen.getByText('My Apiary'));
+
+    fireEvent.change(screen.getByLabelText('record.year'), { target: { value: '2025' } });
+    fireEvent.click(screen.getByTestId('treatment-record-download'));
+
+    await waitFor(() => expect(mockGetTreatmentRecord).toHaveBeenCalledWith('apiary-1', 2025));
+    click.mockRestore();
+  });
+
+  it('says why when the record is refused instead of failing silently', async () => {
+    // It is part of the subscription. A download that simply does nothing is the worst way to
+    // learn that, so the server's own sentence is shown.
+    const { ApiError } = await vi.importActual<typeof import('@/lib/api')>('@/lib/api');
+    setupMocks();
+    mockGetTreatmentRecord.mockRejectedValue(
+      new ApiError('This is part of the supporter subscription.', 403, 'SUPPORTER_REQUIRED'));
+    render(<ApiaryPage />);
+    await waitFor(() => screen.getByText('My Apiary'));
+
+    fireEvent.click(screen.getByTestId('treatment-record-download'));
+
+    await waitFor(() =>
+      expect(screen.getByText('This is part of the supporter subscription.')).toBeInTheDocument());
   });
 });

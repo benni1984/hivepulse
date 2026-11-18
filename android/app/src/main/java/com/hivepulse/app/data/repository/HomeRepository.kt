@@ -36,6 +36,7 @@ class TreatmentRepository @Inject constructor(private val api: ApiService) {
 
     suspend fun reopen(id: String): PlannedTreatmentOut = withServerMessage { api.reopenTreatment(id) }
 
+
     suspend fun delete(id: String) {
         val response: Response<Unit> = withServerMessage { api.deleteTreatment(id) }
         if (!response.isSuccessful) throw RuntimeException("HTTP ${response.code()}")

@@ -74,6 +74,26 @@ export default function HomeAndTreatmentsContent({ Screenshot }: { Screenshot: t
         </div>
         <Screenshot android="/docs/screenshots/android-treatments.png" web="/docs/screenshots/treatments-panel.png" caption="Eine Behandlung planen und abhaken" />
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Das Bestandsbuch</h2>
+        <p>Alle Behandlungen eines Bienenstands in einem Jahr, als Dokument zum Ausdrucken und Aufbewahren. Es entsteht aus dem, was du ohnehin erfasst hast — Arzneimittel, Menge, Anzahl der Völker, geplantes und tatsächliches Datum, wer es eingetragen hat — zusammen mit den Varroa-Befunden des Jahres, die der Grund sind, warum behandelt wurde.</p>
+        <ol className="help-steps">
+          <li>
+            <span className="help-step-num">1</span>
+            <div className="help-step-body"><strong>Trage die Menge ein, während du behandelst.</strong> Die Menge ist das Feld, das das Bestandsbuch ausdrücklich verlangt. Es ist ein Textfeld — schreib es so, wie das Mittel angewendet wird: <em>2 × 15 ml je Volk</em>, <em>60 g</em>, <em>ein Streifen je 5 Waben</em>.</div>
+          </li>
+          <li>
+            <span className="help-step-num">2</span>
+            <div className="help-step-body"><strong>Öffne den Bienenstand und wähle <em>Bestandsbuch erstellen</em></strong>, mit dem Jahr, das du brauchst. Auf der Webseite steht das auf der Bienenstand-Seite, in den Apps unten im Behandlungs-Bildschirm des Bienenstands. Auch ein Jahr ohne Behandlungen ergibt ein Dokument — „hier wurde nicht behandelt“ ist ebenfalls eine Auskunft.</div>
+          </li>
+        </ol>
+        <div className="help-callout info">
+          <i className="fas fa-info-circle" />
+          <p><strong>Die Anzahl der Völker wird an dem Tag eingefroren, an dem du eine Behandlung als erledigt markierst.</strong> Behandelst du im August zehn Völker und gibst im Oktober drei ab, steht im Bestandsbuch weiterhin zehn — denn zehn hast du behandelt. Deshalb ist das Abhaken wichtiger, als es aussieht.</p>
+        </div>
+        <p>Das Bestandsbuch über Tierarzneimittel ist für Lebensmittel liefernde Tiere vorgeschrieben, und Bienen gehören dazu. Bewahre das ausgedruckte Dokument fünf Jahre auf und lege es auf Verlangen vor. HivePulse erstellt das Dokument; es behauptet nicht, selbst das Bestandsbuch zu sein.</p>
+      </section>
     </>
   );
 }

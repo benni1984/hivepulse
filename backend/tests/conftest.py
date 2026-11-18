@@ -68,6 +68,24 @@ def mock_geocoder():
         yield
 
 
+
+def make_supporter(email: str) -> None:
+    """Promote an account for tests of what the subscription includes (#478).
+
+    Inviting somebody, custom fields and the whole statistics history need it. Most tests that
+    use these were written before there was anything to pay for; the account doing the inviting
+    is simply a supporter now, and the thing being tested is unchanged.
+    """
+    from app.models import User
+    db = TestingSession()
+    try:
+        user = db.query(User).filter(User.email == email).first()
+        if user is not None:
+            user.is_supporter = True
+            db.commit()
+    finally:
+        db.close()
+
 @pytest.fixture
 def client():
     app.dependency_overrides[get_db] = override_get_db

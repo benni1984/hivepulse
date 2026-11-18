@@ -352,7 +352,7 @@
     "s3title": "3. Utilisation de vos données",
     "s3body": "Vos données servent uniquement à faire fonctionner l'app et, uniquement si vous acceptez, à afficher votre épingle sur la carte publique et à contribuer aux statistiques globales. Nous ne vendons, n'échangeons ni ne louons vos données personnelles. Nous ne les utilisons pas à des fins publicitaires.",
     "s4title": "4. Prestataires",
-    "s4body": "L'exploitation de HivePulse implique quelques entreprises qui traitent des données pour notre compte, chacune dans le cadre d'un contrat de sous-traitance. Hébergement et site : Vercel. Base de données : Neon (serveurs dans l'UE). E-mails de réinitialisation du mot de passe : Resend. Rapports de plantage : Sentry (serveurs dans l'UE, voir la section suivante). Notifications push, uniquement si vous activez les rappels : Google Firebase pour les appareils Android et Apple pour les iPhone, qui reçoivent un jeton d'appareil et le texte de la notification. Les fonds de carte proviennent de la OpenStreetMap Foundation, dont les serveurs reçoivent votre adresse IP lorsque vous ouvrez une carte. Les polices et les icônes sont servies depuis nos propres serveurs, aucun tiers n'en apprend donc quoi que ce soit. Statistiques de visite : Umami Cloud, qui selon son exploitant n'utilise ni cookies ni identifiants publicitaires et ne conserve pas les adresses IP complètes ; sont enregistrés les pages vues, le site référent, le pays et le type d'appareil. La base légale est notre intérêt légitime à savoir si le site est utilisé (art. 6, § 1, f du RGPD). Recherche d’un code postal (et d’une adresse saisie pour un rucher) : le service de recherche Nominatim de la fondation OpenStreetMap, qui ne reçoit que ce code postal et ce pays ou cette adresse et rien de vos données de compte.",
+    "s4body": "L'exploitation de HivePulse implique quelques entreprises qui traitent des données pour notre compte, chacune dans le cadre d'un contrat de sous-traitance. Hébergement et site : Vercel. Base de données : Neon (serveurs dans l'UE). E-mails de réinitialisation du mot de passe : Resend. Rapports de plantage : Sentry (serveurs dans l'UE, voir la section suivante). Notifications push, uniquement si vous activez les rappels : Google Firebase pour les appareils Android et Apple pour les iPhone, qui reçoivent un jeton d'appareil et le texte de la notification. Les fonds de carte proviennent de la OpenStreetMap Foundation, dont les serveurs reçoivent votre adresse IP lorsque vous ouvrez une carte. Les polices et les icônes sont servies depuis nos propres serveurs, aucun tiers n'en apprend donc quoi que ce soit. Paiement de l’abonnement Supporter, uniquement si vous en prenez un : RevenueCat, qui vérifie l’achat et en informe notre serveur, et Paddle, qui traite le paiement lui-même et en est le vendeur — vos données de paiement sont saisies chez Paddle et ne nous parviennent jamais ; nous ne conservons que quel abonnement est en cours, d’où il vient et quand il se termine. Si vous achetez via l’App Store ou Google Play, c’est Apple ou Google qui encaissent, et nous en apprenons tout aussi peu par RevenueCat. Statistiques de visite : Umami Cloud, qui selon son exploitant n'utilise ni cookies ni identifiants publicitaires et ne conserve pas les adresses IP complètes ; sont enregistrés les pages vues, le site référent, le pays et le type d'appareil. La base légale est notre intérêt légitime à savoir si le site est utilisé (art. 6, § 1, f du RGPD). Recherche d’un code postal (et d’une adresse saisie pour un rucher) : le service de recherche Nominatim de la fondation OpenStreetMap, qui ne reçoit que ce code postal et ce pays ou cette adresse et rien de vos données de compte.",
     "s5title": "5. Rapports de plantage",
     "s5body": "Lorsque l'application ou le serveur rencontre une erreur inattendue, un rapport est envoyé à Sentry afin qu'elle puisse être corrigée. Il contient l'endroit dans le code, la version et le type d'appareil. Il ne contient délibérément aucun de vos contenus : aucune note de visite, aucun mot de passe, aucune adresse e-mail, aucune adresse IP, aucune capture d'écran et aucun enregistrement de ce que vous tapez. Un rapport identifie votre compte uniquement par son numéro interne. Les rapports sont conservés dans l'UE et supprimés au bout de 30 jours. La base légale est notre intérêt légitime à disposer d'une application fonctionnelle et sûre (art. 6, § 1, f du RGPD).",
     "s6title": "6. Base légale (RGPD et LPD suisse)",
@@ -425,7 +425,8 @@
       "releaseNotes": "Notes de version",
       "feedback": "Envoyer un retour",
       "feedbackSubject": "Retour HivePulse",
-      "calendar": "Année apicole"
+      "calendar": "Année apicole",
+      "subscription": "Abonnement"
     },
     "overview": {
       "title": "Mes statistiques",
@@ -666,7 +667,8 @@
       "loadError": "Impossible de charger les données du rucher.",
       "backToMap": "Retour à la carte",
       "sharedNote": "Ce rucher appartient à {name}. Vous pouvez saisir des visites et modifier les ruches.",
-      "partialNote": "{name} a partagé quelques ruches de ce rucher avec vous."
+      "partialNote": "{name} a partagé quelques ruches de ce rucher avec vous.",
+      "limitSeeSubscription": "Voir l’abonnement"
     },
     "hive": {
       "inspections": "Visites",
@@ -981,7 +983,47 @@
       "doneTitle": "Fait",
       "doneOn": "fait le {date}",
       "reopen": "Rouvrir",
-      "errorGeneric": "Cela n’a pas fonctionné. Veuillez réessayer."
+      "errorGeneric": "Cela n’a pas fonctionné. Veuillez réessayer.",
+      "amount": "Quantité",
+      "amountHint": "2 × 15 ml par ruche",
+      "withdrawal": "Temps d’attente (jours)",
+      "colonies": "{count} ruches"
+    },
+    "subscription": {
+      "activeBody": "Merci. Tout ce que comprend l’abonnement est débloqué sur le site et dans les deux applications.",
+      "buy": "S’abonner — 19,99 € par an",
+      "endsOn": "Valable jusqu’au {date}, sans renouvellement. Rien de ce que vous avez saisi ne disparaît ensuite.",
+      "errorGeneric": "Cela n’a pas fonctionné. Veuillez réessayer.",
+      "freeStays": "Gratuits dans tous les cas, et cela ne changera pas : le suivi du frelon asiatique, l’année apicole, les QR codes, les visites hors ligne et l’export de vos propres données.",
+      "graceBody": "Le paiement est en cours de nouvelle tentative. Rien n’est bloqué pendant ce temps : vous gardez l’accès complet.",
+      "hivesUnlimited": "{used} ruches, sans limite.",
+      "hivesUsed": "{used} ruches sur {limit}.",
+      "includeFields": "Vos propres champs sur les ruches et les visites.",
+      "includeHistory": "Tout l’historique des statistiques au lieu de la dernière année.",
+      "includeHives": "Autant de ruches que vous en avez.",
+      "includeMembers": "La carte sanitaire régionale, dans Membres.",
+      "includeSharing": "Inviter quelqu’un à travailler avec vous sur un rucher ou sur une seule ruche.",
+      "includesTitle": "Ce que comprend l’abonnement",
+      "manage": "Gérer l’abonnement",
+      "manageInAppStore": "Acheté via l’App Store. Le renouvellement et la résiliation s’y font, dans Réglages → votre nom → Abonnements — ce site ne peut rien y changer.",
+      "manageInPlayStore": "Acheté via Google Play. Le renouvellement et la résiliation s’y font, dans Paiements et abonnements — ce site ne peut rien y changer.",
+      "manualBody": "Cet accès a été accordé directement et n’expire pas.",
+      "noneBody": "HivePulse est gratuit jusqu’à 10 ruches. Un abonnement lève la limite et ajoute ce qui suit.",
+      "notSellingYet": "L’abonnement n’est pas encore disponible à l’achat ici. Sa mise en place est en cours.",
+      "overLimit": "Au-delà de la limite gratuite — et toutes restent. Un abonnement qui se termine ne retire jamais rien ; vous ne pouvez simplement plus ajouter de ruche tant qu’il n’est pas repris.",
+      "refresh": "Vérifier à nouveau",
+      "renewsOn": "Se renouvelle le {date}.",
+      "stateActive": "Vous êtes supporter",
+      "stateNone": "Aucun abonnement",
+      "thanks": "Merci. Votre abonnement est actif.",
+      "title": "Abonnement"
+    },
+    "record": {
+      "download": "Créer le registre",
+      "intro": "Tous les traitements effectués dans ce rucher sur une année, sous forme de document à imprimer et à conserver. Il est constitué à partir de ce qui est déjà saisi — médicament, quantité, nombre de ruches, dates — avec les relevés varroa qui expliquent pourquoi un traitement a eu lieu.",
+      "keep": "Le registre des médicaments vétérinaires est obligatoire pour les animaux producteurs de denrées alimentaires, ce que sont les abeilles. Conservez le document imprimé cinq ans et présentez-le sur demande.",
+      "title": "Registre des traitements",
+      "year": "Année"
     }
   },
   "hiveTypes": {
@@ -1139,6 +1181,10 @@
       "account": {
         "title": "Compte & profil",
         "desc": "Mettre à jour votre nom d'affichage et votre langue, changer votre mot de passe et supprimer définitivement votre compte et toutes les données associées."
+      },
+      "subscription": {
+        "title": "Abonnement",
+        "desc": "Jusqu’à 10 ruches sont gratuites. Ce que comprend l’abonnement Supporter, ce qu’atteindre la limite ne fait jamais, et où résilier."
       }
     }
   },

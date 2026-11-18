@@ -433,6 +433,10 @@ class ReminderSendResult(BaseModel):
     skipped_off_season: int
     skipped_disabled: int
     skipped_no_channel: int
+    #: Supporters whose subscription had quietly ended. Everything about entitlements is
+    #: event-driven, which works until an event does not arrive; this is the backstop, and a
+    #: number nobody can see is a backstop nobody notices has rusted (#17).
+    subscriptions_lapsed: int = 0
 
 
 # ---------------------------------------------------------------------------
@@ -764,6 +768,10 @@ class TreatmentCreate(BaseModel):
     product: str = Field(min_length=1, max_length=200)
     due_on: PlannedDay
     note: Optional[str] = Field(default=None, max_length=2000)
+    #: Free text, not a number with a unit — a dose is written the way the product is applied.
+    amount: Optional[str] = Field(default=None, max_length=100)
+    #: Days before the honey may be taken. None where a product has none.
+    withdrawal_days: Optional[int] = Field(default=None, ge=0, le=365)
 
     @model_validator(mode="after")
     def exactly_one_target(self):
@@ -778,6 +786,10 @@ class TreatmentUpdate(BaseModel):
     product: Optional[str] = Field(default=None, min_length=1, max_length=200)
     due_on: Optional[PlannedDay] = None
     note: Optional[str] = Field(default=None, max_length=2000)
+    #: Free text, not a number with a unit — a dose is written the way the product is applied.
+    amount: Optional[str] = Field(default=None, max_length=100)
+    #: Days before the honey may be taken. None where a product has none.
+    withdrawal_days: Optional[int] = Field(default=None, ge=0, le=365)
 
 
 class TreatmentDone(BaseModel):
@@ -799,7 +811,11 @@ class PlannedTreatmentOut(BaseModel):
     product: str
     due_on: date
     note: Optional[str] = None
+    amount: Optional[str] = None
+    withdrawal_days: Optional[int] = None
     done_on: Optional[date] = None
+    #: Frozen when it was marked done; None while it is still open (#477).
+    hive_count_treated: Optional[int] = None
     overdue: bool = False
     created_by_name: Optional[str] = None
     created_at: datetime
@@ -1186,6 +1202,44 @@ class HornetTrapNearbyOut(BaseModel):
     longitude: float
     distance_m: int
     total_caught: int
+
+
+
+class SubscriptionOut(BaseModel):
+    """What the signed-in account is entitled to (api-contract.md, Subscriptions).
+
+    Always an object, never null: an account that has never bought anything has `status: "none"`.
+    One shape is easier to decode on three platforms than a sometimes-absent body.
+    """
+
+    status: str
+    source: Optional[str] = None
+    product_id: Optional[str] = None
+    current_period_end: Optional[datetime] = None
+    will_renew: bool = False
+    #: True for the App Store and Google Play: **the app cannot cancel it** and has to send the
+    #: person to the store. Saying so here means the three clients do not each decide for
+    #: themselves what they are allowed to offer.
+    store_managed: bool = False
+    #: Where a web subscriber manages or cancels. Only ever set for `source: "web"`.
+    manage_url: Optional[str] = None
+    #: Colonies this account owns. So a client can say "7 of 10" *before* somebody fills in a
+    #: form, rather than letting them name a colony and then refusing it (#478).
+    hives_used: int = 0
+    #: How many it may own, or None for no limit. None rather than a large number, so a client
+    #: renders "unlimited" instead of a ratio. `hives_used` may exceed this: a lapsed subscriber
+    #: keeps everything they had, so "15 of 10" is a state a client must display without scolding.
+    hive_limit: Optional[int] = None
+
+
+class WebCheckoutOut(BaseModel):
+    """Where to buy on the web (api-contract.md, Subscriptions).
+
+    One field on purpose. A client opens it and nothing else; the moment it tried to take the URL
+    apart to add something, the reason the server builds it would be gone.
+    """
+
+    url: str
 
 
 # Resolve forward references

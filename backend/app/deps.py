@@ -67,7 +67,9 @@ def get_current_supporter(current_user: Annotated[User, Depends(get_current_user
     if not current_user.is_supporter and not current_user.is_admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail={"code": "SUPPORTER_REQUIRED", "message": "Supporter access required."},
+            # Translated, now that a user can meet this by not having paid rather than by
+            # being in the wrong place (#478).
+            detail=error("SUPPORTER_REQUIRED"),
         )
     return current_user
 

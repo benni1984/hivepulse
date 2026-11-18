@@ -26,6 +26,13 @@ import com.hivepulse.app.data.api.isOverdue
 import com.hivepulse.app.ui.common.ErrorBanner
 import com.hivepulse.app.ui.moves.DateField
 import com.hivepulse.app.ui.common.StatusBadge
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
+import androidx.compose.ui.text.input.KeyboardType
+import com.hivepulse.app.ui.common.openSavedPdf
 
 private val Good = Color(0xFF166534)
 private val Warn = Color(0xFFB45309)
@@ -205,13 +212,32 @@ fun TreatmentsScreen(onBack: () -> Unit, vm: TreatmentsViewModel = hiltViewModel
     val state by vm.state.collectAsState()
     var toDelete by remember { mutableStateOf<PlannedTreatmentOut?>(null) }
 
+    val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    // The same handling as the QR sheet: save it where downloads go, offer to open it. A record
+    // somebody has to keep belongs in their own files, not inside this app (#477).
+    LaunchedEffect(state.recordFile) {
+        val file = state.recordFile ?: return@LaunchedEffect
+        val opened = file.uri != null && context.openSavedPdf(file.uri)
+        val saved = context.getString(R.string.qr_pdf_saved, file.name)
+        val result = snackbarHostState.showSnackbar(
+            message = if (file.uri != null && !opened) "$saved\n${context.getString(R.string.qr_pdf_no_viewer)}" else saved,
+            actionLabel = if (opened) context.getString(R.string.qr_pdf_open) else null,
+            duration = SnackbarDuration.Long,
+        )
+        if (result == SnackbarResult.ActionPerformed && file.uri != null) context.openSavedPdf(file.uri)
+        vm.clearRecordFile()
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.treatments_title)) },
                 navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } },
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { padding ->
         LazyColumn(Modifier.padding(padding), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             state.error?.let { item { ErrorBanner(it) { vm.clearError() } } }
@@ -238,6 +264,26 @@ fun TreatmentsScreen(onBack: () -> Unit, vm: TreatmentsViewModel = hiltViewModel
                     value = state.dueOn,
                     onChange = { it?.let(vm::setDueOn) },
                     modifier = Modifier.testTag("treatmentDue"),
+                )
+            }
+            item {
+                OutlinedTextField(
+                    value = state.amount,
+                    onValueChange = { vm.setAmount(it.take(100)) },
+                    label = { Text(stringResource(R.string.treatments_amount)) },
+                    placeholder = { Text(stringResource(R.string.treatments_amount_hint)) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth().testTag("treatmentAmount"),
+                )
+            }
+            item {
+                OutlinedTextField(
+                    value = state.withdrawalDays,
+                    onValueChange = vm::setWithdrawalDays,
+                    label = { Text(stringResource(R.string.treatments_withdrawal)) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.fillMaxWidth().testTag("treatmentWithdrawal"),
                 )
             }
             item {
@@ -284,12 +330,50 @@ fun TreatmentsScreen(onBack: () -> Unit, vm: TreatmentsViewModel = hiltViewModel
                 )
             }
 
+            // The treatment record: only an apiary has one, because it names a place and the
+            // colonies standing there (#477).
+            if (vm.recordApiaryId != null) {
+                item { Text(stringResource(R.string.record_title), style = MaterialTheme.typography.titleSmall) }
+                item {
+                    Text(
+                        stringResource(R.string.record_keep),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                item {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        IconButton(onClick = { vm.setRecordYear(state.recordYear - 1) }) {
+                            Icon(Icons.Default.Remove, contentDescription = null)
+                        }
+                        Text(state.recordYear.toString(), Modifier.testTag("recordYear"))
+                        IconButton(onClick = { vm.setRecordYear(state.recordYear + 1) }) {
+                            Icon(Icons.Default.Add, contentDescription = null)
+                        }
+                        Spacer(Modifier.width(8.dp))
+                        Button(onClick = vm::makeRecord, enabled = !state.isMakingRecord,
+                               modifier = Modifier.testTag("recordDownload")) {
+                            if (state.isMakingRecord) CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
+                            else Text(stringResource(R.string.record_download))
+                        }
+                    }
+                }
+            }
+
             if (state.done.isNotEmpty()) {
                 item { Text(stringResource(R.string.treatments_done_title), style = MaterialTheme.typography.titleSmall) }
                 items(state.done, key = { "done-" + it.id }) { item ->
                     ListItem(
                         headlineContent = { Text(item.product) },
-                        supportingContent = { Text(stringResource(R.string.treatments_done_on, formatDay(item.doneOn))) },
+                        supportingContent = {
+                            Column {
+                                Text(stringResource(R.string.treatments_done_on, formatDay(item.doneOn)))
+                                // Shown as the record will print it, never worked out from today's
+                                // hive list: that number was frozen on the day of the treatment (#477).
+                                item.amount?.takeIf { it.isNotBlank() }?.let { Text(it) }
+                                item.hiveCountTreated?.let { Text(stringResource(R.string.treatments_colonies, it)) }
+                            }
+                        },
                         trailingContent = {
                             TextButton(onClick = { vm.reopen(item) }, modifier = Modifier.testTag("treatmentReopen")) {
                                 Text(stringResource(R.string.treatments_reopen))

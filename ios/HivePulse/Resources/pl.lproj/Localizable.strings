@@ -536,6 +536,14 @@
 "treatments.plan" = "Zaplanuj zabieg";
 "treatments.product" = "Preparat";
 "treatments.dueOn" = "Termin";
+"treatments.amount" = "Ilość";
+"treatments.amountHint" = "2 × 15 ml na rodzinę";
+"treatments.withdrawal" = "Okres karencji (dni)";
+"treatments.colonies" = "rodziny: %lld";
+"record.title" = "Książka leczenia";
+"record.yearValue" = "Rok %lld";
+"record.download" = "Utwórz książkę";
+"record.keep" = "Książka leczenia zwierząt jest wymagana dla zwierząt służących do produkcji żywności, a pszczoły do nich należą. Przechowuj dokument przez pięć lat i okaż go na żądanie.";
 "treatments.note" = "Notatka (opcjonalnie)";
 "treatments.empty" = "Nic nie zaplanowano.";
 "treatments.overdue" = "zaległy od %@";

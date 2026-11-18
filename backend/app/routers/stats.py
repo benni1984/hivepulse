@@ -7,12 +7,13 @@ from fastapi import APIRouter, Header, HTTPException, Query
 from app.access import Scope, apiary_or_404, hive_or_404
 from app.deps import CurrentSupporter, CurrentUser, DB
 from app.i18n import error
-from app.models import Apiary, FieldDefinition, Hive, Inspection
+from app.models import Apiary, FieldDefinition, Hive, Inspection, User
 from app.schemas import (
     ApiaryStats, ApiaryStatsSummary, CustomFieldStat, HiveStats, HiveStatsSummary,
     OverviewStats, StatsPeriod, TrendPoint,
 )
 from app.clock import today_utc
+from app import limits
 
 router = APIRouter(tags=["stats"])
 
@@ -20,6 +21,22 @@ _HEATMAP_CELL = 0.5  # grid cell size in degrees (~50 km)
 
 
 def _resolve_period(
+    preset: Optional[str],
+    from_date: Optional[date],
+    to_date: Optional[date],
+    user: Optional[User] = None,
+) -> StatsPeriod:
+    """`user` narrows the window rather than refusing it (#478).
+
+    The narrowing happens at the end, on the resolved window, because every way of asking has to
+    pass through it: a preset, an explicit date range, and the default of no parameters at all —
+    which means "everything" and is the one the clients actually send. The response carries the
+    window that was really used, so a client can explain the smaller number.
+    """
+    return _narrow_to_subscription(_window(preset, from_date, to_date), user)
+
+
+def _window(
     preset: Optional[str],
     from_date: Optional[date],
     to_date: Optional[date],
@@ -38,6 +55,22 @@ def _resolve_period(
     if preset == "365d":
         return StatsPeriod(**{"from": today - timedelta(days=365), "to": today, "preset": "365d"})
     return StatsPeriod(**{"from": date(2000, 1, 1), "to": today, "preset": "all"})
+
+
+def _narrow_to_subscription(period: StatsPeriod, user: Optional[User]) -> StatsPeriod:
+    """Pull the start of the window forward to what a free account may ask for (#478)."""
+    if user is None:
+        return period
+    earliest = limits.earliest_allowed_stats_day(user)
+    if earliest is None or period.from_date >= earliest:
+        return period
+    return StatsPeriod(**{
+        # "custom" keeps its name: the dates in the answer say what was really used, and calling a
+        # range the caller chose "365d" would be a worse lie than a shortened range.
+        "from": earliest,
+        "to": period.to_date,
+        "preset": "365d" if period.preset in ("all", "365d") else period.preset,
+    })
 
 
 def _filter_inspections(inspections: list, period: StatsPeriod) -> list:
@@ -125,7 +158,7 @@ def hive_stats(
     accept_language: Optional[str] = Header(default=None),
 ):
     hive, _, _ = hive_or_404(db, current_user, hive_id, accept_language)
-    period = _resolve_period(preset, from_date, to_date)
+    period = _resolve_period(preset, from_date, to_date, current_user)
     return _build_hive_stats(hive, period, db)
 
 
@@ -143,7 +176,7 @@ def apiary_stats(
     # A collaborator on single hives sees the figures of those hives, not of the whole apiary.
     hives = scope.hives_in(apiary)
 
-    period = _resolve_period(preset, from_date, to_date)
+    period = _resolve_period(preset, from_date, to_date, current_user)
     today = today_utc()
     cutoff_30d = today - timedelta(days=30)
 
@@ -205,7 +238,7 @@ def overview_stats(
     from_date: Optional[date] = Query(default=None, alias="from"),
     to_date: Optional[date] = Query(default=None, alias="to"),
 ):
-    period = _resolve_period(preset, from_date, to_date)
+    period = _resolve_period(preset, from_date, to_date, current_user)
     scope = Scope(db, current_user)
     apiaries = db.query(Apiary).filter(scope.apiary_filter()).all()
     # Everything the caller can see counts, including what other beekeepers shared with them.

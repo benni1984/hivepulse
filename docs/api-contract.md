@@ -30,11 +30,13 @@ validation answered before the dependency ran; a client refreshing on 401 sailed
 13. [Moving Hives](#moving-hives)
 14. [Sharing](#sharing)
 15. [Stats](#stats)
-16. [Public Dashboard](#public-dashboard)
-17. [Hornet Tracker](#hornet-tracker)
-18. [Admin](#admin)
-19. [Object Reference](#object-reference)
-20. [Error Codes](#error-codes)
+16. [Export](#export)
+17. [Public Dashboard](#public-dashboard)
+18. [Hornet Tracker](#hornet-tracker)
+19. [Admin](#admin)
+20. [Subscriptions](#subscriptions)
+21. [Object Reference](#object-reference)
+22. [Error Codes](#error-codes)
 
 ---
 
@@ -504,9 +506,12 @@ X-Cron-Secret: <secret>
   "sent": 3,
   "skipped_off_season": 12,
   "skipped_disabled": 1,
-  "skipped_no_channel": 5
+  "skipped_no_channel": 5,
+  "subscriptions_lapsed": 0
 }
 ```
+
+`subscriptions_lapsed`: supporters whose subscription had quietly ended. Everything about entitlements is event-driven, which works until an event does not arrive — a deploy at the wrong moment is enough — so this run also checks the cached flag against the records. It lives on this endpoint rather than a cron of its own because this one already runs daily and an extra schedule is an extra thing to forget; the cost is that the endpoint does slightly more than its name says. See [Subscriptions](#subscriptions).
 
 `skipped_no_channel` (renamed from `skipped_no_token`): counts users who are enabled and in-season but have neither a push token nor `reminder_email_enabled`, so there is no channel to notify them through.
 
@@ -966,11 +971,36 @@ a treatment that has happened stays what it was, the `treatment_applied` text of
 ### POST `/treatments`
 
 ```json
-{ "hive_id": "uuid", "product": "Formic acid 60%", "due_on": "2026-08-20", "note": "string | null" }
+{
+  "hive_id": "uuid",
+  "product": "Formic acid 60%",
+  "due_on": "2026-08-20",
+  "note": "string | null",
+  "amount": "2 \u00d7 15 ml per colony | null",
+  "withdrawal_days": 0
+}
 ```
 
 Exactly one of `hive_id` and `apiary_id` (a treatment for all hives of an apiary). `product` up to
-200 characters, `note` up to 2000. **201** with a [PlannedTreatment](#plannedtreatment-object).
+200 characters, `note` up to 2000, `amount` up to 100. **201** with a
+[PlannedTreatment](#plannedtreatment-object).
+
+#### `amount` and `withdrawal_days`, and why they are text and a number
+
+Both exist for the treatment record (#477), where the quantity of the medicine is not decoration:
+the German record of veterinary medicines (§§ 1–2 Tierhalter-Arzneimittelanwendungs- und
+Nachweisverordnung, Art. 108(5) of EU Regulation 2019/6) names it explicitly, and the equivalent
+elsewhere in the EU comes from the same regulation.
+
+`amount` is **free text, not a number with a unit.** Beekeepers write a dose the way the product
+is applied — "2 × 15 ml per colony", "60 g", "one strip per 5 frames" — and forcing that into a
+number would either lose the meaning or be filled in wrongly. The record wants what was really
+given, not something tidy.
+
+Both are **optional**, including on treatments recorded before they existed. The record prints a
+blank where one is missing and says how many entries are incomplete, rather than refusing to
+exist: a document that shows its gaps tells a beekeeper what to go and fill in, while one that
+will not print tells them nothing.
 
 Whoever may work on the hive may plan a treatment for it; for an apiary, whoever may edit it (not
 somebody who has only single hives of it).
@@ -1003,9 +1033,50 @@ changes the day. Omitted, it falls back to the server's **UTC** day — so the c
 date instead, because after about 22:00 in Europe the two are not the same day (#443).
 **200** with the treatment. To undo, `POST /treatments/{id}/reopen`: **200**, `done_on` becomes `null`.
 
+**Marking it done freezes how many colonies it covered** into `hive_count_treated` — one for a
+hive, the apiary's current hive count for an apiary. This is not a convenience: a record assembled
+later would count the colonies that exist *then*. A beekeeper who treats ten colonies in August
+and gives three away in October would get a document claiming they treated seven, which is a false
+statement in a record an authority may ask to see. Reopening clears it again, so the number only
+ever exists alongside a date it belongs to.
+
 ### DELETE `/treatments/{id}`
 
 **204.** Anyone who may plan it may delete it.
+
+### GET `/apiaries/{id}/treatment-record`
+
+`?year=2026` (defaults to the current year). Requires `Authorization: Bearer <access_token>`.
+
+Returns a **PDF**: every treatment of that apiary carried out in that year, as one document to
+print and keep. `Content-Type: application/pdf`, `Content-Disposition: attachment` with a file
+name carrying the apiary and the year.
+
+Part of the supporter subscription — 403 `SUPPORTER_REQUIRED` otherwise, judged by the **apiary's
+owner**, so somebody invited onto an apiary can print the record of the person who pays.
+
+| Error | Meaning |
+|-------|---------|
+| 404 `APIARY_NOT_FOUND` | Not visible to the caller |
+| 403 `SUPPORTER_REQUIRED` | The apiary's owner has no subscription |
+| 422 | `year` outside 2000–2100 |
+
+A year with nothing carried out still returns a PDF, with the heading and an empty table. An empty
+record is an answer — "nothing was treated here in 2026" is exactly what somebody may need to show.
+
+#### What the document is, and what it is not
+
+It contains what the record of veterinary medicines asks for: the beekeeper's name, the apiary and
+its location, the year, and per treatment the product, the amount, the number of colonies, the
+planned and the actual date, the withdrawal period and who recorded it. The varroa readings around
+each treatment are printed with it, because they are the reason a treatment happened.
+
+**It is a document to keep, not a claim of compliance.** The regulation lets the record be loose
+leaves and allows an electronic one only where the data cannot be altered afterwards — which a
+document regenerated from rows somebody can still edit is not. So HivePulse prints the record,
+dated, and the beekeeper keeps it for the five years the regulation asks for, exactly as they
+would keep a paper one. Nothing in the product claims it is itself a legally compliant electronic
+record, and nothing should start to.
 
 ### PlannedTreatment object
 
@@ -1017,12 +1088,19 @@ date instead, because after about 22:00 in Europe the two are not the same day (
   "product": "string",
   "due_on": "2026-08-20",
   "note": "string | null",
+  "amount": "string | null",
+  "withdrawal_days": 0,
   "done_on": "date | null",
+  "hive_count_treated": 0,
   "overdue": false,
   "created_by_name": "string | null",
   "created_at": "datetime"
 }
 ```
+
+`hive_count_treated` is null while the treatment is open and carries the frozen count once it is
+done (see above). `amount` and `withdrawal_days` are null on anything recorded before they
+existed.
 
 `apiary_name` is set when the target is a hive. `overdue` is true for an open treatment due before
 today. A treatment follows its target: when a hive moves it goes with it, and it is deleted with the
@@ -2461,13 +2539,222 @@ An approved proposal takes effect immediately for every caller of `GET /calendar
 inside its radius. Rejecting is not deleting: the proposal stays, so the same group is not offered
 again at the next recompute.
 
+## Subscriptions
+
+The supporter tier. Until #17 `is_supporter` was a flag an admin set by hand (see
+[Admin](#admin)); it is now **derived** from the records described here, and the manual grant
+becomes one source among four rather than the only one.
+
+**The clients do not verify purchases.** RevenueCat does — for the App Store, for Google Play and
+for the web — and tells this API through a signed webhook. A client's only job is to buy through
+the RevenueCat SDK and then ask for a refresh, so the unlock is immediate rather than
+webhook-fast.
+
+**The binding that matters:** every client sets RevenueCat's `app_user_id` to the HivePulse
+`user.id`. Without it a purchase cannot be attributed to an account, and the point of the whole
+arrangement — buy on the iPhone, use it on the website — falls apart.
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/subscriptions/me` | What the signed-in account is entitled to |
+| POST | `/subscriptions/sync` | Refresh this account's entitlement from the provider now |
+| POST | `/subscriptions/webhook` | RevenueCat events: renewal, cancellation, refund, expiry |
+
+### GET `/subscriptions/me`
+
+Requires `Authorization: Bearer <access_token>`.
+
+Always returns an object, never `null`: an account without a subscription has
+`"status": "none"`. One shape is easier to decode on three platforms than a sometimes-absent body.
+
+**Response 200**
+```json
+{
+  "status": "active",
+  "source": "apple",
+  "product_id": "supporter_yearly",
+  "current_period_end": "2027-11-17T09:14:22.108431",
+  "will_renew": true,
+  "store_managed": true,
+  "manage_url": null,
+  "hives_used": 7,
+  "hive_limit": 10
+}
+```
+
+| Field | Meaning |
+|-------|---------|
+| `status` | See the `subscription_status` enum. `none` when the account has never bought anything. |
+| `source` | Where it came from; `null` when `status` is `none`. |
+| `current_period_end` | When access lapses if nothing renews. `null` for `manual`, which does not expire. |
+| `will_renew` | What the store last said about auto-renewal. False after a cancellation that has not yet lapsed. |
+| `store_managed` | `true` for `apple` and `google`: **the app cannot cancel it** and must send the user to the store. |
+| `manage_url` | Where a web subscriber manages or cancels. Present only for `source: "web"`. |
+| `hives_used` | Colonies this account **owns**. Colonies shared *with* it count against their owner. |
+| `hive_limit` | How many it may own, or `null` for no limit. |
+
+`status: "grace"` means the store is retrying payment and access **continues** — do not gate on
+`active` alone.
+
+#### The two counters, and why they are here
+
+`hives_used` and `hive_limit` exist so a client can say "7 of 10" and explain the limit **before**
+somebody fills in a form, instead of letting them name a colony and then refusing it. That is the
+difference between a limit and a rejection.
+
+**The number lives only on the server.** No client hardcodes 10 — four copies of a number that is a
+product decision would drift the first time it moves, and the one in the error message is already
+pinned to it by a test. A client that finds `hive_limit` missing from an older response treats it
+as "no limit known" and simply lets the server answer, which is the behaviour before this field
+existed.
+
+`hive_limit` is `null`, not a large number, for a supporter: a client must render "unlimited" rather
+than a ratio. `hives_used` may **exceed** `hive_limit` — somebody whose subscription lapsed keeps
+every colony they had (see *What the subscription includes*), so `7 of 10` and `15 of 10` are both
+states a client has to display without clipping or scolding.
+
+### GET `/subscriptions/web-checkout`
+
+Requires `Authorization: Bearer <access_token>`. **For the website only** — see the note below.
+
+Returns where this account buys the subscription on the web.
+
+**Response 200**
+```json
+{ "url": "https://pay.rev.cat/abc123xyz/9f8e7d6c-...?email=someone%40example.com" }
+```
+
+**Response 503** — `WEB_CHECKOUT_UNCONFIGURED`. No purchase link is configured on this
+deployment. A page must treat this as "cannot be bought here yet" and say so, not as a failure:
+it is the normal state of a deployment whose store side is not set up, and of every test run.
+
+#### Why the server builds this URL
+
+The link's shape is `https://pay.rev.cat/<token>/<url-encoded app_user_id>`, and the account id
+is a **path segment, not a query parameter**. Three reasons it is not assembled in a client:
+
+1. **Leaving the id out does not fall back to an anonymous purchase — the page 404s.** A client
+   that got the encoding wrong would show a dead link rather than a degraded one.
+2. RevenueCat's own pages disagree on the parameter's name (`app_user_id` on the purchase-link
+   page, `rc_app_user_id` on the paywall page). Getting it wrong produces a *successful payment
+   attached to no account*, which is the worst failure this feature has.
+3. `app_user_id` must be the HivePulse `user.id` and nothing else, because the webhook matches on
+   it. One place decides that.
+
+`email` is passed along so nobody retypes it at the till. The success redirect is configured in
+the RevenueCat dashboard rather than per request, and carries `app_user_id` back as a query
+parameter.
+
+#### Why the apps must not call this
+
+Buying inside the iPhone and Android apps goes through StoreKit and Play Billing. A web purchase
+link shown in an app is a store-review rejection, so this endpoint exists for the website and the
+apps ignore it. The entitlement that a web purchase grants is of course honoured everywhere — that
+is the whole point of deriving `is_supporter` on the server.
+
+### POST `/subscriptions/sync`
+
+Requires `Authorization: Bearer <access_token>`. Empty body.
+
+Called by a client right after a purchase completes. The server asks the provider for this
+account's current entitlement and writes it, rather than waiting for the webhook — which usually
+arrives within seconds but is not something a person should watch a spinner for.
+
+Idempotent: calling it when nothing changed rewrites the same row. Safe to call on app start.
+
+**Response 200** — the same object as `GET /subscriptions/me`.
+
+### POST `/subscriptions/webhook`
+
+**Not authenticated as a user.** RevenueCat sends the shared secret in an `Authorization` header,
+compared in constant time, the same way `/notifications/send-reminders` checks `X-Cron-Secret`.
+
+This is the authoritative path for everything a client never sees: a renewal while the phone is
+off, a cancellation made in the App Store, a refund granted weeks later, a payment that failed.
+
+**Must be idempotent.** RevenueCat retries on any non-2xx, and events can arrive out of order; an
+event older than the row it would overwrite is dropped rather than applied.
+
+**Request headers**
+```
+Authorization: Bearer <REVENUECAT_WEBHOOK_SECRET>
+```
+
+**Response 200**
+```json
+{ "handled": true }
+```
+
+**Response 401** — `WEBHOOK_UNAUTHORIZED`, missing or wrong secret. No body detail: an endpoint
+open to the internet says as little as possible about why it refused.
+
+### What the subscription includes
+
+Decided while the application had no users, because a quantity limit cannot be introduced once
+people have crossed it (#478).
+
+| Free, permanently | With a subscription |
+|---|---|
+| up to **10 colonies**; apiaries unlimited | unlimited |
+| QR codes, scanning, offline inspections | the treatment record and yearly report |
+| the beekeeping year, moves, reminders | **inviting** somebody to an apiary or a hive |
+| the hornet tracker, in full | custom fields |
+| statistics for the last 365 days | the whole history, and the regional health map |
+| the raw data export | |
+
+Three rules that the endpoints above enforce and that a client must not work around:
+
+1. **Reaching a limit never closes what already exists.** `FREE_HIVE_LIMIT_REACHED` is returned by
+   `POST /apiaries/{id}/hives` and `POST /hives/initialize` and by nothing else. Every read, every
+   inspection and every edit goes on unchanged, including for an account that was a supporter and
+   is not any more.
+2. **The person who invites needs it; the guest does not.** `POST /shares` requires it —
+   *after* the ownership check, so somebody pointing at an apiary that is not theirs is told it
+   does not exist rather than sold a subscription. `POST /shares/{id}/accept` and
+   `/shares/accept-by-token` require nothing.
+3. **An apiary's custom fields go by its owner's subscription**, not the caller's. A collaborator
+   invited by a supporter may add and remove them; charging them separately would make "working
+   together" mean "working together, separately".
+
+Statistics are **narrowed, not refused**: a free account's window may not begin earlier than 365
+days ago, and asking for more answers `200` with a shorter window rather than an error. A page that
+answers 403 teaches somebody the app is broken; one that shows a year teaches them what the
+subscription is for.
+
+The narrowing applies to the **window**, not to the `preset` label, so every way of asking is
+covered — including the two that are easy to miss:
+
+| asked for | a free account receives |
+|---|---|
+| `preset=30d`, `90d`, `365d` | exactly that |
+| `preset=all` | `period.preset` = `365d`, `period.from` = today − 365 days |
+| no parameters at all | the same as `preset=all`, because the default *is* everything |
+| `from=2000-01-01` | `period.preset` = `custom`, `period.from` pulled forward to today − 365 days |
+| `from` within the last year | exactly as asked — narrowing only ever pulls the start forward |
+
+`period` in the response is therefore always the window that was really used, and a client should
+read it rather than assume it got what it asked for. A client that wants to explain the smaller
+number compares `period.from` against what it sent.
+
+### How `is_supporter` is derived
+
+The field keeps its place in the user object and its meaning for every client; only its origin
+changes. It is `true` when the account has a subscription whose `status` is `active` or `grace`,
+or a `manual` grant, and `false` otherwise.
+
+`manual` exists for two reasons that are not negotiable: **the store review account** must see the
+paid feature, or a review fails with "we could not test it", and a comped account is occasionally
+the right answer. `PUT /admin/users/{id}/supporter` is unchanged and writes a `manual` record.
+
+---
+
 ## Object Reference
 
 ### Enums
 
 | Enum | Values |
 |------|--------|
-| `locale` | `en`, `fr`, `de`, `es` |
+| `locale` | `en`, `fr`, `de`, `es`, `pl` |
 | `hive_type` | `langstroth`, `dadant`, `top_bar`, `warre`, `other` |
 | `queen_color` | `white`, `yellow`, `red`, `green`, `blue` |
 | `mood` | `calm`, `nervous`, `aggressive` |
@@ -2477,6 +2764,8 @@ again at the next recompute.
 | `stats_preset` | `30d`, `90d`, `365d`, `all` |
 | `nest_status` | `found`, `destruction_ordered`, `destroyed` |
 | `sighting_status` | `pending`, `confirmed`, `rejected` |
+| `subscription_source` | `apple`, `google`, `web`, `manual` |
+| `subscription_status` | `none`, `active`, `grace`, `expired`, `refunded`, `revoked` |
 
 ---
 
@@ -2512,3 +2801,6 @@ again at the next recompute.
 | `HORNET_NEST_NOT_FOUND` | 404 | — |
 | `INVALID_VOTE` | 422 | `vote` must be `yes` or `no` |
 | `INVALID_SIGHTING_STATUS` | 422 | `status` must be `confirmed` or `rejected` |
+| `WEBHOOK_UNAUTHORIZED` | 401 | Subscription webhook called without the shared secret |
+| `WEB_CHECKOUT_UNCONFIGURED` | 503 | No web purchase link is configured on this deployment |
+| `FREE_HIVE_LIMIT_REACHED` | 403 | Ten colonies without a subscription; nothing already kept is affected |

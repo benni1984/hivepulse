@@ -10,9 +10,10 @@ import MoveHivesPanel from '@/components/MoveHivesPanel';
 import TreatmentsPanel from '@/components/TreatmentsPanel';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import {
+  ApiError,
   getApiary, getHives, getApiaryStats, updateApiary, deleteApiary, createHive,
   getApiaryFieldDefs, createApiaryFieldDef, updateApiaryFieldDef, deleteApiaryFieldDef,
-  exportApiaryInspections,
+  exportApiaryInspections, getTreatmentRecord,
   type Apiary, type Hive, type ApiaryStats, type FieldDefinition, type FieldType, type FieldTarget,
 } from '@/lib/api';
 import { moodPct } from '@/lib/mood';
@@ -46,7 +47,10 @@ export default function ApiaryPage() {
   const [showCreateHive, setShowCreateHive] = useState(false);
   const [creatingHive, setCreatingHive] = useState(false);
   const [hiveForm, setHiveForm] = useState({ name: '', hive_type: 'langstroth' });
-  const [hiveMessage, setHiveMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
+  const [hiveMessage, setHiveMessage] = useState<{ type: 'ok' | 'err' | 'limit'; text: string } | null>(null);
+  const [recordYear, setRecordYear] = useState(() => new Date().getFullYear());
+  const [recordBusy, setRecordBusy] = useState(false);
+  const [recordError, setRecordError] = useState<string | null>(null);
 
   const [apiaryFields, setApiaryFields] = useState<FieldDefinition[]>([]);
   const [showCreateField, setShowCreateField] = useState(false);
@@ -215,6 +219,26 @@ export default function ApiaryPage() {
     } catch {}
   }
 
+  async function handleTreatmentRecord() {
+    setRecordBusy(true);
+    setRecordError(null);
+    try {
+      const blob = await getTreatmentRecord(id, recordYear);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `treatment-record-${recordYear}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      // The record is part of the subscription. A failed download with no explanation is the
+      // worst version of that, so the server's sentence is shown instead (#477).
+      setRecordError(err instanceof Error ? err.message : t('apiary.errorGeneric'));
+    } finally {
+      setRecordBusy(false);
+    }
+  }
+
   async function handleCreateHive(e: React.FormEvent) {
     e.preventDefault();
     setCreatingHive(true);
@@ -225,7 +249,14 @@ export default function ApiaryPage() {
       setShowCreateHive(false);
       setHiveMessage({ type: 'ok', text: t('apiary.createHiveSuccess') });
     } catch (err) {
-      setHiveMessage({ type: 'err', text: err instanceof Error ? err.message : t('apiary.errorGeneric') });
+      // Reaching the free limit is an offer, not a fault, and it gets its own box with a way
+      // out instead of a red banner. Told apart by the server's code, never by its sentence —
+      // that sentence exists in five languages (#478).
+      if (err instanceof ApiError && err.code === 'FREE_HIVE_LIMIT_REACHED') {
+        setHiveMessage({ type: 'limit', text: err.message });
+      } else {
+        setHiveMessage({ type: 'err', text: err instanceof Error ? err.message : t('apiary.errorGeneric') });
+      }
     } finally {
       setCreatingHive(false);
     }
@@ -322,7 +353,15 @@ export default function ApiaryPage() {
             </span>
           </div>
 
-          {hiveMessage && (
+          {hiveMessage?.type === 'limit' && (
+            <div className="dash-limit-banner" data-testid="hive-limit-reached">
+              <p>{hiveMessage.text}</p>
+              <Link href="/dashboard/subscription" className="dash-submit-btn">
+                {t('apiary.limitSeeSubscription')}
+              </Link>
+            </div>
+          )}
+          {hiveMessage && hiveMessage.type !== 'limit' && (
             <div className={hiveMessage.type === 'ok' ? 'dash-success-banner' : 'dash-error-banner'}>
               {hiveMessage.text}
             </div>
@@ -452,6 +491,29 @@ export default function ApiaryPage() {
 
           {/* ── Treatments for every hive of the apiary ───────────── */}
           {canEdit && <TreatmentsPanel type="apiary" id={id} />}
+
+          {/* ── The treatment record: what is logged, as a document to keep (#477) ── */}
+          {canEdit && (
+            <div className="dash-profile-card" data-testid="treatment-record">
+              <h2 className="dash-section-title">{t('record.title')}</h2>
+              <p className="dash-card-meta">{t('record.intro')}</p>
+              {recordError && <div className="dash-error-banner">{recordError}</div>}
+              <div className="dash-form-row">
+                <div className="dash-form-group">
+                  <label htmlFor="record-year">{t('record.year')}</label>
+                  <input id="record-year" type="number" min={2000} max={2100} value={recordYear}
+                    onChange={e => setRecordYear(Number(e.target.value))} />
+                </div>
+                <div className="dash-form-group" style={{ alignSelf: 'flex-end' }}>
+                  <button className="dash-share-btn" onClick={handleTreatmentRecord}
+                    disabled={recordBusy} data-testid="treatment-record-download">
+                    {recordBusy ? '…' : t('record.download')}
+                  </button>
+                </div>
+              </div>
+              <p className="dash-card-meta">{t('record.keep')}</p>
+            </div>
+          )}
 
           {/* ── Sharing and deleting stay with the owner ────────────── */}
           {isOwner && <SharingPanel type="apiary" id={id} />}

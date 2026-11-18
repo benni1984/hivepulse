@@ -74,6 +74,26 @@ export default function HomeAndTreatmentsContent({ Screenshot }: { Screenshot: t
         </div>
         <Screenshot android="/docs/screenshots/android-treatments.png" web="/docs/screenshots/treatments-panel.png" caption="Planifier un traitement et le cocher" />
       </section>
+
+      <section className="help-section">
+        <h2 className="help-section-title">Le registre des traitements</h2>
+        <p>Tous les traitements effectués dans un rucher sur une année, sous forme de document à imprimer et à conserver. Il est constitué à partir de ce que vous avez déjà saisi — le médicament, la quantité, le nombre de ruches, la date prévue et la date réelle, qui l’a saisi — avec les relevés varroa de l’année, qui expliquent pourquoi un traitement a eu lieu.</p>
+        <ol className="help-steps">
+          <li>
+            <span className="help-step-num">1</span>
+            <div className="help-step-body"><strong>Saisissez la quantité pendant que vous traitez.</strong> C’est le champ que le registre exige nommément. C’est du texte libre : écrivez-le comme le produit s’applique — <em>2 × 15 ml par ruche</em>, <em>60 g</em>, <em>une lanière pour 5 cadres</em>.</div>
+          </li>
+          <li>
+            <span className="help-step-num">2</span>
+            <div className="help-step-body"><strong>Ouvrez le rucher et choisissez <em>Créer le registre</em></strong>, avec l’année voulue. Sur le site, c’est sur la page du rucher ; dans les applications, en bas de l’écran des traitements du rucher. Une année sans traitement produit tout de même un document — « rien n’a été traité ici » est aussi une réponse.</div>
+          </li>
+        </ol>
+        <div className="help-callout info">
+          <i className="fas fa-info-circle" />
+          <p><strong>Le nombre de ruches est figé le jour où vous marquez un traitement comme effectué.</strong> Si vous traitez dix ruches en août et en cédez trois en octobre, le registre indique toujours dix, car dix est ce que vous avez traité. C’est pourquoi cocher un traitement compte plus qu’il n’y paraît.</p>
+        </div>
+        <p>Tenir un registre des médicaments vétérinaires est obligatoire pour les animaux producteurs de denrées alimentaires, ce que sont les abeilles. Conservez le document imprimé cinq ans et présentez-le sur demande. HivePulse produit le document ; il ne prétend pas être le registre lui-même.</p>
+      </section>
     </>
   );
 }

@@ -531,6 +531,14 @@
 "treatments.plan" = "Planificar un tratamiento";
 "treatments.product" = "Producto";
 "treatments.dueOn" = "Para el";
+"treatments.amount" = "Cantidad";
+"treatments.amountHint" = "2 × 15 ml por colmena";
+"treatments.withdrawal" = "Tiempo de espera (días)";
+"treatments.colonies" = "%lld colmenas";
+"record.title" = "Libro de tratamientos";
+"record.yearValue" = "Año %lld";
+"record.download" = "Crear el libro";
+"record.keep" = "El libro de registro de medicamentos veterinarios es obligatorio para los animales productores de alimentos, y las abejas lo son. Conserva el documento cinco años y muéstralo cuando te lo pidan.";
 "treatments.note" = "Nota (opcional)";
 "treatments.empty" = "Nada planificado.";
 "treatments.overdue" = "toca desde el %@";

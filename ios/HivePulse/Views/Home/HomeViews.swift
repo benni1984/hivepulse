@@ -178,6 +178,11 @@ struct TreatmentsView: View {
                 TextField(NSLocalizedString("treatments.product", comment: ""), text: $vm.product)
                     .accessibilityIdentifier("treatmentProduct")
                 DatePicker(NSLocalizedString("treatments.dueOn", comment: ""), selection: $vm.dueOn, displayedComponents: .date)
+                TextField(NSLocalizedString("treatments.amount", comment: ""), text: $vm.amount)
+                    .accessibilityIdentifier("treatmentAmount")
+                TextField(NSLocalizedString("treatments.withdrawal", comment: ""), text: $vm.withdrawalDays)
+                    .keyboardType(.numberPad)
+                    .accessibilityIdentifier("treatmentWithdrawal")
                 TextField(NSLocalizedString("treatments.note", comment: ""), text: $vm.note)
                 Button {
                     Task { _ = await vm.plan() }
@@ -222,6 +227,32 @@ struct TreatmentsView: View {
                 }
             }
 
+            // The treatment record: only an apiary has one, because it names a place and the
+            // colonies standing there (#477).
+            if vm.apiaryId != nil {
+                Section {
+                    Stepper(
+                        String(format: NSLocalizedString("record.yearValue", comment: ""), vm.recordYear),
+                        value: $vm.recordYear, in: 2000...2100
+                    )
+                    .accessibilityIdentifier("recordYear")
+                    Button {
+                        Task { await vm.makeRecord() }
+                    } label: {
+                        HStack {
+                            if vm.isMakingRecord { ProgressView() }
+                            Text(NSLocalizedString("record.download", comment: ""))
+                        }
+                    }
+                    .disabled(vm.isMakingRecord)
+                    .accessibilityIdentifier("recordDownload")
+                } header: {
+                    Text(NSLocalizedString("record.title", comment: ""))
+                } footer: {
+                    Text(NSLocalizedString("record.keep", comment: ""))
+                }
+            }
+
             if !vm.done.isEmpty {
                 Section(NSLocalizedString("treatments.doneTitle", comment: "")) {
                     ForEach(vm.done) { item in
@@ -230,6 +261,16 @@ struct TreatmentsView: View {
                                 Text(item.product)
                                 Text(String(format: NSLocalizedString("treatments.doneOn", comment: ""), DayFormat.string(from: item.doneOn)))
                                     .font(.caption).foregroundColor(.secondary)
+                                // Shown exactly as the record will print it, and never worked out
+                                // from today's hive list: that number was frozen on the day of the
+                                // treatment and must not drift (#477).
+                                if let amount = item.amount, !amount.isEmpty {
+                                    Text(amount).font(.caption).foregroundColor(.secondary)
+                                }
+                                if let count = item.hiveCountTreated {
+                                    Text(String(format: NSLocalizedString("treatments.colonies", comment: ""), count))
+                                        .font(.caption).foregroundColor(.secondary)
+                                }
                             }
                             Spacer()
                             Button(NSLocalizedString("treatments.reopen", comment: "")) {
@@ -243,6 +284,9 @@ struct TreatmentsView: View {
         }
         .navigationTitle(NSLocalizedString("treatments.title", comment: ""))
         .hpScreenBackground()
+        // Quick Look, like the QR batch sheet: it can print and share from there, which is what
+        // somebody does with a document they have to keep.
+        .quickLookPreview($vm.recordURL)
         .task { await vm.load() }
         .refreshable { await vm.load() }
         .confirmationDialog(

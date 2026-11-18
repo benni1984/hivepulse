@@ -22,6 +22,7 @@ import com.hivepulse.app.R
 import com.hivepulse.app.data.api.QrTokenOut
 import com.hivepulse.app.ui.common.ErrorBanner
 import com.hivepulse.app.ui.common.LoadingScreen
+import com.hivepulse.app.ui.common.openSavedPdf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,14 +38,14 @@ fun QRBatchDetailScreen(
     // Open the saved PDF right away; the snackbar says where it went and lets the user reopen it later
     LaunchedEffect(state.downloaded) {
         val file = state.downloaded ?: return@LaunchedEffect
-        val opened = file.uri != null && context.openPdf(file.uri)
+        val opened = file.uri != null && context.openSavedPdf(file.uri)
         val saved  = context.getString(R.string.qr_pdf_saved, file.name)
         val result = snackbarHostState.showSnackbar(
             message     = if (file.uri != null && !opened) "$saved\n${context.getString(R.string.qr_pdf_no_viewer)}" else saved,
             actionLabel = if (opened) context.getString(R.string.qr_pdf_open) else null,
             duration    = SnackbarDuration.Long
         )
-        if (result == SnackbarResult.ActionPerformed && file.uri != null) context.openPdf(file.uri)
+        if (result == SnackbarResult.ActionPerformed && file.uri != null) context.openSavedPdf(file.uri)
         vm.clearDownloaded()
     }
 
@@ -130,14 +131,3 @@ private fun QrTokenRow(token: QrTokenOut) {
     )
 }
 
-/** Opens a downloaded PDF in the user's viewer app; false if none is installed. */
-private fun Context.openPdf(uri: String): Boolean = try {
-    startActivity(
-        Intent(Intent.ACTION_VIEW)
-            .setDataAndType(Uri.parse(uri), "application/pdf")
-            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
-    )
-    true
-} catch (e: ActivityNotFoundException) {
-    false
-}

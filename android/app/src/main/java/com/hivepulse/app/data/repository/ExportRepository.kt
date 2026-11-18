@@ -45,6 +45,12 @@ class ExportRepository @Inject constructor(
         saveToDownloads(body.bytes(), "HivePulse_QR_batch_${batchId.take(8)}.pdf", "application/pdf")
     }
 
+    /** The year's treatment record, saved beside the other downloads so it can be printed (#477). */
+    suspend fun downloadTreatmentRecord(apiaryId: String, year: Int): SavedDownload = withContext(Dispatchers.IO) {
+        val body = api.treatmentRecord(apiaryId, year)
+        saveToDownloads(body.bytes(), "HivePulse_treatment_record_$year.pdf", "application/pdf")
+    }
+
     private fun mimeType(format: String) = if (format == "csv") "text/csv" else "application/json"
 
     private fun saveToDownloads(data: ByteArray, filename: String, mime: String): SavedDownload {

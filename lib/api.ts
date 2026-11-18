@@ -3,6 +3,40 @@ import type { MoodDistribution } from './mood';
 
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000/api/v1';
 
+/**
+ * An error that kept the server's error code, not only its sentence.
+ *
+ * `extractDetail` deliberately returns a human sentence, already translated by the server, and
+ * for almost every failure that is the whole story. A few are different: the free-colony limit
+ * is not a fault but an offer, and the page has to answer it with an explanation and a way to
+ * subscribe rather than a red banner. Telling those apart by reading the message would mean
+ * matching translated prose in five languages, so the code travels with the error instead.
+ *
+ * It extends Error, so every existing `catch (err) { err instanceof Error ? err.message : … }`
+ * keeps behaving exactly as it did.
+ */
+export class ApiError extends Error {
+  readonly code?: string;
+  readonly status: number;
+  constructor(message: string, status: number, code?: string) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+    this.code = code;
+  }
+}
+
+/** Reads a failed response once and throws it with its code attached. */
+async function failure(res: Response, fallback: string): Promise<never> {
+  const err = await res.json().catch(() => ({}));
+  const detail = (err as Record<string, unknown>).detail;
+  const code = detail && typeof detail === 'object' && !Array.isArray(detail)
+    ? (detail as Record<string, unknown>).code
+    : undefined;
+  throw new ApiError(extractDetail(err as Record<string, unknown>, fallback), res.status,
+                     typeof code === 'string' ? code : undefined);
+}
+
 function extractDetail(err: Record<string, unknown>, fallback: string): string {
   const d = err.detail;
   if (!d) return fallback;
@@ -46,7 +80,7 @@ async function doRefresh(): Promise<boolean> {
   try {
     const res = await fetch(`${BASE}/auth/refresh`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: jsonHeaders(),
       body: JSON.stringify({ refresh_token: rt }),
     });
     if (!res.ok) return false;
@@ -54,6 +88,27 @@ async function doRefresh(): Promise<boolean> {
     localStorage.setItem('access_token', data.access_token);
     return true;
   } catch { return false; }
+}
+
+/**
+ * The language the server should answer errors in.
+ *
+ * The backend translates its messages into all five languages and picks by `Accept-Language`.
+ * Until this existed the website never sent the header, so a German reader was told
+ * "Up to 10 colonies are free" — the translations were there and simply never asked for. Android
+ * and iOS have always sent it; only the website did not (#480).
+ *
+ * `<html lang>` is set by the locale layout, so it is already the right answer on every page and
+ * needs no state of its own. Falls back to English off the browser, e.g. in tests.
+ */
+function acceptLanguage(): string {
+  if (typeof document === 'undefined') return 'en';
+  return document.documentElement.lang || 'en';
+}
+
+/** Headers for the calls that do not go through apiFetch: the auth forms and the public pages. */
+function jsonHeaders(): Record<string, string> {
+  return { 'Content-Type': 'application/json', 'Accept-Language': acceptLanguage() };
 }
 
 async function apiFetch(
@@ -67,6 +122,7 @@ async function apiFetch(
     body: init.body,
     headers: {
       'Content-Type': 'application/json',
+      'Accept-Language': acceptLanguage(),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(init.headers ?? {}),
     },
@@ -83,7 +139,7 @@ async function apiFetch(
 export async function login(email: string, password: string): Promise<User> {
   const res = await fetch(`${BASE}/auth/login`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: jsonHeaders(),
     body: JSON.stringify({ email, password }),
   });
   if (!res.ok) {
@@ -99,7 +155,7 @@ export async function login(email: string, password: string): Promise<User> {
 export async function register(name: string, email: string, password: string): Promise<User> {
   const res = await fetch(`${BASE}/auth/register`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: jsonHeaders(),
     body: JSON.stringify({ name, email, password }),
   });
   if (!res.ok) {
@@ -131,7 +187,7 @@ export interface SignInProviders {
 export async function getSignInProviders(): Promise<SignInProviders> {
   // Bounded, because the login form now waits for this answer: a server that never replies
   // must not leave the only way in permanently hidden.
-  const res = await fetch(`${BASE}/auth/providers`, { signal: AbortSignal.timeout(4000) });
+  const res = await fetch(`${BASE}/auth/providers`, { signal: AbortSignal.timeout(4000), headers: { 'Accept-Language': acceptLanguage() } });
   if (!res.ok) return { google: null, apple: null };
   return res.json();
 }
@@ -145,7 +201,7 @@ export async function socialSignIn(
 ): Promise<User> {
   const res = await fetch(`${BASE}/auth/social`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: jsonHeaders(),
     body: JSON.stringify({
       provider, id_token: idToken, name, authorization_code: authorizationCode,
     }),
@@ -171,7 +227,7 @@ export async function logout() {
 export async function forgotPassword(email: string): Promise<void> {
   await fetch(`${BASE}/auth/forgot-password`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: jsonHeaders(),
     body: JSON.stringify({ email }),
   });
   // Always resolves — backend never reveals whether email exists
@@ -180,7 +236,7 @@ export async function forgotPassword(email: string): Promise<void> {
 export async function resetPassword(token: string, newPassword: string): Promise<void> {
   const res = await fetch(`${BASE}/auth/reset-password`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: jsonHeaders(),
     body: JSON.stringify({ token, new_password: newPassword }),
   });
   if (!res.ok) {
@@ -248,10 +304,8 @@ export async function deleteApiary(id: string): Promise<void> {
 
 export async function createHive(apiaryId: string, data: { name: string; hive_type: string; acquisition_date?: string; notes?: string }): Promise<Hive> {
   const res = await apiFetch(`/apiaries/${apiaryId}/hives`, { method: 'POST', body: JSON.stringify(data) });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(extractDetail(err, 'Create failed'));
-  }
+  // Keeps the code, because FREE_HIVE_LIMIT_REACHED is an offer and not a fault (#478).
+  if (!res.ok) await failure(res, 'Create failed');
   return res.json();
 }
 
@@ -367,6 +421,7 @@ export async function getTreatments(
 
 export async function createTreatment(input: {
   hive_id?: string; apiary_id?: string; product: string; due_on: string; note?: string;
+  amount?: string; withdrawal_days?: number | null;
 }): Promise<PlannedTreatment> {
   const res = await apiFetch('/treatments', { method: 'POST', body: JSON.stringify(input) });
   if (!res.ok) {
@@ -556,8 +611,20 @@ export async function exportApiaryInspections(apiaryId: string, format: 'json' |
   return res.blob();
 }
 
+/**
+ * The year's treatments as a PDF to print and keep (#477).
+ *
+ * Part of the supporter subscription, judged by the apiary's owner, so a 403 here means the
+ * owner does not have one — worth saying rather than showing a failed download.
+ */
+export async function getTreatmentRecord(apiaryId: string, year: number): Promise<Blob> {
+  const res = await apiFetch(`/apiaries/${apiaryId}/treatment-record?year=${year}`);
+  if (!res.ok) await failure(res, 'Could not create the record');
+  return res.blob();
+}
+
 export async function getPublicStats(): Promise<PublicStats> {
-  const res = await fetch(`${BASE}/public/stats`);
+  const res = await fetch(`${BASE}/public/stats`, { headers: { 'Accept-Language': acceptLanguage() } });
   if (!res.ok) throw new Error('Failed to fetch public stats');
   return res.json();
 }
@@ -626,6 +693,18 @@ export interface TreatmentTarget { type: 'hive' | 'apiary'; id: string; name: st
 export interface PlannedTreatment {
   id: string; target: TreatmentTarget; apiary_name: string | null; product: string; due_on: string;
   note: string | null; done_on: string | null; overdue: boolean; created_by_name: string | null; created_at: string;
+  /** The quantity given, as free text — a dose is written the way the product is applied (#477). */
+  amount: string | null;
+  /** Days before the honey may be taken. Null where a product has none. */
+  withdrawal_days: number | null;
+  /**
+   * How many colonies this covered, frozen when it was marked done. Null while it is still open.
+   *
+   * Never recompute this from today's hive list: somebody who treated ten colonies in August and
+   * gave three away in October would be shown seven, in a number that goes into a document an
+   * authority may ask to see.
+   */
+  hive_count_treated: number | null;
 }
 export interface HomeSummary {
   today: string; in_season: boolean; apiary_count: number; hive_count: number;
@@ -907,7 +986,7 @@ export interface HornetNestGeoJSON {
 }
 
 export async function getHornetStats(): Promise<HornetStats> {
-  const res = await fetch(`${BASE}/hornets/stats`);
+  const res = await fetch(`${BASE}/hornets/stats`, { headers: { 'Accept-Language': acceptLanguage() } });
   if (!res.ok) throw new Error('Failed to get hornet stats');
   return res.json();
 }
@@ -915,14 +994,14 @@ export async function getHornetStats(): Promise<HornetStats> {
 export async function submitHornetCatch(data: HornetCatchCreate): Promise<void> {
   const res = await fetch(`${BASE}/hornets/catches`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: jsonHeaders(),
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error('Failed to submit catch');
 }
 
 export async function getHornetNests(): Promise<HornetNestGeoJSON> {
-  const res = await fetch(`${BASE}/hornets/nests`);
+  const res = await fetch(`${BASE}/hornets/nests`, { headers: { 'Accept-Language': acceptLanguage() } });
   if (!res.ok) throw new Error('Failed to get nests');
   return res.json();
 }
@@ -930,14 +1009,14 @@ export async function getHornetNests(): Promise<HornetNestGeoJSON> {
 export async function submitHornetNest(data: HornetNestCreate): Promise<void> {
   const res = await fetch(`${BASE}/hornets/nests`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: jsonHeaders(),
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error('Failed to submit nest');
 }
 
 export async function getHornetSightings(page = 1): Promise<Paginated<HornetSighting>> {
-  const res = await fetch(`${BASE}/hornets/sightings?page=${page}&per_page=12`);
+  const res = await fetch(`${BASE}/hornets/sightings?page=${page}&per_page=12`, { headers: { 'Accept-Language': acceptLanguage() } });
   if (!res.ok) throw new Error('Failed to get sightings');
   return res.json();
 }
@@ -945,7 +1024,7 @@ export async function getHornetSightings(page = 1): Promise<Paginated<HornetSigh
 export async function submitHornetSighting(data: HornetSightingCreate): Promise<void> {
   const res = await fetch(`${BASE}/hornets/sightings`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: jsonHeaders(),
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error('Failed to submit sighting');
@@ -954,7 +1033,7 @@ export async function submitHornetSighting(data: HornetSightingCreate): Promise<
 export async function voteOnSighting(id: string, vote: 'yes' | 'no'): Promise<void> {
   const res = await fetch(`${BASE}/hornets/sightings/${id}/vote`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: jsonHeaders(),
     body: JSON.stringify({ vote }),
   });
   if (!res.ok) throw new Error('Failed to vote');
@@ -1010,7 +1089,7 @@ export interface HornetTrapCatchCreate {
 export async function createHornetTrap(data: HornetTrapCreate): Promise<HornetTrap> {
   const res = await fetch(`${BASE}/hornets/traps`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: jsonHeaders(),
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error('Failed to create trap');
@@ -1018,7 +1097,7 @@ export async function createHornetTrap(data: HornetTrapCreate): Promise<HornetTr
 }
 
 export async function getHornetTrap(accessCode: string): Promise<HornetTrap> {
-  const res = await fetch(`${BASE}/hornets/traps/${encodeURIComponent(accessCode.toUpperCase())}`);
+  const res = await fetch(`${BASE}/hornets/traps/${encodeURIComponent(accessCode.toUpperCase())}`, { headers: { 'Accept-Language': acceptLanguage() } });
   if (!res.ok) throw new Error('Trap not found');
   return res.json();
 }
@@ -1029,7 +1108,7 @@ export async function addTrapCatch(
 ): Promise<HornetTrapCatch> {
   const res = await fetch(`${BASE}/hornets/traps/${encodeURIComponent(accessCode.toUpperCase())}/catches`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: jsonHeaders(),
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error('Failed to log catch');
@@ -1049,7 +1128,7 @@ export async function getNearbyTraps(
 }
 
 export async function getHornetTrapsGeoJSON(): Promise<{ type: string; features: unknown[] }> {
-  const res = await fetch(`${BASE}/hornets/traps/geojson`);
+  const res = await fetch(`${BASE}/hornets/traps/geojson`, { headers: { 'Accept-Language': acceptLanguage() } });
   if (!res.ok) throw new Error('Failed to fetch traps geojson');
   return res.json();
 }
@@ -1294,7 +1373,7 @@ export async function getPublicCalendar(
     query.set('country', place.country);
     query.set('postal_code', place.postalCode);
   }
-  const res = await fetch(`${BASE}/public/calendar?${query}`);
+  const res = await fetch(`${BASE}/public/calendar?${query}`, { headers: { 'Accept-Language': acceptLanguage() } });
   if (!res.ok) throw new Error('Failed to load the calendar');
   return res.json();
 }
@@ -1302,7 +1381,7 @@ export async function getPublicCalendar(
 export async function submitYearFeedback(data: YearFeedbackInput): Promise<YearFeedbackResult> {
   const res = await fetch(`${BASE}/public/calendar/feedback`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: jsonHeaders(),
     body: JSON.stringify(data),
   });
   if (!res.ok) {
@@ -1374,4 +1453,66 @@ export async function adminRejectYearProposal(id: string): Promise<YearProposal>
   const res = await apiFetch(`/admin/year-proposals/${id}/reject`, { method: 'POST' });
   if (!res.ok) throw new Error('Failed to reject');
   return res.json();
+}
+
+
+// ---------------------------------------------------------------------------------------------
+// The supporter subscription (#17, #479)
+// ---------------------------------------------------------------------------------------------
+
+export type SubscriptionStatus = 'none' | 'active' | 'grace' | 'expired' | 'refunded' | 'revoked';
+export type SubscriptionSource = 'apple' | 'google' | 'web' | 'manual';
+
+export interface Subscription {
+  status: SubscriptionStatus;
+  source?: SubscriptionSource | null;
+  product_id?: string | null;
+  current_period_end?: string | null;
+  will_renew: boolean;
+  /** True for the App Store and Google Play: **this site cannot cancel it**, the store must. */
+  store_managed: boolean;
+  /** Where a web subscriber manages or cancels. Only ever set for `source: 'web'`. */
+  manage_url?: string | null;
+  /** Colonies this account owns. Ones shared *with* it count against their owner. */
+  hives_used: number;
+  /** How many it may own, or null for no limit. May be *below* hives_used — see below. */
+  hive_limit: number | null;
+}
+
+/**
+ * Does this subscription currently grant access?
+ *
+ * `grace` means the store is retrying a payment and access **continues**. Gating on `active`
+ * alone would lock somebody out over a card that expired, on the day they are most likely to
+ * give up on the whole thing.
+ */
+export function grantsAccess(s: Subscription): boolean {
+  return s.status === 'active' || s.status === 'grace';
+}
+
+export async function getSubscription(): Promise<Subscription> {
+  const res = await apiFetch('/subscriptions/me');
+  if (!res.ok) await failure(res, 'Could not load the subscription');
+  return res.json();
+}
+
+/** Asks the provider now instead of waiting for the webhook. Used after coming back from paying. */
+export async function syncSubscription(): Promise<Subscription> {
+  const res = await apiFetch('/subscriptions/sync', { method: 'POST' });
+  if (!res.ok) await failure(res, 'Could not refresh the subscription');
+  return res.json();
+}
+
+/**
+ * Where this account buys on the web.
+ *
+ * Returns null when the deployment has no purchase link configured (503
+ * WEB_CHECKOUT_UNCONFIGURED) — the normal state before the store side is set up, and not
+ * something to show as an error. Every other failure still throws.
+ */
+export async function getWebCheckoutUrl(): Promise<string | null> {
+  const res = await apiFetch('/subscriptions/web-checkout');
+  if (res.status === 503) return null;
+  if (!res.ok) await failure(res, 'Could not start the purchase');
+  return (await res.json()).url as string;
 }

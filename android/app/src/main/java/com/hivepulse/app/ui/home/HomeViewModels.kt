@@ -17,6 +17,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import javax.inject.Inject
+import com.hivepulse.app.data.repository.ExportRepository
+import com.hivepulse.app.data.repository.SavedDownload
 
 /**
  * A day as the server sends it ("2026-05-12", no time) shown in the reader's format. Parsed as a plain date, so
@@ -78,6 +80,16 @@ data class TreatmentsState(
     /** YYYY-MM-DD */
     val dueOn: String = LocalDate.now().plusDays(7).toString(),
     val note: String = "",
+    /**
+     * Free text, not a number with a unit: a dose is written the way the product is applied —
+     * "2 x 15 ml per colony", "60 g" — and a number would lose that (#477).
+     */
+    val amount: String = "",
+    val withdrawalDays: String = "",
+    // The treatment record. Only an apiary has one; a single hive is not a holding.
+    val recordYear: Int = LocalDate.now().year,
+    val isMakingRecord: Boolean = false,
+    val recordFile: SavedDownload? = null,
 ) {
     val canPlan: Boolean get() = product.isNotBlank() && !isSaving
 }
@@ -86,6 +98,7 @@ data class TreatmentsState(
 class TreatmentsViewModel @Inject constructor(
     savedState: SavedStateHandle,
     private val repo: TreatmentRepository,
+    private val exportRepo: ExportRepository,
 ) : ViewModel() {
 
     private val id = savedState.get<String>("id")!!
@@ -109,7 +122,33 @@ class TreatmentsViewModel @Inject constructor(
     fun setProduct(value: String) = _state.update { it.copy(product = value) }
     fun setDueOn(value: String) = _state.update { it.copy(dueOn = value) }
     fun setNote(value: String) = _state.update { it.copy(note = value) }
+    fun setAmount(value: String) = _state.update { it.copy(amount = value) }
+    fun setWithdrawalDays(value: String) = _state.update { it.copy(withdrawalDays = value.filter { c -> c.isDigit() }) }
+    fun setRecordYear(value: Int) = _state.update { it.copy(recordYear = value) }
     fun clearError() = _state.update { it.copy(error = null) }
+
+    /** Only an apiary has a record: it names a place and the colonies standing there (#477). */
+    val recordApiaryId: String? get() = apiaryId
+
+    /**
+     * Fetches the year's record and saves it where the QR sheets go, so it can be opened and
+     * printed with the viewer the beekeeper already uses.
+     *
+     * A refusal carries a sentence worth reading — the record is part of the subscription — so it
+     * goes into `error` rather than leaving a download that silently did nothing.
+     */
+    fun makeRecord() {
+        val apiary = apiaryId ?: return
+        if (_state.value.isMakingRecord) return
+        _state.update { it.copy(isMakingRecord = true, error = null, recordFile = null) }
+        viewModelScope.launch {
+            runCatching { exportRepo.downloadTreatmentRecord(apiary, _state.value.recordYear) }
+                .onSuccess { f -> _state.update { it.copy(isMakingRecord = false, recordFile = f) } }
+                .onFailure { e -> _state.update { it.copy(isMakingRecord = false, error = e.message ?: e.cause?.message) } }
+        }
+    }
+
+    fun clearRecordFile() = _state.update { it.copy(recordFile = null) }
 
     fun request(): TreatmentCreateRequest {
         val current = _state.value
@@ -117,6 +156,9 @@ class TreatmentsViewModel @Inject constructor(
             hiveId = hiveId, apiaryId = apiaryId,
             product = current.product.trim(), dueOn = current.dueOn,
             note = current.note.trim().ifEmpty { null },
+            // Left out rather than sent as "": "nothing written down" is not "nothing given".
+            amount = current.amount.trim().ifEmpty { null },
+            withdrawalDays = current.withdrawalDays.trim().toIntOrNull(),
         )
     }
 
@@ -127,7 +169,10 @@ class TreatmentsViewModel @Inject constructor(
         viewModelScope.launch {
             runCatching { repo.create(request()) }
                 .onSuccess {
-                    _state.update { it.copy(isSaving = false, product = "", note = "", dueOn = LocalDate.now().plusDays(7).toString()) }
+                    _state.update {
+                        it.copy(isSaving = false, product = "", note = "", amount = "", withdrawalDays = "",
+                                dueOn = LocalDate.now().plusDays(7).toString())
+                    }
                     load()
                 }
                 // The server words the reason (only the owner may plan for an apiary, ...) in the user's language.

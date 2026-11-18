@@ -19,6 +19,7 @@ import HornetTrackerEn from './content/hornet-tracker';
 import HornetTrapsEn from './content/hornet-traps';
 import RemindersEn from './content/reminders';
 import AccountEn from './content/account';
+import SubscriptionEn from './content/subscription';
 import SharingEn from './content/sharing';
 import MovingHivesEn from './content/moving-hives';
 import HomeAndTreatmentsEn from './content/home-and-treatments';
@@ -38,6 +39,7 @@ import HornetTrackerDe from './content/hornet-tracker.de';
 import HornetTrapsDe from './content/hornet-traps.de';
 import RemindersDe from './content/reminders.de';
 import AccountDe from './content/account.de';
+import SubscriptionDe from './content/subscription.de';
 import SharingDe from './content/sharing.de';
 import MovingHivesDe from './content/moving-hives.de';
 import HomeAndTreatmentsDe from './content/home-and-treatments.de';
@@ -57,6 +59,7 @@ import HornetTrackerFr from './content/hornet-tracker.fr';
 import HornetTrapsFr from './content/hornet-traps.fr';
 import RemindersFr from './content/reminders.fr';
 import AccountFr from './content/account.fr';
+import SubscriptionFr from './content/subscription.fr';
 import SharingFr from './content/sharing.fr';
 import MovingHivesFr from './content/moving-hives.fr';
 import HomeAndTreatmentsFr from './content/home-and-treatments.fr';
@@ -76,6 +79,7 @@ import HornetTrackerEs from './content/hornet-tracker.es';
 import HornetTrapsEs from './content/hornet-traps.es';
 import RemindersEs from './content/reminders.es';
 import AccountEs from './content/account.es';
+import SubscriptionEs from './content/subscription.es';
 import SharingEs from './content/sharing.es';
 import MovingHivesEs from './content/moving-hives.es';
 import HomeAndTreatmentsEs from './content/home-and-treatments.es';
@@ -93,6 +97,7 @@ import HornetTrackerPl from './content/hornet-tracker.pl';
 import HornetTrapsPl from './content/hornet-traps.pl';
 import RemindersPl from './content/reminders.pl';
 import AccountPl from './content/account.pl';
+import SubscriptionPl from './content/subscription.pl';
 import SharingPl from './content/sharing.pl';
 import MovingHivesPl from './content/moving-hives.pl';
 import HomeAndTreatmentsPl from './content/home-and-treatments.pl';
@@ -108,6 +113,7 @@ const CONTENT: Record<string, SlugMap> = {
     'data-export': DataExportEn, 'hive-stats': HiveStatsEn, 'community-stats': CommunityStatsEn,
     'hornet-tracker': HornetTrackerEn, 'hornet-traps': HornetTrapsEn,
     'reminders': RemindersEn, 'account': AccountEn,
+    'subscription': SubscriptionEn,
     'sharing': SharingEn, 'moving-hives': MovingHivesEn, 'home-and-treatments': HomeAndTreatmentsEn, 'beekeeping-year': BeekeepingYearEn,
   },
   de: {
@@ -116,6 +122,7 @@ const CONTENT: Record<string, SlugMap> = {
     'data-export': DataExportDe, 'hive-stats': HiveStatsDe, 'community-stats': CommunityStatsDe,
     'hornet-tracker': HornetTrackerDe, 'hornet-traps': HornetTrapsDe,
     'reminders': RemindersDe, 'account': AccountDe,
+    'subscription': SubscriptionDe,
     'sharing': SharingDe, 'moving-hives': MovingHivesDe, 'home-and-treatments': HomeAndTreatmentsDe, 'beekeeping-year': BeekeepingYearDe,
   },
   fr: {
@@ -124,6 +131,7 @@ const CONTENT: Record<string, SlugMap> = {
     'data-export': DataExportFr, 'hive-stats': HiveStatsFr, 'community-stats': CommunityStatsFr,
     'hornet-tracker': HornetTrackerFr, 'hornet-traps': HornetTrapsFr,
     'reminders': RemindersFr, 'account': AccountFr,
+    'subscription': SubscriptionFr,
     'sharing': SharingFr, 'moving-hives': MovingHivesFr, 'home-and-treatments': HomeAndTreatmentsFr, 'beekeeping-year': BeekeepingYearFr,
   },
   es: {
@@ -132,6 +140,7 @@ const CONTENT: Record<string, SlugMap> = {
     'data-export': DataExportEs, 'hive-stats': HiveStatsEs, 'community-stats': CommunityStatsEs,
     'hornet-tracker': HornetTrackerEs, 'hornet-traps': HornetTrapsEs,
     'reminders': RemindersEs, 'account': AccountEs,
+    'subscription': SubscriptionEs,
     'sharing': SharingEs, 'moving-hives': MovingHivesEs, 'home-and-treatments': HomeAndTreatmentsEs, 'beekeeping-year': BeekeepingYearEs,
   },
   pl: {
@@ -140,6 +149,7 @@ const CONTENT: Record<string, SlugMap> = {
     'data-export': DataExportPl, 'hive-stats': HiveStatsPl, 'community-stats': CommunityStatsPl,
     'hornet-tracker': HornetTrackerPl, 'hornet-traps': HornetTrapsPl,
     'reminders': RemindersPl, 'account': AccountPl,
+    'subscription': SubscriptionPl,
     'sharing': SharingPl, 'moving-hives': MovingHivesPl, 'home-and-treatments': HomeAndTreatmentsPl, 'beekeeping-year': BeekeepingYearPl,
   },
 };

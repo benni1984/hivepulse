@@ -102,6 +102,104 @@ in the Members tab, drawn as soft round patches that blend into each other — t
 See the help pages `hive-stats`, `community-stats`,
 `data-export`, `hornet-tracker`, `hornet-traps`.
 
+### The treatment record
+
+`GET /apiaries/{id}/treatment-record?year=YYYY` returns a PDF: every treatment carried out at that
+apiary in that year, with the product, the amount, how many colonies, the planned and the actual
+date and who recorded it, and the year's varroa readings beside them. Part of the subscription,
+judged by the apiary's **owner**, so somebody invited onto an apiary can print the paperwork for
+work they did.
+
+Beekeepers in the EU must record the veterinary medicines they use, because bees are
+food-producing animals (Art. 108(5) of Regulation (EU) 2019/6; in Germany §§ 1–2
+Tierhalter-Arzneimittelanwendungs- und Nachweisverordnung and § 95a(3) TAMG). Five years, shown
+on request.
+
+Three things decide whether the document is any good:
+
+* **The amount is free text, not a number with a unit.** A dose is written the way the product is
+  applied — "2 × 15 ml per colony", "60 g", "one strip per 5 frames".
+* **The number of colonies is frozen when a treatment is marked done.** Counting them when the
+  record is printed would count the colonies that exist *then*: ten treated in August and three
+  given away in October would read as seven, which is a false statement in a document an authority
+  may ask to see.
+* **It is a document to keep, not a claim of compliance.** The regulation allows an electronic
+  record only where the data cannot be altered afterwards, which a document regenerated from
+  editable rows is not — but it allows loose leaves. So HivePulse prints the sheet, dated, and the
+  beekeeper keeps it. Nothing in the product says more, and nothing should start to.
+
+A missing amount prints as a dash and the document says in its own line how many entries are
+incomplete. A year with nothing treated still produces a PDF: "nothing was treated here in 2026"
+is exactly what somebody may need to show.
+
+The PDF is typeset with DM Sans, which lives in `backend/app/assets/fonts/` because ReportLab's
+own fonts cannot draw `ą ę ż ś ń ź` — four languages would have looked perfect while Polish
+quietly fell apart.
+
+## What the supporter subscription includes
+
+Decided while the application had no users at all, because a quantity limit cannot be introduced
+once people have crossed it (#478). €19.99 a year; the technical side is #17.
+
+| Free, permanently | With a subscription |
+|---|---|
+| up to **10 colonies**, apiaries unlimited | unlimited |
+| QR codes, scanning, offline inspections | the treatment record and yearly report (#477) |
+| the beekeeping year, moves, reminders | **inviting** somebody to an apiary or a hive |
+| the hornet tracker, in full | custom fields |
+| statistics for the last 365 days | the whole history, and the regional health map |
+| the raw data export | |
+
+Three rules hold the whole thing together, and they are enforced in `backend/app/limits.py`:
+
+* **Reaching a limit never closes what already exists.** Not hidden, not read-only, not deleted —
+  the only thing that stops is adding the eleventh colony. Somebody who was a supporter and is not
+  any more keeps every colony they had. A paywall that locks away work already done is the one
+  thing this kind of product does not survive, and it would be a poor thing to do to a record of
+  living animals.
+* **The person who invites pays; the guest does not.** A feature that needs two paying people
+  sells to nobody. An apiary's custom fields go by its *owner's* subscription for the same reason.
+* **Statistics are narrowed, not refused.** `preset=all` from a free account answers with a year.
+  A page that says 403 teaches somebody the app is broken; one that shows less teaches them what
+  the subscription is for.
+
+**Collaborators are deliberately unlimited, and not priced per head.** A colony count measures how
+serious *you* are; a collaborator count measures how many *other people* you bring in, and each of
+those is a potential subscriber in their own right — charging per guest taxes exactly the thing that
+grows the user base. There is no cost to recover either: a guest has no account of their own, they
+sit on somebody else's apiary. Abuse is already closed from two sides: only a paying account can
+invite at all, and `shares.py` allows 20 invitations an hour.
+
+The second tier that does exist is **not "more collaborators" but the association or the commercial
+operation** — a different customer who wants a shared holding, *one* invoice and an export for the
+association's records. That is worth selling as its own product when the first one asks; a seat
+counter would overcharge the hobbyist with a partner and undercharge the association. It can wait,
+because unlike a quantity limit a *higher* tier takes nothing away from anyone and stays addable
+later.
+
+What is deliberately *not* behind it: the hornet tracker (reporting *Vespa velutina* helps
+everybody, including people who will never pay), the beekeeping year (the content nobody else
+has), QR codes and scanning (the moment the app makes sense), and the raw export of one's own
+data (a position, not a feature — and in the EU a right). What is sold is the *document*, not the
+data.
+
+### Buying it
+
+`/dashboard/subscription` on the website shows the state, the renewal or expiry date, the colony
+counter, what the subscription includes and where to cancel. The purchase link is built **on the
+server** (`GET /subscriptions/web-checkout`): the account id is a path segment of it, a link
+without one answers 404 rather than selling anonymously, and a link with the *wrong* one takes
+money and attaches it to nobody. Buying inside the apps goes through StoreKit and Play Billing, as
+those stores require; whichever way it is bought, the entitlement is derived on the server and
+works on all three clients.
+
+A subscription sold by Apple or Google can only be cancelled there. The server says so
+(`store_managed`), so the three clients do not each decide for themselves what they may offer.
+
+Reaching the limit is answered with an amber notice and a way to the subscription page, never a red
+error banner — it is an offer, not a fault. A client tells the two apart by the error **code**,
+never by the sentence, which exists in five languages.
+
 ## Account
 
 Sign in with e-mail, Apple or Google; English, German, French, Spanish and Polish; change password (not
