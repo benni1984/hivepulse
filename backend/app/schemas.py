@@ -768,6 +768,10 @@ class TreatmentCreate(BaseModel):
     product: str = Field(min_length=1, max_length=200)
     due_on: PlannedDay
     note: Optional[str] = Field(default=None, max_length=2000)
+    #: Free text, not a number with a unit — a dose is written the way the product is applied.
+    amount: Optional[str] = Field(default=None, max_length=100)
+    #: Days before the honey may be taken. None where a product has none.
+    withdrawal_days: Optional[int] = Field(default=None, ge=0, le=365)
 
     @model_validator(mode="after")
     def exactly_one_target(self):
@@ -782,6 +786,10 @@ class TreatmentUpdate(BaseModel):
     product: Optional[str] = Field(default=None, min_length=1, max_length=200)
     due_on: Optional[PlannedDay] = None
     note: Optional[str] = Field(default=None, max_length=2000)
+    #: Free text, not a number with a unit — a dose is written the way the product is applied.
+    amount: Optional[str] = Field(default=None, max_length=100)
+    #: Days before the honey may be taken. None where a product has none.
+    withdrawal_days: Optional[int] = Field(default=None, ge=0, le=365)
 
 
 class TreatmentDone(BaseModel):
@@ -803,7 +811,11 @@ class PlannedTreatmentOut(BaseModel):
     product: str
     due_on: date
     note: Optional[str] = None
+    amount: Optional[str] = None
+    withdrawal_days: Optional[int] = None
     done_on: Optional[date] = None
+    #: Frozen when it was marked done; None while it is still open (#477).
+    hive_count_treated: Optional[int] = None
     overdue: bool = False
     created_by_name: Optional[str] = None
     created_at: datetime

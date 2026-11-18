@@ -961,11 +961,36 @@ a treatment that has happened stays what it was, the `treatment_applied` text of
 ### POST `/treatments`
 
 ```json
-{ "hive_id": "uuid", "product": "Formic acid 60%", "due_on": "2026-08-20", "note": "string | null" }
+{
+  "hive_id": "uuid",
+  "product": "Formic acid 60%",
+  "due_on": "2026-08-20",
+  "note": "string | null",
+  "amount": "2 \u00d7 15 ml per colony | null",
+  "withdrawal_days": 0
+}
 ```
 
 Exactly one of `hive_id` and `apiary_id` (a treatment for all hives of an apiary). `product` up to
-200 characters, `note` up to 2000. **201** with a [PlannedTreatment](#plannedtreatment-object).
+200 characters, `note` up to 2000, `amount` up to 100. **201** with a
+[PlannedTreatment](#plannedtreatment-object).
+
+#### `amount` and `withdrawal_days`, and why they are text and a number
+
+Both exist for the treatment record (#477), where the quantity of the medicine is not decoration:
+the German record of veterinary medicines (§§ 1–2 Tierhalter-Arzneimittelanwendungs- und
+Nachweisverordnung, Art. 108(5) of EU Regulation 2019/6) names it explicitly, and the equivalent
+elsewhere in the EU comes from the same regulation.
+
+`amount` is **free text, not a number with a unit.** Beekeepers write a dose the way the product
+is applied — "2 × 15 ml per colony", "60 g", "one strip per 5 frames" — and forcing that into a
+number would either lose the meaning or be filled in wrongly. The record wants what was really
+given, not something tidy.
+
+Both are **optional**, including on treatments recorded before they existed. The record prints a
+blank where one is missing and says how many entries are incomplete, rather than refusing to
+exist: a document that shows its gaps tells a beekeeper what to go and fill in, while one that
+will not print tells them nothing.
 
 Whoever may work on the hive may plan a treatment for it; for an apiary, whoever may edit it (not
 somebody who has only single hives of it).
@@ -998,9 +1023,50 @@ changes the day. Omitted, it falls back to the server's **UTC** day — so the c
 date instead, because after about 22:00 in Europe the two are not the same day (#443).
 **200** with the treatment. To undo, `POST /treatments/{id}/reopen`: **200**, `done_on` becomes `null`.
 
+**Marking it done freezes how many colonies it covered** into `hive_count_treated` — one for a
+hive, the apiary's current hive count for an apiary. This is not a convenience: a record assembled
+later would count the colonies that exist *then*. A beekeeper who treats ten colonies in August
+and gives three away in October would get a document claiming they treated seven, which is a false
+statement in a record an authority may ask to see. Reopening clears it again, so the number only
+ever exists alongside a date it belongs to.
+
 ### DELETE `/treatments/{id}`
 
 **204.** Anyone who may plan it may delete it.
+
+### GET `/apiaries/{id}/treatment-record`
+
+`?year=2026` (defaults to the current year). Requires `Authorization: Bearer <access_token>`.
+
+Returns a **PDF**: every treatment of that apiary carried out in that year, as one document to
+print and keep. `Content-Type: application/pdf`, `Content-Disposition: attachment` with a file
+name carrying the apiary and the year.
+
+Part of the supporter subscription — 403 `SUPPORTER_REQUIRED` otherwise, judged by the **apiary's
+owner**, so somebody invited onto an apiary can print the record of the person who pays.
+
+| Error | Meaning |
+|-------|---------|
+| 404 `APIARY_NOT_FOUND` | Not visible to the caller |
+| 403 `SUPPORTER_REQUIRED` | The apiary's owner has no subscription |
+| 422 | `year` outside 2000–2100 |
+
+A year with nothing carried out still returns a PDF, with the heading and an empty table. An empty
+record is an answer — "nothing was treated here in 2026" is exactly what somebody may need to show.
+
+#### What the document is, and what it is not
+
+It contains what the record of veterinary medicines asks for: the beekeeper's name, the apiary and
+its location, the year, and per treatment the product, the amount, the number of colonies, the
+planned and the actual date, the withdrawal period and who recorded it. The varroa readings around
+each treatment are printed with it, because they are the reason a treatment happened.
+
+**It is a document to keep, not a claim of compliance.** The regulation lets the record be loose
+leaves and allows an electronic one only where the data cannot be altered afterwards — which a
+document regenerated from rows somebody can still edit is not. So HivePulse prints the record,
+dated, and the beekeeper keeps it for the five years the regulation asks for, exactly as they
+would keep a paper one. Nothing in the product claims it is itself a legally compliant electronic
+record, and nothing should start to.
 
 ### PlannedTreatment object
 
@@ -1012,12 +1078,19 @@ date instead, because after about 22:00 in Europe the two are not the same day (
   "product": "string",
   "due_on": "2026-08-20",
   "note": "string | null",
+  "amount": "string | null",
+  "withdrawal_days": 0,
   "done_on": "date | null",
+  "hive_count_treated": 0,
   "overdue": false,
   "created_by_name": "string | null",
   "created_at": "datetime"
 }
 ```
+
+`hive_count_treated` is null while the treatment is open and carries the frozen count once it is
+done (see above). `amount` and `withdrawal_days` are null on anything recorded before they
+existed.
 
 `apiary_name` is set when the target is a hive. `overdue` is true for an open treatment due before
 today. A treatment follows its target: when a hive moves it goes with it, and it is deleted with the

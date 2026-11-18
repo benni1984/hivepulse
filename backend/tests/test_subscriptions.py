@@ -324,9 +324,13 @@ class TestWebCheckout:
 
     def test_there_is_no_link_without_an_account(self, client, monkeypatch):
         """A purchase link only means anything attached to somebody, so an anonymous caller must
-        not receive one at all. (422 rather than 401 is how this whole API answers a *missing*
-        Authorization header — an invalid one gives 401. Asserted as "refused and no url" so this
-        test is about the link, not about that wart.)"""
+        not receive one at all.
+
+        Asserted as "refused, and no url in the body" rather than as a particular status, because
+        which status a *missing* Authorization header gets is #482's subject and not this test's.
+        Pinning 401 or 422 here would make this test fail for a reason that has nothing to do with
+        buying anything.
+        """
         from app.config import settings
         monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "tok123")
 

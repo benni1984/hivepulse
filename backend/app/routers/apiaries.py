@@ -7,9 +7,17 @@ from sqlalchemy.orm import Session
 from app.access import OWNER, PARTIAL, Scope, apiary_or_404, remove_shares
 from app.deps import CurrentUser, DB
 from app.i18n import error
-from app.models import Apiary, HiveMove, PlannedTreatment
+from app.models import Apiary, Hive, HiveMove, Inspection, PlannedTreatment, User
 from app.schemas import ApiaryCreate, ApiaryOut, ApiaryUpdate, PaginatedResponse
 from app.utils.geocoding import forward_geocode, reverse_geocode_city
+import io
+from datetime import date
+from fastapi.responses import StreamingResponse
+from sqlalchemy import or_, false
+from app import limits
+from app.clock import today_utc
+from app.i18n import pick_language
+from app.utils import treatment_record
 
 router = APIRouter(prefix="/apiaries", tags=["apiaries"])
 
@@ -149,3 +157,88 @@ def delete_apiary(
         {HiveMove.to_apiary_id: None}, synchronize_session=False)
     db.delete(apiary)
     db.commit()
+
+
+@router.get("/{apiary_id}/treatment-record")
+def apiary_treatment_record(  # not treatment_record(): that name is the module above
+    apiary_id: str,
+    current_user: CurrentUser,
+    db: DB,
+    year: int = Query(default=None, ge=2000, le=2100),
+    accept_language: Optional[str] = Header(default=None),
+):
+    """The year's treatments as a document to print and keep (#477).
+
+    Part of the supporter subscription, judged by the **apiary's owner** and not by the caller:
+    somebody invited onto an apiary should be able to print the record of the person who pays.
+    The alternative is a collaborator who can do the work but not produce the paperwork for it.
+    """
+    apiary, _, _ = apiary_or_404(db, current_user, apiary_id, accept_language)
+    limits.require_supporter(db.get(User, apiary.user_id) or current_user, accept_language)
+
+    year = year or today_utc().year
+    lang = pick_language(accept_language)
+    start, end = date(year, 1, 1), date(year, 12, 31)
+
+    hive_ids = [h.id for h in db.query(Hive).filter(Hive.apiary_id == apiary.id).all()]
+
+    # Carried out in this year, whether planned for one hive or for the whole stand. Ordered by
+    # the day it happened, which is the order a record is read in.
+    rows = (
+        db.query(PlannedTreatment)
+        .filter(PlannedTreatment.done_on.isnot(None))
+        .filter(PlannedTreatment.done_on >= start, PlannedTreatment.done_on <= end)
+        .filter(or_(PlannedTreatment.apiary_id == apiary.id,
+                    PlannedTreatment.hive_id.in_(hive_ids) if hive_ids else false()))
+        .order_by(PlannedTreatment.done_on)
+        .all()
+    )
+    treatments = [{
+        "done_on": r.done_on,
+        "due_on": r.due_on,
+        "product": r.product,
+        "amount": r.amount,
+        # Falls back to the hive's own count only where nothing was frozen, i.e. for treatments
+        # finished before this existed. Never recomputed for a row that has one (#477).
+        "hive_count": r.hive_count_treated if r.hive_count_treated is not None else (
+            1 if r.hive_id else None),
+        "withdrawal_days": r.withdrawal_days,
+        "recorded_by": r.created_by.name if r.created_by else None,
+    } for r in rows]
+
+    varroa = []
+    if hive_ids:
+        found = (
+            db.query(Inspection, Hive.name)
+            .join(Hive, Hive.id == Inspection.hive_id)
+            .filter(Inspection.hive_id.in_(hive_ids))
+            .filter(Inspection.date >= start, Inspection.date <= end)
+            .filter(or_(Inspection.varroa_count.isnot(None), Inspection.varroa_level.isnot(None)))
+            .order_by(Inspection.date)
+            .all()
+        )
+        levels = {0: "none", 1: "low", 2: "medium", 3: "high"}
+        varroa = [{
+            "date": i.date,
+            "hive": name,
+            "count": i.varroa_count,
+            "level": levels.get(i.varroa_level) if i.varroa_level is not None else None,
+        } for i, name in found]
+
+    pdf = treatment_record.build(
+        lang=lang,
+        year=year,
+        keeper_name=(db.get(User, apiary.user_id) or current_user).name,
+        apiary_name=apiary.name,
+        location=apiary.address,
+        treatments=treatments,
+        varroa=varroa,
+        made_on=today_utc(),
+    )
+    safe = "".join(ch if ch.isalnum() else "-" for ch in apiary.name).strip("-")[:40] or "apiary"
+    return StreamingResponse(
+        io.BytesIO(pdf),
+        media_type="application/pdf",
+        headers={"Content-Disposition":
+                 f"attachment; filename=treatment-record-{safe}-{year}.pdf"},
+    )

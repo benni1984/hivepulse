@@ -286,7 +286,16 @@ class PlannedTreatment(Base):
     product = Column(String(200), nullable=False)
     due_on = Column(Date, nullable=False, index=True)
     note = Column(Text, nullable=True)
+    #: The quantity given, as free text. A dose is written the way the product is applied
+    #: ("2 x 15 ml per colony", "60 g"), and a number with a unit would lose that (#477).
+    amount = Column(String(100), nullable=True)
+    #: How long before the honey may be taken. Null where a product has none.
+    withdrawal_days = Column(Integer, nullable=True)
     done_on = Column(Date, nullable=True)
+    #: How many colonies this covered, **frozen when it was marked done**. Counting them later
+    #: would count the colonies that exist later: ten treated in August and three given away in
+    #: October would read as seven, in a document an authority may ask to see (#477).
+    hive_count_treated = Column(Integer, nullable=True)
     created_by_id = Column(String, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
     created_at = Column(DateTime, default=now_utc)
 

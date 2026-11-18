@@ -496,16 +496,25 @@ MESSAGES = {
 SUPPORTED_LANGUAGES = ("en", "de", "fr", "es", "pl")
 
 
-def get_message(code: str, accept_language: Optional[str] = None) -> str:
-    lang = "en"
+def pick_language(accept_language: Optional[str] = None) -> str:
+    """The language to answer in, or English.
+
+    Lifted out of get_message() unchanged, because error messages are no longer the only thing
+    that has to be in the reader's language: the treatment record is a legal document, and a
+    German authority expects German column headings (#477).
+    """
     if accept_language:
         for part in accept_language.split(","):
             tag = part.strip().split(";")[0].strip()[:2].lower()
             # "es" used to be missing here, so Spanish clients got English even for
             # the messages that did have a Spanish translation.
             if tag in SUPPORTED_LANGUAGES:
-                lang = tag
-                break
+                return tag
+    return "en"
+
+
+def get_message(code: str, accept_language: Optional[str] = None) -> str:
+    lang = pick_language(accept_language)
     messages = MESSAGES.get(code, {})
     return messages.get(lang, messages.get("en", code))
 
