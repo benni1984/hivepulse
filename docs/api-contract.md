@@ -4,6 +4,13 @@ Base URL: `http://<host>:8000/api/v1`
 
 All endpoints require `Authorization: Bearer <access_token>` unless marked **public**.
 
+A request without that header is refused with **401 `TOKEN_INVALID`**, in the error-envelope shape
+below, exactly as a request carrying an invalid one is — the two are indistinguishable to a client,
+so the one rule "refresh the token on 401" covers both. It used to be 422 with pydantic's array of
+validation errors, because the header was declared as a required request field and FastAPI's own
+validation answered before the dependency ran; a client refreshing on 401 sailed straight past it
+(#482). An **expired** token is 401 `TOKEN_EXPIRED`.
+
 ---
 
 ## Table of Contents
@@ -143,6 +150,9 @@ item is untouched, so a client that wants to mark the offending field still read
 that wants its own wording still reads `type` and `ctx`.
 
 `type` and `ctx` are pydantic's. A client should not parse `msg`.
+
+**Authentication never arrives in this shape.** A missing, malformed, invalid or expired
+`Authorization` header is a 401 with the error envelope above, not a 422 (#482).
 
 ### Value ranges
 
@@ -1610,6 +1620,8 @@ Stats can be filtered by a preset window or an explicit date range. Both query p
 
 `trend` is returned for `number` and `date` types. `distribution` is returned for `boolean` and `select` types. `text` fields are omitted from stats.
 
+`mood_distribution` holds **raw counts per recorded mood, and only the moods that were recorded** — it is built from the inspections that set `mood`, so a mood nobody recorded is absent and a hive or apiary without inspections gets `{}`, not three zeroes. Clients must treat every key as optional and guard the total before computing a share (see `lib/mood.ts` on the web; #483).
+
 ### ApiaryStats object
 
 ```json
@@ -1628,6 +1640,8 @@ Stats can be filtered by a preset window or an explicit date range. Both query p
   "per_hive": [ /* array of HiveStats summary */ ]
 }
 ```
+
+`mood_distribution` is sparse here too — see the note under HiveStats above.
 
 ### OverviewStats object
 

@@ -16,17 +16,7 @@ import {
   exportApiaryInspections, getTreatmentRecord,
   type Apiary, type Hive, type ApiaryStats, type FieldDefinition, type FieldType, type FieldTarget,
 } from '@/lib/api';
-
-function moodPct(dist: { calm: number; nervous: number; aggressive: number }) {
-  const total = dist.calm + dist.nervous + dist.aggressive;
-  if (total === 0) return null;
-  return {
-    calm: dist.calm, nervous: dist.nervous, aggressive: dist.aggressive,
-    calmPct: Math.round((dist.calm / total) * 100),
-    nervousPct: Math.round((dist.nervous / total) * 100),
-    aggressivePct: Math.round((dist.aggressive / total) * 100),
-  };
-}
+import { moodPct } from '@/lib/mood';
 
 const HIVE_TYPES = ['langstroth', 'dadant', 'top_bar', 'warre', 'other'] as const;
 

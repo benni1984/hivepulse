@@ -209,8 +209,8 @@ def geocoder(monkeypatch):
 
 
 def test_the_calendar_needs_a_login(client):
-    assert client.get(f"{API}/calendar").status_code in (401, 403, 422)
-    assert client.get(f"{API}/users/me/region").status_code in (401, 403, 422)
+    assert client.get(f"{API}/calendar").status_code == 401
+    assert client.get(f"{API}/users/me/region").status_code == 401
 
 
 def test_a_new_account_has_no_region(me):

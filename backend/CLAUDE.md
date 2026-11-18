@@ -2,7 +2,9 @@
 
 - Entry point: `backend/main.py`
 - Run dev server: `uvicorn main:app --reload` (from `backend/`)
-- Run tests: `pytest` (from `backend/`)
+- Run tests: `pytest -n auto` (from `backend/`) — 2:02 on eight cores against 8:16
+  serially. Plain `pytest` still works and is what you want for a single test; the
+  parallel workers are safe because each one gets its own in-memory database (#445, #486)
 - Database: SQLite for dev, PostgreSQL (Neon) for staging/production
 - ORM: SQLAlchemy + Alembic migrations in `backend/alembic/versions/`
 - Latest migration: `018_beekeeping_year_region.py`

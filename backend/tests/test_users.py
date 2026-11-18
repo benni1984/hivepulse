@@ -30,10 +30,11 @@ def test_update_partial_fields_unchanged(auth_client):
     assert r.json()["locale"] == "de"
 
 
-def test_get_me_no_header_returns_422(client):
-    # Missing Authorization header → FastAPI 422 (required header absent)
+def test_get_me_no_header_returns_401(client):
+    # Missing Authorization header → 401, like an invalid one (#482)
     r = client.get("/api/v1/users/me")
-    assert r.status_code == 422
+    assert r.status_code == 401
+    assert r.json()["detail"]["code"] == "TOKEN_INVALID"
 
 
 def test_get_me_invalid_token_returns_401(client):
@@ -103,7 +104,7 @@ def test_get_reminder_settings_default_values(auth_client):
 
 def test_get_reminder_settings_requires_auth(client):
     r = client.get("/api/v1/users/me/reminder")
-    assert r.status_code == 422  # missing Authorization header
+    assert r.status_code == 401  # missing Authorization header (#482)
 
 
 def test_update_reminder_enabled_false(auth_client):
@@ -197,4 +198,5 @@ def test_register_push_token_overwrites_previous(auth_client):
 
 def test_register_push_token_requires_auth(client):
     r = client.post("/api/v1/users/me/push-token", json={"platform": "ios", "token": "t"})
-    assert r.status_code == 422
+    assert r.status_code == 401  # missing Authorization header (#482)
+    assert r.json()["detail"]["code"] == "TOKEN_INVALID"

@@ -1,6 +1,8 @@
 import { render } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import React from 'react';
+import { NextIntlClientProvider } from 'next-intl';
+
 import { HELP_TOPICS } from '@/lib/helpTopics';
 import en from '@/messages/en.json';
 import de from '@/messages/de.json';
@@ -13,13 +15,20 @@ vi.mock('next-intl/server', () => ({
 }));
 import HelpTopicPage from '@/app/[locale]/help/[slug]/page';
 
+// HelpScreenshot asks next-intl for the current locale so it can show the picture in the
+// reader's language (#475). These tests render the page component on its own, outside the locale
+// layout that normally provides it, so they bring their own provider. Mocking the hook away would
+// pass just as well and would stop exercising the very thing the localised screenshots rely on.
+const withLocale = (locale: string, jsx: React.ReactNode) =>
+  <NextIntlClientProvider locale={locale}>{jsx}</NextIntlClientProvider>;
+
 const NEW_TOPICS = ['sharing', 'moving-hives', 'home-and-treatments', 'beekeeping-year'] as const;
 const LOCALES = ['en', 'de', 'fr', 'es', 'pl'] as const;
 const MESSAGES = { en, de, fr, es, pl } as const;
 
 async function headings(locale: string, slug: string): Promise<string[]> {
   const jsx = await HelpTopicPage({ params: Promise.resolve({ locale, slug }) });
-  const { container } = render(jsx);
+  const { container } = render(withLocale(locale, jsx));
   const out = [...container.querySelectorAll('.help-section-title')].map(h => h.textContent ?? '');
   container.remove();
   return out;
@@ -67,7 +76,7 @@ describe('help pages for working together, moving hives and the home screen', ()
   it('use the words of the apps in German', async () => {
     const text = (await Promise.all(NEW_TOPICS.map(async slug => {
       const jsx = await HelpTopicPage({ params: Promise.resolve({ locale: 'de', slug }) });
-      const { container } = render(jsx);
+      const { container } = render(withLocale('de', jsx));
       const content = container.textContent ?? '';
       container.remove();
       return content;

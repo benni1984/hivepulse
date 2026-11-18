@@ -2,6 +2,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import React from 'react';
 import HivePage from '@/app/[locale]/dashboard/hive/[id]/page';
+import type { MoodDistribution } from '@/lib/mood';
 
 const mockGetHive = vi.hoisted(() => vi.fn());
 const mockGetHiveStats = vi.hoisted(() => vi.fn());
@@ -82,7 +83,7 @@ describe('HivePage', () => {
 
   function setupMocks({
     hive = { id: 'hive-1', name: 'Hive Alpha', hive_type: 'langstroth', apiary_id: 'apiary-1' },
-    stats = { inspection_count: 0, varroa_trend: [] as { date: string; value: number }[], mood_distribution: { calm: 0, nervous: 0, aggressive: 0 } },
+    stats = { inspection_count: 0, varroa_trend: [] as { date: string; value: number }[], mood_distribution: { calm: 0, nervous: 0, aggressive: 0 } as MoodDistribution },
     inspections = [] as { id: string; date: string; varroa_level?: number; mood?: string;
       queen_seen?: boolean; brood_frames?: number; honey_frames?: number; weight_kg?: number;
       treatment_applied?: string; notes?: string; custom_fields?: Record<string, unknown> }[],
@@ -461,6 +462,25 @@ describe('HivePage', () => {
     render(<HivePage />);
     await waitFor(() => screen.getByText('Hive Alpha'));
     expect(screen.getByText('hive.noMoodData')).toBeInTheDocument();
+  });
+
+  // Same sparse shape as on the apiary page: a hive with no inspections gets
+  // `{}` from the server, which used to render "NaN% ()" (#483).
+  it('shows no-mood-data message when the distribution is empty', async () => {
+    setupMocks({ stats: { inspection_count: 0, varroa_trend: [], mood_distribution: {} } });
+    render(<HivePage />);
+    await waitFor(() => screen.getByText('Hive Alpha'));
+    expect(screen.getByText('hive.noMoodData')).toBeInTheDocument();
+    expect(screen.queryByText(/NaN/)).not.toBeInTheDocument();
+  });
+
+  it('shows percentages for a partially filled distribution without NaN', async () => {
+    setupMocks({ stats: { inspection_count: 4, varroa_trend: [], mood_distribution: { nervous: 1, aggressive: 3 } } });
+    render(<HivePage />);
+    await waitFor(() => screen.getByText('Hive Alpha'));
+    expect(screen.getByText(/25%/)).toBeInTheDocument();
+    expect(screen.getByText(/75%/)).toBeInTheDocument();
+    expect(screen.queryByText(/NaN/)).not.toBeInTheDocument();
   });
 
   // ── Custom fields ──────────────────────────────────────────────────────────

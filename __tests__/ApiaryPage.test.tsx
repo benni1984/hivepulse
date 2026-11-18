@@ -329,6 +329,29 @@ describe('ApiaryPage', () => {
     expect(screen.getByText('apiary.noMoodData')).toBeInTheDocument();
   });
 
+  // The server omits a mood nobody recorded, so an apiary whose hives have no
+  // inspections yet gets `{}` — not three zeroes. That used to render
+  // "NaN% ()" on the first screen a new beekeeper reaches (#483).
+  it('shows no-mood-data message when the distribution is empty', async () => {
+    mockGetApiary.mockResolvedValueOnce({ id: 'apiary-1', name: 'My Apiary', hive_count: 2, is_public: false, created_at: '2025-01-01T00:00:00Z' });
+    mockGetHives.mockResolvedValueOnce(paginated([]));
+    mockGetApiaryStats.mockResolvedValueOnce({ hive_count: 2, inspections_total: 0, mood_distribution: {} });
+    render(<ApiaryPage />);
+    await waitFor(() => screen.getByText('My Apiary'));
+    expect(screen.getByText('apiary.noMoodData')).toBeInTheDocument();
+    expect(screen.queryByText(/NaN/)).not.toBeInTheDocument();
+  });
+
+  it('shows percentages for a partially filled distribution without NaN', async () => {
+    mockGetApiary.mockResolvedValueOnce({ id: 'apiary-1', name: 'My Apiary', hive_count: 2, is_public: false, created_at: '2025-01-01T00:00:00Z' });
+    mockGetHives.mockResolvedValueOnce(paginated([]));
+    mockGetApiaryStats.mockResolvedValueOnce({ hive_count: 2, inspections_total: 4, mood_distribution: { calm: 4 } });
+    render(<ApiaryPage />);
+    await waitFor(() => screen.getByText('My Apiary'));
+    expect(screen.getByText(/100%/)).toBeInTheDocument();
+    expect(screen.queryByText(/NaN/)).not.toBeInTheDocument();
+  });
+
   // ── Export ─────────────────────────────────────────────────────────────────
 
   it('shows Export CSV and JSON buttons when apiary has inspections', async () => {

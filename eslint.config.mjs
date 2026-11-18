@@ -33,6 +33,12 @@ const config = [
       // 1602 findings.
       'ds-bundle/**',
       '.ds-sync/**',
+      // Worktrees of other branches, created for background tasks. Each is a whole second copy
+      // of this repository, so `eslint .` was reporting every other branch's findings as this
+      // one's: three worktrees turned the 25-warning backlog into 100. Worse than the noise, a
+      // real *error* on somebody else's branch would fail the lint gate on a branch that is
+      // fine. CI never sees them — it checks out one branch — so only local runs were wrong.
+      '.claude/**',
       // The other platforms have their own toolchains.
       'android/**',
       'ios/**',

@@ -14,14 +14,20 @@ ALGORITHM = "HS256"
 
 
 def get_current_user(
-    authorization: Annotated[str, Header()],
+    # Optional, although the header is anything but: a required `Header()` is checked by
+    # FastAPI's own request validation, which answers 422 with pydantic's list of errors
+    # before this function runs. No header at all is an authentication failure like any
+    # other, so it has to be decided in here to come out as 401 with the project's error
+    # body (#482).
+    authorization: Annotated[Optional[str], Header()] = None,
+    accept_language: Annotated[Optional[str], Header()] = None,
     db: Session = Depends(get_db),
 ) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail={"code": "TOKEN_INVALID", "message": "Could not validate credentials."},
+        detail=error("TOKEN_INVALID", accept_language),
     )
-    if not authorization.startswith("Bearer "):
+    if not authorization or not authorization.startswith("Bearer "):
         raise credentials_exception
     token = authorization.removeprefix("Bearer ")
     try:
@@ -33,7 +39,7 @@ def get_current_user(
     except ExpiredSignatureError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={"code": "TOKEN_EXPIRED", "message": "Access token has expired."},
+            detail=error("TOKEN_EXPIRED", accept_language),
         )
     except JWTError:
         raise credentials_exception
@@ -41,7 +47,7 @@ def get_current_user(
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail={"code": "USER_NOT_FOUND", "message": "User not found."},
+            detail=error("USER_NOT_FOUND", accept_language),
         )
     return user
 
