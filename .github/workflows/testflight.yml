@@ -240,8 +240,18 @@ jobs:
       # continue-on-error -- a symbol upload that fails quietly is exactly how this went unnoticed
       # for six weeks. If it fails the job goes red, the build is already on its way, and somebody
       # looks.
+      #
+      # The emptiness check is in the shell and **not** in the `if:`. A step's `if:` may only use
+      # github, needs, strategy, matrix, job, runner, env, vars, steps and inputs -- `secrets` is
+      # not among them, and an unrecognised name there does not fail the step, it makes GitHub
+      # reject the whole file before any job starts. That produces no job, no step and no log,
+      # only a red run listed under the file path. It cost a day of iPhone releases (#488), and
+      # the shape of it is exactly what this step's own comment warned about.
+      #
+      # Android does the same thing correctly in android-release.yml: the token goes in through
+      # env: and the tool decides what to do with it.
       - name: Upload debug symbols to Sentry
-        if: steps.secrets.outputs.ready == 'true' && secrets.SENTRY_AUTH_TOKEN != ''
+        if: steps.secrets.outputs.ready == 'true'
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: multihead-9n
@@ -249,7 +259,11 @@ jobs:
           # The account is in Sentry's EU region; the default is the US one.
           SENTRY_URL: https://de.sentry.io
         run: |
-          npx --yes @sentry/cli@3.8.2 debug-files upload             "$RUNNER_TEMP/HivePulse.xcarchive/dSYMs"
+          if [ -z "$SENTRY_AUTH_TOKEN" ]; then
+            echo "::notice::SENTRY_AUTH_TOKEN is not set -- skipping the dSYM upload."
+            exit 0
+          fi
+          npx --yes @sentry/cli@3.8.2 debug-files upload "$RUNNER_TEMP/HivePulse.xcarchive/dSYMs"
 
       - name: Summary
         if: steps.secrets.outputs.ready == 'true'
