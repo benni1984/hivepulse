@@ -22,6 +22,7 @@ from app.schemas import (
     YearProposalApprove, YearProposalOut, YearRecomputeOut, ZeroInspectionHiveOut,
 )
 from app.clock import now_utc
+from app.utils import entitlements
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -174,7 +175,23 @@ def set_supporter(user_id: str, body: SupporterUpdate, admin: CurrentAdmin, db: 
             status_code=status.HTTP_404_NOT_FOUND,
             detail={"code": "USER_NOT_FOUND", "message": "User not found."},
         )
-    user.is_supporter = body.is_supporter
+    # Writes a record, not just the flag. The daily sweep (entitlements.sweep_expired, run by the
+    # reminder cron) recomputes `is_supporter` from the subscription rows for every account whose
+    # flag says supporter -- so a grant that only poked the flag lasted until the next cron run
+    # and then vanished, silently, because nothing logs a flag going false.
+    #
+    # The account that would have cost most is review@multihead.de: it is how the store reviewers
+    # sign in, it exists only because somebody made it by hand, and "we could not sign in" is a
+    # whole rejected review round.
+    if body.is_supporter:
+        entitlements.apply_event(
+            db, user=user, source="manual", status="active",
+            # No end date: a manual grant does not expire, and `current_for` prefers it over a
+            # store subscription for exactly that reason.
+            current_period_end=None, store_txn_id=f"manual-{user.id}",
+        )
+    else:
+        entitlements.revoke_manual(db, user)
     db.commit()
     db.refresh(user)
     return UserOut.model_validate(user)

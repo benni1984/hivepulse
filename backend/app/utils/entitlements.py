@@ -141,6 +141,21 @@ def apply_event(
     return row
 
 
+def revoke_manual(db: Session, user: User) -> None:
+    """Take back a grant an admin made by hand, and nothing else.
+
+    A `manual` record is removed rather than marked expired: it never had a period to end, and an
+    expired row with no dates would read, on the account page, as a subscription that lapsed.
+    Records from a store are left exactly where they are -- an admin taking back a courtesy must
+    not cancel something somebody is paying for.
+    """
+    db.query(Subscription).filter(
+        Subscription.user_id == user.id, Subscription.source == "manual"
+    ).delete(synchronize_session=False)
+    db.flush()
+    recompute_supporter(db, user)
+
+
 def sweep_expired(db: Session) -> int:
     """Close the gap a lost webhook leaves, and return how many accounts changed.
 
