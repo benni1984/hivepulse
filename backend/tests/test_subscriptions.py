@@ -344,3 +344,97 @@ class TestWebCheckout:
                                headers={"Accept-Language": "de"})
 
         assert "noch nicht gekauft werden" in resp.json()["detail"]["message"]
+
+
+class TestAdminGrantSurvivesTheSweep:
+    """What `PUT /admin/users/{id}/supporter` is for, and the day it used to last (#17).
+
+    The daily sweep walks every account whose cached flag says supporter and recomputes it from
+    the subscription records. An admin grant that only poked the flag therefore lasted until the
+    next cron run and then vanished — silently, because nothing logs a flag going false.
+
+    The account this would have cost most is `review@multihead.de`: it is how the store reviewers
+    sign in, it exists only because somebody made it by hand, and "we could not sign in" is a
+    whole rejected review round.
+    """
+
+    def _admin_and_victim(self, client, db_session):
+        from app.models import User
+        client.post("/api/v1/auth/register", json={
+            "email": "boss@example.com", "password": "password123",
+            "name": "Boss", "locale": "en"})
+        client.post("/api/v1/auth/register", json={
+            "email": "reviewer@example.com", "password": "password123",
+            "name": "Reviewer", "locale": "en"})
+        boss = db_session.query(User).filter(User.email == "boss@example.com").first()
+        boss.is_admin = True
+        db_session.commit()
+        token = client.post("/api/v1/auth/login", json={
+            "email": "boss@example.com", "password": "password123"}).json()["access_token"]
+        victim = db_session.query(User).filter(User.email == "reviewer@example.com").first()
+        return {"Authorization": f"Bearer {token}"}, victim
+
+    def test_an_admin_grant_is_still_there_after_the_daily_sweep(self, client, db_session):
+        from app.utils import entitlements
+        headers, victim = self._admin_and_victim(client, db_session)
+
+        resp = client.put(f"/api/v1/admin/users/{victim.id}/supporter",
+                          json={"is_supporter": True}, headers=headers)
+        assert resp.status_code == 200 and resp.json()["is_supporter"] is True
+
+        # The admin wrote through the request's own session. Without this, the test session
+        # hands the sweep its own stale copy of the row -- still showing the old flag -- and the
+        # sweep finds nothing to change, which looks exactly like the bug being absent.
+        db_session.expire_all()
+        entitlements.sweep_expired(db_session)
+        db_session.commit()
+        db_session.refresh(victim)
+
+        assert victim.is_supporter is True, "the sweep must not undo what an admin granted"
+
+    def test_the_grant_is_a_record_and_not_only_a_flag(self, client, db_session):
+        from app.models import Subscription
+        headers, victim = self._admin_and_victim(client, db_session)
+
+        client.put(f"/api/v1/admin/users/{victim.id}/supporter",
+                   json={"is_supporter": True}, headers=headers)
+
+        rows = db_session.query(Subscription).filter(Subscription.user_id == victim.id).all()
+        assert [r.source for r in rows] == ["manual"]
+        assert rows[0].current_period_end is None, "a manual grant does not expire"
+
+    def test_taking_it_away_again_still_works(self, client, db_session):
+        from app.utils import entitlements
+        headers, victim = self._admin_and_victim(client, db_session)
+        client.put(f"/api/v1/admin/users/{victim.id}/supporter",
+                   json={"is_supporter": True}, headers=headers)
+
+        client.put(f"/api/v1/admin/users/{victim.id}/supporter",
+                   json={"is_supporter": False}, headers=headers)
+        db_session.expire_all()
+        entitlements.sweep_expired(db_session)
+        db_session.commit()
+        db_session.refresh(victim)
+
+        assert victim.is_supporter is False
+
+    def test_a_store_subscription_is_not_clobbered_by_an_admin_grant(self, client, db_session):
+        """Granting by hand must add a manual record beside a real one, never overwrite it:
+        somebody who is actually paying keeps their renewal date."""
+        from app.models import Subscription
+        from app.utils import entitlements
+        from app.clock import now_utc
+        from datetime import timedelta
+        headers, victim = self._admin_and_victim(client, db_session)
+        entitlements.apply_event(db_session, user=victim, source="apple", status="active",
+                                 product_id="supporter_yearly",
+                                 current_period_end=now_utc() + timedelta(days=200),
+                                 store_txn_id="apple-1")
+        db_session.commit()
+
+        client.put(f"/api/v1/admin/users/{victim.id}/supporter",
+                   json={"is_supporter": True}, headers=headers)
+
+        sources = sorted(r.source for r in
+                         db_session.query(Subscription).filter(Subscription.user_id == victim.id))
+        assert sources == ["apple", "manual"]

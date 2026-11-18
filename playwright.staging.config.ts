@@ -14,6 +14,7 @@ export default defineConfig({
   projects: [
     { name: 'setup', testMatch: /auth\.setup\.ts/ },
     { name: 'admin-setup', testMatch: /admin\.setup\.ts/ },
+    { name: 'supporter-setup', testMatch: /supporter\.setup\.ts/ },
     {
       name: 'chromium',
       use: {
@@ -21,7 +22,22 @@ export default defineConfig({
         storageState: '.auth/user.json',
       },
       dependencies: ['setup'],
-      testIgnore: /\/(admin|members|dashboard-mobile-nav)\.spec\.ts/,
+      // The three write-heavy specs moved to the supporter project below: custom fields belong
+      // to the subscription now, and creating hives runs into the free limit on an account that
+      // has been collecting them since the suite was written (#478).
+      testIgnore: /\/(admin|members|dashboard-mobile-nav|field-definitions|hive|inspection)\.spec\.ts/,
+    },
+    {
+      // A paying account. The demo account above deliberately stays free, because stats.spec and
+      // members.spec prove that a non-supporter is turned away from the community dashboard --
+      // the free tier is most people, and it is worth covering.
+      name: 'supporter',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: '.auth/supporter.json',
+      },
+      dependencies: ['supporter-setup'],
+      testMatch: /\/(field-definitions|hive|inspection)\.spec\.ts/,
     },
     {
       name: 'admin',
