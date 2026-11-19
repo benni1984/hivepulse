@@ -201,3 +201,45 @@ def test_the_fold_changes_nothing_for_the_runner_that_writes_the_manifest():
         assert fresh._digest(lf) == hashlib.sha256(content).hexdigest()
     finally:
         lf.unlink(missing_ok=True)
+
+
+def test_every_playwright_job_runs_on_a_pinned_ubuntu():
+    """Playwright's chromium builds lag a new Ubuntu release.
+
+    When `ubuntu-latest` became Ubuntu 26.04 the web screenshot job died with
+    "Playwright does not support chromium on ubuntu26.04-x64" (#510). Raising the Playwright
+    version was tried and changed nothing (#512), because the missing piece is upstream's browser
+    build. The runner is pinned instead (#516), and this keeps it pinned: a later tidy-up that
+    puts `ubuntu-latest` back would not fail until the next capture, which nobody is watching.
+
+    Jobs that drive a browser only. The Android emulator jobs are deliberately not covered.
+    """
+    offenders = []
+    for name in ("update-help-screenshots", "ci"):
+        for job_id, job in (_workflow(name).get("jobs") or {}).items():
+            steps = job.get("steps") or []
+            drives_a_browser = any(
+                "playwright" in str(step.get("run", "")).lower() for step in steps
+            )
+            if drives_a_browser and job.get("runs-on") == "ubuntu-latest":
+                offenders.append(f"{name}.yml::{job_id}")
+
+    assert not offenders, (
+        "these jobs install or run Playwright on ubuntu-latest and will break on the next "
+        f"runner rollover: {', '.join(offenders)}"
+    )
+
+
+def test_the_two_jobs_that_use_playwright_are_the_ones_we_think():
+    """A guard for the guard above: if a job stops matching, the check silently covers nothing."""
+    found = set()
+    for name in ("update-help-screenshots", "ci"):
+        for job_id, job in (_workflow(name).get("jobs") or {}).items():
+            if any("playwright" in str(s.get("run", "")).lower() for s in (job.get("steps") or [])):
+                found.add(f"{name}::{job_id}")
+
+    assert found == {
+        "update-help-screenshots::web",  # captures the help-page pictures
+        "ci::web",                       # installs chromium, runs the local e2e suite
+        "ci::e2e-staging",               # drives the deployed staging site
+    }, found
