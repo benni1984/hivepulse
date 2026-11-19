@@ -41,16 +41,25 @@ jobs:
               # listing-only edit has to run the suite that parses it (#459).
               - 'docs/store-listing.md'
               - 'distribution/whatsnew/**'
-              - '.github/workflows/ci.yml'
+              # Not only ci.yml: test_screenshot_workflow.py, test_ci_path_filters.py and
+              # test_ios_sdk_check.py read the other workflows and the scripts they call, and
+              # a guard that does not re-run when the thing it guards changes is the same
+              # green-means-untested hole as #459.
+              - '.github/workflows/**'
+              - 'scripts/**'
             android:
               - 'android/**'
               - '.github/workflows/ci.yml'
             ios:
               - 'ios/**'
               - '.github/workflows/ci.yml'
+              # The job runs this script and fails on what it says, so editing it has to run
+              # the job — otherwise the next change to the guard is itself unguarded (#501).
+              - 'scripts/check_ios_sdk.sh'
             ios_hornets:
               - 'ios-hornets/**'
               - '.github/workflows/ci.yml'
+              - 'scripts/check_ios_sdk.sh'
             android_hornets:
               - 'android-hornets/**'
               - '.github/workflows/ci.yml'
@@ -296,6 +305,12 @@ jobs:
         if: needs.changes.outputs.ios == 'true'
         run: sudo xcode-select -s /Applications/Xcode.app
 
+      # Says which SDK the line above actually got, and fails from March 2027 if it is still
+      # below what App Store Connect accepts (#501).
+      - name: Check the iOS SDK
+        if: needs.changes.outputs.ios == 'true'
+        run: ./scripts/check_ios_sdk.sh
+
       - name: Install XcodeGen
         if: needs.changes.outputs.ios == 'true'
         run: brew install xcodegen
@@ -403,6 +418,10 @@ jobs:
       - name: Select Xcode
         if: needs.changes.outputs.ios_hornets == 'true'
         run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Check the iOS SDK
+        if: needs.changes.outputs.ios_hornets == 'true'
+        run: ./scripts/check_ios_sdk.sh
 
       - name: Install XcodeGen
         if: needs.changes.outputs.ios_hornets == 'true'

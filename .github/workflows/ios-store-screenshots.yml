@@ -45,8 +45,12 @@ jobs:
 
       - name: Select Xcode
         # Whatever the image ships, like the other iOS jobs — a pinned version disappears with
-        # the next runner image.
+        # the next runner image. Still true; the step below is what makes it safe, by saying
+        # out loud what "whatever the image ships" turned out to be (#501).
         run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Check the iOS SDK
+        run: ./scripts/check_ios_sdk.sh
 
       - name: Install XcodeGen and generate project
         run: |
