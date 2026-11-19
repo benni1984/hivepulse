@@ -162,27 +162,27 @@
   "price": {
     "free": {
       "tier": "Siempre gratis",
-      "f1": "Colmenas y revisiones ilimitadas",
-      "f2": "Escaneo QR y generación de lotes",
-      "f3": "Estadísticas básicas por colmena",
-      "f4": "Contribución a datos comunitarios",
-      "f5": "Mapa público en vivo",
-      "f6": "Gráficos y tendencias avanzados",
-      "f7": "Exportación de datos",
-      "f8": "Área de miembros"
+      "f1": "Hasta 10 colmenas",
+      "f2": "Revisiones y fotos ilimitadas",
+      "f3": "Escaneo QR y lotes de códigos",
+      "f4": "Estadísticas de los últimos 365 días",
+      "f5": "Rastreador de avispa asiática, mapa comunitario y exportación",
+      "f6": "Más de 10 colmenas",
+      "f7": "Colmenares compartidos y campos de revisión propios",
+      "f8": "Libro de tratamientos y mapa sanitario regional"
     },
-    "month": "/ mes",
+    "year": "/ año",
     "sup": {
       "tier": "Supporter",
       "badge": "Más popular",
-      "f1": "Todo lo de la versión gratuita",
-      "f2": "Gráficos de tendencias avanzados (en la app)",
-      "f3": "Área de miembros y estadísticas globales",
-      "f4": "Soporte prioritario",
-      "f5": "Tu nombre en los créditos de la app",
-      "f6": "Acceso anticipado a nuevas funciones",
-      "f7": "Exportación de datos (CSV / JSON)",
-      "f8": "Mapas de calor regionales"
+      "f1": "Todo lo del plan gratuito",
+      "f2": "Colmenas ilimitadas",
+      "f3": "Estadísticas sin el límite de 365 días",
+      "f4": "El libro de tratamientos en PDF imprimible",
+      "f5": "Campos de revisión propios",
+      "f6": "Compartir un colmenar con otros apicultores",
+      "f7": "El mapa sanitario regional",
+      "f8": "Cancelable en cualquier momento, sin preaviso"
     },
     "coming": "Próximamente",
     "donate": {

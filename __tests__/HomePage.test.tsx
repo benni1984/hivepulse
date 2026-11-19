@@ -1,9 +1,12 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import React from 'react';
+import { SUPPORTER_PRICE_EUR, formatFreePrice } from '@/lib/pricing';
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
+  // The pricing card formats the price for the reader's own language (#504).
+  useLocale: () => 'en',
 }));
 
 // The download section links to the beta page through the locale-aware Link, which pulls in
@@ -72,9 +75,13 @@ describe('HomePage (landing)', () => {
   });
 
   it('renders the three pricing tiers with correct prices', () => {
+    // This test used to assert "€2.99", and so pinned a monthly price that was never sold while
+    // the product went out at 19.99 € a year (#504). It now reads the figure from the module the
+    // page renders, which is the only way the assertion can stay true when the price changes.
     render(<HomePage />);
-    expect(screen.getByText(/€0/)).toBeTruthy();
-    expect(screen.getByText(/€2\.99/)).toBeTruthy();
+    expect(screen.getByText(new RegExp(formatFreePrice('en').replace('€', '\\€')))).toBeTruthy();
+    expect(screen.getByText(/19\.99/)).toBeTruthy();
+    expect(SUPPORTER_PRICE_EUR).toBe(19.99);
     expect(screen.getByText('price.donate.price')).toBeTruthy();
   });
 

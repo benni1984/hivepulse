@@ -162,27 +162,27 @@
   "price": {
     "free": {
       "tier": "Na zawsze za darmo",
-      "f1": "Nieograniczona liczba rodzin i przeglądów",
-      "f2": "Skanowanie kodów QR i generowanie partii",
-      "f3": "Podstawowe statystyki dla każdej rodziny",
-      "f4": "Wkład w dane społeczności",
-      "f5": "Publiczna mapa na żywo",
-      "f6": "Zaawansowane wykresy i trendy",
-      "f7": "Eksport danych",
-      "f8": "Strefa członków"
+      "f1": "Do 10 rodzin pszczelich",
+      "f2": "Nieograniczone przeglądy i zdjęcia",
+      "f3": "Skanowanie QR i partie kodów",
+      "f4": "Statystyki z ostatnich 365 dni",
+      "f5": "Tropiciel szerszenia azjatyckiego, mapa społeczności i eksport",
+      "f6": "Więcej niż 10 rodzin pszczelich",
+      "f7": "Udostępniane pasieki i własne pola przeglądu",
+      "f8": "Książka leczenia i regionalna mapa zdrowia"
     },
-    "month": "/ miesiąc",
+    "year": "/ rok",
     "sup": {
       "tier": "Wspierający",
       "badge": "Najpopularniejszy",
-      "f1": "Wszystko z wersji darmowej",
-      "f2": "Zaawansowane wykresy trendów (w aplikacji)",
-      "f3": "Strefa członków i statystyki globalne",
-      "f4": "Priorytetowe wsparcie",
-      "f5": "Twoje imię w podziękowaniach w aplikacji",
-      "f6": "Wczesny dostęp do nowych funkcji",
-      "f7": "Eksport danych (CSV / JSON)",
-      "f8": "Regionalne mapy cieplne"
+      "f1": "Wszystko z planu bezpłatnego",
+      "f2": "Nieograniczona liczba rodzin pszczelich",
+      "f3": "Statystyki bez limitu 365 dni",
+      "f4": "Książka leczenia jako PDF do wydruku",
+      "f5": "Własne pola przeglądu",
+      "f6": "Udostępnianie pasieki innym pszczelarzom",
+      "f7": "Regionalna mapa zdrowia",
+      "f8": "Można zrezygnować w każdej chwili, bez wypowiedzenia"
     },
     "coming": "Wkrótce",
     "donate": {

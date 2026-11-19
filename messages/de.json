@@ -162,27 +162,27 @@
   "price": {
     "free": {
       "tier": "Dauerhaft kostenlos",
-      "f1": "Unbegrenzte Völker & Kontrollen",
-      "f2": "QR-Code-Scan & Batch-Generierung",
-      "f3": "Grundlegende Statistiken pro Volk",
-      "f4": "Beitrag zu Gemeinschaftsdaten",
-      "f5": "Öffentliche Live-Karte",
-      "f6": "Erweiterte Grafiken & Trends",
-      "f7": "Datenexport",
-      "f8": "Mitgliederbereich"
+      "f1": "Bis zu 10 Völker",
+      "f2": "Unbegrenzte Kontrollen und Fotos",
+      "f3": "QR-Scan und QR-Batches",
+      "f4": "Statistiken der letzten 365 Tage",
+      "f5": "Hornissen-Tracker, Gemeinschaftskarte und Datenexport",
+      "f6": "Mehr als 10 Völker",
+      "f7": "Geteilte Bienenstände und eigene Kontrollfelder",
+      "f8": "Bestandsbuch und regionale Gesundheitskarte"
     },
-    "month": "/ Monat",
+    "year": "/ Jahr",
     "sup": {
       "tier": "Supporter",
       "badge": "Am beliebtesten",
-      "f1": "Alles im kostenlosen Plan",
-      "f2": "Erweiterte Trendgrafiken (in der App)",
-      "f3": "Mitgliederbereich & globale Statistiken",
-      "f4": "Vorrangiger Support",
-      "f5": "Dein Name in den App-Credits",
-      "f6": "Frühzeitiger Zugang zu neuen Funktionen",
-      "f7": "Datenexport (CSV / JSON)",
-      "f8": "Regionale Heatmaps"
+      "f1": "Alles aus dem kostenlosen Tarif",
+      "f2": "Unbegrenzt viele Völker",
+      "f3": "Statistiken ohne die 365-Tage-Grenze",
+      "f4": "Das Bestandsbuch als druckbares PDF",
+      "f5": "Eigene Kontrollfelder",
+      "f6": "Bienenstände mit anderen Imkern teilen",
+      "f7": "Die regionale Gesundheitskarte",
+      "f8": "Jederzeit kündbar, ohne Frist"
     },
     "coming": "Demnächst",
     "donate": {

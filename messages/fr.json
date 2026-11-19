@@ -162,27 +162,27 @@
   "price": {
     "free": {
       "tier": "Gratuit pour toujours",
-      "f1": "Ruches & visites illimitées",
-      "f2": "Scan QR & génération de lots",
-      "f3": "Statistiques de base par ruche",
-      "f4": "Contribution aux données communautaires",
-      "f5": "Carte publique en direct",
-      "f6": "Graphiques & tendances avancés",
-      "f7": "Export de données",
-      "f8": "Espace membres"
+      "f1": "Jusqu'à 10 ruches",
+      "f2": "Visites et photos illimitées",
+      "f3": "Scan QR et impression par lots",
+      "f4": "Statistiques sur les 365 derniers jours",
+      "f5": "Suivi du frelon asiatique, carte communautaire et export",
+      "f6": "Plus de 10 ruches",
+      "f7": "Ruchers partagés et champs de visite personnalisés",
+      "f8": "Registre des traitements et carte sanitaire régionale"
     },
-    "month": "/ mois",
+    "year": "/ an",
     "sup": {
       "tier": "Supporter",
       "badge": "Plus populaire",
-      "f1": "Tout ce qui est gratuit",
-      "f2": "Graphiques de tendances avancés (dans l'app)",
-      "f3": "Espace membres & statistiques mondiales",
-      "f4": "Support prioritaire",
-      "f5": "Votre nom dans les crédits de l'app",
-      "f6": "Accès anticipé aux nouvelles fonctionnalités",
-      "f7": "Export de données (CSV / JSON)",
-      "f8": "Cartes thermiques régionales"
+      "f1": "Tout ce que comprend l'offre gratuite",
+      "f2": "Nombre de ruches illimité",
+      "f3": "Statistiques sans la limite de 365 jours",
+      "f4": "Le registre des traitements en PDF imprimable",
+      "f5": "Champs de visite personnalisés",
+      "f6": "Partager un rucher avec d'autres apiculteurs",
+      "f7": "La carte sanitaire régionale",
+      "f8": "Résiliable à tout moment, sans préavis"
     },
     "coming": "Bientôt disponible",
     "donate": {
