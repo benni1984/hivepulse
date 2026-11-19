@@ -25,8 +25,26 @@ SENSITIVE_KEYS = {
 }
 
 
-def scrub_event(event: dict[str, Any], _hint: Optional[dict] = None) -> dict[str, Any]:
-    """Drop anything that could carry credentials or personal data."""
+# Answers that are 5xx on purpose: the normal state of a deployment, not a failure. Sentry's
+# Starlette integration reports every 5xx HTTPException, so a staging E2E run that opens the
+# purchase page filed one as an error (HIVEPULSE-BACKEND-4).
+EXPECTED_ERROR_CODES = {"WEB_CHECKOUT_UNCONFIGURED"}
+
+
+def _is_expected_error(hint: Optional[dict]) -> bool:
+    exc_info = (hint or {}).get("exc_info")
+    exc = exc_info[1] if exc_info else None
+    detail = getattr(exc, "detail", None)
+    return isinstance(detail, dict) and detail.get("code") in EXPECTED_ERROR_CODES
+
+
+def scrub_event(event: dict[str, Any], _hint: Optional[dict] = None) -> Optional[dict[str, Any]]:
+    """Drop anything that could carry credentials or personal data.
+
+    Returns None (the event is not sent) for an expected error answer.
+    """
+    if _is_expected_error(_hint):
+        return None
     request = event.get("request")
     if isinstance(request, dict):
         request.pop("data", None)      # request bodies hold passwords and notes

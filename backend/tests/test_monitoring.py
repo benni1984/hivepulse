@@ -118,3 +118,19 @@ def test_the_real_sdk_starts_the_way_production_has_it_installed():
 
     assert result.returncode == 0, f"startup crashed:\n{result.stderr}"
     assert result.stdout.strip().endswith("True"), f"reporting did not start:\n{result.stderr}"
+
+
+def test_an_expected_unconfigured_answer_is_not_reported():
+    from fastapi import HTTPException
+
+    exc = HTTPException(503, detail={"code": "WEB_CHECKOUT_UNCONFIGURED", "message": "x"})
+    hint = {"exc_info": (HTTPException, exc, None)}
+    assert scrub_event({"request": {}}, hint) is None
+
+
+def test_other_server_errors_are_still_reported():
+    from fastapi import HTTPException
+
+    exc = HTTPException(503, detail={"code": "SOMETHING_ELSE", "message": "x"})
+    hint = {"exc_info": (HTTPException, exc, None)}
+    assert scrub_event({"request": {}}, hint) is not None
