@@ -79,6 +79,25 @@ describe('landing page pricing', () => {
     }
   });
 
+  it('sends the supporter button to the subscription, not to the app stores', () => {
+    // It pointed at #download, so somebody who read the price, decided yes and clicked was
+    // scrolled to two store badges (#507). Harmless only while nothing can be bought; the day
+    // the Paddle checkout goes live is not a day anybody re-reads the landing page.
+    expect(source).toMatch(
+      /<LocaleLink href="\/dashboard\/subscription"[^>]*data-umami-event="pricing_supporter_cta"/,
+    );
+    // LocaleLink and not <a>: a raw href drops the reader into English (#473).
+    expect(source, 'a raw anchor would lose the locale')
+      .not.toMatch(/<a href="[^"]*"[^>]*data-umami-event="pricing_supporter_cta"/);
+    // The event name is the funnel; renaming it makes before and after incomparable.
+    expect(source).toMatch(/data-umami-event="pricing_supporter_cta"/);
+  });
+
+  it('leaves the free tier pointing at the download, which is right for it', () => {
+    // The way to start for free really is to install the app. Only the supporter button was wrong.
+    expect(source).toMatch(/<a href="#download" className="btn-outline">\{t\('btn\.free'\)\}<\/a>/);
+  });
+
   it('names what the subscription really unlocks', () => {
     // Each of these is a require_supporter call in the backend; if one is dropped from the card
     // the page undersells, and if one is added here without being gated the page oversells.
