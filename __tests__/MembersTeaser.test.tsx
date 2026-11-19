@@ -2,6 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import React from 'react';
 import MembersTeaser from '@/components/MembersTeaser';
+import { formatSupporterPrice } from '@/lib/pricing';
 
 const mockGetMe = vi.hoisted(() => vi.fn());
 const mockGetPublicStats = vi.hoisted(() => vi.fn());
@@ -12,7 +13,11 @@ vi.mock('@/lib/api', () => ({
 }));
 
 vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => key,
+  // The values are echoed back, so a test can see that the price reached the sentence at all
+  // rather than only that a key was rendered (#511).
+  useTranslations: () => (key: string, vals?: Record<string, unknown>) =>
+    vals ? `${key}:${JSON.stringify(vals)}` : key,
+  useLocale: () => 'de',
 }));
 
 vi.mock('@/i18n/navigation', () => ({
@@ -80,6 +85,36 @@ describe('MembersTeaser', () => {
     await waitFor(() => screen.getByText('gate.title'));
     expect(screen.getByText('gate.title')).toBeInTheDocument();
     expect(screen.queryByText('gate.loginTitle')).not.toBeInTheDocument();
+  });
+
+  it('sends a logged-in non-supporter to the subscription page, not to the app store', async () => {
+    // It pointed at /#download for as long as the gate existed: the app download, offered to
+    // somebody who is already signed in on the web — and the apps cannot sell a subscription
+    // at all, so the journey ended nowhere (#511).
+    mockGetMe.mockResolvedValue(mockUser);
+    mockGetPublicStats.mockResolvedValue(mockStats);
+
+    const { container } = render(<MembersTeaser />);
+    await waitFor(() => screen.getByText('gate.title'));
+
+    const cta = container.querySelector('.members-gate a.btn-primary');
+    expect(cta).toHaveAttribute('href', '/dashboard/subscription');
+    expect(container.querySelector('a[href="/#download"]')).toBeNull();
+  });
+
+  it('takes the price from the pricing module instead of the catalogue', async () => {
+    // The sentence used to name "€2.99 / month", a price that was never charged, written into
+    // five catalogues by hand. Now it is a placeholder fed from lib/pricing.ts, so the members
+    // page cannot drift away from the landing page and the terms again.
+    mockGetMe.mockResolvedValue(mockUser);
+    mockGetPublicStats.mockResolvedValue(mockStats);
+
+    render(<MembersTeaser />);
+    await waitFor(() => screen.getByText('gate.title'));
+
+    const note = screen.getByText(/^gate\.note:/);
+    expect(note.textContent).toContain(formatSupporterPrice('de'));
+    expect(note.textContent).not.toMatch(/2[.,]99/);
   });
 
   it('shows login gate for anonymous users', async () => {
