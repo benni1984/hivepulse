@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { getMe, getPublicStats, type User, type PublicStats } from '@/lib/api';
+import { formatSupporterPrice } from '@/lib/pricing';
 
 export default function MembersTeaser() {
   const t = useTranslations('members');
+  const locale = useLocale();
   const [user, setUser] = useState<User | null>(null);
   const [stats, setStats] = useState<PublicStats | null>(null);
   const [checked, setChecked] = useState(false);
@@ -79,8 +81,13 @@ export default function MembersTeaser() {
         <div className="members-gate">
           <h3>{t('gate.title')}</h3>
           <p>{t('gate.desc')}</p>
-          <Link href="/#download" className="btn-primary" style={{ display: 'inline-block', marginBottom: '8px' }} data-umami-event="members_get_app">{t('gate.cta')}</Link>
-          <p style={{ fontSize: '.82rem', color: 'var(--muted)', marginTop: '12px' }}>{t('gate.note')}</p>
+          {/* Pointed at /#download until #511: it offered the app to somebody already signed in
+              on the web, and the apps cannot sell a subscription at all — StoreKit and Play
+              Billing are still blocked on console product ids. The only place to buy is here. */}
+          <Link href="/dashboard/subscription" className="btn-primary" style={{ display: 'inline-block', marginBottom: '8px' }} data-umami-event="members_subscribe">{t('gate.cta')}</Link>
+          {/* The price comes from lib/pricing.ts rather than from five catalogues, which is the
+              whole reason #504 put it in a module. */}
+          <p style={{ fontSize: '.82rem', color: 'var(--muted)', marginTop: '12px' }}>{t('gate.note', { price: formatSupporterPrice(locale) })}</p>
         </div>
       ) : (
         <div className="members-gate">

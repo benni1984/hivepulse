@@ -1096,10 +1096,10 @@
     "gate": {
       "title": "Débloquez le tableau complet",
       "unlockedBadge": "Supporter",
-      "unlockedNote": "Les statistiques mondiales en direct apparaîtront ici lors du lancement du tableau de bord web. Toutes les fonctionnalités sont disponibles maintenant dans l'app.",
+      "unlockedNote": "Votre accès soutien est actif. Le tableau de bord communautaire est disponible sur le web et dans les deux applications.",
       "desc": "Les supporters voient les tendances régionales de varroa, les courbes saisonnières de santé des ruches et les données croisées météo/floraison.",
-      "cta": "Obtenir l'app",
-      "note": "Passez à Supporter (2,99 € / mois) dans l'app après inscription.",
+      "cta": "Devenir soutien",
+      "note": "{price} par an. Résiliable à tout moment, sans préavis.",
       "loginTitle": "Connectez-vous pour voir les statistiques en direct",
       "loginDesc": "Connectez-vous avec votre compte HivePulse pour accéder aux données mondiales de la communauté en temps réel.",
       "loginCta": "Se connecter",

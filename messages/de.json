@@ -1096,10 +1096,10 @@
     "gate": {
       "title": "Das vollständige Bild freischalten",
       "unlockedBadge": "Supporter",
-      "unlockedNote": "Live-Globalstatistiken erscheinen hier, sobald das Web-Dashboard veröffentlicht wird. Alle Funktionen sind jetzt in der App verfügbar.",
+      "unlockedNote": "Dein Supporter-Zugang ist aktiv. Das Gemeinschafts-Dashboard gibt es im Web und in beiden Apps.",
       "desc": "Unterstützer sehen regionale Varroatrends, saisonale Völkergesundheitskurven, Weiselwechselraten und wetterkorrelierte Blühdaten.",
-      "cta": "App herunterladen",
-      "note": "Nach der Anmeldung in der App auf Supporter upgraden (2,99 € / Monat).",
+      "cta": "Supporter werden",
+      "note": "{price} im Jahr. Jederzeit kündbar, ohne Frist.",
       "loginTitle": "Anmelden, um Live-Statistiken zu sehen",
       "loginDesc": "Melde dich mit deinem HivePulse-Konto an, um globale Community-Daten in Echtzeit zu sehen.",
       "loginCta": "Anmelden",

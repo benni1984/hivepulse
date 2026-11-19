@@ -1096,10 +1096,10 @@
     "gate": {
       "title": "Desbloquea el panorama completo",
       "unlockedBadge": "Supporter",
-      "unlockedNote": "Las estadísticas globales en vivo aparecerán aquí cuando se lance el panel web. Todas las funciones están disponibles ahora en la app.",
+      "unlockedNote": "Tu acceso de apoyo está activo. El panel de la comunidad está disponible en la web y en ambas aplicaciones.",
       "desc": "Los supporters ven tendencias regionales de varroa, curvas estacionales de salud de colmenas y datos cruzados de clima/floración.",
-      "cta": "Obtener la app",
-      "note": "Actualiza a Supporter (2,99 € / mes) dentro de la app después de registrarte.",
+      "cta": "Hazte supporter",
+      "note": "{price} al año. Cancela cuando quieras, sin preaviso.",
       "loginTitle": "Inicia sesión para ver las estadísticas en vivo",
       "loginDesc": "Inicia sesión con tu cuenta HivePulse para ver los datos globales de la comunidad en tiempo real.",
       "loginCta": "Iniciar sesión",
