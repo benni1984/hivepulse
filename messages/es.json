@@ -27,7 +27,9 @@
     "made": "Hecho con 🐝 para apicultores de todo el mundo.",
     "imprint": "Aviso legal",
     "deleteAccount": "Eliminar la cuenta",
-    "beta": "Unirse a la prueba"
+    "beta": "Unirse a la prueba",
+    "terms": "Condiciones de uso",
+    "refunds": "Reembolsos"
   },
   "hero": {
     "badge": "Código abierto · Comunidad · Gratuito",
@@ -365,6 +367,46 @@
     "s9body": "Las contraseñas se cifran con bcrypt. El acceso a la API requiere un token JWT firmado. Los datos en tránsito están cifrados con TLS.",
     "s10title": "10. Contacto",
     "s10body": "¿Preguntas sobre esta política o tus datos? Escribe a hivepulse@multihead.de. El responsable del tratamiento es Benjamin Müller, Sonnhaldenweg 5D, 4450 Sissach, Suiza."
+  },
+  "terms": {
+    "title": "Condiciones de uso",
+    "updated": "Última actualización: noviembre de 2026",
+    "intro": "HivePulse es una aplicación apícola para web, Android e iPhone. Estas condiciones describen qué puedes esperar de ella y qué espera ella de ti. Están escritas para leerse, no para saltárselas.",
+    "s1title": "1. Qué cubren estas condiciones",
+    "s1body": "Cubren el sitio web de HivePulse, la aplicación de Android y la de iPhone, incluidos la cuenta gratuita y la suscripción de apoyo. Dos documentos aparte cubren el resto: la política de privacidad dice qué ocurre con tus datos, y la política de reembolsos cómo vuelve el dinero. Quién explota HivePulse consta en el aviso legal.",
+    "s2title": "2. Tu cuenta",
+    "s2body": "Necesitas una cuenta para registrar colmenas y revisiones. Guarda tu contraseña para ti; lo que se haga con tu cuenta se considera hecho por ti. Una persona, una cuenta: para trabajar juntos en un colmenar, invita a la otra persona en lugar de compartir el acceso. Puedes borrar tu cuenta cuando quieras y tus datos se van con ella. La página de borrado dice exactamente qué desaparece y qué significa una suscripción en curso.",
+    "s3title": "3. Qué incluye la cuenta gratuita",
+    "s3body": "Hasta 10 colmenas y estadísticas de revisión de los últimos 365 días. Todo lo demás es gratuito y lo seguirá siendo: el rastreador de avispa asiática, el mapa comunitario, los códigos QR de tus colmenas, la exportación de tus propios datos y ambas aplicaciones. Alcanzar un límite nunca cierra lo que ya existe. Si superas las 10 colmenas cuando termina una suscripción, siguen ahí y siguen siendo editables; sencillamente no puedes añadir nuevas hasta volver por debajo del límite.",
+    "s4title": "4. La suscripción de apoyo",
+    "s4body": "19,99 € al año, renovada anualmente hasta que la canceles. Eleva el límite de colmenas, abre el mapa sanitario regional y desbloquea el libro de tratamientos. El precio se muestra antes de comprar e incluye el impuesto de tu país. Un año en vez de un mes porque la apicultura es estacional: entre marzo y octubre ocurre casi todo. Puedes cancelar cuando quieras y conservas la suscripción hasta que acabe el periodo pagado.",
+    "s5title": "5. A quién le compras",
+    "s5body": "En el sitio web el vendedor es Paddle, como comerciante registrado: el contrato de compraventa se celebra entre tú y Paddle, que cobra el pago, emite la factura y liquida el IVA. Sus condiciones rigen la compra en sí; estas rigen tu uso de HivePulse. En la aplicación de iPhone el vendedor es Apple, en la de Android es Google, y sus condiciones se aplican igual. Elijas la vía que elijas, la suscripción desbloquea las mismas funciones en cada dispositivo donde inicies sesión, porque pertenece a tu cuenta y no al dispositivo.",
+    "s6title": "6. Tus datos siguen siendo tuyos",
+    "s6body": "Tus colmenares, colmenas, revisiones y fotografías te pertenecen. No se venden ni se entregan a anunciantes. Puedes exportarlos cuando quieras y llevártelos a otra parte. Algo se vuelve público solo donde tú lo has elegido: una captura de avispón en el mapa público, un colmenar que marcaste como visible, una fotografía que enviaste a la comunidad. La política de privacidad es la versión detallada de este párrafo.",
+    "s7title": "7. Cómo usar HivePulse",
+    "s7body": "Úsalo para la apicultura. No entres en cuentas ajenas, no castigues el sitio con peticiones automatizadas más allá del uso normal, no subas nada ilícito y no comuniques hallazgos de avispa asiática inventados, porque otros apicultores actúan en consecuencia. El código fuente es abierto y puedes ejecutar tu propia copia; ese permiso viene de la licencia del repositorio, no de esta página. Una cuenta usada para dañar a otros puede cerrarse.",
+    "s8title": "8. Qué se promete y qué no",
+    "s8body": "HivePulse lo explota una sola persona, con cuidado y sin compromiso de disponibilidad. Puede no estar accesible, una función puede tener un fallo y los datos que nunca exportaste pueden perderse, así que guarda tu propia copia de todo aquello cuya pérdida no puedas permitirte. La responsabilidad es ilimitada por dolo, culpa grave y daños a la vida, la integridad física o la salud, y por lo demás se limita a lo que exige la ley. La aplicación apoya tus registros; no sustituye las obligaciones legales de un apicultor, y el libro de tratamientos sigue siendo un documento del que eres responsable.",
+    "s9title": "9. Cambios, fin y derecho aplicable",
+    "s9body": "Estas condiciones pueden cambiar cuando cambie la aplicación o lo exija la ley. Un cambio que te afecte se anuncia en la aplicación y en la página de novedades antes de surtir efecto, y ningún cambio en la suscripción se aplica a un periodo ya pagado. Pones fin al acuerdo borrando tu cuenta. HivePulse se explota desde Suiza, se aplica el derecho suizo y el fuero es Sissach; si eres consumidor, eso no te quita la protección imperativa del derecho del país donde resides. En una compra hecha en el sitio web el vendedor es Paddle, de modo que sus condiciones rigen la venta en sí, incluida la forma de resolver un litigio sobre ella."
+  },
+  "refunds": {
+    "title": "Política de reembolsos",
+    "updated": "Última actualización: noviembre de 2026",
+    "intro": "Una suscripción que resulta no ser la adecuada no debería costar una discusión. Esta página dice cómo recuperas tu dinero, de quién, y qué ocurre después con tu acceso.",
+    "s1title": "1. La versión corta",
+    "s1body": "Dentro de los 14 días siguientes a la compra: lo pides y se te devuelve. Después, una suscripción corre hasta el final del periodo pagado y entonces termina, si la cancelaste. Un reembolso nunca borra lo que has registrado: tus colmenares, colmenas y revisiones siguen donde están.",
+    "s2title": "2. Los catorce días",
+    "s2body": "Como consumidor en la Unión Europea tienes un derecho de desistimiento de 14 días en una compra por internet, y no necesitas motivo. Se aplica a la suscripción de apoyo comprada en este sitio. Conviene saber una cosa: al pedir que las funciones se desbloqueen de inmediato aceptas que la prestación empiece antes de que terminen los 14 días, y el vendedor puede retener la parte correspondiente a los días ya usados. En una suscripción anual desistida en la primera quincena esa parte son unos céntimos, y en la práctica se devuelve el importe completo.",
+    "s3title": "3. Cómo pedirlo",
+    "s3body": "Comprado en el sitio web: tu confirmación de compra viene de Paddle y lleva un enlace a su portal de clientes, donde puedes solicitar el reembolso directamente. Es la vía más rápida, porque el dinero lo tiene Paddle y no nosotros. También puedes escribir a hivepulse@multihead.de y trasladamos la solicitud. Paddle devuelve al medio de pago que usaste; cuánto tarda después depende de tu banco, normalmente unos días hábiles.",
+    "s4title": "4. Qué ocurre con tu acceso",
+    "s4body": "Un reembolso termina la suscripción de inmediato, no al final del periodo: el dinero volvió, así que las funciones también. Desde ese momento vuelve a aplicarse el límite de colmenas. Las colmenas por encima del límite no se borran y nada de lo registrado se toca; sencillamente no puedes añadir nuevas hasta estar por debajo del límite o suscribirte de nuevo. Un libro de tratamientos que ya descargaste sigue siendo tuyo.",
+    "s5title": "5. Comprado en la App Store o en Google Play",
+    "s5body": "Entonces el vendedor es Apple o Google, no Paddle, y ni nosotros ni Paddle podemos reembolsar. En Apple, comunica el problema en reportaproblem.apple.com. En Google, usa el historial de pedidos en play.google.com/store/account/orderhistory. Ambos tienen sus propias reglas y sus propios plazos, que pueden ser más generosos que los 14 días de arriba. En cuanto su reembolso llega a nuestro servidor, el acceso termina como describe la sección 4.",
+    "s6title": "6. Cancelar no es lo mismo que reembolsar",
+    "s6body": "Cancelar detiene la siguiente renovación y te deja el tiempo que has pagado. Suele ser lo que quieres cuando la suscripción lleva ya un tiempo: conservas todo hasta que acabe el año y no se cobra nada más. Hazlo en la página de suscripción de tu cuenta, o allí donde compraste. Cancelar el último día no cuesta nada más; no hay plazo de preaviso."
   },
   "dash": {
     "login": {
@@ -1342,7 +1384,11 @@
     "siteDescription": "La app apícola que convierte cada revisión en datos mundiales para la protección de las abejas. Gratis para iPhone y Android.",
     "siteTitle": "HivePulse — protejamos juntos a los polinizadores",
     "surveyDescription": "¿Encajan las fechas del año apícola donde tienes abejas? Valóralas en un cuarto de hora, sin cuenta, y ayuda a corregir el calendario de tu región.",
-    "surveyTitle": "Valorar el año apícola"
+    "surveyTitle": "Valorar el año apícola",
+    "termsTitle": "Condiciones de uso",
+    "termsDescription": "Qué puedes esperar de HivePulse y qué espera de ti: la cuenta gratuita, la suscripción de apoyo y a quién le compras realmente.",
+    "refundsTitle": "Reembolsos",
+    "refundsDescription": "Cómo recuperar tu dinero por una suscripción de apoyo, de quién, y qué ocurre después con tu acceso."
   },
   "imprint": {
     "title": "Aviso legal",

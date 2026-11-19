@@ -27,7 +27,9 @@
     "made": "Fait avec 🐝 pour les apiculteurs du monde entier.",
     "imprint": "Mentions légales",
     "deleteAccount": "Supprimer le compte",
-    "beta": "Participer au test"
+    "beta": "Participer au test",
+    "terms": "Conditions d'utilisation",
+    "refunds": "Remboursements"
   },
   "hero": {
     "badge": "Open Source · Communautaire · Gratuit",
@@ -365,6 +367,46 @@
     "s9body": "Les mots de passe sont hachés avec bcrypt. L'accès à l'API nécessite un jeton JWT signé. Les données en transit sont chiffrées via TLS.",
     "s10title": "10. Contact",
     "s10body": "Des questions sur cette politique ou vos données ? Écrivez à hivepulse@multihead.de. Le responsable du traitement est Benjamin Müller, Sonnhaldenweg 5D, 4450 Sissach, Suisse."
+  },
+  "terms": {
+    "title": "Conditions d'utilisation",
+    "updated": "Dernière mise à jour : novembre 2026",
+    "intro": "HivePulse est une application apicole pour le web, Android et iPhone. Ces conditions décrivent ce que vous pouvez en attendre et ce qu'elle attend de vous. Elles sont écrites pour être lues, pas pour être sautées.",
+    "s1title": "1. Ce que couvrent ces conditions",
+    "s1body": "Elles couvrent le site HivePulse, l'application Android et l'application iPhone, y compris le compte gratuit et l'abonnement soutien. Deux documents distincts couvrent le reste : la politique de confidentialité dit ce qu'il advient de vos données, et la politique de remboursement comment l'argent revient. L'exploitant est indiqué dans les mentions légales.",
+    "s2title": "2. Votre compte",
+    "s2body": "Il faut un compte pour enregistrer des ruches et des visites. Gardez votre mot de passe pour vous ; ce qui est fait avec votre compte est considéré comme fait par vous. Une personne, un compte : pour travailler à plusieurs sur un rucher, invitez l'autre personne au lieu de partager un identifiant. Vous pouvez supprimer votre compte à tout moment, et vos données partent avec lui. La page de suppression dit exactement ce qui disparaît et ce qu'implique un abonnement en cours.",
+    "s3title": "3. Ce que comprend le compte gratuit",
+    "s3body": "Jusqu'à 10 ruches, et des statistiques de visite sur les 365 derniers jours. Tout le reste est gratuit et le reste : le suivi du frelon asiatique, la carte communautaire, les QR codes de vos ruches, l'export de vos propres données et les deux applications. Atteindre une limite ne ferme jamais ce qui existe déjà. Si vous dépassez 10 ruches quand un abonnement se termine, elles restent et restent modifiables ; vous ne pouvez simplement plus en ajouter tant que vous n'êtes pas repassé sous la limite.",
+    "s4title": "4. L'abonnement soutien",
+    "s4body": "19,99 € par an, reconduit chaque année jusqu'à résiliation. Il relève la limite de ruches, ouvre la carte sanitaire régionale et débloque le registre des traitements. Le prix est affiché avant l'achat et comprend la taxe de votre pays. Une année plutôt qu'un mois parce que l'apiculture est saisonnière : presque tout se passe entre mars et octobre. Vous pouvez résilier à tout moment et conservez l'abonnement jusqu'à la fin de la période payée.",
+    "s5title": "5. À qui vous achetez",
+    "s5body": "Sur le site, le vendeur est Paddle, en tant que marchand de référence : le contrat de vente est conclu entre vous et Paddle, qui encaisse le paiement, émet la facture et reverse la TVA. Leurs conditions régissent l'achat lui-même ; les présentes régissent votre utilisation de HivePulse. Dans l'application iPhone le vendeur est Apple, dans l'application Android c'est Google, et leurs conditions s'appliquent de la même manière. Quelle que soit la voie choisie, l'abonnement débloque les mêmes fonctions sur chaque appareil où vous vous connectez, car il appartient à votre compte et non à l'appareil.",
+    "s6title": "6. Vos données restent les vôtres",
+    "s6body": "Vos ruchers, ruches, visites et photos vous appartiennent. Ils ne sont ni vendus ni remis à des annonceurs. Vous pouvez les exporter à tout moment et les emporter ailleurs. Une donnée ne devient publique que là où vous l'avez choisi : une capture de frelon sur la carte publique, un rucher que vous avez rendu visible, une photo que vous avez soumise à la communauté. La politique de confidentialité est la version détaillée de ce paragraphe.",
+    "s7title": "7. Comment utiliser HivePulse",
+    "s7body": "Utilisez-le pour l'apiculture. N'entrez pas dans les comptes d'autrui, ne sollicitez pas le site par des requêtes automatisées au-delà d'un usage normal, ne téléversez rien d'illicite, et ne signalez pas de découvertes de frelons inventées, car d'autres apiculteurs agissent en conséquence. Le code source est ouvert et vous pouvez faire tourner votre propre copie ; cette autorisation vient de la licence du dépôt, pas de cette page. Un compte servant à nuire à autrui peut être fermé.",
+    "s8title": "8. Ce qui est promis, et ce qui ne l'est pas",
+    "s8body": "HivePulse est exploité par une seule personne, avec soin et sans engagement de disponibilité. Le service peut être injoignable, une fonction peut comporter un défaut, et des données jamais exportées peuvent être perdues — conservez donc votre propre copie de tout ce dont la perte vous coûterait. La responsabilité est illimitée en cas d'intention, de faute lourde et d'atteinte à la vie, à l'intégrité physique ou à la santé, et limitée pour le reste à ce qu'exige la loi. L'application soutient vos enregistrements ; elle ne remplace pas les obligations légales d'un apiculteur, et le registre des traitements reste un document dont vous êtes responsable.",
+    "s9title": "9. Modifications, fin et droit applicable",
+    "s9body": "Ces conditions peuvent changer quand l'application change ou que la loi l'exige. Une modification qui vous concerne est annoncée dans l'application et sur la page des actualités avant son entrée en vigueur, et aucune modification de l'abonnement ne s'applique à une période déjà payée. Vous mettez fin à l'accord en supprimant votre compte. HivePulse est exploité depuis la Suisse, le droit suisse s'applique et le for est à Sissach ; si vous êtes consommateur, cela ne vous retire pas la protection impérative du droit du pays où vous résidez. Pour un achat effectué sur le site, le vendeur est Paddle : ce sont donc leurs conditions qui régissent la vente elle-même, y compris la manière de régler un litige à son sujet."
+  },
+  "refunds": {
+    "title": "Politique de remboursement",
+    "updated": "Dernière mise à jour : novembre 2026",
+    "intro": "Un abonnement qui se révèle ne pas être le bon ne devrait pas coûter une discussion. Cette page dit comment récupérer votre argent, auprès de qui, et ce qu'il advient ensuite de votre accès.",
+    "s1title": "1. La version courte",
+    "s1body": "Dans les 14 jours suivant l'achat : vous demandez, vous êtes remboursé. Ensuite, un abonnement court jusqu'à la fin de la période payée puis s'arrête, si vous l'avez résilié. Un remboursement n'efface jamais ce que vous avez enregistré : vos ruchers, vos ruches et vos visites restent où ils sont.",
+    "s2title": "2. Les quatorze jours",
+    "s2body": "En tant que consommateur dans l'Union européenne, vous disposez d'un droit de rétractation de 14 jours pour un achat en ligne, sans avoir à vous justifier. Il s'applique à l'abonnement soutien acheté sur ce site. Une chose à savoir : en demandant que les fonctions soient débloquées immédiatement, vous acceptez que la prestation commence avant la fin des 14 jours, et le vendeur peut retenir la part correspondant aux jours déjà utilisés. Sur un abonnement annuel rétracté dans la première quinzaine, cette part représente quelques centimes, et en pratique la totalité est remboursée.",
+    "s3title": "3. Comment demander",
+    "s3body": "Achat sur le site : votre confirmation vient de Paddle et contient un lien vers leur portail client, où vous pouvez demander le remboursement directement. C'est la voie la plus rapide, car c'est Paddle qui détient l'argent, pas nous. Vous pouvez aussi écrire à hivepulse@multihead.de et nous transmettrons la demande. Paddle rembourse sur le moyen de paiement utilisé ; le délai dépend ensuite de votre banque, en général quelques jours ouvrés.",
+    "s4title": "4. Ce qu'il advient de votre accès",
+    "s4body": "Un remboursement met fin à l'abonnement immédiatement, et non à la fin de la période — l'argent est revenu, les fonctions repartent donc aussi. À partir de cet instant, la limite de ruches s'applique de nouveau. Les ruches au-dessus de la limite ne sont pas supprimées et rien de ce que vous avez enregistré n'est touché ; vous ne pouvez simplement plus en ajouter tant que vous n'êtes pas sous la limite ou réabonné. Un registre des traitements déjà téléchargé reste le vôtre.",
+    "s5title": "5. Acheté sur l'App Store ou Google Play",
+    "s5body": "Alors le vendeur est Apple ou Google, pas Paddle, et ni nous ni Paddle ne pouvons rembourser. Chez Apple, signalez le problème sur reportaproblem.apple.com. Chez Google, passez par l'historique des commandes sur play.google.com/store/account/orderhistory. Les deux ont leurs propres règles et leurs propres délais, qui peuvent être plus généreux que les 14 jours ci-dessus. Dès que leur remboursement atteint notre serveur, l'accès prend fin comme le décrit la section 4.",
+    "s6title": "6. Résilier n'est pas se faire rembourser",
+    "s6body": "Résilier arrête la prochaine reconduction et vous laisse le temps que vous avez payé. C'est généralement ce que vous voulez quand l'abonnement tourne depuis un moment : vous gardez tout jusqu'à la fin de l'année et plus rien n'est prélevé. Faites-le sur la page d'abonnement de votre compte, ou là où vous avez acheté. Résilier le dernier jour ne coûte rien de plus ; il n'y a pas de préavis."
   },
   "dash": {
     "login": {
@@ -1342,7 +1384,11 @@
     "siteDescription": "L'application des apiculteurs qui transforme chaque visite en données mondiales pour la protection des abeilles. Gratuite sur iPhone et Android.",
     "siteTitle": "HivePulse — protégeons les pollinisateurs ensemble",
     "surveyDescription": "Les dates de l’année apicole correspondent-elles là où vous élevez des abeilles ? Évaluez-les en un quart d’heure, sans compte, et aidez à corriger le calendrier de votre région.",
-    "surveyTitle": "Évaluer l’année apicole"
+    "surveyTitle": "Évaluer l’année apicole",
+    "termsTitle": "Conditions d'utilisation",
+    "termsDescription": "Ce que vous pouvez attendre de HivePulse et ce qu'il attend de vous : le compte gratuit, l'abonnement soutien, et à qui vous achetez réellement.",
+    "refundsTitle": "Remboursements",
+    "refundsDescription": "Comment récupérer votre argent pour un abonnement soutien, auprès de qui, et ce qu'il advient ensuite de votre accès."
   },
   "imprint": {
     "title": "Mentions légales",

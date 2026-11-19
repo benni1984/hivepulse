@@ -27,7 +27,9 @@
     "made": "Mit 🐝 für Imkerinnen und Imker weltweit.",
     "imprint": "Impressum",
     "deleteAccount": "Konto löschen",
-    "beta": "Am Test teilnehmen"
+    "beta": "Am Test teilnehmen",
+    "terms": "Nutzungsbedingungen",
+    "refunds": "Erstattungen"
   },
   "hero": {
     "badge": "Open Source · Gemeinschaftsprojekt · Kostenlos",
@@ -365,6 +367,46 @@
     "s9body": "Passwörter werden mit bcrypt gehasht. Der API-Zugriff erfordert ein signiertes JWT-Token. Datenübertragungen sind TLS-verschlüsselt.",
     "s10title": "10. Kontakt",
     "s10body": "Fragen zu dieser Erklärung oder deinen Daten? Schreib an hivepulse@multihead.de. Verantwortlich ist Benjamin Müller, Sonnhaldenweg 5D, 4450 Sissach, Schweiz."
+  },
+  "terms": {
+    "title": "Nutzungsbedingungen",
+    "updated": "Zuletzt aktualisiert: November 2026",
+    "intro": "HivePulse ist eine Imker-App für Web, Android und iPhone. Diese Bedingungen beschreiben, was du von ihr erwarten kannst und was sie von dir erwartet. Sie sind zum Lesen geschrieben, nicht zum Überspringen.",
+    "s1title": "1. Wofür diese Bedingungen gelten",
+    "s1body": "Sie gelten für die Website, die Android-App und die iPhone-App, einschließlich des kostenlosen Kontos und des Supporter-Abos. Zwei eigene Dokumente decken den Rest ab: Die Datenschutzerklärung sagt, was mit deinen Daten geschieht, die Erstattungsrichtlinie, wie Geld zurückkommt. Wer HivePulse betreibt, steht im Impressum.",
+    "s2title": "2. Dein Konto",
+    "s2body": "Für das Erfassen von Völkern und Kontrollen brauchst du ein Konto. Behalte dein Passwort für dich; was mit deinem Konto geschieht, gilt als von dir getan. Eine Person, ein Konto: Wer gemeinsam an einem Bienenstand arbeiten will, lädt die andere Person ein, statt die Anmeldedaten zu teilen. Du kannst dein Konto jederzeit löschen, deine Daten gehen damit. Die Löschseite sagt genau, was verschwindet und was ein laufendes Abo dabei bedeutet.",
+    "s3title": "3. Was das kostenlose Konto enthält",
+    "s3body": "Bis zu 10 Völker und Kontrollstatistiken über die vergangenen 365 Tage. Alles andere ist kostenlos und bleibt es: der Hornissen-Tracker, die Gemeinschaftskarte, QR-Codes für deine Beuten, der Export deiner eigenen Daten und beide Apps. Eine Grenze schließt nie, was schon da ist. Hast du mehr als 10 Völker, wenn ein Abo endet, bleiben sie erhalten und bearbeitbar; du kannst nur keine neuen anlegen, bis du wieder unter der Grenze bist.",
+    "s4title": "4. Das Supporter-Abo",
+    "s4body": "19,99 € im Jahr, jährlich verlängert, bis du kündigst. Es hebt die Völkergrenze an, öffnet die regionale Gesundheitskarte und schaltet das Bestandsbuch frei. Der Preis wird vor dem Kauf angezeigt und enthält die Steuer deines Landes. Ein Jahr statt eines Monats, weil Imkerei saisonal ist: Zwischen März und Oktober passiert fast alles. Du kannst jederzeit kündigen und behältst das Abo bis zum Ende des bezahlten Zeitraums.",
+    "s5title": "5. Bei wem du kaufst",
+    "s5body": "Auf der Website ist Paddle der Verkäufer, als Merchant of Record: Der Kaufvertrag kommt zwischen dir und Paddle zustande, Paddle nimmt die Zahlung entgegen, stellt die Rechnung aus und führt die Umsatzsteuer ab. Für den Kauf selbst gelten deren Bedingungen, für die Nutzung von HivePulse diese hier. In der iPhone-App ist Apple der Verkäufer, in der Android-App Google, und deren Bedingungen gelten entsprechend. Welchen Weg du auch wählst: Das Abo schaltet dieselben Funktionen auf jedem Gerät frei, auf dem du dich anmeldest, denn es gehört zu deinem Konto und nicht zum Gerät.",
+    "s6title": "6. Deine Daten bleiben deine",
+    "s6body": "Deine Bienenstände, Völker, Kontrollen und Fotos gehören dir. Sie werden nicht verkauft und nicht an Werbetreibende gegeben. Du kannst sie jederzeit exportieren und mitnehmen. Öffentlich sichtbar wird etwas nur dort, wo du es gewählt hast: ein Hornissenfang auf der öffentlichen Karte, ein Bienenstand, den du sichtbar gestellt hast, ein Foto, das du der Gemeinschaft gezeigt hast. Die Datenschutzerklärung ist die ausführliche Fassung dieses Absatzes.",
+    "s7title": "7. Wie HivePulse zu benutzen ist",
+    "s7body": "Benutze es zum Imkern. Dringe nicht in fremde Konten ein, belaste die Seite nicht mit automatisierten Abfragen über die normale Nutzung hinaus, lade nichts Rechtswidriges hoch, und melde keine erfundenen Hornissenfunde, denn andere Imker handeln danach. Der Quelltext ist offen und du darfst eine eigene Kopie betreiben; diese Erlaubnis stammt aus der Lizenz im Repository, nicht von dieser Seite. Ein Konto, mit dem anderen geschadet wird, kann geschlossen werden.",
+    "s8title": "8. Was zugesagt wird und was nicht",
+    "s8body": "HivePulse wird von einer einzelnen Person betrieben, mit Sorgfalt und ohne Verfügbarkeitszusage. Es kann nicht erreichbar sein, eine Funktion kann einen Fehler haben, und Daten, die du nie exportiert hast, können verloren gehen — bewahre deshalb selbst eine Kopie von allem auf, dessen Verlust du dir nicht leisten kannst. Für Vorsatz, grobe Fahrlässigkeit und Schäden an Leben, Körper und Gesundheit wird unbeschränkt gehaftet, im Übrigen nur in den Grenzen, die das Gesetz verlangt. Die App unterstützt deine Aufzeichnungen; sie ersetzt nicht die gesetzlichen Pflichten eines Imkers, und das Bestandsbuch bleibt ein Dokument, für das du verantwortlich bist.",
+    "s9title": "9. Änderungen, Beendigung und anwendbares Recht",
+    "s9body": "Diese Bedingungen können sich ändern, wenn sich die App ändert oder das Gesetz es verlangt. Eine Änderung, die dich betrifft, wird vor ihrem Wirksamwerden in der App und auf der Neuigkeitenseite angekündigt, und keine Änderung am Abo gilt für einen Zeitraum, den du bereits bezahlt hast. Du beendest die Vereinbarung, indem du dein Konto löschst. HivePulse wird aus der Schweiz betrieben, es gilt Schweizer Recht und Gerichtsstand ist Sissach; bist du Verbraucher, nimmt dir das nicht den zwingenden Schutz des Rechts deines Wohnsitzlandes. Für einen Kauf auf der Website ist Paddle der Verkäufer, für den Kauf selbst gelten deshalb deren Bedingungen, einschließlich der Wege, einen Streit darüber beizulegen."
+  },
+  "refunds": {
+    "title": "Erstattungsrichtlinie",
+    "updated": "Zuletzt aktualisiert: November 2026",
+    "intro": "Ein Abo, das sich als nicht das Richtige herausstellt, sollte keine Diskussion kosten. Diese Seite sagt, wie du dein Geld zurückbekommst, von wem, und was danach mit deinem Zugang geschieht.",
+    "s1title": "1. Die kurze Fassung",
+    "s1body": "Innerhalb von 14 Tagen nach dem Kauf: fragen, Geld zurück. Danach läuft ein Abo bis zum Ende des bezahlten Zeitraums und endet dann, sofern du gekündigt hast. Eine Erstattung löscht nie etwas, das du erfasst hast: Deine Bienenstände, Völker und Kontrollen bleiben, wo sie sind.",
+    "s2title": "2. Die vierzehn Tage",
+    "s2body": "Als Verbraucher in der Europäischen Union hast du bei einem Kauf im Internet ein 14-tägiges Widerrufsrecht, und du brauchst dafür keinen Grund. Es gilt für das Supporter-Abo, das auf dieser Website gekauft wurde. Eines ist zu wissen: Indem du verlangst, dass die Funktionen sofort freigeschaltet werden, stimmst du zu, dass die Leistung vor Ablauf der 14 Tage beginnt, und der Verkäufer darf den Anteil für die bereits genutzten Tage einbehalten. Bei einem Jahresabo, das in den ersten zwei Wochen widerrufen wird, sind das ein paar Cent, und in der Praxis wird der volle Betrag erstattet.",
+    "s3title": "3. Wie du es verlangst",
+    "s3body": "Auf der Website gekauft: Deine Kaufbestätigung kommt von Paddle und enthält einen Link zu deren Kundenportal, wo du die Erstattung direkt anfordern kannst. Das ist der schnellste Weg, denn Paddle hat das Geld und wir nicht. Du kannst auch an hivepulse@multihead.de schreiben, dann geben wir die Anfrage weiter. Paddle erstattet auf das Zahlungsmittel, das du benutzt hast; wie lange es danach dauert, entscheidet deine Bank, meist ein paar Werktage.",
+    "s4title": "4. Was mit deinem Zugang geschieht",
+    "s4body": "Eine Erstattung beendet das Abo sofort, nicht zum Ende des Zeitraums — das Geld ist zurück, also sind es die Funktionen auch. Ab diesem Moment gilt wieder die Völkergrenze. Völker über der Grenze werden nicht gelöscht und nichts Erfasstes wird angerührt; du kannst nur keine neuen anlegen, bis du unter der Grenze bist oder erneut abonnierst. Ein Bestandsbuch, das du bereits heruntergeladen hast, bleibt deines.",
+    "s5title": "5. Im App Store oder bei Google Play gekauft",
+    "s5body": "Dann ist Apple beziehungsweise Google der Verkäufer, nicht Paddle, und weder wir noch Paddle können erstatten. Bei Apple meldest du das Problem unter reportaproblem.apple.com. Bei Google geht es über die Bestellhistorie unter play.google.com/store/account/orderhistory. Beide haben eigene Regeln und eigene Fristen, die großzügiger sein können als die 14 Tage oben. Sobald deren Erstattung unseren Server erreicht, endet der Zugang so, wie Abschnitt 4 es beschreibt.",
+    "s6title": "6. Kündigen ist nicht dasselbe wie erstatten",
+    "s6body": "Kündigen stoppt die nächste Verlängerung und lässt dir die Zeit, die du bezahlt hast. Das ist meist das, was du willst, wenn das Abo schon eine Weile läuft: Du behältst alles bis zum Jahresende, und es wird nichts mehr abgebucht. Mach es auf der Abo-Seite in deinem Konto oder dort, wo du gekauft hast. Am letzten Tag zu kündigen kostet nichts extra; es gibt keine Kündigungsfrist."
   },
   "dash": {
     "login": {
@@ -1342,7 +1384,11 @@
     "siteDescription": "Die Imker-App, die jede Durchsicht zu weltweiten Daten für den Bienenschutz macht. Kostenlos für iPhone und Android.",
     "siteTitle": "HivePulse — gemeinsam Bestäuber schützen",
     "surveyDescription": "Passen die Daten des Imkerjahres dort, wo du Bienen hältst? Bewerte sie in einer Viertelstunde, ohne Konto, und hilf, den Kalender für deine Region zu korrigieren.",
-    "surveyTitle": "Das Imkerjahr bewerten"
+    "surveyTitle": "Das Imkerjahr bewerten",
+    "termsTitle": "Nutzungsbedingungen",
+    "termsDescription": "Was du von HivePulse erwarten kannst und was es von dir erwartet: das kostenlose Konto, das Supporter-Abo, und bei wem du eigentlich kaufst.",
+    "refundsTitle": "Erstattungen",
+    "refundsDescription": "Wie du dein Geld für ein Supporter-Abo zurückbekommst, von wem, und was danach mit deinem Zugang geschieht."
   },
   "imprint": {
     "title": "Impressum",

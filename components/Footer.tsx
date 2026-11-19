@@ -64,6 +64,11 @@ export default function Footer() {
                   entry for them. */}
               <li><Link href="/help">{tn('help')}</Link></li>
               <li><Link href="/privacy">{t('privacy')}</Link></li>
+              {/* Paddle's domain review requires the terms and the refund policy to be
+                  "clearly accessible via navigation on your website" — so they live here next
+                  to the privacy policy, not only linked from the checkout (#498). */}
+              <li><Link href="/terms">{t('terms')}</Link></li>
+              <li><Link href="/refunds">{t('refunds')}</Link></li>
               {/* Appears once lib/imprint.ts carries the operator's details. */}
               {imprintIsComplete() && <li><Link href="/impressum">{t('imprint')}</Link></li>}
               <li><Link href="/delete-account">{t('deleteAccount')}</Link></li>
