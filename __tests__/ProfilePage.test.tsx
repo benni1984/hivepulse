@@ -14,6 +14,13 @@ const mockGetReminderSettings = vi.hoisted(() => vi.fn());
 const mockUpdateReminderSettings = vi.hoisted(() => vi.fn());
 const mockUseDashboardAuth = vi.hoisted(() => vi.fn());
 const mockGetRegion = vi.hoisted(() => vi.fn());
+// A default, so every test that does not care about the subscription keeps working: the
+// profile page asks for it on load, and an unmocked call returns undefined, not a promise.
+const mockGetSubscription = vi.hoisted(() =>
+  // The return type is widened on purpose: inferring it from this default would pin `source` to
+  // null, and the tests below hand it 'apple', 'google' and 'manual'.
+  vi.fn(async (): Promise<Record<string, unknown>> =>
+    ({ status: 'none', source: null, hives_used: 0, hive_limit: 10 })));
 const mockUpdateRegion = vi.hoisted(() => vi.fn());
 
 vi.mock('@/lib/api', () => ({
@@ -23,6 +30,8 @@ vi.mock('@/lib/api', () => ({
   updateReminderSettings: mockUpdateReminderSettings,
   getRegion: mockGetRegion,
   updateRegion: mockUpdateRegion,
+  getSubscription: mockGetSubscription,
+  grantsAccess: (s: { status: string }) => s.status === 'active' || s.status === 'grace',
 }));
 
 vi.mock('@/hooks/useDashboardAuth', () => ({
@@ -352,5 +361,84 @@ describe('ProfilePage — region for the beekeeping year', () => {
     fireEvent.click(screen.getByText('regionSave'));
 
     await waitFor(() => expect(screen.getByText('regionError')).toBeTruthy());
+  });
+});
+
+// ------------------------------------------------------------------------------------------------
+// Deleting an account that pays for something (#494)
+// ------------------------------------------------------------------------------------------------
+
+describe('ProfilePage and the subscription nobody can cancel for you', () => {
+  const sub = (over: Record<string, unknown> = {}) => ({
+    status: 'active', source: 'web', product_id: 'supporter_yearly', current_period_end: null,
+    will_renew: true, store_managed: false, manage_url: null,
+    hives_used: 3, hive_limit: null, ...over,
+  });
+
+  beforeEach(() => {
+    mockGetSubscription.mockReset();
+    mockGetSubscription.mockResolvedValue(sub({ status: 'none', source: null }));
+    mockUseDashboardAuth.mockReturnValue({ user: MOCK_USER, loading: false });
+    mockGetReminderSettings.mockResolvedValue({
+      reminder_enabled: false, reminder_interval_days: 7,
+      reminder_season_start: 3, reminder_season_end: 10, reminder_email_enabled: false,
+    });
+    mockGetRegion.mockResolvedValue({ region: null });
+  });
+
+  it('names the App Store when that is where the subscription came from', async () => {
+    // Not a list of all three places. A warning that recites every store somebody *might* have
+    // bought from is a warning nobody reads.
+    mockGetSubscription.mockResolvedValue(sub({ source: 'apple', store_managed: true }));
+    render(<ProfilePage />);
+
+    const warning = await screen.findByTestId('delete-subscription-warning');
+    expect(warning.textContent).toContain('deleteSubApple');
+  });
+
+  it('names Google Play for a Play subscription', async () => {
+    mockGetSubscription.mockResolvedValue(sub({ source: 'google', store_managed: true }));
+    render(<ProfilePage />);
+
+    const warning = await screen.findByTestId('delete-subscription-warning');
+    expect(warning.textContent).toContain('deleteSubGoogle');
+  });
+
+  it('says there is nothing to cancel for a courtesy grant', async () => {
+    // A manual grant costs nothing, so "cancel it or you keep being charged" would be a lie.
+    mockGetSubscription.mockResolvedValue(sub({ source: 'manual' }));
+    render(<ProfilePage />);
+
+    const warning = await screen.findByTestId('delete-subscription-warning');
+    expect(warning.textContent).toContain('deleteSubManual');
+  });
+
+  it('stays quiet for an account with no subscription', async () => {
+    mockGetSubscription.mockResolvedValue(sub({ status: 'none', source: null }));
+    render(<ProfilePage />);
+
+    // Anchored on a string this file's translation mock actually maps, so the assertion
+    // below is about the warning and not about the mock's key table.
+    await screen.findByText('Edit Profile');
+    expect(screen.queryByTestId('delete-subscription-warning')).toBeNull();
+  });
+
+  it('stays quiet for one that has already lapsed', async () => {
+    // Nothing is being charged any more, so there is nothing to warn about.
+    mockGetSubscription.mockResolvedValue(sub({ status: 'expired', source: 'apple' }));
+    render(<ProfilePage />);
+
+    // Anchored on a string this file's translation mock actually maps, so the assertion
+    // below is about the warning and not about the mock's key table.
+    await screen.findByText('Edit Profile');
+    expect(screen.queryByTestId('delete-subscription-warning')).toBeNull();
+  });
+
+  it('does not spoil the page when the subscription cannot be loaded', async () => {
+    mockGetSubscription.mockRejectedValue(new Error('offline'));
+    render(<ProfilePage />);
+
+    expect(await screen.findByText('Edit Profile')).toBeDefined();
+    expect(screen.queryByTestId('delete-subscription-warning')).toBeNull();
   });
 });

@@ -37,6 +37,38 @@ export const RELEASES: Release[] = [
   {
     date: '2026-11-19',
     title: t(
+      'Deleting your account does not cancel your subscription',
+      'Dein Konto zu l\u00f6schen k\u00fcndigt dein Abo nicht',
+      'Supprimer votre compte ne r\u00e9silie pas votre abonnement',
+      'Borrar tu cuenta no cancela tu suscripci\u00f3n',
+      'Usuni\u0119cie konta nie anuluje abonamentu',
+    ),
+    items: [
+      {
+        kind: 'added',
+        text: t(
+          'Before you delete your account, HivePulse now tells you if a subscription is running and where to cancel it \u2014 in the App Store, on Google Play or on the website. A subscription belongs to the shop you bought it from, and nothing here can cancel it for you. Delete first and you keep paying for something you can no longer reach.',
+          'Bevor du dein Konto l\u00f6schst, sagt HivePulse dir jetzt, ob ein Abo l\u00e4uft und wo du es k\u00fcndigst \u2014 im App Store, bei Google Play oder auf der Webseite. Ein Abo geh\u00f6rt dem Laden, in dem du es gekauft hast, und von hier aus l\u00e4sst sich keines k\u00fcndigen. Wer zuerst l\u00f6scht, zahlt weiter f\u00fcr etwas, an das er nicht mehr herankommt.',
+          'Avant de supprimer votre compte, HivePulse vous dit d\u00e9sormais si un abonnement est en cours et o\u00f9 le r\u00e9silier\u00a0: sur l\u2019App Store, sur Google Play ou sur le site. Un abonnement appartient \u00e0 la boutique o\u00f9 vous l\u2019avez achet\u00e9, et rien ici ne peut le r\u00e9silier \u00e0 votre place.',
+          'Antes de borrar tu cuenta, HivePulse te dice ahora si hay una suscripci\u00f3n activa y d\u00f3nde cancelarla: en la App Store, en Google Play o en la web. Una suscripci\u00f3n pertenece a la tienda donde la compraste, y desde aqu\u00ed no se puede cancelar ninguna.',
+          'Zanim usuniesz konto, HivePulse mówi ci teraz, czy abonament dzia\u0142a i gdzie go anulowa\u0107 \u2014 w App Store, w Google Play albo w serwisie. Abonament nale\u017cy do sklepu, w którym go kupi\u0142e\u015b, i st\u0105d nie da si\u0119 go anulowa\u0107.',
+        ),
+      },
+      {
+        kind: 'fixed',
+        text: t(
+          'An account with a subscription could not be deleted at all \u2014 the request stopped with an error. Deleting your data is a right, not something that may depend on whether you pay.',
+          'Ein Konto mit Abo liess sich \u00fcberhaupt nicht l\u00f6schen \u2014 die Anfrage brach mit einem Fehler ab. Seine Daten zu l\u00f6schen ist ein Recht und darf nicht davon abh\u00e4ngen, ob jemand zahlt.',
+          'Un compte avec un abonnement ne pouvait pas \u00eatre supprim\u00e9 du tout\u00a0: la demande \u00e9chouait. Supprimer ses donn\u00e9es est un droit, pas quelque chose qui d\u00e9pend du fait de payer.',
+          'Una cuenta con suscripci\u00f3n no se pod\u00eda borrar en absoluto: la petici\u00f3n fallaba. Borrar tus datos es un derecho, no algo que dependa de si pagas.',
+          'Konta z abonamentem w ogóle nie da\u0142o si\u0119 usun\u0105\u0107 \u2014 \u017c\u0105danie ko\u0144czy\u0142o si\u0119 b\u0142\u0119dem. Usuni\u0119cie swoich danych to prawo, a nie co\u015b, co zale\u017cy od tego, czy p\u0142acisz.',
+        ),
+      },
+    ],
+  },
+  {
+    date: '2026-11-19',
+    title: t(
       'The record you have to keep, out of what you already logged',
       'Das Bestandsbuch — aus dem, was du ohnehin erfasst',
       'Le registre à tenir, à partir de ce que vous saisissez déjà',

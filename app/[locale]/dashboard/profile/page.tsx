@@ -6,6 +6,7 @@ import { useRouter } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import {
   updateMe, deleteMe, getReminderSettings, updateReminderSettings, ReminderSettings,
+  getSubscription, grantsAccess, type Subscription,
   getRegion, updateRegion, type Region,
 } from '@/lib/api';
 import { countriesByName } from '@/lib/calendar';
@@ -28,6 +29,8 @@ export default function ProfilePage() {
   const [currentPw, setCurrentPw] = useState('');
   const [newPw, setNewPw] = useState('');
   const [confirmPw, setConfirmPw] = useState('');
+  // Only to warn before deleting: a subscription this server cannot cancel (#494).
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [pwMsg, setPwMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
   const [pwSaving, setPwSaving] = useState(false);
 
@@ -73,6 +76,9 @@ export default function ProfilePage() {
         setReminderLoaded(true);
       })
       .catch(() => setReminderLoaded(true));
+    // A failure here must stay silent: not knowing about a subscription is no reason to spoil
+    // the profile page, and the public /delete-account text covers the general case anyway.
+    getSubscription().then(setSubscription).catch(() => {});
   }, [loading, user]);
 
   async function handleProfileSave(e: React.FormEvent) {
@@ -440,6 +446,16 @@ export default function ProfilePage() {
       <div className="dash-profile-danger">
         <h2 className="dash-section-title">{t('dangerTitle')}</h2>
         <p className="dash-profile-danger-desc">{t('dangerDesc')}</p>
+        {/* Named, not listed. A page that recites all three places somebody *might* have bought
+            is a page nobody reads; this one knows which it was and says only that (#494). */}
+        {subscription && grantsAccess(subscription) && (
+          <p className="dash-profile-danger-warning" data-testid="delete-subscription-warning">
+            {t(subscription.source === 'apple' ? 'deleteSubApple'
+              : subscription.source === 'google' ? 'deleteSubGoogle'
+              : subscription.source === 'manual' ? 'deleteSubManual'
+              : 'deleteSubWeb')}
+          </p>
+        )}
         {!deleteConfirm ? (
           <button className="dash-admin-btn dash-admin-btn-danger" onClick={() => setDeleteConfirm(true)}>
             {t('deleteAccount')}

@@ -198,6 +198,10 @@
     <string name="alert_password_too_short">Password must be at least 8 characters.</string>
     <string name="alert_password_changed">Password changed successfully.</string>
     <string name="alert_delete_account_confirm">Delete your account?</string>
+    <string name="delete_sub_apple">You have a subscription from the App Store. Deleting this account does not cancel it — cancel it first in Settings → your name → Subscriptions, or Apple keeps charging you for something you can no longer reach.</string>
+    <string name="delete_sub_google">You have a subscription from Google Play. Deleting this account does not cancel it — cancel it first under Payments and subscriptions in the Play Store, or Google keeps charging you for something you can no longer reach.</string>
+    <string name="delete_sub_web">You have a subscription bought on this website. Deleting this account does not cancel it — cancel it first on the Subscription page, or you keep being charged for something you can no longer reach.</string>
+    <string name="delete_sub_manual">Your supporter access was granted directly and costs nothing, so there is nothing to cancel. It goes with the account.</string>
     <string name="alert_delete_account_message">All your data — apiaries, hives, and inspections — will be permanently deleted. This cannot be undone.</string>
     <string name="alert_delete_account_action">Delete Permanently</string>
 

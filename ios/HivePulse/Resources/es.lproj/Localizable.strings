@@ -305,6 +305,10 @@
 "section.dangerZone" = "Zona de peligro";
 "action.deleteAccount" = "Eliminar cuenta";
 "alert.deleteAccountConfirm" = "¿Eliminar tu cuenta?";
+"delete.subApple" = "Tienes una suscripción de la App Store. Borrar esta cuenta no la cancela: cancélala antes en Ajustes → tu nombre → Suscripciones, o Apple seguirá cobrándote por algo a lo que ya no puedes acceder.";
+"delete.subGoogle" = "Tienes una suscripción de Google Play. Borrar esta cuenta no la cancela: cancélala antes en Pagos y suscripciones de Play Store, o Google seguirá cobrándote por algo a lo que ya no puedes acceder.";
+"delete.subWeb" = "Tienes una suscripción comprada en esta web. Borrar esta cuenta no la cancela: cancélala antes en la página de Suscripción, o seguirán cobrándote por algo a lo que ya no puedes acceder.";
+"delete.subManual" = "Tu acceso Supporter se concedió directamente y no cuesta nada, así que no hay nada que cancelar. Se va con la cuenta.";
 "alert.deleteAccountMessage" = "Todos tus datos — colmenares, colmenas y revisiones — se eliminarán definitivamente. Esta acción no se puede deshacer.";
 "alert.deleteAccountAction" = "Eliminar definitivamente";
 /* Statistics overview */

@@ -307,6 +307,10 @@
 "section.dangerZone" = "Gefahrenbereich";
 "action.deleteAccount" = "Konto löschen";
 "alert.deleteAccountConfirm" = "Konto löschen?";
+"delete.subApple" = "Du hast ein Abo aus dem App Store. Dieses Konto zu löschen kündigt es nicht — kündige es vorher unter Einstellungen → dein Name → Abos, sonst bucht Apple weiter für etwas ab, an das du nicht mehr herankommst.";
+"delete.subGoogle" = "Du hast ein Abo von Google Play. Dieses Konto zu löschen kündigt es nicht — kündige es vorher im Play Store unter Zahlungen und Abos, sonst bucht Google weiter für etwas ab, an das du nicht mehr herankommst.";
+"delete.subWeb" = "Du hast ein auf dieser Webseite gekauftes Abo. Dieses Konto zu löschen kündigt es nicht — kündige es vorher auf der Abo-Seite, sonst wird dir weiter etwas abgebucht, an das du nicht mehr herankommst.";
+"delete.subManual" = "Dein Supporter-Zugang wurde direkt vergeben und kostet nichts, es gibt also nichts zu kündigen. Er geht mit dem Konto.";
 "alert.deleteAccountMessage" = "Alle deine Daten — Bienenstände, Völker und Kontrollen — werden endgültig gelöscht. Das lässt sich nicht rückgängig machen.";
 "alert.deleteAccountAction" = "Endgültig löschen";
 /* Statistics overview */

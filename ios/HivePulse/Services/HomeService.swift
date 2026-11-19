@@ -44,6 +44,18 @@ struct TreatmentDoneBody: Encodable {
     enum CodingKeys: String, CodingKey { case doneOn = "done_on" }
 }
 
+protocol SubscriptionServiceProtocol {
+    func mine() async throws -> SubscriptionOut
+}
+
+struct SubscriptionService: SubscriptionServiceProtocol {
+    private let client = APIClient.shared
+
+    func mine() async throws -> SubscriptionOut {
+        try await client.get("subscriptions/me")
+    }
+}
+
 struct TreatmentService: TreatmentServiceProtocol {
     private let client = APIClient.shared
 

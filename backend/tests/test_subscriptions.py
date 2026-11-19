@@ -217,16 +217,76 @@ def test_an_expiry_ends_it(auth_client, db_session):
 
 
 def test_a_refund_ends_it_too(auth_client, db_session):
+    """A refund arrives as a CANCELLATION with a reason. There is no REFUND event type.
+
+    This test used to send `kind="REFUND"` and pass, which proved only that the table mapped a
+    string nobody will ever send. The real event is a cancellation, and without the reason it
+    reads as "keeps the feature until the period ends" -- so somebody could be refunded and stay
+    a supporter (#496).
+    """
     user_id = _user_id(db_session)
     auth_client.post("/api/v1/subscriptions/webhook", json=_event(user_id), headers=_headers())
 
     ms = int((now_utc() + timedelta(seconds=1)).timestamp() * 1000)
     auth_client.post("/api/v1/subscriptions/webhook",
-                     json=_event(user_id, kind="REFUND", event_timestamp_ms=ms),
+                     json=_event(user_id, kind="CANCELLATION", event_timestamp_ms=ms,
+                                 cancel_reason="CUSTOMER_SUPPORT"),
                      headers=_headers())
 
     body = auth_client.get("/api/v1/subscriptions/me").json()
     assert body["status"] == "refunded"
+    assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is False
+
+
+def test_an_ordinary_cancellation_is_not_a_refund(auth_client, db_session):
+    """The other half of the same decision, and the reason the reason matters. Switching off
+    auto-renewal must leave the feature in place until the period that was paid for ends."""
+    user_id = _user_id(db_session)
+    auth_client.post("/api/v1/subscriptions/webhook", json=_event(user_id), headers=_headers())
+
+    ms = int((now_utc() + timedelta(seconds=1)).timestamp() * 1000)
+    auth_client.post("/api/v1/subscriptions/webhook",
+                     json=_event(user_id, kind="CANCELLATION", event_timestamp_ms=ms,
+                                 cancel_reason="UNSUBSCRIBE"),
+                     headers=_headers())
+
+    body = auth_client.get("/api/v1/subscriptions/me").json()
+    assert body["status"] == "active", "cancelled is not expired"
+    assert body["will_renew"] is False, "but it will not come back by itself"
+    assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is True
+
+
+def test_a_reversed_refund_gives_the_access_back(auth_client, db_session):
+    """REFUND_REVERSED exists and used to fall into "unknown event, ignore" -- so the money came
+    back to us and the person stayed locked out."""
+    user_id = _user_id(db_session)
+    auth_client.post("/api/v1/subscriptions/webhook", json=_event(user_id), headers=_headers())
+    ms = int((now_utc() + timedelta(seconds=1)).timestamp() * 1000)
+    auth_client.post("/api/v1/subscriptions/webhook",
+                     json=_event(user_id, kind="CANCELLATION", event_timestamp_ms=ms,
+                                 cancel_reason="CUSTOMER_SUPPORT"),
+                     headers=_headers())
+
+    ms2 = int((now_utc() + timedelta(seconds=2)).timestamp() * 1000)
+    auth_client.post("/api/v1/subscriptions/webhook",
+                     json=_event(user_id, kind="REFUND_REVERSED", event_timestamp_ms=ms2),
+                     headers=_headers())
+
+    assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is True
+
+
+def test_the_dashboards_own_test_button_is_ignored_quietly(auth_client, db_session):
+    """RevenueCat's "send test webhook" sends type TEST from store TEST_STORE. Answering 200 and
+    doing nothing is right; the point of this test is that it is *named* as ignored rather than
+    logged as an unknown type, because during setup that reads as a misconfiguration."""
+    user_id = _user_id(db_session)
+
+    resp = auth_client.post("/api/v1/subscriptions/webhook",
+                            json=_event(user_id, kind="TEST", store="TEST_STORE"),
+                            headers=_headers())
+
+    assert resp.status_code == 200
+    assert resp.json()["handled"] is False
     assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is False
 
 
@@ -438,3 +498,95 @@ class TestAdminGrantSurvivesTheSweep:
         sources = sorted(r.source for r in
                          db_session.query(Subscription).filter(Subscription.user_id == victim.id))
         assert sources == ["apple", "manual"]
+
+
+class TestDeletingAnAccountThatPays:
+    """What happens to a subscription when somebody deletes their account (#17, phase 5).
+
+    Two different questions, and only one of them is ours to answer. Deleting the *records* is:
+    they are the account's data and they go with it. Cancelling the *subscription* is not -- a
+    store subscription belongs to the person's Apple or Google account and this server cannot
+    touch it, so somebody who deletes an account without cancelling first keeps being charged for
+    something they can no longer reach.
+    """
+
+    def _paying_user(self, client, db_session, source="apple"):
+        from app.models import User
+        from app.utils import entitlements
+        from app.clock import now_utc
+        from datetime import timedelta
+        client.post("/api/v1/auth/register", json={
+            "email": "payer@example.com", "password": "password123",
+            "name": "Payer", "locale": "en"})
+        user = db_session.query(User).filter(User.email == "payer@example.com").first()
+        entitlements.apply_event(db_session, user=user, source=source, status="active",
+                                 product_id="supporter_yearly",
+                                 current_period_end=now_utc() + timedelta(days=100),
+                                 store_txn_id=f"{source}-1")
+        db_session.commit()
+        token = client.post("/api/v1/auth/login", json={
+            "email": "payer@example.com", "password": "password123"}).json()["access_token"]
+        return user.id, {"Authorization": f"Bearer {token}"}
+
+    def test_the_account_can_still_be_deleted(self, client, db_session):
+        """The first thing to know: a subscription must not block somebody from leaving. A
+        foreign key that refused the delete would trap a paying account in the product."""
+        user_id, headers = self._paying_user(client, db_session)
+
+        resp = client.delete("/api/v1/users/me", headers=headers)
+
+        assert resp.status_code in (200, 204), resp.text
+
+    def test_the_records_go_with_it(self, client, db_session):
+        from app.models import Subscription
+        user_id, headers = self._paying_user(client, db_session)
+
+        client.delete("/api/v1/users/me", headers=headers)
+
+        db_session.expire_all()
+        assert db_session.query(Subscription).filter(Subscription.user_id == user_id).count() == 0
+
+    def test_nothing_of_the_account_is_left_behind_anywhere(self, client, db_session):
+        """A generic sweep, because the bug this class exists for was a *new table* nobody
+        remembered.
+
+        `Subscription` carried `ondelete="CASCADE"` on the column and still broke the delete:
+        the ORM relationship had no cascade, so SQLAlchemy tried `UPDATE subscriptions SET
+        user_id = NULL` first and the NOT NULL constraint refused it. A paying account could not
+        be deleted at all.
+
+        Rather than listing the tables that existed on the day this was written, the check walks
+        every table that has a `user_id` column and asserts that none of them still points at the
+        account. A table added later is covered the moment somebody stores a row in it.
+        """
+        from sqlalchemy import text
+        from app.models import Base
+        user_id, headers = self._paying_user(client, db_session)
+        apiary = client.post("/api/v1/apiaries", json={"name": "Leaving", "address": "X"},
+                             headers=headers).json()
+        hive = client.post(f"/api/v1/apiaries/{apiary['id']}/hives",
+                           json={"name": "Volk", "hive_type": "langstroth"},
+                           headers=headers).json()
+        client.post(f"/api/v1/hives/{hive['id']}/inspections",
+                    json={"date": "2026-05-01", "mood": "calm"}, headers=headers)
+        client.post("/api/v1/field-definitions",
+                    json={"target": "inspection", "name": "Feld", "type": "text",
+                          "options": [], "required": False, "sort_order": 0}, headers=headers)
+        client.post("/api/v1/treatments",
+                    json={"apiary_id": apiary["id"], "product": "Ameisensäure",
+                          "due_on": "2026-08-20"}, headers=headers)
+
+        assert client.delete("/api/v1/users/me", headers=headers).status_code in (200, 204)
+
+        db_session.expire_all()
+        leftovers = []
+        for table in Base.metadata.sorted_tables:
+            if "user_id" not in table.c:
+                continue
+            count = db_session.execute(
+                text(f"SELECT COUNT(*) FROM {table.name} WHERE user_id = :uid"),
+                {"uid": user_id},
+            ).scalar()
+            if count:
+                leftovers.append(f"{table.name}: {count}")
+        assert not leftovers, "rows still pointing at the deleted account: " + ", ".join(leftovers)

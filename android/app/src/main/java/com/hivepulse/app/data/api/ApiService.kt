@@ -199,6 +199,9 @@ interface ApiService {
 
     @Streaming
     /** The year's treatments as a PDF to keep. Part of the supporter subscription (#477). */
+    @GET("subscriptions/me")
+    suspend fun mySubscription(): SubscriptionOut
+
     @GET("apiaries/{id}/treatment-record")
     suspend fun treatmentRecord(@Path("id") id: String, @Query("year") year: Int): ResponseBody
 

@@ -418,6 +418,24 @@ struct TreatmentCreateRequest: Encodable {
     }
 }
 
+/// What the signed-in account is entitled to (api-contract.md, Subscriptions).
+///
+/// Read here for one reason: deleting the account does not cancel a subscription, and the warning
+/// should name the place it actually came from rather than reciting all three (#494).
+struct SubscriptionOut: Codable {
+    let status: String
+    let source: String?
+    /// True for the App Store and Google Play: **the app cannot cancel it**, the store must.
+    let storeManaged: Bool
+    /// `grace` means the store is retrying a payment and access continues -- gating on `active`
+    /// alone would lock somebody out over a card that expired.
+    var grantsAccess: Bool { status == "active" || status == "grace" }
+    enum CodingKeys: String, CodingKey {
+        case status, source
+        case storeManaged = "store_managed"
+    }
+}
+
 struct HomeInspectionItem: Codable, Equatable {
     let hiveId: String
     let hiveName: String

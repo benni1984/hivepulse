@@ -14,13 +14,30 @@ import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import com.hivepulse.app.data.api.SubscriptionOut
+import com.hivepulse.app.data.repository.SubscriptionRepository
+import com.hivepulse.app.data.api.grantsAccess
 
 @OptIn(ExperimentalCoroutinesApi::class)
+// Shared by both classes in this file. They were private members of the first one until the
+// second needed them; copying them would have been the start of two fixtures drifting apart.
+private fun user() = UserOut("u1", "a@b.com", "Alice", "en", "2024-01-01")
+
+private fun reminder() = ReminderSettingsOut(
+    reminderEnabled      = true,
+    reminderIntervalDays = 7,
+    reminderSeasonStart  = 4,
+    reminderSeasonEnd    = 8,
+    pushTokenApns        = null,
+    pushTokenFcm         = null
+)
+
 class SettingsViewModelTest {
 
     private val repo = mockk<AuthRepository>()
     private val apiaryRepo = mockk<ApiaryRepository>()
     private val exportRepo = mockk<ExportRepository>()
+    private val subscriptionRepo = mockk<SubscriptionRepository>()
     private lateinit var vm: SettingsViewModel
 
     @Before
@@ -30,7 +47,10 @@ class SettingsViewModelTest {
         coEvery { apiaryRepo.list() } returns emptyList()
         coEvery { repo.getReminderSettings() } returns reminder()
         coEvery { repo.registerFcmToken(any()) } just runs
-        vm = SettingsViewModel(repo, apiaryRepo, exportRepo)
+        // Settings asks for the subscription so the delete dialog can name where to cancel
+        // (#494). Relaxed and answering "none": these tests are about everything else.
+        coEvery { subscriptionRepo.mine() } returns SubscriptionOut(status = "none")
+        vm = SettingsViewModel(repo, apiaryRepo, exportRepo, subscriptionRepo)
     }
 
     @After
@@ -48,7 +68,7 @@ class SettingsViewModelTest {
     @Test
     fun `init failure sets error`() = runTest {
         coEvery { repo.getMe() } throws RuntimeException("Unauthorized")
-        val vm = SettingsViewModel(repo, apiaryRepo, exportRepo)
+        val vm = SettingsViewModel(repo, apiaryRepo, exportRepo, subscriptionRepo)
 
         assertEquals("Unauthorized", vm.state.value.error)
         assertNull(vm.state.value.user)
@@ -226,15 +246,6 @@ class SettingsViewModelTest {
         assertEquals(reminder(), vm.state.value.reminderSettings)
     }
 
-    private fun user() = UserOut("u1", "a@b.com", "Alice", "en", "2024-01-01")
-    private fun reminder() = ReminderSettingsOut(
-        reminderEnabled      = true,
-        reminderIntervalDays = 7,
-        reminderSeasonStart  = 4,
-        reminderSeasonEnd    = 8,
-        pushTokenApns        = null,
-        pushTokenFcm         = null
-    )
 
     @Test
     fun `sendTestReport keeps the event id so it can be found in the dashboard`() = runTest {
@@ -281,4 +292,68 @@ class SettingsViewModelTest {
         assertNull(vm.state.value.testReportId)
     }
 
+}
+
+// ── The subscription the app cannot cancel (#494) ────────────────────────────────────────────
+
+@OptIn(ExperimentalCoroutinesApi::class)
+class SettingsSubscriptionTest {
+
+    private val repo = mockk<AuthRepository>()
+    private val apiaryRepo = mockk<ApiaryRepository>()
+    private val exportRepo = mockk<ExportRepository>(relaxed = true)
+    private val subscriptionRepo = mockk<SubscriptionRepository>()
+
+    @Before fun setUp() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        coEvery { repo.getMe() } returns user()
+        coEvery { apiaryRepo.list() } returns emptyList()
+        coEvery { repo.getReminderSettings() } returns reminder()
+        coEvery { repo.registerFcmToken(any()) } just runs
+    }
+    @After fun tearDown() { Dispatchers.resetMain(); clearAllMocks() }
+
+    private fun vm() = SettingsViewModel(repo, apiaryRepo, exportRepo, subscriptionRepo)
+
+    @Test
+    fun `the subscription is read so the delete dialog can name where to cancel`() = runTest {
+        coEvery { subscriptionRepo.mine() } returns
+            SubscriptionOut(status = "active", source = "apple", storeManaged = true)
+
+        val state = vm().state.value
+
+        assertEquals("apple", state.subscription?.source)
+        assertTrue(state.subscription!!.grantsAccess)
+    }
+
+    @Test
+    fun `a grace period still counts as paying`() = runTest {
+        // The store is retrying a card. The money is still going out, so the warning stands.
+        coEvery { subscriptionRepo.mine() } returns
+            SubscriptionOut(status = "grace", source = "google", storeManaged = true)
+
+        assertTrue(vm().state.value.subscription!!.grantsAccess)
+    }
+
+    @Test
+    fun `a lapsed subscription is not warned about`() = runTest {
+        // Nothing is being charged any more, so there is nothing to cancel.
+        coEvery { subscriptionRepo.mine() } returns
+            SubscriptionOut(status = "expired", source = "apple", storeManaged = true)
+
+        assertFalse(vm().state.value.subscription!!.grantsAccess)
+    }
+
+    @Test
+    fun `settings still works when the subscription cannot be read`() = runTest {
+        // Not knowing is no reason to spoil the screen, and the public delete-account page
+        // covers the general case anyway.
+        coEvery { subscriptionRepo.mine() } throws RuntimeException("offline")
+
+        val state = vm().state.value
+
+        assertNull(state.subscription)
+        assertEquals(user(), state.user)
+        assertNull(state.error)
+    }
 }

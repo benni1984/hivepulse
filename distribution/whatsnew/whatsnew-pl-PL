@@ -1,10 +1,12 @@
-HivePulse 1.0.5
+HivePulse 1.1.0
 
-Nowe w tej wersji:
-• Niemożliwe wartości są odrzucane przed zapisem: żaden przegląd z roku 3000, żadne 5000 warrozy, żadna pasieka na 999 stopniach północy
-• Formularze same pokazują swoje granice, zamiast zostawiać to serwerowi
-• Komunikaty o błędach przychodzą w twoim języku i nazywają pole
-• Jedna nazwa na jedną rzecz, na każdym ekranie
+Nowo:
+• Książka leczenia: wszystkie zabiegi z roku jako PDF do wydrukowania i przechowania
+• Zabiegi przyjmują ilość i okres karencji
+• Do 10 rodzin pszczelich bezpłatnie
+
+Naprawione:
+• Po około miesiącu aplikacja zacinała się za komunikatem o danych logowania. Wygasła sesja wraca teraz do ekranu logowania.
 
 Zostań w teście i korzystaj z aplikacji od czasu do czasu.
 

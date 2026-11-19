@@ -307,6 +307,10 @@
 "section.dangerZone" = "Danger Zone";
 "action.deleteAccount" = "Delete Account";
 "alert.deleteAccountConfirm" = "Delete your account?";
+"delete.subApple" = "You have a subscription from the App Store. Deleting this account does not cancel it — cancel it first in Settings → your name → Subscriptions, or Apple keeps charging you for something you can no longer reach.";
+"delete.subGoogle" = "You have a subscription from Google Play. Deleting this account does not cancel it — cancel it first under Payments and subscriptions in the Play Store, or Google keeps charging you for something you can no longer reach.";
+"delete.subWeb" = "You have a subscription bought on this website. Deleting this account does not cancel it — cancel it first on the Subscription page, or you keep being charged for something you can no longer reach.";
+"delete.subManual" = "Your supporter access was granted directly and costs nothing, so there is nothing to cancel. It goes with the account.";
 "alert.deleteAccountMessage" = "All your data — apiaries, hives, and inspections — will be permanently deleted. This cannot be undone.";
 "alert.deleteAccountAction" = "Delete Permanently";
 

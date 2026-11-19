@@ -183,6 +183,10 @@
     <string name="alert_password_too_short">La contraseña debe tener al menos 8 caracteres.</string>
     <string name="alert_password_changed">Contraseña cambiada con éxito.</string>
     <string name="alert_delete_account_confirm">¿Eliminar tu cuenta?</string>
+    <string name="delete_sub_apple">Tienes una suscripción de la App Store. Borrar esta cuenta no la cancela: cancélala antes en Ajustes → tu nombre → Suscripciones, o Apple seguirá cobrándote por algo a lo que ya no puedes acceder.</string>
+    <string name="delete_sub_google">Tienes una suscripción de Google Play. Borrar esta cuenta no la cancela: cancélala antes en Pagos y suscripciones de Play Store, o Google seguirá cobrándote por algo a lo que ya no puedes acceder.</string>
+    <string name="delete_sub_web">Tienes una suscripción comprada en esta web. Borrar esta cuenta no la cancela: cancélala antes en la página de Suscripción, o seguirán cobrándote por algo a lo que ya no puedes acceder.</string>
+    <string name="delete_sub_manual">Tu acceso Supporter se concedió directamente y no cuesta nada, así que no hay nada que cancelar. Se va con la cuenta.</string>
     <string name="alert_delete_account_message">Todos tus datos — colmenares, colmenas y revisiones — se eliminarán definitivamente. Esta acción no se puede deshacer.</string>
     <string name="alert_delete_account_action">Eliminar definitivamente</string>
     <string name="empty_apiaries_title">Todavía no hay colmenares.\nToca + para añadir el primero.</string>

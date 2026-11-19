@@ -306,6 +306,10 @@
 "section.dangerZone" = "Zone dangereuse";
 "action.deleteAccount" = "Supprimer le compte";
 "alert.deleteAccountConfirm" = "Supprimer votre compte ?";
+"delete.subApple" = "Vous avez un abonnement de l’App Store. Supprimer ce compte ne le résilie pas — résiliez-le d’abord dans Réglages → votre nom → Abonnements, sinon Apple continuera à vous facturer quelque chose que vous ne pouvez plus atteindre.";
+"delete.subGoogle" = "Vous avez un abonnement Google Play. Supprimer ce compte ne le résilie pas — résiliez-le d’abord dans Paiements et abonnements du Play Store, sinon Google continuera à vous facturer quelque chose que vous ne pouvez plus atteindre.";
+"delete.subWeb" = "Vous avez un abonnement acheté sur ce site. Supprimer ce compte ne le résilie pas — résiliez-le d’abord sur la page Abonnement, sinon vous continuerez à payer pour quelque chose que vous ne pouvez plus atteindre.";
+"delete.subManual" = "Votre accès Supporter a été accordé directement et ne coûte rien ; il n’y a donc rien à résilier. Il disparaît avec le compte.";
 "alert.deleteAccountMessage" = "Toutes vos données — ruchers, ruches et visites — seront définitivement supprimées. Cette action est irréversible.";
 "alert.deleteAccountAction" = "Supprimer définitivement";
 

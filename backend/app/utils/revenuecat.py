@@ -42,6 +42,11 @@ STORES = {
     "PROMOTIONAL": "manual",
 }
 
+#: Stores whose events are real but not ours to act on. Listed rather than left to the "unknown
+#: store" branch so that setting the integration up does not print warnings that look like a
+#: misconfiguration. TEST_STORE is what the dashboard's own test button sends.
+IGNORED_STORES = frozenset({"TEST_STORE", "ROKU"})
+
 #: What an event means for access.
 #:
 #: Two of these are worth reading twice:
@@ -59,13 +64,30 @@ EVENTS = {
     "NON_RENEWING_PURCHASE": "active",
     "SUBSCRIPTION_EXTENDED": "active",
     "TEMPORARY_ENTITLEMENT_GRANT": "active",
-    "CANCELLATION": "active",          # until the period ends; `will_renew` carries the news
+    "CANCELLATION": "active",          # usually. A refund comes through here too -- see below
     "BILLING_ISSUE": "grace",
     "EXPIRATION": "expired",
     "SUBSCRIPTION_PAUSED": "expired",
-    "REFUND": "refunded",
+    "REFUND_REVERSED": "active",       # the money went back to us; so does the access
     "TRANSFER": "revoked",             # the purchase now belongs to another account
 }
+
+#: Event types that exist and mean nothing to this application. Named so the log can say
+#: "ignored" instead of "unknown", which during setup is the difference between a quiet line and
+#: a false alarm. TEST is the dashboard's own test button.
+IGNORED_EVENTS = frozenset({
+    "TEST", "INVOICE_ISSUANCE", "EXPERIMENT_ENROLLMENT", "VIRTUAL_CURRENCY_TRANSACTION",
+    "PURCHASE_REDEEMED", "SUBSCRIBER_ALIAS",
+    "PRICE_INCREASE_CONSENT_REQUIRED", "PRICE_INCREASE_CONSENT_APPROVED",
+})
+
+#: Why a CANCELLATION arrived. **There is no REFUND event type** -- the list is TEST,
+#: INITIAL_PURCHASE, RENEWAL, CANCELLATION, ... REFUND_REVERSED, ... and a refund is documented as
+#: "A subscription or non-renewing purchase was canceled or refunded", told apart only by this
+#: reason. This file used to map a `REFUND` type that can never arrive, so a real refund was read
+#: as an ordinary cancellation and the person kept the features until the period they no longer
+#: paid for ran out (#496).
+REFUND_REASON = "CUSTOMER_SUPPORT"
 
 
 def _when(ms: Optional[int]) -> Optional[datetime]:
@@ -84,19 +106,38 @@ def read_event(payload: dict[str, Any]) -> Optional[dict[str, Any]]:
     """
     event = payload.get("event") or {}
     kind = event.get("type")
+
+    if kind in IGNORED_EVENTS:
+        log.info("revenuecat: %s is not ours to act on", kind)
+        return None
+
     status = EVENTS.get(kind)
     if status is None:
         log.info("revenuecat: ignoring unknown event type %r", kind)
         return None
 
-    user_id = event.get("app_user_id")
+    # A refund arrives as a cancellation and is told apart only by its reason. Read before
+    # anything else uses `status`, because the difference is "keeps the feature until the period
+    # ends" against "lost it now" (#496).
+    if kind == "CANCELLATION" and event.get("cancel_reason") == REFUND_REASON:
+        status = "refunded"
+
+    # "When looking up users from the webhook in your systems, make sure to search both the
+    # `original_app_user_id` and the `aliases` array." We always hand RevenueCat our own id in
+    # the purchase link, so `app_user_id` is normally it; the fallback costs nothing and covers
+    # the case where an anonymous purchase was identified afterwards.
+    user_id = event.get("app_user_id") or event.get("original_app_user_id")
     if not user_id:
         log.warning("revenuecat: %s event without an app_user_id", kind)
         return None
 
-    store = STORES.get(event.get("store") or "")
+    raw_store = event.get("store") or ""
+    if raw_store in IGNORED_STORES:
+        log.info("revenuecat: %s event from %s, ignored", kind, raw_store)
+        return None
+    store = STORES.get(raw_store)
     if store is None:
-        log.warning("revenuecat: %s event from unknown store %r", kind, event.get("store"))
+        log.warning("revenuecat: %s event from unknown store %r", kind, raw_store)
         return None
 
     return {
@@ -105,8 +146,9 @@ def read_event(payload: dict[str, Any]) -> Optional[dict[str, Any]]:
         "status": status,
         "product_id": event.get("product_id"),
         "current_period_end": _when(event.get("expiration_at_ms")),
-        # A cancellation keeps access and loses the renewal; everything else that grants access
-        # is expected to renew.
+        # There is no auto-renew field in the payload -- deriving it from the event is not a
+        # shortcut, it is the only way. A cancellation keeps access and loses the renewal;
+        # everything else that grants access is expected to renew.
         "will_renew": status == "active" and kind != "CANCELLATION",
         "store_txn_id": event.get("transaction_id") or event.get("original_transaction_id"),
         "event_at": _when(event.get("event_timestamp_ms")),

@@ -500,7 +500,11 @@
       "regionSave": "Zapisz region",
       "regionSaved": "Region zapisany.",
       "regionError": "Nie udało się zapisać regionu.",
-      "regionNotLocated": "Nie znaleziono tego kodu pocztowego, więc terminy opierają się na twojej pierwszej pasiece albo na środkowych Niemczech."
+      "regionNotLocated": "Nie znaleziono tego kodu pocztowego, więc terminy opierają się na twojej pierwszej pasiece albo na środkowych Niemczech.",
+      "deleteSubApple": "Masz abonament z App Store. Usunięcie tego konta go nie anuluje — anuluj go najpierw w Ustawienia → twoje imię → Subskrypcje, inaczej Apple dalej będzie pobierać opłaty za coś, do czego nie masz już dostępu.",
+      "deleteSubGoogle": "Masz abonament z Google Play. Usunięcie tego konta go nie anuluje — anuluj go najpierw w Płatnościach i subskrypcjach w Play Store, inaczej Google dalej będzie pobierać opłaty za coś, do czego nie masz już dostępu.",
+      "deleteSubWeb": "Masz abonament kupiony w tym serwisie. Usunięcie tego konta go nie anuluje — anuluj go najpierw na stronie Abonament, inaczej nadal będziesz płacić za coś, do czego nie masz już dostępu.",
+      "deleteSubManual": "Twój dostęp Supporter został przyznany bezpośrednio i nic nie kosztuje, więc nie ma czego anulować. Znika razem z kontem."
     },
     "admin": {
       "nav": {
@@ -1370,7 +1374,10 @@
     "retentionTitle": "Jak długo cokolwiek jest przechowywane",
     "retentionBody": "W działającej bazie danych usunięcie jest natychmiastowe: minutę później nic z twojego konta nie zostaje. Nasz dostawca hostingu przechowuje automatyczne kopie zapasowe bazy do 30 dni; kopię można przywrócić tylko w całości, nigdy dla pojedynczego konta, a po tym okresie dane znikają także stamtąd. Opisane wyżej zgłoszenia szerszeni i pułapki nie mają limitu przechowywania, bo nie odnoszą się już do osoby. Nie przechowujemy osobnych kopii, archiwów ani eksportów.",
     "noAccessTitle": "Nie masz dostępu do aplikacji?",
-    "noAccessBody": "Jeśli nie możesz się już zalogować, napisz do nas, a usuniemy konto za ciebie w ciągu 30 dni. Użyj adresu, na który zarejestrowano konto, abyśmy wiedzieli, do kogo należy:"
+    "noAccessBody": "Jeśli nie możesz się już zalogować, napisz do nas, a usuniemy konto za ciebie w ciągu 30 dni. Użyj adresu, na który zarejestrowano konto, abyśmy wiedzieli, do kogo należy:",
+    "subTitle": "Jeśli masz abonament, najpierw go anuluj",
+    "subBody": "Usunięcie konta HivePulse nie anuluje żadnego abonamentu. Abonament kupiony w App Store lub Google Play należy do tamtego konta sklepu, a kupiony w tym serwisie — do dostawcy płatności. HivePulse nie może anulować żadnego z nich za ciebie. Anuluj go, zanim usuniesz konto, inaczej nadal będziesz płacić za coś, do czego nie masz już dostępu.",
+    "subWhere": "W App Store: Ustawienia → twoje imię → Subskrypcje. W Google Play: Płatności i subskrypcje. W serwisie: link na stronie Abonament w twoim panelu."
   },
   "beta": {
     "title": "Wypróbuj HivePulse przed wszystkimi",

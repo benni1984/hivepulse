@@ -198,6 +198,10 @@
     <string name="alert_password_too_short">Hasło musi mieć co najmniej 8 znaków.</string>
     <string name="alert_password_changed">Hasło zostało zmienione.</string>
     <string name="alert_delete_account_confirm">Usunąć twoje konto?</string>
+    <string name="delete_sub_apple">Masz abonament z App Store. Usunięcie tego konta go nie anuluje — anuluj go najpierw w Ustawienia → twoje imię → Subskrypcje, inaczej Apple dalej będzie pobierać opłaty za coś, do czego nie masz już dostępu.</string>
+    <string name="delete_sub_google">Masz abonament z Google Play. Usunięcie tego konta go nie anuluje — anuluj go najpierw w Płatnościach i subskrypcjach w Play Store, inaczej Google dalej będzie pobierać opłaty za coś, do czego nie masz już dostępu.</string>
+    <string name="delete_sub_web">Masz abonament kupiony w tym serwisie. Usunięcie tego konta go nie anuluje — anuluj go najpierw na stronie Abonament, inaczej nadal będziesz płacić za coś, do czego nie masz już dostępu.</string>
+    <string name="delete_sub_manual">Twój dostęp Supporter został przyznany bezpośrednio i nic nie kosztuje, więc nie ma czego anulować. Znika razem z kontem.</string>
     <string name="alert_delete_account_message">Wszystkie twoje dane (pasieki, rodziny i przeglądy) zostaną trwale usunięte. Tego nie można cofnąć.</string>
     <string name="alert_delete_account_action">Usuń na stałe</string>
 

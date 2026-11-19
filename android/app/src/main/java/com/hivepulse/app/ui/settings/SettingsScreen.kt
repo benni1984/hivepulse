@@ -40,6 +40,9 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import com.hivepulse.app.data.api.SubscriptionOut
+import com.hivepulse.app.data.api.grantsAccess
+import com.hivepulse.app.data.repository.SubscriptionRepository
 
 data class SettingsState(
     val user: UserOut? = null,
@@ -54,6 +57,8 @@ data class SettingsState(
     val error: String? = null,
     val loggedOut: Boolean = false,
     val deleted: Boolean = false,
+    /** Only to warn before deleting: a subscription this app cannot cancel (#494). */
+    val subscription: SubscriptionOut? = null,
     val reminderSettings: ReminderSettingsOut? = null,
     val isSavingReminder: Boolean = false,
     val reminderSaved: Boolean = false,
@@ -68,6 +73,7 @@ class SettingsViewModel @Inject constructor(
     private val repo: AuthRepository,
     private val apiaryRepo: ApiaryRepository,
     private val exportRepo: ExportRepository,
+    private val subscriptionRepo: SubscriptionRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SettingsState())
@@ -86,6 +92,10 @@ class SettingsViewModel @Inject constructor(
         }
         loadReminderSettings()
         tryRegisterFcmToken()
+        // Silently. Not knowing about a subscription is no reason to spoil Settings, and the
+        // public delete-account page covers the general case anyway.
+        runCatching { subscriptionRepo.mine() }
+            .onSuccess { s -> _state.update { it.copy(subscription = s) } }
     }
 
     internal fun loadReminderSettings() = viewModelScope.launch {
@@ -695,7 +705,24 @@ fun SettingsScreen(
         AlertDialog(
             onDismissRequest = { showDeleteConfirm = false },
             title   = { Text(stringResource(R.string.alert_delete_account_confirm)) },
-            text    = { Text(stringResource(R.string.alert_delete_account_message)) },
+            text    = {
+                // Named, not listed. The account knows where the subscription was bought;
+                // telling somebody to check all three stores is how a warning becomes wallpaper.
+                val extra = state.subscription?.takeIf { it.grantsAccess }?.let { s ->
+                    stringResource(
+                        when (s.source) {
+                            "apple"  -> R.string.delete_sub_apple
+                            "google" -> R.string.delete_sub_google
+                            "manual" -> R.string.delete_sub_manual
+                            else     -> R.string.delete_sub_web
+                        }
+                    )
+                }
+                Text(
+                    stringResource(R.string.alert_delete_account_message) +
+                        (extra?.let { "\n\n" + it } ?: "")
+                )
+            },
             confirmButton = {
                 TextButton(
                     onClick = { vm.deleteAccount(); showDeleteConfirm = false },
