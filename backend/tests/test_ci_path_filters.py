@@ -14,6 +14,7 @@ neither of which was listed: the whatsnew files were raised to 1.0.5, the plist 
 These tests read the filters as data, so a new path added to one list and forgotten in the
 other fails here rather than in a release.
 """
+import fnmatch
 import pathlib
 
 import pytest
@@ -95,13 +96,51 @@ def test_the_backend_suite_runs_for_the_store_texts_it_parses(path):
     assert path in filters()["backend"], f"{path} is parsed by a backend test but does not run it"
 
 
+def covers(globs: list[str], path: str) -> bool:
+    """Whether any glob in a filter matches `path`.
+
+    Asked instead of looking for the literal string, because a filter may name a file exactly
+    or cover it with a wider pattern — `.github/workflows/**` covers ci.yml — and the question
+    this file asks is whether a change to that file runs the suite, not how it is spelled.
+    """
+    return any(fnmatch.fnmatch(path, glob.replace("**", "*")) for glob in globs)
+
+
 def test_the_pipeline_itself_still_re_runs_every_suite():
     """A change to ci.yml has to run everything; only `deployable` leaves it out, on purpose."""
     found = filters()
     for name in ("web", "backend", "android", "ios"):
-        assert ".github/workflows/ci.yml" in found[name], (
+        assert covers(found[name], ".github/workflows/ci.yml"), (
             f"{name} no longer re-runs when the pipeline changes"
         )
-    assert ".github/workflows/ci.yml" not in found["deployable"], (
+    assert not covers(found["deployable"], ".github/workflows/ci.yml"), (
         "a pipeline change would now spend a Vercel deployment — that exclusion is deliberate"
+    )
+
+
+@pytest.mark.parametrize("path", [
+    ".github/workflows/testflight.yml",
+    ".github/workflows/ios-store-screenshots.yml",
+    ".github/workflows/update-help-screenshots.yml",
+    "scripts/check_ios_sdk.sh",
+    "scripts/check_screenshot_freshness.py",
+])
+def test_the_backend_suite_runs_for_the_workflows_and_scripts_it_reads(path):
+    """Several backend tests are guards over files outside backend/.
+
+    test_screenshot_workflow.py parses the screenshot workflows and loads the freshness script;
+    test_ios_sdk_check.py reads every workflow and runs scripts/check_ios_sdk.sh. While those
+    paths did not trigger the suite, the guards could be broken by the very edit they exist to
+    catch and the check would still go green (#459, #501).
+    """
+    assert covers(filters()["backend"], path), (
+        f"{path} is read by a backend test but does not run the backend suite"
+    )
+
+
+@pytest.mark.parametrize("name", ["ios", "ios_hornets"])
+def test_the_ios_jobs_run_when_the_sdk_guard_changes(name):
+    """The guard decides whether those jobs fail, so editing it has to exercise them (#501)."""
+    assert covers(filters()[name], "scripts/check_ios_sdk.sh"), (
+        f"{name} does not re-run when the SDK check it depends on is edited"
     )
