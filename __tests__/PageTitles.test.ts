@@ -34,6 +34,10 @@ const WITHOUT_A_TITLE_OF_ITS_OWN: Record<string, string> = {
   'app/[locale]/dashboard/invitations/page.tsx':
     'a redirect: it stashes the token from an invitation mail, renders a spinner and leaves again, ' +
     'so nobody is there long enough to read the tab',
+  'app/[locale]/dashboard/subscription-return/page.tsx':
+    'the same shape, for the other link that points into the app: RevenueCat sends a buyer here ' +
+    'after paying, it reads the account language and forwards to the subscription page, spinner ' +
+    'only. A title would appear for the length of one redirect (#503)',
 };
 
 function pagesUnder(dir: string): string[] {

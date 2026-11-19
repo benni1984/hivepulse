@@ -124,10 +124,32 @@ on `/dashboard/subscription` opens. Forget this permission and that button leads
 9. **Share URL** gives you the production link and, separately, a **sandbox URL**. The token is
    the part after `https://pay.rev.cat/` and before the user id — that token is what goes into
    the environment variable, *not* the whole URL.
-10. In the link's success settings, point the redirect at
-    `https://hivepulse.multihead.de/de/dashboard/subscription`. The redirect target is configured
-    here, not per request; RevenueCat appends `app_user_id` to it, which is how the page knows to
-    re-check immediately instead of waiting for the webhook.
+10. In the link's success settings, choose **Redirect to a custom success page** and point it at
+    `https://hivepulse.multihead.de/dashboard/subscription-return`. Not the default success page: RevenueCat
+    appends `app_user_id` only to a custom one, and that parameter is how the subscription page
+    knows to re-check immediately instead of waiting for the webhook.
+
+    The target is deliberately the unprefixed route and not `/de/dashboard/subscription` (#503). A
+    link has one redirect URL and a URL carries a language, so a fixed one would return every
+    buyer to whichever language the link was set up in. The return route reads the account's own
+    locale and forwards, query string intact.
+
+11. The paywall's **header**, **subheader** and **terms & conditions URL** are single-language and
+    there is nothing to be done about it: of the hosted flow, RevenueCat's localization page says
+    "it is not possible to specify the language used in Web Purchase Links". It is one heading over
+    one product, and Paddle's checkout after it localises itself, so this is accepted rather than
+    worked around. If the buyer mix ever justifies it, the way out is one link per locale with the
+    server choosing the token by `user.locale` — it already builds the URL — and every one of those
+    links can still share the single return route from step 10.
+
+    Terms URL: `https://hivepulse.multihead.de/terms` (or the `/fr/`, `/de/` … variant matching the
+    language the header is written in).
+
+12. **Repeat purchase behavior** must be **Show the success page**, never *Allow them to make
+    another purchase*. One account can hold one supporter entitlement; a second purchase takes a
+    second payment and grants nothing, which ends in a refund. With step 10's custom redirect,
+    "show the success page" means an existing subscriber is simply returned to their own
+    subscription page, which is where they can manage it.
 
 > The account id is a **path segment** of that link, not a query parameter, and the server builds
 > the whole URL (`GET /subscriptions/web-checkout`). Leaving the id out does not fall back to an
