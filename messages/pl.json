@@ -27,7 +27,9 @@
     "made": "Stworzone z 🐝 dla pszczelarzy na całym świecie.",
     "imprint": "Nota prawna",
     "deleteAccount": "Usuń konto",
-    "beta": "Dołącz do testów"
+    "beta": "Dołącz do testów",
+    "terms": "Warunki korzystania",
+    "refunds": "Zwroty"
   },
   "hero": {
     "badge": "Otwarty kod · Tworzone przez społeczność · Za darmo",
@@ -365,6 +367,46 @@
     "s9body": "Hasła są haszowane algorytmem bcrypt i nigdy nie są przechowywane jawnym tekstem. Dostęp do API wymaga podpisanego tokenu JWT. Dane w transmisji są szyfrowane przez TLS. Regularnie przeglądamy praktyki bezpieczeństwa.",
     "s10title": "10. Kontakt",
     "s10body": "Pytania o tę politykę lub twoje dane? Napisz na hivepulse@multihead.de. Administratorem jest Benjamin Müller, Sonnhaldenweg 5D, 4450 Sissach, Szwajcaria."
+  },
+  "terms": {
+    "title": "Warunki korzystania",
+    "updated": "Ostatnia aktualizacja: listopad 2026",
+    "intro": "HivePulse to aplikacja pszczelarska na przeglądarkę, Androida i iPhone'a. Te warunki opisują, czego możesz się po niej spodziewać i czego ona oczekuje od ciebie. Napisano je po to, żeby je czytać, a nie pomijać.",
+    "s1title": "1. Czego dotyczą te warunki",
+    "s1body": "Dotyczą strony HivePulse, aplikacji na Androida i aplikacji na iPhone'a, w tym bezpłatnego konta i abonamentu wspierającego. Resztę obejmują dwa osobne dokumenty: polityka prywatności mówi, co dzieje się z twoimi danymi, a polityka zwrotów — jak wraca pieniądz. Kto prowadzi HivePulse, podano w nocie prawnej.",
+    "s2title": "2. Twoje konto",
+    "s2body": "Do zapisywania rodzin pszczelich i przeglądów potrzebne jest konto. Zachowaj hasło dla siebie; to, co zrobiono z twoim kontem, uznaje się za zrobione przez ciebie. Jedna osoba, jedno konto: żeby pracować razem przy pasiece, zaproś drugą osobę, zamiast dzielić się loginem. Konto możesz usunąć w każdej chwili, a dane znikają razem z nim. Strona usuwania mówi dokładnie, co przepada i co oznacza trwający abonament.",
+    "s3title": "3. Co obejmuje bezpłatne konto",
+    "s3body": "Do 10 rodzin pszczelich i statystyki przeglądów z ostatnich 365 dni. Wszystko inne jest bezpłatne i takie zostanie: tropiciel szerszenia azjatyckiego, mapa społeczności, kody QR do uli, eksport własnych danych i obie aplikacje. Osiągnięcie limitu nigdy nie zamyka tego, co już istnieje. Jeśli masz więcej niż 10 rodzin, gdy abonament się kończy, zostają i nadal można je edytować; po prostu nie dodasz nowych, dopóki nie zejdziesz poniżej limitu.",
+    "s4title": "4. Abonament wspierający",
+    "s4body": "19,99 € rocznie, odnawiany co roku do czasu rezygnacji. Podnosi limit rodzin pszczelich, otwiera regionalną mapę zdrowia i odblokowuje książkę leczenia. Cenę widać przed zakupem i zawiera podatek twojego kraju. Rok zamiast miesiąca, bo pszczelarstwo jest sezonowe: między marcem a październikiem dzieje się niemal wszystko. Możesz zrezygnować w każdej chwili i zachowujesz abonament do końca opłaconego okresu.",
+    "s5title": "5. U kogo kupujesz",
+    "s5body": "Na stronie sprzedawcą jest Paddle, jako merchant of record: umowa sprzedaży zawierana jest między tobą a Paddle, to oni przyjmują płatność, wystawiają fakturę i odprowadzają VAT. Ich warunki rządzą samym zakupem; niniejsze — korzystaniem z HivePulse. W aplikacji na iPhone'a sprzedawcą jest Apple, w aplikacji na Androida Google, a ich warunki stosuje się tak samo. Którąkolwiek drogę wybierzesz, abonament odblokowuje te same funkcje na każdym urządzeniu, na którym się zalogujesz, bo należy do twojego konta, a nie do urządzenia.",
+    "s6title": "6. Twoje dane zostają twoje",
+    "s6body": "Twoje pasieki, rodziny pszczele, przeglądy i zdjęcia należą do ciebie. Nie są sprzedawane ani przekazywane reklamodawcom. Możesz je w każdej chwili wyeksportować i zabrać gdzie indziej. Coś staje się publicznie widoczne tylko tam, gdzie sam tak wybrałeś: odłów szerszenia na publicznej mapie, pasieka oznaczona jako widoczna, zdjęcie przesłane społeczności. Polityka prywatności to szczegółowa wersja tego akapitu.",
+    "s7title": "7. Jak korzystać z HivePulse",
+    "s7body": "Korzystaj z niego do pszczelarstwa. Nie wchodź na cudze konta, nie obciążaj strony automatycznymi zapytaniami ponad zwykłe użycie, nie wgrywaj niczego niezgodnego z prawem i nie zgłaszaj zmyślonych znalezisk szerszenia, bo inni pszczelarze na nich polegają. Kod źródłowy jest otwarty i wolno ci uruchomić własną kopię; to pozwolenie wynika z licencji w repozytorium, a nie z tej strony. Konto używane do szkodzenia innym może zostać zamknięte.",
+    "s8title": "8. Co jest obiecane, a co nie",
+    "s8body": "HivePulse prowadzi jedna osoba, starannie i bez gwarancji dostępności. Serwis bywa nieosiągalny, funkcja może mieć błąd, a dane, których nigdy nie wyeksportowałeś, mogą przepaść — trzymaj więc własną kopię wszystkiego, czego straty nie możesz sobie pozwolić. Odpowiedzialność jest nieograniczona za winę umyślną, rażące niedbalstwo oraz szkody na życiu, ciele i zdrowiu, a poza tym ograniczona do tego, czego wymaga prawo. Aplikacja wspiera twoją dokumentację; nie zastępuje ustawowych obowiązków pszczelarza, a książka leczenia pozostaje dokumentem, za który odpowiadasz ty.",
+    "s9title": "9. Zmiany, zakończenie i prawo właściwe",
+    "s9body": "Te warunki mogą się zmienić, gdy zmieni się aplikacja albo gdy wymaga tego prawo. Zmianę, która cię dotyczy, zapowiadamy w aplikacji i na stronie aktualności, zanim zacznie obowiązywać, a żadna zmiana abonamentu nie dotyczy okresu już opłaconego. Umowę kończysz, usuwając konto. HivePulse prowadzony jest ze Szwajcarii, stosuje się prawo szwajcarskie, a sądem właściwym jest Sissach; jeśli jesteś konsumentem, nie odbiera ci to bezwzględnej ochrony prawa kraju twojego zamieszkania. Przy zakupie na stronie sprzedawcą jest Paddle, więc samą sprzedażą rządzą ich warunki, łącznie ze sposobem rozstrzygnięcia sporu o nią."
+  },
+  "refunds": {
+    "title": "Polityka zwrotów",
+    "updated": "Ostatnia aktualizacja: listopad 2026",
+    "intro": "Abonament, który okazuje się nie ten, nie powinien kosztować dyskusji. Ta strona mówi, jak odzyskasz pieniądze, od kogo i co potem dzieje się z twoim dostępem.",
+    "s1title": "1. Wersja krótka",
+    "s1body": "W ciągu 14 dni od zakupu: prosisz i dostajesz pieniądze z powrotem. Później abonament biegnie do końca opłaconego okresu i wtedy się kończy, o ile zrezygnowałeś. Zwrot nigdy nie kasuje tego, co zapisałeś: twoje pasieki, rodziny pszczele i przeglądy zostają na miejscu.",
+    "s2title": "2. Czternaście dni",
+    "s2body": "Jako konsument w Unii Europejskiej masz przy zakupie przez internet 14-dniowe prawo odstąpienia i nie musisz go uzasadniać. Dotyczy ono abonamentu wspierającego kupionego na tej stronie. Jedno warto wiedzieć: prosząc o natychmiastowe odblokowanie funkcji, zgadzasz się, że świadczenie zaczyna się przed upływem 14 dni, a sprzedawca może zatrzymać część odpowiadającą już wykorzystanym dniom. Przy abonamencie rocznym, od którego odstąpiono w pierwszych dwóch tygodniach, to kilka centów, a w praktyce zwracana jest pełna kwota.",
+    "s3title": "3. Jak o to poprosić",
+    "s3body": "Zakup na stronie: potwierdzenie przychodzi od Paddle i zawiera odnośnik do ich portalu klienta, gdzie zwrot zamówisz bezpośrednio. To najszybsza droga, bo pieniądze ma Paddle, a nie my. Możesz też napisać na hivepulse@multihead.de, a my przekażemy wniosek. Paddle zwraca na ten środek płatniczy, którego użyłeś; ile to potem potrwa, zależy od twojego banku, zwykle kilka dni roboczych.",
+    "s4title": "4. Co dzieje się z twoim dostępem",
+    "s4body": "Zwrot kończy abonament natychmiast, a nie z końcem okresu — pieniądze wróciły, więc funkcje też. Od tej chwili znów obowiązuje limit rodzin pszczelich. Rodziny ponad limit nie są kasowane i nic z zapisanych danych nie jest ruszane; po prostu nie dodasz nowych, dopóki nie zejdziesz poniżej limitu albo nie wykupisz abonamentu ponownie. Książka leczenia, którą już pobrałeś, zostaje twoja.",
+    "s5title": "5. Zakup w App Store albo Google Play",
+    "s5body": "Wtedy sprzedawcą jest Apple albo Google, nie Paddle, i ani my, ani Paddle nie możemy zwrócić pieniędzy. U Apple zgłoś problem na reportaproblem.apple.com. U Google skorzystaj z historii zamówień na play.google.com/store/account/orderhistory. Oba mają własne zasady i własne terminy, które bywają hojniejsze niż 14 dni powyżej. Gdy ich zwrot dotrze do naszego serwera, dostęp kończy się tak, jak opisuje punkt 4.",
+    "s6title": "6. Rezygnacja to nie to samo co zwrot",
+    "s6body": "Rezygnacja zatrzymuje kolejne odnowienie i zostawia ci czas, który opłaciłeś. Zwykle o to właśnie chodzi, gdy abonament działa już jakiś czas: zachowujesz wszystko do końca roku i nic więcej nie jest pobierane. Zrób to na stronie abonamentu w swoim koncie albo tam, gdzie kupiłeś. Rezygnacja ostatniego dnia nie kosztuje nic więcej; nie ma okresu wypowiedzenia."
   },
   "dash": {
     "login": {
@@ -1342,7 +1384,11 @@
     "siteDescription": "Aplikacja społeczności pszczelarskiej, która zamienia każdy przegląd w globalne dane dla ochrony pszczół. Za darmo na iOS i Androida.",
     "siteTitle": "HivePulse: razem chronimy zapylacze",
     "surveyDescription": "Czy daty roku pasiecznego pasują tam, gdzie trzymasz pszczoły? Oceń je w kwadrans, bez konta, i pomóż poprawić kalendarz dla Twojego regionu.",
-    "surveyTitle": "Oceń rok pasieczny"
+    "surveyTitle": "Oceń rok pasieczny",
+    "termsTitle": "Warunki korzystania",
+    "termsDescription": "Czego możesz oczekiwać od HivePulse i czego on oczekuje od ciebie: bezpłatne konto, abonament wspierający i to, u kogo faktycznie kupujesz.",
+    "refundsTitle": "Zwroty",
+    "refundsDescription": "Jak odzyskać pieniądze za abonament wspierający, od kogo i co potem dzieje się z twoim dostępem."
   },
   "imprint": {
     "title": "Nota prawna",

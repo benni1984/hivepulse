@@ -67,6 +67,15 @@ describe('Footer', () => {
     expect(screen.getByRole('link', { name: 'privacy' })).toHaveAttribute('href', '/privacy');
   });
 
+  it('links the terms and the refund policy from the footer', () => {
+    // Not decoration: Paddle's domain review requires both to be "clearly accessible via
+    // navigation on your website", and the footer is the only navigation a public page has.
+    // Losing these two links fails the review that gates selling anything at all (#498).
+    render(<Footer />);
+    expect(screen.getByRole('link', { name: 'terms' })).toHaveAttribute('href', '/terms');
+    expect(screen.getByRole('link', { name: 'refunds' })).toHaveAttribute('href', '/refunds');
+  });
+
   it('writes no visible English into the component itself', () => {
     // Everything a reader sees comes from the catalogue. The exceptions are names that are the
     // same in every language, and they are listed here so adding one is a decision.

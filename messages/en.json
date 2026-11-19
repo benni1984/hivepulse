@@ -27,7 +27,9 @@
     "made": "Made with 🐝 for beekeepers everywhere.",
     "imprint": "Legal notice",
     "deleteAccount": "Delete account",
-    "beta": "Join the test"
+    "beta": "Join the test",
+    "terms": "Terms of Use",
+    "refunds": "Refunds"
   },
   "hero": {
     "badge": "Open Source · Community Driven · Free to Use",
@@ -365,6 +367,46 @@
     "s9body": "Passwords are hashed with bcrypt and never stored in plain text. API access requires a signed JWT token. Data in transit is encrypted via TLS. We review security practices regularly.",
     "s10title": "10. Contact",
     "s10body": "Questions about this policy or your data? Write to hivepulse@multihead.de. The controller is Benjamin Müller, Sonnhaldenweg 5D, 4450 Sissach, Switzerland."
+  },
+  "terms": {
+    "title": "Terms of Use",
+    "updated": "Last updated: November 2026",
+    "intro": "HivePulse is a beekeeping application for the web, Android and iPhone. These terms describe what you can expect from it and what it expects from you. They are written to be read, not to be skipped.",
+    "s1title": "1. What these terms cover",
+    "s1body": "They cover the HivePulse website, the Android app and the iPhone app, including the free account and the supporter subscription. Two separate documents cover the rest: the privacy policy says what happens to your data, and the refund policy says how money comes back. Who operates HivePulse is stated in the imprint.",
+    "s2title": "2. Your account",
+    "s2body": "You need an account to record colonies and inspections. Keep your password to yourself; anything done with your account is treated as done by you. One person, one account: to work on an apiary together, invite the other person rather than sharing a login. You can delete your account at any time and your data goes with it. The deletion page says exactly what disappears and what a running subscription means for it.",
+    "s3title": "3. What the free account includes",
+    "s3body": "Up to 10 colonies, and inspection statistics covering the past 365 days. Everything else is free and stays free: the hornet tracker, the community map, QR codes for your hives, the export of your own data, and both apps. Reaching a limit never closes what already exists. If you are above 10 colonies when a subscription ends, they remain and stay editable; you simply cannot add new ones until you are below the limit again.",
+    "s4title": "4. The supporter subscription",
+    "s4body": "19.99 € per year, renewing yearly until you cancel. It raises the colony limit, opens the regional health map and unlocks the treatment record. The price is shown before you buy and includes the tax of your country. A year rather than a month because beekeeping is seasonal: almost everything happens between March and October. You can cancel at any time and keep the subscription until the period you have paid for runs out.",
+    "s5title": "5. Who you are buying from",
+    "s5body": "On the website the seller is Paddle, as merchant of record: the contract of sale is between you and Paddle, they take the payment, issue the invoice and remit the VAT. Their terms govern the purchase itself; these terms govern your use of HivePulse. In the iPhone app the seller is Apple, in the Android app it is Google, and their terms apply in the same way. Whichever route you take, the subscription unlocks the same features on every device you sign in on, because it belongs to your account and not to the device.",
+    "s6title": "6. Your data stays yours",
+    "s6body": "Your apiaries, colonies, inspections and photographs belong to you. They are not sold and not handed to advertisers. You can export them at any time and take them elsewhere. Something becomes publicly visible only where you chose it: a hornet catch on the public map, an apiary you marked as visible, a photograph you submitted to the community. The privacy policy is the detailed version of this paragraph.",
+    "s7title": "7. How to use HivePulse",
+    "s7body": "Use it for beekeeping. Do not enter other people's accounts, do not hammer the site with automated requests beyond ordinary use, do not upload anything unlawful, and do not report hornet findings you have invented, because other beekeepers act on them. The source code is open and you may run your own copy; that permission comes from the licence in the repository, not from this page. An account used to harm others can be closed.",
+    "s8title": "8. What is promised, and what is not",
+    "s8body": "HivePulse is run by one person, with care and without a guarantee of availability. It can be unreachable, a feature can carry a bug, and data you never exported can be lost — so keep your own copy of anything you cannot afford to lose. Liability is unlimited for intent, for gross negligence and for injury to life, body or health, and otherwise limited to what the law requires. The application supports your record keeping; it does not replace a beekeeper's legal obligations, and the treatment record remains a document you are responsible for.",
+    "s9title": "9. Changes, ending, and which law applies",
+    "s9body": "These terms can change when the application changes or the law requires it. A change that affects you is announced in the app and on the news page before it takes effect, and no change to the subscription applies to a period you have already paid for. You end the agreement by deleting your account. HivePulse is operated from Switzerland, Swiss law applies and the place of jurisdiction is Sissach; if you are a consumer, that does not take away the mandatory protection of the law of the country you live in. For a purchase made on the website the seller is Paddle, so their terms govern the sale itself, including how a dispute about it is settled."
+  },
+  "refunds": {
+    "title": "Refund Policy",
+    "updated": "Last updated: November 2026",
+    "intro": "A subscription that turns out not to be what you hoped for should not need an argument. This page says how you get your money back, from whom, and what happens to your access afterwards.",
+    "s1title": "1. The short version",
+    "s1body": "Within 14 days of buying, ask and you get your money back. After that a subscription runs to the end of the period you paid for and then stops, if you cancelled it. A refund never deletes anything you recorded: your apiaries, colonies and inspections stay where they are.",
+    "s2title": "2. The fourteen days",
+    "s2body": "As a consumer in the European Union you have a 14-day right of withdrawal on anything bought online, and you need no reason for it. It applies to the supporter subscription bought on this website. One thing is worth knowing: by asking for the features to be unlocked straight away you agree that the service starts before the 14 days are over, and the seller may keep the share matching the days you have already used. On a yearly subscription cancelled within the first fortnight that share is a few cents, and in practice the full amount is returned.",
+    "s3title": "3. How to ask",
+    "s3body": "Bought on the website: your purchase confirmation comes from Paddle and carries a link to their customer portal, where you can request the refund directly. That is the fastest route, because Paddle holds the money and we do not. You can also write to hivepulse@multihead.de and we will pass the request on. Paddle refunds to the means of payment you used; how long it then takes is up to your bank, usually a few working days.",
+    "s4title": "4. What happens to your access",
+    "s4body": "A refund ends the subscription at once, not at the end of the period — the money came back, so the features go back too. From that moment the colony limit applies again. Colonies above the limit are not deleted and nothing you recorded is touched; you simply cannot add new ones until you are below the limit or subscribe again. A treatment record you have already downloaded stays yours.",
+    "s5title": "5. Bought in the App Store or on Google Play",
+    "s5body": "Then Apple or Google is the seller, not Paddle, and neither we nor Paddle can refund it. For Apple, report the problem at reportaproblem.apple.com. For Google, use the order history at play.google.com/store/account/orderhistory. Both have their own rules and their own deadlines, which can be more generous than the 14 days above. When their refund reaches our server, the access ends in the way section 4 describes.",
+    "s6title": "6. Cancelling is not the same as a refund",
+    "s6body": "Cancelling stops the next renewal and leaves you the time you have paid for. That is usually what you want once the subscription has run a while: you keep everything until the year is up and nothing is charged again. Do it on the subscription page in your account, or wherever you bought it. Cancelling on the last day costs nothing extra; there is no notice period."
   },
   "dash": {
     "login": {
@@ -1342,7 +1384,11 @@
     "siteDescription": "The beekeeping community app that turns every inspection into global data for bee conservation. Free for iOS and Android.",
     "siteTitle": "HivePulse — Protecting Pollinators Together",
     "surveyDescription": "Do the dates of the beekeeping year fit where you keep bees? Rate them in a quarter of an hour, without an account, and help correct the calendar for your region.",
-    "surveyTitle": "Rate the beekeeping year"
+    "surveyTitle": "Rate the beekeeping year",
+    "termsTitle": "Terms of Use",
+    "termsDescription": "What you can expect from HivePulse and what it expects from you: the free account, the supporter subscription, and who you are actually buying from.",
+    "refundsTitle": "Refunds",
+    "refundsDescription": "How to get your money back for a supporter subscription, from whom, and what happens to your access afterwards."
   },
   "imprint": {
     "title": "Legal notice",
