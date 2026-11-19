@@ -4,6 +4,8 @@ import UIKit
 struct SettingsView: View {
     @EnvironmentObject var authVM: AuthViewModel
     @State private var showLogoutConfirm = false
+    /// Only to warn before deleting: a subscription this app cannot cancel (#494).
+    @State private var subscription: SubscriptionOut?
     @State private var name = ""
     @State private var locale = "en"
     /// What the picker said when the profile loaded, so that saving a changed *name* is not
@@ -294,6 +296,9 @@ struct SettingsView: View {
             locale = AppLanguage.effective(profileLocale: authVM.currentUser?.locale)
             loadedLocale = locale
             apiaries = (try? await apiaryService.list().items) ?? []
+            // Silently. Not knowing about a subscription is no reason to spoil Settings, and the
+            // public delete-account page covers the general case anyway.
+            subscription = try? await SubscriptionService().mine()
             await authVM.loadReminderSettings()
             if let r = authVM.reminderSettings {
                 reminderEnabled       = r.reminderEnabled
@@ -321,7 +326,10 @@ struct SettingsView: View {
             }
             Button(NSLocalizedString("action.cancel", comment: ""), role: .cancel) {}
         } message: {
-            Text(NSLocalizedString("alert.deleteAccountMessage", comment: ""))
+            // Named, not listed. The account knows where the subscription was bought; telling
+            // somebody to go and check all three stores is how a warning becomes wallpaper.
+            Text(NSLocalizedString("alert.deleteAccountMessage", comment: "")
+                 + (deleteSubscriptionWarning.map { "\n\n" + $0 } ?? ""))
         }
         .sheet(isPresented: $showExportSheet) {
             ExportPickerView(
@@ -378,6 +386,18 @@ struct SettingsView: View {
         } else {
             passwordError = authVM.errorMessage
             authVM.errorMessage = nil
+        }
+    }
+
+    /// The one sentence that fits this account, or none. A courtesy grant costs nothing, so
+    /// "cancel it or you keep being charged" would be a lie there.
+    private var deleteSubscriptionWarning: String? {
+        guard let subscription, subscription.grantsAccess else { return nil }
+        switch subscription.source {
+        case "apple":  return NSLocalizedString("delete.subApple", comment: "")
+        case "google": return NSLocalizedString("delete.subGoogle", comment: "")
+        case "manual": return NSLocalizedString("delete.subManual", comment: "")
+        default:       return NSLocalizedString("delete.subWeb", comment: "")
         }
     }
 

@@ -500,7 +500,11 @@
       "regionSave": "Guardar la región",
       "regionSaved": "Región guardada.",
       "regionError": "No se pudo guardar la región.",
-      "regionNotLocated": "No se encontró ese código postal, así que las fechas siguen tu primer colmenar o el centro de Alemania."
+      "regionNotLocated": "No se encontró ese código postal, así que las fechas siguen tu primer colmenar o el centro de Alemania.",
+      "deleteSubApple": "Tienes una suscripción de la App Store. Borrar esta cuenta no la cancela: cancélala antes en Ajustes → tu nombre → Suscripciones, o Apple seguirá cobrándote por algo a lo que ya no puedes acceder.",
+      "deleteSubGoogle": "Tienes una suscripción de Google Play. Borrar esta cuenta no la cancela: cancélala antes en Pagos y suscripciones de Play Store, o Google seguirá cobrándote por algo a lo que ya no puedes acceder.",
+      "deleteSubWeb": "Tienes una suscripción comprada en esta web. Borrar esta cuenta no la cancela: cancélala antes en la página de Suscripción, o seguirán cobrándote por algo a lo que ya no puedes acceder.",
+      "deleteSubManual": "Tu acceso Supporter se concedió directamente y no cuesta nada, así que no hay nada que cancelar. Se va con la cuenta."
     },
     "admin": {
       "nav": {
@@ -1370,7 +1374,10 @@
     "retentionTitle": "Cuánto tiempo se conserva algo",
     "retentionBody": "En la base de datos en funcionamiento la eliminación es inmediata: un minuto después no queda nada de tu cuenta. Nuestro proveedor de alojamiento guarda copias de seguridad automáticas durante un máximo de 30 días; una copia solo puede restaurarse por completo, nunca para una sola cuenta, y pasado ese plazo los datos también desaparecen de ahí. Los avisos y trampas de avispones descritos arriba no tienen plazo, porque ya no se refieren a ninguna persona. No mantenemos copias, archivos ni exportaciones aparte.",
     "noAccessTitle": "¿Sin acceso a la aplicación?",
-    "noAccessBody": "Si ya no puedes iniciar sesión, escríbenos y eliminaremos la cuenta por ti en un plazo de 30 días. Usa la dirección con la que se registró la cuenta, para que sepamos de cuál se trata:"
+    "noAccessBody": "Si ya no puedes iniciar sesión, escríbenos y eliminaremos la cuenta por ti en un plazo de 30 días. Usa la dirección con la que se registró la cuenta, para que sepamos de cuál se trata:",
+    "subTitle": "Si tienes una suscripción, cancélala primero",
+    "subBody": "Borrar tu cuenta de HivePulse no cancela ninguna suscripción. Una suscripción comprada en la App Store o en Google Play pertenece a esa cuenta de la tienda, y una comprada en esta web pertenece al proveedor de pago: HivePulse no puede cancelar ninguna por ti. Cancélala antes de borrar la cuenta o seguirán cobrándote por algo a lo que ya no puedes acceder.",
+    "subWhere": "En la App Store: Ajustes → tu nombre → Suscripciones. En Google Play: Pagos y suscripciones. En la web: el enlace de la página de Suscripción de tu panel."
   },
   "beta": {
     "title": "Probar HivePulse antes que nadie",

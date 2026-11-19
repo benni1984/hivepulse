@@ -261,6 +261,23 @@ data class TreatmentCreateRequest(
     val amount: String? = null,
     @SerializedName("withdrawal_days") val withdrawalDays: Int? = null,
 )
+/**
+ * What the signed-in account is entitled to (api-contract.md, Subscriptions).
+ *
+ * Read here for one reason: deleting the account does not cancel a subscription, and the warning
+ * should name the place it actually came from rather than reciting all three (#494).
+ */
+data class SubscriptionOut(
+    val status: String,
+    val source: String? = null,
+    /** True for the App Store and Google Play: **the app cannot cancel it**, the store must. */
+    @SerializedName("store_managed") val storeManaged: Boolean = false,
+)
+
+/** `grace` means the store is retrying a payment and access continues. Gating on `active` alone
+ *  would lock somebody out over a card that expired. */
+val SubscriptionOut.grantsAccess: Boolean get() = status == "active" || status == "grace"
+
 data class HomeInspectionOut(
     @SerializedName("hive_id")            val hiveId: String,
     @SerializedName("hive_name")          val hiveName: String,

@@ -362,6 +362,10 @@
     <string name="admin_users_supporter">Soutien</string>
     <string name="alert_delete_account_action">Supprimer définitivement</string>
     <string name="alert_delete_account_confirm">Supprimer votre compte ?</string>
+    <string name="delete_sub_apple">Vous avez un abonnement de l’App Store. Supprimer ce compte ne le résilie pas — résiliez-le d’abord dans Réglages → votre nom → Abonnements, sinon Apple continuera à vous facturer quelque chose que vous ne pouvez plus atteindre.</string>
+    <string name="delete_sub_google">Vous avez un abonnement Google Play. Supprimer ce compte ne le résilie pas — résiliez-le d’abord dans Paiements et abonnements du Play Store, sinon Google continuera à vous facturer quelque chose que vous ne pouvez plus atteindre.</string>
+    <string name="delete_sub_web">Vous avez un abonnement acheté sur ce site. Supprimer ce compte ne le résilie pas — résiliez-le d’abord sur la page Abonnement, sinon vous continuerez à payer pour quelque chose que vous ne pouvez plus atteindre.</string>
+    <string name="delete_sub_manual">Votre accès Supporter a été accordé directement et ne coûte rien ; il n’y a donc rien à résilier. Il disparaît avec le compte.</string>
     <string name="alert_delete_account_message">Toutes vos données — ruchers, ruches et visites — seront définitivement supprimées. Cette action est irréversible.</string>
     <string name="alert_delete_apiary_has_hives">&quot;%1$s&quot; contient encore %2$d ruche(s). Supprimez d\'abord toutes les ruches, puis le rucher.</string>
     <string name="alert_password_changed">Mot de passe modifié avec succès.</string>

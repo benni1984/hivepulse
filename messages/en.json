@@ -500,7 +500,11 @@
       "regionSave": "Save region",
       "regionSaved": "Region saved.",
       "regionError": "The region could not be saved.",
-      "regionNotLocated": "That postal code was not found, so the dates follow your first apiary or central Germany."
+      "regionNotLocated": "That postal code was not found, so the dates follow your first apiary or central Germany.",
+      "deleteSubApple": "You have a subscription from the App Store. Deleting this account does not cancel it — cancel it first in Settings → your name → Subscriptions, or Apple keeps charging you for something you can no longer reach.",
+      "deleteSubGoogle": "You have a subscription from Google Play. Deleting this account does not cancel it — cancel it first under Payments and subscriptions in the Play Store, or Google keeps charging you for something you can no longer reach.",
+      "deleteSubWeb": "You have a subscription bought on this website. Deleting this account does not cancel it — cancel it first on the Subscription page, or you keep being charged for something you can no longer reach.",
+      "deleteSubManual": "Your supporter access was granted directly and costs nothing, so there is nothing to cancel. It goes with the account."
     },
     "admin": {
       "nav": {
@@ -1370,7 +1374,10 @@
     "retentionTitle": "How long anything is kept",
     "retentionBody": "In the live database the deletion is immediate — nothing of your account is left a minute later. Our hosting provider keeps automatic database backups for up to 30 days; a backup can only ever be restored as a whole, never for a single account, and after that window the data is gone from there too. The hornet reports and traps described above have no retention limit, because they no longer relate to a person. We keep no separate copies, no archives and no exports.",
     "noAccessTitle": "No access to the app?",
-    "noAccessBody": "If you cannot log in any more, write to us and we will delete the account for you within 30 days. Use the address the account was registered with, so we can tell whose account it is:"
+    "noAccessBody": "If you cannot log in any more, write to us and we will delete the account for you within 30 days. Use the address the account was registered with, so we can tell whose account it is:",
+    "subTitle": "If you have a subscription, cancel it first",
+    "subBody": "Deleting your HivePulse account does not cancel a subscription. A subscription bought in the App Store or on Google Play belongs to that store account, and one bought on this website belongs to the payment provider — HivePulse cannot cancel any of them for you. Cancel it before you delete the account, or you will keep being charged for something you can no longer reach.",
+    "subWhere": "In the App Store: Settings → your name → Subscriptions. On Google Play: Payments and subscriptions. On the website: the link on the Subscription page in your dashboard."
   },
   "beta": {
     "title": "Try HivePulse before everybody else",

@@ -362,6 +362,10 @@
     <string name="admin_users_supporter">Unterstützer</string>
     <string name="alert_delete_account_action">Endgültig löschen</string>
     <string name="alert_delete_account_confirm">Konto löschen?</string>
+    <string name="delete_sub_apple">Du hast ein Abo aus dem App Store. Dieses Konto zu löschen kündigt es nicht — kündige es vorher unter Einstellungen → dein Name → Abos, sonst bucht Apple weiter für etwas ab, an das du nicht mehr herankommst.</string>
+    <string name="delete_sub_google">Du hast ein Abo von Google Play. Dieses Konto zu löschen kündigt es nicht — kündige es vorher im Play Store unter Zahlungen und Abos, sonst bucht Google weiter für etwas ab, an das du nicht mehr herankommst.</string>
+    <string name="delete_sub_web">Du hast ein auf dieser Webseite gekauftes Abo. Dieses Konto zu löschen kündigt es nicht — kündige es vorher auf der Abo-Seite, sonst wird dir weiter etwas abgebucht, an das du nicht mehr herankommst.</string>
+    <string name="delete_sub_manual">Dein Supporter-Zugang wurde direkt vergeben und kostet nichts, es gibt also nichts zu kündigen. Er geht mit dem Konto.</string>
     <string name="alert_delete_account_message">Alle deine Daten — Bienenstände, Völker und Kontrollen — werden endgültig gelöscht. Das lässt sich nicht rückgängig machen.</string>
     <string name="alert_delete_apiary_has_hives">&quot;%1$s&quot; enthält noch %2$d Volk/Völker. Lösche zuerst alle Völker und dann den Bienenstand.</string>
     <string name="alert_password_changed">Passwort erfolgreich geändert.</string>

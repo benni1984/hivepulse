@@ -3,6 +3,7 @@ package com.hivepulse.app.data.repository
 import com.hivepulse.app.data.api.ApiService
 import com.hivepulse.app.data.api.HomeSummaryOut
 import com.hivepulse.app.data.api.PlannedTreatmentOut
+import com.hivepulse.app.data.api.SubscriptionOut
 import com.hivepulse.app.data.api.TreatmentCreateRequest
 import com.hivepulse.app.data.api.withServerMessage
 import retrofit2.Response
@@ -14,6 +15,13 @@ import javax.inject.Singleton
 @Singleton
 class HomeRepository @Inject constructor(private val api: ApiService) {
     suspend fun home(): HomeSummaryOut = withServerMessage { api.home() }
+}
+
+/** What the account is entitled to. Read in Settings so the delete dialog can name the right
+ *  place to cancel (#494). */
+@Singleton
+class SubscriptionRepository @Inject constructor(private val api: ApiService) {
+    suspend fun mine(): SubscriptionOut = withServerMessage { api.mySubscription() }
 }
 
 /** The treatments planned for a hive or an apiary. A refusal carries the server's own message. */

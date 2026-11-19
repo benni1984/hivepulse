@@ -500,7 +500,11 @@
       "regionSave": "Enregistrer la région",
       "regionSaved": "Région enregistrée.",
       "regionError": "La région n’a pas pu être enregistrée.",
-      "regionNotLocated": "Ce code postal n’a pas été trouvé ; les dates suivent donc votre premier rucher ou le centre de l’Allemagne."
+      "regionNotLocated": "Ce code postal n’a pas été trouvé ; les dates suivent donc votre premier rucher ou le centre de l’Allemagne.",
+      "deleteSubApple": "Vous avez un abonnement de l’App Store. Supprimer ce compte ne le résilie pas — résiliez-le d’abord dans Réglages → votre nom → Abonnements, sinon Apple continuera à vous facturer quelque chose que vous ne pouvez plus atteindre.",
+      "deleteSubGoogle": "Vous avez un abonnement Google Play. Supprimer ce compte ne le résilie pas — résiliez-le d’abord dans Paiements et abonnements du Play Store, sinon Google continuera à vous facturer quelque chose que vous ne pouvez plus atteindre.",
+      "deleteSubWeb": "Vous avez un abonnement acheté sur ce site. Supprimer ce compte ne le résilie pas — résiliez-le d’abord sur la page Abonnement, sinon vous continuerez à payer pour quelque chose que vous ne pouvez plus atteindre.",
+      "deleteSubManual": "Votre accès Supporter a été accordé directement et ne coûte rien ; il n’y a donc rien à résilier. Il disparaît avec le compte."
     },
     "admin": {
       "nav": {
@@ -1370,7 +1374,10 @@
     "retentionTitle": "Durée de conservation",
     "retentionBody": "Dans la base de données en service, la suppression est immédiate : une minute plus tard, il ne reste rien de votre compte. Notre hébergeur conserve des sauvegardes automatiques pendant 30 jours au maximum ; une sauvegarde ne peut être restaurée qu'intégralement, jamais pour un seul compte, et passé ce délai les données en ont également disparu. Les signalements et pièges à frelons décrits plus haut n'ont pas de durée limite, car ils ne concernent plus une personne. Nous ne conservons ni copies, ni archives, ni exports distincts.",
     "noAccessTitle": "Plus d'accès à l'application ?",
-    "noAccessBody": "Si vous ne pouvez plus vous connecter, écrivez-nous et nous supprimerons le compte pour vous sous 30 jours. Utilisez l'adresse avec laquelle le compte a été créé, afin que nous sachions de quel compte il s'agit :"
+    "noAccessBody": "Si vous ne pouvez plus vous connecter, écrivez-nous et nous supprimerons le compte pour vous sous 30 jours. Utilisez l'adresse avec laquelle le compte a été créé, afin que nous sachions de quel compte il s'agit :",
+    "subTitle": "Si vous avez un abonnement, résiliez-le d’abord",
+    "subBody": "Supprimer votre compte HivePulse ne résilie aucun abonnement. Un abonnement acheté sur l’App Store ou sur Google Play appartient à ce compte de magasin, et un abonnement acheté sur ce site appartient au prestataire de paiement — HivePulse ne peut en résilier aucun à votre place. Résiliez-le avant de supprimer le compte, sinon vous continuerez à payer pour quelque chose que vous ne pouvez plus atteindre.",
+    "subWhere": "Sur l’App Store : Réglages → votre nom → Abonnements. Sur Google Play : Paiements et abonnements. Sur le site : le lien de la page Abonnement de votre tableau de bord."
   },
   "beta": {
     "title": "Essayer HivePulse avant tout le monde",

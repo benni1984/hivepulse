@@ -46,6 +46,16 @@ export default async function DeleteAccountPage({
           <p>{t('immediate')}</p>
         </section>
 
+        {/* Before "what is removed": the one thing deleting the account does *not* do. A store
+            subscription belongs to the Apple or Google account and a web one to the payment
+            provider; this server can cancel none of them, so somebody who deletes first keeps
+            paying for something they can no longer reach (#494). */}
+        <section>
+          <h2>{t('subTitle')}</h2>
+          <p>{t('subBody')}</p>
+          <p>{t('subWhere')}</p>
+        </section>
+
         <section>
           <h2>{t('removedTitle')}</h2>
           <ul className="legal-list">

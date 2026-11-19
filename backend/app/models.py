@@ -5,7 +5,7 @@ from sqlalchemy import (
     Boolean, CheckConstraint, Column, Date, DateTime, Float, ForeignKey,
     Integer, String, Text, JSON, UniqueConstraint, Enum as SAEnum
 )
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import backref, relationship
 
 from app.database import Base
 from app.clock import now_utc
@@ -558,4 +558,17 @@ class Subscription(Base):
     created_at = Column(DateTime, default=now_utc)
     updated_at = Column(DateTime, default=now_utc, onupdate=now_utc)
 
-    user = relationship("User", backref="subscriptions")
+    # The cascade is not decoration. Without it, deleting an account makes SQLAlchemy try
+    # `UPDATE subscriptions SET user_id = NULL` before removing the user -- and the column is
+    # NOT NULL, so the whole delete fails with an integrity error. A paying account could not
+    # be deleted at all, which is a right somebody has and not a feature we grant (#17 phase 5).
+    #
+    # Deliberately without `passive_deletes=True`. The column does carry ON DELETE CASCADE, but
+    # handing the work to the database means SQLite (the test engine) and PostgreSQL (production)
+    # behave differently unless foreign keys are switched on in SQLite -- and a delete that is
+    # proven in tests and not in production is worse than no proof. The ORM deletes the rows
+    # itself, identically everywhere, and there are never many of them.
+    user = relationship(
+        "User",
+        backref=backref("subscriptions", cascade="all, delete-orphan"),
+    )

@@ -500,7 +500,11 @@
       "regionSave": "Region speichern",
       "regionSaved": "Region gespeichert.",
       "regionError": "Die Region konnte nicht gespeichert werden.",
-      "regionNotLocated": "Diese Postleitzahl wurde nicht gefunden, die Termine richten sich deshalb nach deinem ersten Bienenstand oder Mitteldeutschland."
+      "regionNotLocated": "Diese Postleitzahl wurde nicht gefunden, die Termine richten sich deshalb nach deinem ersten Bienenstand oder Mitteldeutschland.",
+      "deleteSubApple": "Du hast ein Abo aus dem App Store. Dieses Konto zu löschen kündigt es nicht — kündige es vorher unter Einstellungen → dein Name → Abos, sonst bucht Apple weiter für etwas ab, an das du nicht mehr herankommst.",
+      "deleteSubGoogle": "Du hast ein Abo von Google Play. Dieses Konto zu löschen kündigt es nicht — kündige es vorher im Play Store unter Zahlungen und Abos, sonst bucht Google weiter für etwas ab, an das du nicht mehr herankommst.",
+      "deleteSubWeb": "Du hast ein auf dieser Webseite gekauftes Abo. Dieses Konto zu löschen kündigt es nicht — kündige es vorher auf der Abo-Seite, sonst wird dir weiter etwas abgebucht, an das du nicht mehr herankommst.",
+      "deleteSubManual": "Dein Supporter-Zugang wurde direkt vergeben und kostet nichts, es gibt also nichts zu kündigen. Er geht mit dem Konto."
     },
     "admin": {
       "nav": {
@@ -1370,7 +1374,10 @@
     "retentionTitle": "Wie lange etwas aufbewahrt wird",
     "retentionBody": "In der laufenden Datenbank passiert die Löschung sofort — eine Minute später ist von deinem Konto nichts mehr da. Unser Hosting-Anbieter hält automatische Sicherungskopien der Datenbank für bis zu 30 Tage; eine Sicherung lässt sich immer nur vollständig wiederherstellen, nie für ein einzelnes Konto, und nach diesem Zeitraum sind die Daten auch dort verschwunden. Für die oben beschriebenen Hornissen-Meldungen und -Fallen gibt es keine Frist, weil sie keinen Personenbezug mehr haben. Eigene Kopien, Archive oder Exporte führen wir nicht.",
     "noAccessTitle": "Kein Zugang zur App?",
-    "noAccessBody": "Wenn du dich nicht mehr anmelden kannst, schreib uns — wir löschen das Konto dann innerhalb von 30 Tagen für dich. Nimm dafür die Adresse, mit der das Konto registriert wurde, damit wir wissen, um welches es geht:"
+    "noAccessBody": "Wenn du dich nicht mehr anmelden kannst, schreib uns — wir löschen das Konto dann innerhalb von 30 Tagen für dich. Nimm dafür die Adresse, mit der das Konto registriert wurde, damit wir wissen, um welches es geht:",
+    "subTitle": "Wenn du ein Abo hast, kündige es zuerst",
+    "subBody": "Dein HivePulse-Konto zu löschen kündigt kein Abo. Ein im App Store oder bei Google Play gekauftes Abo gehört zu dem jeweiligen Store-Konto, ein auf dieser Webseite gekauftes zum Zahlungsanbieter — HivePulse kann keines davon für dich kündigen. Kündige es, bevor du das Konto löschst, sonst wird dir weiter etwas abgebucht, an das du nicht mehr herankommst.",
+    "subWhere": "Im App Store: Einstellungen → dein Name → Abos. Bei Google Play: Zahlungen und Abos. Auf der Webseite: der Link auf der Abo-Seite in deinem Dashboard."
   },
   "beta": {
     "title": "HivePulse vor allen anderen ausprobieren",
