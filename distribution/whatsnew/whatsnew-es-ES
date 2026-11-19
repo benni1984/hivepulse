@@ -1,11 +1,13 @@
-HivePulse 1.0.5
+HivePulse 1.1.0
 
-Nuevo en esta versión:
-• Los valores imposibles se rechazan antes de guardarse: ninguna revisión en el año 3000, ni 5000 varroas, ni un colmenar a 999 grados norte
-• Los formularios muestran sus propios límites en lugar de dejárselo al servidor
-• Los mensajes de error llegan en tu idioma y nombran el campo
-• El campo se llama «Comportamiento» en toda la app
+Nuevo:
+• Libro de tratamientos: todos los tratamientos de un año en PDF para imprimir y conservar
+• Los tratamientos admiten la cantidad y el tiempo de espera
+• Hasta 10 colmenas gratis
 
-Sigue en la prueba y usa la app de vez en cuando, por favor.
+Corregido:
+• Al cabo de un mes la app se quedaba bloqueada tras un mensaje sobre credenciales. Una sesión caducada vuelve ahora al inicio de sesión.
+
+Sigue en la prueba y usa la app de vez en cuando.
 
 hivepulse@multihead.de

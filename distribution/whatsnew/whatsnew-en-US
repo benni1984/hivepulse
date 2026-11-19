@@ -1,10 +1,12 @@
-HivePulse 1.0.5
+HivePulse 1.1.0
 
-New in this build:
-• Impossible values are refused before they are saved: no inspection dated in the year 3000, no 5000 mites, no apiary at 999 degrees north
-• The forms show their own limits instead of leaving that to the server
-• Error messages arrive in your language and name the field they are about
-• One name per thing, on every screen and in every language
+New:
+• Treatment record: every treatment of a year as a PDF to print and keep
+• Treatments now take the amount and the withdrawal period
+• Up to 10 colonies are free
+
+Fixed:
+• After about a month the app got stuck behind a message about credentials. An expired session now returns you to the sign-in screen.
 
 Please stay in the test and keep using the app now and then.
 

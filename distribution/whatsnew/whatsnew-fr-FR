@@ -1,11 +1,13 @@
-HivePulse 1.0.5
+HivePulse 1.1.0
 
-Nouveau dans cette version :
-• Les valeurs impossibles sont refusées avant d'être enregistrées : pas de visite datée en l'an 3000, pas de 5000 varroas, pas de rucher à 999 degrés nord
-• Les formulaires affichent leurs limites au lieu de le laisser au serveur
-• Les messages d'erreur arrivent dans votre langue et nomment le champ concerné
-• Un seul mot par chose, sur chaque écran
+Nouveau :
+• Registre des traitements : tous les traitements d'une année en PDF à imprimer et conserver
+• Les traitements acceptent la quantité et le temps d'attente
+• Jusqu'à 10 ruches gratuites
 
-Merci de rester dans le test et d'utiliser l'application de temps en temps.
+Corrigé :
+• Au bout d'un mois, l'application restait bloquée sur un message d'identifiants. Une session expirée ramène désormais à l'écran de connexion.
+
+Merci de rester dans le test.
 
 hivepulse@multihead.de
