@@ -3,10 +3,14 @@ import { describe, it, expect, vi } from 'vitest';
 import React from 'react';
 
 vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => key,
+  // Values are echoed back so a test can see that the operator's name reached the sentence,
+  // not merely that the key rendered (#515).
+  useTranslations: () => (key: string, vals?: Record<string, unknown>) =>
+    vals ? `${key}:${JSON.stringify(vals)}` : key,
 }));
 
 import TermsPage from '@/app/[locale]/terms/page';
+import { IMPRINT } from '@/lib/imprint';
 import en from '@/messages/en.json';
 import de from '@/messages/de.json';
 import fr from '@/messages/fr.json';
@@ -77,6 +81,25 @@ describe('TermsPage', () => {
   it('states the price that the subscription page sells for', () => {
     for (const [locale, messages] of Object.entries(ALL)) {
       expect(messages.terms.s4body, `${locale} must state the price`).toMatch(/19[.,]99/);
+    }
+  });
+
+  it('names the operator, which Paddle asks the terms to do', () => {
+    // "the company name or sole proprietor's brand (legal name preferred for sole proprietors)"
+    // must be in the Terms themselves. Pointing at the imprint was not enough: a reviewer reads
+    // the page in front of them, and getting this wrong turns an automatic approval into a
+    // manual review Paddle estimates at 5-7 business days (#515).
+    render(<TermsPage />);
+    const first = screen.getByText(/^s1body:/);
+    expect(first.textContent).toContain(IMPRINT.name);
+  });
+
+  it('takes that name from the imprint rather than from five catalogues', () => {
+    for (const [locale, messages] of Object.entries(ALL)) {
+      expect(messages.terms.s1body, `${locale} must carry the operator placeholder`)
+        .toMatch(/\{operator\}/);
+      expect(messages.terms.s1body, `${locale} must not hardcode the name`)
+        .not.toContain(IMPRINT.name);
     }
   });
 

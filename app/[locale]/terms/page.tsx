@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { useTranslations } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
+import { IMPRINT } from '@/lib/imprint';
 
 export async function generateMetadata({
   params,
@@ -23,10 +24,16 @@ const SECTION_COUNT = 9;
 export default function TermsPage() {
   const t = useTranslations('terms');
 
-  const sections = Array.from({ length: SECTION_COUNT }, (_, i) => ({
-    title: t(`s${i + 1}title`),
-    body: t(`s${i + 1}body`),
-  }));
+  // Section 1 names the operator. Paddle's domain review asks for "the company name or sole
+  // proprietor's brand" in the Terms, and a reviewer reads this page, not the imprint it links
+  // to (#515). The name comes from lib/imprint.ts so it is stated in one place.
+  const sections = Array.from({ length: SECTION_COUNT }, (_, i) => {
+    const n = i + 1;
+    return {
+      title: t(`s${n}title`),
+      body: n === 1 ? t('s1body', { operator: IMPRINT.name }) : t(`s${n}body`),
+    };
+  });
 
   return (
     <main className="legal-page">
