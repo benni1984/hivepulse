@@ -217,16 +217,76 @@ def test_an_expiry_ends_it(auth_client, db_session):
 
 
 def test_a_refund_ends_it_too(auth_client, db_session):
+    """A refund arrives as a CANCELLATION with a reason. There is no REFUND event type.
+
+    This test used to send `kind="REFUND"` and pass, which proved only that the table mapped a
+    string nobody will ever send. The real event is a cancellation, and without the reason it
+    reads as "keeps the feature until the period ends" -- so somebody could be refunded and stay
+    a supporter (#496).
+    """
     user_id = _user_id(db_session)
     auth_client.post("/api/v1/subscriptions/webhook", json=_event(user_id), headers=_headers())
 
     ms = int((now_utc() + timedelta(seconds=1)).timestamp() * 1000)
     auth_client.post("/api/v1/subscriptions/webhook",
-                     json=_event(user_id, kind="REFUND", event_timestamp_ms=ms),
+                     json=_event(user_id, kind="CANCELLATION", event_timestamp_ms=ms,
+                                 cancel_reason="CUSTOMER_SUPPORT"),
                      headers=_headers())
 
     body = auth_client.get("/api/v1/subscriptions/me").json()
     assert body["status"] == "refunded"
+    assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is False
+
+
+def test_an_ordinary_cancellation_is_not_a_refund(auth_client, db_session):
+    """The other half of the same decision, and the reason the reason matters. Switching off
+    auto-renewal must leave the feature in place until the period that was paid for ends."""
+    user_id = _user_id(db_session)
+    auth_client.post("/api/v1/subscriptions/webhook", json=_event(user_id), headers=_headers())
+
+    ms = int((now_utc() + timedelta(seconds=1)).timestamp() * 1000)
+    auth_client.post("/api/v1/subscriptions/webhook",
+                     json=_event(user_id, kind="CANCELLATION", event_timestamp_ms=ms,
+                                 cancel_reason="UNSUBSCRIBE"),
+                     headers=_headers())
+
+    body = auth_client.get("/api/v1/subscriptions/me").json()
+    assert body["status"] == "active", "cancelled is not expired"
+    assert body["will_renew"] is False, "but it will not come back by itself"
+    assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is True
+
+
+def test_a_reversed_refund_gives_the_access_back(auth_client, db_session):
+    """REFUND_REVERSED exists and used to fall into "unknown event, ignore" -- so the money came
+    back to us and the person stayed locked out."""
+    user_id = _user_id(db_session)
+    auth_client.post("/api/v1/subscriptions/webhook", json=_event(user_id), headers=_headers())
+    ms = int((now_utc() + timedelta(seconds=1)).timestamp() * 1000)
+    auth_client.post("/api/v1/subscriptions/webhook",
+                     json=_event(user_id, kind="CANCELLATION", event_timestamp_ms=ms,
+                                 cancel_reason="CUSTOMER_SUPPORT"),
+                     headers=_headers())
+
+    ms2 = int((now_utc() + timedelta(seconds=2)).timestamp() * 1000)
+    auth_client.post("/api/v1/subscriptions/webhook",
+                     json=_event(user_id, kind="REFUND_REVERSED", event_timestamp_ms=ms2),
+                     headers=_headers())
+
+    assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is True
+
+
+def test_the_dashboards_own_test_button_is_ignored_quietly(auth_client, db_session):
+    """RevenueCat's "send test webhook" sends type TEST from store TEST_STORE. Answering 200 and
+    doing nothing is right; the point of this test is that it is *named* as ignored rather than
+    logged as an unknown type, because during setup that reads as a misconfiguration."""
+    user_id = _user_id(db_session)
+
+    resp = auth_client.post("/api/v1/subscriptions/webhook",
+                            json=_event(user_id, kind="TEST", store="TEST_STORE"),
+                            headers=_headers())
+
+    assert resp.status_code == 200
+    assert resp.json()["handled"] is False
     assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is False
 
 
