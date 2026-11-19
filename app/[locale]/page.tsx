@@ -235,7 +235,17 @@ export default function HomePage() {
                 <li><i className="fas fa-check" /> <span>{t('price.sup.f7')}</span></li>
                 <li><i className="fas fa-check" /> <span>{t('price.sup.f8')}</span></li>
               </ul>
-              <a href="#download" className="btn-primary" data-umami-event="pricing_supporter_cta">{t('btn.supporter')}</a>
+              {/* Pointed at #download, so somebody who read "19,99 € / Jahr", decided yes and
+                  clicked was scrolled to two app store badges (#507). It goes to the
+                  subscription page instead — the one that shows the state of the account and
+                  carries the buy button once the Paddle checkout is configured. A signed-out
+                  visitor meets the dashboard's auth guard and lands on login, which is the right
+                  order: there is no purchase without an account, because the account id is a
+                  path segment of the purchase link. LocaleLink, not <a>, or the click drops the
+                  reader into English (#473). The umami event keeps its name so the funnel stays
+                  comparable across this change. btn.free still points at #download, and for the
+                  free tier that is correct. */}
+              <LocaleLink href="/dashboard/subscription" className="btn-primary" data-umami-event="pricing_supporter_cta">{t('btn.supporter')}</LocaleLink>
             </div>
             <div className="pricing-card" data-aos="fade-up" data-aos-delay="200">
               <div className="pricing-tier">{t('price.donate.tier')}</div>
