@@ -17,7 +17,10 @@ const mockGetRegion = vi.hoisted(() => vi.fn());
 // A default, so every test that does not care about the subscription keeps working: the
 // profile page asks for it on load, and an unmocked call returns undefined, not a promise.
 const mockGetSubscription = vi.hoisted(() =>
-  vi.fn(async () => ({ status: 'none', source: null, hives_used: 0, hive_limit: 10 })));
+  // The return type is widened on purpose: inferring it from this default would pin `source` to
+  // null, and the tests below hand it 'apple', 'google' and 'manual'.
+  vi.fn(async (): Promise<Record<string, unknown>> =>
+    ({ status: 'none', source: null, hives_used: 0, hive_limit: 10 })));
 const mockUpdateRegion = vi.hoisted(() => vi.fn());
 
 vi.mock('@/lib/api', () => ({
