@@ -243,3 +243,30 @@ def test_the_two_jobs_that_use_playwright_are_the_ones_we_think():
         "ci::web",                       # installs chromium, runs the local e2e suite
         "ci::e2e-staging",               # drives the deployed staging site
     }, found
+
+
+def test_the_gate_in_front_of_production_installs_from_the_lockfile():
+    """The E2E job decides whether a commit reaches production (#513).
+
+    It used to run `rm -f package-lock.json && npm install`, so it re-resolved every semver range
+    on each run: two runs of one commit could install different dependencies, and a bad release
+    of any transitive package reached the gate the day it was published. It also hid #510 -- the
+    screenshot job broke on the pinned Playwright while this job silently floated past it, so the
+    correct job failed and the incorrect one was saved by its own incorrectness.
+
+    Safe here because this job drives Playwright against deployed staging and builds nothing.
+    The jobs that do build still delete the lock file; see the comment on the web job.
+    """
+    job = _workflow("ci")["jobs"]["e2e-staging"]
+    installs = [
+        str(step.get("run", ""))
+        for step in job["steps"]
+        if "npm" in str(step.get("run", "")) and "playwright" not in str(step.get("run", ""))
+    ]
+
+    assert installs, "the E2E job no longer installs anything -- has it been restructured?"
+    assert any(run.strip() == "npm ci" for run in installs), installs
+    for run in installs:
+        assert "rm -f package-lock.json" not in run, (
+            "the lock file deletion is back in the gate in front of the production deploy"
+        )

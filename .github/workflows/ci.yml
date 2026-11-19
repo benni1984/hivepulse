@@ -492,9 +492,16 @@ jobs:
 
       - name: Install dependencies
         if: needs.changes.outputs.web == 'true'
-        # The lock file is generated on Windows and omits resolved URLs for
-        # Linux-specific optional binaries (@parcel/watcher, rollup, etc.).
-        # Deleting it forces npm to resolve all optional deps for the current OS.
+        # The lock file is generated on Windows. It is no longer as bare as this comment used to
+        # claim: it now carries @next/swc-linux-*, @parcel/watcher-linux-x64-glibc and
+        # @rollup/rollup-linux-x64-gnu, 123 linux entries in all. What is still missing is
+        # sharp's linux variant -- @img has only sharp-win32-x64 -- and this job runs
+        # `npm run build`, so it is the one that would notice.
+        #
+        # So the deletion stays here while the E2E job below moved to `npm ci` (#513): that job
+        # builds nothing and does not need any of this. Making the lock file complete is the
+        # actual fix and is its own piece of work; `npm install --package-lock-only
+        # --os=linux --cpu=x64` was tried and changes nothing on npm 10.9.
         run: rm -f package-lock.json && npm install
 
       # There was no lint step here at all, while the root CLAUDE.md listed lint among the
@@ -633,8 +640,19 @@ jobs:
         with:
           node-version: '22'
 
+      # `npm ci`, not the lockfile deletion the other jobs still do (#513). This job decides
+      # whether a commit reaches production, so it must install the same code twice. Deleting the
+      # lockfile re-resolved every semver range on each run: two runs of one commit could install
+      # different dependencies, and a bad release of any transitive package reached this gate the
+      # day it was published.
+      #
+      # It is safe *here* specifically because this job never builds the site -- it drives
+      # Playwright against the already deployed staging. The platform-specific binaries that the
+      # deletion was working around (sharp, rollup, @parcel/watcher) are a build concern, and
+      # this job has no build. The jobs that do build still delete the lockfile, for a reason
+      # that is real and is written up separately.
       - name: Install dependencies
-        run: rm -f package-lock.json && npm install
+        run: npm ci
 
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
