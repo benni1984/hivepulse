@@ -4,6 +4,8 @@ import React from 'react';
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
+  // The pricing card formats the price for the reader's own language (#504).
+  useLocale: () => 'en',
 }));
 vi.mock('next/dynamic', () => ({ default: () => () => null }));
 vi.mock('@/i18n/navigation', () => ({

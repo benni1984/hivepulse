@@ -1,10 +1,11 @@
 'use client';
 
 import React from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { Link, Link as LocaleLink } from '@/i18n/navigation';
 import { BETA, hasAnyBetaLink } from '@/lib/beta';
+import { formatFreePrice, formatSupporterPrice } from '@/lib/pricing';
 
 const LiveStats = dynamic(() => import('@/components/LiveStats'), { ssr: false });
 
@@ -37,6 +38,8 @@ function StoreBadge({ url, className, label, img, event, soonLabel }: StoreBadge
 
 export default function HomePage() {
   const t = useTranslations();
+  // For the price only: Intl writes "19,99 €" or "€19.99" depending on who is reading (#504).
+  const locale = useLocale();
   // Store listings don't exist yet (issues #6/#7) — set these in Vercel once the apps are published.
   const appStoreUrl = process.env.NEXT_PUBLIC_APP_STORE_URL;
   const playStoreUrl = process.env.NEXT_PUBLIC_PLAY_STORE_URL;
@@ -213,7 +216,7 @@ export default function HomePage() {
           <div className="pricing-grid">
             <div className="pricing-card" data-aos="fade-up" data-aos-delay="0">
               <div className="pricing-tier">{t('price.free.tier')}</div>
-              <div className="pricing-price">€0 <span>{t('price.month')}</span></div>
+              <div className="pricing-price">{formatFreePrice(locale)} <span>{t('price.year')}</span></div>
               <ul className="pricing-features">
                 {(['f1','f2','f3','f4','f5'] as const).map(k => <li key={k}><i className="fas fa-check" /> <span>{t(`price.free.${k}`)}</span></li>)}
                 {(['f6','f7','f8'] as const).map(k => <li key={k} className="dim"><i className="fas fa-times" /> <span>{t(`price.free.${k}`)}</span></li>)}
@@ -223,7 +226,10 @@ export default function HomePage() {
             <div className="pricing-card featured" data-aos="fade-up" data-aos-delay="100">
               <div className="pricing-badge">{t('price.sup.badge')}</div>
               <div className="pricing-tier">{t('price.sup.tier')}</div>
-              <div className="pricing-price">€2.99 <span>{t('price.month')}</span></div>
+              {/* Was a monthly figure typed straight into the markup — one that was never sold,
+                  beside a unit that did come from the catalogue. One constant now, formatted for
+                  the reader's own locale (#504). The test forbids any price literal here. */}
+              <div className="pricing-price">{formatSupporterPrice(locale)} <span>{t('price.year')}</span></div>
               <ul className="pricing-features">
                 {(['f1','f2','f3','f4','f5','f6'] as const).map(k => <li key={k}><i className="fas fa-check" /> <span>{t(`price.sup.${k}`)}</span></li>)}
                 <li><i className="fas fa-check" /> <span>{t('price.sup.f7')}</span></li>

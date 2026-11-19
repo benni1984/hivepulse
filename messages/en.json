@@ -162,27 +162,27 @@
   "price": {
     "free": {
       "tier": "Free Forever",
-      "f1": "Unlimited hives & inspections",
-      "f2": "QR code scanning & batch generation",
-      "f3": "Basic statistics per hive",
-      "f4": "Community data contribution",
-      "f5": "Public live map",
-      "f6": "Advanced charts & trends",
-      "f7": "Data export",
-      "f8": "Members area"
+      "f1": "Up to 10 colonies",
+      "f2": "Unlimited inspections and photos",
+      "f3": "QR code scanning and batch printing",
+      "f4": "Statistics for the past 365 days",
+      "f5": "Hornet tracker, community map and data export",
+      "f6": "More than 10 colonies",
+      "f7": "Shared apiaries and custom inspection fields",
+      "f8": "Treatment record and regional health map"
     },
-    "month": "/ month",
+    "year": "/ year",
     "sup": {
       "tier": "Supporter",
       "badge": "Most Popular",
       "f1": "Everything in Free",
-      "f2": "Advanced trend charts (in-app)",
-      "f3": "Members area & global stats",
-      "f4": "Priority support",
-      "f5": "Your name in the app credits",
-      "f6": "Early access to new features",
-      "f7": "Data export (CSV / JSON)",
-      "f8": "Regional heatmaps"
+      "f2": "Unlimited colonies",
+      "f3": "Statistics without the 365-day limit",
+      "f4": "The treatment record as a printable PDF",
+      "f5": "Custom inspection fields",
+      "f6": "Share an apiary with other beekeepers",
+      "f7": "The regional health map",
+      "f8": "Cancel any time, no notice period"
     },
     "coming": "Coming soon",
     "donate": {
