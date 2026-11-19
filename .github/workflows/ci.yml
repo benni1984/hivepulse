@@ -472,7 +472,11 @@ jobs:
   web:
     name: Web build & test
     needs: changes
-    runs-on: ubuntu-latest
+    # Pinned: this job installs chromium and runs the local Playwright suite. See the E2E job
+    # below for the whole story (#510, #512, #516). This is the worst one to let rot -- every
+    # pull request waits on it, so a runner rollover would block the repository, not one
+    # workflow. It has not failed yet; that is luck about which image its runner happens to be.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -614,7 +618,14 @@ jobs:
       (github.event_name == 'workflow_dispatch'
         || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
       && needs.changes.outputs.deployable == 'true'
-    runs-on: ubuntu-latest
+    # Pinned, not ubuntu-latest: this job drives a browser, and Playwright's chromium builds lag
+    # a new Ubuntu release. When ubuntu-latest rolled over to 26.04 the screenshot workflow died
+    # with "Playwright does not support chromium on ubuntu26.04-x64" (#510) -- raising the
+    # Playwright version did not help (#512, #516), because the missing piece is upstream's
+    # browser build, not our dependency. This job had not failed yet only because its runner had
+    # not rolled over; a red E2E gate blocks the production deploy, so it is pinned before it
+    # bites. Raise this deliberately once Playwright ships builds for a newer Ubuntu.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
