@@ -91,6 +91,16 @@ def web_checkout(current_user: CurrentUser, accept_language: Optional[str] = Hea
     purchase link shown in an app is a store rejection. What a web purchase *grants* is of course
     honoured everywhere — that is the point of deriving `is_supporter` on the server.
     """
+    # Two ways to be unable to sell, answered identically on purpose. The page already renders
+    # this code as "cannot be bought here yet" in five languages, `scrub_event` already keeps it
+    # out of Sentry (#497), and the E2E suite already expects it -- so the switch costs no new
+    # user-facing text and no new noise.
+    if not settings.web_checkout_enabled:
+        # Deliberately switched off: the token may well be present and correct, but nobody has
+        # said yet that this deployment may sell (#530).
+        log.info("web checkout is switched off (WEB_CHECKOUT_ENABLED)")
+        raise HTTPException(503, detail=error("WEB_CHECKOUT_UNCONFIGURED", accept_language))
+
     token = (settings.revenuecat_web_purchase_token_sandbox
              or settings.revenuecat_web_purchase_token)
     if not token:

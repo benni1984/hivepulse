@@ -24,6 +24,16 @@ class Settings(BaseSettings):
     #: Sandbox links are a separate token. Never both at once; this one wins when set, so a
     #: staging deployment cannot accidentally take real money.
     revenuecat_web_purchase_token_sandbox: str = ""
+    #: Whether the website may sell at all. **Off by default, and that is the point** (#530).
+    #:
+    #: A token in the environment used to be enough to put a buy button in front of people, so
+    #: selling switched itself on with whatever deploy happened to come next -- including one
+    #: about something else entirely. Paddle approves a checkout domain on its own schedule, and
+    #: a checkout opened before that approval fails in the customer's face.
+    #:
+    #: Defaulting to "on unless disabled" would fail open: forget the variable, and the button
+    #: appears. This way going live is an act somebody performs, at a moment they chose.
+    web_checkout_enabled: bool = False
     # Push — Android (FCM HTTP v1). The legacy server key was retired by Google in 2024,
     # so delivery needs a service account; push is skipped while these are empty.
     firebase_project_id: str = ""
