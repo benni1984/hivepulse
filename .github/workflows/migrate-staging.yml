@@ -38,7 +38,25 @@ jobs:
 
       - name: Run database migrations
         run: |
-          set -a && source .vercel/.env.production.local && set +a
+          # `vercel pull` cannot read back a variable stored as Sensitive, so it writes the
+          # literal placeholder [SENSITIVE] where that variable's value belongs. Sourcing it
+          # hands the settings a string where a boolean or a number goes, and the step dies
+          # naming pydantic and a field rather than the pull. WEB_CHECKOUT_ENABLED took
+          # staging, the E2E gate and the production deploy down this way, for three merges
+          # in a row, while every quality gate stayed green (#536).
+          #
+          # A placeholder is not a value, so leave it out and let the field's default stand --
+          # for a feature flag that is the closed position. Nothing live depends on this file:
+          # it exists to run migrations, and the deployed app reads the real values from the
+          # platform, where a sensitive variable works normally.
+          ENV_FILE=.vercel/.env.production.local
+          UNREADABLE=$(grep -E '^[A-Za-z_][A-Za-z0-9_]*="?\[SENSITIVE\]"?$' "$ENV_FILE" | cut -d= -f1 | paste -sd' ' - || true)
+          if [ -n "$UNREADABLE" ]; then
+            echo "::warning::vercel pull could not read these (stored as Sensitive); they stay unset for the migration: $UNREADABLE"
+            { grep -vE '^[A-Za-z_][A-Za-z0-9_]*="?\[SENSITIVE\]"?$' "$ENV_FILE" || true; } > "$ENV_FILE.readable"
+            mv "$ENV_FILE.readable" "$ENV_FILE"
+          fi
+          set -a && source "$ENV_FILE" && set +a
           STATE=$(python3 scripts/check_alembic_state.py)
           echo "Current alembic state: $STATE"
           case "$STATE" in
