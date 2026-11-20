@@ -200,6 +200,21 @@ working, so anybody who already bought keeps their access and a cancellation sti
 
 Staging needs `WEB_CHECKOUT_ENABLED=true` as well, or sandbox purchases cannot be tested there.
 
+**Add it as a plain variable, not a Sensitive one.** A flag that says whether a buy button
+exists is not a secret, and marking it Sensitive costs something real: Vercel stores such a
+value write-only — "can't be read back from the dashboard or API" — so `vercel pull` writes the
+literal string `[SENSITIVE]` in its place. The deploy jobs source that file to run migrations,
+pydantic gets `[SENSITIVE]` where it wants a boolean, and the staging deploy dies in its
+migration step. Because the E2E gate and the production deploy sit behind it, **nothing reaches
+production at all**, while every quality gate stays green and the error names pydantic rather
+than the pull. Three merges sat on `main` unpublished that way (#536).
+
+The deploy steps now drop any variable whose pulled value is that placeholder, and say in the
+log which ones, so this fails in the open rather than taking the pipeline down. The value is
+then simply absent and the default stands — closed, for this flag. But that also means a flag
+stored as Sensitive **does not reach the migration step at all**, so keep it plain and the
+question does not arise. `backend/tests/test_vercel_env_pull.py` holds the filter in place.
+
 **The sandbox token wins over the production one when both are set.** That is on purpose, so a
 staging deployment cannot take real money. Never set the sandbox token on production.
 
