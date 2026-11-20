@@ -43,6 +43,9 @@ def _event(user_id: str, kind: str = "INITIAL_PURCHASE", store: str = "APP_STORE
         "type": kind,
         "app_user_id": user_id,
         "store": store,
+        # RevenueCat labels every event, and since #506 so must this helper: an unlabelled
+        # one is refused, which is what `test_an_unlabelled_event_is_refused` is for.
+        "environment": "PRODUCTION",
         "product_id": "supporter_yearly",
         "transaction_id": "txn-1",
         "expiration_at_ms": ms + 365 * 24 * 3600 * 1000,
@@ -169,6 +172,200 @@ def test_an_event_from_a_store_we_do_not_know_is_ignored_too(auth_client, db_ses
                             json=_event(user_id, store="SOME_NEW_STORE"), headers=_headers())
 
     assert resp.json()["handled"] is False
+
+# --------------------------------------------------------------------------------------------
+# Which environment an event came from (#506)
+#
+# RevenueCat's webhook configuration offers Production, Sandbox or Both, and Both is its
+# default. Pick that on a webhook pointing at production and a purchase paid for with a test
+# card unlocks the paid features for real. One webhook per environment is the first line of
+# defence; these are the second, for the day somebody clicks "Both".
+# --------------------------------------------------------------------------------------------
+
+def _subscriber(is_sandbox: bool = False, store: str = "app_store", **over):
+    """What RevenueCat's subscriber API answers, cut down to the fields that are read.
+
+    `is_sandbox` sits on the subscription, not on the subscriber: one account can hold a real
+    purchase and a sandbox one, so it is a question per subscription. The store arrives in lower
+    case here, unlike in a webhook event.
+    """
+    expires = (now_utc() + timedelta(days=365)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    detail = {
+        "store": store,
+        "is_sandbox": is_sandbox,
+        "original_purchase_date": "2026-11-01T00:00:00Z",
+    }
+    detail.update(over)
+    return {"subscriber": {
+        "entitlements": {"supporter": {"expires_date": expires,
+                                       "product_identifier": "supporter_yearly"}},
+        "subscriptions": {"supporter_yearly": detail},
+    }}
+
+
+def _accepts(monkeypatch, environment: str):
+    from app import config as cfg
+    monkeypatch.setattr(cfg.settings, "revenuecat_environment", environment)
+
+
+def test_the_default_is_the_strict_one():
+    """A deployment nobody configured must not honour test purchases.
+
+    Forgetting the variable on staging means sandbox purchases are ignored there, which is
+    visible within a minute of testing. The other way round hands the paid features to a test
+    card and says nothing, so the default has to be this one.
+    """
+    from app import config as cfg
+
+    assert cfg.Settings.model_fields["revenuecat_environment"].default == "PRODUCTION"
+
+
+def test_a_sandbox_event_grants_nothing_on_a_production_deployment(auth_client, db_session):
+    """The whole point of #506. A test card must not unlock a real account."""
+    user_id = _user_id(db_session)
+
+    resp = auth_client.post("/api/v1/subscriptions/webhook",
+                            json=_event(user_id, environment="SANDBOX"), headers=_headers())
+
+    assert resp.status_code == 200, "and still 200, or RevenueCat retries it forever"
+    assert resp.json()["handled"] is False
+    assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is False
+
+
+def test_the_matching_environment_still_works(auth_client, db_session, monkeypatch):
+    """The other half: staging accepts what production refuses, or nothing can be tested."""
+    _accepts(monkeypatch, "SANDBOX")
+    user_id = _user_id(db_session)
+
+    resp = auth_client.post("/api/v1/subscriptions/webhook",
+                            json=_event(user_id, environment="SANDBOX"), headers=_headers())
+
+    assert resp.json()["handled"] is True
+    assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is True
+
+
+def test_a_real_purchase_is_ignored_on_a_sandbox_deployment(auth_client, db_session, monkeypatch):
+    """Both directions, because the check is about belonging rather than about being paid for.
+
+    A staging deployment that honoured production events would show somebody else's real
+    subscription to whoever happens to hold that id in its own database.
+    """
+    _accepts(monkeypatch, "SANDBOX")
+    user_id = _user_id(db_session)
+
+    resp = auth_client.post("/api/v1/subscriptions/webhook",
+                            json=_event(user_id, environment="PRODUCTION"), headers=_headers())
+
+    assert resp.json()["handled"] is False
+    assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is False
+
+
+def test_an_unlabelled_event_is_refused(auth_client, db_session):
+    """RevenueCat labels every event it sends, so one without a label is either not from
+    RevenueCat or not what this code was written against. Granting on it would be guessing."""
+    user_id = _user_id(db_session)
+    payload = _event(user_id)
+    del payload["event"]["environment"]
+
+    resp = auth_client.post("/api/v1/subscriptions/webhook", json=payload, headers=_headers())
+
+    assert resp.json()["handled"] is False
+    assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is False
+
+
+@pytest.mark.parametrize("configured", ["", "both", "Production ", "PRODUCTIO"])
+def test_a_setting_nobody_can_read_falls_to_the_strict_side(
+        auth_client, db_session, monkeypatch, configured):
+    """A deployment configured with nonsense gets the strict reading, not a free pass.
+
+    "Both" is the plausible mistake here: it is what RevenueCat's own dashboard calls the
+    setting, so somebody will eventually type it into ours.
+    """
+    _accepts(monkeypatch, configured)
+    user_id = _user_id(db_session)
+
+    sandbox = auth_client.post("/api/v1/subscriptions/webhook",
+                               json=_event(user_id, environment="SANDBOX"), headers=_headers())
+    assert sandbox.json()["handled"] is False
+
+    real = auth_client.post("/api/v1/subscriptions/webhook",
+                            json=_event(user_id, environment="PRODUCTION"), headers=_headers())
+    assert real.json()["handled"] is True, "PRODUCTION is the fallback, so it must still work"
+
+
+def test_the_label_is_read_whatever_its_case(auth_client, db_session):
+    """RevenueCat shouts its enums, but a value read from configuration is typed by a person."""
+    user_id = _user_id(db_session)
+
+    resp = auth_client.post("/api/v1/subscriptions/webhook",
+                            json=_event(user_id, environment=" production "), headers=_headers())
+
+    assert resp.json()["handled"] is True
+
+
+# --------------------------------------------------------------------------------------------
+# The same hole on the other way in: POST /subscriptions/sync
+#
+# This one needs nothing but a signed-in account -- the webhook at least wants the shared
+# secret -- which makes it the easier of the two to reach. It reads a subscriber from
+# RevenueCat's API rather than an event, where the label is a boolean on each subscription.
+# --------------------------------------------------------------------------------------------
+
+def test_sync_grants_what_a_real_purchase_says(auth_client, monkeypatch):
+    """First that it works at all: `read_subscriber` had no test before #506."""
+    from app.utils import revenuecat
+    monkeypatch.setattr(revenuecat, "fetch_subscriber", lambda user_id: _subscriber())
+
+    resp = auth_client.post("/api/v1/subscriptions/sync")
+
+    assert resp.status_code == 200
+    assert resp.json()["status"] == "active"
+    assert resp.json()["source"] == "apple"
+    assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is True
+
+
+def test_sync_ignores_a_sandbox_purchase_on_a_production_deployment(auth_client, monkeypatch):
+    from app.utils import revenuecat
+    monkeypatch.setattr(revenuecat, "fetch_subscriber",
+                        lambda user_id: _subscriber(is_sandbox=True))
+
+    resp = auth_client.post("/api/v1/subscriptions/sync")
+
+    assert resp.status_code == 200, "nothing to act on is not an error"
+    assert resp.json()["status"] == "none"
+    assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is False
+
+
+def test_sync_accepts_a_sandbox_purchase_on_a_sandbox_deployment(auth_client, monkeypatch):
+    from app.utils import revenuecat
+    _accepts(monkeypatch, "SANDBOX")
+    monkeypatch.setattr(revenuecat, "fetch_subscriber",
+                        lambda user_id: _subscriber(is_sandbox=True))
+
+    resp = auth_client.post("/api/v1/subscriptions/sync")
+
+    assert resp.json()["status"] == "active"
+    assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is True
+
+
+def test_sync_does_not_revoke_what_is_already_there_when_it_refuses(
+        auth_client, db_session, monkeypatch):
+    """Refusing an event means "do not act", not "take it away".
+
+    A real subscription on the account and a sandbox purchase arriving afterwards must leave the
+    real one standing. Treating a refusal as an expiry would make a stray sandbox purchase a way
+    to cancel somebody else's subscription.
+    """
+    from app.utils import revenuecat
+    user_id = _user_id(db_session)
+    auth_client.post("/api/v1/subscriptions/webhook", json=_event(user_id), headers=_headers())
+    monkeypatch.setattr(revenuecat, "fetch_subscriber",
+                        lambda uid: _subscriber(is_sandbox=True))
+
+    resp = auth_client.post("/api/v1/subscriptions/sync")
+
+    assert resp.json()["status"] == "active"
+    assert auth_client.get("/api/v1/users/me").json()["is_supporter"] is True
 
 
 # --------------------------------------------------------------------------------------------

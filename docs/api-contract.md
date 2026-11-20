@@ -2675,6 +2675,15 @@ off, a cancellation made in the App Store, a refund granted weeks later, a payme
 **Must be idempotent.** RevenueCat retries on any non-2xx, and events can arrive out of order; an
 event older than the row it would overwrite is dropped rather than applied.
 
+**The event's environment has to match the deployment.** RevenueCat labels every event
+`SANDBOX` or `PRODUCTION`. The server accepts only the one named by `REVENUECAT_ENVIRONMENT`
+(default `PRODUCTION`) and answers `handled: false` to the other, the way it does to a store
+it does not know. An event carrying no label at all is refused too. RevenueCat's webhook
+configuration offers Production, Sandbox or **Both**, and Both is its default — on a
+webhook pointing at production that would let a purchase paid for with a test card unlock
+the paid features for real (#506). The same check applies to `POST /subscriptions/sync`,
+where the subscriber API labels each subscription with an `is_sandbox` boolean instead.
+
 **Request headers**
 ```
 Authorization: Bearer <REVENUECAT_WEBHOOK_SECRET>
@@ -2684,6 +2693,10 @@ Authorization: Bearer <REVENUECAT_WEBHOOK_SECRET>
 ```json
 { "handled": true }
 ```
+
+`handled: false` means the event was understood and deliberately not acted on — an
+ignored event type or store, the wrong environment, or an account that no longer exists.
+It is still a 200, because anything else has RevenueCat retry it forever.
 
 **Response 401** — `WEBHOOK_UNAUTHORIZED`, missing or wrong secret. No body detail: an endpoint
 open to the internet says as little as possible about why it refused.
