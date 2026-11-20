@@ -26,7 +26,7 @@ const I = {
 };
 
 export default function DashboardShell({ children, adminOnly = false, memberOnly = false }: { children: React.ReactNode; adminOnly?: boolean; memberOnly?: boolean }) {
-  const { user, loading } = useDashboardAuth();
+  const { user, loading, failed } = useDashboardAuth();
   const router = useRouter();
   const pathname = usePathname();
   const t = useTranslations('dash');
@@ -54,6 +54,20 @@ export default function DashboardShell({ children, adminOnly = false, memberOnly
   }
 
   const closeMobileNav = () => setMobileNavOpen(false);
+
+  // The account could not be loaded, and the reason was *not* that the session ended — so the
+  // tokens are still there and reloading is likely to work. Saying so beats a spinner that never
+  // stops, and beats the login page we used to show for a server hiccup (#522).
+  if (failed) {
+    return (
+      <div className="dash-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="dash-profile-card" style={{ maxWidth: '420px', textAlign: 'center' }}>
+          <p>{t('loadFailed')}</p>
+          <button className="btn-primary" onClick={() => window.location.reload()}>{t('retry')}</button>
+        </div>
+      </div>
+    );
+  }
 
   if (loading || !user) {
     return (

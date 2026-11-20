@@ -1070,7 +1070,9 @@
       "keep": "El libro de registro de medicamentos veterinarios es obligatorio para los animales productores de alimentos, y las abejas lo son. Conserva el documento impreso cinco años y muéstralo cuando te lo pidan.",
       "title": "Libro de tratamientos",
       "year": "Año"
-    }
+    },
+    "loadFailed": "No se pudo cargar tu cuenta. Sigues con la sesión iniciada; suele ser un problema pasajero del servidor.",
+    "retry": "Reintentar"
   },
   "hiveTypes": {
     "langstroth": "Langstroth",

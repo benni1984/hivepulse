@@ -111,6 +111,21 @@ function jsonHeaders(): Record<string, string> {
   return { 'Content-Type': 'application/json', 'Accept-Language': acceptLanguage() };
 }
 
+/**
+ * The session really is gone: a 401 whose refresh also failed.
+ *
+ * It exists so that callers can tell that one case from "the server had a bad minute". They used
+ * to be the same thrown Error, and the dashboard treated both as a lost session — it wiped the
+ * tokens and sent people to the login page over a 502 or a cold start, with no way back except
+ * signing in again (#522).
+ */
+export class UnauthorizedError extends Error {
+  constructor() {
+    super('unauthorized');
+    this.name = 'UnauthorizedError';
+  }
+}
+
 async function apiFetch(
   path: string,
   init: { method?: string; body?: string; headers?: Record<string, string> } = {},
@@ -131,7 +146,7 @@ async function apiFetch(
     const refreshed = await tryRefresh();
     if (refreshed) return apiFetch(path, init, false);
     clearTokens();
-    throw new Error('unauthorized');
+    throw new UnauthorizedError();
   }
   return res;
 }

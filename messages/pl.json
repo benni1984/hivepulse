@@ -1070,7 +1070,9 @@
       "keep": "Książka leczenia zwierząt jest wymagana dla zwierząt służących do produkcji żywności, a pszczoły do nich należą. Przechowuj wydrukowany dokument przez pięć lat i okaż go na żądanie.",
       "title": "Książka leczenia",
       "year": "Rok"
-    }
+    },
+    "loadFailed": "Nie udało się wczytać twojego konta. Nadal jesteś zalogowany — zwykle to chwilowy problem serwera.",
+    "retry": "Spróbuj ponownie"
   },
   "hiveTypes": {
     "langstroth": "Langstroth",
