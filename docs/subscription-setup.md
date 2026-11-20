@@ -211,23 +211,51 @@ What to check on our side after a sandbox purchase:
 
 ## 5. Going to production
 
-Repeat sections 1.2 to 1.7 in the production Paddle account, **including the `pay.rev.cat` domain
-approval**, create a production web config in RevenueCat pointing at it, and set the production
-token. The webhook URL and secret stay the same.
+Sandbox and production are **separate Paddle accounts**, in RevenueCat's words: "Paddle has
+entirely separate sandbox accounts that should be created and configured as standalone accounts."
+Nothing carries over. Repeat sections 1.2 to 1.7 in the production account — **including the
+`pay.rev.cat` domain approval**, which is the part that takes days — create a production web
+config in RevenueCat pointing at it, and set the production token.
+
+> ### The one switch that is easy to forget, and expensive
+>
+> **The purchase link has exactly one success redirect.** It is not per environment. So while you
+> test against staging it must point at the staging return route, and on the day you go live it
+> must be changed to production.
+>
+> Forget it in the testing direction and you land on production without a session, which looks
+> uncannily like being signed out by a bug — that is what happened on the first sandbox purchase,
+> and an issue was opened against innocent code before the cause turned up.
+>
+> Forget it in the *other* direction and **every paying customer lands on staging**: a different
+> database, no entitlement, no trace of the money they just spent. Nothing in the pipeline can
+> catch this. Check it as the last step before the first real sale.
+
+**Two webhooks, not one.** Each environment gets its own, with its own secret, and with
+RevenueCat's *Environment* set explicitly — Sandbox for the one pointing at
+`apiscan-staging.vercel.app`, Production for the one pointing at `hivepulse.multihead.de`. The
+default is "Both", and "Both" on the production webhook means a purchase paid for with a test card
+grants a real entitlement, because the server does not read the environment field (#506). Today
+only the mismatch between the two databases' account ids stops it, which is luck rather than
+design.
 
 ---
 
 ## What this document does not know
 
-Two things were not answered by any page read for this, and both are yours to settle:
+- **Whether you need a trade registration.** `lib/imprint.ts` puts the operator in Sissach, so
+  this is a Swiss question — selling a subscription regularly and with intent to profit, and from
+  what turnover that has to be entered in the commercial register. Paddle being merchant of
+  record removes the VAT filing, not the registration. That is a question for a Treuhand, and it
+  belongs before the first franc rather than after it.
 
-- **Whether Paddle onboards an individual.** Their documentation talks about account
-  verification and says approval "could take some time"; it does not say whether a registered
-  business is required. Ask Paddle before counting on it.
-- **Whether you need a trade registration.** Selling a subscription regularly and with intent to
-  profit is a *Gewerbe* in Germany, whatever the payment provider. Paddle being merchant of
-  record removes the VAT filing, not the registration. That is a question for the Gewerbeamt and
-  a Steuerberater, and it belongs before the first euro rather than after it.
+**Answered since this was written:** whether Paddle onboards an individual. It does, and it is the
+easier path. Verification has three stages — domain review, business verification, identity
+verification — and of the middle one Paddle says plainly: "this step is not required for
+individuals or sole traders." Choosing *Individual* rather than *Private* at signup therefore
+skips the registration documents and the ownership breakdown entirely; only your own identity is
+checked, through their partner Sumsub, with a photo ID and a proof of address. *Private* means a
+privately held company and asks for papers an individual does not have.
 
 ---
 
