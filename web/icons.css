@@ -8,7 +8,7 @@
  *
  * Only the icons this site draws are in here. The vendor's three files are about 300 KB
  * together; what is shipped below is a fraction of that, because a site that draws
- * 36 icons has no use for 2465.
+ * 34 icons has no use for 2465.
  *
  * Font Awesome Free 6.5.0
  * Icons: CC BY 4.0 -- https://creativecommons.org/licenses/by/4.0/
@@ -73,7 +73,6 @@
 .fa-chevron-right::before { content: '\f054'; }
 .fa-clock::before { content: '\f017'; }
 .fa-code-branch::before { content: '\f126'; }
-.fa-coffee::before { content: '\f0f4'; }
 .fa-crown::before { content: '\f521'; }
 .fa-egg::before { content: '\f7fb'; }
 .fa-expand-alt::before { content: '\f424'; }
@@ -85,7 +84,6 @@
 .fa-info-circle::before { content: '\f05a'; }
 .fa-lightbulb::before { content: '\f0eb'; }
 .fa-map-marked-alt::before { content: '\f5a0'; }
-.fa-paypal::before { content: '\f1ed'; }
 .fa-question-circle::before { content: '\f059'; }
 .fa-search::before { content: '\f002'; }
 .fa-seedling::before { content: '\f4d8'; }

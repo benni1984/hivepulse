@@ -33,6 +33,7 @@ export default function Footer() {
           <div className="footer-links">
             <h4>{t('explore')}</h4>
             <ul>
+              <li><Link href="/pricing">{tn('pricing')}</Link></li>
               <li><Link href="/map">{tn('map')}</Link></li>
               <li><Link href="/members">{tn('members')}</Link></li>
               <li><Link href="/news">{tn('news')}</Link></li>
@@ -44,13 +45,6 @@ export default function Footer() {
             <ul>
               <li><Link href="/contribute">{tn('contribute')}</Link></li>
               <li><a href="https://github.com/benni1984/HivePulse" target="_blank" rel="noopener">GitHub</a></li>
-            </ul>
-          </div>
-          <div className="footer-links">
-            <h4>{t('support')}</h4>
-            <ul>
-              <li><a href="https://ko-fi.com/benjaminmuller64800" target="_blank" rel="noopener" data-umami-event="footer_kofi">Ko-fi</a></li>
-              <li><a href="https://www.paypal.com/donate/?hosted_button_id=H583STJ96AXT2" target="_blank" rel="noopener" data-umami-event="footer_paypal">PayPal</a></li>
             </ul>
           </div>
           <div className="footer-links">

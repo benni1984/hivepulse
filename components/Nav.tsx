@@ -129,6 +129,7 @@ export default function Nav({ locale }: { locale: string }) {
           <li><Link href="/news"       className={`nav-link-news${isActive('/news') ? ' active' : ''}`}       onClick={() => setMenuOpen(false)}>{t('news')}</Link></li>
           <li><Link href="/contribute" className={`nav-link-contribute${isActive('/contribute') ? ' active' : ''}`} onClick={() => setMenuOpen(false)}>{t('contribute')}</Link></li>
           <li><Link href="/members"    className={`nav-link-members${isActive('/members') ? ' active' : ''}`}    onClick={() => setMenuOpen(false)}>{t('members')}</Link></li>
+          <li><Link href="/pricing"    className={`nav-link-pricing${isActive('/pricing') ? ' active' : ''}`}    onClick={() => setMenuOpen(false)}>{t('pricing')}</Link></li>
           {isLoggedIn && (
             <li className="nav-mobile-account">
               <Link href="/dashboard" onClick={() => setMenuOpen(false)}>{t('dashboard')}</Link>

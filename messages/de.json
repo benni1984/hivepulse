@@ -14,13 +14,13 @@
     "back": {
       "map": "← Live-Karte"
     },
+    "pricing": "Preise",
     "releaseNotes": "Release Notes"
   },
   "footer": {
     "tagline": "Open-Source-Imkerei für einen gesünderen Planeten.",
     "explore": "Entdecken",
     "community": "Gemeinschaft",
-    "support": "Unterstützen",
     "legal": "Rechtliches",
     "privacy": "Datenschutzerklärung",
     "copyright": "© 2025 HivePulse. Veröffentlicht unter der MIT-Lizenz.",
@@ -46,6 +46,25 @@
     },
     "scroll": "Runterscrollen für mehr",
     "phoneLabel": "Dashboard-Screenshot"
+  },
+  "pricing": {
+    "title": "Preise",
+    "intro": "HivePulse ist ein Stockbuch für Imkerinnen und Imker. Bis zu zehn Völker sind dauerhaft kostenlos; das Supporter-Abo hebt diese Grenze auf und schaltet frei, was eine größere Imkerei braucht. Ein Preis, jährlich abgerechnet, jederzeit kündbar.",
+    "knowTitle": "Was du wissen solltest",
+    "q1title": "Was passiert, wenn ich zehn Völker erreiche?",
+    "q1body": "Es endet nur das Anlegen des elften. Nichts, was schon erfasst ist, wird versteckt, gesperrt oder gelöscht — keine Kontrolle, kein Foto, kein Volk. Eine Grenze, die bereits geleistete Arbeit wegnimmt, wäre bei einer Aufzeichnung über lebende Tiere das Falsche, und deshalb tut sie es nie.",
+    "q2title": "Was kostet es, und ist die Steuer enthalten?",
+    "q2body": "{price} im Jahr für ein Konto, inklusive Mehrwertsteuer, wo sie anfällt. Es gibt kein Monatsabo: Imkerei läuft in Jahreszeiten, und ein Monatsabo würde vor allem den Winter in Rechnung stellen.",
+    "q3title": "Wie kündige ich?",
+    "q3body": "Auf der Abo-Seite deines Kontos, ohne Frist. Das Abo läuft dann bis zum Ende des bezahlten Jahres und verlängert sich einfach nicht. Deine Völker bleiben; es endet nur wieder das Anlegen von mehr als zehn.",
+    "q4title": "Bekomme ich mein Geld zurück?",
+    "q4body": "Ja. Als Verbraucher in der Europäischen Union hast du vierzehn Tage, um einen Kauf im Internet ohne Angabe von Gründen zu widerrufen. Wer erstattet und wie, steht in der Erstattungsrichtlinie.",
+    "q5title": "Wo kaufe ich es?",
+    "q5body": "Auf dieser Website, angemeldet in deinem Konto — das Abo gehört zum Konto und nicht zu einem Gerät, es gilt also im Web, auf Android und auf dem iPhone gleichzeitig. Die Apps verkaufen es nicht.",
+    "q6title": "Was bleibt in jedem Fall kostenlos?",
+    "q6body": "Der Hornissen-Tracker, das Imkerjahr, die QR-Codes, Kontrollen ohne Empfang, die Gemeinschaftskarte und der Export deiner eigenen Daten. Sie sind absichtlich kostenlos und nicht als Testphase.",
+    "legal": "Für jeden Kauf gelten die Nutzungsbedingungen, die Erstattungsrichtlinie und die Datenschutzerklärung.",
+    "more": "Alle Preisdetails und das Kleingedruckte"
   },
   "stats": {
     "title": "Unsere Gemeinschaft, gerade jetzt",
@@ -155,9 +174,9 @@
     }
   },
   "support": {
-    "tag": "Unterstütze die Mission",
-    "title": "Halte die Völker am Summen",
-    "sub": "HivePulse ist kostenlos nutzbar. Ein kleiner Beitrag hält die Server am Laufen, finanziert neue Funktionen und unterstützt unsere Forschungspartnerschaften."
+    "tag": "Preise",
+    "title": "Kostenlos anfangen, wachsen wenn es nötig ist",
+    "sub": "Bis zu 10 Völker sind dauerhaft kostenlos. Das Supporter-Abo hebt die Grenze auf und schaltet das Bestandsbuch, eigene Kontrollfelder, geteilte Bienenstände und die regionale Gesundheitskarte frei. Jederzeit kündbar."
   },
   "price": {
     "free": {
@@ -184,18 +203,11 @@
       "f7": "Die regionale Gesundheitskarte",
       "f8": "Jederzeit kündbar, ohne Frist"
     },
-    "coming": "Demnächst",
-    "donate": {
-      "tier": "Einmalige Spende",
-      "price": "Dein Betrag",
-      "note": "Jeder Beitrag, egal wie groß, hilft HivePulse unabhängig, werbefrei und für alle Imker zugänglich zu halten."
-    }
+    "coming": "Demnächst"
   },
   "btn": {
     "free": "Kostenlos herunterladen",
-    "supporter": "Supporter werden",
-    "kofi": "Auf Ko-fi unterstützen",
-    "paypal": "Per PayPal spenden"
+    "supporter": "Supporter werden"
   },
   "dl": {
     "tag": "Noch heute starten",
@@ -1376,6 +1388,8 @@
     "membersTitle": "Gemeinschaftsstatistik",
     "newsDescription": "Was es Neues in HivePulse gibt: Funktionen, sobald sie fertig sind, und die Fehler dahinter ausführlich aufgeschrieben.",
     "newsTitle": "Neuigkeiten",
+    "pricingDescription": "Was HivePulse kostet: zehn Völker dauerhaft kostenlos, und was das Supporter-Abo dazugibt. Ein Jahrespreis, jederzeit kündbar.",
+    "pricingTitle": "Preise",
     "privacyDescription": "Was HivePulse speichert, warum, wie lange, und welche Unternehmen Daten in unserem Auftrag verarbeiten. Zum Lesen geschrieben, nicht zum Überspringen.",
     "privacyTitle": "Datenschutz",
     "registerDescription": "Kostenloses HivePulse-Konto erstellen: Kontrollen erfassen, Varroa-Zahlen verfolgen und die Geschichte jedes Volks an einem Ort behalten.",

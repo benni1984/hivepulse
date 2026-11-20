@@ -14,13 +14,13 @@
     "back": {
       "map": "← Mapa na żywo"
     },
+    "pricing": "Cennik",
     "releaseNotes": "Informacje o wersjach"
   },
   "footer": {
     "tagline": "Pszczelarstwo z otwartym kodem dla zdrowszej planety.",
     "explore": "Odkrywaj",
     "community": "Społeczność",
-    "support": "Wesprzyj nas",
     "legal": "Informacje prawne",
     "privacy": "Polityka prywatności",
     "copyright": "© 2025 HivePulse. Udostępniane na licencji MIT.",
@@ -46,6 +46,25 @@
     },
     "scroll": "Przewiń, aby dowiedzieć się więcej",
     "phoneLabel": "Zrzut ekranu panelu"
+  },
+  "pricing": {
+    "title": "Cennik",
+    "intro": "HivePulse to dziennik pasieczny dla pszczelarzy. Do dziesięciu rodzin pszczelich jest bezpłatnie na zawsze; abonament supporter znosi ten limit i odblokowuje to, czego potrzebuje większa pasieka. Jedna cena, rozliczana rocznie, można zrezygnować w każdej chwili.",
+    "knowTitle": "Co warto wiedzieć",
+    "q1title": "Co się stanie, gdy osiągnę dziesięć rodzin?",
+    "q1body": "Kończy się tylko dodawanie jedenastej. Nic z tego, co już zapisane, nie zostaje ukryte, zablokowane ani usunięte — ani przegląd, ani zdjęcie, ani rodzina. Limit, który odbierałby już wykonaną pracę, byłby w dokumentacji żywych zwierząt rzeczą niewłaściwą, i dlatego nigdy tego nie robi.",
+    "q2title": "Ile to kosztuje i czy podatek jest w cenie?",
+    "q2body": "{price} rocznie za konto, z VAT tam, gdzie jest należny. Nie ma planu miesięcznego: pszczelarstwo toczy się w sezonach, a abonament miesięczny obciążałby głównie zimę.",
+    "q3title": "Jak zrezygnować?",
+    "q3body": "Na stronie abonamentu w swoim koncie, bez wypowiedzenia. Abonament trwa wtedy do końca opłaconego roku i po prostu się nie odnawia. Twoje rodziny zostają; kończy się tylko znów dodawanie więcej niż dziesięciu.",
+    "q4title": "Czy dostanę zwrot pieniędzy?",
+    "q4body": "Tak. Jako konsument w Unii Europejskiej masz czternaście dni na odstąpienie od zakupu przez internet bez podawania przyczyny. Kto zwraca i w jaki sposób, mówi polityka zwrotów.",
+    "q5title": "Gdzie go kupić?",
+    "q5body": "Na tej stronie, po zalogowaniu się na swoje konto — abonament należy do konta, a nie do urządzenia, więc obowiązuje jednocześnie w przeglądarce, na Androidzie i na iPhonie. Aplikacje go nie sprzedają.",
+    "q6title": "Co pozostaje bezpłatne w każdym przypadku?",
+    "q6body": "Tropiciel szerszenia azjatyckiego, rok pszczelarski, kody QR, przeglądy zapisane bez zasięgu, mapa społeczności i eksport własnych danych. Są bezpłatne celowo, a nie jako okres próbny.",
+    "legal": "Do każdego zakupu stosuje się warunki korzystania, politykę zwrotów i politykę prywatności.",
+    "more": "Wszystkie szczegóły cennika i drobny druk"
   },
   "stats": {
     "title": "Nasza społeczność, właśnie teraz",
@@ -155,9 +174,9 @@
     }
   },
   "support": {
-    "tag": "Wesprzyj misję",
-    "title": "Niech ule brzęczą dalej",
-    "sub": "HivePulse jest darmowy. Mały datek pozwala utrzymać serwery, finansuje nowe funkcje i wspiera nasze partnerstwa badawcze. Żaden pszczelarz nie powinien odpaść przez cenę."
+    "tag": "Cennik",
+    "title": "Zacznij bezpłatnie, rozwijaj się w razie potrzeby",
+    "sub": "Do 10 rodzin pszczelich jest bezpłatnie na zawsze. Abonament supporter znosi limit i odblokowuje książkę leczenia, własne pola przeglądu, udostępniane pasieki oraz regionalną mapę zdrowia. Można zrezygnować w każdej chwili."
   },
   "price": {
     "free": {
@@ -184,18 +203,11 @@
       "f7": "Regionalna mapa zdrowia",
       "f8": "Można zrezygnować w każdej chwili, bez wypowiedzenia"
     },
-    "coming": "Wkrótce",
-    "donate": {
-      "tier": "Jednorazowy datek",
-      "price": "Kwota dowolna",
-      "note": "Każdy datek, niezależnie od wysokości, pomaga HivePulse pozostać niezależnym, wolnym od reklam i darmowym dla pszczelarzy, którzy najbardziej tego potrzebują."
-    }
+    "coming": "Wkrótce"
   },
   "btn": {
     "free": "Pobierz za darmo",
-    "supporter": "Zostań wspierającym",
-    "kofi": "Wesprzyj na Ko-fi",
-    "paypal": "Wpłać przez PayPal"
+    "supporter": "Zostań wspierającym"
   },
   "dl": {
     "tag": "Zacznij już dziś",
@@ -1376,6 +1388,8 @@
     "membersTitle": "Statystyki społeczności",
     "newsDescription": "Co nowego w HivePulse: funkcje zaraz po wydaniu i stojące za nimi błędy, opisane dokładnie.",
     "newsTitle": "Aktualności",
+    "pricingDescription": "Ile kosztuje HivePulse: dziesięć rodzin pszczelich bezpłatnie na zawsze i co dodaje abonament supporter. Jedna cena roczna, można zrezygnować w każdej chwili.",
+    "pricingTitle": "Cennik",
     "privacyDescription": "Co HivePulse przechowuje, dlaczego, jak długo i które firmy przetwarzają dane na nasze zlecenie. Napisane po to, by je przeczytać.",
     "privacyTitle": "Prywatność",
     "registerDescription": "Utwórz darmowe konto HivePulse, aby zapisywać przeglądy, śledzić liczbę warrozy i mieć historię każdej rodziny pszczelej w jednym miejscu.",

@@ -14,13 +14,13 @@
     "back": {
       "map": "← Live Map"
     },
+    "pricing": "Pricing",
     "releaseNotes": "Release notes"
   },
   "footer": {
     "tagline": "Open-source beekeeping for a healthier planet.",
     "explore": "Explore",
     "community": "Community",
-    "support": "Support Us",
     "legal": "Legal",
     "privacy": "Privacy Policy",
     "copyright": "© 2025 HivePulse. Released under the MIT License.",
@@ -46,6 +46,25 @@
     },
     "scroll": "Scroll to learn more",
     "phoneLabel": "Dashboard Screenshot"
+  },
+  "pricing": {
+    "title": "Pricing",
+    "intro": "HivePulse is a hive record book for beekeepers. Up to ten colonies are free for good; the supporter subscription lifts that limit and unlocks what a larger beekeeping operation needs. One price, billed yearly, cancellable at any time.",
+    "knowTitle": "What you should know",
+    "q1title": "What happens when I reach ten colonies?",
+    "q1body": "Only adding the eleventh one stops. Nothing already recorded is hidden, locked or deleted — not an inspection, not a photo, not a hive. A limit that took away work somebody had already done would be the wrong thing to do to a record of living animals, so it never does.",
+    "q2title": "What does it cost, and is tax included?",
+    "q2body": "{price} a year for an account, including VAT where it applies. There is no monthly plan: beekeeping runs in seasons, and a monthly subscription would mostly bill people for the winter.",
+    "q3title": "How do I cancel?",
+    "q3body": "On the subscription page of your account, with no notice period. The subscription then runs to the end of the year you paid for and simply does not renew. Your colonies stay; only adding more than ten stops again.",
+    "q4title": "Can I get my money back?",
+    "q4body": "Yes. As a consumer in the European Union you have fourteen days to withdraw from an online purchase without giving a reason. The refund policy says who refunds it and how.",
+    "q5title": "Where do I buy it?",
+    "q5body": "On this website, signed in to your account — the subscription belongs to the account and not to a device, so it counts on the website, on Android and on the iPhone at the same time. The apps do not sell it.",
+    "q6title": "What stays free, whatever I do?",
+    "q6body": "The Asian hornet tracker, the beekeeping year, QR codes, inspections recorded without a signal, the community map and the export of your own data. They are free on purpose, and not as a trial.",
+    "legal": "The terms of use, the refund policy and the privacy policy apply to every purchase.",
+    "more": "Full pricing details and the fine print"
   },
   "stats": {
     "title": "Our Community, Right Now",
@@ -155,9 +174,9 @@
     }
   },
   "support": {
-    "tag": "Support the Mission",
-    "title": "Keep the hives buzzing",
-    "sub": "HivePulse is free to use. A small contribution keeps the servers running, funds new features, and supports our research partnerships. No beekeeper should be priced out."
+    "tag": "Pricing",
+    "title": "Start free, grow when you need to",
+    "sub": "Up to 10 colonies are free for good. The supporter subscription lifts the limit and unlocks the treatment record, custom inspection fields, shared apiaries and the regional health map. Cancel any time."
   },
   "price": {
     "free": {
@@ -184,18 +203,11 @@
       "f7": "The regional health map",
       "f8": "Cancel any time, no notice period"
     },
-    "coming": "Coming soon",
-    "donate": {
-      "tier": "One-time Donation",
-      "price": "Your choice",
-      "note": "Every contribution, no matter the size, helps keep HivePulse independent, ad-free, and free for beekeepers who need it most."
-    }
+    "coming": "Coming soon"
   },
   "btn": {
     "free": "Download Free",
-    "supporter": "Get Supporter",
-    "kofi": "Support on Ko-fi",
-    "paypal": "Donate via PayPal"
+    "supporter": "Get Supporter"
   },
   "dl": {
     "tag": "Get Started Today",
@@ -1376,6 +1388,8 @@
     "membersTitle": "Community Statistics",
     "newsDescription": "What is new in HivePulse: features as they ship, and the bugs behind them written up in full.",
     "newsTitle": "News",
+    "pricingDescription": "What HivePulse costs: ten colonies free for good, and what the supporter subscription adds. One yearly price, cancellable at any time.",
+    "pricingTitle": "Pricing",
     "privacyDescription": "What HivePulse stores, why, for how long, and which companies process data on our behalf. Written to be read, not to be skipped.",
     "privacyTitle": "Privacy",
     "registerDescription": "Create a free HivePulse account to log inspections, follow varroa counts and keep every hive's history in one place.",
