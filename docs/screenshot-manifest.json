@@ -117,7 +117,7 @@
     "fingerprint": "00fabd57e7efbb220b4954c906288ab3ebc3758a26f8b8b91ed7ccf2fb5c8c81"
   },
   "web": {
-    "captured": "2026-11-19",
+    "captured": "2026-11-20",
     "files": {
       "app/CLAUDE.md": "709195bac9e7b142a5e02ada5a00b76cb3d8c332cb45694d4c54798cd894dfe4",
       "app/[locale]/apiary/page.tsx": "576850ea1ca11f28f2a4c8a940634d57970bb44cf2230acacc9718f8639e5803",
@@ -260,7 +260,7 @@
       "app/[locale]/map/page.tsx": "fc2b81606b5b473b022734936bf70c124514d14fdd9fdde207a6d6f015bd2152",
       "app/[locale]/members/page.tsx": "b16e3fcd924ebb08683d00d52b7c8e2a45fba25011993f2393cf6885b7c9785c",
       "app/[locale]/news/page.tsx": "6847a105b009e49ac9e4497e829195b1ab54f455736e11189162431de449fb44",
-      "app/[locale]/page.tsx": "f0764e221ea298b480ac1b17d2d91a7d3231f846fcc86f9b8eb3de4ae13eadd6",
+      "app/[locale]/page.tsx": "9f1c142df92494b99004541502287bba14bdf7af354e32cc8220014ff92e4684",
       "app/[locale]/privacy/page.tsx": "4309ab0c5e6a9d915c231678dfb93b0ad36caac574e2e9d2b567b22ff5c43db2",
       "app/[locale]/refunds/page.tsx": "fdeae845dffc1c8a73f72ef50e4ccf54c9d5bdcbac007e8ec8733c0c0a0efdec",
       "app/[locale]/release-notes/page.tsx": "51ab2f43cfb9c37db22e37674f498a4afe2dd24fe430e2753510b8d98d019092",
@@ -273,7 +273,7 @@
       "components/BeekeepingYear.tsx": "a7acb0c388ac257ed5f200dee666be664f6b97ccc5e8931fcba0c4878824069b",
       "components/CityChart.tsx": "8439b4fc597314fb002761b199cb85f0bcca583a38c4556740417ef6a54dc8e9",
       "components/CommunityMap.tsx": "b4e292f8d4412ee4e182e9719a73fc3f83f81e2b6f189e191634ade0fdeb2909",
-      "components/DashboardShell.tsx": "e5b5ff6a20668d5fbeddf290f06836875768e23ccb924db3cb51624d0936b817",
+      "components/DashboardShell.tsx": "4616f3f662ba019f3697213a355f004fb169040e4917098844c0c37c605f772d",
       "components/FeatureForm.tsx": "976902e2bb81d09c5d22f9ce680249dc4eef6448ebd5a0d9b62d4ba9dc2a29a5",
       "components/Footer.tsx": "bca9ee1651c4e303e402960cbda6d5e6c2159453b81f39476c9a74ca1229afcc",
       "components/GuidedTour.tsx": "37818cf8c6c8255e0763a1d668e4f818565f9c7291fd1f9d79ce6444690c3c0c",
@@ -300,14 +300,14 @@
       "components/YearFeedback.tsx": "05eeae99b14d2958f7afeff714d6e9310cb4ae3ebc856a69666f4885098954ac",
       "components/year/EntryIcon.tsx": "7e17a999327766f0e2856a82172d09acc0b8a7be846cf17e97a8f12d9a24e718",
       "components/year/YearRibbon.tsx": "8cfe689c9ee82eeaef0a3876d598597aa3a64b7ea1063dbeab1f50b485dc7584",
-      "messages/de.json": "87b978b14c8cedbdb43260c7acd496aa43a70a8bc18ac33d7da91fb36bd70c0a",
-      "messages/en.json": "a36ade517daec68d95df5c14ec676beb5dd2a94c92df10cef57c24d8cc8db9f3",
-      "messages/es.json": "c5904e5bb5bac249d01d951601edc02288d88f1597fae8b0466abe45c7f1990d",
-      "messages/fr.json": "1fce4f8213cccbce85ae767d246929f26d475bbfce56cd41468683519ff5f9d4",
-      "messages/pl.json": "71228b0cf4fc1d5a996787111cd4908a20c9361a11c6e788674f3529f90d792d",
+      "messages/de.json": "ff65f68010fb7836a724b7a9622a2d1620e8e178cf13764324a3f6ff60837583",
+      "messages/en.json": "90b61ef8f2ab83f57fdd7b6afb719abf306cc5782c768e1bfdb66ca6fb75f9fc",
+      "messages/es.json": "9216e81bdc819af2a42fda70956e69f75a5cadf554d3d336bdef380f40891449",
+      "messages/fr.json": "3b8a0b49d1dc04cd2b169260cd2df62646799d9a61b175bf8c596c50a686b0aa",
+      "messages/pl.json": "c01ce9877d29e916269293d16c36a25e7d907f1f8b786f2e138dbac6b1f67fef",
       "web/landing.css": "2aeab1ee9f334ab084d503776db9272bcfbd2b28868e146158c062875d185bc3",
       "web/style.css": "7291ccc8a75041556e935475f2eb4c08a757b6c35c8257cbb0a30cd665f307f2"
     },
-    "fingerprint": "e4f3112c597ed8bac2c7ef8c8e0c3eab0313d57190b33a7d66ee3a9afc52ba2e"
+    "fingerprint": "81a59d83bfd5620649ff7a471a885be5404b072e265023dacf7f51e4092e9fe6"
   }
 }
