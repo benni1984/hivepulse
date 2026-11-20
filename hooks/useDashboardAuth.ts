@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from '@/i18n/navigation';
-import { getMe, clearTokens, type User } from '@/lib/api';
+import { getMe, clearTokens, UnauthorizedError, type User } from '@/lib/api';
 
 // Dashboard pages call this hook a second time (alongside DashboardShell) to
 // gate their own data-fetching effects on auth readiness — see useDashboardReady
@@ -13,6 +13,7 @@ export function useDashboardAuth() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -25,10 +26,24 @@ export function useDashboardAuth() {
     }
     inflightMe
       .then(u => { setUser(u); setLoading(false); })
-      .catch(() => { clearTokens(); router.replace('/dashboard/login'); });
+      .catch((e) => {
+        // Only a session that is genuinely gone may end the session. Everything else — a 502, a
+        // timeout, a cold start of the Python function, a dropped connection — used to land here
+        // too and was answered by wiping both tokens and redirecting to the login page. That is
+        // unrecoverable by reloading, and the first call on every dashboard page load is this
+        // one, so a single bad response signed somebody out on a day when nothing was wrong with
+        // their session (#522).
+        if (e instanceof UnauthorizedError) {
+          clearTokens();
+          router.replace('/dashboard/login');
+          return;
+        }
+        setFailed(true);
+        setLoading(false);
+      });
   }, [router]);
 
-  return { user, loading };
+  return { user, loading, failed };
 }
 
 /**

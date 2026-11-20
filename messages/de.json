@@ -1070,7 +1070,9 @@
       "keep": "Das Bestandsbuch über Tierarzneimittel ist für Lebensmittel liefernde Tiere vorgeschrieben, und Bienen gehören dazu. Bewahre das ausgedruckte Dokument fünf Jahre auf und lege es auf Verlangen vor.",
       "title": "Bestandsbuch",
       "year": "Jahr"
-    }
+    },
+    "loadFailed": "Dein Konto konnte nicht geladen werden. Du bist weiterhin angemeldet — meist ist das ein kurzes Serverproblem.",
+    "retry": "Erneut versuchen"
   },
   "hiveTypes": {
     "langstroth": "Langstroth",

@@ -1070,7 +1070,9 @@
       "keep": "Keeping the record of veterinary medicines is required for food-producing animals, and bees are. Keep the printed document for five years and show it on request.",
       "title": "Treatment record",
       "year": "Year"
-    }
+    },
+    "loadFailed": "Your account could not be loaded. You are still signed in — this is usually a short server problem.",
+    "retry": "Try again"
   },
   "hiveTypes": {
     "langstroth": "Langstroth",

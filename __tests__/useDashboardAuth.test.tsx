@@ -15,9 +15,20 @@ vi.mock('@/i18n/navigation', () => ({
   useRouter: () => mockRouter,
 }));
 
+// A real class, not a stub: the hook decides with `instanceof`, which is the whole point of
+// #522 — telling a session that is genuinely gone from a server that had a bad minute.
+// Declared through vi.hoisted because vi.mock is lifted above ordinary declarations.
+const UnauthorizedError = vi.hoisted(() => class UnauthorizedError extends Error {
+  constructor() {
+    super('unauthorized');
+    this.name = 'UnauthorizedError';
+  }
+});
+
 vi.mock('@/lib/api', () => ({
   getMe: mockGetMe,
   clearTokens: mockClearTokens,
+  UnauthorizedError,
 }));
 
 const mockUser = { id: '1', email: 'a@b.com', name: 'Test', locale: 'en', created_at: '2024-01-01' };
@@ -45,12 +56,51 @@ describe('useDashboardAuth', () => {
     expect(mockRouter.replace).not.toHaveBeenCalled();
   });
 
-  it('clears tokens and redirects when getMe throws', async () => {
+  it('clears tokens and redirects when the session really is gone', async () => {
     localStorage.setItem('access_token', 'expired');
-    mockGetMe.mockRejectedValueOnce(new Error('unauthorized'));
+    mockGetMe.mockRejectedValueOnce(new UnauthorizedError());
     renderHook(() => useDashboardAuth());
     await waitFor(() => expect(mockRouter.replace).toHaveBeenCalledWith('/dashboard/login'));
     expect(mockClearTokens).toHaveBeenCalled();
+  });
+
+  it('does not sign anybody out over a server error', async () => {
+    // This used to clear both tokens and redirect, which cannot be undone by reloading: the
+    // tokens were gone from localStorage. The first call on every dashboard page load is this
+    // one, so a single 502 or a cold start signed somebody out on a day when their session was
+    // perfectly good (#522).
+    localStorage.setItem('access_token', 'good');
+    mockGetMe.mockRejectedValueOnce(new Error('Failed to get user'));
+
+    const { result } = renderHook(() => useDashboardAuth());
+
+    await waitFor(() => expect(result.current.failed).toBe(true));
+    expect(result.current.loading).toBe(false);
+    expect(mockClearTokens).not.toHaveBeenCalled();
+    expect(mockRouter.replace).not.toHaveBeenCalled();
+    expect(localStorage.getItem('access_token')).toBe('good');
+  });
+
+  it('does not sign anybody out when the request never arrives', async () => {
+    // A dropped connection rejects the fetch itself, so it never carries a status at all.
+    localStorage.setItem('access_token', 'good');
+    mockGetMe.mockRejectedValueOnce(new TypeError('Failed to fetch'));
+
+    const { result } = renderHook(() => useDashboardAuth());
+
+    await waitFor(() => expect(result.current.failed).toBe(true));
+    expect(mockClearTokens).not.toHaveBeenCalled();
+    expect(mockRouter.replace).not.toHaveBeenCalled();
+  });
+
+  it('reports no failure on the happy path', async () => {
+    localStorage.setItem('access_token', 'tok');
+    mockGetMe.mockResolvedValueOnce(mockUser);
+
+    const { result } = renderHook(() => useDashboardAuth());
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+    expect(result.current.failed).toBe(false);
   });
 
   it('dedupes concurrent hook instances into a single getMe call', async () => {

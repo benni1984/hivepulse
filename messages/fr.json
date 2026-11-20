@@ -1070,7 +1070,9 @@
       "keep": "Le registre des médicaments vétérinaires est obligatoire pour les animaux producteurs de denrées alimentaires, ce que sont les abeilles. Conservez le document imprimé cinq ans et présentez-le sur demande.",
       "title": "Registre des traitements",
       "year": "Année"
-    }
+    },
+    "loadFailed": "Votre compte n'a pas pu être chargé. Vous êtes toujours connecté — c'est en général un problème de serveur passager.",
+    "retry": "Réessayer"
   },
   "hiveTypes": {
     "langstroth": "Langstroth",
