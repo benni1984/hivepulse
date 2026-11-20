@@ -311,6 +311,47 @@ active and only clears `will_renew`.
 
 ---
 
+## Nothing on the website may ask for a donation — decided the hard way (#533)
+
+Paddle reviewed `hivepulse.multihead.de`, classified it as **"Other/Donations"** and refused the
+application outright. Not the domain check — the whole application:
+
+> We're not able to activate your account to take payments through Paddle.
+
+It was not their mistake. Their Acceptable Use Policy excludes anything sold
+
+> Where there is no bona fide software or service sold, including but not limited to donations,
+> crowdfunding, community access, advertising, and sponsorship.
+
+and what the reviewer found on the page we submitted as our pricing page was a third card reading
+**"One-time donation — your amount"** with a **Ko-fi** button and a `paypal.com/donate/` button,
+under the heading "Support the mission / A small contribution keeps the servers running". The
+footer repeated both links on every page of the site.
+
+So: **no donation link, button, tier or appeal goes back on this domain.** Not in the footer, not
+on the landing page, not in a help article. A Ko-fi button looks like free money and costs the
+ability to sell anything at all. `__tests__/NoDonationRoutes.test.ts` fails the build if one
+returns, and it names the hosts it refuses.
+
+If donations are ever wanted again, that is a decision about **who processes payments**, not a
+tweak to a page. Make it first, then delete that test on purpose.
+
+### The fallback, if the appeal fails
+
+There is exactly one appeal. If it is refused, the way through is **Stripe Billing with Managed
+Payments** behind the same RevenueCat interface:
+
+* Stripe is then merchant of record and handles VAT collection and remittance, as Paddle would have.
+* **Switzerland is a supported seller country**, and software/SaaS is an eligible category with its
+  own tax code. Stripe runs an eligibility review of the account, but there is **no domain review** —
+  it judges the *product* by its tax code, so donations elsewhere on the site cannot disqualify the
+  subscription the way they did here.
+* Web Purchase Links keep working, so **the backend does not change**: `pay.rev.cat/<token>/<id>`,
+  the webhook and `app/utils/entitlements.py` all stay. That is the dividend of letting our own
+  table be the source of truth instead of the provider.
+* What it does cost is text: Paddle is named as the seller in the privacy policy, the terms and the
+  refund policy, in five languages, plus sections 1 and 6 of this document.
+
 ## What this document does not know
 
 - **Whether you need a trade registration.** `lib/imprint.ts` puts the operator in Sissach, so

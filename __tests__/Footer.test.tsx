@@ -51,10 +51,23 @@ describe('Footer', () => {
     expect(socialLinks.length).toBe(2);
   });
 
-  it('links the support section to Ko-fi and PayPal', () => {
+  it('has no donation column at all', () => {
+    // It held a Ko-fi link and a PayPal donate link on every page of the site, which is what
+    // had Paddle classify the domain as "Other/Donations" and refuse the application to take
+    // payments (#533). NoDonationRoutes.test.ts guards the whole web app; this guards the one
+    // place they were rendered from.
     render(<Footer />);
-    expect(screen.getByRole('link', { name: 'Ko-fi' })).toHaveAttribute('href', 'https://ko-fi.com/benjaminmuller64800');
-    expect(screen.getByRole('link', { name: 'PayPal' })).toHaveAttribute('href', 'https://www.paypal.com/donate/?hosted_button_id=H583STJ96AXT2');
+    expect(screen.queryByRole('link', { name: 'Ko-fi' })).toBeNull();
+    expect(screen.queryByRole('link', { name: 'PayPal' })).toBeNull();
+    expect(screen.queryByText('support')).toBeNull();
+  });
+
+  it('links the pricing page from the footer', () => {
+    // Same reason the terms and the refund policy are here: Paddle's domain review wants the
+    // pricing page "clearly accessible via navigation", and the footer is the only navigation
+    // a public page has (#498, #533).
+    render(<Footer />);
+    expect(screen.getByRole('link', { name: 'pricing' })).toHaveAttribute('href', '/pricing');
   });
 
   it('links the legal section to help and privacy', () => {
@@ -79,7 +92,7 @@ describe('Footer', () => {
   it('writes no visible English into the component itself', () => {
     // Everything a reader sees comes from the catalogue. The exceptions are names that are the
     // same in every language, and they are listed here so adding one is a decision.
-    const BRAND_NAMES = ['GitHub', 'Ko-fi', 'PayPal', 'Hive', 'Pulse'];
+    const BRAND_NAMES = ['GitHub', 'Hive', 'Pulse'];
     const source = readFileSync(join(process.cwd(), 'components', 'Footer.tsx'), 'utf8');
     const visible = [...source.matchAll(/>([A-Za-z][A-Za-z0-9 &;'.,!?/-]{2,40})</g)]
       .map(m => m[1].trim())

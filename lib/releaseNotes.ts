@@ -35,6 +35,38 @@ export function pick(text: Localized, locale: string): string {
 /** Newest first. */
 export const RELEASES: Release[] = [
   {
+    date: '2026-11-20',
+    title: t(
+      'The price has a page, and the website stops asking for donations',
+      'Der Preis hat eine Seite, und die Website bittet nicht mehr um Spenden',
+      'Le tarif a sa page, et le site ne demande plus de dons',
+      'El precio tiene su página y la web deja de pedir donativos',
+      'Cena ma własną stronę, a serwis przestaje prosić o datki',
+    ),
+    items: [
+      {
+        kind: 'added',
+        text: t(
+          'A pricing page of its own, at /pricing, linked from the top of every page. It states what the subscription costs, what each plan includes, what happens when a free account reaches ten colonies — nothing already recorded is ever hidden, locked or deleted — how to cancel, and where the terms and the refund policy are.',
+          'Eine eigene Preisseite unter /pricing, von oben auf jeder Seite verlinkt. Sie nennt, was das Abo kostet, was in welchem Tarif steckt, was passiert, wenn ein kostenloses Konto zehn Völker erreicht — nichts, was schon erfasst ist, wird je versteckt, gesperrt oder gelöscht —, wie man kündigt und wo die Nutzungsbedingungen und die Erstattungsrichtlinie stehen.',
+          'Une page de tarifs à part, sur /pricing, liée depuis le haut de chaque page. Elle indique le prix de l’abonnement, le contenu de chaque offre, ce qui se passe quand un compte gratuit atteint dix ruches — rien de déjà enregistré n’est jamais masqué, bloqué ni supprimé —, comment résilier, et où se trouvent les conditions et la politique de remboursement.',
+          'Una página de precios propia, en /pricing, enlazada desde la parte superior de cada página. Dice lo que cuesta la suscripción, lo que incluye cada plan, qué pasa cuando una cuenta gratuita llega a diez colmenas — nada de lo ya registrado se oculta, se bloquea ni se borra nunca —, cómo cancelar y dónde están las condiciones y la política de reembolsos.',
+          'Własna strona cennika pod /pricing, podlinkowana z góry każdej strony. Podaje, ile kosztuje abonament, co zawiera każdy plan, co się dzieje, gdy bezpłatne konto osiągnie dziesięć rodzin — nic z tego, co już zapisane, nigdy nie zostaje ukryte, zablokowane ani usunięte —, jak zrezygnować i gdzie są warunki oraz polityka zwrotów.',
+        ),
+      },
+      {
+        kind: 'changed',
+        text: t(
+          'The Ko-fi and PayPal donation links are gone from the website, and with them the "pay what you want" card that sat beside the subscription. Mixing a donation with a price made it unclear what was actually being sold — to readers, and to the payment provider, which refused to process payments for the site at all because of it.',
+          'Die Ko-fi- und PayPal-Spendenlinks sind von der Website verschwunden, und mit ihnen die „zahl was du willst"-Karte neben dem Abo. Eine Spende neben einem Preis machte unklar, was hier eigentlich verkauft wird — für Leser, und für den Zahlungsanbieter, der die Seite deswegen gar nicht erst abwickeln wollte.',
+          'Les liens de don Ko-fi et PayPal ont disparu du site, ainsi que la carte « payez ce que vous voulez » qui côtoyait l’abonnement. Mêler un don à un prix rendait flou ce qui était réellement vendu — pour les lecteurs, et pour le prestataire de paiement, qui a refusé le site pour cette raison.',
+          'Los enlaces de donativo de Ko-fi y PayPal han desaparecido de la web, y con ellos la tarjeta de «paga lo que quieras» que acompañaba a la suscripción. Mezclar un donativo con un precio dejaba poco claro qué se vendía — para los lectores y para el proveedor de pago, que por eso rechazó el sitio.',
+          'Linki do datków Ko-fi i PayPal zniknęły ze strony, a wraz z nimi karta „zapłać ile chcesz" stojąca obok abonamentu. Mieszanie datku z ceną zacierało, co właściwie jest sprzedawane — dla czytelników i dla dostawcy płatności, który z tego powodu w ogóle odmówił obsługi serwisu.',
+        ),
+      },
+    ],
+  },
+  {
     date: '2026-11-19',
     title: t(
       'Deleting your account does not cancel your subscription',
@@ -1122,12 +1154,16 @@ export const FEATURES: FeatureGroup[] = [
         'Alcanzar el límite nunca cierra lo que ya existe: nada se oculta, nada pasa a solo lectura, nada se borra.',
         'Osiągnięcie limitu nigdy nie zamyka tego, co już jest — nic nie znika, nic nie staje się tylko do odczytu, nic nie jest usuwane.',
       ),
+      // Said "bought on the website, on the iPhone or on Android" while neither app has a
+      // purchase route at all — no StoreKit, no Play Billing, and no Apple or Google endpoint
+      // on the server. The apps show this list in Settings, so it was telling people to look
+      // for a button that is not there (#533).
       t(
-        'Bought on the website, on the iPhone or on Android — it belongs to the account and works everywhere you sign in.',
-        'Gekauft auf der Webseite, am iPhone oder auf Android — es hängt am Konto und gilt überall, wo du dich anmeldest.',
-        'Acheté sur le site, sur iPhone ou sur Android — il appartient au compte et vaut partout où vous vous connectez.',
-        'Comprada en la web, en el iPhone o en Android: pertenece a la cuenta y vale donde inicies sesión.',
-        'Kupiony w serwisie, na iPhonie lub na Androidzie — należy do konta i działa wszędzie, gdzie się zalogujesz.',
+        'Bought on the website — it belongs to the account, not to a device, so it works on the website and in both apps at once.',
+        'Gekauft auf der Webseite — es hängt am Konto und nicht am Gerät, es gilt also auf der Webseite und in beiden Apps gleichzeitig.',
+        'Acheté sur le site — il appartient au compte et non à un appareil, il vaut donc sur le site et dans les deux applications à la fois.',
+        'Comprada en la web: pertenece a la cuenta y no a un dispositivo, así que vale a la vez en la web y en las dos apps.',
+        'Kupiony w serwisie — należy do konta, a nie do urządzenia, więc działa jednocześnie w serwisie i w obu aplikacjach.',
       ),
     ],
   },

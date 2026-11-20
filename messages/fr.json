@@ -14,13 +14,13 @@
     "back": {
       "map": "← Carte en direct"
     },
+    "pricing": "Tarifs",
     "releaseNotes": "Notes de version"
   },
   "footer": {
     "tagline": "Apiculture open source pour une planète plus saine.",
     "explore": "Explorer",
     "community": "Communauté",
-    "support": "Nous soutenir",
     "legal": "Mentions légales",
     "privacy": "Politique de confidentialité",
     "copyright": "© 2025 HivePulse. Publié sous la licence MIT.",
@@ -46,6 +46,25 @@
     },
     "scroll": "Défiler pour en savoir plus",
     "phoneLabel": "Capture d'écran du tableau de bord"
+  },
+  "pricing": {
+    "title": "Tarifs",
+    "intro": "HivePulse est un carnet de rucher pour les apiculteurs. Jusqu'à dix ruches sont gratuites pour toujours ; l'abonnement supporter lève cette limite et débloque ce dont un rucher plus grand a besoin. Un seul tarif, facturé à l'année, résiliable à tout moment.",
+    "knowTitle": "Ce qu'il faut savoir",
+    "q1title": "Que se passe-t-il quand j'atteins dix ruches ?",
+    "q1body": "Seul l'ajout de la onzième s'arrête. Rien de ce qui est déjà enregistré n'est masqué, bloqué ni supprimé — ni une visite, ni une photo, ni une ruche. Une limite qui retirerait un travail déjà fait serait la mauvaise chose à faire pour un registre d'animaux vivants, et elle ne le fait donc jamais.",
+    "q2title": "Combien cela coûte-t-il, et la taxe est-elle incluse ?",
+    "q2body": "{price} par an pour un compte, TVA incluse là où elle s'applique. Il n'y a pas d'abonnement mensuel : l'apiculture suit les saisons, et un abonnement mensuel facturerait surtout l'hiver.",
+    "q3title": "Comment résilier ?",
+    "q3body": "Depuis la page d'abonnement de votre compte, sans préavis. L'abonnement court alors jusqu'à la fin de l'année payée et ne se renouvelle simplement pas. Vos ruches restent ; seul l'ajout au-delà de dix s'arrête de nouveau.",
+    "q4title": "Puis-je être remboursé ?",
+    "q4body": "Oui. En tant que consommateur dans l'Union européenne, vous disposez de quatorze jours pour renoncer à un achat en ligne sans avoir à vous justifier. La politique de remboursement indique qui rembourse et comment.",
+    "q5title": "Où l'acheter ?",
+    "q5body": "Sur ce site, connecté à votre compte — l'abonnement appartient au compte et non à un appareil ; il vaut donc en même temps sur le web, sur Android et sur l'iPhone. Les applications ne le vendent pas.",
+    "q6title": "Qu'est-ce qui reste gratuit dans tous les cas ?",
+    "q6body": "Le suivi du frelon asiatique, l'année apicole, les codes QR, les visites saisies sans réseau, la carte communautaire et l'export de vos propres données. C'est gratuit volontairement, et non à titre d'essai.",
+    "legal": "Les conditions d'utilisation, la politique de remboursement et la politique de confidentialité s'appliquent à tout achat.",
+    "more": "Tous les détails des tarifs et les mentions"
   },
   "stats": {
     "title": "Notre communauté, en ce moment",
@@ -155,9 +174,9 @@
     }
   },
   "support": {
-    "tag": "Soutenir la mission",
-    "title": "Gardons les ruches bourdonnantes",
-    "sub": "HivePulse est gratuit. Une petite contribution maintient les serveurs en fonctionnement, finance de nouvelles fonctionnalités et soutient nos partenariats de recherche."
+    "tag": "Tarifs",
+    "title": "Commencer gratuitement, évoluer au besoin",
+    "sub": "Jusqu'à 10 ruches sont gratuites pour toujours. L'abonnement supporter lève la limite et débloque le registre des traitements, les champs de visite personnalisés, les ruchers partagés et la carte sanitaire régionale. Résiliable à tout moment."
   },
   "price": {
     "free": {
@@ -184,18 +203,11 @@
       "f7": "La carte sanitaire régionale",
       "f8": "Résiliable à tout moment, sans préavis"
     },
-    "coming": "Bientôt disponible",
-    "donate": {
-      "tier": "Don unique",
-      "price": "Votre choix",
-      "note": "Chaque contribution, quelle que soit sa taille, aide à maintenir HivePulse indépendant, sans publicité et accessible à tous."
-    }
+    "coming": "Bientôt disponible"
   },
   "btn": {
     "free": "Télécharger gratuitement",
-    "supporter": "Devenir Supporter",
-    "kofi": "Soutenir sur Ko-fi",
-    "paypal": "Don via PayPal"
+    "supporter": "Devenir Supporter"
   },
   "dl": {
     "tag": "Commencer aujourd'hui",
@@ -1376,6 +1388,8 @@
     "membersTitle": "Statistiques de la communauté",
     "newsDescription": "Ce qui est nouveau dans HivePulse : les fonctions dès leur sortie, et les défauts qui les précèdent, racontés en détail.",
     "newsTitle": "Actualités",
+    "pricingDescription": "Ce que coûte HivePulse : dix ruches gratuites pour toujours, et ce qu'ajoute l'abonnement supporter. Un tarif annuel, résiliable à tout moment.",
+    "pricingTitle": "Tarifs",
     "privacyDescription": "Ce que HivePulse enregistre, pourquoi, pendant combien de temps et quelles entreprises traitent les données pour nous. Écrit pour être lu.",
     "privacyTitle": "Confidentialité",
     "registerDescription": "Créez un compte HivePulse gratuit pour enregistrer vos visites, suivre les comptages de varroas et garder l'historique de chaque ruche au même endroit.",

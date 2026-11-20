@@ -206,7 +206,7 @@ export default function HomePage() {
       </section>
 
       {/* Pricing */}
-      <section className="support-section" id="support">
+      <section className="support-section" id="pricing">
         <div className="container">
           <div className="section-header" data-aos="fade-up">
             <div className="section-tag">{t('support.tag')}</div>
@@ -247,16 +247,10 @@ export default function HomePage() {
                   free tier that is correct. */}
               <LocaleLink href="/dashboard/subscription" className="btn-primary" data-umami-event="pricing_supporter_cta">{t('btn.supporter')}</LocaleLink>
             </div>
-            <div className="pricing-card" data-aos="fade-up" data-aos-delay="200">
-              <div className="pricing-tier">{t('price.donate.tier')}</div>
-              <div className="pricing-price">{t('price.donate.price')}</div>
-              <p className="pricing-note">{t('price.donate.note')}</p>
-              <div className="donation-buttons">
-                <a href="https://ko-fi.com/benjaminmuller64800" className="btn-donate btn-kofi" target="_blank" rel="noopener noreferrer" data-umami-event="donate_kofi"><i className="fas fa-coffee" /> {t('btn.kofi')}</a>
-                <a href="https://www.paypal.com/donate/?hosted_button_id=H583STJ96AXT2" className="btn-donate btn-paypal" target="_blank" rel="noopener noreferrer" data-umami-event="donate_paypal"><i className="fab fa-paypal" /> {t('btn.paypal')}</a>
-              </div>
-            </div>
           </div>
+          <p className="pricing-more">
+            <LocaleLink href="/pricing" data-umami-event="pricing_details">{t('pricing.more')}</LocaleLink>
+          </p>
         </div>
       </section>
 

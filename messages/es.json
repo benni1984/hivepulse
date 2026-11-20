@@ -14,13 +14,13 @@
     "back": {
       "map": "← Mapa en vivo"
     },
+    "pricing": "Precios",
     "releaseNotes": "Notas de versión"
   },
   "footer": {
     "tagline": "Apicultura de código abierto para un planeta más saludable.",
     "explore": "Explorar",
     "community": "Comunidad",
-    "support": "Apoyarnos",
     "legal": "Legal",
     "privacy": "Política de privacidad",
     "copyright": "© 2025 HivePulse. Publicado bajo la licencia MIT.",
@@ -46,6 +46,25 @@
     },
     "scroll": "Desplázate para saber más",
     "phoneLabel": "Captura del panel"
+  },
+  "pricing": {
+    "title": "Precios",
+    "intro": "HivePulse es un cuaderno de colmenar para apicultores. Hasta diez colmenas son gratis para siempre; la suscripción supporter elimina ese límite y desbloquea lo que necesita un colmenar más grande. Un solo precio, facturado al año, cancelable en cualquier momento.",
+    "knowTitle": "Lo que conviene saber",
+    "q1title": "¿Qué pasa cuando llego a diez colmenas?",
+    "q1body": "Solo se detiene añadir la undécima. Nada de lo ya registrado se oculta, se bloquea ni se borra — ni una revisión, ni una foto, ni una colmena. Un límite que quitara un trabajo ya hecho sería lo incorrecto en un registro de animales vivos, y por eso nunca lo hace.",
+    "q2title": "¿Cuánto cuesta y lleva impuestos incluidos?",
+    "q2body": "{price} al año por cuenta, IVA incluido donde corresponda. No hay plan mensual: la apicultura va por temporadas, y una suscripción mensual cobraría sobre todo el invierno.",
+    "q3title": "¿Cómo cancelo?",
+    "q3body": "En la página de suscripción de tu cuenta, sin preaviso. La suscripción sigue hasta el final del año pagado y simplemente no se renueva. Tus colmenas se quedan; solo vuelve a detenerse añadir más de diez.",
+    "q4title": "¿Puedo recuperar mi dinero?",
+    "q4body": "Sí. Como consumidor en la Unión Europea tienes catorce días para desistir de una compra por internet sin dar explicaciones. La política de reembolsos dice quién reembolsa y cómo.",
+    "q5title": "¿Dónde se compra?",
+    "q5body": "En esta web, con la sesión iniciada en tu cuenta — la suscripción pertenece a la cuenta y no a un dispositivo, así que vale a la vez en la web, en Android y en el iPhone. Las apps no la venden.",
+    "q6title": "¿Qué sigue siendo gratis en cualquier caso?",
+    "q6body": "El rastreador de avispa asiática, el año apícola, los códigos QR, las revisiones registradas sin cobertura, el mapa comunitario y la exportación de tus propios datos. Son gratis a propósito, no como periodo de prueba.",
+    "legal": "A toda compra se le aplican las condiciones de uso, la política de reembolsos y la política de privacidad.",
+    "more": "Todos los detalles de precios y la letra pequeña"
   },
   "stats": {
     "title": "Nuestra comunidad, ahora mismo",
@@ -155,9 +174,9 @@
     }
   },
   "support": {
-    "tag": "Apoya la misión",
-    "title": "Mantengamos las colmenas zumbando",
-    "sub": "HivePulse es gratuito. Una pequeña contribución mantiene los servidores en funcionamiento, financia nuevas funciones y apoya nuestras alianzas de investigación."
+    "tag": "Precios",
+    "title": "Empieza gratis y amplía cuando lo necesites",
+    "sub": "Hasta 10 colmenas son gratis para siempre. La suscripción supporter elimina el límite y desbloquea el libro de tratamientos, los campos de revisión propios, los colmenares compartidos y el mapa sanitario regional. Cancela cuando quieras."
   },
   "price": {
     "free": {
@@ -184,18 +203,11 @@
       "f7": "El mapa sanitario regional",
       "f8": "Cancelable en cualquier momento, sin preaviso"
     },
-    "coming": "Próximamente",
-    "donate": {
-      "tier": "Donación única",
-      "price": "Tu elección",
-      "note": "Cada contribución, sin importar el tamaño, ayuda a mantener HivePulse independiente, sin anuncios y gratuito para todos los apicultores."
-    }
+    "coming": "Próximamente"
   },
   "btn": {
     "free": "Descargar gratis",
-    "supporter": "Hazte Supporter",
-    "kofi": "Apoyar en Ko-fi",
-    "paypal": "Donar vía PayPal"
+    "supporter": "Hazte Supporter"
   },
   "dl": {
     "tag": "Empieza hoy",
@@ -1376,6 +1388,8 @@
     "membersTitle": "Estadísticas de la comunidad",
     "newsDescription": "Qué hay de nuevo en HivePulse: las funciones en cuanto salen y los fallos que había detrás, contados con detalle.",
     "newsTitle": "Novedades",
+    "pricingDescription": "Lo que cuesta HivePulse: diez colmenas gratis para siempre y lo que añade la suscripción supporter. Un precio anual, cancelable en cualquier momento.",
+    "pricingTitle": "Precios",
     "privacyDescription": "Qué guarda HivePulse, por qué, durante cuánto tiempo y qué empresas tratan los datos por encargo nuestro. Escrito para leerse, no para saltárselo.",
     "privacyTitle": "Privacidad",
     "registerDescription": "Crea una cuenta gratuita de HivePulse para registrar revisiones, seguir los recuentos de varroa y guardar el historial de cada colmena en un solo lugar.",

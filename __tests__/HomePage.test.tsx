@@ -74,15 +74,19 @@ describe('HomePage (landing)', () => {
     expect(container.querySelectorAll('.roadmap-card')).toHaveLength(5);
   });
 
-  it('renders the three pricing tiers with correct prices', () => {
+  it('renders the two pricing tiers with correct prices', () => {
     // This test used to assert "€2.99", and so pinned a monthly price that was never sold while
     // the product went out at 19.99 € a year (#504). It now reads the figure from the module the
     // page renders, which is the only way the assertion can stay true when the price changes.
-    render(<HomePage />);
+    //
+    // There were three tiers until #533. The third was a "pay what you want" donation card
+    // carrying a Ko-fi and a PayPal button, and it is why Paddle classified the domain as
+    // "Other/Donations" and refused the application to take payments at all.
+    const { container } = render(<HomePage />);
     expect(screen.getByText(new RegExp(formatFreePrice('en').replace('€', '\\€')))).toBeTruthy();
     expect(screen.getByText(/19\.99/)).toBeTruthy();
     expect(SUPPORTER_PRICE_EUR).toBe(19.99);
-    expect(screen.getByText('price.donate.price')).toBeTruthy();
+    expect(container.querySelectorAll('.pricing-card')).toHaveLength(2);
   });
 
   it('links the map preview CTA to /map', () => {

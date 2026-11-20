@@ -185,13 +185,32 @@ data.
 
 ### Buying it
 
+`/pricing` states the price publicly — what it costs, what each plan includes, what reaching the
+free limit does *not* do, and where the terms, the refund policy and the privacy policy are. It is
+linked from the top nav and the footer, which is what Paddle's domain review means by a pricing
+page "clearly accessible via navigation". **Nothing on the website asks for a donation**, and that
+is not a matter of taste: the page used to carry a "pay what you want" card with a Ko-fi and a
+PayPal button, Paddle classified the domain as "Other/Donations" and refused the application to
+take payments at all (#533). `__tests__/NoDonationRoutes.test.ts` fails if such a link returns.
+
 `/dashboard/subscription` on the website shows the state, the renewal or expiry date, the colony
 counter, what the subscription includes and where to cancel. The purchase link is built **on the
 server** (`GET /subscriptions/web-checkout`): the account id is a path segment of it, a link
 without one answers 404 rather than selling anonymously, and a link with the *wrong* one takes
-money and attaches it to nobody. Buying inside the apps goes through StoreKit and Play Billing, as
-those stores require; whichever way it is bought, the entitlement is derived on the server and
-works on all three clients.
+money and attaches it to nobody.
+
+**Today it is sold on the website only.** There is no StoreKit code and no Play Billing code, and
+the backend has no `/subscriptions/apple` or `/subscriptions/google` — only the web checkout, the
+sync and the RevenueCat webhook. `STORE_MANAGED` in the router describes a row that *came* from a
+store, which nothing currently produces. Both apps nevertheless gate the Members screen on
+`is_supporter` and offer a "become a supporter" button that opens `/contribute`, a page which does
+not mention the subscription. That is a gap, not a design: Apple's 3.1.3(b) allows unlocking
+content bought elsewhere only where the same content is also an in-app purchase. Tracked
+separately; do not read this paragraph as a plan.
+
+Whichever way it is bought, the entitlement is derived on the server and works on all three
+clients — that part is built and is the reason the purchase route can change without touching
+the clients.
 
 A subscription sold by Apple or Google can only be cancelled there. The server says so
 (`store_managed`), so the three clients do not each decide for themselves what they may offer.

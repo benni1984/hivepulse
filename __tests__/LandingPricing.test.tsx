@@ -98,6 +98,21 @@ describe('landing page pricing', () => {
     expect(source).toMatch(/<a href="#download" className="btn-outline">\{t\('btn\.free'\)\}<\/a>/);
   });
 
+  it('sells two plans and asks for no donations', () => {
+    // The third card was a "pay what you want" tier with a Ko-fi button and a
+    // paypal.com/donate button. Paddle reviewed the domain, filed it under "Other/Donations"
+    // and refused the application outright (#533). Their policy excludes anything sold "where
+    // there is no bona fide software or service", so the card and the subscription could not
+    // share a page.
+    expect(source, 'the donation card is back').not.toMatch(/price\.donate/);
+    expect(source, 'a donation button is back').not.toMatch(/btn\.(kofi|paypal)/);
+    expect(source, 'a donation link is back').not.toMatch(/ko-fi|paypal/i);
+    // Two cards, so the grid is a pair and not a trio.
+    expect(source.match(/className="pricing-card/g) ?? []).toHaveLength(2);
+    // What does not fit on a card now has a page, reachable from the section.
+    expect(source).toMatch(/<LocaleLink href="\/pricing"/);
+  });
+
   it('names what the subscription really unlocks', () => {
     // Each of these is a require_supporter call in the backend; if one is dropped from the card
     // the page undersells, and if one is added here without being gated the page oversells.

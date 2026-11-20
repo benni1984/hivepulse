@@ -546,7 +546,7 @@
 
 .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
   align-items: stretch;
 }
@@ -634,32 +634,17 @@
   margin-bottom: 22px;
 }
 
-.donation-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: auto;
-}
-
-.btn-donate {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 44px;
-  padding: 10px 20px;
-  border-radius: 999px;
-  text-decoration: none;
-  font-weight: 600;
+.pricing-more {
+  margin: 22px 0 0;
+  text-align: center;
   font-size: 15px;
-  background: #fff;
-  border: 1px solid var(--border);
-  color: var(--body-text);
-  transition: background .15s, border-color .15s;
 }
-.btn-donate:hover { background: #f7f6f4; }
-.btn-kofi i { color: #ff5e5b; }
-.btn-paypal i { color: #003087; }
+.pricing-more a {
+  color: var(--green-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
 
 .pricing-card .btn-primary,
 .pricing-card .btn-outline {
