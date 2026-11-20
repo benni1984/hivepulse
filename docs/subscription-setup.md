@@ -182,6 +182,23 @@ Settings → Environment Variables, on the **hivepulse** project for production 
 | `REVENUECAT_WEBHOOK_SECRET` | the string you typed in 2.4 | 2.4 |
 | `REVENUECAT_API_KEY` | RevenueCat **secret** API key, for `POST /subscriptions/sync` | RevenueCat → API keys |
 | `REVENUECAT_ENTITLEMENT` | only if you did not call the entitlement `supporter` | 2.2 |
+| `WEB_CHECKOUT_ENABLED` | `true` to let this deployment sell at all | see below |
+
+**`WEB_CHECKOUT_ENABLED` is off unless you set it, and that is deliberate (#530).** Without it,
+`/subscriptions/web-checkout` answers `503 WEB_CHECKOUT_UNCONFIGURED` even with a perfectly good
+token, and the page says "cannot be bought here yet" — the same thing it says on a deployment that
+has no token at all, in five languages.
+
+The reason is that a token used to be enough. Set it, and the next deploy put a buy button in
+front of people, whatever that deploy was about. Paddle approves a checkout domain on its own
+schedule, and a checkout opened before that approval fails with "Something went wrong." in the
+customer's face. A default of "on unless disabled" fails open; this one fails closed, so selling
+starts when somebody decides it does.
+
+Only *selling* is gated. `GET /subscriptions/me`, `POST /subscriptions/sync` and the webhook keep
+working, so anybody who already bought keeps their access and a cancellation still arrives.
+
+Staging needs `WEB_CHECKOUT_ENABLED=true` as well, or sandbox purchases cannot be tested there.
 
 **The sandbox token wins over the production one when both are set.** That is on purpose, so a
 staging deployment cannot take real money. Never set the sandbox token on production.
@@ -230,6 +247,18 @@ config in RevenueCat pointing at it, and set the production token.
 > Forget it in the *other* direction and **every paying customer lands on staging**: a different
 > database, no entitlement, no trace of the money they just spent. Nothing in the pipeline can
 > catch this. Check it as the last step before the first real sale.
+
+**The order of the last three moves**, once Paddle shows the checkout domain as approved:
+
+1. Set the **default payment link** to `https://pay.rev.cat` in Checkout settings. Paddle refuses
+   it before approval — "In live it must be on an approved domain" — and until it is set, every
+   checkout fails with "Something went wrong."
+2. Point the purchase link's **success redirect** at production, per the box above.
+3. Set **`WEB_CHECKOUT_ENABLED=true`** on the production project and deploy. This one is last on
+   purpose: it is the moment the buy button appears, and everything above has to be true first.
+
+Deploying before step 3 is safe and expected — the page simply keeps saying "cannot be bought
+here yet", which is the truth until Paddle has approved the domain.
 
 **Two webhooks, not one.** Each environment gets its own, with its own secret, and with
 RevenueCat's *Environment* set explicitly — Sandbox for the one pointing at

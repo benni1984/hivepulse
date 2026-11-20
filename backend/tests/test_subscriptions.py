@@ -319,6 +319,15 @@ class TestWebCheckout:
     rather than selling anonymously. Worse, a link with the *wrong* id takes real money and
     attaches it to nobody. These tests are about that one string."""
 
+    @pytest.fixture(autouse=True)
+    def selling_is_switched_on(self, monkeypatch):
+        """Everything in this class is about *what* the link looks like once selling is allowed.
+
+        Whether it is allowed at all is `web_checkout_enabled`, which is off by default so that a
+        deploy cannot start selling by itself (#530) -- that switch has its own class below."""
+        from app.config import settings
+        monkeypatch.setattr(settings, "web_checkout_enabled", True)
+
     def test_nothing_configured_says_not_yet_rather_than_failing(self, auth_client):
         """The normal state of a deployment whose store side is not set up, and of every test run
         before this class sets a token. A page must be able to say "not yet"."""
@@ -404,6 +413,90 @@ class TestWebCheckout:
                                headers={"Accept-Language": "de"})
 
         assert "noch nicht gekauft werden" in resp.json()["detail"]["message"]
+
+
+class TestSellingIsSwitchedOffUntilSomebodySaysOtherwise:
+    """The switch exists because selling used to turn itself on (#530).
+
+    A token in the environment was enough to put a buy button in front of people, so the next
+    deploy -- about anything at all -- would start selling. Paddle approves a checkout domain on
+    its own schedule, and a checkout opened before that approval fails in the customer's face
+    with "Something went wrong."
+
+    Note what these tests do *not* set: `web_checkout_enabled`. The default is the behaviour
+    under test.
+    """
+
+    def test_a_configured_token_alone_does_not_start_selling(self, auth_client, monkeypatch):
+        from app.config import settings
+        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "tok123")
+
+        resp = auth_client.get("/api/v1/subscriptions/web-checkout")
+
+        assert resp.status_code == 503
+        assert resp.json()["detail"]["code"] == "WEB_CHECKOUT_UNCONFIGURED"
+        assert "url" not in resp.json()
+
+    def test_the_sandbox_token_does_not_either(self, auth_client, monkeypatch):
+        from app.config import settings
+        monkeypatch.setattr(settings, "revenuecat_web_purchase_token_sandbox", "sand123")
+
+        resp = auth_client.get("/api/v1/subscriptions/web-checkout")
+
+        assert resp.status_code == 503
+
+    def test_it_answers_exactly_as_an_unconfigured_deployment_does(self, auth_client, monkeypatch):
+        """Deliberately the same code, so the page already says "cannot be bought here yet" in
+        five languages, Sentry already ignores it (#497) and the E2E suite already expects it.
+        A new code would have meant new text, new noise and a new expectation."""
+        from app.config import settings
+        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "tok123")
+
+        switched_off = auth_client.get("/api/v1/subscriptions/web-checkout")
+        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "")
+        unconfigured = auth_client.get("/api/v1/subscriptions/web-checkout")
+
+        assert switched_off.status_code == unconfigured.status_code
+        assert switched_off.json() == unconfigured.json()
+
+    def test_switching_it_on_sells(self, auth_client, monkeypatch):
+        from app.config import settings
+        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "tok123")
+        monkeypatch.setattr(settings, "web_checkout_enabled", True)
+
+        resp = auth_client.get("/api/v1/subscriptions/web-checkout")
+
+        assert resp.status_code == 200
+        assert resp.json()["url"].startswith("https://pay.rev.cat/tok123/")
+
+    def test_switching_it_on_without_a_token_still_refuses(self, auth_client, monkeypatch):
+        """The two conditions are separate; neither excuses the other."""
+        from app.config import settings
+        monkeypatch.setattr(settings, "web_checkout_enabled", True)
+        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "")
+        monkeypatch.setattr(settings, "revenuecat_web_purchase_token_sandbox", "")
+
+        resp = auth_client.get("/api/v1/subscriptions/web-checkout")
+
+        assert resp.status_code == 503
+
+    def test_an_existing_subscriber_is_unaffected(self, auth_client, db_session, monkeypatch):
+        """Only *selling* is gated. Somebody who already bought must keep their access, and the
+        webhook must keep arriving -- otherwise a kill switch for new purchases would also be a
+        kill switch for the people who already paid."""
+        from app.config import settings
+        from app.models import User
+        from app.utils import entitlements
+        monkeypatch.setattr(settings, "web_checkout_enabled", False)
+        user = db_session.query(User).filter(User.email == "test@example.com").first()
+        entitlements.apply_event(db_session, user=user, source="web", status="active",
+                                 current_period_end=None, store_txn_id="txn-530")
+        db_session.commit()
+
+        me = auth_client.get("/api/v1/subscriptions/me")
+
+        assert me.status_code == 200
+        assert me.json()["status"] == "active"
 
 
 class TestAdminGrantSurvivesTheSweep:
