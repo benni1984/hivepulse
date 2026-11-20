@@ -241,6 +241,47 @@ design.
 
 ---
 
+## 6. When somebody asks for their money back
+
+**Two actions in Paddle, not one.** They do different things, and the one that is easy to forget is
+the one that costs money.
+
+| | What it does | What it does *not* do |
+|---|---|---|
+| **Refund** — Transactions → the transaction → Refund | Returns the money. RevenueCat sends `CANCELLATION` with `cancel_reason: CUSTOMER_SUPPORT`, the server maps that to `refunded`, and access ends **at once** | Stop the next payment |
+| **Cancel** — Subscriptions → Actions → Cancel | Ends the subscription, so nothing is charged again | Return any money |
+
+A refund on its own leaves the subscription **Active in Paddle, with a next payment date**: Paddle
+refunds a *transaction* and does not touch the *subscription*. The customer loses the features
+immediately and is charged 19.99 € again twelve months later. The first they would know of it is
+the statement (#526).
+
+When cancelling after a refund, choose **immediately** rather than at the end of the billing
+period — the period is no longer paid for.
+
+**Nothing can enforce this but the person doing it.** The server never learns Paddle's subscription
+status; it sees only what RevenueCat sends, and a refunded subscription that is still live looks
+exactly like one that is not. This list is the control.
+
+**The ordinary case needs only one action.** Somebody who just wants to stop, without their money
+back, is a plain cancellation — theirs through Paddle's customer portal, or yours here — and they
+keep access until the year they paid for runs out. That is what the terms promise, and the mapping
+produces it: a `CANCELLATION` whose reason is *not* `CUSTOMER_SUPPORT` leaves the subscription
+active and only clears `will_renew`.
+
+> **Verified, not assumed.** The whole cycle was run in the sandbox — buy, refund, cancel. The
+> refund arrived as `CANCELLATION` with `cancel_reason: "CUSTOMER_SUPPORT"` and a negative price,
+> the cancellation as `EXPIRATION` with `expiration_reason: "CUSTOMER_SUPPORT"`, and access ended
+> on the first of the two without anybody touching the website. This is the first time #496's
+> refund branch has run against a real payload rather than a fixture.
+>
+> One warning for whoever repeats it: **RevenueCat's Webhook Events list does not refresh in
+> place.** Its Refresh button did nothing; both events appeared only after leaving the Webhooks
+> page and returning. Reading that list too early is how an afternoon gets spent hunting a
+> delivery problem that does not exist (#527).
+
+---
+
 ## What this document does not know
 
 - **Whether you need a trade registration.** `lib/imprint.ts` puts the operator in Sissach, so
