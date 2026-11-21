@@ -678,12 +678,18 @@ def summarize_ui_dump(dump, max_nodes=60):
 
 
 def dump_failure_diagnostics(tag):
-    """Best-effort screenshot + UI summary on failure — without this, a CI
-    failure gives no visibility into what was actually on screen (login
-    error toast? unexpected dialog? blank/crashed screen?). The screenshot
-    goes to DEBUG_DIR, which is gitignored and uploaded as its own artifact — it must never reach
-    public/docs/screenshots, which the workflow commits wholesale; the UI summary goes to stdout so
-    it's visible directly in the CI log."""
+    """Best-effort evidence on failure — without this, a CI failure gives no visibility into what
+    was actually on screen (login error toast? unexpected dialog? blank/crashed screen?). The
+    screenshot and the log go to DEBUG_DIR, which is gitignored and uploaded as its own artifact —
+    they must never reach public/docs/screenshots, which the workflow commits wholesale; the UI
+    summary and the top activity go to stdout so they are visible directly in the CI log.
+
+    Logcat and the top activity are here because of #543. A Play-screenshot job waited 275
+    seconds for the login screen, gave up, and left nothing behind at all — no way to tell a slow
+    cold-booted emulator from an app that crashed on launch and was restarted into the same
+    crash, or from one that came up behind a system dialog the UI dump does not match. Those are
+    three different repairs, and the log distinguished none of them.
+    """
     try:
         screenshot(f"android-DEBUG-{tag}", out_dir=DEBUG_DIR)
     except Exception as e:
@@ -693,6 +699,31 @@ def dump_failure_diagnostics(tag):
         print(f"  [diagnostics] UI summary at failure ({tag}):\n{summarize_ui_dump(dump)}", flush=True)
     except Exception as e:
         print(f"  [diagnostics] UI dump failed: {e}", flush=True)
+    try:
+        # What is actually in front. One line answers "did the app even start", which is the
+        # first question every one of these failures raises.
+        activities = adb("shell", "dumpsys", "activity", "activities", capture=True) or ""
+        on_top = [line.strip() for line in activities.splitlines()
+                  if "ResumedActivity" in line or "mFocusedWindow" in line]
+        print(f"  [diagnostics] on top: {'; '.join(on_top) or '(nothing resumed)'}", flush=True)
+    except Exception as e:
+        print(f"  [diagnostics] dumpsys failed: {e}", flush=True)
+    try:
+        # The tail only: a full buffer is tens of megabytes of emulator noise, and a crash or an
+        # ANR is always in the last few thousand lines. Saved rather than printed, because it is
+        # too long to read in the job log and the artifact is where somebody will look.
+        os.makedirs(DEBUG_DIR, exist_ok=True)
+        log = adb("logcat", "-d", "-t", "3000", capture=True) or ""
+        path = os.path.join(DEBUG_DIR, f"logcat-{tag.replace(' ', '_')}.txt")
+        with open(path, "w", encoding="utf-8", errors="replace") as f:
+            f.write(log)
+        fatal = [line for line in log.splitlines()
+                 if "FATAL EXCEPTION" in line or "ANR in " in line or "Force finishing" in line]
+        print(f"  [diagnostics] logcat saved to {path}"
+              + (f" — {len(fatal)} fatal line(s): {fatal[0]}" if fatal else " — no fatal lines"),
+              flush=True)
+    except Exception as e:
+        print(f"  [diagnostics] logcat failed: {e}", flush=True)
 
 # ── Extra screens (best effort) ───────────────────────────────────────────────
 
