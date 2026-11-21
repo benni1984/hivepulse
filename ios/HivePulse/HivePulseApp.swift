@@ -104,12 +104,6 @@ struct HivePulseApp: App {
                         .environmentObject(authVM)
                         .task {
                             await authVM.loadProfile()
-                            // The store account is this account. Bound on every way in,
-                            // because the webhook matches purchases on this id and a
-                            // purchase made under an anonymous one reaches nobody.
-                            if let id = authVM.currentUser?.id {
-                                await PurchaseServices.current.identify(userID: id)
-                            }
                             await requestPushPermission()
                             // Inspections recorded at the apiary go up as soon as the app
                             // is open again with a connection.

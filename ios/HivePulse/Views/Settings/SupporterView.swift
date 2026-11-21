@@ -131,9 +131,12 @@ struct SupporterView: View {
             Image(systemName: "checkmark.seal.fill")
                 .font(.system(size: 32))
                 .foregroundColor(.hpGreen)
+            // The identifier sits on the text, not on the card: a SwiftUI container's place in
+            // the element tree is not something to guess at from a test (#286).
             Text(NSLocalizedString("supporter.active.title", comment: ""))
                 .font(.dmSans(17, weight: .bold, relativeTo: .headline))
                 .foregroundColor(.hpStone900)
+                .accessibilityIdentifier("supporterActive")
             Text(NSLocalizedString("supporter.active.desc", comment: ""))
                 .font(.dmSans(15, relativeTo: .subheadline))
                 .foregroundColor(.hpStone500)
@@ -145,7 +148,6 @@ struct SupporterView: View {
             .accessibilityIdentifier("supporterManage")
         }
         .hpCard(padding: 20, alignment: .center)
-        .accessibilityIdentifier("supporterActive")
     }
 
     /// No key in this build, or a store with nothing in it. Deliberately the same sentence as the
@@ -156,13 +158,13 @@ struct SupporterView: View {
             Text(NSLocalizedString("supporter.unavailable.title", comment: ""))
                 .font(.dmSans(16, weight: .bold, relativeTo: .headline))
                 .foregroundColor(.hpStone900)
+                .accessibilityIdentifier("supporterUnavailable")
             Text(NSLocalizedString("supporter.unavailable.desc", comment: ""))
                 .font(.dmSans(14, relativeTo: .subheadline))
                 .foregroundColor(.hpStone500)
                 .multilineTextAlignment(.center)
         }
         .hpCard(padding: 16, alignment: .center)
-        .accessibilityIdentifier("supporterUnavailable")
     }
 
     private func failed(_ message: String) -> some View {
