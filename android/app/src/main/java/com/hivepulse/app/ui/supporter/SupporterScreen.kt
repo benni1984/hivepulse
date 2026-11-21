@@ -93,15 +93,22 @@ class SupporterViewModel @Inject constructor(
         runCatching { auth.getMe() }.getOrNull()?.let { purchases.identify(it.id) }
 
         // Asked first, because somebody who bought on the website or was granted it by hand must
-        // not be sold the same thing again. Failing to ask is not a reason to refuse the sale:
-        // the store is the authority on what it will charge for, the server on what is unlocked.
+        // not be sold the same thing again.
         val current = runCatching { subscriptions.mine() }.getOrNull()
         if (current != null && current.grantsAccess) {
             _state.update { it.copy(screen = SupporterScreenState.AlreadySupporter) }
             return@launch
         }
 
-        if (!purchases.canSell) {
+        // Two things have to be true to show a price: this deployment is allowed to sell, which
+        // only the server knows, and this build has a key, which only the app knows.
+        //
+        // **No answer counts as "no".** The honest reading of silence is "unknown", and the whole
+        // point of the switch is that going live is an act somebody performs rather than something
+        // a failed request can bring about (#530). The cost is that a connection problem hides the
+        // prices for a moment; the cost the other way round is taking money a week early, in a
+        // store whose products are not approved yet.
+        if (current?.storeCheckoutEnabled != true || !purchases.canSell) {
             _state.update { it.copy(screen = SupporterScreenState.Unavailable) }
             return@launch
         }

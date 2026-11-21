@@ -272,6 +272,10 @@ data class SubscriptionOut(
     val source: String? = null,
     /** True for the App Store and Google Play: **the app cannot cancel it**, the store must. */
     @SerializedName("store_managed") val storeManaged: Boolean = false,
+    /** Whether **this deployment** lets the apps sell (api-contract.md). Off unless somebody
+     *  switched it on, so the paywall shows prices only when the server says so; the default
+     *  covers an older server that does not send the field at all. */
+    @SerializedName("store_checkout_enabled") val storeCheckoutEnabled: Boolean = false,
 )
 
 /** `grace` means the store is retrying a payment and access continues. Gating on `active` alone

@@ -57,7 +57,10 @@ class SupporterScreenTest {
     val apiService: ApiService = mockk<ApiService>(relaxed = true).also {
         coEvery { it.listApiaries(any(), any()) } returns PaginatedResponse(emptyList(), 0, 1, 1)
         coEvery { it.getMe() } returns user
-        coEvery { it.mySubscription() } returns SubscriptionOut(status = "none")
+        // The flag matters as much as the mock: without it the paywall shows no prices,
+        // which is the default everywhere else and correct there (#17).
+        coEvery { it.mySubscription() } returns
+            SubscriptionOut(status = "none", storeCheckoutEnabled = true)
     }
 
     @Inject lateinit var tokenStore: TokenStore

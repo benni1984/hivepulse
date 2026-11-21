@@ -51,6 +51,17 @@ class Settings(BaseSettings):
     #: Defaulting to "on unless disabled" would fail open: forget the variable, and the button
     #: appears. This way going live is an act somebody performs, at a moment they chose.
     web_checkout_enabled: bool = False
+    #: Whether the **apps** may sell at all. Off by default, for the same reason and with
+    #: the same consequence as the line above (#17).
+    #:
+    #: A build value in the apps would have done the job, and was the wrong answer: it can
+    #: only be changed by shipping a new app through review. The store products appear when
+    #: Apple and Google approve them, which is not a date anybody controls, and the switch
+    #: has to be ready that morning rather than a week later.
+    #:
+    #: Reaches the apps on `GET /subscriptions/me`, which their paywall already fetches
+    #: before it offers anything, so the gate costs no extra request.
+    store_checkout_enabled: bool = False
     # Push — Android (FCM HTTP v1). The legacy server key was retired by Google in 2024,
     # so delivery needs a service account; push is skipped while these are empty.
     firebase_project_id: str = ""

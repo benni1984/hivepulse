@@ -102,9 +102,14 @@ the fastest store rejection there is and, since that page stopped asking for mon
   implement": bind `logIn(user.id)` before offering anything, one entitlement and one offering,
   restore reachable without buying, sync after a purchase and a restore, and managing the
   subscription leaves the app. A difference here is a difference a reviewer sees.
-- **Without a key neither app sells, and both say so** — the public SDK key is a build value from a
-  secret (`REVENUECAT_PUBLIC_KEY_IOS` / `REVENUECAT_PUBLIC_KEY_ANDROID`), the way the Sentry DSN is.
-  This repository is public, so it is not written down in it.
+- **Two things have to be true before a price appears:** `STORE_CHECKOUT_ENABLED` on the server,
+  which reaches the apps on `GET /subscriptions/me`, and a public SDK key in the build
+  (`REVENUECAT_PUBLIC_KEY_IOS` / `REVENUECAT_PUBLIC_KEY_ANDROID`, a build value from a secret the
+  way the Sentry DSN is — this repository is public, so it is not written down in it). Both default
+  to off, and **a server that cannot be reached counts as off**: silence reads as "unknown", and
+  unknown is closed (#530). The switch is on the server and not in the build because changing a
+  build value means shipping a new app through review, and the morning Apple approves the products
+  is not a morning to start a release.
 - **Android stays on `purchases:10.30.5`**, the last release built against Kotlin 2.0.21. 11.x is
   built against 2.2.21 and would not link, the same way `googleid` 1.2.x does not; moving to it is a
   Kotlin upgrade first.

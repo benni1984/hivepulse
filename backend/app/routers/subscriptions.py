@@ -57,6 +57,9 @@ def _out(db: Session, user: User, row: Optional[Subscription]) -> SubscriptionOu
     counters = {
         "hives_used": limits.hive_count(db, user),
         "hive_limit": None if user.is_supporter else limits.FREE_HIVE_LIMIT,
+        # Deployment state, not row state, so it belongs on both ways out of here -- an
+        # account that has never bought anything is exactly who the apps ask for (#17).
+        "store_checkout_enabled": settings.store_checkout_enabled,
     }
     if row is None:
         return SubscriptionOut(status="none", **counters)

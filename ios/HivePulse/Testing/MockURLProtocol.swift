@@ -57,7 +57,14 @@ final class MockURLProtocol: URLProtocol {
 extension MockURLProtocol {
 
     // Authenticated screens, all lists empty.
+    /// Nothing bought, and this deployment may sell. Both halves matter: without the flag the
+    /// paywall shows no prices, which is the default and correct everywhere else (#17).
+    static let sellingSubscriptionJSON = """
+    {"status":"none","store_checkout_enabled":true,"hives_used":0,"hive_limit":10}
+    """
+
     static let authenticatedHandlers: [(String, Int, String)] = [
+        ("subscriptions/me",  200, sellingSubscriptionJSON),
         ("hives/by-qr/tok-free", 200, qrUnlinkedJSON),   // before "hives"
         ("hives/by-qr/tok-h1",   200, qrLinkedHiveJSON),
         ("stats/overview",   200, overviewJSON),

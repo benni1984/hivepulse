@@ -59,7 +59,10 @@ final class SupporterViewModelTests: XCTestCase {
     }
 
     private final class FakeSubscriptions: SubscriptionServiceProtocol {
-        var current = SubscriptionOut(status: "none", source: nil, storeManaged: false)
+        /// Switched on, because most of these tests are about what happens once it is. The
+        /// switch itself has its own cases below.
+        var current = SubscriptionOut(status: "none", source: nil, storeManaged: false,
+                                     storeCheckoutEnabled: true)
         var syncs = 0
         var syncThrows: Error?
         var mineThrows: Error?
@@ -146,16 +149,43 @@ final class SupporterViewModelTests: XCTestCase {
         XCTAssertEqual(vm.state, .unavailable)
     }
 
-    func testBeingUnableToReadTheAccountDoesNotBlockTheSale() async {
-        // The server is the authority on what is unlocked, but it is not the authority on what
-        // the store will charge for. A failed read must not leave somebody unable to buy.
+    func testBeingUnableToAskTheServerMeansNotSelling() async {
+        // The server carries the permission to sell, not just the entitlement, so silence is
+        // no longer something to work around. Unknown is closed: the switch exists precisely
+        // so that going live is an act somebody performs and not something a failed request
+        // can bring about (#530).
         let subscriptions = FakeSubscriptions()
         subscriptions.mineThrows = Boom()
         let vm = make(FakePurchases(), subscriptions)
 
         await vm.load()
 
-        XCTAssertEqual(vm.state, .offers([SupporterOffer(id: "annual", title: "Yearly", price: "€19.99")]))
+        XCTAssertEqual(vm.state, .unavailable)
+    }
+
+    func testNothingIsSoldUntilTheServerSaysThisDeploymentMay() async {
+        // The default, and the state every deployment is in until somebody switches it on.
+        let subscriptions = FakeSubscriptions()
+        subscriptions.current = SubscriptionOut(status: "none", source: nil, storeManaged: false,
+                                                storeCheckoutEnabled: false)
+        let vm = make(FakePurchases(), subscriptions)
+
+        await vm.load()
+
+        XCTAssertEqual(vm.state, .unavailable, "a key alone must not start selling")
+    }
+
+    func testAnAccountThatAlreadyPaidIsStillToldSoWhileTheSwitchIsOff() async {
+        // The switch gates selling, not reading. Somebody who pays must not be shown "cannot
+        // be bought here" over a feature they already have.
+        let subscriptions = FakeSubscriptions()
+        subscriptions.current = SubscriptionOut(status: "active", source: "apple", storeManaged: true,
+                                                storeCheckoutEnabled: false)
+        let vm = make(FakePurchases(), subscriptions)
+
+        await vm.load()
+
+        XCTAssertEqual(vm.state, .alreadySupporter)
     }
 
     // MARK: - Buying

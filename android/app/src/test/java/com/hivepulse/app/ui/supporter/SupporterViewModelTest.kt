@@ -41,7 +41,10 @@ class SupporterViewModelTest {
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         coEvery { auth.getMe() } returns user
-        coEvery { subscriptions.mine() } returns SubscriptionOut(status = "none")
+        // Switched on, because most of these tests are about what happens once it is. The
+        // switch itself has its own cases below.
+        coEvery { subscriptions.mine() } returns
+            SubscriptionOut(status = "none", storeCheckoutEnabled = true)
         coEvery { subscriptions.sync() } returns SubscriptionOut(status = "active", source = "google")
         every { purchases.canSell } returns true
         coEvery { purchases.offers() } returns listOf(offer)
@@ -102,11 +105,37 @@ class SupporterViewModelTest {
     }
 
     @Test
-    fun `being unable to read the account does not block the sale`() {
-        // The server is the authority on what is unlocked, not on what the store will charge for.
+    fun `being unable to ask the server means not selling`() {
+        // The server carries the permission to sell, not just the entitlement, so silence is
+        // no longer something to work around. Unknown is closed: the switch exists precisely
+        // so that going live is an act somebody performs and not something a failed request
+        // can bring about (#530).
         coEvery { subscriptions.mine() } throws RuntimeException("no connection")
 
-        assertEquals(SupporterScreenState.Offers(listOf(offer)), vm().state.value.screen)
+        assertEquals(SupporterScreenState.Unavailable, vm().state.value.screen)
+    }
+
+    @Test
+    fun `nothing is sold until the server says this deployment may`() {
+        // The default, and the state every deployment is in until somebody switches it on.
+        coEvery { subscriptions.mine() } returns
+            SubscriptionOut(status = "none", storeCheckoutEnabled = false)
+
+        assertEquals(
+            "a key alone must not start selling",
+            SupporterScreenState.Unavailable, vm().state.value.screen,
+        )
+    }
+
+    @Test
+    fun `an account that already paid is still told so while the switch is off`() {
+        // The switch gates selling, not reading. Somebody who pays must not be shown
+        // "cannot be bought here" over a feature they already have.
+        coEvery { subscriptions.mine() } returns SubscriptionOut(
+            status = "active", source = "google", storeCheckoutEnabled = false,
+        )
+
+        assertEquals(SupporterScreenState.AlreadySupporter, vm().state.value.screen)
     }
 
     @Test

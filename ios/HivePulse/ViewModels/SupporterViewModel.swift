@@ -49,15 +49,22 @@ final class SupporterViewModel: ObservableObject {
         if let userID { await purchases.identify(userID: userID) }
 
         // Asked first, because somebody who bought on the website or was granted it by hand must
-        // not be sold the same thing again. Failing to ask is not a reason to refuse the sale:
-        // the store is the authority on what it will charge for, and the server on what is
-        // unlocked.
-        if let current = try? await subscriptions.mine(), current.grantsAccess {
+        // not be sold the same thing again.
+        let current = try? await subscriptions.mine()
+        if current?.grantsAccess == true {
             state = .alreadySupporter
             return
         }
 
-        guard purchases.canSell else {
+        // Two things have to be true to show a price: this deployment is allowed to sell, which
+        // only the server knows, and this build has a key, which only the app knows.
+        //
+        // **No answer counts as "no".** The honest reading of silence is "unknown", and the whole
+        // point of the switch is that going live is an act somebody performs rather than something
+        // a failed request can bring about (#530). The cost is that a connection problem hides the
+        // prices for a moment; the cost the other way round is taking money a week early, in a
+        // store whose products are not approved yet.
+        guard current?.storeCheckoutEnabled == true, purchases.canSell else {
             state = .unavailable
             return
         }

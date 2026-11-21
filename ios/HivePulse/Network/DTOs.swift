@@ -425,6 +425,10 @@ struct TreatmentCreateRequest: Encodable {
 struct SubscriptionOut: Codable {
     let status: String
     let source: String?
+    /// Whether **this deployment** lets the apps sell (api-contract.md). Off unless somebody
+    /// switched it on, so the paywall shows prices only when the server says so; the default
+    /// covers an older server that does not send the field at all.
+    var storeCheckoutEnabled: Bool = false
     /// True for the App Store and Google Play: **the app cannot cancel it**, the store must.
     let storeManaged: Bool
     /// `grace` means the store is retrying a payment and access continues -- gating on `active`
@@ -433,6 +437,7 @@ struct SubscriptionOut: Codable {
     enum CodingKeys: String, CodingKey {
         case status, source
         case storeManaged = "store_managed"
+        case storeCheckoutEnabled = "store_checkout_enabled"
     }
 }
 

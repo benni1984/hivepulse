@@ -2578,7 +2578,8 @@ Always returns an object, never `null`: an account without a subscription has
   "store_managed": true,
   "manage_url": null,
   "hives_used": 7,
-  "hive_limit": 10
+  "hive_limit": 10,
+  "store_checkout_enabled": false
 }
 ```
 
@@ -2592,9 +2593,27 @@ Always returns an object, never `null`: an account without a subscription has
 | `manage_url` | Where a web subscriber manages or cancels. Present only for `source: "web"`. |
 | `hives_used` | Colonies this account **owns**. Colonies shared *with* it count against their owner. |
 | `hive_limit` | How many it may own, or `null` for no limit. |
+| `store_checkout_enabled` | Whether **this deployment** lets the apps sell. See below. |
 
 `status: "grace"` means the store is retrying payment and access **continues** — do not gate on
 `active` alone.
+
+#### `store_checkout_enabled`, and why it is the server's answer
+
+**Off unless somebody switched it on**, exactly as `WEB_CHECKOUT_ENABLED` is for the website
+(#530). An app whose paywall finds it false says the subscription cannot be bought there yet,
+the same sentence it shows in a build with no SDK key at all.
+
+It is a field on this response rather than a build value in the apps for one reason: a build
+value can only be changed by shipping a new app through review. The store products appear
+when Apple and Google approve them, which is not a date anybody controls, and the switch has
+to be ready that morning rather than a week later. The apps already fetch this endpoint
+before offering anything, so the gate costs no extra request.
+
+**A client that cannot read this response must not sell.** Not because selling is dangerous,
+but because the only honest reading of silence here is "unknown", and the whole point of the
+flag is that going live is an act somebody performs. An older client that does not know the
+field at all keeps its previous behaviour; a current one treats absent as false.
 
 #### The two counters, and why they are here
 
@@ -2706,6 +2725,9 @@ open to the internet says as little as possible about why it refused.
 Both apps buy through the RevenueCat SDK, which buys through StoreKit 2 and Play Billing. The
 same five things on both, because a difference here is a difference a store reviewer sees.
 
+0. **Nothing is offered until `GET /subscriptions/me` says `store_checkout_enabled`.** The
+   paywall is reachable either way — it explains what the subscription is — but the prices
+   appear only when the server says this deployment sells.
 1. **`logIn(user.id)` before anything is offered.** RevenueCat's `app_user_id` is the HivePulse
    `user.id` and nothing else — the webhook matches on it, and a purchase made while the SDK
    still holds an anonymous id is a successful payment attached to no account. `logOut()` on

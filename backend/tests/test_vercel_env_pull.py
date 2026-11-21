@@ -162,16 +162,24 @@ def test_the_filter_runs_as_written(tmp_path):
     assert "URL:postgresql://u:p@h/d" in result.stdout
 
 
-def test_the_flag_that_broke_it_defaults_to_closed():
+#: Every flag that decides whether money can change hands. Dropping an unreadable value is only
+#: safe while each of these defaults to the closed position, so they are checked together: the
+#: filter is one piece of reasoning, not one per flag.
+SELLING_FLAGS = ("web_checkout_enabled", "store_checkout_enabled")
+
+
+@pytest.mark.parametrize("flag", SELLING_FLAGS)
+def test_the_flags_that_decide_selling_default_to_closed(flag):
     """Dropping a value is only safe because the default is the closed position.
 
-    If `web_checkout_enabled` ever defaults to True, dropping an unreadable value would open
-    a checkout rather than leave it shut, and filtering would become the wrong fix.
+    If one of these ever defaults to True, dropping an unreadable value would open a checkout
+    rather than leave it shut, and filtering would become the wrong fix — silently, on the one
+    deploy where the variable could not be read.
     """
     config = (REPO / "backend/app/config.py").read_text(encoding="utf-8")
-    match = re.search(r"^\s*web_checkout_enabled:\s*bool\s*=\s*(\w+)", config, re.MULTILINE)
-    assert match, "web_checkout_enabled is gone, or no longer a bool with a default"
+    match = re.search(rf"^\s*{flag}:\s*bool\s*=\s*(\w+)", config, re.MULTILINE)
+    assert match, f"{flag} is gone, or no longer a bool with a default"
     assert match.group(1) == "False", (
-        "web_checkout_enabled no longer defaults to False, so an unreadable value would now "
-        "switch selling ON rather than leaving it off (#530, #536)"
+        f"{flag} no longer defaults to False, so an unreadable value would now switch selling ON "
+        "rather than leaving it off (#530, #536, #17)"
     )
