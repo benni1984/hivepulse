@@ -49,6 +49,16 @@ class Settings(BaseSettings):
     #: Defaulting to "on unless disabled" would fail open: forget the variable, and the button
     #: appears. This way going live is an act somebody performs, at a moment they chose.
     web_checkout_enabled: bool = False
+    #: When the Paddle API key stops working, as YYYY-MM-DD (#528).
+    #:
+    #: The live Paddle account does not offer "never expire" for an API key, so there is always
+    #: a date. This server never talks to Paddle -- RevenueCat does -- so the day it passes,
+    #: RevenueCat quietly loses its connection and nothing here turns red. Writing the date down
+    #: is what lets the admin health page and the daily cron say so while there is still time.
+    #:
+    #: Empty is itself a finding, not a default: a key that must expire and whose date nobody
+    #: recorded is exactly the situation this guards against.
+    paddle_api_key_expires_at: str = ""
     #: Whether the **apps** may sell at all. Off by default, for the same reason and with
     #: the same consequence as the line above (#17).
     #:

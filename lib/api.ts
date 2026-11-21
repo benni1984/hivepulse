@@ -895,7 +895,26 @@ export async function adminSelfTestError(): Promise<CrashReportSelfTest> {
   return res.json();
 }
 
-export interface ConfigurationHealth { environment: string; signing_key_is_the_public_default: boolean; crash_reporting_configured: boolean; push_android_configured: boolean; push_ios_configured: boolean; }
+export interface ConfigurationHealth {
+  environment: string;
+  signing_key_is_the_public_default: boolean;
+  crash_reporting_configured: boolean;
+  push_android_configured: boolean;
+  push_ios_configured: boolean;
+  /**
+   * When the Paddle API key stops working (#528).
+   *
+   * The live Paddle account does not allow a key without an expiry date. This server never
+   * talks to Paddle — RevenueCat does — so the day it passes, RevenueCat loses Paddle while
+   * every endpoint here keeps answering. `known: false` is a finding of its own, not an
+   * absence: a key that must expire and whose date nobody recorded is the thing to report.
+   */
+  paddle_key_expiry_known: boolean;
+  paddle_key_expires_at: string | null;
+  paddle_key_days_left: number | null;
+  paddle_key_expiring_soon: boolean;
+  paddle_key_expired: boolean;
+}
 
 export async function adminGetConfigurationHealth(): Promise<ConfigurationHealth> {
   const res = await apiFetch('/admin/health/configuration');

@@ -19,7 +19,7 @@ from typing import Optional
 
 from app.access import Scope
 from app.config import settings
-from app.utils import entitlements
+from app.utils import entitlements, paddle_key
 from app.notifications_i18n import reminder_email, reminder_push
 from app.utils.push import PushResult, send_apns, send_fcm
 from app.database import get_db
@@ -193,6 +193,11 @@ def send_reminders(request: Request, db: DB) -> ReminderSendResult:
     lapsed = entitlements.sweep_expired(db)
     if lapsed:
         db.commit()
+
+    # And the one thing no request path can discover: the Paddle API key has an expiry date, and
+    # when it passes RevenueCat loses Paddle while this server carries on answering (#528). Same
+    # reasoning as the sweep above -- this run already happens every morning.
+    paddle_key.warn_if_expiring()
 
     return ReminderSendResult(
         sent=sent,

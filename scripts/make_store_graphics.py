@@ -7,7 +7,13 @@ geometry as public/brand/hivepulse-logo.svg.
 
     python scripts/make_store_graphics.py
 
-Writes public/brand/play-icon-512.png and public/brand/play-feature-1024x500.png.
+Writes public/brand/play-icon-512.png, public/brand/play-feature-1024x500.png and
+public/brand/product-icon-512.png.
+
+The third is the same drawing as the first and a separate file on purpose (#500). Paddle shows
+it to the customer in the checkout and on the invoice, and it is pointed at by a URL typed into
+their console once. Pointing that URL at the Play icon would mean that the next change Google
+asks for silently changes what appears on somebody's receipt.
 
 Deliberately wordless apart from the brand name: text on a feature graphic would need one
 version per language, and "HivePulse" is the same in all four.
@@ -166,3 +172,7 @@ if __name__ == "__main__":
     BRAND.mkdir(parents=True, exist_ok=True)
     build_icon(BRAND / "play-icon-512.png")
     build_feature(BRAND / "play-feature-1024x500.png")
+    # The same icon under a name that says what it is for, so Play and Paddle cannot drag each
+    # other around (#500). Paddle's product icon URL is
+    # https://hivepulse.multihead.de/brand/product-icon-512.png
+    build_icon(BRAND / "product-icon-512.png")

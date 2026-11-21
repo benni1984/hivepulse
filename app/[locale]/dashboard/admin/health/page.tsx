@@ -10,6 +10,7 @@ import {
   type HealthSummary, type InactiveUser, type NoVarroaApiary, type ZeroInspectionHive, type Paginated,
   type CrashReportSelfTest, type ConfigurationHealth,
 } from '@/lib/api';
+import { paddleKeyNotice } from '@/lib/adminHealthNotices';
 
 type Section = 'inactive' | 'zeroHives' | 'noVarroa';
 
@@ -191,6 +192,11 @@ function ConfigurationWarnings() {
   // Push fails quietly without credentials, so its absence has to be said out loud.
   if (!config.push_android_configured) notices.push(t('admin.health.pushAndroidMissing'));
   if (!config.push_ios_configured) notices.push(t('admin.health.pushIosMissing'));
+  // The Paddle key is the quietest failure this system has: RevenueCat loses Paddle, purchases
+  // stop, and nothing on this server turns red (#528). The daily cron warns as well, because a
+  // page only warns somebody who opens it.
+  const paddle = paddleKeyNotice(config);
+  if (paddle) notices.push(t(paddle.key, paddle.values));
 
   if (notices.length === 0) return null;
 

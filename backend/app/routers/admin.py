@@ -9,6 +9,7 @@ from app import year_feedback
 from app.beekeeping_year import ENTRIES as YEAR_ENTRIES
 from app.deps import CurrentAdmin, DB
 from app.config import settings
+from app.utils import paddle_key
 from app.monitoring import send_self_test
 from app.i18n import error
 from app.models import (
@@ -55,6 +56,9 @@ def configuration_health(admin: CurrentAdmin) -> dict:
             and settings.apns_team_id.strip()
             and settings.apns_private_key_p8.strip()
         ),
+        # The Paddle key must expire, and when it does RevenueCat stops reaching Paddle while
+        # everything here keeps answering (#528). Nothing else on this server would notice.
+        **paddle_key.status(),
     }
 
 

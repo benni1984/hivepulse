@@ -639,7 +639,10 @@
         "crashDiagnosis": "Technical detail: the key has {settingsChars} characters in the configuration and {envChars} in the process environment. Two zeros mean the hosting platform never passed it to the server.",
         "defaultSigningKey": "Warning: this server signs logins with the public default key from the source code. Anyone who knows it can forge a token for any account. Set a real SECRET_KEY in the hosting environment.",
         "pushAndroidMissing": "Android push is not configured: reminders never reach an Android phone. Needs FIREBASE_PROJECT_ID and FIREBASE_SERVICE_ACCOUNT_JSON in the hosting environment.",
-        "pushIosMissing": "iPhone push is not configured: reminders never reach an iPhone. Needs APNS_KEY_ID, APNS_TEAM_ID and APNS_PRIVATE_KEY_P8 in the hosting environment."
+        "pushIosMissing": "iPhone push is not configured: reminders never reach an iPhone. Needs APNS_KEY_ID, APNS_TEAM_ID and APNS_PRIVATE_KEY_P8 in the hosting environment.",
+        "paddleKeyExpiring": "The Paddle API key expires in {days} day(s). When it does, RevenueCat can no longer reach Paddle and web purchases fail, while this server keeps answering as if nothing were wrong. Rotate it in Paddle, paste it into RevenueCat, and move PADDLE_API_KEY_EXPIRES_AT with it.",
+        "paddleKeyExpired": "The Paddle API key expired {days} day(s) ago. RevenueCat cannot reach Paddle, so every web purchase is failing — nothing else here would say so.",
+        "paddleKeyUnknown": "Nobody wrote down when the Paddle API key expires. The live account does not allow a key without an expiry date, so there is one; set PADDLE_API_KEY_EXPIRES_AT to it (YYYY-MM-DD)."
       },
       "yearProposals": {
         "title": "Proposals for the beekeeping year",
