@@ -61,8 +61,8 @@ final class SupporterViewModelTests: XCTestCase {
     private final class FakeSubscriptions: SubscriptionServiceProtocol {
         /// Switched on, because most of these tests are about what happens once it is. The
         /// switch itself has its own cases below.
-        var current = SubscriptionOut(status: "none", source: nil, storeManaged: false,
-                                     storeCheckoutEnabled: true)
+        var current = SubscriptionOut(status: "none", source: nil,
+                                      storeCheckoutEnabled: true, storeManaged: false)
         var syncs = 0
         var syncThrows: Error?
         var mineThrows: Error?
@@ -166,8 +166,8 @@ final class SupporterViewModelTests: XCTestCase {
     func testNothingIsSoldUntilTheServerSaysThisDeploymentMay() async {
         // The default, and the state every deployment is in until somebody switches it on.
         let subscriptions = FakeSubscriptions()
-        subscriptions.current = SubscriptionOut(status: "none", source: nil, storeManaged: false,
-                                                storeCheckoutEnabled: false)
+        subscriptions.current = SubscriptionOut(status: "none", source: nil,
+                                                storeCheckoutEnabled: false, storeManaged: false)
         let vm = make(FakePurchases(), subscriptions)
 
         await vm.load()
@@ -179,8 +179,8 @@ final class SupporterViewModelTests: XCTestCase {
         // The switch gates selling, not reading. Somebody who pays must not be shown "cannot
         // be bought here" over a feature they already have.
         let subscriptions = FakeSubscriptions()
-        subscriptions.current = SubscriptionOut(status: "active", source: "apple", storeManaged: true,
-                                                storeCheckoutEnabled: false)
+        subscriptions.current = SubscriptionOut(status: "active", source: "apple",
+                                                storeCheckoutEnabled: false, storeManaged: true)
         let vm = make(FakePurchases(), subscriptions)
 
         await vm.load()
