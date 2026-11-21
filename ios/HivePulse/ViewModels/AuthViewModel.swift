@@ -239,6 +239,12 @@ final class AuthViewModel: ObservableObject {
         // by this one stays (#469). This is what keeps one beekeeper's hives from the next now
         // that signing out is no longer the only way a session ends.
         OfflineStore.shared.adopt(userId: resp.user.id)
+        // The store account is this account, bound here for the same reason the line above is
+        // here: this is the one place every way in goes through. RevenueCat's app_user_id has to
+        // be the HivePulse user.id, because the webhook matches purchases on it -- a purchase made
+        // while the SDK still holds an anonymous id is a payment that reaches nobody (#17).
+        let userID = resp.user.id
+        Task { await PurchaseServices.current.identify(userID: userID) }
         KeychainService.shared.accessToken  = resp.accessToken
         KeychainService.shared.refreshToken = resp.refreshToken
         currentUser = resp.user

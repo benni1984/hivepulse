@@ -24,11 +24,12 @@ class AuthRepositoryTest {
     private val owner = mockk<OfflineOwner>(relaxed = true)
     private val queue = mockk<OfflineInspectionQueue>(relaxed = true)
     private val syncScheduler = mockk<SyncScheduler>(relaxed = true)
+    private val purchases = mockk<PurchaseGateway>(relaxed = true)
     private lateinit var repo: AuthRepository
 
     @Before
     fun setUp() {
-        repo = AuthRepository(api, tokenStore, cache, owner, queue, syncScheduler)
+        repo = AuthRepository(api, tokenStore, cache, owner, queue, syncScheduler, purchases)
     }
 
     @After

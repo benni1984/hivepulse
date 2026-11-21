@@ -92,8 +92,17 @@ extension MockURLProtocol {
     ]
 
     // Authenticated supporter — same as authenticatedHandlers but user has is_supporter: true.
+    /// What `GET /subscriptions/me` answers for an account that pays. `store_managed` is true
+    /// because Apple sold it, which is also what tells the app it cannot cancel it itself.
+    static let activeSubscriptionJSON = """
+    {"status":"active","source":"apple","store_managed":true}
+    """
+
     static let authenticatedSupporterHandlers: [(String, Int, String)] = [
         ("stats/community-heatmap", 200, communityHeatmapJSON),
+        // A supporter account has a subscription. Without this the paywall asked, got
+        // nothing, and offered to sell a second one to somebody who already pays (#17).
+        ("subscriptions/me",  200, activeSubscriptionJSON),
         ("inspections",      200, emptyList),
         ("hives",            200, emptyList),
         ("field-definitions",200, "[]"),
