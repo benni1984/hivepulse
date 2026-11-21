@@ -1,8 +1,8 @@
 # The supporter subscription — what is built and what you have to set up
 
 The code is finished and deployed. The subscription page is live, it says "cannot be bought here
-yet", and it will keep saying that until the four environment variables at the bottom of this
-page exist. Nothing below is optional; nothing below can be done by a workflow.
+yet", and it will keep saying that until the environment variables in section 3 exist. Nothing
+below is optional; nothing below can be done by a workflow.
 
 Everything here was read out of RevenueCat's and Paddle's own documentation rather than
 remembered. Where a page did not answer something, this one says so instead of guessing.
@@ -13,9 +13,11 @@ remembered. Where a page did not answer something, this one says so instead of g
 
 Do these in order. One of them is not instant:
 
-> **Paddle must approve `pay.rev.cat` as a payment domain before anything can be sold.**
-> Production approval goes through Paddle's review and "could take some time". The sandbox needs
-> no approval, so you can build and test the whole flow while that approval is pending.
+> **Paddle must approve `hivepulse.multihead.de` as a checkout domain before anything can be
+> sold.** Production approval goes through Paddle's review; the sandbox needs no approval, so you
+> can build and test the whole flow while it is pending.
+>
+> It used to say `pay.rev.cat` here, and that was the mistake that cost a week (#541). See 1.3.
 
 So: Paddle sandbox → RevenueCat → test a real sandbox purchase → then production.
 
@@ -45,20 +47,34 @@ Some accounts still start on the older "Paddle Classic".
 **Paddle → Business Account → Account Settings → Get Paddle Billing**, then switch from *Paddle
 Classic* to *Paddle Billing* with the tab at the bottom of the sidebar.
 
-### 1.3 Approve `pay.rev.cat` — the slow one
+### 1.3 Approve our own domain — the slow one
 
-**Checkout → Website approval → Add a new domain →** enter `pay.rev.cat` **→ Submit for
-Approval**.
+**Settings → Website approval → Add domain →** enter `hivepulse.multihead.de` **→ Submit for
+approval**. Sandbox does not need it; production does, and it is reviewed by a person.
 
-This is the step nobody guesses. The purchase page is hosted by RevenueCat on that domain, and
-Paddle refuses to render a checkout on a domain it has not approved. Sandbox does not need it;
-production does, and it is reviewed by a person.
+Paddle refuses to render a checkout on a domain it has not approved, and the domain that matters
+is the one the page runs on — ours, because `purchases-js` opens the Paddle checkout in our own
+page (#541).
+
+> **Not `pay.rev.cat`.** That was tried and refused, and it can never pass. Paddle's own
+> "Add domain" dialog states the condition: *"Your website must link through to, or contain,
+> your: terms of service, privacy notice and refund policy to be successfully approved."*
+> `pay.rev.cat` is RevenueCat's domain, there is no setting anywhere in RevenueCat to put those
+> three links on it, and purchase links have no custom domain. `hivepulse.multihead.de` carries
+> all three on `/pricing` and was approved the same day it was submitted.
+>
+> RevenueCat's Paddle page lists the three domains a seller might need, and names ours:
+> *"your own domain — if you're self-hosting purchases with RevenueCat's Web SDK"*.
+
+The rejection mail blames an offline site, a missing certificate or a login wall. None of those
+was true. Read it as "we could not find your terms, privacy and refund policy", because that is
+what it means.
 
 ### 1.4 Checkout settings
 
-If no default payment link is set, enter `https://pay.rev.cat`
-(<https://sandbox-vendors.paddle.com/checkout-settings>). Optional, but it avoids a confusing
-error later.
+Set the **default payment link** to `https://hivepulse.multihead.de/en/dashboard/subscription`
+(<https://sandbox-vendors.paddle.com/checkout-settings>). Paddle requires one to create a
+transaction, and it only accepts an approved domain.
 
 ### 1.5 Turn off abandoned-cart emails
 
@@ -117,43 +133,38 @@ on `/dashboard/subscription` opens. Forget this permission and that button leads
 7. **Product catalog → Offerings → New offering**, with one package (**+ New Package**) whose
    identifier matches the billing cycle, pointing at the Paddle product.
 
-### 2.3 The purchase link
+### 2.3 The public SDK key — and no purchase link
 
-8. **Funnels → Purchase Links →** create one. Set **Offering** and **Payment provider** (the
-   Paddle config).
-9. **Share URL** gives you the production link and, separately, a **sandbox URL**. The token is
-   the part after `https://pay.rev.cat/` and before the user id — that token is what goes into
-   the environment variable, *not* the whole URL.
-10. In the link's success settings, choose **Redirect to a custom success page** and point it at
-    `https://hivepulse.multihead.de/dashboard/subscription-return`. Not the default success page: RevenueCat
-    appends `app_user_id` only to a custom one, and that parameter is how the subscription page
-    knows to re-check immediately instead of waiting for the webhook.
+8. **Web → your Paddle config → Public API Key.** Copy it. That is the whole of it: it goes into
+   the website's build as `NEXT_PUBLIC_REVENUECAT_WEB_KEY`, the page configures the SDK with it,
+   and the Paddle checkout opens over `/dashboard/subscription`.
 
-    The target is deliberately the unprefixed route and not `/de/dashboard/subscription` (#503). A
-    link has one redirect URL and a URL carries a language, so a fixed one would return every
-    buyer to whichever language the link was set up in. The return route reads the account's own
-    locale and forwards, query string intact.
+   Public on purpose — it identifies the app and authorises nothing. It is still not written into
+   this repository, which is public; it comes from a Vercel environment variable, the way the
+   apps take theirs from a GitHub secret.
 
-11. The paywall's **header**, **subheader** and **terms & conditions URL** are single-language and
-    there is nothing to be done about it: of the hosted flow, RevenueCat's localization page says
-    "it is not possible to specify the language used in Web Purchase Links". It is one heading over
-    one product, and Paddle's checkout after it localises itself, so this is accepted rather than
-    worked around. If the buyer mix ever justifies it, the way out is one link per locale with the
-    server choosing the token by `user.locale` — it already builds the URL — and every one of those
-    links can still share the single return route from step 10.
+9. On the same config, **Purchase tracking** stays on **Automatic** ("Track all new Paddle
+   purchases and updates via webhooks — no setup needed"). The page never tells our backend what
+   was bought; RevenueCat does, through the webhook in 2.4.
 
-    Terms URL: `https://hivepulse.multihead.de/terms` (or the `/fr/`, `/de/` … variant matching the
-    language the header is written in).
+**There is no Web Purchase Link, and there must not be one.** A hosted link lives on
+`pay.rev.cat`, and Paddle cannot approve that domain (1.3). Creating one anyway would give you a
+URL that looks right, takes a customer to a checkout, and fails in their face with
+"Something went wrong."
 
-12. **Repeat purchase behavior** must be **Show the success page**, never *Allow them to make
-    another purchase*. One account can hold one supporter entitlement; a second purchase takes a
-    second payment and grants nothing, which ends in a refund. With step 10's custom redirect,
-    "show the success page" means an existing subscriber is simply returned to their own
-    subscription page, which is where they can manage it.
+Two things the hosted flow could not do, and the SDK does:
 
-> The account id is a **path segment** of that link, not a query parameter, and the server builds
-> the whole URL (`GET /subscriptions/web-checkout`). Leaving the id out does not fall back to an
-> anonymous purchase — the page answers 404. Do not hand the bare link to anybody.
+* **The checkout speaks the buyer's language.** Of the hosted flow RevenueCat says flatly that
+  "it is not possible to specify the language used in Web Purchase Links"; the SDK takes
+  `selectedLocale`, and covers all five of ours. #503's return route, which forwarded a buyer to
+  their own language after a fixed redirect, is now only there for links in RevenueCat's emails.
+* **The price on the button is the price at the till.** The offering carries it, already
+  formatted in the customer's currency.
+
+> The account id still has to be right. It is `appUserId` in `lib/revenuecatWeb.ts`, it is the
+> HivePulse `user.id`, and the webhook matches on it — a purchase carrying anything else is money
+> taken and credited to nobody. It used to be a path segment of a URL the server built; the
+> hazard did not go away, it became a named argument with its own tests.
 
 ### 2.4 The webhook to our server
 
@@ -177,8 +188,7 @@ Settings → Environment Variables, on the **hivepulse** project for production 
 
 | Variable | What it is | Where it comes from |
 |---|---|---|
-| `REVENUECAT_WEB_PURCHASE_TOKEN` | the token out of the production purchase link | 2.3 |
-| `REVENUECAT_WEB_PURCHASE_TOKEN_SANDBOX` | the sandbox token | 2.3 |
+| `NEXT_PUBLIC_REVENUECAT_WEB_KEY` | the Paddle config's **public** API key, read by the browser | 2.3 |
 | `REVENUECAT_WEBHOOK_SECRET` | the string you typed in 2.4 | 2.4 |
 | `REVENUECAT_API_KEY` | RevenueCat **secret** API key, for `POST /subscriptions/sync` | RevenueCat → API keys |
 | `REVENUECAT_ENTITLEMENT` | only if you did not call the entitlement `supporter` | 2.2 |
@@ -187,15 +197,19 @@ Settings → Environment Variables, on the **hivepulse** project for production 
 | `STORE_CHECKOUT_ENABLED` | `true` to let this deployment sell **in the apps** | see below |
 
 **`WEB_CHECKOUT_ENABLED` is off unless you set it, and that is deliberate (#530).** Without it,
-`/subscriptions/web-checkout` answers `503 WEB_CHECKOUT_UNCONFIGURED` even with a perfectly good
-token, and the page says "cannot be bought here yet" — the same thing it says on a deployment that
-has no token at all, in five languages.
+`GET /subscriptions/me` reports `web_checkout_enabled: false`, the page never asks RevenueCat for
+a price at all, and it says "cannot be bought here yet" — the same thing it says on a deployment
+whose build has no SDK key, in five languages.
 
-The reason is that a token used to be enough. Set it, and the next deploy put a buy button in
-front of people, whatever that deploy was about. Paddle approves a checkout domain on its own
-schedule, and a checkout opened before that approval fails with "Something went wrong." in the
-customer's face. A default of "on unless disabled" fails open; this one fails closed, so selling
-starts when somebody decides it does.
+The reason is that a key used to be enough. Set it, and the next deploy put a buy button in front
+of people, whatever that deploy was about. Paddle approves a checkout domain on its own schedule,
+and a checkout opened before that approval fails with "Something went wrong." in the customer's
+face. A default of "on unless disabled" fails open; this one fails closed, so selling starts when
+somebody decides it does.
+
+Note which way round the two work: the key is a build value and the switch is a server value.
+Deploying the key changes nothing on its own, and the switch can be flipped the morning Paddle
+approves without shipping anything.
 
 Only *selling* is gated. `GET /subscriptions/me`, `POST /subscriptions/sync` and the webhook keep
 working, so anybody who already bought keeps their access and a cancellation still arrives.
@@ -246,7 +260,8 @@ staging deployment cannot take real money. Never set the sandbox token on produc
 
 ## 4. Testing, and what does not work
 
-- Build the sandbox link as **Share URL → Copy sandbox URL**, then append a real user id.
+- Sign in on staging and open `/dashboard/subscription`. With `WEB_CHECKOUT_ENABLED=true` and a
+  sandbox SDK key in that build, the button carries a price and opens Paddle's sandbox checkout.
 - Pay with Paddle's test cards.
 - **Use a real-looking email.** Reserved domains — `.test`, `.invalid`, `.localhost` — fail
   Paddle's validation and RevenueCat will not record the purchase.
@@ -270,30 +285,27 @@ What to check on our side after a sandbox purchase:
 Sandbox and production are **separate Paddle accounts**, in RevenueCat's words: "Paddle has
 entirely separate sandbox accounts that should be created and configured as standalone accounts."
 Nothing carries over. Repeat sections 1.2 to 1.7 in the production account — **including the
-`pay.rev.cat` domain approval**, which is the part that takes days — create a production web
-config in RevenueCat pointing at it, and set the production token.
+domain approval**, which is the part that takes days — create a production web config in
+RevenueCat pointing at it, and put its public key on the production Vercel project.
 
-> ### The one switch that is easy to forget, and expensive
+> ### What is no longer a trap
 >
-> **The purchase link has exactly one success redirect.** It is not per environment. So while you
-> test against staging it must point at the staging return route, and on the day you go live it
-> must be changed to production.
+> There used to be a box here about the purchase link's single success redirect: point it at
+> staging to test and every paying customer lands on staging, point it at production and your own
+> sandbox purchase returns you to a site you are not signed in to. Nothing in the pipeline could
+> catch either.
 >
-> Forget it in the testing direction and you land on production without a session, which looks
-> uncannily like being signed out by a bug — that is what happened on the first sandbox purchase,
-> and an issue was opened against innocent code before the cause turned up.
->
-> Forget it in the *other* direction and **every paying customer lands on staging**: a different
-> database, no entitlement, no trace of the money they just spent. Nothing in the pipeline can
-> catch this. Check it as the last step before the first real sale.
+> There is no redirect any more. The checkout resolves in the page it was opened from, so each
+> environment returns to itself by construction (#541). The `/dashboard/subscription-return`
+> route stays for links in RevenueCat's own emails.
 
-**The order of the last three moves**, once Paddle shows the checkout domain as approved:
+**The order of the last two moves**, once Paddle shows the checkout domain as approved:
 
-1. Set the **default payment link** to `https://pay.rev.cat` in Checkout settings. Paddle refuses
-   it before approval — "In live it must be on an approved domain" — and until it is set, every
+1. Set the **default payment link** in Checkout settings to
+   `https://hivepulse.multihead.de/en/dashboard/subscription`. Paddle refuses an unapproved
+   domain — "In live it must be on an approved domain" — and until a default is set, every
    checkout fails with "Something went wrong."
-2. Point the purchase link's **success redirect** at production, per the box above.
-3. Set **`WEB_CHECKOUT_ENABLED=true`** on the production project and deploy. This one is last on
+2. Set **`WEB_CHECKOUT_ENABLED=true`** on the production project and deploy. This one is last on
    purpose: it is the moment the buy button appears, and everything above has to be true first.
 
 Deploying before step 3 is safe and expected — the page simply keeps saying "cannot be bought
@@ -390,9 +402,9 @@ Payments** behind the same RevenueCat interface:
   own tax code. Stripe runs an eligibility review of the account, but there is **no domain review** —
   it judges the *product* by its tax code, so donations elsewhere on the site cannot disqualify the
   subscription the way they did here.
-* Web Purchase Links keep working, so **the backend does not change**: `pay.rev.cat/<token>/<id>`,
-  the webhook and `app/utils/entitlements.py` all stay. That is the dividend of letting our own
-  table be the source of truth instead of the provider.
+* **Nothing in our code changes.** `purchases-js` talks to whichever billing engine the
+  RevenueCat config names, and the webhook and `app/utils/entitlements.py` do not care either.
+  That is the dividend of letting our own table be the source of truth instead of the provider.
 * What it does cost is text: Paddle is named as the seller in the privacy policy, the terms and the
   refund policy, in five languages, plus sections 1 and 6 of this document.
 
@@ -416,8 +428,9 @@ privately held company and asks for papers an individual does not have.
 
 ## What is already done, so you do not look for it
 
-- `GET /subscriptions/me`, `POST /subscriptions/sync`, `POST /subscriptions/webhook` and
-  `GET /subscriptions/web-checkout` (`backend/app/routers/subscriptions.py`).
+- `GET /subscriptions/me`, `POST /subscriptions/sync` and `POST /subscriptions/webhook`
+  (`backend/app/routers/subscriptions.py`), and the browser's side of the checkout
+  (`lib/revenuecatWeb.ts`).
 - The event and store mapping (`backend/app/utils/revenuecat.py`), checked line by line against
   RevenueCat's published values: `PADDLE` is a real `store`, a refund arrives as a `CANCELLATION`
   with `cancel_reason: CUSTOMER_SUPPORT` and there is no `REFUND` event type, `expiration_at_ms`
@@ -429,6 +442,6 @@ privately held company and asks for papers an individual does not have.
 - The subscription page, the free-colony limit, the treatment record, and the five-language texts
   on all three clients.
 
-**Not done, and deliberately so:** buying inside the iPhone and Android apps. That is StoreKit and
-Play Billing, needs product identifiers from App Store Connect and the Play Console, and is the
-reason the apps should not be released with the paywall visible but unbuyable.
+- Buying inside the iPhone and Android apps, through StoreKit 2 and Play Billing with the
+  RevenueCat SDKs (#17, #535). Both are gated by `STORE_CHECKOUT_ENABLED` and need product
+  identifiers from App Store Connect and the Play Console before a price appears.

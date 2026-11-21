@@ -37,6 +37,38 @@ export const RELEASES: Release[] = [
   {
     date: '2026-11-21',
     title: t(
+      'Paying on the website happens on the website',
+      'Bezahlen auf der Webseite passiert auf der Webseite',
+      'Le paiement sur le site se fait sur le site',
+      'Pagar en la web ocurre en la web',
+      'Płatność w serwisie odbywa się w serwisie',
+    ),
+    items: [
+      {
+        kind: 'changed',
+        text: t(
+          'The payment form now opens on the Subscription page itself instead of sending you to another site to pay. You stay signed in, on hivepulse.multihead.de, and you come back to your own account the moment it is done — there is no longer a trip through a page somewhere else that then has to find its way back to you.',
+          'Das Zahlungsfenster öffnet sich jetzt auf der Abo-Seite selbst, statt dich zum Bezahlen auf eine andere Seite zu schicken. Du bleibst angemeldet, auf hivepulse.multihead.de, und bist in dem Moment wieder in deinem Konto, in dem es durch ist — der Umweg über eine fremde Seite, die anschließend zurückfinden muss, fällt weg.',
+          'Le formulaire de paiement s’ouvre désormais sur la page Abonnement elle-même au lieu de vous envoyer payer ailleurs. Vous restez connecté, sur hivepulse.multihead.de, et vous retrouvez votre compte dès que c’est fait — fini le détour par une page extérieure qui doit ensuite vous ramener.',
+          'El formulario de pago se abre ahora en la propia página de Suscripción en vez de enviarte a otro sitio a pagar. Sigues con la sesión iniciada, en hivepulse.multihead.de, y vuelves a tu cuenta en cuanto termina — se acabó el rodeo por una página ajena que luego tenía que encontrar el camino de vuelta.',
+          'Formularz płatności otwiera się teraz na samej stronie Abonamentu, zamiast odsyłać Cię do zapłaty gdzie indziej. Pozostajesz zalogowany, na hivepulse.multihead.de, i wracasz do swojego konta w chwili, gdy płatność się kończy — znika objazd przez obcą stronę, która potem musi trafić z powrotem.',
+        ),
+      },
+      {
+        kind: 'changed',
+        text: t(
+          'The button shows the price you will actually be charged, in your own currency, and the payment form is in your language. Before, the button read €19.99 to everybody, whatever the till was about to say.',
+          'Auf dem Knopf steht der Preis, der dir tatsächlich berechnet wird, in deiner Währung, und das Zahlungsfenster ist in deiner Sprache. Vorher stand dort für alle 19,99 €, egal was die Kasse gleich sagen würde.',
+          'Le bouton affiche le prix qui vous sera réellement facturé, dans votre monnaie, et le formulaire de paiement est dans votre langue. Auparavant il affichait 19,99 € pour tout le monde, quoi que la caisse s’apprête à annoncer.',
+          'El botón muestra el precio que de verdad se te va a cobrar, en tu moneda, y el formulario de pago está en tu idioma. Antes ponía 19,99 € para todo el mundo, dijera lo que dijera luego la caja.',
+          'Na przycisku widać cenę, która zostanie naprawdę pobrana, w Twojej walucie, a formularz płatności jest w Twoim języku. Wcześniej widniało tam 19,99 € dla wszystkich, cokolwiek miała za chwilę powiedzieć kasa.',
+        ),
+      },
+    ],
+  },
+  {
+    date: '2026-11-21',
+    title: t(
       'The subscription can be bought in the apps',
       'Das Abo lässt sich in den Apps kaufen',
       'L’abonnement s’achète dans les applications',

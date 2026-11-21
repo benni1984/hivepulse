@@ -35,7 +35,7 @@ export default function SubscriptionContent({ Screenshot }: { Screenshot: typeof
           </li>
           <li>
             <span className="help-step-num">2</span>
-            <div className="help-step-body">Choose <strong>Subscribe</strong> and complete the payment. Access is unlocked as soon as the payment is confirmed — on the website and in both apps, because the account carries the subscription and not the device.</div>
+            <div className="help-step-body">Choose <strong>Subscribe</strong> and complete the payment. The payment form opens right there on the page — you stay on HivePulse, and the button shows the price in your own currency. Access is unlocked as soon as the payment is confirmed — on the website and in both apps, because the account carries the subscription and not the device.</div>
           </li>
         </ol>
         <p>In the iPhone and Android apps you buy it under <strong>Settings → Supporter</strong>, or from the card on the Members tab. The purchase goes through the App Store or Google Play, as those stores require, and the price there is the same. Whichever way you buy, the subscription belongs to your HivePulse account and works everywhere you sign in: buy it on the phone and the website knows within seconds.</p>

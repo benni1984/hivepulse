@@ -1049,7 +1049,7 @@
     },
     "subscription": {
       "activeBody": "Merci. Tout ce que comprend l’abonnement est débloqué sur le site et dans les deux applications.",
-      "buy": "S’abonner — 19,99 € par an",
+      "buy": "S’abonner — {price} par an",
       "endsOn": "Valable jusqu’au {date}, sans renouvellement. Rien de ce que vous avez saisi ne disparaît ensuite.",
       "errorGeneric": "Cela n’a pas fonctionné. Veuillez réessayer.",
       "freeStays": "Gratuits dans tous les cas, et cela ne changera pas : le suivi du frelon asiatique, l’année apicole, les QR codes, les visites hors ligne et l’export de vos propres données.",

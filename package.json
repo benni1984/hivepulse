@@ -13,6 +13,7 @@
     "test:e2e:staging": "playwright test --config=playwright.staging.config.ts"
   },
   "dependencies": {
+    "@revenuecat/purchases-js": "1.74.0",
     "@swc/helpers": "^0.5.21",
     "@vercel/blob": "^2.4.0",
     "aos": "^2.3.4",

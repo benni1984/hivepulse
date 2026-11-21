@@ -1,9 +1,14 @@
 /**
- * The subscription page (#479).
+ * The subscription page (#479, #541).
  *
  * Most of this file is about the states that are easy to get wrong because they look like
  * failures and are not: a grace period, a subscription that was cancelled but still runs, a
  * lapsed one with more colonies than the free limit, and a deployment that cannot sell yet.
+ *
+ * Since #541 the page runs the Paddle checkout itself instead of linking to pay.rev.cat, so the
+ * buy control is a button and the tests mock `lib/revenuecatWeb` rather than an API call. What
+ * that module hides is deliberate: these tests must run without a store, exactly as the iPhone's
+ * and Android's paywall tests do.
  */
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
@@ -13,12 +18,14 @@ import type { Subscription } from '@/lib/api';
 
 const mockGetSubscription = vi.hoisted(() => vi.fn());
 const mockSyncSubscription = vi.hoisted(() => vi.fn());
-const mockGetWebCheckoutUrl = vi.hoisted(() => vi.fn());
+const mockLoadOffer = vi.hoisted(() => vi.fn());
+const mockBuy = vi.hoisted(() => vi.fn());
 const mockSearchParams = vi.hoisted(() => ({ value: new URLSearchParams() }));
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string, vals?: Record<string, unknown>) =>
     vals ? `${key}:${JSON.stringify(vals)}` : key,
+  useLocale: () => 'de',
 }));
 
 vi.mock('next/navigation', () => ({
@@ -29,21 +36,29 @@ vi.mock('@/components/DashboardShell', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
-vi.mock('@/hooks/useDashboardAuth', () => ({ useDashboardReady: () => true }));
+vi.mock('@/hooks/useDashboardAuth', () => ({
+  useDashboardAuth: () => ({
+    user: { id: 'user-1', email: 'bee@example.com', locale: 'de' }, loading: false, failed: false,
+  }),
+}));
 
 vi.mock('@/lib/useDocumentTitle', () => ({ useDocumentTitle: () => {} }));
 
 vi.mock('@/lib/api', () => ({
   getSubscription: mockGetSubscription,
   syncSubscription: mockSyncSubscription,
-  getWebCheckoutUrl: mockGetWebCheckoutUrl,
   grantsAccess: (s: { status: string }) => s.status === 'active' || s.status === 'grace',
+}));
+
+vi.mock('@/lib/revenuecatWeb', () => ({
+  loadSupporterOffer: mockLoadOffer,
+  buySupporter: mockBuy,
 }));
 
 const base: Subscription = {
   status: 'none', source: null, product_id: null, current_period_end: null,
   will_renew: false, store_managed: false, manage_url: null,
-  hives_used: 3, hive_limit: 10,
+  hives_used: 3, hive_limit: 10, web_checkout_enabled: true,
 };
 
 function sub(over: Partial<Subscription> = {}): Subscription {
@@ -54,9 +69,10 @@ describe('SubscriptionPage', () => {
   beforeEach(() => {
     mockGetSubscription.mockReset();
     mockSyncSubscription.mockReset();
-    mockGetWebCheckoutUrl.mockReset();
+    mockLoadOffer.mockReset();
+    mockBuy.mockReset();
     mockSearchParams.value = new URLSearchParams();
-    mockGetWebCheckoutUrl.mockResolvedValue('https://pay.rev.cat/tok/user-1');
+    mockLoadOffer.mockResolvedValue({ id: '$rc_annual', price: '19,99 €' });
   });
 
   it('shows how many colonies of the free allowance are used', async () => {
@@ -122,16 +138,107 @@ describe('SubscriptionPage', () => {
     mockGetSubscription.mockResolvedValue(sub());
     render(<SubscriptionPage />);
 
+    expect(await screen.findByTestId('subscription-buy')).toBeDefined();
+  });
+
+  it('quotes the price the customer will be charged, not one from a translation file', async () => {
+    // RevenueCat quotes in the customer's own currency. A button reading €19.99 to somebody
+    // about to be charged in złoty is wrong in the one place it cannot be.
+    mockGetSubscription.mockResolvedValue(sub());
+    mockLoadOffer.mockResolvedValue({ id: '$rc_annual', price: '89,99 zł' });
+    render(<SubscriptionPage />);
+
     const buy = await screen.findByTestId('subscription-buy');
-    expect(buy.getAttribute('href')).toBe('https://pay.rev.cat/tok/user-1');
+    expect(buy.textContent).toContain('89,99');
+  });
+
+  it('binds the checkout to this account and no other', async () => {
+    // The webhook matches on the id. A purchase carrying anything else is money taken and
+    // credited to nobody — the worst failure this feature has (#541).
+    mockGetSubscription.mockResolvedValue(sub());
+    mockBuy.mockResolvedValue('cancelled');
+    render(<SubscriptionPage />);
+
+    fireEvent.click(await screen.findByTestId('subscription-buy'));
+
+    await waitFor(() => expect(mockBuy).toHaveBeenCalledWith(
+      'user-1', { email: 'bee@example.com', locale: 'de' }));
+  });
+
+  it('asks the server again once the checkout says it was paid', async () => {
+    mockGetSubscription.mockResolvedValue(sub());
+    mockBuy.mockResolvedValue('bought');
+    mockSyncSubscription.mockResolvedValue(sub({ status: 'active', source: 'web' }));
+    render(<SubscriptionPage />);
+
+    fireEvent.click(await screen.findByTestId('subscription-buy'));
+
+    expect(await screen.findByTestId('subscription-thanks')).toBeDefined();
+    expect(mockSyncSubscription).toHaveBeenCalled();
+  });
+
+  it('says nothing at all when somebody closes the checkout', async () => {
+    // Changing your mind is not an error, and both apps are silent about it too.
+    mockGetSubscription.mockResolvedValue(sub());
+    mockBuy.mockResolvedValue('cancelled');
+    render(<SubscriptionPage />);
+
+    fireEvent.click(await screen.findByTestId('subscription-buy'));
+
+    await waitFor(() => expect(mockBuy).toHaveBeenCalled());
+    expect(document.querySelector('.dash-error-banner')).toBeNull();
+    expect(screen.queryByTestId('subscription-thanks')).toBeNull();
+    expect(mockSyncSubscription).not.toHaveBeenCalled();
+  });
+
+  it('shows a failed checkout as an error rather than as a thank you', async () => {
+    mockGetSubscription.mockResolvedValue(sub());
+    mockBuy.mockRejectedValue(new Error('the card was declined'));
+    render(<SubscriptionPage />);
+
+    fireEvent.click(await screen.findByTestId('subscription-buy'));
+
+    await waitFor(() =>
+      expect(document.querySelector('.dash-error-banner')?.textContent)
+        .toContain('the card was declined'));
+    expect(screen.queryByTestId('subscription-thanks')).toBeNull();
   });
 
   it('says so plainly when the site cannot sell yet, instead of a dead button', async () => {
     mockGetSubscription.mockResolvedValue(sub());
-    mockGetWebCheckoutUrl.mockResolvedValue(null);
+    mockLoadOffer.mockResolvedValue(null);
     render(<SubscriptionPage />);
 
     expect(await screen.findByTestId('subscription-unconfigured')).toBeDefined();
+    expect(screen.queryByTestId('subscription-buy')).toBeNull();
+  });
+
+  it('does not even ask RevenueCat while the server says this deployment may not sell', async () => {
+    // The server's switch is the authority, as it is in both apps (#530, #17). Asking anyway
+    // would put a price in front of somebody the moment a key reached the build, which is the
+    // failure the switch exists to prevent.
+    mockGetSubscription.mockResolvedValue(sub({ web_checkout_enabled: false }));
+    render(<SubscriptionPage />);
+
+    expect(await screen.findByTestId('subscription-unconfigured')).toBeDefined();
+    expect(mockLoadOffer).not.toHaveBeenCalled();
+  });
+
+  it('treats a server that never heard of the switch as not selling', async () => {
+    // Absent means false. Silence reads as "unknown", and unknown is closed.
+    mockGetSubscription.mockResolvedValue(sub({ web_checkout_enabled: undefined }));
+    render(<SubscriptionPage />);
+
+    expect(await screen.findByTestId('subscription-unconfigured')).toBeDefined();
+    expect(mockLoadOffer).not.toHaveBeenCalled();
+  });
+
+  it('does not offer a price to somebody who already pays', async () => {
+    mockGetSubscription.mockResolvedValue(sub({ status: 'active', source: 'web' }));
+    render(<SubscriptionPage />);
+
+    await screen.findByTestId('subscription-state');
+    expect(mockLoadOffer).not.toHaveBeenCalled();
     expect(screen.queryByTestId('subscription-buy')).toBeNull();
   });
 
@@ -201,13 +308,14 @@ describe('SubscriptionPage', () => {
     await waitFor(() => expect(mockSyncSubscription).toHaveBeenCalled());
   });
 
-  it('still shows the state when the purchase link cannot be fetched at all', async () => {
+  it('still shows the state when the offering cannot be fetched at all', async () => {
     // One broken call must not blank the page somebody opened to understand their account.
-    mockGetSubscription.mockResolvedValue(sub({ status: 'active', source: 'manual' }));
-    mockGetWebCheckoutUrl.mockRejectedValue(new Error('network'));
+    mockGetSubscription.mockResolvedValue(sub({ status: 'expired', hives_used: 15 }));
+    mockLoadOffer.mockRejectedValue(new Error('network'));
     render(<SubscriptionPage />);
 
     expect(await screen.findByTestId('subscription-state')).toBeDefined();
-    expect(screen.getByTestId('subscription-manual')).toBeDefined();
+    expect(screen.getByTestId('subscription-over-limit')).toBeDefined();
+    expect(await screen.findByTestId('subscription-unconfigured')).toBeDefined();
   });
 });

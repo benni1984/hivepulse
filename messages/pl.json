@@ -1049,7 +1049,7 @@
     },
     "subscription": {
       "activeBody": "Dziękujemy. Wszystko, co obejmuje abonament, jest odblokowane w serwisie i w obu aplikacjach.",
-      "buy": "Wykup abonament — 19,99 € rocznie",
+      "buy": "Wykup abonament — {price} rocznie",
       "endsOn": "Ważny do {date} i nie odnawia się. Nic z tego, co zapisałeś, potem nie znika.",
       "errorGeneric": "Nie udało się. Spróbuj ponownie.",
       "freeStays": "Bezpłatne tak czy inaczej i takie pozostaną: tropiciel szerszenia azjatyckiego, rok pszczelarski, kody QR, przeglądy bez sieci i eksport własnych danych.",

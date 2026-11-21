@@ -1049,7 +1049,7 @@
     },
     "subscription": {
       "activeBody": "Gracias. Todo lo que incluye la suscripción está desbloqueado en la web y en ambas aplicaciones.",
-      "buy": "Suscribirse — 19,99 € al año",
+      "buy": "Suscribirse — {price} al año",
       "endsOn": "Válida hasta el {date} y no se renueva. Nada de lo que has registrado desaparece después.",
       "errorGeneric": "No ha funcionado. Inténtalo de nuevo.",
       "freeStays": "Gratis en cualquier caso, y así seguirá: el rastreador de avispa asiática, el año apícola, los códigos QR, las revisiones sin conexión y la exportación de tus propios datos.",
