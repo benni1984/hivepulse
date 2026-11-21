@@ -301,7 +301,7 @@
 "members.stat.goodMood" = "Gute Stimmung";
 "members.stat.avgBrood" = "Ø Brutrahmen";
 "members.stat.interval" = "Ø Kontrollintervall";
-"members.becomeSupporter" = "Mehr erfahren & Unterstützer werden";
+"members.becomeSupporter" = "Unterstützer werden";
 
 /* Konto löschen */
 "section.dangerZone" = "Gefahrenbereich";
@@ -601,3 +601,26 @@
 "region.saved" = "Region gespeichert.";
 "region.error" = "Die Region konnte nicht gespeichert werden.";
 "region.notLocated" = "Diese Postleitzahl wurde nicht gefunden, die Termine richten sich deshalb nach deinem ersten Bienenstand oder Mitteldeutschland.";
+
+/* Die Unterstützer-Seite (#17). Aus den Einstellungen und aus der Mitglieder-Sperre. */
+"supporter.title" = "Unterstützer";
+"supporter.heading" = "HivePulse unterstützen";
+"supporter.intro" = "Bis zu 10 Völker bleibt HivePulse kostenlos. Mit einem Abo fallen die Grenzen, und das Projekt läuft weiter.";
+"supporter.benefit.colonies" = "So viele Völker, wie du hast";
+"supporter.benefit.history" = "Statistiken über die ganze Zeit, nicht nur über die letzten 365 Tage";
+"supporter.benefit.treatments" = "Das Behandlungsbuch als druckbares PDF";
+"supporter.benefit.fields" = "Eigene Felder für die Kontrolle";
+"supporter.benefit.sharing" = "Einen Bienenstand mit jemandem teilen";
+"supporter.benefit.map" = "Die regionale Gesundheitskarte";
+"supporter.cancelAnytime" = "Jederzeit im App Store kündbar. Das Abo gehört zu deinem Konto und gilt damit auch auf der Website und auf Android.";
+"supporter.restore" = "Kauf wiederherstellen";
+"supporter.restore.nothing" = "Für diesen Apple-Account wurde kein früherer Kauf gefunden.";
+"supporter.unavailable.title" = "Hier noch nicht erhältlich";
+"supporter.unavailable.desc" = "Diese Version der App kann kein Abo verkaufen. Auf der Website geht es, und weil das Abo zu deinem Konto gehört, gilt es dann auch hier.";
+"supporter.active.title" = "Du bist Unterstützer";
+"supporter.active.desc" = "Danke. Alles oben ist auf jedem Gerät frei, auf dem du angemeldet bist.";
+"supporter.manage" = "Abo verwalten";
+"supporter.retry" = "Erneut versuchen";
+"supporter.notice" = "Abo";
+"supporter.settings.active" = "Danke, dass du HivePulse unterstützt.";
+"supporter.settings.inactive" = "So viele Völker, wie du hast, die ganze Historie und die regionale Gesundheitskarte.";

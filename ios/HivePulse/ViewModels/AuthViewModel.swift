@@ -122,6 +122,10 @@ final class AuthViewModel: ObservableObject {
             try? await service.logout(refreshToken: refresh)
         }
         KeychainService.shared.clearAll()
+        // And the store account, or the next person to use this phone inherits the
+        // subscription. Only here, not in `sessionExpired()`: an expiry is the same
+        // beekeeper about to sign back in, and signing in rebinds anyway.
+        await PurchaseServices.current.forget()
         // The next account on this device must not see the previous one's hives, and a
         // queued inspection could no longer be uploaded with the signed-out session.
         await OfflineInspectionQueue.shared.clear()

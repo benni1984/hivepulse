@@ -2701,6 +2701,37 @@ It is still a 200, because anything else has RevenueCat retry it forever.
 **Response 401** — `WEBHOOK_UNAUTHORIZED`, missing or wrong secret. No body detail: an endpoint
 open to the internet says as little as possible about why it refused.
 
+### What the apps implement
+
+Both apps buy through the RevenueCat SDK, which buys through StoreKit 2 and Play Billing. The
+same five things on both, because a difference here is a difference a store reviewer sees.
+
+1. **`logIn(user.id)` before anything is offered.** RevenueCat's `app_user_id` is the HivePulse
+   `user.id` and nothing else — the webhook matches on it, and a purchase made while the SDK
+   still holds an anonymous id is a successful payment attached to no account. `logOut()` on
+   sign-out, or the next person to use the phone inherits the subscription.
+2. **One entitlement, `supporter`, and one offering.** The app asks for the current offering
+   rather than naming products, so a price or a product can change in the dashboard without a
+   release.
+3. **Restore, reachable without buying.** Apple requires it, and it is the only way somebody
+   who reinstalled or changed phone gets their subscription back.
+4. **`POST /subscriptions/sync` right after a purchase and after a restore**, so the unlock is
+   immediate rather than webhook-fast. Not instead of the webhook: that stays the authority,
+   and everything the app never sees — a renewal while the phone is off, a refund granted
+   weeks later — arrives only that way.
+5. **Managing the subscription leaves the app.** Neither app can cancel: iOS opens
+   `showManageSubscriptions`, Android the Play subscription page. A Cancel button an app
+   cannot honour is worse than a sentence saying where to go.
+
+**Without a key the apps do not sell, and say so.** The public SDK key arrives as a build value
+from a secret, the way the Sentry DSN already does. An empty one leaves the paywall saying it
+cannot be bought here rather than crashing on a client that was never configured — the same
+position `WEB_CHECKOUT_ENABLED` holds on the website (#530), and the same one the backend holds
+with no RevenueCat key at all.
+
+**What the apps never call** is `GET /subscriptions/web-checkout`. A web purchase link shown in
+an app is a store-review rejection.
+
 ### What the subscription includes
 
 Decided while the application had no users, because a quantity limit cannot be introduced once
