@@ -89,12 +89,47 @@ IGNORED_EVENTS = frozenset({
 #: paid for ran out (#496).
 REFUND_REASON = "CUSTOMER_SUPPORT"
 
+#: The two environments RevenueCat labels its events with. Anything else is not something it
+#: sends, so it is read as "do not act".
+ENVIRONMENTS = frozenset({"PRODUCTION", "SANDBOX"})
+
 
 def _when(ms: Optional[int]) -> Optional[datetime]:
     """RevenueCat sends milliseconds since the epoch; this database stores naive UTC."""
     if ms is None:
         return None
     return datetime.fromtimestamp(int(ms) / 1000, tz=timezone.utc).replace(tzinfo=None)
+
+
+def _is_ours(environment: Optional[str], what: str) -> bool:
+    """Whether something labelled `environment` belongs to this deployment.
+
+    RevenueCat's webhook configuration offers Production, Sandbox or Both, and Both is its
+    default. Pick that on a webhook pointing at production and a purchase paid for with a test
+    card unlocks the paid features for real. Configuration is the first line of defence --
+    one webhook per environment, each with its own secret -- and this is the second, for the
+    day somebody clicks "Both" without knowing what it means (#506).
+
+    An unlabelled event is refused. RevenueCat labels every event it sends, so one without a
+    label is either not from RevenueCat or not what this code was written against, and
+    granting access on it would be guessing. Refusing withholds a feature somebody may have
+    paid for, which complains out loud; the other direction hands the paid features to a test
+    card and says nothing.
+    """
+    want = (settings.revenuecat_environment or "").strip().upper()
+    if want not in ENVIRONMENTS:
+        # A deployment configured with nonsense gets the strict reading, not a free pass. The
+        # module degrades rather than fails, the way its docstring says.
+        log.warning("revenuecat: REVENUECAT_ENVIRONMENT is %r, reading it as PRODUCTION",
+                    settings.revenuecat_environment)
+        want = "PRODUCTION"
+
+    got = (environment or "").strip().upper()
+    if got == want:
+        return True
+    log.warning("revenuecat: ignoring %s from the %s environment; this deployment accepts %s",
+                what, got or "unlabelled", want)
+    return False
 
 
 def read_event(payload: dict[str, Any]) -> Optional[dict[str, Any]]:
@@ -114,6 +149,11 @@ def read_event(payload: dict[str, Any]) -> Optional[dict[str, Any]]:
     status = EVENTS.get(kind)
     if status is None:
         log.info("revenuecat: ignoring unknown event type %r", kind)
+        return None
+
+    # Before anything is read out of the event: a sandbox purchase must not unlock a
+    # production account, however well the shared secret checked out (#506).
+    if not _is_ours(event.get("environment"), f"a {kind} event"):
         return None
 
     # A refund arrives as a cancellation and is told apart only by its reason. Read before
@@ -173,6 +213,14 @@ def read_subscriber(user_id: str, body: dict[str, Any]) -> Optional[dict[str, An
     detail = subscriptions.get(product) or {}
     store = STORES.get((detail.get("store") or "").upper())
     if store is None:
+        return None
+
+    # `POST /subscriptions/sync` reaches this with nothing but a signed-in account, which
+    # makes it the easier of the two ways in -- the webhook at least wants the shared secret.
+    # The subscriber API labels each subscription with a boolean rather than the event's enum,
+    # so a missing one means what the name says: not sandbox.
+    sandbox = "SANDBOX" if detail.get("is_sandbox") else "PRODUCTION"
+    if not _is_ours(sandbox, f"the {product} subscription of {user_id}"):
         return None
 
     now = now_utc()

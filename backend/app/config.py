@@ -17,6 +17,23 @@ class Settings(BaseSettings):
     revenuecat_api_key: str = ""        # server key, for POST /subscriptions/sync
     revenuecat_webhook_secret: str = "" # the Authorization header RevenueCat is told to send
     revenuecat_entitlement: str = "supporter"
+    #: Which RevenueCat environment this deployment believes. "PRODUCTION" or "SANDBOX".
+    #:
+    #: RevenueCat's webhook configuration offers Production, Sandbox or Both, and **Both is
+    #: its default**. A sandbox event accepted by production grants a real entitlement for a
+    #: test card. What prevents that today is luck -- a sandbox purchase carries a staging
+    #: account's id, and staging has its own database -- and luck stops being a safeguard the
+    #: first time two databases share an id (#506).
+    #:
+    #: Production keeps the default; a staging deployment sets SANDBOX. Deliberately not
+    #: derived from `environment` or from the presence of the sandbox purchase token: those
+    #: answer other questions, and a check that reads a different signal than the one somebody
+    #: set is a check that can disagree with itself.
+    #:
+    #: The default is the strict position. Forgetting it on staging means sandbox purchases are
+    #: ignored there -- visible within a minute of testing, and harmless. The other way round
+    #: is neither.
+    revenuecat_environment: str = "PRODUCTION"
     #: The token of the Web Purchase Link, i.e. the "abc123" of
     #: https://pay.rev.cat/abc123/<app_user_id>. Empty means the website cannot sell yet
     #: and says so, which is the normal state of a deployment and of every test run.

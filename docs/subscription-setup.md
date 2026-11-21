@@ -182,6 +182,7 @@ Settings → Environment Variables, on the **hivepulse** project for production 
 | `REVENUECAT_WEBHOOK_SECRET` | the string you typed in 2.4 | 2.4 |
 | `REVENUECAT_API_KEY` | RevenueCat **secret** API key, for `POST /subscriptions/sync` | RevenueCat → API keys |
 | `REVENUECAT_ENTITLEMENT` | only if you did not call the entitlement `supporter` | 2.2 |
+| `REVENUECAT_ENVIRONMENT` | `SANDBOX` on staging. Production needs nothing | see below |
 | `WEB_CHECKOUT_ENABLED` | `true` to let this deployment sell at all | see below |
 
 **`WEB_CHECKOUT_ENABLED` is off unless you set it, and that is deliberate (#530).** Without it,
@@ -214,6 +215,13 @@ log which ones, so this fails in the open rather than taking the pipeline down. 
 then simply absent and the default stands — closed, for this flag. But that also means a flag
 stored as Sensitive **does not reach the migration step at all**, so keep it plain and the
 question does not arise. `backend/tests/test_vercel_env_pull.py` holds the filter in place.
+
+**`REVENUECAT_ENVIRONMENT=SANDBOX` is the other thing staging needs, and it is easy to
+forget.** The server accepts events only from the environment it was told to expect, and the
+default is `PRODUCTION` — so a staging deployment without this variable answers
+`handled: false` to every sandbox purchase and nothing unlocks. That is the harmless
+direction of the mistake, and the reason the default is that way round: the opposite would
+have a production deployment honour test cards. Production needs no variable; leave it unset.
 
 **The sandbox token wins over the production one when both are set.** That is on purpose, so a
 staging deployment cannot take real money. Never set the sandbox token on production.
@@ -278,10 +286,15 @@ here yet", which is the truth until Paddle has approved the domain.
 **Two webhooks, not one.** Each environment gets its own, with its own secret, and with
 RevenueCat's *Environment* set explicitly — Sandbox for the one pointing at
 `apiscan-staging.vercel.app`, Production for the one pointing at `hivepulse.multihead.de`. The
-default is "Both", and "Both" on the production webhook means a purchase paid for with a test card
-grants a real entitlement, because the server does not read the environment field (#506). Today
-only the mismatch between the two databases' account ids stops it, which is luck rather than
-design.
+default is "Both", and "Both" on the production webhook would mean a purchase paid for with a
+test card grants a real entitlement.
+
+That is now caught on our side as well: the server reads the event's `environment` and
+ignores anything that is not the environment this deployment was told to expect (#506).
+Setting the webhooks correctly remains the first line of defence — the check is the
+second, for the day somebody clicks "Both" without knowing what it means. It used to be
+neither: what kept a sandbox event from granting a real entitlement was the mismatch between
+the two databases' account ids, which is luck rather than design.
 
 ---
 
