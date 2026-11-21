@@ -21,7 +21,7 @@
     <string name="members_stat_good_mood">Gute Stimmung</string>
     <string name="members_stat_avg_brood">Ø Brutrahmen</string>
     <string name="members_stat_avg_interval">Ø Kontrollintervall</string>
-    <string name="members_become_supporter">Mehr erfahren &amp; Unterstützer werden</string>
+    <string name="members_become_supporter">Unterstützer werden</string>
     <string name="heatmap_section_title">Regionale Gesundheitskarte</string>
     <string name="heatmap_empty">Keine Community-Daten verfügbar.</string>
     <string name="heatmap_hint">Tippe auf eine Zelle für Details.</string>
@@ -593,4 +593,27 @@
     <string name="region_error">Die Region konnte nicht gespeichert werden.</string>
     <string name="region_not_located">Diese Postleitzahl wurde nicht gefunden, die Termine richten sich deshalb nach deinem ersten Bienenstand oder Mitteldeutschland.</string>
     <string name="session_expired">Sitzung abgelaufen. Bitte erneut anmelden.</string>
+
+    <!-- Die Unterstützer-Seite (#17). Aus den Einstellungen und aus der Mitglieder-Sperre. -->
+    <string name="supporter_title">Unterstützer</string>
+    <string name="supporter_heading">HivePulse unterstützen</string>
+    <string name="supporter_intro">Bis zu 10 Völker bleibt HivePulse kostenlos. Mit einem Abo fallen die Grenzen, und das Projekt läuft weiter.</string>
+    <string name="supporter_benefit_colonies">So viele Völker, wie du hast</string>
+    <string name="supporter_benefit_history">Statistiken über die ganze Zeit, nicht nur über die letzten 365 Tage</string>
+    <string name="supporter_benefit_treatments">Das Behandlungsbuch als druckbares PDF</string>
+    <string name="supporter_benefit_fields">Eigene Felder für die Kontrolle</string>
+    <string name="supporter_benefit_sharing">Einen Bienenstand mit jemandem teilen</string>
+    <string name="supporter_benefit_map">Die regionale Gesundheitskarte</string>
+    <string name="supporter_unavailable_title">Hier noch nicht erhältlich</string>
+    <string name="supporter_unavailable_desc">Diese Version der App kann kein Abo verkaufen. Auf der Website geht es, und weil das Abo zu deinem Konto gehört, gilt es dann auch hier.</string>
+    <string name="supporter_active_title">Du bist Unterstützer</string>
+    <string name="supporter_active_desc">Danke. Alles oben ist auf jedem Gerät frei, auf dem du angemeldet bist.</string>
+    <string name="supporter_manage">Abo verwalten</string>
+    <string name="supporter_restore">Kauf wiederherstellen</string>
+    <string name="supporter_retry">Erneut versuchen</string>
+    <string name="supporter_notice">Abo</string>
+    <string name="supporter_settings_active">Danke, dass du HivePulse unterstützt.</string>
+    <string name="supporter_settings_inactive">So viele Völker, wie du hast, die ganze Historie und die regionale Gesundheitskarte.</string>
+    <string name="supporter_cancel_anytime">Jederzeit in Google Play kündbar. Das Abo gehört zu deinem Konto und gilt damit auch auf der Website und auf dem iPhone.</string>
+    <string name="supporter_restore_nothing">Für dieses Google-Konto wurde kein früherer Kauf gefunden.</string>
 </resources>

@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -184,6 +185,7 @@ fun SettingsScreen(
     onBack: () -> Unit,
     onAdminClick: () -> Unit = {},
     onCustomFieldsClick: () -> Unit = {},
+    onSupporterClick: () -> Unit = {},
     onGuidedTourClick: () -> Unit = {},
     vm: SettingsViewModel = hiltViewModel(),
     regionVm: com.hivepulse.app.ui.calendar.RegionViewModel = hiltViewModel(),
@@ -270,6 +272,28 @@ fun SettingsScreen(
                         Spacer(Modifier.width(8.dp))
                         Text(stringResource(R.string.fielddefs_manage))
                     }
+
+                    // Supporter. High up and its own row, because a store reviewer who cannot
+                    // find the purchase rejects the build, and because somebody looking for what
+                    // they pay for looks here first. Same position and same wording as the
+                    // iPhone's: one button, the sentence underneath.
+                    OutlinedButton(
+                        onClick  = onSupporterClick,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(Icons.Default.Star, null, Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text(stringResource(R.string.supporter_title))
+                    }
+                    Text(
+                        // Says which it is without a second request: the flag is on the account.
+                        stringResource(
+                            if (user.isSupporter) R.string.supporter_settings_active
+                            else R.string.supporter_settings_inactive
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
 
                     // Account info
                     Text(stringResource(R.string.section_account), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)

@@ -38,7 +38,8 @@ export default function SubscriptionContent({ Screenshot }: { Screenshot: typeof
             <div className="help-step-body">Wybierz <strong>Wykup abonament</strong> i dokonaj płatności. Wszystko odblokowuje się zaraz po potwierdzeniu — w serwisie i w obu aplikacjach, bo abonament należy do konta, a nie do urządzenia.</div>
           </li>
         </ol>
-        <p>Na razie abonament kupuje się w serwisie. W aplikacjach na iPhone’a i Androida zakup będzie przechodził przez App Store i Google Play, jak wymagają tego te sklepy — to jest właśnie budowane. Niezależnie od drogi zakupu abonament należy do twojego konta HivePulse i działa wszędzie, gdzie się zalogujesz; sam limit obowiązuje już na wszystkich trzech.</p>
+        <p>W aplikacjach na iPhone’a i Androida kupujesz go w <strong>Ustawieniach → Wspierający</strong> albo z karty w zakładce Członkowie. Zakup przechodzi przez App Store lub Google Play, jak wymagają tego te sklepy, i kosztuje tam tyle samo. Niezależnie od drogi zakupu abonament należy do twojego konta HivePulse i działa wszędzie, gdzie się zalogujesz: kup go na telefonie, a serwis wie o tym kilka sekund później.</p>
+        <p>Nowy telefon albo ponownie zainstalowana aplikacja? <strong>Przywróć zakup</strong> na dole tej samej strony odzyskuje abonament kupiony w sklepie. Dla kupionego w serwisie nigdy tego nie potrzebujesz — ten i tak idzie za kontem.</p>
         <Screenshot src="/docs/screenshots/subscription.png" caption="Strona Abonament: co masz, co obejmuje abonament i gdzie zrezygnować" />
       </section>
 

@@ -150,6 +150,15 @@ once people have crossed it (#478). €19.99 a year; the technical side is #17.
 | statistics for the last 365 days | the whole history, and the regional health map |
 | the raw data export | |
 
+Where it is bought, and where it is managed:
+
+| Feature | Where | W | I | A | Contract |
+|---------|-------|:-:|:-:|:-:|----------|
+| Buy the subscription | Website: Dashboard → Subscription. Apps: Settings → Supporter, and the Members gate | ✔ | ✔ | ✔ | Subscriptions |
+| Restore a purchase made in a store | Bottom of the apps' paywall, in every state | — | ✔ | ✔ | Subscriptions |
+| See the state, the period end and where to cancel | Same three places | ✔ | ✔ | ✔ | Subscriptions |
+| Cancel | Whoever sold it: the website's link, the App Store, or Google Play | ✔ | ✔ | ✔ | Subscriptions |
+
 Three rules hold the whole thing together, and they are enforced in `backend/app/limits.py`:
 
 * **Reaching a limit never closes what already exists.** Not hidden, not read-only, not deleted —
@@ -199,14 +208,23 @@ server** (`GET /subscriptions/web-checkout`): the account id is a path segment o
 without one answers 404 rather than selling anonymously, and a link with the *wrong* one takes
 money and attaches it to nobody.
 
-**Today it is sold on the website only.** There is no StoreKit code and no Play Billing code, and
-the backend has no `/subscriptions/apple` or `/subscriptions/google` — only the web checkout, the
-sync and the RevenueCat webhook. `STORE_MANAGED` in the router describes a row that *came* from a
-store, which nothing currently produces. Both apps nevertheless gate the Members screen on
-`is_supporter` and offer a "become a supporter" button that opens `/contribute`, a page which does
-not mention the subscription. That is a gap, not a design: Apple's 3.1.3(b) allows unlocking
-content bought elsewhere only where the same content is also an in-app purchase. Tracked
-separately; do not read this paragraph as a plan.
+**It is sold on all three.** Both apps buy it through the RevenueCat SDK, which buys through
+StoreKit 2 and Play Billing; the paywall is reached from **Settings → Supporter** and from the
+Members gate, and `Restore purchase` sits on it in every state because Apple requires one and
+because a new phone otherwise loses what somebody paid for. The backend needed no new endpoint for
+any of it — the RevenueCat webhook already maps `APP_STORE` to `apple` and `PLAY_STORE` to
+`google`, so `STORE_MANAGED` now describes rows that actually arrive. The five things both apps
+must do are listed in `docs/api-contract.md` under "What the apps implement".
+
+This closed the one real gap here: until #535 each app offered a "become a supporter" button that
+opened `/contribute` in a browser. Apple's 3.1.3(b) allows unlocking content bought elsewhere only
+where the same content is also an in-app purchase, 3.1.1 forbids steering out of the app, and since
+that page stopped asking for money the button was a dead end as well.
+
+**Neither app sells without a key.** The public SDK key is a build value from a secret
+(`REVENUECAT_PUBLIC_KEY_IOS` / `REVENUECAT_PUBLIC_KEY_ANDROID`); without it the paywall says it
+cannot be bought here, which is also what it says before the store products exist. Android stays on
+`purchases:10.30.5`, the last release built against this project's Kotlin 2.0.21.
 
 Whichever way it is bought, the entitlement is derived on the server and works on all three
 clients — that part is built and is the reason the purchase route can change without touching

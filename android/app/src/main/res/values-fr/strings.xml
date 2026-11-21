@@ -21,7 +21,7 @@
     <string name="members_stat_good_mood">Bonne humeur</string>
     <string name="members_stat_avg_brood">Cadres de couvain moy.</string>
     <string name="members_stat_avg_interval">Intervalle de visite moy.</string>
-    <string name="members_become_supporter">En savoir plus &amp; devenir soutien</string>
+    <string name="members_become_supporter">Devenir soutien</string>
     <string name="heatmap_section_title">Carte de santé régionale</string>
     <string name="heatmap_empty">Aucune donnée communautaire disponible.</string>
     <string name="heatmap_hint">Touchez une cellule pour les détails.</string>
@@ -593,4 +593,27 @@
     <string name="region_error">La région n’a pas pu être enregistrée.</string>
     <string name="region_not_located">Ce code postal n’a pas été trouvé ; les dates suivent donc votre premier rucher ou le centre de l’Allemagne.</string>
     <string name="session_expired">Session expirée. Veuillez vous reconnecter.</string>
+
+    <!-- La page de soutien (#17). Depuis les réglages et depuis le blocage Membres. -->
+    <string name="supporter_title">Soutien</string>
+    <string name="supporter_heading">Soutenir HivePulse</string>
+    <string name="supporter_intro">HivePulse reste gratuit jusqu’à 10 ruches. Un abonnement lève les limites et permet au projet de continuer.</string>
+    <string name="supporter_benefit_colonies">Autant de ruches que vous en avez</string>
+    <string name="supporter_benefit_history">Des statistiques sur tout votre historique, pas seulement sur les 365 derniers jours</string>
+    <string name="supporter_benefit_treatments">Le registre des traitements en PDF imprimable</string>
+    <string name="supporter_benefit_fields">Vos propres champs de visite</string>
+    <string name="supporter_benefit_sharing">Partager un rucher avec quelqu’un</string>
+    <string name="supporter_benefit_map">La carte sanitaire régionale</string>
+    <string name="supporter_unavailable_title">Pas encore en vente ici</string>
+    <string name="supporter_unavailable_desc">Cette version de l’application ne peut pas vendre d’abonnement. C’est possible sur le site web, et comme l’abonnement appartient à votre compte, il vaut aussi ici.</string>
+    <string name="supporter_active_title">Vous êtes soutien</string>
+    <string name="supporter_active_desc">Merci. Tout ce qui précède est débloqué sur chaque appareil où vous vous connectez.</string>
+    <string name="supporter_manage">Gérer l’abonnement</string>
+    <string name="supporter_restore">Restaurer l’achat</string>
+    <string name="supporter_retry">Réessayer</string>
+    <string name="supporter_notice">Abonnement</string>
+    <string name="supporter_settings_active">Merci de soutenir HivePulse.</string>
+    <string name="supporter_settings_inactive">Autant de ruches que vous en avez, tout l’historique et la carte sanitaire régionale.</string>
+    <string name="supporter_cancel_anytime">Résiliable à tout moment dans Google Play. L’abonnement appartient à votre compte : il vaut aussi sur le site web et sur l’iPhone.</string>
+    <string name="supporter_restore_nothing">Aucun achat antérieur n’a été trouvé pour ce compte Google.</string>
 </resources>

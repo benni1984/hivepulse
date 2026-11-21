@@ -38,7 +38,8 @@ export default function SubscriptionContent({ Screenshot }: { Screenshot: typeof
             <div className="help-step-body">Elige <strong>Suscribirse</strong> y completa el pago. Todo se desbloquea en cuanto se confirma — en la web y en ambas aplicaciones, porque la suscripción pertenece a la cuenta y no al dispositivo.</div>
           </li>
         </ol>
-        <p>De momento la suscripción se compra en la web. En las apps de iPhone y Android la compra pasará por la App Store y Google Play, como exigen esas tiendas, y eso todavía se está construyendo. Compres por donde compres, la suscripción pertenece a tu cuenta de HivePulse y vale en todas partes donde inicies sesión; el límite en sí ya se aplica en las tres.</p>
+        <p>En las apps de iPhone y Android se compra en <strong>Ajustes → Colaborador</strong>, o desde la tarjeta de la pestaña Miembros. La compra pasa por la App Store o Google Play, como exigen esas tiendas, y allí cuesta lo mismo. Compres por donde compres, la suscripción pertenece a tu cuenta de HivePulse y vale en todas partes donde inicies sesión: cómprala en el móvil y la web lo sabe segundos después.</p>
+        <p>¿Móvil nuevo, o app reinstalada? <strong>Restaurar la compra</strong>, al final de esa misma página, recupera una suscripción comprada en una tienda. Para una comprada en la web no lo necesitas nunca: esa sigue a la cuenta de todos modos.</p>
         <Screenshot src="/docs/screenshots/subscription.png" caption="La página de Suscripción: lo que tienes, qué incluye la suscripción y dónde cancelar" />
       </section>
 

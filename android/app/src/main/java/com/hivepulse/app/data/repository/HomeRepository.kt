@@ -22,6 +22,9 @@ class HomeRepository @Inject constructor(private val api: ApiService) {
 @Singleton
 class SubscriptionRepository @Inject constructor(private val api: ApiService) {
     suspend fun mine(): SubscriptionOut = withServerMessage { api.mySubscription() }
+
+    /** After a purchase or a restore, so the unlock does not wait for the webhook (#17). */
+    suspend fun sync(): SubscriptionOut = withServerMessage { api.syncSubscription() }
 }
 
 /** The treatments planned for a hive or an apiary. A refusal carries the server's own message. */

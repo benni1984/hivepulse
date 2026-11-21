@@ -273,7 +273,7 @@
     <string name="members_stat_good_mood">Good Mood</string>
     <string name="members_stat_avg_brood">Avg Brood Frames</string>
     <string name="members_stat_avg_interval">Avg Inspection Interval</string>
-    <string name="members_become_supporter">Learn more &amp; become a supporter</string>
+    <string name="members_become_supporter">Become a supporter</string>
     <string name="heatmap_section_title">Regional Health Map</string>
     <string name="heatmap_empty">No community data available.</string>
     <string name="heatmap_hint">Tap a cell for details.</string>
@@ -595,4 +595,27 @@
     <string name="region_error">The region could not be saved.</string>
     <string name="region_not_located">That postal code was not found, so the dates follow your first apiary or central Germany.</string>
     <string name="session_expired">Session expired. Please log in again.</string>
+
+    <!-- The supporter paywall (#17). From Settings and from the Members gate. -->
+    <string name="supporter_title">Supporter</string>
+    <string name="supporter_heading">Support HivePulse</string>
+    <string name="supporter_intro">HivePulse stays free for up to 10 colonies. A subscription lifts the limits and keeps the project running.</string>
+    <string name="supporter_benefit_colonies">As many colonies as you keep</string>
+    <string name="supporter_benefit_history">Statistics over your whole history, not only the last 365 days</string>
+    <string name="supporter_benefit_treatments">The treatment record as a printable PDF</string>
+    <string name="supporter_benefit_fields">Your own inspection fields</string>
+    <string name="supporter_benefit_sharing">Share an apiary with somebody else</string>
+    <string name="supporter_benefit_map">The regional health map</string>
+    <string name="supporter_unavailable_title">Not for sale here yet</string>
+    <string name="supporter_unavailable_desc">This version of the app cannot sell a subscription. It can be bought on the website, and because the subscription belongs to your account it counts here as well.</string>
+    <string name="supporter_active_title">You are a supporter</string>
+    <string name="supporter_active_desc">Thank you. Everything above is unlocked on every device you sign in on.</string>
+    <string name="supporter_manage">Manage subscription</string>
+    <string name="supporter_restore">Restore purchase</string>
+    <string name="supporter_retry">Try again</string>
+    <string name="supporter_notice">Subscription</string>
+    <string name="supporter_settings_active">Thank you for supporting HivePulse.</string>
+    <string name="supporter_settings_inactive">As many colonies as you keep, the whole history, and the regional health map.</string>
+    <string name="supporter_cancel_anytime">Cancel any time in Google Play. The subscription belongs to your account, so it counts on the website and on the iPhone too.</string>
+    <string name="supporter_restore_nothing">No earlier purchase was found for this Google account.</string>
 </resources>

@@ -61,6 +61,14 @@ android {
     val sentryDsn: String = (project.findProperty("SENTRY_DSN") as? String)
         ?: System.getenv("SENTRY_DSN_ANDROID") ?: ""
 
+    // Selling is off unless RevenueCat's **public** SDK key is passed at build time
+    // (-PREVENUECAT_PUBLIC_KEY=… or REVENUECAT_PUBLIC_KEY_ANDROID). Without it the paywall says
+    // it cannot be bought here rather than talking to an account that is not ours -- the same
+    // position WEB_CHECKOUT_ENABLED holds on the website. It is not a secret by design, but this
+    // repository is public, so it is not written down in it either.
+    val revenueCatKey: String = (project.findProperty("REVENUECAT_PUBLIC_KEY") as? String)
+        ?: System.getenv("REVENUECAT_PUBLIC_KEY_ANDROID") ?: ""
+
     // Google Play refuses an upload whose version code it has seen before, so the release
     // workflow passes a strictly increasing one. Local builds stay at 1.
     val buildVersionCode: Int = (project.findProperty("VERSION_CODE") as? String)?.toIntOrNull() ?: 1
@@ -106,6 +114,7 @@ android {
         testInstrumentationRunner = "com.hivepulse.app.HiltTestRunner"
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
         buildConfigField("String", "SENTRY_DSN", "\"$sentryDsn\"")
+        buildConfigField("String", "REVENUECAT_PUBLIC_KEY", "\"$revenueCatKey\"")
     }
 
     if (keystoreFile != null) {
@@ -225,6 +234,20 @@ dependencies {
     implementation("androidx.credentials:credentials-play-services-auth:1.6.0")
     // 1.2.x is built against Kotlin 2.4 metadata and will not link against this project's 2.0.
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
+    // In-app purchases (#17). The store sells, RevenueCat verifies the receipt and tells the
+    // backend by webhook, and the backend stays the only thing that decides who has access.
+    //
+    // 10.30.5 and not 11.x, which is current: 11.x is compiled against Kotlin 2.2.21 and would
+    // not link against this project's 2.0.21, the same way `googleid` 1.2.x does not. 10.30.5 is
+    // the last release of the Kotlin-2.0 line -- its own bundled ProGuard rules say so
+    // ("These rules target kotlinx.serialization 1.5.1 (Kotlin 2.0.21)"). Moving to 11.x is a
+    // Kotlin upgrade first, which drags the Compose compiler plugin, KSP, Hilt and Room with it.
+    //
+    // No keep rules of ours: the AAR ships `proguard.txt` as consumer rules, covering the enum
+    // names it reads reflectively and the Parcelable CREATOR fields. Checked in the published
+    // artifact rather than assumed, because R8 runs in no test (see "R8" in CLAUDE.md).
+    implementation("com.revenuecat.purchases:purchases:10.30.5")
 
     // Security (encrypted token storage)
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
