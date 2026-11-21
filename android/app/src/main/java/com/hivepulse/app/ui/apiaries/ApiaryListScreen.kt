@@ -26,6 +26,8 @@ import com.hivepulse.app.ui.home.homeSummaryItems
 import com.hivepulse.app.ui.sharing.InvitationsViewModel
 import com.hivepulse.app.ui.sharing.invitationItems
 import com.hivepulse.app.ui.common.ErrorBanner
+import com.hivepulse.app.ui.feedback.FeedbackPromptCard
+import com.hivepulse.app.ui.feedback.FeedbackPromptViewModel
 import com.hivepulse.app.ui.common.LoadingScreen
 import com.hivepulse.app.ui.theme.Amber500
 import com.hivepulse.app.ui.theme.Stone200
@@ -42,6 +44,7 @@ fun ApiaryListScreen(
     vm: ApiaryViewModel = hiltViewModel(),
     invitationsVm: InvitationsViewModel = hiltViewModel(),
     homeVm: HomeSummaryViewModel = hiltViewModel(),
+    feedbackVm: FeedbackPromptViewModel = hiltViewModel(),
 ) {
     val state by vm.state.collectAsState()
     val home by homeVm.state.collectAsState()
@@ -49,7 +52,7 @@ fun ApiaryListScreen(
     var showCreate by remember { mutableStateOf(false) }
     var showRedeem by remember { mutableStateOf(false) }
     // Coming back from another screen is when an invitation may have arrived.
-    LaunchedEffect(Unit) { invitationsVm.load(); homeVm.load() }
+    LaunchedEffect(Unit) { invitationsVm.load(); homeVm.load(); feedbackVm.refresh() }
 
     Scaffold(
         topBar = {
@@ -85,11 +88,21 @@ fun ApiaryListScreen(
             when {
                 state.isLoading && state.apiaries.isEmpty() -> LoadingScreen()
                 state.apiaries.isEmpty() && invitations.invitations.isEmpty() -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                    ) {
                         Icon(Icons.Default.Hive, contentDescription = null, Modifier.size(48.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         Text(stringResource(R.string.empty_apiaries_title), style = MaterialTheme.typography.titleMedium)
                         Text(stringResource(R.string.action_new_apiary), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         RedeemInvitationLink { showRedeem = true }
+                        // Here too, and not only over a full list: somebody who has kept the app
+                        // for three days without naming a single colony is exactly the person
+                        // worth asking why (#546).
+                        if (feedbackVm.visible) {
+                            FeedbackPromptCard(onAnswered = { feedbackVm.answered() })
+                        }
                     }
                 }
                 else -> LazyColumn(
@@ -107,6 +120,11 @@ fun ApiaryListScreen(
                         onAccept  = { invitation -> invitationsVm.accept(invitation) { vm.load() } },
                         onDecline = { invitation -> invitationsVm.decline(invitation) },
                     )
+                    // Above the summary and below an invitation: an invitation is somebody
+                    // waiting on an answer, this is only us asking for one (#546).
+                    if (feedbackVm.visible) {
+                        item { FeedbackPromptCard(onAnswered = { feedbackVm.answered() }) }
+                    }
                     homeSummaryItems(
                         home,
                         onHiveClick = onHiveClick,

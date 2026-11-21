@@ -323,6 +323,9 @@
     <string name="action_export_data">Exporter les données</string>
     <string name="action_help">Aide &amp; documentation</string>
     <string name="action_feedback">Envoyer un retour</string>
+    <string name="feedback_ask_title">Comment ça se passe ?</string>
+    <string name="feedback_ask_body">Vous utilisez HivePulse depuis quelques jours. Si quelque chose gêne ou manque, dites-le — chaque message est lu, et c’est de là que vient la version suivante.</string>
+    <string name="feedback_ask_dismiss">Non merci</string>
     <string name="action_load_more">Charger plus</string>
     <string name="action_next">Suivant</string>
     <string name="action_prev">Précédent</string>

@@ -40,6 +40,9 @@
     <string name="action_logout">Sign Out</string>
     <string name="action_help">Help &amp; Documentation</string>
     <string name="action_feedback">Send feedback</string>
+    <string name="feedback_ask_title">How is it going?</string>
+    <string name="feedback_ask_body">You have been keeping bees with HivePulse for a few days. If something gets in the way, or is missing, say so — every message is read, and it is what the next version is built from.</string>
+    <string name="feedback_ask_dismiss">No thanks</string>
     <string name="url_help">https://hivepulse.multihead.de/en/help</string>
     <string name="action_new_apiary">New Apiary</string>
     <string name="action_edit_apiary">Edit Apiary</string>

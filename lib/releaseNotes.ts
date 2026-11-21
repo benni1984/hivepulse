@@ -35,6 +35,28 @@ export function pick(text: Localized, locale: string): string {
 /** Newest first. */
 export const RELEASES: Release[] = [
   {
+    date: '2026-11-22',
+    title: t(
+      'The app asks what you think',
+      'Die App fragt, was du denkst',
+      'L’application vous demande votre avis',
+      'La app te pregunta qué opinas',
+      'Aplikacja pyta, co sądzisz',
+    ),
+    items: [
+      {
+        kind: 'added',
+        text: t(
+          'Three days after you start, a card on the apiary list asks once how it is going and offers a way to say so — in the apps and on the website. One question, once: whichever button you press, it does not come back. Until now the only way to send anything was Settings → Send feedback, and nobody goes looking in Settings to volunteer an opinion.',
+          'Drei Tage nach dem Start fragt eine Karte in der Bienenstand-Liste einmal, wie es läuft, und bietet einen Weg, es zu sagen — in den Apps und auf der Webseite. Eine Frage, einmal: welchen Knopf du auch drückst, sie kommt nicht wieder. Bisher führte der einzige Weg über Einstellungen → Rückmeldung, und dort sucht niemand von sich aus danach.',
+          'Trois jours après vos débuts, une carte sur la liste des ruchers demande une fois comment ça se passe et propose de le dire — dans les applications et sur le site. Une question, une seule fois : quel que soit le bouton choisi, elle ne revient pas. Jusqu’ici le seul chemin était Réglages → Envoyer un retour, et personne ne va l’y chercher.',
+          'Tres días después de empezar, una tarjeta en la lista de colmenares pregunta una vez cómo va y ofrece una forma de decirlo — en las apps y en la web. Una pregunta, una vez: pulses el botón que pulses, no vuelve. Hasta ahora el único camino era Ajustes → Enviar comentarios, y nadie lo busca allí por su cuenta.',
+          'Trzy dni po starcie karta na liście pasiek pyta raz, jak idzie, i proponuje sposób, żeby to powiedzieć — w aplikacjach i w serwisie. Jedno pytanie, raz: którykolwiek przycisk naciśniesz, nie wraca. Dotychczas jedyną drogą było Ustawienia → Prześlij opinię, a tam nikt sam nie zagląda.',
+        ),
+      },
+    ],
+  },
+  {
     date: '2026-11-21',
     title: t(
       'Paying on the website happens on the website',

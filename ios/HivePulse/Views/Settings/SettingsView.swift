@@ -433,26 +433,14 @@ struct SettingsView: View {
         isDeleting = false
     }
 
-    private var appVersion: String {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
-    }
+    private var appVersion: String { FeedbackMail.appVersion }
 
-    private var appBuild: String {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "?"
-    }
+    private var appBuild: String { FeedbackMail.appBuild }
 
     /// A mail with the build already in the subject, so a report does not start by asking
-    /// which one it came from. `addingPercentEncoding` cannot fail for this character set,
-    /// but a force-unwrapped URL here would crash Settings, so it falls back to a bare mailto.
-    private var feedbackMail: URL {
-        let subject = String(format: "%@ %@ (%@)",
-                             NSLocalizedString("action.feedbackSubject", comment: ""),
-                             appVersion, appBuild)
-        let encoded = subject.addingPercentEncoding(
-            withAllowedCharacters: .urlQueryAllowed) ?? ""
-        return URL(string: "mailto:hivepulse@multihead.de?subject=\(encoded)")
-            ?? URL(string: "mailto:hivepulse@multihead.de")!
-    }
+    /// which one it came from. Built in `FeedbackMail`, because the card on the apiary list
+    /// offers the same mail and two copies of an address drift (#546).
+    private var feedbackMail: URL { FeedbackMail.url }
 
     private func sendTestReport() async {
         isSendingTestReport = true
