@@ -57,8 +57,21 @@ final class OnboardingStore {
     }
 
     /// Both of the above at once, for the one screen that needs it.
+    ///
+    /// `-mockFeedbackDue` brings the question forward for a UI test, the way `-mockStoreOffers`
+    /// and `-mockCameraPreview` stand in for a store and a camera. Three days of waiting cannot
+    /// be arranged in a simulator, and the alternative — writing a date into the UserDefaults
+    /// argument domain — was tried first and did not reach this method at all. *When* the
+    /// question is due is `FeedbackPromptTests`' business; the UI test's business is the card.
+    ///
+    /// It still respects an answer, so the test that presses "No thanks" tests something.
     func shouldAskForFeedback(now: Date = Date()) -> Bool {
         noteLaunch(now: now)
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("-mockFeedbackDue") {
+            return !hasAskedForFeedback
+        }
+        #endif
         return Self.shouldAskForFeedback(
             firstLaunchAt: firstLaunchAt, now: now, alreadyAsked: hasAskedForFeedback)
     }

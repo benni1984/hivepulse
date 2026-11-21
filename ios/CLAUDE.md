@@ -104,7 +104,7 @@ You can write test files on any OS and let CI run them — no local macOS needed
 | `-mockAuthenticatedSupporter` | Authenticated supporter; Members shows the community heatmap with two mock cells |
 | `-mockQrBatch` | Authenticated + one QR batch (`b-1`) whose PDF can be downloaded |
 | `-guidedTourSeen YES` / `NO` | Overrides the "guided tour already shown" flag for this launch (UserDefaults argument domain) |
-| `-feedbackAsked YES` / `NO`, `-firstLaunchAt <epoch seconds>` | The two values the feedback card reads (#546). The argument domain shadows whatever the simulator kept, so a test can place the first launch four days in the past |
+| `-mockFeedbackDue` | Brings the feedback card forward (#546). Three days cannot be waited out in a simulator, and a date written into the UserDefaults argument domain never reached the app. It also clears the “already asked” flag at launch, because UserDefaults outlive a test and the order the class ran in would otherwise decide whether a card was there |
 | `-mockSessionExpired` | Tokens the server has forgotten: every call 401s, including the refresh. The app must land on Login (`SessionExpiryUITests`) |
 | `-mockServer` | Mock only, no token — starts at Login, auth calls return real-looking responses |
 | `-mockCameraPreview` | Replaces the Scan tab's live camera with a flat colour, so the viewfinder and the instruction over it can be reached in the simulator (`DataScannerViewController` is unsupported there) |

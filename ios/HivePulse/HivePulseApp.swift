@@ -38,6 +38,13 @@ struct HivePulseApp: App {
             // A language picked in an earlier run would override the launch arguments.
             AppLanguage.reset()
         }
+        if args.contains("-mockFeedbackDue") {
+            // The keychain is cleared between UI tests; UserDefaults are not, and the app
+            // container outlives a launch. Without this, the test that presses "No thanks"
+            // would silently decide whether the next test in the class sees a card at all,
+            // and the class would pass or fail by the order it happened to run in (#546).
+            OnboardingStore().hasAskedForFeedback = false
+        }
         if args.contains("-mockApiaryWithHive") {
             KeychainService.shared.clearAll()
             KeychainService.shared.accessToken = "ui-test-token"
