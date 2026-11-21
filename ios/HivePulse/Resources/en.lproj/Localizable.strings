@@ -301,7 +301,7 @@
 "members.stat.goodMood" = "Good Mood";
 "members.stat.avgBrood" = "Avg Brood Frames";
 "members.stat.interval" = "Avg Inspection Interval";
-"members.becomeSupporter" = "Learn more & become a supporter";
+"members.becomeSupporter" = "Become a supporter";
 
 /* Delete account */
 "section.dangerZone" = "Danger Zone";
@@ -602,3 +602,26 @@
 "region.saved" = "Region saved.";
 "region.error" = "The region could not be saved.";
 "region.notLocated" = "That postal code was not found, so the dates follow your first apiary or central Germany.";
+
+/* The supporter paywall (#17). Shown from Settings and from the Members gate. */
+"supporter.title" = "Supporter";
+"supporter.heading" = "Support HivePulse";
+"supporter.intro" = "HivePulse stays free for up to 10 colonies. A subscription lifts the limits and keeps the project running.";
+"supporter.benefit.colonies" = "As many colonies as you keep";
+"supporter.benefit.history" = "Statistics over your whole history, not only the last 365 days";
+"supporter.benefit.treatments" = "The treatment record as a printable PDF";
+"supporter.benefit.fields" = "Your own inspection fields";
+"supporter.benefit.sharing" = "Share an apiary with somebody else";
+"supporter.benefit.map" = "The regional health map";
+"supporter.cancelAnytime" = "Cancel any time in the App Store. The subscription belongs to your account, so it counts on the website and on Android too.";
+"supporter.restore" = "Restore purchase";
+"supporter.restore.nothing" = "No earlier purchase was found for this Apple Account.";
+"supporter.unavailable.title" = "Not for sale here yet";
+"supporter.unavailable.desc" = "This version of the app cannot sell a subscription. It can be bought on the website, and because the subscription belongs to your account it counts here as well.";
+"supporter.active.title" = "You are a supporter";
+"supporter.active.desc" = "Thank you. Everything above is unlocked on every device you sign in on.";
+"supporter.manage" = "Manage subscription";
+"supporter.retry" = "Try again";
+"supporter.notice" = "Subscription";
+"supporter.settings.active" = "Thank you for supporting HivePulse.";
+"supporter.settings.inactive" = "As many colonies as you keep, the whole history, and the regional health map.";

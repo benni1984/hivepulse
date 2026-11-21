@@ -44,8 +44,16 @@ struct TreatmentDoneBody: Encodable {
     enum CodingKeys: String, CodingKey { case doneOn = "done_on" }
 }
 
+/// `POST /subscriptions/sync` takes an empty body. Its own type, like `SharingEmptyBody`:
+/// `AdminService`'s is private to that file.
+private struct SubscriptionEmptyBody: Encodable {}
+
 protocol SubscriptionServiceProtocol {
     func mine() async throws -> SubscriptionOut
+    /// Asks the server to re-read this account from the provider now, instead of waiting
+    /// for the webhook. Called right after a purchase and after a restore, so the unlock is
+    /// immediate rather than webhook-fast -- the webhook stays the authority either way.
+    func sync() async throws -> SubscriptionOut
 }
 
 struct SubscriptionService: SubscriptionServiceProtocol {
@@ -53,6 +61,10 @@ struct SubscriptionService: SubscriptionServiceProtocol {
 
     func mine() async throws -> SubscriptionOut {
         try await client.get("subscriptions/me")
+    }
+
+    func sync() async throws -> SubscriptionOut {
+        try await client.post("subscriptions/sync", body: SubscriptionEmptyBody())
     }
 }
 

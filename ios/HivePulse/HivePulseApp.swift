@@ -23,6 +23,11 @@ struct HivePulseApp: App {
     init() {
         // First statement: a crash during setup should still be reported.
         _ = CrashReporting.start()
+        // Before any paywall can be reached, and here rather than in the app delegate:
+        // RevenueCat asks not to be configured in `didFinishLaunching` when an app user id
+        // of ours follows, because of iOS 15 prewarming. With no key it does nothing, and
+        // the rest of the app never notices -- the same way a missing Sentry DSN is quiet.
+        RevenueCatPurchaseService.configureIfPossible()
         HivePulseAppearance.apply()
         // Before any view reads a string.
         AppLanguage.applyStored()
@@ -99,6 +104,12 @@ struct HivePulseApp: App {
                         .environmentObject(authVM)
                         .task {
                             await authVM.loadProfile()
+                            // The store account is this account. Bound on every way in,
+                            // because the webhook matches purchases on this id and a
+                            // purchase made under an anonymous one reaches nobody.
+                            if let id = authVM.currentUser?.id {
+                                await PurchaseServices.current.identify(userID: id)
+                            }
                             await requestPushPermission()
                             // Inspections recorded at the apiary go up as soon as the app
                             // is open again with a connection.

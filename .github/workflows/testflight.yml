@@ -143,9 +143,14 @@ jobs:
       # (a fresh runner never has the previous one's private key) and needs a registered device.
       - name: Archive (Release, manual distribution signing)
         if: steps.secrets.outputs.ready == 'true'
-        # SENTRY_DSN_IOS is optional: without it the app ships with crash reporting off.
+        # Both optional. Without SENTRY_DSN_IOS the app ships with crash reporting off; without
+        # REVENUECAT_PUBLIC_KEY_IOS it ships unable to sell a subscription and says so on the
+        # paywall, rather than talking to an account that is not ours. That one is RevenueCat's
+        # **public** SDK key -- not a secret by design, but this repository is public, so it is
+        # not written down in it either.
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN_IOS }}
+          REVENUECAT_PUBLIC_KEY: ${{ secrets.REVENUECAT_PUBLIC_KEY_IOS }}
         run: |
           xcodebuild archive \
             -project ios/HivePulse.xcodeproj \
@@ -158,7 +163,8 @@ jobs:
             CODE_SIGN_IDENTITY="Apple Distribution" \
             APP_PROFILE_NAME="$PROFILE_NAME" \
             CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
-            SENTRY_DSN="$SENTRY_DSN"
+            SENTRY_DSN="$SENTRY_DSN" \
+            REVENUECAT_PUBLIC_KEY="$REVENUECAT_PUBLIC_KEY"
 
       # Diagnostics: export the same archive to an IPA first and print its code signature, so a rejected
       # upload shows which certificate cloud signing actually applied (Apple Distribution vs. development/ad hoc).

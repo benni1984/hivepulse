@@ -1,7 +1,5 @@
 import SwiftUI
 
-private let supporterInfoURL = URL(string: "https://hivepulse.multihead.de/contribute")!
-
 struct MembersView: View {
     @EnvironmentObject var authVM: AuthViewModel
     @State private var publicStats: PublicStats?
@@ -107,10 +105,21 @@ struct MembersView: View {
                 .font(.dmSans(15, relativeTo: .subheadline))
                 .foregroundColor(.hpStone500)
                 .multilineTextAlignment(.center)
-            Link(NSLocalizedString("members.becomeSupporter", comment: ""),
-                 destination: supporterInfoURL)
-                .buttonStyle(HPPrimaryButtonStyle())
-                .padding(.top, 4)
+            // Into the app's own paywall, not out to a web page. The button used to open
+            // /contribute, which is both the fastest store rejection there is (an external
+            // purchase route) and, since that page stopped asking for money, a dead end (#535).
+            NavigationLink {
+                SupporterView(userID: authVM.currentUser?.id) {
+                    // Paid for: re-read the account, so the gate this button sits in gives way
+                    // to the map it was hiding.
+                    Task { await authVM.loadProfile() }
+                }
+            } label: {
+                Text(NSLocalizedString("members.becomeSupporter", comment: ""))
+            }
+            .buttonStyle(HPPrimaryButtonStyle())
+            .accessibilityIdentifier("membersBecomeSupporter")
+            .padding(.top, 4)
         }
         .hpCard(padding: 20, alignment: .center)
     }

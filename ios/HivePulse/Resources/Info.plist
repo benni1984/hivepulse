@@ -20,6 +20,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>APIBaseURL</key>
 	<string>$(API_BASE_URL)</string>
+	<key>RevenueCatPublicKey</key>
+	<string>$(REVENUECAT_PUBLIC_KEY)</string>
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleExecutable</key>
