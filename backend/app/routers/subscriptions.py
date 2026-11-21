@@ -1,25 +1,29 @@
 """The supporter subscription (#17, api-contract.md → Subscriptions).
 
-Four endpoints and no cleverness: the state, a way to ask for it sooner, where to buy on the web
-(#479), and the webhook that is the actual authority. Everything that changes an entitlement goes
-through `app.utils.entitlements`, which is the only thing that writes a subscription or touches
-`User.is_supporter` — this router never does it directly, not even for a purchase it just handed
-somebody a link to.
+Three endpoints and no cleverness: the state, a way to ask for it sooner, and the webhook that is
+the actual authority. Everything that changes an entitlement goes through
+`app.utils.entitlements`, which is the only thing that writes a subscription or touches
+`User.is_supporter` — this router never does it directly, not even for a purchase that has just
+been paid for.
+
+There used to be a fourth, `GET /subscriptions/web-checkout`, handing the website a hosted
+purchase link on pay.rev.cat. Paddle will not approve a checkout domain that does not carry the
+seller's terms, privacy notice and refund policy, and that domain is not ours to put them on, so
+the website now runs the checkout itself on hivepulse.multihead.de and there is no link left to
+build (#541).
 """
 import json
 import logging
 import secrets
 from typing import Optional
-from urllib.parse import quote
 
 from fastapi import APIRouter, Header, HTTPException
 from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.deps import CurrentUser, DB
-from app.i18n import error
 from app.models import Subscription, User
-from app.schemas import SubscriptionOut, WebCheckoutOut
+from app.schemas import SubscriptionOut
 from app import limits
 from app.utils import entitlements, revenuecat
 
@@ -58,8 +62,13 @@ def _out(db: Session, user: User, row: Optional[Subscription]) -> SubscriptionOu
         "hives_used": limits.hive_count(db, user),
         "hive_limit": None if user.is_supporter else limits.FREE_HIVE_LIMIT,
         # Deployment state, not row state, so it belongs on both ways out of here -- an
-        # account that has never bought anything is exactly who the apps ask for (#17).
+        # account that has never bought anything is exactly who a paywall asks for (#17).
+        #
+        # Both switches ride along, not just the asking client's own: one response that says
+        # what this deployment sells is easier to reason about than a field that means
+        # something different depending on who read it, and a client ignores the other one.
         "store_checkout_enabled": settings.store_checkout_enabled,
+        "web_checkout_enabled": settings.web_checkout_enabled,
     }
     if row is None:
         return SubscriptionOut(status="none", **counters)
@@ -78,42 +87,6 @@ def _out(db: Session, user: User, row: Optional[Subscription]) -> SubscriptionOu
 @router.get("/me", response_model=SubscriptionOut)
 def my_subscription(current_user: CurrentUser, db: DB):
     return _out(db, current_user, entitlements.current_for(db, current_user.id))
-
-
-@router.get("/web-checkout", response_model=WebCheckoutOut)
-def web_checkout(current_user: CurrentUser, accept_language: Optional[str] = Header(default=None)):
-    """Where this account buys the subscription on the web (#479).
-
-    **The server builds this URL, never a client.** The account id is a *path segment* of the
-    purchase link, and leaving it out does not fall back to an anonymous purchase — the page
-    answers 404. RevenueCat's own documentation also disagrees with itself about the parameter's
-    name, and getting that wrong produces a successful payment attached to no account, which is
-    the worst thing this feature could do. So one place decides, and it decides `user.id`.
-
-    Not for the apps: buying inside them goes through StoreKit and Play Billing, and a web
-    purchase link shown in an app is a store rejection. What a web purchase *grants* is of course
-    honoured everywhere — that is the point of deriving `is_supporter` on the server.
-    """
-    # Two ways to be unable to sell, answered identically on purpose. The page already renders
-    # this code as "cannot be bought here yet" in five languages, `scrub_event` already keeps it
-    # out of Sentry (#497), and the E2E suite already expects it -- so the switch costs no new
-    # user-facing text and no new noise.
-    if not settings.web_checkout_enabled:
-        # Deliberately switched off: the token may well be present and correct, but nobody has
-        # said yet that this deployment may sell (#530).
-        log.info("web checkout is switched off (WEB_CHECKOUT_ENABLED)")
-        raise HTTPException(503, detail=error("WEB_CHECKOUT_UNCONFIGURED", accept_language))
-
-    token = (settings.revenuecat_web_purchase_token_sandbox
-             or settings.revenuecat_web_purchase_token)
-    if not token:
-        # Not a failure: it is the normal state of a deployment whose store side is unconfigured,
-        # and of every test run. A page says "not yet" rather than showing an error.
-        raise HTTPException(503, detail=error("WEB_CHECKOUT_UNCONFIGURED", accept_language))
-    return WebCheckoutOut(
-        url=f"https://pay.rev.cat/{token}/{quote(str(current_user.id), safe='')}"
-            f"?email={quote(current_user.email, safe='')}"
-    )
 
 
 @router.post("/sync", response_model=SubscriptionOut)

@@ -575,192 +575,108 @@ def test_the_admin_grant_still_works(admin_client, db_session):
 
 
 # --------------------------------------------------------------------------------------------
-# Where somebody buys it on the web (#479)
+# The switch that lets the website sell (#530, #541)
+#
+# There used to be a GET /subscriptions/web-checkout here, and a long class about the one string
+# it returned: a hosted purchase link whose path segment had to be this account's id, because a
+# wrong one takes real money and attaches it to nobody.
+#
+# The endpoint is gone (#541). Paddle approves a checkout domain only if that domain carries the
+# seller's terms, privacy notice and refund policy, and pay.rev.cat is not ours to put them on --
+# so the checkout runs on our own domain through purchases-js, and there is no link to build. The
+# id still has to be right; it is now an argument the browser passes, and the page's own tests
+# guard it.
+#
+# What is left on the server is the switch, and it is tested the same way the apps' one is.
 # --------------------------------------------------------------------------------------------
 
-class TestWebCheckout:
-    """The account id is a *path segment* of the purchase link, and a link without it answers 404
-    rather than selling anonymously. Worse, a link with the *wrong* id takes real money and
-    attaches it to nobody. These tests are about that one string."""
+def test_the_website_may_not_sell_until_somebody_says_so(auth_client):
+    """The default, read through the endpoint the page actually calls."""
+    body = auth_client.get("/api/v1/subscriptions/me").json()
 
-    @pytest.fixture(autouse=True)
-    def selling_is_switched_on(self, monkeypatch):
-        """Everything in this class is about *what* the link looks like once selling is allowed.
-
-        Whether it is allowed at all is `web_checkout_enabled`, which is off by default so that a
-        deploy cannot start selling by itself (#530) -- that switch has its own class below."""
-        from app.config import settings
-        monkeypatch.setattr(settings, "web_checkout_enabled", True)
-
-    def test_nothing_configured_says_not_yet_rather_than_failing(self, auth_client):
-        """The normal state of a deployment whose store side is not set up, and of every test run
-        before this class sets a token. A page must be able to say "not yet"."""
-        resp = auth_client.get("/api/v1/subscriptions/web-checkout")
-
-        assert resp.status_code == 503
-        assert resp.json()["detail"]["code"] == "WEB_CHECKOUT_UNCONFIGURED"
-
-    def test_the_link_carries_this_accounts_own_id_as_a_path_segment(
-            self, auth_client, db_session, monkeypatch):
-        from app.config import settings
-        from app.models import User
-        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "tok123")
-        user = db_session.query(User).filter(User.email == "test@example.com").first()
-
-        url = auth_client.get("/api/v1/subscriptions/web-checkout").json()["url"]
-
-        assert url.startswith(f"https://pay.rev.cat/tok123/{user.id}"), url
-        assert f"?email=" in url, "so nobody retypes their address at the till"
-
-    def test_the_address_is_escaped_rather_than_pasted_in(self, client, monkeypatch):
-        """A + in an address is a space once it is in a query string. Nobody would notice until a
-        receipt went to the wrong mailbox."""
-        from app.config import settings
-        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "tok123")
-        client.post("/api/v1/auth/register", json={
-            "email": "bee+keeper@example.com", "password": "password123",
-            "name": "Plus", "locale": "en"})
-        token = client.post("/api/v1/auth/login", json={
-            "email": "bee+keeper@example.com", "password": "password123"}).json()["access_token"]
-
-        url = client.get("/api/v1/subscriptions/web-checkout",
-                         headers={"Authorization": f"Bearer {token}"}).json()["url"]
-
-        assert "bee%2Bkeeper%40example.com" in url
-        assert "bee+keeper@" not in url
-
-    def test_a_sandbox_token_wins_so_staging_cannot_take_real_money(self, auth_client, monkeypatch):
-        from app.config import settings
-        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "live-token")
-        monkeypatch.setattr(settings, "revenuecat_web_purchase_token_sandbox", "sandbox-token")
-
-        url = auth_client.get("/api/v1/subscriptions/web-checkout").json()["url"]
-
-        assert "sandbox-token" in url
-        assert "live-token" not in url
-
-    def test_two_accounts_never_receive_the_same_link(self, client, monkeypatch):
-        """The failure this guards is a payment credited to the wrong beekeeper."""
-        from app.config import settings
-        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "tok123")
-        links = []
-        for who in ("one", "two"):
-            client.post("/api/v1/auth/register", json={
-                "email": f"{who}@example.com", "password": "password123",
-                "name": who, "locale": "en"})
-            tok = client.post("/api/v1/auth/login", json={
-                "email": f"{who}@example.com", "password": "password123"}).json()["access_token"]
-            links.append(client.get("/api/v1/subscriptions/web-checkout",
-                                    headers={"Authorization": f"Bearer {tok}"}).json()["url"])
-
-        assert links[0] != links[1]
-
-    def test_there_is_no_link_without_an_account(self, client, monkeypatch):
-        """A purchase link only means anything attached to somebody, so an anonymous caller must
-        not receive one at all.
-
-        Asserted as "refused, and no url in the body" rather than as a particular status, because
-        which status a *missing* Authorization header gets is #482's subject and not this test's.
-        Pinning 401 or 422 here would make this test fail for a reason that has nothing to do with
-        buying anything.
-        """
-        from app.config import settings
-        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "tok123")
-
-        resp = client.get("/api/v1/subscriptions/web-checkout")
-
-        assert resp.status_code >= 400
-        assert "url" not in resp.json()
-
-    def test_the_message_is_translated(self, auth_client):
-        resp = auth_client.get("/api/v1/subscriptions/web-checkout",
-                               headers={"Accept-Language": "de"})
-
-        assert "noch nicht gekauft werden" in resp.json()["detail"]["message"]
+    assert body["web_checkout_enabled"] is False
 
 
-class TestSellingIsSwitchedOffUntilSomebodySaysOtherwise:
-    """The switch exists because selling used to turn itself on (#530).
+def test_the_website_switch_reaches_an_account_that_has_never_bought_anything(
+        auth_client, monkeypatch):
+    """Everybody the page is about to sell to has `status: "none"`, and `_out` builds that case
+    on its *other* return path. A flag that only appeared once a subscription existed would be
+    visible to nobody who needed it."""
+    from app import config as cfg
+    monkeypatch.setattr(cfg.settings, "web_checkout_enabled", True)
 
-    A token in the environment was enough to put a buy button in front of people, so the next
-    deploy -- about anything at all -- would start selling. Paddle approves a checkout domain on
-    its own schedule, and a checkout opened before that approval fails in the customer's face
-    with "Something went wrong."
+    body = auth_client.get("/api/v1/subscriptions/me").json()
 
-    Note what these tests do *not* set: `web_checkout_enabled`. The default is the behaviour
-    under test.
+    assert body["status"] == "none", "precondition: this account bought nothing"
+    assert body["web_checkout_enabled"] is True
+
+
+def test_switching_the_website_on_does_not_switch_the_apps_on(auth_client, monkeypatch):
+    """The mirror of `test_the_two_switches_are_separate`, from the other side.
+
+    Paddle approves a domain and Apple and Google approve products, on three different days. One
+    flag for both would mean the first approval opens a shop that has nothing in it.
     """
+    from app import config as cfg
+    monkeypatch.setattr(cfg.settings, "web_checkout_enabled", True)
+    monkeypatch.setattr(cfg.settings, "store_checkout_enabled", False)
 
-    def test_a_configured_token_alone_does_not_start_selling(self, auth_client, monkeypatch):
-        from app.config import settings
-        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "tok123")
+    body = auth_client.get("/api/v1/subscriptions/me").json()
 
-        resp = auth_client.get("/api/v1/subscriptions/web-checkout")
+    assert body["web_checkout_enabled"] is True
+    assert body["store_checkout_enabled"] is False
 
-        assert resp.status_code == 503
-        assert resp.json()["detail"]["code"] == "WEB_CHECKOUT_UNCONFIGURED"
-        assert "url" not in resp.json()
 
-    def test_the_sandbox_token_does_not_either(self, auth_client, monkeypatch):
-        from app.config import settings
-        monkeypatch.setattr(settings, "revenuecat_web_purchase_token_sandbox", "sand123")
+def test_selling_on_the_website_is_off_by_default_in_the_settings():
+    """Pins the default itself, not just what the endpoint reports -- see
+    `test_vercel_env_pull.py`, where a variable stored as Sensitive is dropped and this default
+    stands in its place. Dropping it is only safe while this is False."""
+    from app import config as cfg
 
-        resp = auth_client.get("/api/v1/subscriptions/web-checkout")
+    assert cfg.Settings.model_fields["web_checkout_enabled"].default is False
 
-        assert resp.status_code == 503
 
-    def test_it_answers_exactly_as_an_unconfigured_deployment_does(self, auth_client, monkeypatch):
-        """Deliberately the same code, so the page already says "cannot be bought here yet" in
-        five languages, Sentry already ignores it (#497) and the E2E suite already expects it.
-        A new code would have meant new text, new noise and a new expectation."""
-        from app.config import settings
-        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "tok123")
+def test_there_is_no_web_checkout_endpoint_any_more(auth_client):
+    """The hosted purchase link is gone, and nothing may quietly bring it back.
 
-        switched_off = auth_client.get("/api/v1/subscriptions/web-checkout")
-        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "")
-        unconfigured = auth_client.get("/api/v1/subscriptions/web-checkout")
+    A client still calling it would be building a pay.rev.cat URL that Paddle refuses to serve a
+    checkout from, and failing in the customer's face rather than at build time.
+    """
+    resp = auth_client.get("/api/v1/subscriptions/web-checkout")
 
-        assert switched_off.status_code == unconfigured.status_code
-        assert switched_off.json() == unconfigured.json()
+    assert resp.status_code == 404
 
-    def test_switching_it_on_sells(self, auth_client, monkeypatch):
-        from app.config import settings
-        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "tok123")
-        monkeypatch.setattr(settings, "web_checkout_enabled", True)
 
-        resp = auth_client.get("/api/v1/subscriptions/web-checkout")
+def test_no_purchase_link_token_is_configurable_any_more():
+    """The two settings went with the endpoint.
 
-        assert resp.status_code == 200
-        assert resp.json()["url"].startswith("https://pay.rev.cat/tok123/")
+    Left behind, they would have looked like something worth filling in, and filling them in
+    would have done nothing at all -- the worst kind of configuration.
+    """
+    from app import config as cfg
 
-    def test_switching_it_on_without_a_token_still_refuses(self, auth_client, monkeypatch):
-        """The two conditions are separate; neither excuses the other."""
-        from app.config import settings
-        monkeypatch.setattr(settings, "web_checkout_enabled", True)
-        monkeypatch.setattr(settings, "revenuecat_web_purchase_token", "")
-        monkeypatch.setattr(settings, "revenuecat_web_purchase_token_sandbox", "")
+    assert "revenuecat_web_purchase_token" not in cfg.Settings.model_fields
+    assert "revenuecat_web_purchase_token_sandbox" not in cfg.Settings.model_fields
 
-        resp = auth_client.get("/api/v1/subscriptions/web-checkout")
 
-        assert resp.status_code == 503
+def test_an_existing_web_subscriber_is_unaffected_by_the_switch(
+        auth_client, db_session, monkeypatch):
+    """Only *selling* is gated. Somebody who already bought keeps their access and the webhook
+    keeps arriving -- otherwise a kill switch for new purchases would also be one for the people
+    who already paid."""
+    from app import config as cfg
+    from app.models import User
+    from app.utils import entitlements
+    monkeypatch.setattr(cfg.settings, "web_checkout_enabled", False)
+    user = db_session.query(User).filter(User.email == "test@example.com").first()
+    entitlements.apply_event(db_session, user=user, source="web", status="active",
+                             current_period_end=None, store_txn_id="txn-530")
+    db_session.commit()
 
-    def test_an_existing_subscriber_is_unaffected(self, auth_client, db_session, monkeypatch):
-        """Only *selling* is gated. Somebody who already bought must keep their access, and the
-        webhook must keep arriving -- otherwise a kill switch for new purchases would also be a
-        kill switch for the people who already paid."""
-        from app.config import settings
-        from app.models import User
-        from app.utils import entitlements
-        monkeypatch.setattr(settings, "web_checkout_enabled", False)
-        user = db_session.query(User).filter(User.email == "test@example.com").first()
-        entitlements.apply_event(db_session, user=user, source="web", status="active",
-                                 current_period_end=None, store_txn_id="txn-530")
-        db_session.commit()
+    me = auth_client.get("/api/v1/subscriptions/me")
 
-        me = auth_client.get("/api/v1/subscriptions/me")
-
-        assert me.status_code == 200
-        assert me.json()["status"] == "active"
+    assert me.status_code == 200
+    assert me.json()["status"] == "active"
 
 
 class TestAdminGrantSurvivesTheSweep:

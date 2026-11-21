@@ -34,14 +34,12 @@ class Settings(BaseSettings):
     #: ignored there -- visible within a minute of testing, and harmless. The other way round
     #: is neither.
     revenuecat_environment: str = "PRODUCTION"
-    #: The token of the Web Purchase Link, i.e. the "abc123" of
-    #: https://pay.rev.cat/abc123/<app_user_id>. Empty means the website cannot sell yet
-    #: and says so, which is the normal state of a deployment and of every test run.
-    revenuecat_web_purchase_token: str = ""
-    #: Sandbox links are a separate token. Never both at once; this one wins when set, so a
-    #: staging deployment cannot accidentally take real money.
-    revenuecat_web_purchase_token_sandbox: str = ""
     #: Whether the website may sell at all. **Off by default, and that is the point** (#530).
+    #:
+    #: Reaches the browser on `GET /subscriptions/me` as `web_checkout_enabled`, beside the
+    #: apps' switch. There is no purchase-link token any more: since #541 the Paddle checkout
+    #: runs on our own domain through purchases-js, and the public SDK key is a build value in
+    #: the website, not a secret the server hands out.
     #:
     #: A token in the environment used to be enough to put a buy button in front of people, so
     #: selling switched itself on with whatever deploy happened to come next -- including one
