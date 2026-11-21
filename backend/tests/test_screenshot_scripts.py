@@ -156,3 +156,128 @@ def test_the_store_script_does_not_wait_for_words_the_toolbar_icon_already_carri
         body = script[script.index(f"def {function}"):]
         body = body[:body.index("\n\n\n")]
         assert "leave_the_apiary_list()" in body, f"{function} does not wait for the list to go"
+
+
+# ── What a failed capture leaves behind (#543) ────────────────────────────────
+
+
+def test_the_store_script_collects_evidence_when_it_fails_before_the_first_screen():
+    """A Play-screenshot job waited 275s for the login screen, gave up, and left nothing.
+
+    The per-step failures inside main() have had diagnostics since they were written. Installing,
+    setting the per-app locale, signing in and confirming the language run *before* those, had
+    none, and they are the ones a cold-booted emulator loses. Without this wrapper the artifact
+    is empty and the next reader guesses between a slow boot, a crash on launch and a system
+    dialog the UI dump does not match.
+    """
+    script = (ROOT / "scripts/android-store-screenshots.py").read_text(encoding="utf-8")
+    entry = script[script.index('if __name__ == "__main__":'):]
+
+    assert "dump_failure_diagnostics" in entry, (
+        "the store script must capture diagnostics for anything that escapes main()"
+    )
+    assert "except SystemExit" in entry, (
+        "main() returns 1 through sys.exit for an incomplete set; that must not be reported as a "
+        "crash, and must not re-enter the diagnostics path"
+    )
+
+
+def test_the_diagnostics_say_what_was_on_top_and_keep_the_logcat():
+    """A screenshot of a black emulator says nothing; logcat says whether the app died.
+
+    Both are best effort and each sits in its own try, because a failure whose diagnostics throw
+    is a failure with no diagnostics at all — which is the state #543 was about.
+    """
+    script = (ROOT / "scripts/android-screenshots.py").read_text(encoding="utf-8")
+    body = script[script.index("def dump_failure_diagnostics("):]
+    body = body[:body.index("\n\n\n")]
+
+    assert "logcat" in body, "a crash or an ANR is only visible in logcat"
+    assert "-t" in body, "the whole buffer is tens of megabytes of emulator noise; take the tail"
+    assert "DEBUG_DIR" in body, (
+        "the logcat belongs in the gitignored debug directory, never in public/docs/screenshots, "
+        "which the workflow commits wholesale"
+    )
+    assert "dumpsys" in body, "'did the app even start' is the first question every time"
+    assert "FATAL EXCEPTION" in body, "the job log should name the crash, not just link a file"
+    assert body.count("except Exception") >= 4, (
+        "screenshot, UI dump, dumpsys and logcat each need their own guard"
+    )
+
+
+def _helpers(monkeypatch, tmp_path, *, logcat: str, dumpsys: str = ""):
+    """Load android-screenshots.py with adb replaced, and its output redirected into tmp_path.
+
+    Static assertions keep the shape of the diagnostics; this one runs them, because the way to
+    get this wrong is a typo in an adb argument list that nothing executes until the night it is
+    needed — which is exactly how #543 was discovered.
+    """
+    import importlib.util
+    import subprocess
+
+    spec = importlib.util.spec_from_file_location(
+        "android_screenshots_under_test", ROOT / "scripts/android-screenshots.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    calls = []
+
+    def fake_run(cmd, **kwargs):
+        calls.append(cmd)
+        if cmd[:2] == ["adb", "logcat"]:
+            return subprocess.CompletedProcess(cmd, 0, stdout=logcat, stderr="")
+        if "dumpsys" in cmd:
+            return subprocess.CompletedProcess(cmd, 0, stdout=dumpsys, stderr="")
+        return subprocess.CompletedProcess(cmd, 0, stdout="", stderr="")
+
+    monkeypatch.setattr(module.subprocess, "run", fake_run)
+    monkeypatch.setattr(module, "DEBUG_DIR", str(tmp_path))
+    monkeypatch.setattr(module, "screenshot", lambda *a, **k: None)
+    monkeypatch.setattr(module, "get_ui_dump", lambda *a, **k: "<hierarchy/>")
+    return module, calls
+
+
+def test_a_failure_writes_the_logcat_tail_and_names_the_crash(monkeypatch, tmp_path, capsys):
+    crash = "11-21 14:39:55.000 E AndroidRuntime: FATAL EXCEPTION: main\n"
+    module, calls = _helpers(monkeypatch, tmp_path, logcat="boot noise\n" + crash)
+
+    module.dump_failure_diagnostics("store-pl-startup")
+
+    written = list(tmp_path.glob("logcat-*.txt"))
+    assert written, "the logcat has to reach the artifact directory"
+    assert "FATAL EXCEPTION" in written[0].read_text(encoding="utf-8")
+    out = capsys.readouterr().out
+    assert "FATAL EXCEPTION" in out, "the job log should name the crash, not only link a file"
+    assert any(cmd[:2] == ["adb", "logcat"] and "-t" in cmd for cmd in calls), (
+        "take the tail; the whole buffer is tens of megabytes of emulator noise"
+    )
+
+
+def test_a_failure_with_a_clean_log_says_so_rather_than_nothing(monkeypatch, tmp_path, capsys):
+    """The informative half of #543: no crash means the emulator was merely slow, and that is a
+    different repair from a crash. Silence would leave both looking the same."""
+    module, _ = _helpers(monkeypatch, tmp_path, logcat="nothing of note\n",
+                         dumpsys="  mResumedActivity: ActivityRecord{u0 com.hivepulse.app/.MainActivity}")
+
+    module.dump_failure_diagnostics("store-pl-startup")
+
+    out = capsys.readouterr().out
+    assert "no fatal lines" in out
+    assert "com.hivepulse.app/.MainActivity" in out, "say what was on top"
+
+
+def test_diagnostics_never_raise_even_when_every_probe_fails(monkeypatch, tmp_path, capsys):
+    """A failure whose diagnostics throw is a failure with no diagnostics — the state #543 was
+    about. The caller is already on its way out; this must not become the error it reports."""
+    module, _ = _helpers(monkeypatch, tmp_path, logcat="")
+    monkeypatch.setattr(module.subprocess, "run",
+                        lambda *a, **k: (_ for _ in ()).throw(OSError("no adb")))
+    monkeypatch.setattr(module, "screenshot",
+                        lambda *a, **k: (_ for _ in ()).throw(OSError("no adb")))
+    monkeypatch.setattr(module, "get_ui_dump",
+                        lambda *a, **k: (_ for _ in ()).throw(OSError("no adb")))
+
+    module.dump_failure_diagnostics("store-pl-startup")
+
+    out = capsys.readouterr().out
+    assert out.count("[diagnostics]") >= 4, "each probe reports its own failure and moves on"

@@ -471,4 +471,15 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except SystemExit:
+        raise
+    except Exception as error:
+        # Everything before the first screen — installing, setting the per-app locale, signing in,
+        # checking the app really speaks this language — used to escape with no evidence at all
+        # (#543). The per-step failures inside main() have had diagnostics all along; the steps
+        # that run before them had none, and those are the ones that fail on a cold emulator.
+        print(f"\nERROR: {error}", file=sys.stderr, flush=True)
+        A.dump_failure_diagnostics(f"store-{LANG}-startup")
+        sys.exit(1)
