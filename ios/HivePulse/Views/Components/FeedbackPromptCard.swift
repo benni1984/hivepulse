@@ -36,6 +36,9 @@ struct FeedbackPromptCard: View {
             }
         }
         .padding(.vertical, 4)
-        .accessibilityIdentifier("feedbackPromptCard")
+        // Deliberately no identifier on the stack itself. An accessibility modifier on a
+        // container can make SwiftUI treat the container as the element and hide everything
+        // inside it, and a card whose buttons cannot be reached is worse than a card with no
+        // name. The two controls carry their own, which is all a test needs.
     }
 }

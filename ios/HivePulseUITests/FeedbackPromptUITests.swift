@@ -9,11 +9,14 @@ import XCTest
 ///
 /// Three days cannot be waited out in a simulator, so `-mockFeedbackDue` brings the question
 /// forward, the way `-mockStoreOffers` stands in for a store and `-mockCameraPreview` for a
-/// camera. Writing a date into the UserDefaults argument domain was tried first and never
-/// reached the app: four tests failed twice each before the launch flag replaced it.
+/// camera.
 ///
 /// Every query goes through `element(_:)` rather than `app.buttons[...]` or `app.links[...]`:
 /// which class SwiftUI gives a `Link` with a custom button style is not something to guess at.
+/// And every assertion carries the element tree, because two rounds of this went on guesses —
+/// first a date in the UserDefaults argument domain that never arrived, then an accessibility
+/// identifier on the card's own stack, which can make SwiftUI treat the container as the
+/// element and hide the buttons inside it. A failure that says what *was* on screen ends that.
 final class FeedbackPromptUITests: XCTestCase {
 
     override func setUpWithError() throws {
@@ -22,6 +25,11 @@ final class FeedbackPromptUITests: XCTestCase {
 
     private func element(_ app: XCUIApplication, _ identifier: String) -> XCUIElement {
         app.descendants(matching: .any).matching(identifier: identifier).firstMatch
+    }
+
+    /// The whole element tree, trimmed to something a job log can carry.
+    private func whatIsOnScreen(_ app: XCUIApplication) -> String {
+        String(app.debugDescription.prefix(6000))
     }
 
     private func launch(_ extra: [String]) -> XCUIApplication {
@@ -34,16 +42,19 @@ final class FeedbackPromptUITests: XCTestCase {
     func test_theCardAsksOverTheApiaryList() {
         let app = launch(["-mockApiaryWithHive", "-mockFeedbackDue"])
 
-        XCTAssertTrue(element(app, "feedbackPromptDismiss").waitForExistence(timeout: 15),
-                      "the card belongs above the list")
+        let dismiss = element(app, "feedbackPromptDismiss")
+        XCTAssertTrue(dismiss.waitForExistence(timeout: 15),
+                      "the card belongs above the list. On screen:\n\(whatIsOnScreen(app))")
     }
 
     func test_theCardAlsoAsksOnTheEmptyScreen() {
         // The branch without a List. It is the one this feature would have missed.
         let app = launch(["-mockAuthenticated", "-mockFeedbackDue"])
 
-        XCTAssertTrue(element(app, "feedbackPromptDismiss").waitForExistence(timeout: 15),
-                      "an account with no apiaries still sees the question")
+        let dismiss = element(app, "feedbackPromptDismiss")
+        XCTAssertTrue(dismiss.waitForExistence(timeout: 15),
+                      "an account with no apiaries still sees the question. On screen:\n"
+                      + whatIsOnScreen(app))
     }
 
     func test_aFreshInstallIsNotAskedAnything() {
@@ -58,7 +69,7 @@ final class FeedbackPromptUITests: XCTestCase {
     func test_noThanksTakesItAway() {
         let app = launch(["-mockApiaryWithHive", "-mockFeedbackDue"])
         let dismiss = element(app, "feedbackPromptDismiss")
-        XCTAssertTrue(dismiss.waitForExistence(timeout: 15))
+        XCTAssertTrue(dismiss.waitForExistence(timeout: 15), whatIsOnScreen(app))
 
         dismiss.tap()
 
@@ -72,6 +83,7 @@ final class FeedbackPromptUITests: XCTestCase {
 
         // Only that it exists. Tapping it hands the simulator a `mailto:` and leaves the app,
         // which tells us nothing and costs a flake.
-        XCTAssertTrue(element(app, "feedbackPromptSend").waitForExistence(timeout: 15))
+        XCTAssertTrue(element(app, "feedbackPromptSend").waitForExistence(timeout: 15),
+                      whatIsOnScreen(app))
     }
 }
