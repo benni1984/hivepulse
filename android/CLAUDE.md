@@ -129,7 +129,7 @@ AuthViewModelTest, AuthRepositoryTest, ApiaryViewModelTest, ApiaryRepositoryTest
 
 ## UI / Instrumented Tests — all passing
 
-LoginScreenTest, RegisterScreenTest, ApiaryScreenTest, ApiaryWithDataTest, HiveDetailScreenTest, InspectionFormScreenTest, QRBatchListScreenTest, SettingsScreenTest, SupporterScreenTest, FeedbackPromptScreenTest
+LoginScreenTest, RegisterScreenTest, ApiaryScreenTest, ApiaryWithDataTest, HiveDetailScreenTest, InspectionFormScreenTest, QRBatchListScreenTest, SettingsScreenTest, SupporterScreenTest, FeedbackPromptScreenTest, FeedbackPromptEmptyScreenTest
 
 ## IMPORTANT: MockK Exception Rule
 
