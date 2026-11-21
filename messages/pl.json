@@ -639,7 +639,10 @@
         "crashDiagnosis": "Szczegół techniczny: klucz ma {settingsChars} znaków w konfiguracji i {envChars} w środowisku procesu. Dwa zera oznaczają, że platforma hostingowa nigdy nie przekazała go serwerowi.",
         "defaultSigningKey": "Ostrzeżenie: ten serwer podpisuje logowania publicznym kluczem domyślnym z kodu źródłowego. Każdy, kto go zna, może sfałszować token dla dowolnego konta. Ustaw prawdziwy SECRET_KEY w środowisku hostingu.",
         "pushAndroidMissing": "Push dla Androida nie jest skonfigurowany: przypomnienia nigdy nie dotrą do telefonu z Androidem. Wymaga FIREBASE_PROJECT_ID i FIREBASE_SERVICE_ACCOUNT_JSON w środowisku hostingu.",
-        "pushIosMissing": "Push dla iPhone'a nie jest skonfigurowany: przypomnienia nigdy nie dotrą do iPhone'a. Wymaga APNS_KEY_ID, APNS_TEAM_ID i APNS_PRIVATE_KEY_P8 w środowisku hostingu."
+        "pushIosMissing": "Push dla iPhone'a nie jest skonfigurowany: przypomnienia nigdy nie dotrą do iPhone'a. Wymaga APNS_KEY_ID, APNS_TEAM_ID i APNS_PRIVATE_KEY_P8 w środowisku hostingu.",
+        "paddleKeyExpiring": "Klucz API Paddle wygaśnie za {days} dni. Wtedy RevenueCat nie połączy się już z Paddle i zakupy w serwisie zaczną się nie udawać, a ten serwer będzie odpowiadał dalej, jakby nic się nie stało. Odnów go w Paddle, wklej do RevenueCat i przesuń razem z nim PADDLE_API_KEY_EXPIRES_AT.",
+        "paddleKeyExpired": "Klucz API Paddle wygasł {days} dni temu. RevenueCat nie łączy się z Paddle, więc każdy zakup w serwisie się nie udaje — nic innego tutaj by tego nie powiedziało.",
+        "paddleKeyUnknown": "Nikt nie zapisał, kiedy wygasa klucz API Paddle. Konto produkcyjne nie dopuszcza klucza bez daty, więc jakaś jest; wpisz ją w PADDLE_API_KEY_EXPIRES_AT (RRRR-MM-DD)."
       },
       "yearProposals": {
         "title": "Propozycje do roku pasiecznego",

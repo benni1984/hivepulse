@@ -84,8 +84,20 @@ a dead page.
 
 ### 1.6 The API key, and the permission everybody forgets
 
-**Developer Tools → Authentication → + New API key.** Set it to **not expire** and copy it; keep
-the window open until it is saved in RevenueCat, because Paddle shows it once.
+**Developer Tools → Authentication → + New API key.** Copy it and keep the window open until it
+is saved in RevenueCat, because Paddle shows it once.
+
+> **It will expire, and you have to write down when (#528).** This page used to say "set it to
+> not expire", which came from RevenueCat's own instructions and holds in the sandbox only: the
+> live account requires a date. Put that date in `PADDLE_API_KEY_EXPIRES_AT` (`YYYY-MM-DD`, see
+> section 3) the moment you create the key.
+>
+> Not bookkeeping — this is the quietest failure the whole arrangement has. **This server never
+> talks to Paddle**; RevenueCat does. So on the day the key stops working, RevenueCat loses
+> Paddle and everything here keeps answering as though nothing were wrong: no endpoint errors,
+> nothing reaches Sentry, nothing in the pipeline turns red. The only symptom is that purchases
+> stop. With the date recorded, the admin health page says so and the daily reminder run warns
+> for the last thirty days.
 
 Permissions — this is the minimum RevenueCat documents, and it is worth setting exactly:
 
@@ -110,6 +122,11 @@ on `/dashboard/subscription` opens. Forget this permission and that button leads
 - The *price name* is what the customer reads in the checkout, so write it as a person would say
   it, not as an identifier.
 - Each Paddle **Price** becomes its own product in RevenueCat.
+- **Product icon URL:** `https://hivepulse.multihead.de/brand/product-icon-512.png` (#500).
+  Optional, and worth filling in: Paddle shows it in the checkout and on the invoice. It is a
+  file of its own rather than the Play listing icon — the same drawing today, but the next
+  change Google asks for on the listing must not silently change what appears on a receipt.
+  `scripts/make_store_graphics.py` redraws all three from the brand logo.
 
 ---
 
@@ -189,6 +206,7 @@ Settings → Environment Variables, on the **hivepulse** project for production 
 | Variable | What it is | Where it comes from |
 |---|---|---|
 | `NEXT_PUBLIC_REVENUECAT_WEB_KEY` | the Paddle config's **public** API key, read by the browser | 2.3 |
+| `PADDLE_API_KEY_EXPIRES_AT` | the date on the key, `YYYY-MM-DD` | 1.6 |
 | `REVENUECAT_WEBHOOK_SECRET` | the string you typed in 2.4 | 2.4 |
 | `REVENUECAT_API_KEY` | RevenueCat **secret** API key, for `POST /subscriptions/sync` | RevenueCat → API keys |
 | `REVENUECAT_ENTITLEMENT` | only if you did not call the entitlement `supporter` | 2.2 |

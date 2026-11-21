@@ -639,7 +639,10 @@
         "crashDiagnosis": "Détail technique : la clé compte {settingsChars} caractères dans la configuration et {envChars} dans l'environnement du processus. Deux zéros signifient que la plateforme d'hébergement ne l'a jamais transmise au serveur.",
         "defaultSigningKey": "Avertissement : ce serveur signe les connexions avec la clé par défaut publique du code source. Quiconque la connaît peut forger un jeton pour n'importe quel compte. Définissez une vraie valeur SECRET_KEY dans l'environnement d'hébergement.",
         "pushAndroidMissing": "Le push Android n'est pas configuré : les rappels n'atteignent aucun téléphone Android. Il faut FIREBASE_PROJECT_ID et FIREBASE_SERVICE_ACCOUNT_JSON dans l'environnement d'hébergement.",
-        "pushIosMissing": "Le push iPhone n'est pas configuré : les rappels n'atteignent aucun iPhone. Il faut APNS_KEY_ID, APNS_TEAM_ID et APNS_PRIVATE_KEY_P8 dans l'environnement d'hébergement."
+        "pushIosMissing": "Le push iPhone n'est pas configuré : les rappels n'atteignent aucun iPhone. Il faut APNS_KEY_ID, APNS_TEAM_ID et APNS_PRIVATE_KEY_P8 dans l'environnement d'hébergement.",
+        "paddleKeyExpiring": "La clé d’API Paddle expire dans {days} jour(s). À ce moment-là, RevenueCat ne pourra plus joindre Paddle et les achats sur le site échoueront, alors que ce serveur continuera de répondre comme si de rien n’était. Renouvelez-la dans Paddle, saisissez-la dans RevenueCat et déplacez PADDLE_API_KEY_EXPIRES_AT avec elle.",
+        "paddleKeyExpired": "La clé d’API Paddle a expiré il y a {days} jour(s). RevenueCat ne joint plus Paddle, donc tous les achats sur le site échouent — rien d’autre ici ne le dirait.",
+        "paddleKeyUnknown": "Personne n’a noté la date d’expiration de la clé d’API Paddle. Le compte en production n’autorise pas de clé sans date, il y en a donc une ; indiquez-la dans PADDLE_API_KEY_EXPIRES_AT (AAAA-MM-JJ)."
       },
       "yearProposals": {
         "title": "Propositions pour l’année apicole",
