@@ -35,7 +35,7 @@ export default function SubscriptionContent({ Screenshot }: { Screenshot: typeof
           </li>
           <li>
             <span className="help-step-num">2</span>
-            <div className="help-step-body">Elige <strong>Suscribirse</strong> y completa el pago. Todo se desbloquea en cuanto se confirma — en la web y en ambas aplicaciones, porque la suscripción pertenece a la cuenta y no al dispositivo.</div>
+            <div className="help-step-body">Elige <strong>Suscribirse</strong> y completa el pago. El formulario de pago se abre en la propia página — no sales de HivePulse, y el botón muestra el precio en tu moneda. Todo se desbloquea en cuanto se confirma — en la web y en ambas aplicaciones, porque la suscripción pertenece a la cuenta y no al dispositivo.</div>
           </li>
         </ol>
         <p>En las apps de iPhone y Android se compra en <strong>Ajustes → Colaborador</strong>, o desde la tarjeta de la pestaña Miembros. La compra pasa por la App Store o Google Play, como exigen esas tiendas, y allí cuesta lo mismo. Compres por donde compres, la suscripción pertenece a tu cuenta de HivePulse y vale en todas partes donde inicies sesión: cómprala en el móvil y la web lo sabe segundos después.</p>

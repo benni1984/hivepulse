@@ -1,47 +1,59 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { Suspense, useCallback, useEffect, useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import DashboardShell from '@/components/DashboardShell';
-import { useDashboardReady } from '@/hooks/useDashboardAuth';
+import { useDashboardAuth } from '@/hooks/useDashboardAuth';
 import {
-  getSubscription, syncSubscription, getWebCheckoutUrl, grantsAccess,
+  getSubscription, syncSubscription, grantsAccess,
   type Subscription,
 } from '@/lib/api';
+import { loadSupporterOffer, buySupporter, type SupporterOffer } from '@/lib/revenuecatWeb';
 
-export default function SubscriptionPage() {
+function Subscription() {
   const t = useTranslations('dash');
+  const locale = useLocale();
   useDocumentTitle(t('subscription.title'));
-  const ready = useDashboardReady();
+  const { user, loading: authLoading } = useDashboardAuth();
+  const ready = !authLoading && user !== null;
   const params = useSearchParams();
 
   const [sub, setSub] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
-  const [buyUrl, setBuyUrl] = useState<string | null>(null);
+  const [offer, setOffer] = useState<SupporterOffer | null>(null);
+  const [buying, setBuying] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  // The purchase page sends people back here with ?app_user_id=… appended. The value is in a URL
-  // anybody can type, so it is never used to decide *who* this is — only that somebody has just
-  // come back from paying, which is worth one immediate sync instead of waiting for the webhook.
+  // Two ways to arrive having just paid: the checkout finished on this page, or RevenueCat sent
+  // somebody back from one of its own pages with ?app_user_id=… appended. The query value is in
+  // a URL anybody can type, so it never decides *who* this is — only that a sync is worth doing
+  // now instead of waiting for the webhook.
   const justPaid = params.get('app_user_id') !== null;
+  const [thanks, setThanks] = useState(justPaid);
   const [syncing, setSyncing] = useState(justPaid);
 
   // The promise-chain shape the other dashboard pages use. Everything that sets state hangs off
   // a `.then`, so nothing is set while the effect body runs.
   useEffect(() => {
     if (!ready) return;
-    Promise.all([
-      justPaid ? syncSubscription() : getSubscription(),
-      // One broken call here must not blank a page somebody opened to understand their account.
-      getWebCheckoutUrl().catch(() => null),
-    ])
-      .then(([state, url]) => { setSub(state); setBuyUrl(url); })
+    (justPaid ? syncSubscription() : getSubscription())
+      .then(async (state) => {
+        setSub(state);
+        // Only somebody who could actually buy costs a call to RevenueCat. A supporter does not
+        // need a price, and a deployment that has not been told it may sell must not show one:
+        // the server's switch is the authority, exactly as it is in the two apps (#530, #17).
+        if (!grantsAccess(state) && state.web_checkout_enabled) {
+          // One broken call here must not blank a page somebody opened to understand their
+          // account — it reads as "cannot be bought here yet", which is what it means to them.
+          setOffer(await loadSupporterOffer(user.id).catch(() => null));
+        }
+      })
       .catch((e) => setErr(e instanceof Error ? e.message : t('subscription.errorGeneric')))
       .finally(() => { setLoading(false); setSyncing(false); });
-  }, [ready, justPaid, t]);
+  }, [ready, justPaid, user, t]);
 
-  async function refresh() {
+  const refresh = useCallback(async () => {
     setSyncing(true);
     try {
       setSub(await syncSubscription());
@@ -49,6 +61,31 @@ export default function SubscriptionPage() {
       setErr(e instanceof Error ? e.message : t('subscription.errorGeneric'));
     } finally {
       setSyncing(false);
+    }
+  }, [t]);
+
+  /**
+   * The checkout opens over this page and resolves here — there is no redirect to wait out.
+   *
+   * A cancelled purchase is silent. Somebody closed the sheet; an error banner for that is the
+   * application telling them off for changing their mind, and both apps are silent about it too.
+   */
+  async function buy() {
+    if (!user) return;
+    setErr(null);
+    setBuying(true);
+    try {
+      const outcome = await buySupporter(user.id, { email: user.email, locale });
+      if (outcome === 'bought') {
+        setThanks(true);
+        // The webhook is the authority and usually lands within seconds, but nobody should watch
+        // a spinner for it: ask now, and the page is already correct when the sheet closes.
+        await refresh();
+      }
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : t('subscription.errorGeneric'));
+    } finally {
+      setBuying(false);
     }
   }
 
@@ -69,7 +106,7 @@ export default function SubscriptionPage() {
 
       {!loading && sub && (
         <>
-          {justPaid && active && (
+          {thanks && active && (
             <div className="dash-success-banner" data-testid="subscription-thanks">
               {t('subscription.thanks')}
             </div>
@@ -123,10 +160,14 @@ export default function SubscriptionPage() {
 
           <div className="dash-profile-card">
             {!active && (
-              buyUrl
-                ? <a className="dash-submit-btn" href={buyUrl} data-testid="subscription-buy">
-                    {t('subscription.buy')}
-                  </a>
+              offer
+                /* The price comes from the offering, not from a translation file: RevenueCat
+                   quotes the customer in their own currency, and a button that says €19.99 to
+                   somebody about to be charged in złoty is wrong where it matters most. */
+                ? <button className="dash-submit-btn" onClick={buy} disabled={buying}
+                          data-testid="subscription-buy">
+                    {buying ? '…' : t('subscription.buy', { price: offer.price })}
+                  </button>
                 : <p className="dash-empty" data-testid="subscription-unconfigured">
                     {t('subscription.notSellingYet')}
                   </p>
@@ -159,5 +200,21 @@ export default function SubscriptionPage() {
         </>
       )}
     </DashboardShell>
+  );
+}
+
+/**
+ * `useSearchParams` needs a boundary (#541).
+ *
+ * Without one it opts the whole route out of prerendering, and the server render threw
+ * `No intl context found` on every first paint — a 500 in the log and an unstyled flash before
+ * the client took over. `subscription-return` has had this wrapper for the same reason since
+ * #503; this page was simply missed.
+ */
+export default function SubscriptionPage() {
+  return (
+    <Suspense fallback={<div className="spinner" />}>
+      <Subscription />
+    </Suspense>
   );
 }

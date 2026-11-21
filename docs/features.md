@@ -203,10 +203,12 @@ PayPal button, Paddle classified the domain as "Other/Donations" and refused the
 take payments at all (#533). `__tests__/NoDonationRoutes.test.ts` fails if such a link returns.
 
 `/dashboard/subscription` on the website shows the state, the renewal or expiry date, the colony
-counter, what the subscription includes and where to cancel. The purchase link is built **on the
-server** (`GET /subscriptions/web-checkout`): the account id is a path segment of it, a link
-without one answers 404 rather than selling anonymously, and a link with the *wrong* one takes
-money and attaches it to nobody.
+counter, what the subscription includes and where to cancel. **The Paddle checkout opens in that
+page**, through `@revenuecat/purchases-js` (#541) — not on a hosted page at `pay.rev.cat`, which
+Paddle can never approve, because it approves a checkout domain only if that domain carries the
+seller's terms, privacy notice and refund policy, and that domain is not ours to put them on.
+`hivepulse.multihead.de` carries all three on `/pricing`. The button quotes the price out of the
+offering, in the customer's own currency, and the checkout speaks the account's language.
 
 **It is sold on all three.** Both apps buy it through the RevenueCat SDK, which buys through
 StoreKit 2 and Play Billing; the paywall is reached from **Settings → Supporter** and from the

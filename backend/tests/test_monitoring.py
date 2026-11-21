@@ -120,12 +120,32 @@ def test_the_real_sdk_starts_the_way_production_has_it_installed():
     assert result.stdout.strip().endswith("True"), f"reporting did not start:\n{result.stderr}"
 
 
-def test_an_expected_unconfigured_answer_is_not_reported():
+def test_an_expected_answer_is_not_reported(monkeypatch):
+    """The mechanism, not a particular code.
+
+    EXPECTED_ERROR_CODES is empty since #541 -- the one member it had went with the endpoint
+    that raised it. Pinning the test to a code that no longer exists would have deleted the
+    test along with it, and the next deliberate 5xx would have been added to an unguarded set.
+    """
     from fastapi import HTTPException
 
-    exc = HTTPException(503, detail={"code": "WEB_CHECKOUT_UNCONFIGURED", "message": "x"})
+    from app import monitoring
+
+    monkeypatch.setattr(monitoring, "EXPECTED_ERROR_CODES", {"ON_PURPOSE"})
+    exc = HTTPException(503, detail={"code": "ON_PURPOSE", "message": "x"})
     hint = {"exc_info": (HTTPException, exc, None)}
     assert scrub_event({"request": {}}, hint) is None
+
+
+def test_the_expected_set_is_empty_so_nothing_is_silently_swallowed():
+    """A 5xx that nobody decided is expected must reach Sentry.
+
+    This is the half of the guard that costs nothing until somebody adds a code here for a
+    failure that is a real failure.
+    """
+    from app import monitoring
+
+    assert monitoring.EXPECTED_ERROR_CODES == set()
 
 
 def test_other_server_errors_are_still_reported():

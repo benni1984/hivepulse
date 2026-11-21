@@ -26,9 +26,14 @@ SENSITIVE_KEYS = {
 
 
 # Answers that are 5xx on purpose: the normal state of a deployment, not a failure. Sentry's
-# Starlette integration reports every 5xx HTTPException, so a staging E2E run that opens the
+# Starlette integration reports every 5xx HTTPException, so a staging E2E run that opened the
 # purchase page filed one as an error (HIVEPULSE-BACKEND-4).
-EXPECTED_ERROR_CODES = {"WEB_CHECKOUT_UNCONFIGURED"}
+#
+# Empty since #541: the one code it held, WEB_CHECKOUT_UNCONFIGURED, is gone with the endpoint
+# that raised it -- whether the website may sell is now a field on GET /subscriptions/me and
+# not a 503. The set stays, and is tested, because the next deliberate 5xx will want it and
+# discovering that need from a week of Sentry noise is the expensive way to learn it.
+EXPECTED_ERROR_CODES: set[str] = set()
 
 
 def _is_expected_error(hint: Optional[dict]) -> bool:

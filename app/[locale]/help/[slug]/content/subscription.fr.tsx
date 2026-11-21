@@ -35,7 +35,7 @@ export default function SubscriptionContent({ Screenshot }: { Screenshot: typeof
           </li>
           <li>
             <span className="help-step-num">2</span>
-            <div className="help-step-body">Choisissez <strong>S’abonner</strong> et réglez le paiement. Tout est débloqué dès la confirmation — sur le site et dans les deux applications, car l’abonnement appartient au compte et non à l’appareil.</div>
+            <div className="help-step-body">Choisissez <strong>S’abonner</strong> et réglez le paiement. Le formulaire de paiement s’ouvre directement sur la page — vous restez sur HivePulse, et le bouton affiche le prix dans votre monnaie. Tout est débloqué dès la confirmation — sur le site et dans les deux applications, car l’abonnement appartient au compte et non à l’appareil.</div>
           </li>
         </ol>
         <p>Dans les applications iPhone et Android, l’achat se fait dans <strong>Réglages → Soutien</strong>, ou depuis la carte de l’onglet Membres. Il passe par l’App Store ou Google Play, comme ces magasins l’exigent, et le prix y est le même. Quel que soit le chemin, l’abonnement appartient à votre compte HivePulse et vaut partout où vous vous connectez : achetez-le sur le téléphone et le site le sait quelques secondes plus tard.</p>

@@ -1230,6 +1230,13 @@ class SubscriptionOut(BaseModel):
     #: Deployment state rather than account state, and here anyway, because this is the one
     #: response both paywalls read before they offer anything.
     store_checkout_enabled: bool = False
+    #: Whether this deployment lets the **website** sell. Off unless somebody switched it
+    #: on, for the same reason and with the same consequence as the line above (#530, #541).
+    #:
+    #: It reached the page as a 503 from a second endpoint until the website stopped using a
+    #: hosted purchase link; now that the checkout runs on our own domain there is no link to
+    #: hand out, and the switch travels with the state every client already reads.
+    web_checkout_enabled: bool = False
     #: Colonies this account owns. So a client can say "7 of 10" *before* somebody fills in a
     #: form, rather than letting them name a colony and then refusing it (#478).
     hives_used: int = 0
@@ -1237,16 +1244,6 @@ class SubscriptionOut(BaseModel):
     #: renders "unlimited" instead of a ratio. `hives_used` may exceed this: a lapsed subscriber
     #: keeps everything they had, so "15 of 10" is a state a client must display without scolding.
     hive_limit: Optional[int] = None
-
-
-class WebCheckoutOut(BaseModel):
-    """Where to buy on the web (api-contract.md, Subscriptions).
-
-    One field on purpose. A client opens it and nothing else; the moment it tried to take the URL
-    apart to add something, the reason the server builds it would be gone.
-    """
-
-    url: str
 
 
 # Resolve forward references

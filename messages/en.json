@@ -1049,7 +1049,7 @@
     },
     "subscription": {
       "activeBody": "Thank you. Everything the subscription includes is unlocked on the website and in both apps.",
-      "buy": "Subscribe — €19.99 a year",
+      "buy": "Subscribe — {price} a year",
       "endsOn": "Runs until {date} and does not renew. Nothing you have recorded is removed after that.",
       "errorGeneric": "That did not work. Please try again.",
       "freeStays": "Free either way, and staying that way: the Asian hornet tracker, the beekeeping year, QR codes, offline inspections and the export of your own data.",

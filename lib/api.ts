@@ -1489,12 +1489,18 @@ export interface Subscription {
   /** Where a web subscriber manages or cancels. Only ever set for `source: 'web'`. */
   manage_url?: string | null;
   /**
-   * Whether this deployment lets the **apps** sell. Nothing on the website reads it — the site has
-   * its own switch, and `GET /subscriptions/web-checkout` answers `503` when that one is off — but
-   * it is part of this response, and a type that omits a field the server sends is a type that
-   * lies to the next person who needs it.
+   * Whether this deployment lets the **apps** sell. Nothing on the website reads it, but it is
+   * part of this response, and a type that omits a field the server sends is a type that lies to
+   * the next person who needs it.
    */
   store_checkout_enabled?: boolean;
+  /**
+   * Whether this deployment lets the **website** sell (#541).
+   *
+   * Absent means false. An older server that does not send it has not been told it may sell, and
+   * the only honest reading of silence is "unknown" — which is closed.
+   */
+  web_checkout_enabled?: boolean;
   /** Colonies this account owns. Ones shared *with* it count against their owner. */
   hives_used: number;
   /** How many it may own, or null for no limit. May be *below* hives_used — see below. */
@@ -1525,16 +1531,3 @@ export async function syncSubscription(): Promise<Subscription> {
   return res.json();
 }
 
-/**
- * Where this account buys on the web.
- *
- * Returns null when the deployment has no purchase link configured (503
- * WEB_CHECKOUT_UNCONFIGURED) — the normal state before the store side is set up, and not
- * something to show as an error. Every other failure still throws.
- */
-export async function getWebCheckoutUrl(): Promise<string | null> {
-  const res = await apiFetch('/subscriptions/web-checkout');
-  if (res.status === 503) return null;
-  if (!res.ok) await failure(res, 'Could not start the purchase');
-  return (await res.json()).url as string;
-}

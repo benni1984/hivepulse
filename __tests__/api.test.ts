@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { login, register, logout, getMe, updateMe, deleteMe, getApiaries, createApiary, updateApiary, deleteApiary, createHive, updateHive, deleteHive, getHive, clearTokens, createInspection, updateInspection, deleteInspection, getQrBatches, createQrBatch, getQrBatch, downloadQrBatchPdf, getPublicStats, exportHiveInspections, exportApiaryInspections, getReminderSettings, updateReminderSettings, registerPushToken, forgotPassword, resetPassword, socialSignIn, deleteQrBatch, createShare, getShares, getIncomingShares, acceptShare, declineShare, deleteShare, acceptShareByToken, moveHives, getHiveMoves, getMovesOverview, getHome, getTreatments, createTreatment, markTreatmentDone, reopenTreatment, deleteTreatment } from '@/lib/api';
-import { ApiError, getSubscription, syncSubscription, getWebCheckoutUrl, grantsAccess }
+import { ApiError, getSubscription, syncSubscription, grantsAccess }
   from '@/lib/api';
 import { todayLocal } from '@/lib/dates';
 
@@ -875,20 +875,19 @@ describe('subscription', () => {
     expect(vi.mocked(fetch).mock.calls[0][1]).toMatchObject({ method: 'POST' });
   });
 
-  it('treats an unconfigured purchase link as null, not as a failure', async () => {
-    // The normal state of a deployment whose store side is not set up. A page says "not yet"
-    // instead of showing somebody an error they can do nothing about.
+  it('carries both selling switches, and reads a missing one as off', async () => {
+    // There used to be a second call here, `getWebCheckoutUrl`, whose 503 told the page it
+    // could not sell. It is gone with the hosted purchase link (#541): the website's switch now
+    // rides on this response beside the apps' one, and an older server that sends neither has
+    // not said it may sell — silence reads as unknown, and unknown is closed.
     localStorage.setItem('access_token', 'tok');
-    vi.mocked(fetch).mockResolvedValueOnce(ok({ detail: { code: 'WEB_CHECKOUT_UNCONFIGURED' } }, 503));
+    vi.mocked(fetch).mockResolvedValueOnce(ok({ ...noSub, web_checkout_enabled: true }));
 
-    expect(await getWebCheckoutUrl()).toBeNull();
-  });
+    const withSwitch = await getSubscription();
+    expect(withSwitch.web_checkout_enabled).toBe(true);
 
-  it('still throws when the purchase link fails for any other reason', async () => {
-    localStorage.setItem('access_token', 'tok');
-    vi.mocked(fetch).mockResolvedValueOnce(ok({ detail: { code: 'BOOM' } }, 500));
-
-    await expect(getWebCheckoutUrl()).rejects.toBeInstanceOf(ApiError);
+    vi.mocked(fetch).mockResolvedValueOnce(ok(noSub));
+    expect((await getSubscription()).web_checkout_enabled).toBeUndefined();
   });
 });
 

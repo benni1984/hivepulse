@@ -1049,7 +1049,7 @@
     },
     "subscription": {
       "activeBody": "Danke. Alles, was zum Abo gehört, ist auf der Webseite und in beiden Apps freigeschaltet.",
-      "buy": "Abo abschließen — 19,99 € im Jahr",
+      "buy": "Abo abschließen — {price} im Jahr",
       "endsOn": "Läuft bis zum {date} und verlängert sich nicht. Nichts von dem, was du erfasst hast, verschwindet danach.",
       "errorGeneric": "Das hat nicht geklappt. Bitte versuche es noch einmal.",
       "freeStays": "So oder so kostenlos, und das bleibt auch so: der Tracker für die Asiatische Hornisse, das Imkerjahr, QR-Codes, Kontrollen ohne Netz und der Export deiner eigenen Daten.",

@@ -2579,7 +2579,8 @@ Always returns an object, never `null`: an account without a subscription has
   "manage_url": null,
   "hives_used": 7,
   "hive_limit": 10,
-  "store_checkout_enabled": false
+  "store_checkout_enabled": false,
+  "web_checkout_enabled": false
 }
 ```
 
@@ -2594,21 +2595,29 @@ Always returns an object, never `null`: an account without a subscription has
 | `hives_used` | Colonies this account **owns**. Colonies shared *with* it count against their owner. |
 | `hive_limit` | How many it may own, or `null` for no limit. |
 | `store_checkout_enabled` | Whether **this deployment** lets the apps sell. See below. |
+| `web_checkout_enabled` | Whether **this deployment** lets the website sell. See below. |
 
 `status: "grace"` means the store is retrying payment and access **continues** — do not gate on
 `active` alone.
 
-#### `store_checkout_enabled`, and why it is the server's answer
+#### The two switches, and why they are the server's answer
 
-**Off unless somebody switched it on**, exactly as `WEB_CHECKOUT_ENABLED` is for the website
-(#530). An app whose paywall finds it false says the subscription cannot be bought there yet,
-the same sentence it shows in a build with no SDK key at all.
+`store_checkout_enabled` is the apps, `web_checkout_enabled` is the website. **Both are off
+unless somebody switched them on** (#530, #17), both come from an environment variable
+(`STORE_CHECKOUT_ENABLED`, `WEB_CHECKOUT_ENABLED`), and a client that finds its own one false
+says the subscription cannot be bought there yet — the same sentence it shows in a build with
+no SDK key at all.
 
-It is a field on this response rather than a build value in the apps for one reason: a build
-value can only be changed by shipping a new app through review. The store products appear
+They are two switches rather than one because the two sides go live on different days: Apple
+and Google approve products on their own schedule, and Paddle approves a checkout domain on
+its. Each side opens when its own approval lands.
+
+They are fields on this response rather than build values for one reason: a build value in an
+app can only be changed by shipping a new app through review. The store products appear
 when Apple and Google approve them, which is not a date anybody controls, and the switch has
-to be ready that morning rather than a week later. The apps already fetch this endpoint
-before offering anything, so the gate costs no extra request.
+to be ready that morning rather than a week later. Every client already fetches this endpoint
+before offering anything, so the gate costs no extra request — and since #541 the website
+reads its switch here too, instead of discovering it from a second call that answered 503.
 
 **A client that cannot read this response must not sell.** Not because selling is dangerous,
 but because the only honest reading of silence here is "unknown", and the whole point of the
@@ -2632,44 +2641,51 @@ than a ratio. `hives_used` may **exceed** `hive_limit` — somebody whose subscr
 every colony they had (see *What the subscription includes*), so `7 of 10` and `15 of 10` are both
 states a client has to display without clipping or scolding.
 
-### GET `/subscriptions/web-checkout`
+### How the website sells — no endpoint
 
-Requires `Authorization: Bearer <access_token>`. **For the website only** — see the note below.
+The website buys through `@revenuecat/purchases-js`, which runs the **Paddle checkout on our own
+page**. There is nothing for the server to hand out: the browser configures the SDK with
+`appUserId = user.id`, reads the current offering and calls `purchase()`. Whether the site may
+sell at all is `web_checkout_enabled` on `GET /subscriptions/me`, and the public SDK key is a
+build value (`NEXT_PUBLIC_REVENUECAT_WEB_KEY`), the way the apps carry theirs.
 
-Returns where this account buys the subscription on the web.
+`GET /subscriptions/web-checkout` used to exist and is **gone** (#541). It returned a hosted
+link, `https://pay.rev.cat/<token>/<app_user_id>`, and with it went
+`REVENUECAT_WEB_PURCHASE_TOKEN(_SANDBOX)` and the `WEB_CHECKOUT_UNCONFIGURED` answer.
 
-**Response 200**
-```json
-{ "url": "https://pay.rev.cat/abc123xyz/9f8e7d6c-...?email=someone%40example.com" }
-```
+#### Why the hosted link had to go
 
-**Response 503** — `WEB_CHECKOUT_UNCONFIGURED`. No purchase link is configured on this
-deployment. A page must treat this as "cannot be bought here yet" and say so, not as a failure:
-it is the normal state of a deployment whose store side is not set up, and of every test run.
+Paddle only lets a checkout run from a domain it has approved, and it approves a domain only if
+that domain **contains or links to the seller's terms of service, privacy notice and refund
+policy**. `pay.rev.cat` is RevenueCat's domain; nothing in RevenueCat puts those three links on
+it, and there is no custom domain for purchase links. So the hosted link could never be
+approved, while `hivepulse.multihead.de` was approved the day it was submitted.
 
-#### Why the server builds this URL
+RevenueCat's own Paddle page names this as the supported arrangement: of the domains a seller
+may need approved, the third is *"your own domain — if you're self-hosting purchases with
+RevenueCat's Web SDK"*.
 
-The link's shape is `https://pay.rev.cat/<token>/<url-encoded app_user_id>`, and the account id
-is a **path segment, not a query parameter**. Three reasons it is not assembled in a client:
+#### What the browser must still get right
 
-1. **Leaving the id out does not fall back to an anonymous purchase — the page 404s.** A client
-   that got the encoding wrong would show a dead link rather than a degraded one.
-2. RevenueCat's own pages disagree on the parameter's name (`app_user_id` on the purchase-link
-   page, `rc_app_user_id` on the paywall page). Getting it wrong produces a *successful payment
-   attached to no account*, which is the worst failure this feature has.
-3. `app_user_id` must be the HivePulse `user.id` and nothing else, because the webhook matches on
-   it. One place decides that.
+The reason the old endpoint existed was that the account id was a **path segment** of a URL, and
+a client that encoded it wrong produced a successful payment attached to no account. The SDK
+removes that hazard — `appUserId` is a named argument — but the rule it protected is unchanged
+and now lives in the browser:
 
-`email` is passed along so nobody retypes it at the till. The success redirect is configured in
-the RevenueCat dashboard rather than per request, and carries `app_user_id` back as a query
-parameter.
+**`appUserId` is the HivePulse `user.id`, and nothing else.** Not the email, not an anonymous id.
+The webhook matches on it, and a purchase it cannot attribute is money taken for nothing. The
+page therefore configures the SDK only once it knows the signed-in account, and never with a
+value read from a query string.
 
-#### Why the apps must not call this
+`customerEmail` is passed so nobody retypes it at the till, and `selectedLocale` so the checkout
+speaks the account's language — purchases-js covers all five of ours.
+
+#### Why the apps must not do this
 
 Buying inside the iPhone and Android apps goes through StoreKit and Play Billing. A web purchase
-link shown in an app is a store-review rejection, so this endpoint exists for the website and the
-apps ignore it. The entitlement that a web purchase grants is of course honoured everywhere — that
-is the whole point of deriving `is_supporter` on the server.
+path shown in an app is a store-review rejection, so this is the website's way in and the apps
+have their own. The entitlement that a web purchase grants is of course honoured everywhere —
+that is the whole point of deriving `is_supporter` on the server.
 
 ### POST `/subscriptions/sync`
 
@@ -2751,8 +2767,8 @@ cannot be bought here rather than crashing on a client that was never configured
 position `WEB_CHECKOUT_ENABLED` holds on the website (#530), and the same one the backend holds
 with no RevenueCat key at all.
 
-**What the apps never call** is `GET /subscriptions/web-checkout`. A web purchase link shown in
-an app is a store-review rejection.
+**What the apps never do** is offer the website's way in. The web checkout runs in a browser
+on our own domain (#541); a web purchase path shown in an app is a store-review rejection.
 
 ### What the subscription includes
 
