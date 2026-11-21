@@ -301,7 +301,7 @@
 "members.stat.goodMood" = "Bonne humeur";
 "members.stat.avgBrood" = "Cadres de couvain moy.";
 "members.stat.interval" = "Intervalle de visite moy.";
-"members.becomeSupporter" = "En savoir plus & devenir soutien";
+"members.becomeSupporter" = "Devenir soutien";
 /* Suppression du compte */
 "section.dangerZone" = "Zone dangereuse";
 "action.deleteAccount" = "Supprimer le compte";
@@ -600,3 +600,26 @@
 "region.saved" = "Région enregistrée.";
 "region.error" = "La région n’a pas pu être enregistrée.";
 "region.notLocated" = "Ce code postal n’a pas été trouvé ; les dates suivent donc votre premier rucher ou le centre de l’Allemagne.";
+
+/* La page de soutien (#17). Depuis les réglages et depuis le blocage Membres. */
+"supporter.title" = "Soutien";
+"supporter.heading" = "Soutenir HivePulse";
+"supporter.intro" = "HivePulse reste gratuit jusqu’à 10 ruches. Un abonnement lève les limites et permet au projet de continuer.";
+"supporter.benefit.colonies" = "Autant de ruches que vous en avez";
+"supporter.benefit.history" = "Des statistiques sur tout votre historique, pas seulement sur les 365 derniers jours";
+"supporter.benefit.treatments" = "Le registre des traitements en PDF imprimable";
+"supporter.benefit.fields" = "Vos propres champs de visite";
+"supporter.benefit.sharing" = "Partager un rucher avec quelqu’un";
+"supporter.benefit.map" = "La carte sanitaire régionale";
+"supporter.cancelAnytime" = "Résiliable à tout moment dans l’App Store. L’abonnement appartient à votre compte : il vaut aussi sur le site web et sur Android.";
+"supporter.restore" = "Restaurer l’achat";
+"supporter.restore.nothing" = "Aucun achat antérieur n’a été trouvé pour ce compte Apple.";
+"supporter.unavailable.title" = "Pas encore en vente ici";
+"supporter.unavailable.desc" = "Cette version de l’application ne peut pas vendre d’abonnement. C’est possible sur le site web, et comme l’abonnement appartient à votre compte, il vaut aussi ici.";
+"supporter.active.title" = "Vous êtes soutien";
+"supporter.active.desc" = "Merci. Tout ce qui précède est débloqué sur chaque appareil où vous vous connectez.";
+"supporter.manage" = "Gérer l’abonnement";
+"supporter.retry" = "Réessayer";
+"supporter.notice" = "Abonnement";
+"supporter.settings.active" = "Merci de soutenir HivePulse.";
+"supporter.settings.inactive" = "Autant de ruches que vous en avez, tout l’historique et la carte sanitaire régionale.";

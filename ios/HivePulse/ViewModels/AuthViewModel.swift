@@ -122,6 +122,10 @@ final class AuthViewModel: ObservableObject {
             try? await service.logout(refreshToken: refresh)
         }
         KeychainService.shared.clearAll()
+        // And the store account, or the next person to use this phone inherits the
+        // subscription. Only here, not in `sessionExpired()`: an expiry is the same
+        // beekeeper about to sign back in, and signing in rebinds anyway.
+        await PurchaseServices.current.forget()
         // The next account on this device must not see the previous one's hives, and a
         // queued inspection could no longer be uploaded with the signed-out session.
         await OfflineInspectionQueue.shared.clear()
@@ -235,6 +239,12 @@ final class AuthViewModel: ObservableObject {
         // by this one stays (#469). This is what keeps one beekeeper's hives from the next now
         // that signing out is no longer the only way a session ends.
         OfflineStore.shared.adopt(userId: resp.user.id)
+        // The store account is this account, bound here for the same reason the line above is
+        // here: this is the one place every way in goes through. RevenueCat's app_user_id has to
+        // be the HivePulse user.id, because the webhook matches purchases on it -- a purchase made
+        // while the SDK still holds an anonymous id is a payment that reaches nobody (#17).
+        let userID = resp.user.id
+        Task { await PurchaseServices.current.identify(userID: userID) }
         KeychainService.shared.accessToken  = resp.accessToken
         KeychainService.shared.refreshToken = resp.refreshToken
         currentUser = resp.user

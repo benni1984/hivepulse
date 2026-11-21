@@ -1223,6 +1223,13 @@ class SubscriptionOut(BaseModel):
     store_managed: bool = False
     #: Where a web subscriber manages or cancels. Only ever set for `source: "web"`.
     manage_url: Optional[str] = None
+    #: Whether this deployment lets the iPhone and Android apps sell. Off unless somebody
+    #: switched it on, exactly as the website's own checkout is (#530); an app that finds it
+    #: false says the subscription cannot be bought there yet.
+    #:
+    #: Deployment state rather than account state, and here anyway, because this is the one
+    #: response both paywalls read before they offer anything.
+    store_checkout_enabled: bool = False
     #: Colonies this account owns. So a client can say "7 of 10" *before* somebody fills in a
     #: form, rather than letting them name a colony and then refusing it (#478).
     hives_used: int = 0

@@ -245,7 +245,7 @@
     <string name="members_stat_good_mood">Buen comportamiento</string>
     <string name="members_stat_avg_brood">Media de cuadros de cría</string>
     <string name="members_stat_avg_interval">Intervalo medio entre revisiones</string>
-    <string name="members_become_supporter">Más información y hazte colaborador</string>
+    <string name="members_become_supporter">Hazte colaborador</string>
     <string name="heatmap_section_title">Mapa regional de salud</string>
     <string name="heatmap_empty">No hay datos de la comunidad.</string>
     <string name="heatmap_hint">Toca una celda para ver los detalles.</string>
@@ -560,4 +560,27 @@
     <string name="region_error">No se pudo guardar la región.</string>
     <string name="region_not_located">No se encontró ese código postal, así que las fechas siguen tu primer colmenar o el centro de Alemania.</string>
     <string name="session_expired">Sesión caducada. Por favor, inicia sesión de nuevo.</string>
+
+    <!-- La página de colaborador (#17). Desde Ajustes y desde el bloqueo de Miembros. -->
+    <string name="supporter_title">Colaborador</string>
+    <string name="supporter_heading">Apoya HivePulse</string>
+    <string name="supporter_intro">HivePulse sigue siendo gratis hasta 10 colmenas. Una suscripción quita los límites y mantiene el proyecto en marcha.</string>
+    <string name="supporter_benefit_colonies">Tantas colmenas como tengas</string>
+    <string name="supporter_benefit_history">Estadísticas de todo tu historial, no solo de los últimos 365 días</string>
+    <string name="supporter_benefit_treatments">El registro de tratamientos en PDF imprimible</string>
+    <string name="supporter_benefit_fields">Tus propios campos de revisión</string>
+    <string name="supporter_benefit_sharing">Compartir un colmenar con otra persona</string>
+    <string name="supporter_benefit_map">El mapa sanitario regional</string>
+    <string name="supporter_unavailable_title">Aquí todavía no está a la venta</string>
+    <string name="supporter_unavailable_desc">Esta versión de la aplicación no puede vender una suscripción. En la web sí se puede, y como la suscripción pertenece a tu cuenta, también vale aquí.</string>
+    <string name="supporter_active_title">Eres colaborador</string>
+    <string name="supporter_active_desc">Gracias. Todo lo anterior está desbloqueado en cada dispositivo en el que inicies sesión.</string>
+    <string name="supporter_manage">Gestionar la suscripción</string>
+    <string name="supporter_restore">Restaurar la compra</string>
+    <string name="supporter_retry">Intentar de nuevo</string>
+    <string name="supporter_notice">Suscripción</string>
+    <string name="supporter_settings_active">Gracias por apoyar HivePulse.</string>
+    <string name="supporter_settings_inactive">Tantas colmenas como tengas, todo el historial y el mapa sanitario regional.</string>
+    <string name="supporter_cancel_anytime">Cancelable en cualquier momento en Google Play. La suscripción pertenece a tu cuenta, así que también vale en la web y en el iPhone.</string>
+    <string name="supporter_restore_nothing">No se encontró ninguna compra anterior para esta cuenta de Google.</string>
 </resources>

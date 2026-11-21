@@ -273,7 +273,7 @@
     <string name="members_stat_good_mood">Dobry temperament</string>
     <string name="members_stat_avg_brood">Śr. liczba ramek z czerwiem</string>
     <string name="members_stat_avg_interval">Śr. odstęp między przeglądami</string>
-    <string name="members_become_supporter">Dowiedz się więcej i zostań wspierającym</string>
+    <string name="members_become_supporter">Zostań wspierającym</string>
     <string name="heatmap_section_title">Regionalna mapa zdrowia</string>
     <string name="heatmap_empty">Brak danych społeczności.</string>
     <string name="heatmap_hint">Dotknij komórki, aby zobaczyć szczegóły.</string>
@@ -595,4 +595,27 @@
     <string name="region_error">Nie udało się zapisać regionu.</string>
     <string name="region_not_located">Nie znaleziono tego kodu pocztowego, więc terminy opierają się na twojej pierwszej pasiece albo na środkowych Niemczech.</string>
     <string name="session_expired">Sesja wygasła. Zaloguj się ponownie.</string>
+
+    <!-- Strona wspierającego (#17). Z ustawień i z blokady Członków. -->
+    <string name="supporter_title">Wspierający</string>
+    <string name="supporter_heading">Wspieraj HivePulse</string>
+    <string name="supporter_intro">Do 10 rodzin pszczelich HivePulse pozostaje bezpłatny. Abonament znosi limity i pozwala projektowi działać dalej.</string>
+    <string name="supporter_benefit_colonies">Tyle rodzin pszczelich, ile masz</string>
+    <string name="supporter_benefit_history">Statystyki z całej historii, nie tylko z ostatnich 365 dni</string>
+    <string name="supporter_benefit_treatments">Rejestr leczenia jako PDF do druku</string>
+    <string name="supporter_benefit_fields">Własne pola przeglądu</string>
+    <string name="supporter_benefit_sharing">Udostępnienie pasieki komuś innemu</string>
+    <string name="supporter_benefit_map">Regionalna mapa zdrowia</string>
+    <string name="supporter_unavailable_title">Tu jeszcze nie do kupienia</string>
+    <string name="supporter_unavailable_desc">Ta wersja aplikacji nie może sprzedać abonamentu. Na stronie jest to możliwe, a ponieważ abonament należy do konta, obowiązuje również tutaj.</string>
+    <string name="supporter_active_title">Jesteś wspierającym</string>
+    <string name="supporter_active_desc">Dziękujemy. Wszystko powyżej jest odblokowane na każdym urządzeniu, na którym się zalogujesz.</string>
+    <string name="supporter_manage">Zarządzaj abonamentem</string>
+    <string name="supporter_restore">Przywróć zakup</string>
+    <string name="supporter_retry">Spróbuj ponownie</string>
+    <string name="supporter_notice">Abonament</string>
+    <string name="supporter_settings_active">Dziękujemy za wspieranie HivePulse.</string>
+    <string name="supporter_settings_inactive">Tyle rodzin pszczelich, ile masz, cała historia i regionalna mapa zdrowia.</string>
+    <string name="supporter_cancel_anytime">Można anulować w każdej chwili w Google Play. Abonament należy do konta, więc obowiązuje też na stronie i na iPhonie.</string>
+    <string name="supporter_restore_nothing">Nie znaleziono wcześniejszego zakupu dla tego konta Google.</string>
 </resources>

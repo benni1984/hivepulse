@@ -343,4 +343,44 @@ final class DTOTests: XCTestCase {
         XCTAssertEqual(apiary?["email"] as? String, "bob@example.com")
     }
 
+    // MARK: - SubscriptionOut
+
+    /// The response every app reads before it offers anything. Nothing decoded this shape from
+    /// JSON until three UI tests died on it (#17) -- the unit tests all built the struct through
+    /// its memberwise initializer, which never touches the decoder.
+    func test_subscriptionOut_decodesADeploymentThatMaySell() throws {
+        let json = #"{"status":"none","store_managed":false,"store_checkout_enabled":true}"#
+
+        let out = try JSONDecoder().decode(SubscriptionOut.self, from: Data(json.utf8))
+
+        XCTAssertEqual(out.status, "none")
+        XCTAssertTrue(out.storeCheckoutEnabled)
+        XCTAssertFalse(out.grantsAccess)
+    }
+
+    /// A server that has not deployed the field yet. This is the case the property default
+    /// claimed to cover and did not: the synthesized decoder throws on a missing key rather than
+    /// falling back, so the read failed and the paywall read a failed read as "may not sell".
+    func test_subscriptionOut_readsAMissingSwitchAsOffRatherThanThrowing() throws {
+        let json = #"{"status":"active","source":"apple","store_managed":true}"#
+
+        let out = try JSONDecoder().decode(SubscriptionOut.self, from: Data(json.utf8))
+
+        XCTAssertFalse(out.storeCheckoutEnabled, "silence has to read as off, not as an error")
+        XCTAssertTrue(out.storeManaged)
+        XCTAssertTrue(out.grantsAccess)
+    }
+
+    /// Both tolerated keys absent at once, and a status that still grants access.
+    func test_subscriptionOut_survivesAResponseCarryingOnlyAStatus() throws {
+        let json = #"{"status":"grace"}"#
+
+        let out = try JSONDecoder().decode(SubscriptionOut.self, from: Data(json.utf8))
+
+        XCTAssertTrue(out.grantsAccess, "a grace period is still paid for")
+        XCTAssertFalse(out.storeManaged)
+        XCTAssertFalse(out.storeCheckoutEnabled)
+        XCTAssertNil(out.source)
+    }
+
 }

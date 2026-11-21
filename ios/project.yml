@@ -24,6 +24,13 @@ packages:
   GoogleSignIn:
     url: https://github.com/google/GoogleSignIn-iOS
     from: 8.0.0
+  # The SPM distribution lives in its own repository -- `purchases-ios` itself is not
+  # consumable as a package, and pointing at it fails to resolve. Pinned to major 5;
+  # 5.103.2 was current when this was added, and its Package.swift declares iOS 13 and
+  # swift-tools 5.9, both below this project's floor.
+  RevenueCat:
+    url: https://github.com/RevenueCat/purchases-ios-spm.git
+    from: 5.0.0
 
 targets:
   HivePulse:
@@ -35,6 +42,11 @@ targets:
         product: Sentry
       - package: GoogleSignIn
         product: GoogleSignIn
+      # Only `RevenueCat`, not `RevenueCatUI`: the paywall is ours, built from the app's own
+      # components and translated with the app. The UI package would bring a second design
+      # language and six more resource bundles into the archive.
+      - package: RevenueCat
+        product: RevenueCat
     sources:
       - path: HivePulse
         excludes:
@@ -54,6 +66,11 @@ targets:
         Debug:
           API_BASE_URL: http://localhost:8000/api/v1
           SENTRY_DSN: ""
+          # RevenueCat's **public** SDK key, handed in by the TestFlight workflow from the
+          # REVENUECAT_PUBLIC_KEY_IOS secret. Empty here on purpose: a build from source
+          # and a local build do not sell, and say so, rather than talking to an account
+          # that is not theirs. This repository is public, so no key is written down in it.
+          REVENUECAT_PUBLIC_KEY: ""
         Release:
           API_BASE_URL: https://hivepulse.multihead.de/api/v1
           # Filled by the TestFlight workflow from the SENTRY_DSN_IOS secret; empty here

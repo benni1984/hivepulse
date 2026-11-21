@@ -38,7 +38,8 @@ export default function SubscriptionContent({ Screenshot }: { Screenshot: typeof
             <div className="help-step-body">Choisissez <strong>S’abonner</strong> et réglez le paiement. Tout est débloqué dès la confirmation — sur le site et dans les deux applications, car l’abonnement appartient au compte et non à l’appareil.</div>
           </li>
         </ol>
-        <p>Pour l’instant l’abonnement s’achète sur le site. Dans les applications iPhone et Android, l’achat passera par l’App Store et Google Play, comme ces magasins l’exigent ; cela est encore en cours de développement. Quel que soit le chemin, l’abonnement appartient à votre compte HivePulse et vaut partout où vous vous connectez — la limite elle-même s’applique déjà sur les trois.</p>
+        <p>Dans les applications iPhone et Android, l’achat se fait dans <strong>Réglages → Soutien</strong>, ou depuis la carte de l’onglet Membres. Il passe par l’App Store ou Google Play, comme ces magasins l’exigent, et le prix y est le même. Quel que soit le chemin, l’abonnement appartient à votre compte HivePulse et vaut partout où vous vous connectez : achetez-le sur le téléphone et le site le sait quelques secondes plus tard.</p>
+        <p>Changé de téléphone, ou réinstallé l’application ? <strong>Restaurer l’achat</strong>, en bas de cette même page, récupère un abonnement acheté dans un magasin. Pour un abonnement acheté sur le site, vous n’en avez jamais besoin : il suit le compte de toute façon.</p>
         <Screenshot src="/docs/screenshots/subscription.png" caption="La page Abonnement : ce que vous avez, ce que comprend l’abonnement et où résilier" />
       </section>
 

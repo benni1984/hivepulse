@@ -425,6 +425,13 @@ struct TreatmentCreateRequest: Encodable {
 struct SubscriptionOut: Codable {
     let status: String
     let source: String?
+    /// Whether **this deployment** lets the apps sell (api-contract.md). Off unless somebody
+    /// switched it on, so the paywall shows prices only when the server says so.
+    ///
+    /// The `= false` here serves the memberwise initializer only -- what covers an older server
+    /// that does not send the field is `init(from:)` below, and it has to, because Swift's
+    /// synthesized decoder would throw rather than fall back.
+    var storeCheckoutEnabled: Bool = false
     /// True for the App Store and Google Play: **the app cannot cancel it**, the store must.
     let storeManaged: Bool
     /// `grace` means the store is retrying a payment and access continues -- gating on `active`
@@ -433,6 +440,26 @@ struct SubscriptionOut: Codable {
     enum CodingKeys: String, CodingKey {
         case status, source
         case storeManaged = "store_managed"
+        case storeCheckoutEnabled = "store_checkout_enabled"
+    }
+}
+
+extension SubscriptionOut {
+    /// Decoded by hand, because the defaults above promised something Swift does not give:
+    /// the synthesized decoder ignores a property's default value and throws `keyNotFound`
+    /// for a missing key. So a response without `store_checkout_enabled` did not fall back to
+    /// `false` -- it made the whole read throw, and `SupporterViewModel` reads a failed read as
+    /// "this deployment may not sell". Three UI tests died of it, and against a server that had
+    /// not deployed the field yet the paywall would have gone dark for everybody.
+    ///
+    /// `Android`'s Gson DTO tolerates both keys by way of Kotlin's own defaults, so this is also
+    /// what makes the two clients agree on the same response (#17).
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        status = try c.decode(String.self, forKey: .status)
+        source = try c.decodeIfPresent(String.self, forKey: .source)
+        storeCheckoutEnabled = try c.decodeIfPresent(Bool.self, forKey: .storeCheckoutEnabled) ?? false
+        storeManaged = try c.decodeIfPresent(Bool.self, forKey: .storeManaged) ?? false
     }
 }
 

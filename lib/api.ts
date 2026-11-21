@@ -1488,6 +1488,13 @@ export interface Subscription {
   store_managed: boolean;
   /** Where a web subscriber manages or cancels. Only ever set for `source: 'web'`. */
   manage_url?: string | null;
+  /**
+   * Whether this deployment lets the **apps** sell. Nothing on the website reads it — the site has
+   * its own switch, and `GET /subscriptions/web-checkout` answers `503` when that one is off — but
+   * it is part of this response, and a type that omits a field the server sends is a type that
+   * lies to the next person who needs it.
+   */
+  store_checkout_enabled?: boolean;
   /** Colonies this account owns. Ones shared *with* it count against their owner. */
   hives_used: number;
   /** How many it may own, or null for no limit. May be *below* hives_used — see below. */

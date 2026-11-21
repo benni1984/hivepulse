@@ -65,6 +65,26 @@ struct SettingsView: View {
                 }
             }
 
+            // MARK: - Supporter
+            // High up and its own row, because a store reviewer who cannot find the purchase
+            // rejects the build, and because somebody looking for what they pay for looks here
+            // first. The same position on Android.
+            Section {
+                NavigationLink {
+                    SupporterView(userID: authVM.currentUser?.id) {
+                        Task { await authVM.loadProfile() }
+                    }
+                } label: {
+                    Label(NSLocalizedString("supporter.title", comment: ""),
+                          systemImage: "star.circle")
+                }
+                .accessibilityIdentifier("settingsSupporter")
+            } footer: {
+                // Says which it is without a second request: the flag is already on the account.
+                Text(NSLocalizedString(isSupporter ? "supporter.settings.active"
+                                                   : "supporter.settings.inactive", comment: ""))
+            }
+
             // MARK: - Profile
             Section(NSLocalizedString("section.profile", comment: "")) {
                 if let user = authVM.currentUser {
@@ -391,6 +411,12 @@ struct SettingsView: View {
 
     /// The one sentence that fits this account, or none. A courtesy grant costs nothing, so
     /// "cancel it or you keep being charged" would be a lie there.
+    /// An admin grant counts, the way it does everywhere else: `is_supporter` is derived from
+    /// all four sources, and the row must not tell a contributor they are not one.
+    private var isSupporter: Bool {
+        authVM.currentUser?.isSupporter == true
+    }
+
     private var deleteSubscriptionWarning: String? {
         guard let subscription, subscription.grantsAccess else { return nil }
         switch subscription.source {

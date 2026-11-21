@@ -121,6 +121,11 @@ jobs:
       - name: Build the app bundle
         env:
           SENTRY_DSN_ANDROID: ${{ secrets.SENTRY_DSN_ANDROID }}
+          # RevenueCat's **public** SDK key. Without it the bundle ships unable to sell a
+          # subscription and the paywall says so, rather than talking to an account that is not
+          # ours. Not a secret by design, but this repository is public, so it is not written down
+          # in it either (#17).
+          REVENUECAT_PUBLIC_KEY_ANDROID: ${{ secrets.REVENUECAT_PUBLIC_KEY_ANDROID }}
           # Lets the Gradle plugin upload the R8 mapping, so a crash from this bundle reads as our
           # own names in Sentry rather than a.b.c.d(). Absent, the build is exactly what it was
           # before and nothing is uploaded (#452).

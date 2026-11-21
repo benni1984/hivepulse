@@ -107,6 +107,10 @@ You can write test files on any OS and let CI run them — no local macOS needed
 | `-mockSessionExpired` | Tokens the server has forgotten: every call 401s, including the refresh. The app must land on Login (`SessionExpiryUITests`) |
 | `-mockServer` | Mock only, no token — starts at Login, auth calls return real-looking responses |
 | `-mockCameraPreview` | Replaces the Scan tab's live camera with a flat colour, so the viewfinder and the instruction over it can be reached in the simulator (`DataScannerViewController` is unsupported there) |
+| `-mockStoreOffers` | Replaces the store with `MockPurchaseService`, so the paywall shows a price. A simulator has no store account, so the real one can only ever reach "cannot be bought here" |
+| `-mockStoreCancels` | With the above: the next purchase comes back cancelled — a dismissed sheet must show no error |
+| `-mockStoreEmpty` | With the above: a configured store with no products, which is what a deployment looks like before the console work is finished |
+| `-mockStoreHasPurchase` | With the above: a restore finds a subscription |
 
 `-resetKeychain` can be combined with the mock arguments — the keychain is cleared first, then the mock token is set (most UI tests do this).
 
@@ -126,13 +130,13 @@ Most-specific URL patterns must come first:
 
 ## Unit Tests (HivePulseTests/)
 
-AuthViewModelTests, YearRibbonTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, QRBatchDetailViewModelTests, OverviewStatsViewModelTests, ForgotPasswordViewModelTests, GuidedTourTests, CommunityHeatmapTests, FieldDefinitionsViewModelTests, HornetIconTests, AppBundleTests, ThemeTests, DTOTests, APIClientTests — all passing in CI.
+AuthViewModelTests, YearRibbonTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, QRBatchDetailViewModelTests, OverviewStatsViewModelTests, ForgotPasswordViewModelTests, GuidedTourTests, CommunityHeatmapTests, FieldDefinitionsViewModelTests, SupporterViewModelTests, HornetIconTests, AppBundleTests, ThemeTests, DTOTests, APIClientTests — all passing in CI.
 
 ## UI Tests (HivePulseUITests/)
 
-LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests, QRBatchDetailUITests, QRScanUITests, OverviewStatsUITests, ForgotPasswordUITests, GuidedTourUITests, FieldDefinitionsUITests, HornetUITests, MembersUITests, YearRibbonUITests, ScreenshotUITests — all passing in CI.
+LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests, QRBatchDetailUITests, QRScanUITests, OverviewStatsUITests, ForgotPasswordUITests, GuidedTourUITests, FieldDefinitionsUITests, HornetUITests, MembersUITests, SupporterUITests, YearRibbonUITests, ScreenshotUITests — all passing in CI.
 
-Screens: Login, Register, ApiaryList, ApiaryDetail, ApiaryForm, HiveDetail, HiveInitialize, HiveQR, InspectionForm, InspectionDetail, QRScanner, QRBatchList, QRBatchDetail, HiveStats, OverviewStats, ForgotPassword, GuidedTour, Members (community heatmap), FieldDefinitions (user scope from Settings, apiary scope from the apiary toolbar), Settings.
+Screens: Login, Register, ApiaryList, ApiaryDetail, ApiaryForm, HiveDetail, HiveInitialize, HiveQR, InspectionForm, InspectionDetail, QRScanner, QRBatchList, QRBatchDetail, HiveStats, OverviewStats, ForgotPassword, GuidedTour, Members (community heatmap), FieldDefinitions (user scope from Settings, apiary scope from the apiary toolbar), Supporter (the paywall, from Settings and from the Members gate), Settings.
 
 **The Scan tab opens the camera** — no entry page, no button, no sheet. It was all three until
 #425; Android never had them, and at the hive the tab is itself the request to scan. What the page

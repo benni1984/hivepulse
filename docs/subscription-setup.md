@@ -183,7 +183,8 @@ Settings → Environment Variables, on the **hivepulse** project for production 
 | `REVENUECAT_API_KEY` | RevenueCat **secret** API key, for `POST /subscriptions/sync` | RevenueCat → API keys |
 | `REVENUECAT_ENTITLEMENT` | only if you did not call the entitlement `supporter` | 2.2 |
 | `REVENUECAT_ENVIRONMENT` | `SANDBOX` on staging. Production needs nothing | see below |
-| `WEB_CHECKOUT_ENABLED` | `true` to let this deployment sell at all | see below |
+| `WEB_CHECKOUT_ENABLED` | `true` to let this deployment sell **on the website** | see below |
+| `STORE_CHECKOUT_ENABLED` | `true` to let this deployment sell **in the apps** | see below |
 
 **`WEB_CHECKOUT_ENABLED` is off unless you set it, and that is deliberate (#530).** Without it,
 `/subscriptions/web-checkout` answers `503 WEB_CHECKOUT_UNCONFIGURED` even with a perfectly good
@@ -215,6 +216,21 @@ log which ones, so this fails in the open rather than taking the pipeline down. 
 then simply absent and the default stands — closed, for this flag. But that also means a flag
 stored as Sensitive **does not reach the migration step at all**, so keep it plain and the
 question does not arise. `backend/tests/test_vercel_env_pull.py` holds the filter in place.
+
+**`STORE_CHECKOUT_ENABLED` is the same switch for the apps, and a separate one on purpose.**
+The website and the apps go live at different moments: Paddle approves a checkout domain, and
+Apple and Google approve subscription products, on three different schedules. One flag for
+both would mean the first approval starts selling through a store that has nothing to sell.
+
+It is read by the apps from `GET /subscriptions/me`, which their paywall already fetches
+before it offers anything. While it is off, both apps say the subscription cannot be bought
+there yet — the same sentence as a build with no SDK key. **A build value in the apps would
+have been the wrong answer:** changing one means shipping a new app through review, and the
+morning Apple approves the products is not a morning to start a release.
+
+An app that cannot reach the server does not sell either. Silence reads as "unknown", and
+unknown is closed; `SupporterViewModelTest` and `SupporterViewModelTests` pin that on both
+platforms.
 
 **`REVENUECAT_ENVIRONMENT=SANDBOX` is the other thing staging needs, and it is easy to
 forget.** The server accepts events only from the environment it was told to expect, and the

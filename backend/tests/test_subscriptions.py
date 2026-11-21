@@ -111,6 +111,73 @@ def test_sync_returns_the_stored_state_when_there_is_nothing_to_ask(auth_client)
     assert resp.status_code == 200
     assert resp.json()["status"] == "none"
 
+# --------------------------------------------------------------------------------------------
+# The switch that lets the apps sell (#17)
+#
+# Off unless somebody switched it on, the way the website's own checkout is (#530). The apps
+# cannot be given a build flag instead: changing one means shipping a new app through review,
+# and the store products appear when Apple and Google approve them, not on a date we pick.
+# --------------------------------------------------------------------------------------------
+
+def test_the_apps_may_not_sell_until_somebody_says_so(auth_client):
+    """The default, read through the endpoint the apps actually call."""
+    body = auth_client.get("/api/v1/subscriptions/me").json()
+
+    assert body["store_checkout_enabled"] is False
+
+
+def test_the_switch_reaches_an_account_that_has_never_bought_anything(auth_client, monkeypatch):
+    """The case that matters, and the one `_out` builds on its *other* return path.
+
+    Everybody the apps are about to sell to has `status: "none"`. A flag that only appeared once a
+    subscription existed would be visible to nobody who needed it.
+    """
+    from app import config as cfg
+    monkeypatch.setattr(cfg.settings, "store_checkout_enabled", True)
+
+    body = auth_client.get("/api/v1/subscriptions/me").json()
+
+    assert body["status"] == "none", "precondition: this account bought nothing"
+    assert body["store_checkout_enabled"] is True
+
+
+def test_the_switch_also_reaches_an_account_that_has(auth_client, db_session, monkeypatch):
+    from app import config as cfg
+    monkeypatch.setattr(cfg.settings, "store_checkout_enabled", True)
+    user_id = _user_id(db_session)
+    auth_client.post("/api/v1/subscriptions/webhook", json=_event(user_id), headers=_headers())
+
+    body = auth_client.get("/api/v1/subscriptions/me").json()
+
+    assert body["status"] == "active"
+    assert body["store_checkout_enabled"] is True
+
+
+def test_the_two_switches_are_separate(auth_client, monkeypatch):
+    """Switching the website on must not switch the apps on.
+
+    They go live at different moments -- Paddle approves a domain, Apple and Google approve
+    products -- and one flag for both would mean the first approval sells through a store that
+    has nothing to sell.
+    """
+    from app import config as cfg
+    monkeypatch.setattr(cfg.settings, "web_checkout_enabled", True)
+    monkeypatch.setattr(cfg.settings, "store_checkout_enabled", False)
+
+    assert auth_client.get("/api/v1/subscriptions/me").json()["store_checkout_enabled"] is False
+
+
+def test_selling_in_the_apps_is_off_by_default_in_the_settings():
+    """Pins the default itself, not just what the endpoint reports.
+
+    Dropping an unreadable value is only safe while this is False -- see
+    `test_vercel_env_pull.py`, where a variable stored as Sensitive is filtered out and the
+    field's default stands in its place.
+    """
+    from app import config as cfg
+
+    assert cfg.Settings.model_fields["store_checkout_enabled"].default is False
+
 
 # --------------------------------------------------------------------------------------------
 # The webhook, which is the one open to the internet

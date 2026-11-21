@@ -24,6 +24,9 @@ class AuthRepository @Inject constructor(
     private val owner: OfflineOwner,
     private val queue: OfflineInspectionQueue,
     private val syncScheduler: SyncScheduler,
+    /** Only to bind and unbind the store account; nothing here ever asks it about access. With no
+     *  key configured every call on it is a no-op, which is the state in CI and in every test. */
+    private val purchases: PurchaseGateway,
 ) {
     val isLoggedIn get() = tokenStore.isLoggedIn
 
@@ -51,6 +54,11 @@ class AuthRepository @Inject constructor(
         adoptOfflineData(resp.user.id)
         tokenStore.accessToken  = resp.accessToken
         tokenStore.refreshToken = resp.refreshToken
+        // The store account is this account. RevenueCat's app_user_id has to be the HivePulse
+        // user.id, because the webhook matches purchases on it -- a purchase made while the SDK
+        // still holds an anonymous id is a payment that reaches nobody (#17). Here for the same
+        // reason the line above is here: this is the one place every way in goes through.
+        purchases.identify(resp.user.id)
         return resp.user
     }
 
@@ -88,6 +96,10 @@ class AuthRepository @Inject constructor(
     suspend fun logout() {
         tokenStore.refreshToken?.let { runCatching { api.logout(LogoutRequest(it)) } }
         tokenStore.clear()
+        // And the store account, or the next person to use this phone inherits the subscription.
+        // Only on a deliberate sign-out, not on an expiry: an expiry is the same beekeeper about
+        // to sign back in, and signing in rebinds anyway (#17).
+        purchases.forget()
         // The next account on this device must not see the previous one's hives, and a
         // queued inspection could no longer be uploaded with the signed-out session.
         cache.clear()

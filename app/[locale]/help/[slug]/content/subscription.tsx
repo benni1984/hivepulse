@@ -38,7 +38,8 @@ export default function SubscriptionContent({ Screenshot }: { Screenshot: typeof
             <div className="help-step-body">Choose <strong>Subscribe</strong> and complete the payment. Access is unlocked as soon as the payment is confirmed — on the website and in both apps, because the account carries the subscription and not the device.</div>
           </li>
         </ol>
-        <p>For now the subscription is bought on the website. In the iPhone and Android apps the purchase will go through the App Store and Google Play, as those stores require, and that is still being built. Whichever way you buy, the subscription belongs to your HivePulse account and works everywhere you sign in — the limit itself already applies on all three.</p>
+        <p>In the iPhone and Android apps you buy it under <strong>Settings → Supporter</strong>, or from the card on the Members tab. The purchase goes through the App Store or Google Play, as those stores require, and the price there is the same. Whichever way you buy, the subscription belongs to your HivePulse account and works everywhere you sign in: buy it on the phone and the website knows within seconds.</p>
+        <p>Changed phone, or reinstalled the app? <strong>Restore purchase</strong>, at the bottom of that same page, brings back a subscription bought in a store. You never need it for one bought on the website — that one follows the account anyway.</p>
         <Screenshot src="/docs/screenshots/subscription.png" caption="The subscription page: what you keep, what the subscription includes, and where to cancel" />
       </section>
 

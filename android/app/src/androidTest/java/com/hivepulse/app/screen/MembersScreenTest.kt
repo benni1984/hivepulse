@@ -128,9 +128,9 @@ class MembersScreenTest {
         coEvery { apiService.getMe() } returns regularUser()
         navigateToMembers()
         composeRule.waitUntil(5_000) {
-            composeRule.onAllNodesWithText("Learn more & become a supporter").fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("Become a supporter").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithText("Learn more & become a supporter").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("Become a supporter").performScrollTo().assertIsDisplayed()
     }
 
     // ─── Helpers ─────────────────────────────────────────────────────────────

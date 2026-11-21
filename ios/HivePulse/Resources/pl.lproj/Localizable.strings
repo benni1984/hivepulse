@@ -301,7 +301,7 @@
 "members.stat.goodMood" = "Dobry temperament";
 "members.stat.avgBrood" = "Śr. liczba ramek z czerwiem";
 "members.stat.interval" = "Śr. odstęp między przeglądami";
-"members.becomeSupporter" = "Dowiedz się więcej i zostań wspierającym";
+"members.becomeSupporter" = "Zostań wspierającym";
 
 /* Delete account */
 "section.dangerZone" = "Strefa zagrożenia";
@@ -602,3 +602,26 @@
 "region.saved" = "Region zapisany.";
 "region.error" = "Nie udało się zapisać regionu.";
 "region.notLocated" = "Nie znaleziono tego kodu pocztowego, więc terminy opierają się na twojej pierwszej pasiece albo na środkowych Niemczech.";
+
+/* Strona wspierającego (#17). Z ustawień i z blokady Członków. */
+"supporter.title" = "Wspierający";
+"supporter.heading" = "Wspieraj HivePulse";
+"supporter.intro" = "Do 10 rodzin pszczelich HivePulse pozostaje bezpłatny. Abonament znosi limity i pozwala projektowi działać dalej.";
+"supporter.benefit.colonies" = "Tyle rodzin pszczelich, ile masz";
+"supporter.benefit.history" = "Statystyki z całej historii, nie tylko z ostatnich 365 dni";
+"supporter.benefit.treatments" = "Rejestr leczenia jako PDF do druku";
+"supporter.benefit.fields" = "Własne pola przeglądu";
+"supporter.benefit.sharing" = "Udostępnienie pasieki komuś innemu";
+"supporter.benefit.map" = "Regionalna mapa zdrowia";
+"supporter.cancelAnytime" = "Można anulować w każdej chwili w App Store. Abonament należy do konta, więc obowiązuje też na stronie i na Androidzie.";
+"supporter.restore" = "Przywróć zakup";
+"supporter.restore.nothing" = "Nie znaleziono wcześniejszego zakupu dla tego konta Apple.";
+"supporter.unavailable.title" = "Tu jeszcze nie do kupienia";
+"supporter.unavailable.desc" = "Ta wersja aplikacji nie może sprzedać abonamentu. Na stronie jest to możliwe, a ponieważ abonament należy do konta, obowiązuje również tutaj.";
+"supporter.active.title" = "Jesteś wspierającym";
+"supporter.active.desc" = "Dziękujemy. Wszystko powyżej jest odblokowane na każdym urządzeniu, na którym się zalogujesz.";
+"supporter.manage" = "Zarządzaj abonamentem";
+"supporter.retry" = "Spróbuj ponownie";
+"supporter.notice" = "Abonament";
+"supporter.settings.active" = "Dziękujemy za wspieranie HivePulse.";
+"supporter.settings.inactive" = "Tyle rodzin pszczelich, ile masz, cała historia i regionalna mapa zdrowia.";
