@@ -60,7 +60,7 @@ extension MockURLProtocol {
     /// Nothing bought, and this deployment may sell. Both halves matter: without the flag the
     /// paywall shows no prices, which is the default and correct everywhere else (#17).
     static let sellingSubscriptionJSON = """
-    {"status":"none","store_checkout_enabled":true,"hives_used":0,"hive_limit":10}
+    {"status":"none","store_managed":false,"store_checkout_enabled":true,"hives_used":0,"hive_limit":10}
     """
 
     static let authenticatedHandlers: [(String, Int, String)] = [

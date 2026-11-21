@@ -95,9 +95,9 @@ class SettingsScreenTest {
         composeRule.waitUntil(5_000) {
             composeRule.onAllNodesWithText("Language").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithText("English").assertIsDisplayed()
-        composeRule.onNodeWithText("Français").assertIsDisplayed()
-        composeRule.onNodeWithText("Deutsch").assertIsDisplayed()
+        composeRule.onNodeWithText("English").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("Français").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("Deutsch").performScrollTo().assertIsDisplayed()
     }
 
     @Test
@@ -179,7 +179,7 @@ class SettingsScreenTest {
         composeRule.waitUntil(5_000) {
             composeRule.onAllNodesWithText("Español").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithText("Español").assertIsDisplayed()
+        composeRule.onNodeWithText("Español").performScrollTo().assertIsDisplayed()
     }
 
     @Test

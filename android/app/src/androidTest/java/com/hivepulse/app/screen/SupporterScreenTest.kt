@@ -119,7 +119,7 @@ class SupporterScreenTest {
         // way back to what they paid for.
         openFromSettings()
 
-        composeRule.onNodeWithText("Restore purchase").assertIsDisplayed()
+        composeRule.onNodeWithText("Restore purchase").performScrollTo().assertIsDisplayed()
     }
 
     @Test
