@@ -1,6 +1,6 @@
 {
   "android": {
-    "captured": "2026-11-19",
+    "captured": "2026-11-21",
     "files": {
       "android/app/src/main/java/com/hivepulse/app/ui/admin/AdminScreen.kt": "b205815830470d2780c3902552ec94aaf236328747eab642334102d84930d9f5",
       "android/app/src/main/java/com/hivepulse/app/ui/admin/AdminViewModel.kt": "8282c27ffce90c2466e6d6377edc0fcc22887fb9432ba38e53be0fbcb9373da0",
@@ -40,39 +40,40 @@
       "android/app/src/main/java/com/hivepulse/app/ui/members/CommunityHeatmapSection.kt": "14a09d8ef62be8682a23dea40148d148fb4b9835594e5963a5dadd3163f56a3a",
       "android/app/src/main/java/com/hivepulse/app/ui/members/HeatBlobs.kt": "82ddfb431b8e2bb93bfbd4db6149d3904328fc66b238bfa2ded2e46133776d2b",
       "android/app/src/main/java/com/hivepulse/app/ui/members/HeatmapLevels.kt": "284694b8e0266c837231d9faa3007b0519996ab28d321154aba5c3bac1a8866e",
-      "android/app/src/main/java/com/hivepulse/app/ui/members/MembersScreen.kt": "ce7441f236caba4c5169ee2ca53e8dc8f494b1cdc589569ea46cfab895acad2a",
+      "android/app/src/main/java/com/hivepulse/app/ui/members/MembersScreen.kt": "db6569284b8b49f4cc01cf858780c60420cb0861c72a517db0399efb3fc8c566",
       "android/app/src/main/java/com/hivepulse/app/ui/moves/MoveRoutes.kt": "43349ee7cb64bb03ef75a2ab612a938ac4228f0670668fe8c637627bd1238654",
       "android/app/src/main/java/com/hivepulse/app/ui/moves/MoveScreens.kt": "e6cec349d5512f9e55362bc788e9e29c521741973054c3dc681df0aab8070cc4",
       "android/app/src/main/java/com/hivepulse/app/ui/moves/MoveViewModels.kt": "46b6b611402e9fe681ef9f3716fe27f6895f32bd7835f203005fde9e6206f4bb",
-      "android/app/src/main/java/com/hivepulse/app/ui/navigation/NavGraph.kt": "ed86d2fd9f2300be3892612dd1a8a686de1ba8daccb1b0a24726c40778f8b703",
+      "android/app/src/main/java/com/hivepulse/app/ui/navigation/NavGraph.kt": "bfa8ee67a62bd8f2a65bd220391402902a9e12a6df913a2a445686a214267668",
       "android/app/src/main/java/com/hivepulse/app/ui/onboarding/GuidedTourScreen.kt": "1237fb9defedf244093e56646c15d728dbeb73fd776a962202cf2a7b686ab570",
       "android/app/src/main/java/com/hivepulse/app/ui/qr/QRBatchDetailScreen.kt": "f8a3d21b37ae614deea4d2ecf167d744db25e1b72c761a114ec9d8018ef6fecc",
       "android/app/src/main/java/com/hivepulse/app/ui/qr/QRBatchListScreen.kt": "77ae80475e22e040abd6a97f8a02204ce73df5edf48729204b6eabf5a21b17d3",
       "android/app/src/main/java/com/hivepulse/app/ui/qr/QRScanScreen.kt": "beaddbc5111e670df90de0249dbd6bbd6de13201670b7afb55066306a2afb367",
       "android/app/src/main/java/com/hivepulse/app/ui/qr/QRViewModel.kt": "ffc497afca304cd434dac24e50f0711e430a69cd46f25177d1bdfea9f1469aae",
-      "android/app/src/main/java/com/hivepulse/app/ui/settings/SettingsScreen.kt": "6369d15211864e4733a5a51db4c9a52e0ad77883cb11a1050dec3e40609af85b",
+      "android/app/src/main/java/com/hivepulse/app/ui/settings/SettingsScreen.kt": "be448b85761fe75e6c6532ac22afbcb0dbe93cae65d7bd3c573aa3f9360f7751",
       "android/app/src/main/java/com/hivepulse/app/ui/sharing/InvitationLink.kt": "ff109c22064798ba37b8a8dc4ce66e3ba63805d9c60933df914adb905461bc13",
       "android/app/src/main/java/com/hivepulse/app/ui/sharing/SharingScreen.kt": "2973591cce8fde09aaf9c86528a679c264a65cbcb3ebe8a036e2dd2c5c902d71",
       "android/app/src/main/java/com/hivepulse/app/ui/sharing/SharingViewModels.kt": "141aba2f33eb0de9afd9a4030b19bfef7afc56ee9ff96a9d73edc2b8c413e751",
       "android/app/src/main/java/com/hivepulse/app/ui/stats/HiveStatsScreen.kt": "29f6daa793eccd487b3a5cad70f76ff90a3d4672dae32bb0e453a6b3cac729ba",
       "android/app/src/main/java/com/hivepulse/app/ui/stats/OverviewStatsScreen.kt": "ecfd6f32a5c099845f79a00c838c76f44d086ce382eb4c354cf116124d49e6f5",
+      "android/app/src/main/java/com/hivepulse/app/ui/supporter/SupporterScreen.kt": "67af3b9894b91f0afd170002e5c7156afafce7c53a3358343e0057accc76a8c7",
       "android/app/src/main/java/com/hivepulse/app/ui/theme/Color.kt": "c4d3a1598fd6b313adc9debfa67c4f90d6973ec5457051c224ed5ddc0d690383",
       "android/app/src/main/java/com/hivepulse/app/ui/theme/Theme.kt": "9fe29380419548a57237af0b2e99f09226b1fbfa9a23b940bcdcb70506aa8cda",
       "android/app/src/main/java/com/hivepulse/app/ui/theme/Type.kt": "d42cf5d4f17cc4bba5e5dd9ac6c87446438a46e24f896c36b8cc35b333408128",
-      "android/app/src/main/res/values-de/strings.xml": "af2b02b786fdd906f4fe6acc1b1642099c64913c794b48849cfd6453ec27932b",
-      "android/app/src/main/res/values-es/strings.xml": "760b14cd4286b1f7a8890d8b79ef003bc6bb78cde3eaadbf4d6228a35e0e1abe",
-      "android/app/src/main/res/values-fr/strings.xml": "cabf75b3814bdda43f1c515a273e129a00d46b301f15e6463b8031c3a267a4fc",
-      "android/app/src/main/res/values/strings.xml": "3a38447f0688a452d29fc7b862403fd811b3adf93bc7d7ddcad2ca2080717205"
+      "android/app/src/main/res/values-de/strings.xml": "d5861b6f4329ea22d88f6b43380fedef0864036b4e515c0ce1bd0e8f016920cf",
+      "android/app/src/main/res/values-es/strings.xml": "df9a85de71c16acf0f1a12c4eed17ba97ab43cd0d2cea2f11ed2c3aa3526a305",
+      "android/app/src/main/res/values-fr/strings.xml": "ef1047dcf6bf10d8452d2e101140724d8acfb28ba615829b489a64e063241d67",
+      "android/app/src/main/res/values/strings.xml": "22fb833522919ab71d7f58bcdf2e3fa4277a66f689d1d875f64ba91f273f1316"
     },
-    "fingerprint": "a79465e8b115b54f6ae0706f6d1f81d04d953517211f33f3ad7ab93c99a5ad66"
+    "fingerprint": "08e379393ddb32b3c56ba7050ff3ab7b75f0f311118fe04b48f0c8b225b48f8d"
   },
   "ios": {
-    "captured": "2026-11-19",
+    "captured": "2026-11-21",
     "files": {
-      "ios/HivePulse/Resources/de.lproj/Localizable.strings": "27c53dc116e008c00f3aaca6f353da585d015f051e3b943b0f21b32d244c19ea",
-      "ios/HivePulse/Resources/en.lproj/Localizable.strings": "aba8b4287e9d6009f599dbaa41cbe917a6390c10f69daf8109d96b8173e1125d",
-      "ios/HivePulse/Resources/es.lproj/Localizable.strings": "c8cdc7a1d54dbbcc4ac1abcf15e81e836382879d38e8965cca5cb3e61297c741",
-      "ios/HivePulse/Resources/fr.lproj/Localizable.strings": "b6a7c2407c88d05adfd2e9361ce833d8c5ef829e4496aa29aef5622e50ef6258",
+      "ios/HivePulse/Resources/de.lproj/Localizable.strings": "8eb17a9d37f1db0f1fa16a827ebb9cceb6d5af11d122cfba9720e8db67dbbc49",
+      "ios/HivePulse/Resources/en.lproj/Localizable.strings": "9ea66f6078fd2c64340b765a5c502407b3028fcdaf510d684437d53d5167723a",
+      "ios/HivePulse/Resources/es.lproj/Localizable.strings": "197bca7016266de8225ad6d7576629a167f8b175ca5fd6cf523f8c0ea1a69e53",
+      "ios/HivePulse/Resources/fr.lproj/Localizable.strings": "4333b38ed5266559ebf203726bb87421c5b7cb5bf1c7abe0bedf411c594deedf",
       "ios/HivePulse/Views/Admin/AdminView.swift": "c6bda4092a2169736649eecb39bc2cdf9d17c5c37442451de4c41954b1117745",
       "ios/HivePulse/Views/Apiaries/ApiaryDetailView.swift": "fe3183549a395ac6df4c25eb4751f324a453952b4bfde9a62cad8c0d7d0a6fe2",
       "ios/HivePulse/Views/Apiaries/ApiaryFormView.swift": "59857c965579874184cd7d02abefb61d57604d1e70e8770b8d7c092339809fe4",
@@ -103,21 +104,22 @@
       "ios/HivePulse/Views/Main/MainTabView.swift": "d6669dfd5683ba0a03bfd33e6fe857dd5a39b0af964f8eaeea849c388c8f5cab",
       "ios/HivePulse/Views/Members/CommunityHeatmapSection.swift": "45a115338db44cdf645c50e70c258fe5342533c55b5584bd14863ba221146b9b",
       "ios/HivePulse/Views/Members/HeatBlobs.swift": "af9d68509260145856760b191c0f3221a938cb6a63bc62de24428b9ffca0d3ef",
-      "ios/HivePulse/Views/Members/MembersView.swift": "986ba15d2185219fd4be2b69ffc9a9511f4b479d940c7ae7bea21764c379747b",
+      "ios/HivePulse/Views/Members/MembersView.swift": "805fee17e2b6e80d440d5d98c0e7b638093ae266057485432f5067f918dabe67",
       "ios/HivePulse/Views/Moves/MoveScreens.swift": "848bb4e2d3ac8475673a70fd3812129a007715ae583bd6346839efb1a6b80fac",
       "ios/HivePulse/Views/Moves/MovesMapView.swift": "058c82cd9411e589c6f39e3860393466edbf3e2ec2eff9f57252f344569091b7",
       "ios/HivePulse/Views/Onboarding/GuidedTourView.swift": "b39326ddfc7a3258eee72ba5edcc929665467eb0248b354b902b2c65952296cf",
       "ios/HivePulse/Views/QR/QRBatchListView.swift": "7266421ae9bf5e5a1cd3ae1b3bf086b353ad6959603b7b4ce69125dbfa8f892e",
       "ios/HivePulse/Views/QR/QRScannerView.swift": "ffcd381360710ce209a2e7b8808ff768b7734b200abffaf1831ee0f59472e326",
-      "ios/HivePulse/Views/Settings/SettingsView.swift": "57a20f3c6f6fe8d62f277f66dc72ec23bd32143feb34d12aef8e381ff19d4e7c",
+      "ios/HivePulse/Views/Settings/SettingsView.swift": "dcbeb0542f0e2e23ef113ea307653b9614c7bdd3fdc154d9504b15916de12d87",
+      "ios/HivePulse/Views/Settings/SupporterView.swift": "031384f55daf0a1cb234310ec270d041386596a2ec448ff34bdcf78c81672215",
       "ios/HivePulse/Views/Sharing/SharingView.swift": "878e9e3476c1ec92c1a697b93b9903e2c34db8efc1c69254f26ed8e7ca8b6119",
       "ios/HivePulse/Views/Stats/HiveStatsView.swift": "5992643276aa9f75a56014ad72fdebae33ca1ae7788b51f1f6ebbed5a42c81fe",
       "ios/HivePulse/Views/Stats/OverviewStatsView.swift": "5dacab8cc3558c6f9c4eb9a94c048936cd97eb9bed4eb593f0ee8dc853b92aab"
     },
-    "fingerprint": "00fabd57e7efbb220b4954c906288ab3ebc3758a26f8b8b91ed7ccf2fb5c8c81"
+    "fingerprint": "9f63ef3b1c40c4d75ea87bbd7f69bde1d829f69729643072686860c45cbe7591"
   },
   "web": {
-    "captured": "2026-11-20",
+    "captured": "2026-11-21",
     "files": {
       "app/CLAUDE.md": "709195bac9e7b142a5e02ada5a00b76cb3d8c332cb45694d4c54798cd894dfe4",
       "app/[locale]/apiary/page.tsx": "576850ea1ca11f28f2a4c8a940634d57970bb44cf2230acacc9718f8639e5803",
@@ -237,11 +239,11 @@
       "app/[locale]/help/[slug]/content/sharing.fr.tsx": "f866c1ca03e41bc710f0e798495f6d93f70f0235a0e8267ea3711eb9fea414d6",
       "app/[locale]/help/[slug]/content/sharing.pl.tsx": "739d8b30d4fa8f68ad1651a97db1790c72d164d1b3d5483aa56e22704106bbeb",
       "app/[locale]/help/[slug]/content/sharing.tsx": "dad025f2699a0f2e9a240339f284392e3296a4c7d58690db1e9b8704bd8a7070",
-      "app/[locale]/help/[slug]/content/subscription.de.tsx": "6a6cbb757d4ff0316e7ba7f99ff57a37d3a07316fdafadf75b7f06194ab51242",
-      "app/[locale]/help/[slug]/content/subscription.es.tsx": "c27c01be7da8651880ffb303b4f017ad01a961226db2fae5f1bb1dd872ee477f",
-      "app/[locale]/help/[slug]/content/subscription.fr.tsx": "cc03ecd896c6a387f35359f6ae5e9297546446fb16073ffe27f5d69bf57a7ab9",
-      "app/[locale]/help/[slug]/content/subscription.pl.tsx": "d15a8f54b156baa2cde26e8ba623f5f16a30b3231346828b2b9fbcccd054609e",
-      "app/[locale]/help/[slug]/content/subscription.tsx": "6e287f5d0be8f78f181b7bac8225d9e3d5748edf8d9b6bc7dbf7f022958867b2",
+      "app/[locale]/help/[slug]/content/subscription.de.tsx": "620e94f12e3503ddd2a7f1a0beec86193c44e56f741d850917529b27d59864e0",
+      "app/[locale]/help/[slug]/content/subscription.es.tsx": "1547875111d5f7c50269c8eab972af284674e4aa328848f37356fa717cc7cfe6",
+      "app/[locale]/help/[slug]/content/subscription.fr.tsx": "c6aea288fea7d1e83865ac267cf79cf8e0d9f9995774017fa8254ca023ae3969",
+      "app/[locale]/help/[slug]/content/subscription.pl.tsx": "daca631c799242e51f6e6e647346fb0b0cb6e1fa67de20a2040a54323581a254",
+      "app/[locale]/help/[slug]/content/subscription.tsx": "cedb6699a002a0742b90db4411d295f664d459c4add017d672a88217b5a20a2e",
       "app/[locale]/help/[slug]/page.tsx": "830c581a205afed3d9ef09b5d507c4866718bbe4958a283c1595e9f817949d52",
       "app/[locale]/help/layout.tsx": "d504ab52acb0751504434f682806dc9e3812f7820389aac5d32d2f4a5f79755d",
       "app/[locale]/help/page.tsx": "95321f3306e00c8159544234669fef24bf1ed06419e7f29815bef35a1174253e",
@@ -309,6 +311,6 @@
       "web/landing.css": "751f5693db853b2497788e9ea09d0adce75d94165d1880f93e67f05cb616223d",
       "web/style.css": "7291ccc8a75041556e935475f2eb4c08a757b6c35c8257cbb0a30cd665f307f2"
     },
-    "fingerprint": "83da017e46bf40e91b153cc17853ee9c8e6b3bd45dd1fcfa53f9576b0b8fc96b"
+    "fingerprint": "a1fcd93196f7193ce0c971b6e85501b47aaf2f9277111e5cef263883fde020fd"
   }
 }
