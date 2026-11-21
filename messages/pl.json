@@ -482,6 +482,11 @@
       "calendar": "Rok pszczelarski",
       "subscription": "Abonament"
     },
+    "feedback": {
+      "title": "Jak idzie?",
+      "body": "Pracujesz z HivePulse już kilka dni. Jeśli coś przeszkadza albo czegoś brakuje, napisz — każda wiadomość jest czytana i z niej powstaje kolejna wersja.",
+      "dismiss": "Nie, dziękuję"
+    },
     "overview": {
       "title": "Moje statystyki",
       "period": "Okres",

@@ -482,6 +482,11 @@
       "calendar": "Beekeeping year",
       "subscription": "Subscription"
     },
+    "feedback": {
+      "title": "How is it going?",
+      "body": "You have been keeping bees with HivePulse for a few days. If something gets in the way, or is missing, say so — every message is read, and it is what the next version is built from.",
+      "dismiss": "No thanks"
+    },
     "overview": {
       "title": "My Statistics",
       "period": "Period",

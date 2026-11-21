@@ -247,7 +247,18 @@ crash reports to an EU-region Sentry; a guided tour.
 
 **Send feedback** sits in Settings under Help on all three clients. On Android it opens the Play listing,
 because feedback sent from there is what reaches the Play Console's testing feedback page; on the iPhone
-and the website it opens a mail with the version and build already in the subject.
+and the website it opens a mail with the version and build already in the subject (`FeedbackMail.swift`).
+
+**And the app asks, once (#546).** Three days after the first launch, a card on the apiary list — on the
+empty screen as well as over a full list, because somebody who has named no colony in three days is the
+most worth asking why — offers the same route and goes away for good on either button. The rule lives in
+three places that must agree (`OnboardingStore.kt`, `OnboardingStore.swift`, `lib/feedbackPrompt.ts`) and
+each holds it as a function of (first launch, now, already asked) so a test needs no device.
+
+It exists because Google refused Play production access twice for "testers were not engaged" and no
+gathered feedback, while every `closed-test` issue in the repository was from 7 or 8 October. Seven builds
+went out inside the second window; what was missing was anybody saying anything, and the only way to say
+it was the sixth of thirteen rows in Settings.
 
 ## Navigation (the same on iPhone and Android)
 

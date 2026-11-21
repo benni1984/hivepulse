@@ -35,6 +35,9 @@
     <string name="action_logout">Cerrar sesión</string>
     <string name="action_help">Ayuda y documentación</string>
     <string name="action_feedback">Enviar comentarios</string>
+    <string name="feedback_ask_title">¿Cómo va?</string>
+    <string name="feedback_ask_body">Llevas unos días con HivePulse. Si algo estorba o falta, dilo: se lee cada mensaje, y de ahí sale la siguiente versión.</string>
+    <string name="feedback_ask_dismiss">No, gracias</string>
     <string name="url_help">https://hivepulse.multihead.de/es/help</string>
     <string name="action_new_apiary">Nuevo colmenar</string>
     <string name="action_edit_apiary">Editar colmenar</string>

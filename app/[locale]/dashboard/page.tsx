@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import TourHint from '@/components/TourHint';
 import IncomingInvitations from '@/components/IncomingInvitations';
+import FeedbackPrompt from '@/components/FeedbackPrompt';
 import HomeSummary from '@/components/HomeSummary';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getApiaries, createApiary, type Apiary } from '@/lib/api';
@@ -78,6 +79,9 @@ export default function DashboardPage() {
       </div>
 
       {ready && <IncomingInvitations onChange={loadApiaries} />}
+      {/* Above the summary and below an invitation: an invitation is somebody waiting, this is
+          only us asking (#546). */}
+      {ready && <FeedbackPrompt />}
       {ready && <HomeSummary />}
 
       {createMessage && (

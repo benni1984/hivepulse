@@ -5,6 +5,12 @@ struct ApiaryListView: View {
     @StateObject private var invitationsVM = InvitationsViewModel()
     @StateObject private var homeVM = HomeSummaryViewModel()
     @State private var showCreate = false
+    /// Asked once, three days in (#546). `false` until the store has been read in `.task`, so
+    /// the card never flashes at somebody who has already answered.
+    @State private var askForFeedback = false
+    /// One store, not one per call: both the question and the answer read the same preferences,
+    /// and two instances would be two chances to disagree about which key holds what.
+    private let onboarding = OnboardingStore()
     @State private var showRedeem = false
     @State private var pastedLink = ""
 
@@ -17,6 +23,12 @@ struct ApiaryListView: View {
         .buttonStyle(.borderless)
         .frame(maxWidth: .infinity)
         .accessibilityIdentifier("redeemInvitationButton")
+    }
+
+    /// Both buttons end it, for good, on this device.
+    private func answeredFeedback() {
+        onboarding.hasAskedForFeedback = true
+        askForFeedback = false
     }
 
     var body: some View {
@@ -40,9 +52,18 @@ struct ApiaryListView: View {
                         .padding()
                     }
                     redeemInvitationButton
+                    // Here too, and not only over a full list: somebody who has kept the app for
+                    // three days without naming a single colony is exactly who to ask why.
+                    if askForFeedback {
+                        FeedbackPromptCard(onAnswered: answeredFeedback)
+                            .padding(.horizontal)
+                    }
                 }
             } else {
                 List {
+                    if askForFeedback {
+                        Section { FeedbackPromptCard(onAnswered: answeredFeedback) }
+                    }
                     if !invitationsVM.invitations.isEmpty {
                         Section {
                             InvitationsSection(vm: invitationsVM) { await apiaryVM.load() }
@@ -120,6 +141,7 @@ struct ApiaryListView: View {
             }
         }
         .task {
+            askForFeedback = onboarding.shouldAskForFeedback()
             await invitationsVM.load()
             await homeVM.load()
         }
