@@ -38,7 +38,8 @@ export default function SubscriptionContent({ Screenshot }: { Screenshot: typeof
             <div className="help-step-body">Wähle <strong>Abo abschließen</strong> und bezahle. Sobald die Zahlung bestätigt ist, ist alles freigeschaltet — auf der Webseite und in beiden Apps, denn das Abo hängt am Konto und nicht am Gerät.</div>
           </li>
         </ol>
-        <p>Vorerst wird das Abo auf der Webseite gekauft. In der iPhone- und der Android-App wird der Kauf über den App Store und Google Play laufen, wie es diese Stores verlangen — das wird gerade gebaut. Egal auf welchem Weg du kaufst: das Abo gehört zu deinem HivePulse-Konto und gilt überall, wo du dich anmeldest; die Grenze selbst gilt auf allen dreien schon jetzt.</p>
+        <p>In der iPhone- und der Android-App kaufst du es unter <strong>Einstellungen → Unterstützer</strong>, oder über die Karte im Mitglieder-Tab. Der Kauf läuft über den App Store beziehungsweise Google Play, wie es diese Stores verlangen, und kostet dort dasselbe. Egal auf welchem Weg du kaufst: das Abo gehört zu deinem HivePulse-Konto und gilt überall, wo du dich anmeldest — kauf es am Handy, und die Webseite weiß es Sekunden später.</p>
+        <p>Neues Handy, oder App neu installiert? <strong>Kauf wiederherstellen</strong>, unten auf derselben Seite, holt ein im Store gekauftes Abo zurück. Für ein auf der Webseite gekauftes brauchst du das nie — das folgt ohnehin dem Konto.</p>
         <Screenshot src="/docs/screenshots/subscription.png" caption="Die Abo-Seite: was du führst, was zum Abo gehört und wo man kündigt" />
       </section>
 

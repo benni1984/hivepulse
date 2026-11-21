@@ -35,6 +35,48 @@ export function pick(text: Localized, locale: string): string {
 /** Newest first. */
 export const RELEASES: Release[] = [
   {
+    date: '2026-11-21',
+    title: t(
+      'The subscription can be bought in the apps',
+      'Das Abo lässt sich in den Apps kaufen',
+      'L’abonnement s’achète dans les applications',
+      'La suscripción se puede comprar en las apps',
+      'Abonament można kupić w aplikacjach',
+    ),
+    items: [
+      {
+        kind: 'added',
+        text: t(
+          'On the iPhone and on Android the supporter subscription is now bought in the app, under Settings → Supporter or from the card on the Members tab. The purchase goes through the App Store or Google Play, at the same price, and the subscription still belongs to your account rather than to the phone: buy it on the phone and the website knows within seconds.',
+          'Auf dem iPhone und auf Android wird das Unterstützer-Abo jetzt in der App gekauft, unter Einstellungen → Unterstützer oder über die Karte im Mitglieder-Tab. Der Kauf läuft über den App Store beziehungsweise Google Play, zum selben Preis, und das Abo gehört weiterhin zum Konto und nicht zum Handy: kauf es am Handy, und die Webseite weiß es Sekunden später.',
+          'Sur iPhone et sur Android, l’abonnement Soutien s’achète désormais dans l’application, dans Réglages → Soutien ou depuis la carte de l’onglet Membres. L’achat passe par l’App Store ou Google Play, au même prix, et l’abonnement appartient toujours au compte et non au téléphone : achetez-le sur le téléphone et le site le sait quelques secondes plus tard.',
+          'En el iPhone y en Android la suscripción de colaborador ya se compra en la app, en Ajustes → Colaborador o desde la tarjeta de la pestaña Miembros. La compra pasa por la App Store o Google Play, al mismo precio, y la suscripción sigue perteneciendo a la cuenta y no al móvil: cómprala en el móvil y la web lo sabe segundos después.',
+          'Na iPhonie i Androidzie abonament wspierającego kupuje się teraz w aplikacji, w Ustawieniach → Wspierający albo z karty w zakładce Członkowie. Zakup przechodzi przez App Store lub Google Play, w tej samej cenie, a abonament nadal należy do konta, a nie do telefonu: kup go na telefonie, a serwis wie o tym kilka sekund później.',
+        ),
+      },
+      {
+        kind: 'added',
+        text: t(
+          '"Restore purchase", at the bottom of that page, brings back a subscription bought in a store after a new phone or a reinstall. You never need it for one bought on the website — that one follows the account anyway.',
+          '„Kauf wiederherstellen" unten auf derselben Seite holt ein im Store gekauftes Abo nach einem neuen Handy oder einer Neuinstallation zurück. Für ein auf der Webseite gekauftes brauchst du das nie — das folgt ohnehin dem Konto.',
+          '« Restaurer l’achat », en bas de cette page, récupère un abonnement acheté en magasin après un changement de téléphone ou une réinstallation. Pour un abonnement acheté sur le site, vous n’en avez jamais besoin : il suit le compte de toute façon.',
+          '«Restaurar la compra», al final de esa página, recupera una suscripción comprada en una tienda tras cambiar de móvil o reinstalar. Para una comprada en la web no lo necesitas nunca: esa sigue a la cuenta de todos modos.',
+          '„Przywróć zakup" na dole tej strony odzyskuje abonament kupiony w sklepie po zmianie telefonu lub ponownej instalacji. Dla kupionego w serwisie nigdy tego nie potrzebujesz — ten i tak idzie za kontem.',
+        ),
+      },
+      {
+        kind: 'changed',
+        text: t(
+          'The "become a supporter" button on the Members tab used to open a web page in a browser, and that page had stopped mentioning the subscription at all. It now opens the page in the app that actually sells it.',
+          'Der Knopf „Unterstützer werden" im Mitglieder-Tab öffnete eine Webseite im Browser, und diese Seite erwähnte das Abo längst nicht mehr. Er öffnet jetzt die Seite in der App, die es tatsächlich verkauft.',
+          'Le bouton « Devenir soutien » de l’onglet Membres ouvrait une page web dans un navigateur, page qui ne mentionnait plus l’abonnement du tout. Il ouvre désormais la page de l’application qui le vend réellement.',
+          'El botón «Hazte colaborador» de la pestaña Miembros abría una página web en el navegador, y esa página ya no mencionaba la suscripción. Ahora abre la página de la app que de verdad la vende.',
+          'Przycisk „Zostań wspierającym" w zakładce Członkowie otwierał stronę w przeglądarce, a ta strona już w ogóle nie wspominała o abonamencie. Teraz otwiera stronę w aplikacji, która go rzeczywiście sprzedaje.',
+        ),
+      },
+    ],
+  },
+  {
     date: '2026-11-20',
     title: t(
       'The price has a page, and the website stops asking for donations',
@@ -1154,16 +1196,16 @@ export const FEATURES: FeatureGroup[] = [
         'Alcanzar el límite nunca cierra lo que ya existe: nada se oculta, nada pasa a solo lectura, nada se borra.',
         'Osiągnięcie limitu nigdy nie zamyka tego, co już jest — nic nie znika, nic nie staje się tylko do odczytu, nic nie jest usuwane.',
       ),
-      // Said "bought on the website, on the iPhone or on Android" while neither app has a
-      // purchase route at all — no StoreKit, no Play Billing, and no Apple or Google endpoint
-      // on the server. The apps show this list in Settings, so it was telling people to look
-      // for a button that is not there (#533).
+      // This line was narrowed to "bought on the website" in #533, because neither app had a
+      // purchase route and the apps show this list in Settings — it was telling people to look
+      // for a button that was not there. Both apps sell it now (#17), so it says all three
+      // again. If a purchase route is ever removed from one of them, narrow this line with it.
       t(
-        'Bought on the website — it belongs to the account, not to a device, so it works on the website and in both apps at once.',
-        'Gekauft auf der Webseite — es hängt am Konto und nicht am Gerät, es gilt also auf der Webseite und in beiden Apps gleichzeitig.',
-        'Acheté sur le site — il appartient au compte et non à un appareil, il vaut donc sur le site et dans les deux applications à la fois.',
-        'Comprada en la web: pertenece a la cuenta y no a un dispositivo, así que vale a la vez en la web y en las dos apps.',
-        'Kupiony w serwisie — należy do konta, a nie do urządzenia, więc działa jednocześnie w serwisie i w obu aplikacjach.',
+        'Bought on the website, on the iPhone or on Android, whichever you have to hand. It belongs to the account and not to a device, so it works on all three at once — and "Restore purchase" in the apps brings back a store purchase after a new phone.',
+        'Gekauft auf der Webseite, auf dem iPhone oder auf Android, was gerade zur Hand ist. Es hängt am Konto und nicht am Gerät, gilt also auf allen dreien gleichzeitig — und „Kauf wiederherstellen" in den Apps holt einen Store-Kauf nach einem Gerätewechsel zurück.',
+        'Acheté sur le site, sur iPhone ou sur Android, au choix. Il appartient au compte et non à un appareil : il vaut donc sur les trois à la fois, et « Restaurer l’achat » dans les applications récupère un achat en magasin après un changement de téléphone.',
+        'Comprada en la web, en el iPhone o en Android, como prefieras. Pertenece a la cuenta y no a un dispositivo, así que vale en las tres a la vez, y «Restaurar la compra» en las apps recupera una compra de tienda tras cambiar de móvil.',
+        'Kupiony w serwisie, na iPhonie albo na Androidzie — jak wygodniej. Należy do konta, a nie do urządzenia, więc działa na wszystkich trzech jednocześnie, a „Przywróć zakup" w aplikacjach odzyskuje zakup ze sklepu po zmianie telefonu.',
       ),
     ],
   },

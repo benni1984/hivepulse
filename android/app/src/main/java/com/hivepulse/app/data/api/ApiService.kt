@@ -202,6 +202,12 @@ interface ApiService {
     @GET("subscriptions/me")
     suspend fun mySubscription(): SubscriptionOut
 
+    /** Asks the server to re-read this account from the provider now, instead of waiting for the
+     *  webhook. Called right after a purchase and after a restore, so the unlock is immediate
+     *  rather than webhook-fast -- the webhook stays the authority either way (#17). */
+    @POST("subscriptions/sync")
+    suspend fun syncSubscription(): SubscriptionOut
+
     @GET("apiaries/{id}/treatment-record")
     suspend fun treatmentRecord(@Path("id") id: String, @Query("year") year: Int): ResponseBody
 

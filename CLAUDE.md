@@ -79,10 +79,37 @@ the other in the same PR.
 - **Every "create" action is an amber button with a label at the bottom right** (Android
   `ExtendedFloatingActionButton`, iOS `.hpFloatingButton(...)`): new apiary, new hive, new inspection, new QR
   batch, new custom field. Never a plus in a toolbar.
-- **Settings order:** custom fields, profile (email, name, language), change password, reminders, region, export, admin,
+- **Settings order:** custom fields, **supporter**, profile (email, name, language), change password, reminders, region, export, admin,
   help, feedback and tour, diagnostics, log out, danger zone. **Feedback** goes to the Play Store page on
   Android (the only route whose answers reach the Play Console's testing feedback page) and to a mail with
-  the build in the subject on iPhone and web.
+  the build in the subject on iPhone and web. **Supporter** sits that high on purpose: a store
+  reviewer who cannot find the purchase rejects the build, and it is where somebody looks for what
+  they pay for.
+
+### Buying the subscription — in both apps, and nowhere else in them
+
+Both apps sell the supporter subscription through the RevenueCat SDK, which buys through StoreKit 2
+and Play Billing. The paywall is reached from **Settings → Supporter** and from the Members gate,
+and those are the only two ways in; the gate used to open `/contribute` in a browser, which is both
+the fastest store rejection there is and, since that page stopped asking for money, a dead end
+(#535).
+
+- **The server decides, always.** RevenueCat verifies the receipt and tells the backend by webhook;
+  `is_supporter` is derived from the `subscriptions` table. The apps take money and then call
+  `POST /subscriptions/sync` so the unlock does not wait for the webhook. No client ever verifies a
+  purchase, and no new endpoint was needed for any of this.
+- **The five things both apps must do** are listed in `docs/api-contract.md` under "What the apps
+  implement": bind `logIn(user.id)` before offering anything, one entitlement and one offering,
+  restore reachable without buying, sync after a purchase and a restore, and managing the
+  subscription leaves the app. A difference here is a difference a reviewer sees.
+- **Without a key neither app sells, and both say so** — the public SDK key is a build value from a
+  secret (`REVENUECAT_PUBLIC_KEY_IOS` / `REVENUECAT_PUBLIC_KEY_ANDROID`), the way the Sentry DSN is.
+  This repository is public, so it is not written down in it.
+- **Android stays on `purchases:10.30.5`**, the last release built against Kotlin 2.0.21. 11.x is
+  built against 2.2.21 and would not link, the same way `googleid` 1.2.x does not; moving to it is a
+  Kotlin upgrade first.
+- Nothing outside `PurchaseService.swift` / `PurchaseGateway.kt` imports RevenueCat, so the screens
+  and their tests see our own `SupporterOffer` and `PurchaseOutcome` and run without a store.
 
 ### The admin area is a desktop place — decided, not a gap
 

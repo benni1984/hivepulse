@@ -19,6 +19,7 @@ import com.hivepulse.app.ui.onboarding.GuidedTourScreen
 import com.hivepulse.app.ui.settings.SettingsScreen
 import com.hivepulse.app.ui.stats.HiveStatsScreen
 import com.hivepulse.app.ui.stats.OverviewStatsScreen
+import com.hivepulse.app.ui.supporter.SupporterScreen
 import javax.inject.Inject
 
 object Routes {
@@ -46,6 +47,7 @@ object Routes {
     const val ADMIN_HEALTH       = "admin_health"
     const val HORNET_HOME        = "hornet_home"
     const val MEMBERS            = "members"
+    const val SUPPORTER          = "supporter"
     const val FIELD_DEFINITIONS  = "field_definitions?apiaryId={apiaryId}"
     const val SHARING            = "sharing/{type}/{id}"
     const val MOVE_HIVES         = "move_hives/{apiaryId}?hiveId={hiveId}"
@@ -255,6 +257,7 @@ fun HivePulseNavGraph(
                 onBack       = { navController.popBackStack() },
                 onAdminClick = { navController.navigate(Routes.ADMIN) },
                 onCustomFieldsClick = { navController.navigate("field_definitions?apiaryId=") },
+                onSupporterClick = { navController.navigate(Routes.SUPPORTER) },
                 onGuidedTourClick = { navController.navigate("guided_tour?fromSettings=true") }
             )
         }
@@ -283,7 +286,10 @@ fun HivePulseNavGraph(
             HornetHomeScreen()
         }
         composable(Routes.MEMBERS) {
-            MembersScreen()
+            MembersScreen(onBecomeSupporter = { navController.navigate(Routes.SUPPORTER) })
+        }
+        composable(Routes.SUPPORTER) {
+            SupporterScreen(onBack = { navController.popBackStack() })
         }
         composable(Routes.GUIDED_TOUR,
             arguments = listOf(navArgument("fromSettings") { type = NavType.BoolType; defaultValue = false })) { back ->

@@ -107,6 +107,10 @@ You can write test files on any OS and let CI run them — no local macOS needed
 | `-mockSessionExpired` | Tokens the server has forgotten: every call 401s, including the refresh. The app must land on Login (`SessionExpiryUITests`) |
 | `-mockServer` | Mock only, no token — starts at Login, auth calls return real-looking responses |
 | `-mockCameraPreview` | Replaces the Scan tab's live camera with a flat colour, so the viewfinder and the instruction over it can be reached in the simulator (`DataScannerViewController` is unsupported there) |
+| `-mockStoreOffers` | Replaces the store with `MockPurchaseService`, so the paywall shows a price. A simulator has no store account, so the real one can only ever reach "cannot be bought here" |
+| `-mockStoreCancels` | With the above: the next purchase comes back cancelled — a dismissed sheet must show no error |
+| `-mockStoreEmpty` | With the above: a configured store with no products, which is what a deployment looks like before the console work is finished |
+| `-mockStoreHasPurchase` | With the above: a restore finds a subscription |
 
 `-resetKeychain` can be combined with the mock arguments — the keychain is cleared first, then the mock token is set (most UI tests do this).
 
@@ -126,7 +130,7 @@ Most-specific URL patterns must come first:
 
 ## Unit Tests (HivePulseTests/)
 
-AuthViewModelTests, YearRibbonTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, QRBatchDetailViewModelTests, OverviewStatsViewModelTests, ForgotPasswordViewModelTests, GuidedTourTests, CommunityHeatmapTests, FieldDefinitionsViewModelTests, HornetIconTests, AppBundleTests, ThemeTests, DTOTests, APIClientTests — all passing in CI.
+AuthViewModelTests, YearRibbonTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, QRBatchDetailViewModelTests, OverviewStatsViewModelTests, ForgotPasswordViewModelTests, GuidedTourTests, CommunityHeatmapTests, FieldDefinitionsViewModelTests, SupporterViewModelTests, HornetIconTests, AppBundleTests, ThemeTests, DTOTests, APIClientTests — all passing in CI.
 
 ## UI Tests (HivePulseUITests/)
 

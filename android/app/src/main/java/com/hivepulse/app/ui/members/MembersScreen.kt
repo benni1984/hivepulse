@@ -1,7 +1,5 @@
 package com.hivepulse.app.ui.members
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -12,7 +10,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,8 +27,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-private const val SUPPORTER_INFO_URL = "https://hivepulse.multihead.de/contribute"
 
 // ─── State ───────────────────────────────────────────────────────────────────
 
@@ -81,6 +76,12 @@ class MembersViewModel @Inject constructor(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MembersScreen(
+    /**
+     * Into the app's own paywall. This gate used to open `/contribute` in a browser, which is both
+     * the fastest store rejection there is -- an external purchase route -- and, since that page
+     * stopped asking for money, a dead end (#535).
+     */
+    onBecomeSupporter: () -> Unit = {},
     viewModel: MembersViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -141,7 +142,7 @@ fun MembersScreen(
                         onOverlayChange = viewModel::selectOverlay
                     )
                 } else {
-                    SupporterGateCard()
+                    SupporterGateCard(onBecomeSupporter)
                 }
             }
         }
@@ -195,8 +196,7 @@ private fun StatCard(value: String, labelRes: Int) {
 }
 
 @Composable
-private fun SupporterGateCard() {
-    val context = LocalContext.current
+private fun SupporterGateCard(onBecomeSupporter: () -> Unit) {
     Surface(
         shape = MaterialTheme.shapes.medium,
         color = MaterialTheme.colorScheme.surfaceVariant,
@@ -224,11 +224,7 @@ private fun SupporterGateCard() {
                 textAlign = TextAlign.Center
             )
             Spacer(Modifier.height(4.dp))
-            Button(onClick = {
-                context.startActivity(
-                    Intent(Intent.ACTION_VIEW, Uri.parse(SUPPORTER_INFO_URL))
-                )
-            }) {
+            Button(onClick = onBecomeSupporter) {
                 Text(stringResource(R.string.members_become_supporter))
             }
         }
