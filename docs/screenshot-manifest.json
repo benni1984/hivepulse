@@ -125,7 +125,7 @@
       "app/[locale]/apiary/page.tsx": "576850ea1ca11f28f2a4c8a940634d57970bb44cf2230acacc9718f8639e5803",
       "app/[locale]/beta/page.tsx": "a0ab1c7d5cc3a6847eadb228cadc1b45cb217c5ec01fb480c48d184faa4b483d",
       "app/[locale]/contribute/page.tsx": "375917a710102e64cce1a8cd5f547199861c112a1477e40f3b4b3948e137f727",
-      "app/[locale]/dashboard/admin/health/page.tsx": "04d4bf0a6a9002cc7ce17a4e7a85a5e38dcb4ca28bfba817981f5ea92ede2f5e",
+      "app/[locale]/dashboard/admin/health/page.tsx": "04c78e93cf9651c55e6698f23272a19c7941726b2d55939eacb502b53d19e24c",
       "app/[locale]/dashboard/admin/map/page.tsx": "adcfb2fcc130614dc742961205519d53e4df5abbf43977ad7771a0528fddd22f",
       "app/[locale]/dashboard/admin/page.tsx": "f2252b6781b1c5f6f7aa0865f5919d348bee54679d0136b9e7fb2bb4bd8c9dd6",
       "app/[locale]/dashboard/admin/users/page.tsx": "e0712e6eed2e5148f204dd187bc9c570ac3cd04ae6700b56da8af7376d4db633",
@@ -303,14 +303,14 @@
       "components/YearFeedback.tsx": "05eeae99b14d2958f7afeff714d6e9310cb4ae3ebc856a69666f4885098954ac",
       "components/year/EntryIcon.tsx": "7e17a999327766f0e2856a82172d09acc0b8a7be846cf17e97a8f12d9a24e718",
       "components/year/YearRibbon.tsx": "8cfe689c9ee82eeaef0a3876d598597aa3a64b7ea1063dbeab1f50b485dc7584",
-      "messages/de.json": "1767c94730d73af8d2287a84a84d7b29b3c2eee9f9ff82269ab87c7ba99ae6c7",
-      "messages/en.json": "5b48f772dd6975c5d285eb440bc4a9ff40e7f9512f8dee4740ef07f7e03764c6",
-      "messages/es.json": "2974acde45c736472a079899f2d69c7672f32c86292ed2c39567f4eebadc6fea",
-      "messages/fr.json": "cac5e21dedd995b9dad72bf9eeb80776c91501093d9f0910038bd399661741b9",
-      "messages/pl.json": "d4bf0e9f22731e389efb593aebb7e6f5dcecd9247a0dfcd9d946de8e26145ed1",
+      "messages/de.json": "abb357e6400ba26fe358f7c972b6fb93e5b84c0adc0ebd932ee6458392a69d3d",
+      "messages/en.json": "f5a297af1d6b8cd32e1dfb662e4efb2bdf9838b184a1c1b11b9247d37183d883",
+      "messages/es.json": "6ea05e9333955c8ad7682bbc15a61ef34db90241c2efe3e47b6eb4c435a45a34",
+      "messages/fr.json": "6d0574cf760c886e5acf9febf3e22bbcf4780bf5c24f2fc171142708dca401af",
+      "messages/pl.json": "971503bd6240472656501c547c9aeddc551c539f12f8883d1a2ec9f4ab22168b",
       "web/landing.css": "751f5693db853b2497788e9ea09d0adce75d94165d1880f93e67f05cb616223d",
       "web/style.css": "7291ccc8a75041556e935475f2eb4c08a757b6c35c8257cbb0a30cd665f307f2"
     },
-    "fingerprint": "90f582234b7d6657d8c68ffe7696491b50ace5753f4acf4a8a088db985e6add2"
+    "fingerprint": "aa2b74bb41662574dae0495b4fd157205d93659ff1f21126fdd503dc04569c90"
   }
 }
