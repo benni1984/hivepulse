@@ -482,6 +482,11 @@
       "calendar": "Año apícola",
       "subscription": "Suscripción"
     },
+    "feedback": {
+      "title": "¿Cómo va?",
+      "body": "Llevas unos días con HivePulse. Si algo estorba o falta, dilo: se lee cada mensaje, y de ahí sale la siguiente versión.",
+      "dismiss": "No, gracias"
+    },
     "overview": {
       "title": "Mis estadísticas",
       "period": "Período",

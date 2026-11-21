@@ -109,6 +109,9 @@
 "action.help" = "Hilfe & Dokumentation";
 "action.feedback" = "Rückmeldung geben";
 "action.feedbackSubject" = "HivePulse Rückmeldung";
+"feedback.askTitle" = "Wie läuft es?";
+"feedback.askBody" = "Du imkerst jetzt ein paar Tage mit HivePulse. Wenn etwas im Weg steht oder fehlt, sag es — jede Nachricht wird gelesen, und daraus entsteht die nächste Version.";
+"feedback.askDismiss" = "Nein danke";
 "action.newBatch" = "Neuer QR-Batch";
 "action.generate" = "Erstellen";
 "action.downloadPDF" = "PDF drucken";

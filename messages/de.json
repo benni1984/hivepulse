@@ -482,6 +482,11 @@
       "calendar": "Imkerjahr",
       "subscription": "Abo"
     },
+    "feedback": {
+      "title": "Wie läuft es?",
+      "body": "Du imkerst jetzt ein paar Tage mit HivePulse. Wenn etwas im Weg steht oder fehlt, sag es — jede Nachricht wird gelesen, und daraus entsteht die nächste Version.",
+      "dismiss": "Nein danke"
+    },
     "overview": {
       "title": "Meine Statistiken",
       "period": "Zeitraum",

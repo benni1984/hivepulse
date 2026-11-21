@@ -109,6 +109,9 @@
 "action.help" = "Aide & documentation";
 "action.feedback" = "Envoyer un retour";
 "action.feedbackSubject" = "Retour HivePulse";
+"feedback.askTitle" = "Comment ça se passe ?";
+"feedback.askBody" = "Vous utilisez HivePulse depuis quelques jours. Si quelque chose gêne ou manque, dites-le — chaque message est lu, et c’est de là que vient la version suivante.";
+"feedback.askDismiss" = "Non merci";
 "action.newBatch" = "Nouveau lot";
 "action.generate" = "Générer";
 "action.downloadPDF" = "Imprimer PDF";

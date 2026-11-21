@@ -482,6 +482,11 @@
       "calendar": "Année apicole",
       "subscription": "Abonnement"
     },
+    "feedback": {
+      "title": "Comment ça se passe ?",
+      "body": "Vous utilisez HivePulse depuis quelques jours. Si quelque chose gêne ou manque, dites-le — chaque message est lu, et c’est de là que vient la version suivante.",
+      "dismiss": "Non merci"
+    },
     "overview": {
       "title": "Mes statistiques",
       "period": "Période",

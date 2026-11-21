@@ -104,6 +104,7 @@ You can write test files on any OS and let CI run them — no local macOS needed
 | `-mockAuthenticatedSupporter` | Authenticated supporter; Members shows the community heatmap with two mock cells |
 | `-mockQrBatch` | Authenticated + one QR batch (`b-1`) whose PDF can be downloaded |
 | `-guidedTourSeen YES` / `NO` | Overrides the "guided tour already shown" flag for this launch (UserDefaults argument domain) |
+| `-mockFeedbackDue` | Brings the feedback card forward (#546). Three days cannot be waited out in a simulator, and a date written into the UserDefaults argument domain never reached the app. It also clears the “already asked” flag at launch, because UserDefaults outlive a test and the order the class ran in would otherwise decide whether a card was there |
 | `-mockSessionExpired` | Tokens the server has forgotten: every call 401s, including the refresh. The app must land on Login (`SessionExpiryUITests`) |
 | `-mockServer` | Mock only, no token — starts at Login, auth calls return real-looking responses |
 | `-mockCameraPreview` | Replaces the Scan tab's live camera with a flat colour, so the viewfinder and the instruction over it can be reached in the simulator (`DataScannerViewController` is unsupported there) |
@@ -130,11 +131,11 @@ Most-specific URL patterns must come first:
 
 ## Unit Tests (HivePulseTests/)
 
-AuthViewModelTests, YearRibbonTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, QRBatchDetailViewModelTests, OverviewStatsViewModelTests, ForgotPasswordViewModelTests, GuidedTourTests, CommunityHeatmapTests, FieldDefinitionsViewModelTests, SupporterViewModelTests, HornetIconTests, AppBundleTests, ThemeTests, DTOTests, APIClientTests — all passing in CI.
+AuthViewModelTests, YearRibbonTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, QRBatchDetailViewModelTests, OverviewStatsViewModelTests, ForgotPasswordViewModelTests, GuidedTourTests, CommunityHeatmapTests, FieldDefinitionsViewModelTests, SupporterViewModelTests, FeedbackPromptTests, HornetIconTests, AppBundleTests, ThemeTests, DTOTests, APIClientTests — all passing in CI.
 
 ## UI Tests (HivePulseUITests/)
 
-LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests, QRBatchDetailUITests, QRScanUITests, OverviewStatsUITests, ForgotPasswordUITests, GuidedTourUITests, FieldDefinitionsUITests, HornetUITests, MembersUITests, SupporterUITests, YearRibbonUITests, ScreenshotUITests — all passing in CI.
+LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests, QRBatchDetailUITests, QRScanUITests, OverviewStatsUITests, ForgotPasswordUITests, GuidedTourUITests, FieldDefinitionsUITests, HornetUITests, MembersUITests, SupporterUITests, FeedbackPromptUITests, YearRibbonUITests, ScreenshotUITests — all passing in CI.
 
 Screens: Login, Register, ApiaryList, ApiaryDetail, ApiaryForm, HiveDetail, HiveInitialize, HiveQR, InspectionForm, InspectionDetail, QRScanner, QRBatchList, QRBatchDetail, HiveStats, OverviewStats, ForgotPassword, GuidedTour, Members (community heatmap), FieldDefinitions (user scope from Settings, apiary scope from the apiary toolbar), Supporter (the paywall, from Settings and from the Members gate), Settings.
 
