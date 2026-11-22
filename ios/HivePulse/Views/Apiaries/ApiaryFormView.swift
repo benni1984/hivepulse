@@ -132,27 +132,4 @@ struct ApiaryFormView: View {
     }
 }
 
-// Minimal one-shot location helper
-final class OneTimeLocator: NSObject, CLLocationManagerDelegate {
-    private let manager = CLLocationManager()
-    private var continuation: CheckedContinuation<CLLocation?, Never>?
-
-    func locate() async -> CLLocation? {
-        await withCheckedContinuation { cont in
-            continuation = cont
-            manager.delegate = self
-            manager.requestWhenInUseAuthorization()
-            manager.requestLocation()
-        }
-    }
-
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        continuation?.resume(returning: locations.first)
-        continuation = nil
-    }
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        continuation?.resume(returning: nil)
-        continuation = nil
-    }
-}
+// `OneTimeLocator` lives in Services/ since the hornet map needed it too (#555).
