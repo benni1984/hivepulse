@@ -398,6 +398,15 @@ def install_in_language():
                     print(f"  login screen after {time.time() - started:.0f}s "
                           f"(attempt {attempt})", flush=True)
                 return
+            # What this loop actually kept waiting behind (#551): the emulator's launcher hangs
+            # under load and its "isn't responding" dialog covers the screen. Our app is resumed
+            # and healthy underneath it. Dismiss it and give the time back -- the dialog ate it,
+            # not the app, so it must not count against the attempt.
+            dismissed = A.dismiss_blocking_system_dialog(dump)
+            if dismissed:
+                print(f"  dismissed a system dialog: {dismissed!r}", flush=True)
+                deadline = max(deadline, time.time() + 60)
+                continue
             time.sleep(2)
         print(f"  no login screen {time.time() - started:.0f}s after the first launch "
               f"— starting the app again", flush=True)
