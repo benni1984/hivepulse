@@ -19,7 +19,7 @@ struct ApiaryListView: View {
     private var redeemInvitationButton: some View {
         Button { showRedeem = true } label: {
             Text(NSLocalizedString("invitation.redeemTitle", comment: ""))
-                .font(.dmSans(15, weight: .semibold, relativeTo: .subheadline))
+                .font(.dmSans(15, weight: .medium, relativeTo: .subheadline))
                 .foregroundColor(.hpAmberDark)
                 // A tap target, not a line of prose: this used to be a footnote wedged into a
                 // few points between the floating button and the tab bar (#553).
