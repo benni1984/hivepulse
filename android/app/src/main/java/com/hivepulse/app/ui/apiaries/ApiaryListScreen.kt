@@ -30,6 +30,7 @@ import com.hivepulse.app.ui.feedback.FeedbackPromptCard
 import com.hivepulse.app.ui.feedback.FeedbackPromptViewModel
 import com.hivepulse.app.ui.common.LoadingScreen
 import com.hivepulse.app.ui.theme.Amber500
+import com.hivepulse.app.ui.theme.Amber600
 import com.hivepulse.app.ui.theme.Stone200
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,7 +85,7 @@ fun ApiaryListScreen(
             )
         }
     ) { padding ->
-        Box(Modifier.padding(padding)) {
+        Box(Modifier.padding(padding).fillMaxSize()) {
             when {
                 state.isLoading && state.apiaries.isEmpty() -> LoadingScreen()
                 state.apiaries.isEmpty() && invitations.invitations.isEmpty() -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -96,7 +97,6 @@ fun ApiaryListScreen(
                         Icon(Icons.Default.Hive, contentDescription = null, Modifier.size(48.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         Text(stringResource(R.string.empty_apiaries_title), style = MaterialTheme.typography.titleMedium)
                         Text(stringResource(R.string.action_new_apiary), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        RedeemInvitationLink { showRedeem = true }
                         // Here too, and not only over a full list: somebody who has kept the app
                         // for three days without naming a single colony is exactly the person
                         // worth asking why (#546).
@@ -134,9 +134,17 @@ fun ApiaryListScreen(
                     items(state.apiaries) { apiary ->
                         ApiaryCard(apiary, onClick = { onApiaryClick(apiary.id) }, onDelete = { vm.delete(apiary.id) })
                     }
-                    item { RedeemInvitationLink { showRedeem = true } }
                 }
             }
+            // The other way an apiary gets into this list, on the same line as the first one
+            // (#553). It was the last item of the LazyColumn before: a beekeeper with twelve
+            // apiaries scrolled past all twelve to reach a rare recovery action, and arrived
+            // between the floating button and the bottom bar. Here it needs no scrolling, and
+            // the two controls divide the bottom line instead of stacking in it.
+            RedeemInvitationLink(
+                onClick = { showRedeem = true },
+                modifier = Modifier.align(Alignment.BottomStart).padding(horizontal = 8.dp, vertical = 12.dp),
+            )
         }
     }
 
@@ -185,9 +193,13 @@ fun ApiaryListScreen(
  * address that had no account and who signed up with a password; the website takes the link by itself.
  */
 @Composable
-private fun RedeemInvitationLink(onClick: () -> Unit) {
-    TextButton(onClick = onClick, modifier = Modifier.testTag("redeemInvitationButton")) {
-        Text(stringResource(R.string.invitation_redeem_title))
+private fun RedeemInvitationLink(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    TextButton(onClick = onClick, modifier = modifier.testTag("redeemInvitationButton")) {
+        Text(
+            stringResource(R.string.invitation_redeem_title),
+            color = Amber600,
+            style = MaterialTheme.typography.labelLarge,
+        )
     }
 }
 

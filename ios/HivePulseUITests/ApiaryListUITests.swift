@@ -29,7 +29,7 @@ final class ApiaryListUITests: XCTestCase {
         XCTAssertFalse(app.navigationBars.buttons["Add"].exists, "no plus in the toolbar any more")
     }
 
-    func test_apiaryList_redeemsAnInvitationLinkFromTheFooterNotTheToolbar() {
+    func test_apiaryList_redeemsAnInvitationLinkFromTheBottomLineNotTheToolbar() {
         launch(with: "-mockAuthenticated")
         XCTAssertTrue(app.navigationBars["Apiaries"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.navigationBars.buttons["redeemInvitationButton"].exists, "no envelope in the toolbar any more")
@@ -38,6 +38,31 @@ final class ApiaryListUITests: XCTestCase {
         button.tap()
         XCTAssertTrue(app.alerts.firstMatch.waitForExistence(timeout: 5))
         XCTAssertTrue(app.alerts.textFields.firstMatch.exists)
+    }
+
+    func test_apiaryList_theTwoWaysInDoNotSitOnTopOfEachOther() {
+        // #553: the link was the last row of the list and landed in the few points between the
+        // floating button and the tab bar. They share the bottom line now, so their frames must
+        // not meet — the assertion a screenshot would have made.
+        launch(with: "-mockApiaryWithHive")
+        XCTAssertTrue(app.navigationBars["Apiaries"].waitForExistence(timeout: 5))
+
+        let redeem = app.buttons["redeemInvitationButton"]
+        let create = app.buttons["newApiaryButton"]
+        XCTAssertTrue(redeem.waitForExistence(timeout: 5))
+        XCTAssertTrue(create.exists)
+
+        XCTAssertFalse(redeem.frame.intersects(create.frame),
+                       "redeem \(redeem.frame) overlaps create \(create.frame)")
+        XCTAssertTrue(redeem.isHittable, "a control nobody can tap is not a control")
+    }
+
+    func test_apiaryList_theLinkIsThereWithoutScrollingThroughEveryApiary() {
+        // The half of #553 that padding would not have fixed: it was the last row of the list.
+        launch(with: "-mockApiaryWithHive")
+        XCTAssertTrue(app.staticTexts["Meadow"].waitForExistence(timeout: 5))
+
+        XCTAssertTrue(app.buttons["redeemInvitationButton"].isHittable)
     }
 
     // MARK: - With data
