@@ -83,13 +83,35 @@ of the product, not of the app, which is a confusing place to lose a day.
 > page. Submitting the app without attaching it leaves the product in "Waiting for Review"
 > for ever, and the app ships unable to sell.
 
+### RevenueCat needs an App Store app of its own
+
+**This does not exist yet.** RevenueCat's *Apps* page for the project is empty apart from the
+Test Store; the Paddle configuration lives under *Web* and is a different thing entirely. Until
+an App Store configuration is created there, nothing on the iPhone can sell: there is no public
+SDK key to put in `REVENUECAT_PUBLIC_KEY_IOS`, and a build without it ships saying the
+subscription cannot be bought here.
+
+**RevenueCat → Project → Apps → New app configuration → App Store**, bundle ID
+`com.hivepulse.app`. Then, on that configuration:
+
+1. Paste the **In-App Purchase key** (next section) so RevenueCat can verify receipts.
+2. Copy its **public SDK key** into the GitHub secret `REVENUECAT_PUBLIC_KEY_IOS`. The
+   TestFlight workflow passes it to the build as `REVENUECAT_PUBLIC_KEY`; it is public by
+   design and still does not belong in this repository, which is.
+3. **Import the product.** `supporter_yearly` already exists in RevenueCat — as the *Paddle*
+   product. The App Store one is a separate product that is imported from App Store Connect
+   after the subscription there is created, and it has to be attached to the **same**
+   `supporter` entitlement and added as a package to the **same** `default` offering. Two
+   products, one entitlement, one offering: that is what lets somebody buy on the website and
+   be a supporter on the iPhone.
+
 ### Server notifications and the key RevenueCat needs
 
 * **App Store Connect → your app → App Information → App Store Server Notifications.** Set the
-  production and sandbox URLs to the ones RevenueCat shows under its iOS app configuration.
-  Without them a cancellation or a refund never reaches us.
+  production and sandbox URLs to the ones RevenueCat shows under its App Store app
+  configuration. Without them a cancellation or a refund never reaches us.
 * **Users and Access → Integrations → In-App Purchase** → create a key, download the `.p8`
-  once, and paste it into RevenueCat's iOS app. This is what lets RevenueCat verify a receipt
+  once, and paste it into RevenueCat's App Store app configuration. This is what lets RevenueCat verify a receipt
   and refresh a subscription. It is a different key from the App Store Connect API key the
   TestFlight workflow uses, and it is **not** stored in this repository.
 * **Sandbox tester:** Users and Access → Sandbox → Testers. A sandbox purchase needs an Apple ID
