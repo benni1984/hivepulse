@@ -82,8 +82,15 @@ def get_ui_dump(retries=6):
 def wait_for(text, timeout=25):
     deadline = time.time() + timeout
     while time.time() < deadline:
-        if text in get_ui_dump():
+        dump = get_ui_dump()
+        if text in dump:
             return
+        # The same launcher ANR that stalls the store captures can land here (#551); this
+        # screen is reached through the same cold first launch.
+        dismissed = dismiss_blocking_system_dialog(dump)
+        if dismissed:
+            print(f"  dismissed a system dialog: {dismissed!r}", flush=True)
+            deadline = max(deadline, time.time() + timeout)
         time.sleep(1)
     raise TimeoutError(f"Timed out waiting for: {text!r}")
 
@@ -110,6 +117,51 @@ def tap_node(dump, *, text=None, content_desc=None):
             return
     label = text or content_desc
     raise RuntimeError(f"Node not found: {label!r}")
+
+
+# Dialogs the system puts in front of everything (#551). They are in the *device's* language,
+# which these scripts never change -- the per-app locale is set with `set-app-locales`, so the
+# emulator's own UI stays English however many languages we photograph.
+SYSTEM_DIALOG_MARKERS = ("isn't responding", "keeps stopping", "has stopped", "Not Responding")
+# In the order we would choose them. "Wait" leaves the hung process alone, which is what we want
+# when the hung process is the launcher and not us; "Close app" is the fallback the ANR dialog
+# offers when there is no Wait.
+SYSTEM_DIALOG_BUTTONS = ("Wait", "Close app", "Close", "OK", "Got it")
+
+
+def dismiss_blocking_system_dialog(dump):
+    """Tap away an ANR or crash dialog sitting over the app. Returns its text, or None.
+
+    This is what the Play screenshot runs kept waiting behind (#551). The diagnostics from #543
+    caught it in the act: our own activity was resumed the whole time and the logcat had no
+    fatal line, while `mFocusedWindow` was
+    `Application Not Responding: com.google.android.apps.nexuslauncher` and the dump held
+    "Pixel Launcher isn't responding" with a Wait button. Three `am start`s cannot help with
+    that, because the app was never the problem -- the hosted runner was slow enough to hang its
+    own launcher, and the dialog does not go away by itself.
+
+    Deliberately narrow: it only fires on a dialog that says something is not responding, and it
+    only taps a button whose label is one of a handful. A helper that dismissed anything it
+    found would quietly tap through a real failure and leave a screenshot of the wrong screen.
+    """
+    root = ET.fromstring(dump)
+    texts = [node.get("text", "") for node in root.iter("node")]
+    message = next((t for t in texts if any(m in t for m in SYSTEM_DIALOG_MARKERS)), None)
+    if message is None:
+        return None
+
+    for label in SYSTEM_DIALOG_BUTTONS:
+        for node in root.iter("node"):
+            if node.get("text") != label or node.get("clickable") != "true":
+                continue
+            b = _bounds(node)
+            if b:
+                tap((b[0] + b[2]) // 2, (b[1] + b[3]) // 2)
+                return message
+    # A dialog with no button we recognise: back usually closes it, and saying the message is
+    # still better than silence.
+    keyevent("KEYCODE_BACK")
+    return message
 
 
 def node_enabled(dump, text):
