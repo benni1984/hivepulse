@@ -105,7 +105,15 @@ PRIVATE BY DEFAULT
 Your apiaries are private. If you choose to put one on the public map, it shows at city level, never at your exact coordinates — the point is to show beekeeping activity, not where the hives are. You can switch it off again at any time.
 
 NO ADS, NO DATA SALE
-No advertising, no tracking for advertising, and nothing about you is sold or passed on. The project is open source. If you would like to support it there is a way to, and nothing in the app is locked behind it.
+No advertising, no tracking for advertising, and nothing about you is sold or passed on. The project is open source.
+
+FREE FOR UP TO TEN COLONIES
+Everything above is free for up to ten colonies. The Asian hornet tracker, the beekeeping year, QR codes, offline inspections and the export of your own data stay free however many you keep.
+
+HivePulse Supporter lifts the limit and adds your own fields, inviting somebody to an apiary or a single hive, the whole statistics history instead of the last year, the treatment record, and the regional health map. 19.99 EUR a year, renewing until you cancel. Bought in the app it is managed and cancelled in your store account; bought on the website, on the subscription page. Reaching the limit never takes anything away: nothing you have recorded is hidden or deleted, with or without a subscription.
+
+Terms of use: https://hivepulse.multihead.de/terms
+Privacy policy: https://hivepulse.multihead.de/privacy
 
 Bees do not read release notes. The app tries to stay out of the way while you work.
 ```
@@ -133,7 +141,15 @@ STANDARDMÄSSIG PRIVAT
 Deine Bienenstände sind privat. Wenn du einen auf die öffentliche Karte stellst, erscheint er auf Stadtebene und nie an deinen genauen Koordinaten — es geht darum, Imkerei sichtbar zu machen, nicht die Standorte. Abschalten kannst du es jederzeit wieder.
 
 KEINE WERBUNG, KEIN DATENVERKAUF
-Keine Werbung, keine Verfolgung für Werbung, und nichts über dich wird verkauft oder weitergegeben. Das Projekt ist Open Source. Wer es unterstützen möchte, kann das — und keine Funktion der App hängt davon ab.
+Keine Werbung, keine Verfolgung für Werbung, und nichts über dich wird verkauft oder weitergegeben. Das Projekt ist Open Source.
+
+BIS ZEHN VÖLKER KOSTENLOS
+Alles oben Genannte ist bis zehn Völker kostenlos. Der Hornissen-Tracker, das Imkerjahr, die QR-Codes, Kontrollen ohne Netz und der Export deiner eigenen Daten bleiben kostenlos, egal wie viele Völker du führst.
+
+HivePulse Supporter hebt die Grenze auf und bringt dazu eigene Felder, das Einladen anderer zu einem Bienenstand oder einem einzelnen Volk, die ganze Statistik-Historie statt nur des letzten Jahres, das Bestandsbuch und die regionale Gesundheitskarte. 19,99 € im Jahr, läuft bis zur Kündigung weiter. In der App gekauft, wird es im Store-Konto verwaltet und gekündigt; auf der Webseite gekauft, auf der Abo-Seite. Die Grenze nimmt nie etwas weg: nichts, was du erfasst hast, wird versteckt oder gelöscht — mit Abo wie ohne.
+
+Nutzungsbedingungen: https://hivepulse.multihead.de/de/terms
+Datenschutzerklärung: https://hivepulse.multihead.de/de/privacy
 
 Bienen lesen keine Versionshinweise. Die App versucht, dir bei der Arbeit nicht im Weg zu stehen.
 ```
@@ -161,7 +177,15 @@ PRIVÉ PAR DÉFAUT
 Vos ruchers sont privés. Si vous en placez un sur la carte publique, il apparaît à l'échelle de la commune et jamais à vos coordonnées exactes — le but est de montrer l'activité apicole, pas les emplacements. Vous pouvez le désactiver à tout moment.
 
 NI PUBLICITÉ NI VENTE DE DONNÉES
-Aucune publicité, aucun pistage publicitaire, et rien de vous n'est vendu ni transmis. Le projet est open source. Qui veut le soutenir peut le faire, et aucune fonction n'en dépend.
+Aucune publicité, aucun pistage publicitaire, et rien de vous n'est vendu ni transmis. Le projet est open source.
+
+GRATUIT JUSQU'À DIX RUCHES
+Tout ce qui précède est gratuit jusqu'à dix ruches. Le suivi du frelon asiatique, l'année apicole, les QR codes, les visites hors ligne et l'export de vos données restent gratuits quel que soit votre cheptel.
+
+HivePulse Supporter lève la limite et ajoute vos propres champs, l'invitation d'une personne sur un rucher ou une seule ruche, tout l'historique des statistiques au lieu de la dernière année, le registre des traitements et la carte sanitaire régionale. 19,99 € par an, reconduit jusqu'à résiliation. Acheté dans l'application, il se gère et se résilie depuis votre compte du magasin ; acheté sur le site, depuis la page d'abonnement. Atteindre la limite ne retire jamais rien : rien de ce que vous avez enregistré n'est masqué ni supprimé, avec ou sans abonnement.
+
+Conditions d'utilisation : https://hivepulse.multihead.de/fr/terms
+Politique de confidentialité : https://hivepulse.multihead.de/fr/privacy
 
 Les abeilles ne lisent pas les notes de version. L'application essaie de ne pas vous gêner pendant le travail.
 ```
@@ -189,7 +213,15 @@ PRIVADO POR DEFECTO
 Tus colmenares son privados. Si colocas uno en el mapa público, aparece a escala de municipio y nunca en tus coordenadas exactas: la idea es mostrar la actividad apícola, no las ubicaciones. Puedes desactivarlo cuando quieras.
 
 SIN ANUNCIOS NI VENTA DE DATOS
-Sin publicidad, sin rastreo publicitario, y nada sobre ti se vende ni se cede. El proyecto es de código abierto. Quien quiera apoyarlo puede hacerlo, y ninguna función depende de eso.
+Sin publicidad, sin rastreo publicitario, y nada sobre ti se vende ni se cede. El proyecto es de código abierto.
+
+GRATIS HASTA DIEZ COLMENAS
+Todo lo anterior es gratis hasta diez colmenas. El rastreador de avispa asiática, el año apícola, los códigos QR, las revisiones sin red y la exportación de tus datos siguen siendo gratis tengas las que tengas.
+
+HivePulse Supporter quita el límite y añade tus propios campos, invitar a alguien a un colmenar o a una sola colmena, todo el historial de estadísticas en lugar del último año, el libro de tratamientos y el mapa sanitario regional. 19,99 € al año, se renueva hasta que lo canceles. Comprado en la app se gestiona y se cancela en tu cuenta de la tienda; comprado en la web, en la página de suscripción. Llegar al límite nunca quita nada: nada de lo que has registrado se oculta ni se borra, con o sin suscripción.
+
+Condiciones de uso: https://hivepulse.multihead.de/es/terms
+Política de privacidad: https://hivepulse.multihead.de/es/privacy
 
 Las abejas no leen notas de versión. La aplicación intenta no estorbar mientras trabajas.
 ```
@@ -217,7 +249,15 @@ DOMYŚLNIE PRYWATNIE
 Twoje pasieki są prywatne. Jeśli umieścisz jedną na publicznej mapie, pojawi się na poziomie miejscowości, nigdy w dokładnych współrzędnych — chodzi o pokazanie pszczelarstwa, a nie lokalizacji uli. W każdej chwili możesz to wyłączyć.
 
 BEZ REKLAM, BEZ SPRZEDAŻY DANYCH
-Żadnych reklam, żadnego śledzenia reklamowego i nic o Tobie nie jest sprzedawane ani przekazywane. Projekt jest open source. Kto chce go wesprzeć, może to zrobić, a żadna funkcja aplikacji od tego nie zależy.
+Żadnych reklam, żadnego śledzenia reklamowego i nic o Tobie nie jest sprzedawane ani przekazywane. Projekt jest open source.
+
+DO DZIESIĘCIU RODZIN ZA DARMO
+Wszystko powyższe jest bezpłatne do dziesięciu rodzin pszczelich. Tropiciel szerszenia azjatyckiego, rok pszczelarski, kody QR, przeglądy bez zasięgu i eksport własnych danych pozostają bezpłatne niezależnie od ich liczby.
+
+HivePulse Supporter znosi limit i dodaje własne pola, zapraszanie kogoś do pasieki lub pojedynczej rodziny, całą historię statystyk zamiast ostatniego roku, książkę leczenia oraz regionalną mapę zdrowia. 19,99 € rocznie, odnawia się do czasu rezygnacji. Kupiony w aplikacji jest zarządzany i anulowany na koncie sklepu; kupiony w serwisie — na stronie abonamentu. Osiągnięcie limitu nigdy niczego nie odbiera: nic z tego, co zapisałeś, nie jest ukrywane ani usuwane — z abonamentem czy bez.
+
+Warunki korzystania: https://hivepulse.multihead.de/pl/terms
+Polityka prywatności: https://hivepulse.multihead.de/pl/privacy
 
 Pszczoły nie czytają informacji o wersji. Aplikacja stara się nie przeszkadzać w pracy.
 ```
@@ -312,66 +352,172 @@ paragraph says what the app is rather than greeting the reader.
 
 ### What's New — max 4000
 
-The release this describes is **1.0.5**. It is the App Store's release notes; Play takes its own
+The release this describes is **1.1.0**. It is the App Store's release notes; Play takes its own
 from `distribution/whatsnew/` during the automated upload, and those are Android's four lines, not
 these. Keep the two apart: a fix that only happened on one platform belongs only in that
-platform's notes. The guided tour and the website's four new inspection fields are not in here —
-neither happened on the iPhone.
+platform's notes.
+
+`__tests__/ReleaseNotes.test.ts` checks that the version named above is the one in
+`CFBundleShortVersionString` — it sat at 1.0.5 here while the iPhone built 1.1.0, which is
+exactly the drift #431 was about, one field further along.
 
 **en**
 ```
-The app used to accept an inspection dated in the year 3000, five thousand mites in one colony, and an apiary at 999 degrees north. Not because nobody had thought about limits: the limits that existed each lived inside a single screen. The move form refused a date in the future and the inspection form, two taps away, did not. A limit that holds in one place is not a limit.
+A hive visit is a record you are required to keep. In most of Europe a treatment with a
+veterinary medicine has to be written down and kept for five years, and bees are food-producing
+animals like any other. The app has had every one of those entries all along; it just could not
+hand them to you as a document.
 
-Every date is now bounded where the field itself is defined, so the next screen cannot be built without one, with a day's tolerance for anyone far enough east that their evening is the server's tomorrow. Coordinates have to be real coordinates. Varroa counts stop at a thousand, weight between nothing and five hundred kilograms. The forms carry the same limits, so the phone says no before anything is sent.
+Now it can. Under treatments there is a year's worth as a PDF — what was given, to which colony,
+how much, and the waiting period before the honey may be taken. Print it, file it, show it. A
+treatment entry now carries the amount and the waiting period, because a record without them
+answers the wrong half of the question.
 
-And when something is refused, the reason now arrives in your language and names the field it means. It used to come straight out of a library, in English: "Input should be less than or equal to 1000" — unreadable, and silent about which of eleven fields it was talking about.
+The subscription can be bought here. Up to ten colonies HivePulse is free and stays free — and
+the hornet tracker, the beekeeping year, QR codes, offline inspections and the export of your
+own data are free however many you keep. Above that, HivePulse Supporter lifts the limit and
+adds your own fields, inviting somebody to an apiary or a single hive, the whole statistics
+history, the treatment record and the regional health map. It is under Settings, with Restore
+purchase on the same screen — a new phone or a reinstall is one tap, not a support mail.
 
-Two names changed so that one thing has one name. Honey frames are "Honigrahmen" in German now, standing beside brood frames as "Brutrahmen" rather than against them, and the colony's mood is "Comportamiento" in Spanish on every screen.
+Reaching the limit never takes anything away. Nothing you have recorded is hidden or deleted,
+with or without a subscription; you simply cannot add an eleventh colony until there is one.
+
+And after a few days the app asks, once, how it is going. Whichever button you press it does not
+come back. The answers are read — the last round of reports became ten fixes in two days.
+
+Fixed: after about a month the app could get stuck behind a message about sign-in details. The
+session had simply run out; it now signs you back in instead of talking about tokens.
 ```
+(1752)
 
 **de**
 ```
-Die App nahm bisher eine Kontrolle im Jahr 3000, fünftausend Milben in einem Volk und einen Bienenstand bei 999 Grad Nord. Nicht, weil niemand an Grenzen gedacht hätte: die Grenzen, die es gab, galten jeweils nur auf einem Bildschirm. Das Umzugsformular lehnte ein Datum in der Zukunft ab, das Kontrollformular zwei Tipper weiter nicht. Eine Grenze, die an einer Stelle gilt, ist keine Grenze.
+Eine Durchsicht ist eine Aufzeichnung, die du führen musst. In weiten Teilen Europas muss
+jede Behandlung mit einem Tierarzneimittel festgehalten und fünf Jahre aufbewahrt werden, und
+Bienen sind Lebensmittel liefernde Tiere wie andere auch. Die App hatte diese Einträge immer
+schon — sie konnte sie dir nur nicht als Dokument geben.
 
-Jedes Datum hat seine Grenzen jetzt dort, wo das Feld selbst definiert ist — der nächste Bildschirm kann also nicht ohne gebaut werden —, mit einem Tag Toleranz für alle, die weit genug östlich wohnen, dass ihr Abend der Morgen des Servers ist. Koordinaten müssen Koordinaten sein. Varroa-Zahlen enden bei tausend, das Gewicht zwischen null und fünfhundert Kilogramm. Die Formulare tragen dieselben Grenzen, das Telefon sagt also Nein, bevor überhaupt etwas abgeschickt wird.
+Jetzt kann sie es. Unter den Behandlungen liegt ein ganzes Jahr als PDF: was gegeben wurde,
+welchem Volk, wie viel, und die Wartezeit, bis der Honig genommen werden darf. Ausdrucken,
+abheften, vorlegen. Eine Behandlung nimmt jetzt Menge und Wartezeit auf, denn ein Bestandsbuch
+ohne beides beantwortet die falsche Hälfte der Frage.
 
-Und wenn etwas abgelehnt wird, kommt der Grund in deiner Sprache und nennt das Feld, um das es geht. Vorher kam er direkt aus einer Bibliothek, auf Englisch: „Input should be less than or equal to 1000" — unlesbar, und ohne zu sagen, welches von elf Feldern gemeint war.
+Das Abo lässt sich hier kaufen. Bis zehn Völker ist HivePulse kostenlos und bleibt es — und der
+Hornissen-Tracker, das Imkerjahr, die QR-Codes, Kontrollen ohne Netz und der Export deiner
+eigenen Daten sind kostenlos, egal wie viele Völker du führst. Darüber hinaus hebt HivePulse
+Supporter die Grenze auf und bringt eigene Felder, das Einladen anderer zu einem Bienenstand
+oder einem einzelnen Volk, die ganze Statistik-Historie, das Bestandsbuch und die regionale
+Gesundheitskarte. Zu finden in den Einstellungen, mit „Kauf wiederherstellen“ auf derselben
+Seite — ein neues Handy oder eine Neuinstallation ist ein Tipp und keine Support-Mail.
 
-Zwei Namen haben sich geändert, damit eine Sache einen Namen hat. Honigwaben heißen jetzt Honigrahmen, passend zu den Brutrahmen daneben statt dagegen, und die Volksstimmung heißt auf Spanisch auf jedem Bildschirm „Comportamiento".
+Die Grenze nimmt nie etwas weg. Nichts, was du erfasst hast, wird versteckt oder gelöscht, mit
+Abo wie ohne; du kannst nur kein elftes Volk anlegen, solange keines da ist.
+
+Und nach ein paar Tagen fragt die App einmal, wie es läuft. Welchen Knopf du auch drückst, sie
+kommt nicht wieder. Die Antworten werden gelesen — aus der letzten Runde wurden in zwei Tagen
+zehn Korrekturen.
+
+Behoben: Nach etwa einem Monat konnte die App hinter einer Meldung über Anmeldedaten
+hängenbleiben. Die Sitzung war schlicht abgelaufen; jetzt meldet sie dich wieder an, statt von
+Tokens zu reden.
 ```
+(1890)
 
 **fr**
 ```
-L'application acceptait jusqu'ici une visite datée en l'an 3000, cinq mille varroas dans une ruche et un rucher à 999 degrés nord. Non par oubli : les limites qui existaient ne valaient chacune que sur un écran. Le formulaire de déplacement refusait une date future, celui de visite, à deux touches de là, non. Une limite qui vaut à un endroit n'est pas une limite.
+Une visite de ruche est un registre que vous devez tenir. Dans une grande partie de l'Europe,
+tout traitement avec un médicament vétérinaire doit être consigné et conservé cinq ans, et les
+abeilles sont des animaux producteurs de denrées comme les autres. L'application avait déjà
+toutes ces entrées — elle ne savait simplement pas vous les remettre sous forme de document.
 
-Chaque date porte désormais ses bornes là où le champ lui-même est défini — l'écran suivant ne peut donc plus être écrit sans elles —, avec un jour de tolérance pour qui vit assez à l'est pour que son soir soit le lendemain du serveur. Les coordonnées doivent être des coordonnées. Le comptage de varroas s'arrête à mille, le poids entre zéro et cinq cents kilogrammes. Les formulaires portent les mêmes bornes : le téléphone refuse avant même d'envoyer quoi que ce soit.
+C'est fait. Sous les traitements, une année entière en PDF : ce qui a été administré, à quelle
+colonie, en quelle quantité, et le délai d'attente avant de récolter le miel. À imprimer, à
+classer, à présenter. Un traitement enregistre désormais la quantité et le délai d'attente, car
+un registre sans les deux répond à la mauvaise moitié de la question.
 
-Et lorsqu'une saisie est refusée, la raison arrive maintenant dans votre langue et nomme le champ concerné. Elle sortait auparavant telle quelle d'une bibliothèque, en anglais : « Input should be less than or equal to 1000 » — illisible, et muette sur lequel des onze champs était visé.
+L'abonnement s'achète ici. Jusqu'à dix ruches HivePulse est gratuit et le reste — et le suivi du
+frelon asiatique, l'année apicole, les QR codes, les visites hors ligne et l'export de vos
+données sont gratuits quel que soit votre cheptel. Au-delà, HivePulse Supporter lève la limite
+et ajoute vos propres champs, l'invitation d'une personne sur un rucher ou une seule ruche, tout
+l'historique des statistiques, le registre des traitements et la carte sanitaire régionale. Dans
+les Réglages, avec « Restaurer l'achat » sur le même écran — un nouveau téléphone ou une
+réinstallation, c'est une touche et non un courriel au support.
 
-Deux noms ont changé pour qu'une chose n'en porte qu'un. Les cadres de miel s'appellent « Honigrahmen » en allemand, aux côtés des « Brutrahmen » plutôt que contre eux, et l'humeur de la colonie est « Comportamiento » en espagnol sur tous les écrans.
+Atteindre la limite ne retire jamais rien. Rien de ce que vous avez enregistré n'est masqué ni
+supprimé, avec ou sans abonnement ; vous ne pouvez simplement pas ajouter une onzième ruche.
+
+Et après quelques jours, l'application demande une fois comment ça se passe. Quel que soit le
+bouton, elle ne revient pas. Les réponses sont lues — la dernière série a donné dix corrections
+en deux jours.
+
+Corrigé : au bout d'un mois environ, l'application pouvait rester bloquée derrière un message sur
+les identifiants. La session avait simplement expiré ; elle vous reconnecte désormais au lieu de
+parler de jetons.
 ```
+(1967)
 
 **es**
 ```
-Hasta ahora la app aceptaba una revisión fechada en el año 3000, cinco mil varroas en una colmena y un colmenar a 999 grados norte. No por falta de pensarlo: los límites que existían valían cada uno en una sola pantalla. El formulario de traslado rechazaba una fecha futura y el de revisión, a dos toques, no. Un límite que vale en un sitio no es un límite.
+Una revisión es un registro que estás obligado a llevar. En buena parte de Europa todo
+tratamiento con un medicamento veterinario debe anotarse y conservarse cinco años, y las abejas
+son animales productores de alimentos como cualquier otro. La app tenía todas esas entradas
+desde siempre; lo que no sabía era entregártelas como documento.
 
-Cada fecha tiene ahora sus límites donde se define el campo —así la próxima pantalla no puede escribirse sin ellos—, con un día de tolerancia para quien vive lo bastante al este como para que su tarde sea el día siguiente del servidor. Las coordenadas tienen que ser coordenadas. El recuento de varroa acaba en mil, el peso entre cero y quinientos kilogramos. Los formularios llevan los mismos límites, así que el teléfono dice no antes de enviar nada.
+Ya sabe. Bajo los tratamientos hay un año entero en PDF: qué se administró, a qué colmena, en
+qué cantidad y el tiempo de espera antes de poder retirar la miel. Imprímelo, archívalo,
+preséntalo. Un tratamiento recoge ahora la cantidad y el tiempo de espera, porque un libro sin
+ambos responde a la mitad equivocada de la pregunta.
 
-Y cuando algo se rechaza, el motivo llega en tu idioma y nombra el campo. Antes salía tal cual de una biblioteca, en inglés: «Input should be less than or equal to 1000» — ilegible, y sin decir cuál de once campos era.
+La suscripción se compra aquí. Hasta diez colmenas HivePulse es gratis y lo seguirá siendo — y
+el rastreador de avispa asiática, el año apícola, los códigos QR, las revisiones sin red y la
+exportación de tus datos son gratis tengas las que tengas. Por encima, HivePulse Supporter quita
+el límite y añade tus propios campos, invitar a alguien a un colmenar o a una sola colmena, todo
+el historial de estadísticas, el libro de tratamientos y el mapa sanitario regional. Está en
+Ajustes, con «Restaurar la compra» en la misma pantalla: un móvil nuevo o una reinstalación es
+un toque, no un correo al soporte.
 
-Dos nombres han cambiado para que una cosa tenga un nombre. Los cuadros de miel son «Honigrahmen» en alemán, junto a los «Brutrahmen» en vez de contra ellos, y el comportamiento de la colmena se llama «Comportamiento» en todas las pantallas.
+Llegar al límite nunca quita nada. Nada de lo registrado se oculta ni se borra, con o sin
+suscripción; simplemente no puedes añadir una undécima colmena hasta que la haya.
+
+Y al cabo de unos días la app pregunta, una vez, cómo va. Pulses el botón que pulses, no vuelve.
+Las respuestas se leen: de la última ronda salieron diez correcciones en dos días.
+
+Corregido: al cabo de un mes aproximadamente la app podía quedarse detrás de un mensaje sobre
+las credenciales. La sesión simplemente había caducado; ahora vuelve a iniciarla en lugar de
+hablar de tokens.
 ```
+(1838)
 
 **pl**
 ```
-Aplikacja przyjmowała dotąd przegląd z datą w roku 3000, pięć tysięcy warrozy w jednej rodzinie i pasiekę na 999 stopniach północy. Nie dlatego, że nikt nie pomyślał o granicach: te, które istniały, obowiązywały każda na jednym ekranie. Formularz przeniesienia odrzucał datę z przyszłości, a formularz przeglądu, dwa dotknięcia dalej, nie. Granica, która obowiązuje w jednym miejscu, nie jest granicą.
+Przegląd to dokumentacja, którą musisz prowadzić. W większości Europy każde leczenie
+produktem weterynaryjnym trzeba zapisać i przechowywać pięć lat, a pszczoły są zwierzętami
+produkującymi żywność jak każde inne. Aplikacja miała te wpisy od zawsze — nie potrafiła ich
+tylko podać jako dokumentu.
 
-Każda data ma teraz swoje granice tam, gdzie zdefiniowane jest samo pole — następnego ekranu nie da się więc napisać bez nich — z jednym dniem tolerancji dla tych, którzy mieszkają dość daleko na wschód, by ich wieczór był jutrem serwera. Współrzędne muszą być współrzędnymi. Liczba warrozy kończy się na tysiącu, waga między zerem a pięciuset kilogramami. Formularze noszą te same granice, telefon mówi więc nie, zanim cokolwiek zostanie wysłane.
+Teraz potrafi. W leczeniu znajdziesz cały rok w PDF: co podano, której rodzinie, ile i jaki jest
+okres karencji, zanim można odebrać miód. Wydrukuj, włóż do segregatora, pokaż. Wpis o leczeniu
+przyjmuje teraz ilość i okres karencji, bo książka bez nich odpowiada na złą połowę pytania.
 
-A kiedy coś zostaje odrzucone, powód przychodzi teraz w twoim języku i nazywa pole. Wcześniej wychodził wprost z biblioteki, po angielsku: „Input should be less than or equal to 1000" — nieczytelny i milczący o tym, o które z jedenastu pól chodzi.
+Abonament można kupić tutaj. Do dziesięciu rodzin HivePulse jest darmowy i taki zostanie — a
+tropiciel szerszenia azjatyckiego, rok pszczelarski, kody QR, przeglądy bez zasięgu i eksport
+własnych danych są darmowe niezależnie od ich liczby. Powyżej HivePulse Supporter znosi limit i
+dodaje własne pola, zapraszanie kogoś do pasieki lub pojedynczej rodziny, całą historię
+statystyk, książkę leczenia i regionalną mapę zdrowia. Jest w Ustawieniach, a „Przywróć
+zakup” na tym samym ekranie — nowy telefon albo ponowna instalacja to jedno dotknięcie, nie
+mail do wsparcia.
 
-Dwie nazwy się zmieniły, żeby jedna rzecz miała jedną nazwę. Ramki z miodem to po niemiecku „Honigrahmen", obok „Brutrahmen" zamiast przeciw nim, a temperament rodziny to po hiszpańsku „Comportamiento" na każdym ekranie.
+Osiągnięcie limitu nigdy niczego nie odbiera. Nic z zapisanych danych nie jest ukrywane ani
+usuwane, z abonamentem czy bez; po prostu nie dodasz jedenastej rodziny, dopóki nie ma miejsca.
+
+A po kilku dniach aplikacja pyta raz, jak idzie. Którykolwiek przycisk naciśniesz, nie wraca.
+Odpowiedzi są czytane — z ostatniej rundy powstało w dwa dni dziesięć poprawek.
+
+Poprawione: po około miesiącu aplikacja potrafiła utknąć za komunikatem o danych logowania.
+Sesja po prostu wygasła; teraz loguje Cię z powrotem, zamiast mówić o tokenach.
 ```
+(1690)
 
 ## The other fields
 
