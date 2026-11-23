@@ -24,6 +24,8 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
+import com.hivepulse.app.ui.onboarding.tourAnchor
+import com.hivepulse.app.ui.onboarding.TourAnchors
 
 // ── Mode
 
@@ -107,7 +109,8 @@ private fun TrapHomeView(
             icon = { Text("➕", style = MaterialTheme.typography.titleLarge) },
             title = stringResource(R.string.hornet_traps_new),
             subtitle = stringResource(R.string.hornet_traps_hint),
-            onClick = onRegister
+            onClick = onRegister,
+            modifier = Modifier.tourAnchor(TourAnchors.TRAP_NEW),
         )
     }
 }
@@ -117,11 +120,12 @@ private fun TrapActionCard(
     icon: @Composable () -> Unit,
     title: String,
     subtitle: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Card(
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -296,7 +300,8 @@ private fun TrapRegisterView(
                     OutlinedTextField(
                         value = name, onValueChange = { name = it },
                         label = { Text(stringResource(R.string.hornet_traps_name)) },
-                        modifier = Modifier.fillMaxWidth(), singleLine = true
+                        modifier = Modifier.fillMaxWidth().tourAnchor(TourAnchors.TRAP_NAME),
+                        singleLine = true
                     )
                 }
                 item {
@@ -359,7 +364,7 @@ private fun TrapRegisterView(
                             )
                         },
                         enabled = name.isNotBlank() && lat.isNotBlank() && lon.isNotBlank() && !state.trapLoading,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth().tourAnchor(TourAnchors.TRAP_REGISTER)
                     ) {
                         Text(stringResource(R.string.hornet_traps_submit))
                     }

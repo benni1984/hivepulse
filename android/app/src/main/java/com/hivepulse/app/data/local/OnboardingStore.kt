@@ -18,6 +18,22 @@ class OnboardingStore @Inject constructor(@ApplicationContext context: Context) 
         get() = prefs.getBoolean(KEY_TOUR_SEEN, false)
         set(value) { prefs.edit().putBoolean(KEY_TOUR_SEEN, value).apply() }
 
+    /**
+     * Which tours this device has been through (#449).
+     *
+     * Seen is not spent: this only puts a mark beside a tour in the list in Settings, and the
+     * start button stays. Somebody who watched the QR tour a year ago and has forgotten what a
+     * batch is for must be able to watch it again, which is the whole difference between this
+     * and the carousel it replaced.
+     */
+    var finishedTours: Set<String>
+        get() = prefs.getStringSet(KEY_TOURS_DONE, emptySet()) ?: emptySet()
+        set(value) { prefs.edit().putStringSet(KEY_TOURS_DONE, value).apply() }
+
+    fun markTourFinished(id: String) {
+        finishedTours = finishedTours + id
+    }
+
     /** Epoch milliseconds, or 0 when this device has not been counted yet. */
     var firstLaunchAt: Long
         get() = prefs.getLong(KEY_FIRST_LAUNCH, 0L)
@@ -59,6 +75,7 @@ class OnboardingStore @Inject constructor(@ApplicationContext context: Context) 
         }
 
         private const val KEY_TOUR_SEEN = "guided_tour_seen"
+        private const val KEY_TOURS_DONE = "tours_finished"
         private const val KEY_FIRST_LAUNCH = "first_launch_at"
         private const val KEY_FEEDBACK_ASKED = "feedback_asked"
     }

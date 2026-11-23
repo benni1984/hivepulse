@@ -32,6 +32,9 @@ import com.hivepulse.app.ui.common.LoadingScreen
 import com.hivepulse.app.ui.theme.Amber500
 import com.hivepulse.app.ui.theme.Amber600
 import com.hivepulse.app.ui.theme.Stone200
+import com.hivepulse.app.ui.onboarding.tourAnchor
+import com.hivepulse.app.ui.onboarding.TourAnchors
+import androidx.compose.foundation.lazy.itemsIndexed
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,11 +66,15 @@ fun ApiaryListScreen(
                     // Same order as the iPhone's toolbar: statistics, QR batches, moves map, beekeeping year.
                     // Scanning is a tab of the bottom bar on both.
                     IconButton(onClick = onStatsClick)    { Icon(Icons.Default.BarChart,     contentDescription = stringResource(R.string.screen_stats_overview)) }
-                    IconButton(onClick = onBatchClick)    { Icon(Icons.Default.Print,        contentDescription = stringResource(R.string.tab_print)) }
-                    IconButton(onClick = onMovesClick, modifier = Modifier.testTag("movesOverviewButton")) {
+                    IconButton(onClick = onBatchClick, modifier = Modifier.tourAnchor(TourAnchors.QR_BATCHES)) {
+                        Icon(Icons.Default.Print, contentDescription = stringResource(R.string.tab_print))
+                    }
+                    IconButton(onClick = onMovesClick, modifier = Modifier.testTag("movesOverviewButton")
+                        .tourAnchor(TourAnchors.MOVES_OVERVIEW)) {
                         Icon(Icons.Default.Map, contentDescription = stringResource(R.string.moves_overview_title))
                     }
-                    IconButton(onClick = onCalendarClick, modifier = Modifier.testTag("beekeepingYearButton")) {
+                    IconButton(onClick = onCalendarClick, modifier = Modifier.testTag("beekeepingYearButton")
+                        .tourAnchor(TourAnchors.BEEKEEPING_YEAR)) {
                         Icon(Icons.Default.CalendarMonth, contentDescription = stringResource(R.string.calendar_title))
                     }
                 }
@@ -81,7 +88,8 @@ fun ApiaryListScreen(
                 text     = { Text(newApiaryLabel) },
                 containerColor = Amber500,
                 contentColor   = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.semantics { contentDescription = newApiaryLabel },
+                modifier = Modifier.semantics { contentDescription = newApiaryLabel }
+                    .tourAnchor(TourAnchors.NEW_APIARY),
             )
         }
     ) { padding ->
@@ -131,8 +139,14 @@ fun ApiaryListScreen(
                         onMarkDone = { treatment -> homeVm.markDone(treatment) },
                         onDismissError = { homeVm.clearError() },
                     )
-                    items(state.apiaries) { apiary ->
-                        ApiaryCard(apiary, onClick = { onApiaryClick(apiary.id) }, onDelete = { vm.delete(apiary.id) })
+                    itemsIndexed(state.apiaries) { index, apiary ->
+                        ApiaryCard(
+                            apiary,
+                            onClick = { onApiaryClick(apiary.id) },
+                            onDelete = { vm.delete(apiary.id) },
+                            // Only the first row: pointing at all of them would say nothing.
+                            tourAnchorId = if (index == 0) TourAnchors.APIARY_OPEN else null,
+                        )
                     }
                 }
             }
@@ -204,11 +218,17 @@ private fun RedeemInvitationLink(onClick: () -> Unit, modifier: Modifier = Modif
 }
 
 @Composable
-private fun ApiaryCard(apiary: ApiaryOut, onClick: () -> Unit, onDelete: () -> Unit) {
+private fun ApiaryCard(
+    apiary: ApiaryOut,
+    onClick: () -> Unit,
+    onDelete: () -> Unit,
+    tourAnchorId: String? = null,
+) {
     var showDeleteConfirm by remember { mutableStateOf(false) }
 
     Card(
-        modifier  = Modifier.fillMaxWidth().clickable(onClick = onClick),
+        modifier  = Modifier.fillMaxWidth().clickable(onClick = onClick)
+            .let { if (tourAnchorId != null) it.tourAnchor(tourAnchorId) else it },
         shape     = MaterialTheme.shapes.large,
         colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         border    = BorderStroke(1.dp, Stone200),

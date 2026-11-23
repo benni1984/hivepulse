@@ -15,12 +15,12 @@ import com.hivepulse.app.ui.admin.*
 import com.hivepulse.app.ui.hornet.HornetHomeScreen
 import com.hivepulse.app.ui.fields.FieldDefinitionsScreen
 import com.hivepulse.app.ui.members.MembersScreen
-import com.hivepulse.app.ui.onboarding.GuidedTourScreen
 import com.hivepulse.app.ui.settings.SettingsScreen
 import com.hivepulse.app.ui.stats.HiveStatsScreen
 import com.hivepulse.app.ui.stats.OverviewStatsScreen
 import com.hivepulse.app.ui.supporter.SupporterScreen
 import javax.inject.Inject
+import com.hivepulse.app.ui.onboarding.LocalTourController
 
 object Routes {
     const val LOGIN              = "login"
@@ -55,7 +55,6 @@ object Routes {
     const val MOVES_OVERVIEW     = "moves_overview"
     const val BEEKEEPING_YEAR    = "beekeeping_year"
     const val TREATMENTS         = "treatments/{type}/{id}"
-    const val GUIDED_TOUR        = "guided_tour?fromSettings={fromSettings}"
 }
 
 @Composable
@@ -79,10 +78,17 @@ fun HivePulseNavGraph(
     val start = remember { if (tokenStore.isLoggedIn) Routes.APIARY_LIST else Routes.LOGIN }
 
     // The first successful sign-in on this device shows the guided tour before the apiary list
-    val afterAuth: () -> Unit = remember(navController, onboardingStore) {
+    val tourController = LocalTourController.current
+    val afterAuth: () -> Unit = remember(navController, onboardingStore, tourController) {
         {
-            val destination = if (onboardingStore.hasSeenGuidedTour) Routes.APIARY_LIST else "guided_tour?fromSettings=false"
-            navController.navigate(destination) { popUpTo(Routes.LOGIN) { inclusive = true } }
+            navController.navigate(Routes.APIARY_LIST) { popUpTo(Routes.LOGIN) { inclusive = true } }
+            // The carousel ran *instead of* the apiary list and then vanished, leaving somebody
+            // in front of "No apiaries yet" with nothing pointed at. This one runs *on* it, and
+            // the first thing it points at is the button that ends that sentence.
+            if (!onboardingStore.hasSeenGuidedTour) {
+                onboardingStore.hasSeenGuidedTour = true
+                tourController?.start("first-steps")
+            }
         }
     }
 
@@ -258,7 +264,7 @@ fun HivePulseNavGraph(
                 onAdminClick = { navController.navigate(Routes.ADMIN) },
                 onCustomFieldsClick = { navController.navigate("field_definitions?apiaryId=") },
                 onSupporterClick = { navController.navigate(Routes.SUPPORTER) },
-                onGuidedTourClick = { navController.navigate("guided_tour?fromSettings=true") }
+                onStartTour = { tourController?.start(it) }
             )
         }
         composable(Routes.ADMIN) {
@@ -290,14 +296,6 @@ fun HivePulseNavGraph(
         }
         composable(Routes.SUPPORTER) {
             SupporterScreen(onBack = { navController.popBackStack() })
-        }
-        composable(Routes.GUIDED_TOUR,
-            arguments = listOf(navArgument("fromSettings") { type = NavType.BoolType; defaultValue = false })) { back ->
-            val fromSettings = back.arguments?.getBoolean("fromSettings") ?: false
-            GuidedTourScreen(onFinished = {
-                if (fromSettings) navController.popBackStack()
-                else navController.navigate(Routes.APIARY_LIST) { popUpTo(Routes.GUIDED_TOUR) { inclusive = true } }
-            })
         }
         composable(Routes.FIELD_DEFINITIONS,
             arguments = listOf(navArgument("apiaryId") { type = NavType.StringType; defaultValue = "" })) {

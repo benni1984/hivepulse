@@ -38,6 +38,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.hivepulse.app.ui.common.StatusBadge
 import com.hivepulse.app.ui.hives.hiveTypeLabelRes
+import com.hivepulse.app.ui.onboarding.tourAnchor
+import com.hivepulse.app.ui.onboarding.TourAnchors
 
 data class ApiaryDetailState(
     val apiaryName: String = "",
@@ -142,7 +144,8 @@ fun ApiaryDetailScreen(
                     text           = { Text(newHiveLabel) },
                     containerColor = Amber500,
                     contentColor   = MaterialTheme.colorScheme.onPrimary,
-                    modifier       = Modifier.semantics { contentDescription = newHiveLabel },
+                    modifier       = Modifier.semantics { contentDescription = newHiveLabel }
+                        .tourAnchor(TourAnchors.NEW_HIVE),
                 )
             }
         },
@@ -153,25 +156,28 @@ fun ApiaryDetailScreen(
             actions = {
                 // Taking hives to where something is in bloom is the owner's to do.
                 if (state.apiary?.isOwner == true && state.hives.isNotEmpty()) {
-                    IconButton(onClick = onMoveClick, modifier = Modifier.testTag("moveHivesButton")) {
+                    IconButton(onClick = onMoveClick, modifier = Modifier.testTag("moveHivesButton")
+                        .tourAnchor(TourAnchors.MOVE_HIVES)) {
                         Icon(Icons.Default.SwapHoriz, contentDescription = stringResource(R.string.moves_title))
                     }
                 }
                 // Inviting stays with the owner.
                 if (state.apiary?.isOwner == true) {
-                    IconButton(onClick = onShareClick, modifier = Modifier.testTag("shareApiaryButton")) {
+                    IconButton(onClick = onShareClick, modifier = Modifier.testTag("shareApiaryButton")
+                        .tourAnchor(TourAnchors.SHARE_APIARY)) {
                         Icon(Icons.Default.Group, contentDescription = stringResource(R.string.sharing_title))
                     }
                 }
                 // Somebody who has single hives of it cannot work on the apiary around them: no treatment for all
                 // of its hives, no fields, no editing. Same order as the iPhone's toolbar.
                 if (state.apiary?.canEdit == true) {
-                    IconButton(onClick = onTreatmentsClick, modifier = Modifier.testTag("apiaryTreatmentsButton")) {
+                    IconButton(onClick = onTreatmentsClick, modifier = Modifier.testTag("apiaryTreatmentsButton")
+                        .tourAnchor(TourAnchors.TREATMENTS)) {
                         Icon(Icons.Default.Medication, contentDescription = stringResource(R.string.treatments_title))
                     }
                 }
                 if (state.apiary?.canEdit != false) {
-                    IconButton(onClick = onFieldsClick) {
+                    IconButton(onClick = onFieldsClick, modifier = Modifier.tourAnchor(TourAnchors.CUSTOM_FIELDS)) {
                         Icon(Icons.Default.Tune, contentDescription = stringResource(R.string.fielddefs_apiary_title))
                     }
                 }

@@ -42,6 +42,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
+import com.hivepulse.app.ui.onboarding.tourAnchor
+import com.hivepulse.app.ui.onboarding.TourAnchors
 
 private fun tintOf(category: String): Color = when (category) {
     "inspection", "bloom" -> Forest600
@@ -375,6 +377,7 @@ fun YearFeedbackLink(modifier: Modifier = Modifier) {
             color = Amber600,
             modifier = Modifier
                 .testTag("yearFeedbackLink")
+                .tourAnchor(TourAnchors.YEAR_RATE)
                 .clickable {
                     context.startActivity(
                         android.content.Intent(
