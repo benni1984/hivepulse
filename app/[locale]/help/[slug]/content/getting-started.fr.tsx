@@ -131,10 +131,12 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           rien.
         </p>
         <p>
-          Dans les applications iPhone et Android, la visite reste la courte, à faire défiler après
-          la première connexion, qui présente les QR codes, les visites, les statistiques, les
-          rappels et le suivi du frelon asiatique. Passez-la quand vous voulez et relancez-la depuis{' '}
-          <strong>Paramètres → Revoir la visite guidée</strong>.
+          Les applications iPhone et Android ont les neuf mêmes, et elles fonctionnent pareil :
+          l’écran s’assombrit autour d’une vraie commande et attend que vous appuyiez. La première
+          ouverture ne remplace plus la liste des ruchers par un diaporama — elle arrive sur la
+          liste des ruchers, et la première étape pointe le bouton ambre.{' '}
+          <strong>Paramètres → Visites guidées</strong> les liste toutes les neuf là aussi, et en
+          lancer une vous amène d’abord sur l’écran où elle commence.
         </p>
       </section>
 

@@ -117,7 +117,22 @@ You can write test files on any OS and let CI run them — no local macOS needed
 
 ## Guided Tour
 
-After the first successful sign-in or registration on a device, `AuthViewModel.showGuidedTour` presents `GuidedTourView` as a full-screen cover over the tabs; `OnboardingStore` (UserDefaults) remembers it, and Settings has "Show guided tour again". **UI tests that sign in or register and expect the apiary list must pass `-guidedTourSeen YES`** (see `RegisterUITests`); `GuidedTourUITests` covers the tour.
+The tour points at the real control and waits for the real tap (#449). `TourHost` wraps
+`MainTabView`, so a step can point at a tab as well as at anything inside a screen, and
+`.tourAnchor(TourAnchors.x)` marks a target — it publishes the view's bounds through
+`TourAnchorKey` and observes the tap with a `simultaneousGesture`, so the control underneath stays
+a control. The shade is drawn with `allowsHitTesting(false)` and a `reverseMask`, which is why the
+lit button is still tappable.
+
+`Tours.swift` mirrors `lib/tours.ts` and Android's `Tours.kt`: same nine, same order, same words,
+strings generated from the website's file. `ToursTests` pins the anchors, the order and all five
+languages; `TourUITests` covers the overlay. The amber create button carries its anchor through
+`hpFloatingButton(tourAnchor:)`, so all five call sites get it from one place.
+
+After the first successful sign-in `AuthViewModel.showGuidedTour` now starts `first-steps` on the
+apiary list instead of presenting a cover over it; `OnboardingStore.finishedTours` holds the marks
+in the list in Settings (a mark, not a lock). **UI tests that sign in or register and expect the
+apiary list must pass `-guidedTourSeen YES`** (see `RegisterUITests`).
 
 ## Pattern: Handler Order
 
@@ -131,11 +146,11 @@ Most-specific URL patterns must come first:
 
 ## Unit Tests (HivePulseTests/)
 
-AuthViewModelTests, YearRibbonTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, QRBatchDetailViewModelTests, OverviewStatsViewModelTests, ForgotPasswordViewModelTests, GuidedTourTests, CommunityHeatmapTests, FieldDefinitionsViewModelTests, SupporterViewModelTests, FeedbackPromptTests, HornetIconTests, AppBundleTests, ThemeTests, DTOTests, APIClientTests — all passing in CI.
+AuthViewModelTests, YearRibbonTests, ApiaryViewModelTests, HiveViewModelTests, InspectionViewModelTests, AdminViewModelTests, HornetViewModelTests, HiveQRViewTests, QRBatchDetailViewModelTests, OverviewStatsViewModelTests, ForgotPasswordViewModelTests, ToursTests, CommunityHeatmapTests, FieldDefinitionsViewModelTests, SupporterViewModelTests, FeedbackPromptTests, HornetIconTests, AppBundleTests, ThemeTests, DTOTests, APIClientTests — all passing in CI.
 
 ## UI Tests (HivePulseUITests/)
 
-LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests, QRBatchDetailUITests, QRScanUITests, OverviewStatsUITests, ForgotPasswordUITests, GuidedTourUITests, FieldDefinitionsUITests, HornetUITests, MembersUITests, SupporterUITests, FeedbackPromptUITests, YearRibbonUITests, ScreenshotUITests — all passing in CI.
+LoginUITests, RegisterUITests, ApiaryListUITests, HiveDetailUITests, InspectionFormUITests, SettingsUITests, QRBatchListUITests, QRBatchDetailUITests, QRScanUITests, OverviewStatsUITests, ForgotPasswordUITests, TourUITests, FieldDefinitionsUITests, HornetUITests, MembersUITests, SupporterUITests, FeedbackPromptUITests, YearRibbonUITests, ScreenshotUITests — all passing in CI.
 
 Screens: Login, Register, ApiaryList, ApiaryDetail, ApiaryForm, HiveDetail, HiveInitialize, HiveQR, InspectionForm, InspectionDetail, QRScanner, QRBatchList, QRBatchDetail, HiveStats, OverviewStats, ForgotPassword, GuidedTour, Members (community heatmap), FieldDefinitions (user scope from Settings, apiary scope from the apiary toolbar), Supporter (the paywall, from Settings and from the Members gate), Settings.
 

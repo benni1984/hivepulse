@@ -37,6 +37,38 @@ export const RELEASES: Release[] = [
   {
     date: '2026-11-23',
     title: t(
+      'The apps point at the real button too',
+      'Auch die Apps zeigen auf den echten Knopf',
+      'Les applications pointent aussi le vrai bouton',
+      'Las apps también señalan el botón de verdad',
+      'Aplikacje też wskazują prawdziwy przycisk',
+    ),
+    items: [
+      {
+        kind: 'changed',
+        text: t(
+          'The swipeable tour is gone from the iPhone and Android apps. It ran once after the first sign-in, described features in the voice of a product page, and then left you on a screen saying “No apiaries yet” with nothing pointed at. In its place are the same nine tours the website has: each dims the screen around one real control, says why it is the one, and waits for you to tap it. The control stays a control — the overlay is drawn around it, not over it.',
+          'Die Tour zum Durchwischen ist aus der iPhone- und der Android-App verschwunden. Sie lief einmal nach der ersten Anmeldung, beschrieb Funktionen im Ton einer Produktseite und ließ dich dann auf einem Bildschirm zurück, auf dem „Noch keine Bienenstände“ stand und auf nichts gezeigt wurde. An ihrer Stelle stehen dieselben neun Touren wie auf der Webseite: jede dunkelt den Bildschirm um ein echtes Bedienelement ab, sagt, warum es dieses ist, und wartet, bis du es antippst. Der Knopf bleibt ein Knopf — die Abdunklung liegt um ihn herum, nicht über ihm.',
+          'La visite à faire défiler a disparu des applications iPhone et Android. Elle se jouait une fois après la première connexion, décrivait les fonctionnalités sur le ton d’une page produit, puis vous laissait devant un écran disant « Aucun rucher » sans rien montrer. À sa place, les neuf mêmes visites que sur le site : chacune assombrit l’écran autour d’une vraie commande, dit pourquoi c’est celle-là, et attend que vous appuyiez. Le bouton reste un bouton — l’assombrissement l’entoure, il ne le recouvre pas.',
+          'El recorrido deslizable ha desaparecido de las apps de iPhone y Android. Se reproducía una vez tras el primer inicio de sesión, describía funciones con voz de página de producto y luego te dejaba ante una pantalla que decía «Aún no hay colmenares» sin señalar nada. En su lugar están los mismos nueve tours que en la web: cada uno oscurece la pantalla alrededor de un control de verdad, dice por qué es ese, y espera a que lo pulses. El botón sigue siendo un botón — el oscurecimiento lo rodea, no lo cubre.',
+          'Przewodnik do przewijania zniknął z aplikacji na iPhone’a i Androida. Uruchamiał się raz po pierwszym logowaniu, opisywał funkcje głosem strony produktowej, a potem zostawiał Cię przed ekranem z napisem „Brak pasiek”, nie wskazując niczego. Na jego miejscu jest tych samych dziewięć przewodników co w serwisie: każdy przygasza ekran wokół jednego prawdziwego elementu, mówi, dlaczego to właśnie ten, i czeka, aż go dotkniesz. Przycisk zostaje przyciskiem — przygaszenie go otacza, a nie przykrywa.',
+        ),
+      },
+      {
+        kind: 'added',
+        text: t(
+          'And the apps got the half that matters most: Settings → Guided tours lists all nine and starts any of them, taking you to the screen it begins on first. Nothing is spent by being watched — start the QR tour again next spring, when you have forgotten what a batch is for.',
+          'Und die Apps haben die Hälfte bekommen, auf die es am meisten ankommt: Einstellungen → Geführte Touren listet alle neun und startet jede, und bringt dich zuerst auf den Bildschirm, auf dem sie anfängt. Durchs Ansehen ist nichts verbraucht — starte die QR-Tour im nächsten Frühjahr wieder, wenn du vergessen hast, wofür ein Batch gut ist.',
+          'Et les applications ont reçu la moitié qui compte le plus : Paramètres → Visites guidées les liste toutes les neuf et en lance n’importe laquelle, en vous amenant d’abord sur l’écran où elle commence. Rien n’est épuisé par le fait d’avoir été vu — relancez la visite des QR codes au printemps prochain, quand vous aurez oublié à quoi sert un lot.',
+          'Y las apps han recibido la mitad que más importa: Ajustes → Tours guiados los lista todos y empieza cualquiera, llevándote primero a la pantalla en la que arranca. Nada se gasta por haberlo visto — vuelve a empezar el tour de los QR la próxima primavera, cuando hayas olvidado para qué sirve un lote.',
+          'A aplikacje dostały tę połowę, która liczy się najbardziej: Ustawienia → Przewodniki wymieniają wszystkie dziewięć i uruchamiają dowolny, zabierając Cię najpierw na ekran, na którym się zaczyna. Nic nie zużywa się przez obejrzenie — uruchom przewodnik po kodach QR następnej wiosny, gdy zapomnisz, do czego służy partia.',
+        ),
+      },
+    ],
+  },
+  {
+    date: '2026-11-23',
+    title: t(
       'Tours that point at the real button',
       'Touren, die auf den echten Knopf zeigen',
       'Des visites qui pointent le vrai bouton',
@@ -1293,11 +1325,11 @@ export const FEATURES: FeatureGroup[] = [
         'Usuń konto i wszystkie swoje dane samodzielnie, w każdej chwili.',
       ),
       t(
-        'Nine guided tours on the website that point at the real control and wait for the real click, each restartable from Settings or from a “?” next to its own feature.',
-        'Neun geführte Touren auf der Webseite, die auf das echte Bedienelement zeigen und auf den echten Klick warten — jede aus den Einstellungen oder über ein „?“ neben der eigenen Funktion wieder startbar.',
-        'Neuf visites guidées sur le site qui pointent la vraie commande et attendent le vrai clic, chacune relançable depuis les Paramètres ou via un « ? » à côté de sa propre fonctionnalité.',
-        'Nueve tours guiados en la web que señalan el control de verdad y esperan el clic de verdad, cada uno reiniciable desde Ajustes o con una «?» junto a su propia función.',
-        'Dziewięć przewodników w serwisie, które wskazują prawdziwy element i czekają na prawdziwe kliknięcie — każdy do uruchomienia ponownie z Ustawień albo przez „?” obok własnej funkcji.',
+        'Nine guided tours on all three clients that point at the real control and wait for the real tap, each restartable from Settings or from a “?” next to its own feature.',
+        'Neun geführte Touren auf allen drei Clients, die auf das echte Bedienelement zeigen und auf den echten Klick warten — jede aus den Einstellungen oder über ein „?“ neben der eigenen Funktion wieder startbar.',
+        'Neuf visites guidées sur les trois clients, qui pointent la vraie commande et attendent le vrai clic, chacune relançable depuis les Paramètres ou via un « ? » à côté de sa propre fonctionnalité.',
+        'Nueve tours guiados en los tres clientes que señalan el control de verdad y esperan el clic de verdad, cada uno reiniciable desde Ajustes o con una «?» junto a su propia función.',
+        'Dziewięć przewodników we wszystkich trzech klientach, które wskazują prawdziwy element i czekają na prawdziwe kliknięcie — każdy do uruchomienia ponownie z Ustawień albo przez „?” obok własnej funkcji.',
       ),
       t(
         'No advertising network and no tracking of what you do.',

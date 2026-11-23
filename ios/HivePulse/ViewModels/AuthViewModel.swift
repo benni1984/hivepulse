@@ -230,10 +230,6 @@ final class AuthViewModel: ObservableObject {
         showGuidedTour = false
     }
 
-    func replayGuidedTour() {
-        showGuidedTour = true
-    }
-
     private func store(_ resp: TokenResponse) {
         // Before anything is read or uploaded: data left by a different account goes, data left
         // by this one stays (#469). This is what keeps one beekeeper's hives from the next now

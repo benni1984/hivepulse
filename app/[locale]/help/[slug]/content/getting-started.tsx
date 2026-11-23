@@ -129,10 +129,11 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           wants is not on the screen it says so instead of dimming the page at nothing.
         </p>
         <p>
-          In the iPhone and Android apps the tour is still the short swipeable one shown after the
-          first sign-in, introducing QR codes, inspections, statistics, reminders and the hornet
-          tracker. Skip it whenever you like, and bring it back from{' '}
-          <strong>Settings → Show guided tour again</strong>.
+          The iPhone and Android apps have the same nine, and they work the same way: the screen
+          dims around one real control and waits for you to tap it. Opening the app for the first
+          time no longer replaces the apiary list with a slideshow — it lands on the apiary list,
+          and the first step points at the amber button. <strong>Settings → Guided tours</strong>
+          lists all nine there too, and starting one takes you to the screen it begins on.
         </p>
       </section>
 

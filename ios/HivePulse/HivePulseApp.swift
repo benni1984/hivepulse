@@ -98,13 +98,17 @@ struct HivePulseApp: App {
     }
 
     @Environment(\.scenePhase) private var scenePhase
+    @StateObject private var tourController = TourController.shared
 
     var body: some Scene {
         WindowGroup {
             // Stable container so the tour cover survives the login -> tabs switch that happens in the same update.
             ZStack {
                 if authVM.isAuthenticated {
-                    MainTabView(selection: $selectedTab)
+                    TourHost(controller: tourController,
+                             selectTab: { selectedTab = $0.rawValue }) {
+                        MainTabView(selection: $selectedTab)
+                    }
                         // On the view, not the container: keying the container would restart
                         // the .task below and ask for push permission again.
                         .id(languageOverride)
@@ -125,6 +129,15 @@ struct HivePulseApp: App {
                             if let tokenData = note.userInfo?["token"] as? Data {
                                 Task { await authVM.registerAPNsToken(tokenData) }
                             }
+                        }
+                        // The carousel ran *instead of* the apiary list and then vanished,
+                        // leaving somebody in front of "No apiaries yet" with nothing pointed
+                        // at. This one runs *on* it, and the first thing it points at is the
+                        // button that ends that sentence (#449).
+                        .onChange(of: authVM.showGuidedTour) { _, show in
+                            guard show else { return }
+                            authVM.finishGuidedTour()
+                            tourController.start("first-steps")
                         }
                 } else {
                     // Unauthenticated: HivePulse login + public Hornets tab always visible
@@ -157,9 +170,7 @@ struct HivePulseApp: App {
             .onReceive(NotificationCenter.default.publisher(for: .sessionExpired)) { _ in
                 authVM.sessionExpired()
             }
-            .fullScreenCover(isPresented: $authVM.showGuidedTour) {
-                GuidedTourView { authVM.finishGuidedTour() }
-            }
+
         }
     }
 

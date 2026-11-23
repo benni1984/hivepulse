@@ -54,7 +54,8 @@ struct FieldDefinitionsView: View {
         }
         .hpScreenBackground()
         .navigationTitle(NSLocalizedString(isApiaryScope ? "fielddefs.apiaryTitle" : "fielddefs.title", comment: ""))
-        .hpFloatingButton(NSLocalizedString("fielddefs.new", comment: ""), identifier: "newFieldButton") {
+        .hpFloatingButton(NSLocalizedString("fielddefs.new", comment: ""), identifier: "newFieldButton",
+                          tourAnchor: TourAnchors.fieldNew) {
             showCreate = true
         }
         .overlay(alignment: .bottom) {

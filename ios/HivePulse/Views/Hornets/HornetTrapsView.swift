@@ -99,6 +99,7 @@ private struct TrapHomeView: View {
                     ) {
                         mode = .register
                     }
+                    .tourAnchor(TourAnchors.trapNew)
                 }
                 .padding(.horizontal)
             }
@@ -326,6 +327,7 @@ private struct TrapRegisterView: View {
                 Form {
                     Section(NSLocalizedString("hornets.traps.name", comment: "")) {
                         TextField(NSLocalizedString("hornets.traps.namePlaceholder", comment: ""), text: $name)
+                            .tourAnchor(TourAnchors.trapName)
                     }
 
                     Section(header: HStack {
@@ -375,6 +377,7 @@ private struct TrapRegisterView: View {
                         }
                         .disabled(vm.trapLoading || name.isEmpty || lat.isEmpty || lon.isEmpty)
                         .frame(maxWidth: .infinity, alignment: .center)
+                        .tourAnchor(TourAnchors.trapRegister)
                     }
                 }
             }

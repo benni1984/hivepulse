@@ -52,7 +52,8 @@ struct QRBatchListView: View {
         }
         .navigationTitle(NSLocalizedString("screen.qrBatches", comment: ""))
         .hpScreenBackground()
-        .hpFloatingButton(NSLocalizedString("action.newBatch", comment: ""), identifier: "newBatchButton") {
+        .hpFloatingButton(NSLocalizedString("action.newBatch", comment: ""), identifier: "newBatchButton",
+                          tourAnchor: TourAnchors.newQrBatch) {
             showCreate = true
         }
         .task { await vm.load() }

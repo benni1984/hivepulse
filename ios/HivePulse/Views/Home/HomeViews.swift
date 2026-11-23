@@ -194,6 +194,7 @@ struct TreatmentsView: View {
                 }
                 .disabled(!vm.canPlan)
                 .accessibilityIdentifier("treatmentPlan")
+                .tourAnchor(TourAnchors.treatmentPlan)
             } footer: {
                 Text(NSLocalizedString(isHive ? "treatments.introHive" : "treatments.introApiary", comment: ""))
             }

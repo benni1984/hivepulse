@@ -32,6 +32,7 @@ struct SharingView: View {
                 }
                 .disabled(vm.isInviting || !SharingViewModel.looksLikeAnEmail(email))
                 .accessibilityIdentifier("inviteButton")
+                .tourAnchor(TourAnchors.sharingInvite)
             } footer: {
                 Text(NSLocalizedString(isHive ? "sharing.introHive" : "sharing.introApiary", comment: ""))
             }

@@ -78,6 +78,9 @@ struct ApiaryListView: View {
                         NavigationLink(destination: ApiaryDetailView(apiary: apiary)) {
                             ApiaryRow(apiary: apiary)
                         }
+                        // Only the first row: pointing at all of them would say nothing.
+                        .modifier(OptionalTourAnchor(
+                            id: apiary.id == apiaryVM.apiaries.first?.id ? TourAnchors.apiaryOpen : nil))
                         // Only the owner deletes: the server would refuse anybody else.
                         .deleteDisabled(!apiary.isOwner)
                     }
@@ -102,7 +105,8 @@ struct ApiaryListView: View {
         }
         .navigationTitle(NSLocalizedString("screen.apiaries", comment: ""))
         .hpScreenBackground()
-        .hpFloatingButton(NSLocalizedString("action.newApiary", comment: ""), identifier: "newApiaryButton") {
+        .hpFloatingButton(NSLocalizedString("action.newApiary", comment: ""), identifier: "newApiaryButton",
+                          tourAnchor: TourAnchors.newApiary) {
             showCreate = true
         }
         // The other way an apiary gets into this list, on the same line as the first one (#553).
@@ -135,6 +139,7 @@ struct ApiaryListView: View {
                 }
                 .accessibilityLabel(NSLocalizedString("screen.qrBatches", comment: ""))
                 .accessibilityIdentifier("qrBatchesButton")
+                .tourAnchor(TourAnchors.qrBatches)
                 NavigationLink {
                     MovesOverviewView()
                 } label: {
@@ -142,6 +147,7 @@ struct ApiaryListView: View {
                 }
                 .accessibilityLabel(NSLocalizedString("moves.overviewTitle", comment: ""))
                 .accessibilityIdentifier("movesOverviewButton")
+                .tourAnchor(TourAnchors.movesOverview)
                 NavigationLink {
                     BeekeepingYearView()
                 } label: {
@@ -149,6 +155,7 @@ struct ApiaryListView: View {
                 }
                 .accessibilityLabel(NSLocalizedString("calendar.title", comment: ""))
                 .accessibilityIdentifier("beekeepingYearButton")
+                .tourAnchor(TourAnchors.beekeepingYear)
             }
         }
         .task {

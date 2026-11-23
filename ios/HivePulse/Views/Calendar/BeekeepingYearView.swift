@@ -239,6 +239,7 @@ struct YearFeedbackLink: View {
                 .font(.footnote.weight(.bold))
                 .foregroundColor(.hpAmberDark)
                 .accessibilityIdentifier("yearFeedbackLink")
+                .tourAnchor(TourAnchors.yearRate)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
