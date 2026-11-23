@@ -108,7 +108,7 @@ It raises no permission prompt of its own: it asks only where permission is alre
 (`lib/deviceLocation.ts`, `OneTimeLocator.locateIfAlreadyAllowed`), because a prompt caused by opening
 a map is one people refuse, and the refusal would also cost the report form, where the location is the
 point. Without an answer it fits the reported nests, and only then falls back to a wide European view.
-**Android shows a list rather than a map** and is tracked separately (#556).
+**Android drew a list under the same tab name** until #556 -- a card per nest, ever since the tracker was built -- and now draws the map too, by the same rules: the camera is `HornetMapCamera`, a pure function unit-tested without an emulator, and the location comes from `ACCESS_FINE_LOCATION` only where it is already granted.
 
 ### The treatment record
 

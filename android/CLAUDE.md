@@ -125,11 +125,11 @@ Screenshots live in `public/docs/screenshots/android-*.png`.
 
 ## Unit Tests — all passing
 
-AuthViewModelTest, AuthRepositoryTest, ApiaryViewModelTest, ApiaryRepositoryTest, HiveRepositoryTest, HiveDetailViewModelTest, InspectionRepositoryTest, InspectionFormViewModelTest, QrBatchRepositoryTest, StatsRepositoryTest, QRViewModelTest, SettingsViewModelTest, SupporterViewModelTest, FeedbackPromptRuleTest, DtoTest
+AuthViewModelTest, AuthRepositoryTest, ApiaryViewModelTest, ApiaryRepositoryTest, HiveRepositoryTest, HiveDetailViewModelTest, InspectionRepositoryTest, InspectionFormViewModelTest, QrBatchRepositoryTest, StatsRepositoryTest, QRViewModelTest, SettingsViewModelTest, SupporterViewModelTest, FeedbackPromptRuleTest, HornetMapCameraTest, DtoTest
 
 ## UI / Instrumented Tests — all passing
 
-LoginScreenTest, RegisterScreenTest, ApiaryScreenTest, ApiaryWithDataTest, HiveDetailScreenTest, InspectionFormScreenTest, QRBatchListScreenTest, SettingsScreenTest, SupporterScreenTest, FeedbackPromptScreenTest, FeedbackPromptEmptyScreenTest
+LoginScreenTest, RegisterScreenTest, ApiaryScreenTest, ApiaryWithDataTest, HiveDetailScreenTest, InspectionFormScreenTest, QRBatchListScreenTest, SettingsScreenTest, SupporterScreenTest, FeedbackPromptScreenTest, FeedbackPromptEmptyScreenTest, HornetMapScreenTest
 
 ## IMPORTANT: MockK Exception Rule
 

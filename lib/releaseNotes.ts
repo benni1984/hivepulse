@@ -35,6 +35,28 @@ export function pick(text: Localized, locale: string): string {
 /** Newest first. */
 export const RELEASES: Release[] = [
   {
+    date: '2026-11-23',
+    title: t(
+      'Android draws the hornet map',
+      'Android zeichnet die Hornissenkarte',
+      'Android dessine la carte des frelons',
+      'Android dibuja el mapa de avispas',
+      'Android rysuje mapę szerszeni',
+    ),
+    items: [
+      {
+        kind: 'fixed',
+        text: t(
+          'The Hornets tab called one of its screens “Map” and then showed a list of cards — on Android only, and ever since the tracker was built. It now draws a real map: every reported nest as a dot in the colour of its status, and a tap on one shows the note, who reported it and when. It opens where the iPhone and the website already open — in your own surroundings when the app may already use your location, otherwise fitted around the reported nests — and it shows your region even when nothing has been reported there, because that is an answer too. It asks for nothing: the location is taken only where the permission is already given.',
+          'Der Reiter Hornissen nannte einen seiner Bildschirme „Karte“ und zeigte dann eine Liste von Karteikarten — nur auf Android, und das, seit es den Tracker gibt. Jetzt zeichnet er eine echte Karte: jedes gemeldete Nest als Punkt in der Farbe seines Status, und ein Tipp darauf zeigt die Notiz, wer es gemeldet hat und wann. Sie öffnet dort, wo iPhone und Webseite längst öffnen — in deiner Umgebung, wenn die App deinen Standort schon nutzen darf, sonst um die gemeldeten Nester gelegt — und sie zeigt deine Gegend auch dann, wenn dort nichts gemeldet ist, denn auch das ist eine Antwort. Gefragt wird nichts: der Standort wird nur genommen, wo die Erlaubnis schon da ist.',
+          'L’onglet Frelons appelait l’un de ses écrans « Carte » et affichait ensuite une liste de fiches — sur Android seulement, et depuis la création du suivi. Il dessine désormais une vraie carte : chaque nid signalé comme un point à la couleur de son état, et une pression dessus montre la note, qui l’a signalé et quand. Elle s’ouvre là où l’iPhone et le site s’ouvrent déjà — chez vous si l’application peut déjà utiliser votre position, sinon cadrée autour des nids signalés — et elle montre votre région même si rien n’y a été signalé, car c’est une réponse aussi. Elle ne demande rien : la position n’est prise que là où l’autorisation existe déjà.',
+          'La pestaña Avispones llamaba «Mapa» a una de sus pantallas y luego mostraba una lista de fichas — solo en Android, y desde que existe el rastreador. Ahora dibuja un mapa de verdad: cada nido notificado como un punto del color de su estado, y al tocarlo aparece la nota, quién lo notificó y cuándo. Se abre donde ya se abren el iPhone y la web — en tu entorno si la app ya puede usar tu ubicación, y si no encuadrada en torno a los nidos notificados — y muestra tu zona aunque allí no haya nada notificado, porque eso también es una respuesta. No pregunta nada: la ubicación solo se toma donde el permiso ya está dado.',
+          'Zakładka Szerszenie nazywała jeden ze swoich ekranów „Mapą”, a potem pokazywała listę kart — tylko na Androidzie i od początku istnienia tropiciela. Teraz rysuje prawdziwą mapę: każde zgłoszone gniazdo jako kropkę w kolorze jego stanu, a po dotknięciu widać notatkę, kto je zgłosił i kiedy. Otwiera się tam, gdzie otwierają się już iPhone i serwis — w Twojej okolicy, jeśli aplikacja może już korzystać z Twojej lokalizacji, a jeśli nie, to skadrowana wokół zgłoszonych gniazd — i pokazuje Twój region nawet wtedy, gdy nic tam nie zgłoszono, bo to też jest odpowiedź. O nic nie pyta: lokalizacja jest brana tylko tam, gdzie zgoda już jest.',
+        ),
+      },
+    ],
+  },
+  {
     date: '2026-11-22',
     title: t(
       'The hornet map opens where you are',
