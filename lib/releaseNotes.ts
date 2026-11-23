@@ -37,6 +37,28 @@ export const RELEASES: Release[] = [
   {
     date: '2026-11-22',
     title: t(
+      'The hornet map opens where you are',
+      'Die Hornissenkarte öffnet dort, wo du bist',
+      'La carte des frelons s’ouvre là où vous êtes',
+      'El mapa de avispas se abre donde estás',
+      'Mapa szerszeni otwiera się tam, gdzie jesteś',
+    ),
+    items: [
+      {
+        kind: 'changed',
+        text: t(
+          'It used to open over the middle of France on the iPhone, and over the whole of Europe on the website. Now it goes to your own surroundings as soon as it opens, close enough to tell one village from the next — and shows your region even when nothing has been reported there, because that is an answer too. It asks for nothing: if the app may already use your location it uses it, and otherwise it fits the reported nests as before.',
+          'Auf dem iPhone öffnete sie bisher über der Mitte Frankreichs, auf der Webseite über ganz Europa. Jetzt springt sie beim Öffnen in deine Umgebung, nah genug, um ein Dorf vom nächsten zu unterscheiden — und zeigt deine Gegend auch dann, wenn dort nichts gemeldet ist, denn auch das ist eine Antwort. Gefragt wird nichts: darf die App deinen Standort schon nutzen, nutzt sie ihn, sonst zeigt sie wie bisher die gemeldeten Nester.',
+          'Sur iPhone elle s’ouvrait au milieu de la France, sur le site sur toute l’Europe. Elle vient maintenant chez vous dès l’ouverture, d’assez près pour distinguer un village du suivant — et montre votre région même si rien n’y a été signalé, car c’est une réponse aussi. Elle ne demande rien : si l’application peut déjà utiliser votre position elle l’utilise, sinon elle cadre les nids signalés comme avant.',
+          'En el iPhone se abría en el centro de Francia, y en la web sobre toda Europa. Ahora va a tu entorno nada más abrirse, lo bastante cerca para distinguir un pueblo del siguiente — y muestra tu zona aunque allí no haya nada notificado, porque eso también es una respuesta. No pregunta nada: si la app ya puede usar tu ubicación la usa, y si no encuadra los nidos notificados como antes.',
+          'Na iPhonie otwierał się nad środkiem Francji, a w serwisie nad całą Europą. Teraz zaraz po otwarciu trafia w Twoją okolicę, na tyle blisko, by odróżnić jedną wieś od drugiej — i pokazuje Twój region nawet wtedy, gdy nic tam nie zgłoszono, bo to też jest odpowiedź. O nic nie pyta: jeśli aplikacja może już korzystać z Twojej lokalizacji, korzysta, a jeśli nie, kadruje zgłoszone gniazda jak dotąd.',
+        ),
+      },
+    ],
+  },
+  {
+    date: '2026-11-22',
+    title: t(
       'The app asks what you think',
       'Die App fragt, was du denkst',
       'L’application vous demande votre avis',

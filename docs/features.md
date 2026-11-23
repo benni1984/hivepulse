@@ -102,6 +102,14 @@ in the Members tab, drawn as soft round patches that blend into each other — t
 See the help pages `hive-stats`, `community-stats`,
 `data-export`, `hornet-tracker`, `hornet-traps`.
 
+**The nest map opens where the beekeeper is** (#555), close enough to tell one village from the
+next, and shows their own region even when nothing has been reported in it — that is an answer too.
+It raises no permission prompt of its own: it asks only where permission is already granted
+(`lib/deviceLocation.ts`, `OneTimeLocator.locateIfAlreadyAllowed`), because a prompt caused by opening
+a map is one people refuse, and the refusal would also cost the report form, where the location is the
+point. Without an answer it fits the reported nests, and only then falls back to a wide European view.
+**Android shows a list rather than a map** and is tracked separately (#556).
+
 ### The treatment record
 
 `GET /apiaries/{id}/treatment-record?year=YYYY` returns a PDF: every treatment carried out at that
