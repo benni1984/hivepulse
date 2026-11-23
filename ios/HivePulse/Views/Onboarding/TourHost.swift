@@ -118,7 +118,9 @@ struct TourHost<Content: View>: View {
             .overlayPreferenceValue(TourAnchorKey.self) { anchors in
                 GeometryReader { proxy in
                     if let tour = controller.tour, let step = controller.step {
-                        overlay(tour: tour, step: step, rect: anchors[step.anchor].map { proxy[$0] })
+                        overlay(tour: tour, step: step,
+                                rect: anchors[step.anchor].map { proxy[$0] },
+                                height: proxy.size.height)
                     }
                 }
             }
@@ -126,9 +128,14 @@ struct TourHost<Content: View>: View {
     }
 
     @ViewBuilder
-    private func overlay(tour: Tour, step: TourStep, rect: CGRect?) -> some View {
+    private func overlay(tour: Tour, step: TourStep, rect: CGRect?, height: CGFloat) -> some View {
         let counter = "\(controller.index + 1)/\(tour.steps.count)"
         let manual = step.advance == .manual
+        // Below the target where there is room beneath it, above it otherwise. Without this the
+        // caption for the amber create button — which lives in the bottom corner of every screen
+        // in this app — is laid out past the bottom edge, where nobody can read it and where it
+        // sits over the button it is about. The website flips it the same way.
+        let below = rect.map { $0.maxY + 170 < height } ?? true
 
         ZStack(alignment: .topLeading) {
             if let rect {
@@ -154,7 +161,11 @@ struct TourHost<Content: View>: View {
                      nextLabel: "tour.next",
                      onNext: manual ? { controller.next() } : nil)
                     .padding(.horizontal, 12)
-                    .offset(y: rect.maxY + 12)
+                    .frame(maxWidth: .infinity,
+                           maxHeight: .infinity,
+                           alignment: below ? .topLeading : .bottomLeading)
+                    .padding(below ? .top : .bottom,
+                             below ? rect.maxY + 12 : height - rect.minY + 12)
             } else {
                 // Not a dark screen with nothing lit. Either we are still looking, or we have
                 // given up and say so.

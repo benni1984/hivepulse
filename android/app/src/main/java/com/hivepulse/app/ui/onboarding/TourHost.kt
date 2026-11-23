@@ -3,6 +3,7 @@ package com.hivepulse.app.ui.onboarding
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -208,9 +209,15 @@ private fun TourOverlay(controller: TourController, tour: Tour, step: TourStep) 
         right = rect.right + pad,
         bottom = rect.bottom + pad,
     )
-    val cardTop = with(density) { hole.bottom.toDp() } + 12.dp
+    BoxWithConstraints(Modifier.fillMaxSize().testTag("tourOverlay")) {
+        // Below the target where there is room beneath it, above it otherwise. Without this the
+        // card for the amber create button — which lives in the bottom corner of every screen in
+        // this app — is laid out past the bottom edge, where nobody can read it and where it
+        // pushes the button it is about out of reach. The website flips it the same way.
+        val screenHeight = constraints.maxHeight.toFloat()
+        val roomBelow = with(density) { CARD_ROOM.toPx() }
+        val below = hole.bottom + roomBelow < screenHeight
 
-    Box(Modifier.fillMaxSize().testTag("tourOverlay")) {
         // No `pointerInput` here on purpose: a Compose node without one is not in the hit-test
         // path, so every touch reaches the control underneath, lit one included.
         // `BlendMode.Clear` only clears something: without its own offscreen layer it would
@@ -244,11 +251,21 @@ private fun TourOverlay(controller: TourController, tour: Tour, step: TourStep) 
             onNext = if (manual) ({ controller.next() }) else null,
             onStop = { controller.stop() },
             modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(top = cardTop, start = 12.dp, end = 12.dp),
+                .align(if (below) Alignment.TopStart else Alignment.BottomStart)
+                .padding(
+                    top = if (below) with(density) { hole.bottom.toDp() } + 12.dp else 0.dp,
+                    bottom = if (below) 0.dp else {
+                        with(density) { (screenHeight - hole.top).toDp() } + 12.dp
+                    },
+                    start = 12.dp,
+                    end = 12.dp,
+                ),
         )
     }
 }
+
+/** How much room a caption needs under the target before it is put there rather than above it. */
+private val CARD_ROOM = 170.dp
 
 @Composable
 private fun TourCard(

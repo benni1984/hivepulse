@@ -115,8 +115,12 @@ class TourScreenTest {
     fun theRealTapIsWhatMovesTheTourOn() {
         openSettings()
         composeRule.onNodeWithTag("startTour-first-steps").performScrollTo().performClick()
+        // The overlay appears the moment the tour starts, which is *before* the navigation to
+        // the apiary list has finished. Waiting for the button itself is what says the screen
+        // underneath has arrived.
         composeRule.waitUntil(timeoutMillis = 10_000) {
-            composeRule.onAllNodesWithTag("tourOverlay").fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithTag("tourOverlay").fetchSemanticsNodes().isNotEmpty() &&
+                composeRule.onAllNodesWithText("New Apiary").fetchSemanticsNodes().isNotEmpty()
         }
 
         // The lit control is the amber create button, and it is still a button: the overlay is

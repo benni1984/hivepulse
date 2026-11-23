@@ -88,14 +88,12 @@ final class ScreenshotUITests: XCTestCase {
         let start = app.buttons["startTour-first-steps"]
         for _ in 0..<8 where !start.exists { app.swipeUp(velocity: .slow) }
         XCTAssertTrue(start.waitForExistence(timeout: 10),
-                      "the tour list is not in Settings
-\(app.debugDescription)")
+                      "the tour list is not in Settings\n\(app.debugDescription)")
         snap("13-guided-tour-welcome", app)
 
         start.tap()
         XCTAssertTrue(app.otherElements["tourCard"].waitForExistence(timeout: 10),
-                      "the tour did not start
-\(app.debugDescription)")
+                      "the tour did not start\n\(app.debugDescription)")
         sleep(1)
         snap("14-guided-tour-qr", app)
     }
