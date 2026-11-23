@@ -219,13 +219,30 @@ class ApiaryWithDataTest {
     }
 
     @Test
-    fun apiaryList_redeemsAnInvitationLinkFromTheFooterNotTheToolbar() {
+    fun apiaryList_redeemsAnInvitationLinkFromTheBottomLineNotTheToolbar() {
         waitForApiaryList()
 
-        composeRule.onNode(hasScrollAction()).performScrollToNode(hasTestTag("redeemInvitationButton"))
+        // No scrolling: that is the point of #553. It used to be the last item of the list, so
+        // a beekeeper with twelve apiaries scrolled past all twelve to reach it.
+        composeRule.onNodeWithTag("redeemInvitationButton").assertIsDisplayed()
         composeRule.onNodeWithTag("redeemInvitationButton").performClick()
 
         composeRule.onNodeWithTag("redeemField").assertIsDisplayed()
+    }
+
+    @Test
+    fun apiaryList_theTwoWaysInDoNotSitOnTopOfEachOther() {
+        waitForApiaryList()
+
+        val redeem = composeRule.onNodeWithTag("redeemInvitationButton")
+            .fetchSemanticsNode().boundsInRoot
+        val create = composeRule.onNodeWithContentDescription("New Apiary")
+            .fetchSemanticsNode().boundsInRoot
+
+        Assert.assertTrue(
+            "redeem $redeem overlaps create $create",
+            redeem.right <= create.left || create.right <= redeem.left,
+        )
     }
 
     private fun waitForApiaryList() {

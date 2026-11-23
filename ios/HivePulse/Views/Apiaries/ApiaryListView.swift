@@ -18,10 +18,15 @@ struct ApiaryListView: View {
     /// address that had no account and who signed up with a password; the website takes the link by itself.
     private var redeemInvitationButton: some View {
         Button { showRedeem = true } label: {
-            Text(NSLocalizedString("invitation.redeemTitle", comment: "")).font(.footnote)
+            Text(NSLocalizedString("invitation.redeemTitle", comment: ""))
+                .font(.dmSans(15, weight: .medium, relativeTo: .subheadline))
+                .foregroundColor(.hpAmberDark)
+                // A tap target, not a line of prose: this used to be a footnote wedged into a
+                // few points between the floating button and the tab bar (#553).
+                .padding(.horizontal, 16).padding(.vertical, 14)
+                .contentShape(Rectangle())
         }
-        .buttonStyle(.borderless)
-        .frame(maxWidth: .infinity)
+        .buttonStyle(.plain)
         .accessibilityIdentifier("redeemInvitationButton")
     }
 
@@ -51,7 +56,6 @@ struct ApiaryListView: View {
                         }
                         .padding()
                     }
-                    redeemInvitationButton
                     // Here too, and not only over a full list: somebody who has kept the app for
                     // three days without naming a single colony is exactly who to ask why.
                     if askForFeedback {
@@ -93,8 +97,6 @@ struct ApiaryListView: View {
                             }
                         }
                     }
-                    Section { redeemInvitationButton }
-                        .listRowBackground(Color.clear)
                 }
             }
         }
@@ -102,6 +104,15 @@ struct ApiaryListView: View {
         .hpScreenBackground()
         .hpFloatingButton(NSLocalizedString("action.newApiary", comment: ""), identifier: "newApiaryButton") {
             showCreate = true
+        }
+        // The other way an apiary gets into this list, on the same line as the first one (#553).
+        //
+        // It was the last row of the list before: a beekeeper with twelve apiaries scrolled past
+        // all twelve to reach a rare recovery action, and arrived between the floating button and
+        // the tab bar. Here it is reachable without scrolling at all, and the two controls divide
+        // the bottom line instead of stacking in it.
+        .overlay(alignment: .bottomLeading) {
+            redeemInvitationButton.padding(.horizontal, 8).padding(.vertical, 12)
         }
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {

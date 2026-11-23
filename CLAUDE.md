@@ -79,6 +79,11 @@ the other in the same PR.
 - **Every "create" action is an amber button with a label at the bottom right** (Android
   `ExtendedFloatingActionButton`, iOS `.hpFloatingButton(...)`): new apiary, new hive, new inspection, new QR
   batch, new custom field. Never a plus in a toolbar.
+- **Redeeming an invitation link sits opposite it, at the bottom left of the apiary list**, on the
+  same line and floating over the content. It was the last row of the list on both until #553,
+  which meant scrolling past every apiary to reach a rare recovery action and arriving in the few
+  points between the create button and the bottom bar. Both ways of getting an apiary into the
+  list belong on one line.
 - **Settings order:** custom fields, **supporter**, profile (email, name, language), change password, reminders, region, export, admin,
   help, feedback and tour, diagnostics, log out, danger zone. **Feedback** goes to the Play Store page on
   Android (the only route whose answers reach the Play Console's testing feedback page) and to a mail with
