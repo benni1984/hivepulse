@@ -63,8 +63,8 @@ struct ApiaryDetailView: View {
         // Making a hive by hand, as the web has it: a sticker is not needed to start. Not for somebody who was
         // given single hives of this apiary: the server would refuse.
         .hpFloatingButton(NSLocalizedString("action.newHive", comment: ""), identifier: "newHiveButton",
-                          tourAnchor: TourAnchors.newHive,
-                          isVisible: apiary.canEdit) {
+                          isVisible: apiary.canEdit,
+                          tourAnchor: TourAnchors.newHive) {
             showAddHive = true
         }
         .toolbar {

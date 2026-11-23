@@ -2,6 +2,8 @@ package com.hivepulse.app.screen
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
@@ -118,15 +120,24 @@ class TourScreenTest {
         // The overlay appears the moment the tour starts, which is *before* the navigation to
         // the apiary list has finished. Waiting for the button itself is what says the screen
         // underneath has arrived.
+        // The overlay appears the moment the tour starts, which is *before* the navigation to
+        // the apiary list has finished. Waiting for the button itself is what says the screen
+        // underneath has arrived.
+        //
+        // By content description, never by its text: the button sets one with
+        // `Modifier.semantics { contentDescription = ... }`, and that *replaces* the text of the
+        // merged node. `onNodeWithText` finds it only in the unmerged tree, and the error it
+        // gives for that ("Failed to inject touch input") names neither.
         composeRule.waitUntil(timeoutMillis = 10_000) {
             composeRule.onAllNodesWithTag("tourOverlay").fetchSemanticsNodes().isNotEmpty() &&
-                composeRule.onAllNodesWithText("New Apiary").fetchSemanticsNodes().isNotEmpty()
+                composeRule.onAllNodesWithContentDescription("New Apiary")
+                    .fetchSemanticsNodes().isNotEmpty()
         }
 
         // The lit control is the amber create button, and it is still a button: the overlay is
         // drawn around it, not over it, so this tap reaches it and opens the form — and the tour
         // moves to the next step because of that tap, not because of a "next".
-        composeRule.onNodeWithText("New Apiary").performClick()
+        composeRule.onNodeWithContentDescription("New Apiary").performClick()
         composeRule.waitUntil(timeoutMillis = 10_000) {
             composeRule.onAllNodesWithText("Name").fetchSemanticsNodes().isNotEmpty()
         }
