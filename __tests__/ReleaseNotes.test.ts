@@ -84,4 +84,21 @@ describe('the version being shipped', () => {
       'CFBundleShortVersionString; the TestFlight workflow only sets the build number',
     ).toBe(versionInNotes('en-US'));
   });
+
+  it('is the version the App Store release notes claim to describe', () => {
+    // A third place, and the one nothing watched: `docs/store-listing.md` carries the App
+    // Store's own "What's New", and it still described 1.0.5 while the iPhone built 1.1.0 —
+    // the same drift as above, one field further along. The workflow uploads whatever is in
+    // that file, so a stale section becomes the release notes of a shipped version.
+    const listing = readFileSync(
+      join(process.cwd(), 'docs', 'store-listing.md'), 'utf8');
+    const claimed = /The release this describes is \*\*(\d+\.\d+\.\d+)\*\*/.exec(listing)?.[1];
+
+    expect(claimed, 'store-listing.md no longer says which release its What\'s New describes')
+      .toBeDefined();
+    expect(
+      claimed,
+      `store-listing.md describes ${claimed}, the build is ${versionInNotes('en-US')}`,
+    ).toBe(versionInNotes('en-US'));
+  });
 });

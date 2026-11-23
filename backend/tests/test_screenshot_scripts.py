@@ -281,3 +281,107 @@ def test_diagnostics_never_raise_even_when_every_probe_fails(monkeypatch, tmp_pa
 
     out = capsys.readouterr().out
     assert out.count("[diagnostics]") >= 4, "each probe reports its own failure and moves on"
+
+
+# ── The dialog the runs kept waiting behind (#551) ────────────────────────────
+
+
+def _dump(*nodes: str) -> str:
+    return "<hierarchy>" + "".join(nodes) + "</hierarchy>"
+
+
+def _node(text: str, *, clickable: bool = False, bounds: str = "[0,0][100,100]") -> str:
+    return (f'<node text="{text}" content-desc="" clickable="{str(clickable).lower()}" '
+            f'enabled="true" bounds="{bounds}" />')
+
+
+ANR = _dump(
+    _node("Pixel Launcher isn\u2019t responding".replace("\u2019", "'")),
+    _node("Close app", clickable=True, bounds="[70,1170][1010,1296]"),
+    _node("Wait", clickable=True, bounds="[70,1296][1010,1422]"),
+)
+
+
+def _screenshot_module(monkeypatch, taps, keys):
+    """Load android-screenshots.py with adb replaced by two recorders."""
+    import importlib.util
+    import subprocess
+
+    spec = importlib.util.spec_from_file_location(
+        "android_screenshots_anr", ROOT / "scripts/android-screenshots.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    def fake_run(cmd, **kwargs):
+        if cmd[:4] == ["adb", "shell", "input", "tap"]:
+            taps.append((int(cmd[4]), int(cmd[5])))
+        if cmd[:4] == ["adb", "shell", "input", "keyevent"]:
+            keys.append(cmd[4])
+        return subprocess.CompletedProcess(cmd, 0, stdout="", stderr="")
+
+    monkeypatch.setattr(module.subprocess, "run", fake_run)
+    monkeypatch.setattr(module.time, "sleep", lambda *_: None)
+    return module
+
+
+def test_an_anr_dialog_is_tapped_away_and_named(monkeypatch):
+    """Our app was resumed and healthy the whole time; the launcher's dialog was in front."""
+    taps, keys = [], []
+    module = _screenshot_module(monkeypatch, taps, keys)
+
+    message = module.dismiss_blocking_system_dialog(ANR)
+
+    assert message is not None and "responding" in message
+    # "Wait" and not "Close app": the hung process is the launcher, not us, and closing it
+    # invites the same hang again on the way back.
+    assert taps == [(540, 1359)], taps
+
+
+def test_an_ordinary_screen_is_left_alone(monkeypatch):
+    """A helper that dismissed anything it found would tap through a real failure and
+    photograph the wrong screen."""
+    taps, keys = [], []
+    module = _screenshot_module(monkeypatch, taps, keys)
+
+    ordinary = _dump(_node("My Apiaries"), _node("Sign In", clickable=True))
+
+    assert module.dismiss_blocking_system_dialog(ordinary) is None
+    assert taps == []
+
+
+def test_a_dialog_with_no_button_we_know_still_gets_closed(monkeypatch):
+    taps, keys = [], []
+    module = _screenshot_module(monkeypatch, taps, keys)
+
+    message = module.dismiss_blocking_system_dialog(
+        _dump(_node("Something keeps stopping"), _node("Report", clickable=True)))
+
+    assert message is not None
+    assert taps == [], "an unknown button is not a button to press"
+    assert keys == ["KEYCODE_BACK"]
+
+
+def test_both_waiting_loops_dismiss_it():
+    """The store capture is where it bit, and the help-page capture reaches the same first
+    launch through the same cold emulator."""
+    store = (ROOT / "scripts/android-store-screenshots.py").read_text(encoding="utf-8")
+    helper = (ROOT / "scripts/android-screenshots.py").read_text(encoding="utf-8")
+
+    launch = store[store.index("def install_in_language"):]
+    launch = launch[:launch.index("\n\n\n")]
+    assert "dismiss_blocking_system_dialog" in launch
+
+    wait = helper[helper.index("def wait_for("):]
+    wait = wait[:wait.index("\n\n\n")]
+    assert "dismiss_blocking_system_dialog" in wait
+
+
+def test_dismissing_gives_the_time_back_instead_of_spending_an_attempt():
+    """Three attempts of ninety seconds is already the second widening of this loop. A dialog
+    that ate a minute must not also cost an attempt, or the fix is just a slower failure."""
+    store = (ROOT / "scripts/android-store-screenshots.py").read_text(encoding="utf-8")
+    launch = store[store.index("def install_in_language"):]
+    launch = launch[:launch.index("\n\n\n")]
+
+    assert "deadline = max(deadline" in launch, "the deadline has to move when a dialog is gone"
+    assert "continue" in launch, "and the poll resumes rather than falling through to a sleep"

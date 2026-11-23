@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import 'leaflet/dist/leaflet.css';
 import type { HornetNestGeoJSON, HornetNestFeature } from '@/lib/api';
+import { locationIfAlreadyAllowed } from '@/lib/deviceLocation';
 
 const STATUS_COLORS: Record<string, string> = {
   found: '#ef4444',              // red
@@ -115,6 +116,20 @@ export default function HornetMapClient({ geojson, trapsGeojson, labels }: Props
 
       if (bounds.length === 1) map.setView(bounds[0], 12);
       else if (bounds.length > 1) map.fitBounds(bounds, { padding: [40, 40] });
+
+      // Then, if the browser already knows where it is, come to the beekeeper (#555).
+      //
+      // After the pins and not instead of them: the map is drawn and useful immediately, and
+      // moves once the fix arrives rather than waiting on it. And only when permission was
+      // already granted — a prompt that appears because somebody opened a map is a prompt they
+      // refuse, and a refusal here would also cost the report form, where it is the point.
+      //
+      // The beekeeper's own region wins even when it is empty. Where the nests are is what the
+      // map shows; where you are is the question it answers, and "no reports near you" is an
+      // answer worth seeing instead of being thrown to a cluster three countries away.
+      locationIfAlreadyAllowed().then(here => {
+        if (here && !destroyed) map.setView([here.lat, here.lng], 12);
+      });
 
       // Legend
       const legend = new L.Control({ position: 'bottomleft' });

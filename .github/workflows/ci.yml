@@ -294,6 +294,10 @@ jobs:
     name: iOS build & test
     needs: changes
     runs-on: ${{ needs.changes.outputs.ios == 'true' && 'macos-latest' || 'ubuntu-latest' }}
+    # A test that deadlocks does not fail, it waits -- and GitHub waits six hours with it. That
+    # happened twice before anybody worked out it was one test and not the runners (#558). The
+    # suite needs about ten minutes, twenty when the retry of a failing test runs.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
@@ -408,6 +412,10 @@ jobs:
     name: iOS Hornet Tracker build & test
     needs: changes
     runs-on: ${{ needs.changes.outputs.ios_hornets == 'true' && 'macos-latest' || 'ubuntu-latest' }}
+    # A test that deadlocks does not fail, it waits -- and GitHub waits six hours with it. That
+    # happened twice before anybody worked out it was one test and not the runners (#558). The
+    # suite needs about ten minutes, twenty when the retry of a failing test runs.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
