@@ -33,16 +33,37 @@ final class SupporterViewModelTests: XCTestCase {
         /// before the second begins, and the test would pass with the guard deleted.
         var holdsUntilReleased = false
         private var gate: CheckedContinuation<Void, Never>?
+        private var released = false
 
+        /// True once a purchase is actually suspended at the gate -- which is a moment later
+        /// than `bought` growing, and the difference is the whole of #558.
+        var isHeld: Bool { gate != nil }
+
+        /// Lets a held purchase go. Safe to call before one arrives: a `buy` that reaches the
+        /// gate afterwards walks straight through, so the order the two tasks happen to run in
+        /// can no longer leave a continuation that nobody resumes.
         func release() {
+            released = true
             gate?.resume()
             gate = nil
+        }
+
+        /// Waits for the gate, with a ceiling. A test that waits forever does not fail -- it
+        /// takes the whole job with it, and GitHub's default patience is six hours.
+        func waitUntilHeld(file: StaticString = #filePath, line: UInt = #line) async {
+            for _ in 0..<200_000 {
+                if isHeld { return }
+                await Task.yield()
+            }
+            XCTFail("the purchase never reached the gate", file: file, line: line)
         }
 
         func buy(_ offer: SupporterOffer) async throws -> PurchaseOutcome {
             bought.append(offer)
             if holdsUntilReleased {
-                await withCheckedContinuation { gate = $0 }
+                await withCheckedContinuation { cont in
+                    if released { cont.resume() } else { gate = cont }
+                }
             }
             if let thrown { throw thrown }
             return outcome
@@ -258,9 +279,16 @@ final class SupporterViewModelTests: XCTestCase {
         purchases.holdsUntilReleased = true
 
         let first = Task { await vm.buy(offer) }
-        // Until the fake is genuinely inside `buy` and suspended there. Spinning rather than
-        // sleeping keeps it deterministic: the loop cannot end before the first purchase started.
-        while purchases.bought.isEmpty { await Task.yield() }
+        // Until the fake is genuinely inside `buy` and suspended *at the gate*. Spinning rather
+        // than sleeping keeps it deterministic: the loop cannot end before the first purchase
+        // started.
+        //
+        // Waiting for `bought` instead was one line too early (#558). The append happens before
+        // the continuation is installed, and `buy` is not `@MainActor` while the view model is,
+        // so it runs off the main actor and the loop could end in between. `release()` then
+        // found no continuation, resumed nothing, and `await first.value` waited for the rest of
+        // the job -- twice, six hours each.
+        await purchases.waitUntilHeld()
 
         await vm.buy(offer)                 // the second tap, which must be refused
         XCTAssertEqual(purchases.bought.count, 1, "a second tap while one is in flight is a second charge")
