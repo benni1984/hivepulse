@@ -110,11 +110,29 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
         </div>
       </section>
       <section className="help-section">
-        <h2 className="help-section-title">Przewodnik w aplikacjach</h2>
+        <h2 className="help-section-title">Przewodniki</h2>
         <p>
-          Przy pierwszym logowaniu do aplikacji na iPhone'a lub Androida krótki przewodnik do przewijania przedstawia
-          kody QR, przeglądy, statystyki, przypomnienia i tropiciela szerszeni. Pomiń go, kiedy chcesz,
-          i przywołaj później z <strong>Ustawienia → Pokaż przewodnik ponownie</strong>.
+          W serwisie przewodnik nie opisuje aplikacji — wskazuje prawdziwy przycisk na prawdziwym
+          ekranie i czeka, aż go naciśniesz. Strona zostaje tam, gdzie jest, rozjaśniona wokół
+          jednego elementu, który się liczy, ze zdaniem o tym, dlaczego to właśnie ten.
+        </p>
+        <p>
+          Jest ich dziewięć: pierwsza rodzina z pustego konta, naklejki QR, zapis bez zasięgu,
+          pułapki na szerszenie, rok pasieczny, zabiegi, udostępnianie pasieki, własne pola
+          przeglądu i wędrówka rodzin. Każda funkcja ma obok nagłówka mały bursztynowy{' '}
+          <strong>?</strong>, który uruchamia przewodnik o niej, a{' '}
+          <strong>Ustawienia → Przewodniki</strong> wymienia wszystkie dziewięć. Żaden nie zużywa
+          się przez obejrzenie: zacznij go znowu rok później, tyle razy, ile chcesz.
+        </p>
+        <p>
+          Przewodnik nigdy Cię nie zatrzymuje. Escape go kończy, każdy krok ma wyjście, a jeśli
+          szukanego elementu nie ma na ekranie, mówi to, zamiast przygaszać stronę wokół niczego.
+        </p>
+        <p>
+          W aplikacjach na iPhone’a i Androida przewodnik to nadal ten krótki, do przewijania po
+          pierwszym logowaniu, przedstawiający kody QR, przeglądy, statystyki, przypomnienia
+          i tropiciela szerszenia azjatyckiego. Pomiń go, kiedy chcesz, i przywołaj z{' '}
+          <strong>Ustawienia → Pokaż przewodnik ponownie</strong>.
         </p>
       </section>
 

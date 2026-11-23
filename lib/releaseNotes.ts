@@ -37,6 +37,38 @@ export const RELEASES: Release[] = [
   {
     date: '2026-11-23',
     title: t(
+      'Tours that point at the real button',
+      'Touren, die auf den echten Knopf zeigen',
+      'Des visites qui pointent le vrai bouton',
+      'Tours que señalan el botón de verdad',
+      'Przewodniki, które wskazują prawdziwy przycisk',
+    ),
+    items: [
+      {
+        kind: 'added',
+        text: t(
+          'The website now has nine guided tours, and none of them describes the app. Each points at the actual button on the actual screen, dims everything around it and waits for you to press it — a first colony from an empty account, QR stickers, recording with no signal, hornet traps, the beekeeping year, treatments, sharing an apiary, your own inspection fields, and moving colonies. Every feature carries a small amber “?” next to its heading that starts the one about it.',
+          'Die Webseite hat jetzt neun geführte Touren, und keine beschreibt die App. Jede zeigt auf den echten Knopf auf dem echten Bildschirm, dunkelt alles darum ab und wartet, bis du ihn drückst — das erste Volk aus einem leeren Konto, QR-Aufkleber, Erfassen ohne Netz, Hornissenfallen, das Bienenjahr, Behandlungen, einen Bienenstand teilen, eigene Felder in der Kontrolle, und Völker wandern. Jede Funktion trägt neben ihrer Überschrift ein kleines bernsteinfarbenes „?“, das die Tour dazu startet.',
+          'Le site compte désormais neuf visites guidées, et aucune ne décrit l’application. Chacune pointe le vrai bouton sur le vrai écran, assombrit tout autour et attend que vous appuyiez — une première colonie à partir d’un compte vide, les autocollants QR, l’enregistrement sans réseau, les pièges à frelons, l’année apicole, les traitements, le partage d’un rucher, vos propres champs de visite, et la transhumance. Chaque fonctionnalité porte un petit « ? » ambre à côté de son titre qui lance la visite correspondante.',
+          'La web tiene ahora nueve tours guiados, y ninguno describe la app. Cada uno señala el botón de verdad en la pantalla de verdad, oscurece todo alrededor y espera a que lo pulses — una primera colonia desde una cuenta vacía, las pegatinas QR, registrar sin cobertura, las trampas para avispas asiáticas, el año apícola, los tratamientos, compartir un colmenar, tus propios campos de revisión, y la trashumancia. Cada función lleva una pequeña «?» ámbar junto a su título que empieza el tour correspondiente.',
+          'Serwis ma teraz dziewięć przewodników i żaden nie opisuje aplikacji. Każdy wskazuje prawdziwy przycisk na prawdziwym ekranie, przygasza wszystko wokół i czeka, aż go naciśniesz — pierwsza rodzina z pustego konta, naklejki QR, zapis bez zasięgu, pułapki na szerszenie, rok pasieczny, zabiegi, udostępnianie pasieki, własne pola przeglądu i wędrówka rodzin. Każda funkcja ma obok nagłówka mały bursztynowy „?”, który uruchamia przewodnik o niej.',
+        ),
+      },
+      {
+        kind: 'changed',
+        text: t(
+          'A tour is no longer something that happened once. Settings → Guided tours lists all nine and starts any of them, taking you to the page it begins on first, and marks what this browser has already seen without spending it — start it again a year later, as often as you like.',
+          'Eine Tour ist nicht mehr etwas, das einmal passiert ist. Einstellungen → Geführte Touren listet alle neun und startet jede, bringt dich zuerst auf die Seite, auf der sie anfängt, und vermerkt, was dieser Browser schon gesehen hat, ohne es zu verbrauchen — starte sie ein Jahr später wieder, so oft du willst.',
+          'Une visite n’est plus quelque chose qui a eu lieu une fois. Paramètres → Visites guidées les liste toutes les neuf et en lance n’importe laquelle, en vous amenant d’abord sur la page où elle commence, et marque ce que ce navigateur a déjà vu sans l’épuiser — relancez-la un an plus tard, autant de fois que vous voulez.',
+          'Un tour ya no es algo que ocurrió una vez. Ajustes → Tours guiados los lista todos y empieza cualquiera, llevándote primero a la página en la que arranca, y marca lo que este navegador ya ha visto sin gastarlo — vuelve a empezarlo un año después, tantas veces como quieras.',
+          'Przewodnik nie jest już czymś, co zdarzyło się raz. Ustawienia → Przewodniki wymieniają wszystkie dziewięć i uruchamiają dowolny, zabierając Cię najpierw na stronę, na której się zaczyna, i zaznaczają, co ta przeglądarka już widziała, nie zużywając tego — zacznij go znowu rok później, tyle razy, ile chcesz.',
+        ),
+      },
+    ],
+  },
+  {
+    date: '2026-11-23',
+    title: t(
       'Android draws the hornet map',
       'Android zeichnet die Hornissenkarte',
       'Android dessine la carte des frelons',
@@ -1259,6 +1291,13 @@ export const FEATURES: FeatureGroup[] = [
         'Supprimer vous-même votre compte et toutes vos données, à tout moment.',
         'Eliminar tú mismo tu cuenta y todos tus datos, en cualquier momento.',
         'Usuń konto i wszystkie swoje dane samodzielnie, w każdej chwili.',
+      ),
+      t(
+        'Nine guided tours on the website that point at the real control and wait for the real click, each restartable from Settings or from a “?” next to its own feature.',
+        'Neun geführte Touren auf der Webseite, die auf das echte Bedienelement zeigen und auf den echten Klick warten — jede aus den Einstellungen oder über ein „?“ neben der eigenen Funktion wieder startbar.',
+        'Neuf visites guidées sur le site qui pointent la vraie commande et attendent le vrai clic, chacune relançable depuis les Paramètres ou via un « ? » à côté de sa propre fonctionnalité.',
+        'Nueve tours guiados en la web que señalan el control de verdad y esperan el clic de verdad, cada uno reiniciable desde Ajustes o con una «?» junto a su propia función.',
+        'Dziewięć przewodników w serwisie, które wskazują prawdziwy element i czekają na prawdziwe kliknięcie — każdy do uruchomienia ponownie z Ustawień albo przez „?” obok własnej funkcji.',
       ),
       t(
         'No advertising network and no tracking of what you do.',

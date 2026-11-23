@@ -110,11 +110,30 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
         </div>
       </section>
       <section className="help-section">
-        <h2 className="help-section-title">Die geführte Tour in den Apps</h2>
+        <h2 className="help-section-title">Geführte Touren</h2>
         <p>
-          Wenn du dich zum ersten Mal in der iPhone- oder Android-App anmeldest, stellt dir eine kurze Tour zum
-          Durchwischen QR-Codes, Durchsichten, Statistiken, Erinnerungen und den Hornissentracker vor. Du kannst sie
-          jederzeit überspringen und später unter <strong>Einstellungen → Tour erneut anzeigen</strong> zurückholen.
+          Auf der Webseite beschreibt eine Tour die App nicht — sie zeigt auf den echten Knopf auf
+          dem echten Bildschirm und wartet, bis du ihn drückst. Die Seite bleibt, wo sie ist, hell
+          um das eine Bedienelement, auf das es ankommt, mit einem Satz dazu, warum es dieses ist.
+        </p>
+        <p>
+          Es sind neun: das erste Volk aus einem leeren Konto, QR-Aufkleber, Erfassen ohne Netz,
+          Hornissenfallen, das Bienenjahr, Behandlungen, einen Bienenstand teilen, eigene Felder in
+          der Kontrolle, und Völker wandern. Jede Funktion trägt neben ihrer Überschrift ein kleines
+          bernsteinfarbenes <strong>?</strong>, das die Tour dazu startet, und{' '}
+          <strong>Einstellungen → Geführte Touren</strong> listet alle neun. Keine ist durchs
+          Ansehen verbraucht: starte jede wieder, ein Jahr später, so oft du willst.
+        </p>
+        <p>
+          Eine Tour hält dich nie fest. Escape beendet sie, jeder Schritt hat einen Ausweg, und wenn
+          das gesuchte Bedienelement nicht auf dem Bildschirm ist, sagt sie das, statt die Seite um
+          nichts abzudunkeln.
+        </p>
+        <p>
+          In der iPhone- und Android-App ist die Tour weiterhin die kurze zum Durchwischen nach der
+          ersten Anmeldung, die QR-Codes, Kontrollen, Statistiken, Erinnerungen und den
+          Hornissen-Tracker vorstellt. Du kannst sie jederzeit überspringen und unter{' '}
+          <strong>Einstellungen → Tour erneut anzeigen</strong> zurückholen.
         </p>
       </section>
 

@@ -251,7 +251,7 @@ never by the sentence, which exists in five languages.
 
 Sign in with e-mail, Apple or Google; English, German, French, Spanish and Polish; change password (not
 for accounts made through Apple or Google); delete the account and all data (also revokes Apple access);
-crash reports to an EU-region Sentry; a guided tour.
+crash reports to an EU-region Sentry; guided tours.
 
 **Send feedback** sits in Settings under Help on all three clients. On Android it opens the Play listing,
 because feedback sent from there is what reaches the Play Console's testing feedback page; on the iPhone
@@ -267,6 +267,37 @@ It exists because Google refused Play production access twice for "testers were 
 gathered feedback, while every `closed-test` issue in the repository was from 7 or 8 October. Seven builds
 went out inside the second window; what was missing was anybody saying anything, and the only way to say
 it was the sixth of thirteen rows in Settings.
+
+### Guided tours (#449)
+
+**On the website a tour points at the real control and waits for the real click.** Nine of them:
+`first-steps`, `qr-codes`, `offline`, `hornets`, `year`, `treatments`, `sharing`, `custom-fields`,
+`moves`. They are data in `lib/tours.ts`, five languages each, and the whole coupling to the
+interface is a `data-tour="<id>"` attribute on an actual element — which is also the first thing
+that will rot, so `__tests__/Tours.test.ts` pins every anchor against the source.
+
+The overlay (`components/GuidedTour.tsx`) draws **four dark rectangles around** the target rather
+than one sheet with a hole: the control stays clickable, focusable and readable by a screen reader,
+with no `pointer-events` trickery and no intercepting and replaying of the click. A step ends on
+the real click, on a navigation (`advance: 'route'`), or on a small "next" for a step that only
+explains something — and a tour made of nothing but those is the carousel again, which a test
+forbids.
+
+**Three things the engine owes the user:** never trap them (an anchor not found within 2.5 s says
+so and offers to skip), always escapable (Escape, and a visible way out on every step), and
+announce itself (`aria-live`, the target in the focus order).
+
+**Every tour is reachable again**, which is the half the old carousel could not do: a small amber
+`?` (`components/TourHint.tsx`) next to a feature's heading starts the one about it, and
+**Settings → Guided tours** (`components/TourList.tsx`) lists all nine, marks what this browser has
+seen without spending it, and takes you to the page a tour begins on before starting it. The
+provider sits in the locale layout, not the dashboard's, because the hornet trap is a public page.
+
+**The apps still have the old swipeable tour** after the first sign-in (`GuidedTourScreen`,
+`OnboardingStore.hasSeenGuidedTour`). Replacing it with this engine is Compose and SwiftUI work:
+there is no DOM, so the engine has to collect the target's on-screen coordinates
+(`onGloballyPositioned` / an anchor preference) and draw over them. The step definitions and the
+wording carry over; the engines cannot.
 
 ## Navigation (the same on iPhone and Android)
 

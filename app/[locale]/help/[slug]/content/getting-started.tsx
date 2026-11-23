@@ -110,11 +110,29 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
         </div>
       </section>
       <section className="help-section">
-        <h2 className="help-section-title">The guided tour in the apps</h2>
+        <h2 className="help-section-title">Guided tours</h2>
         <p>
-          The first time you sign in to the iPhone or Android app, a short swipeable tour introduces
-          QR codes, inspections, statistics, reminders and the hornet tracker. Skip it whenever you like —
-          and bring it back later from <strong>Settings → Show guided tour again</strong>.
+          On the website a tour does not describe the app — it points at the actual button on the
+          actual screen and waits for you to press it. The rest of the page stays where it is, lit
+          around the one control that matters, with a sentence saying why it is the one.
+        </p>
+        <p>
+          There are nine of them: a first colony from an empty account, QR stickers, recording
+          without a signal, hornet traps, the beekeeping year, treatments, sharing an apiary,
+          your own inspection fields, and moving colonies. Every feature carries a small amber{' '}
+          <strong>?</strong> next to its heading that starts the one about it, and{' '}
+          <strong>Settings → Guided tours</strong> lists all nine. None of them is spent by being
+          watched: start any of them again, a year later, as often as you like.
+        </p>
+        <p>
+          A tour never traps you. Escape leaves it, every step has a way out, and if the control it
+          wants is not on the screen it says so instead of dimming the page at nothing.
+        </p>
+        <p>
+          In the iPhone and Android apps the tour is still the short swipeable one shown after the
+          first sign-in, introducing QR codes, inspections, statistics, reminders and the hornet
+          tracker. Skip it whenever you like, and bring it back from{' '}
+          <strong>Settings → Show guided tour again</strong>.
         </p>
       </section>
 

@@ -110,11 +110,29 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
         </div>
       </section>
       <section className="help-section">
-        <h2 className="help-section-title">El recorrido guiado en las apps</h2>
+        <h2 className="help-section-title">Tours guiados</h2>
         <p>
-          La primera vez que inicias sesión en la app de iPhone o Android, un breve recorrido deslizable presenta
-          los códigos QR, las revisiones, las estadísticas, los recordatorios y el rastreador de avispones. Puedes
-          saltarlo cuando quieras y volver a verlo en <strong>Ajustes → Mostrar de nuevo el recorrido</strong>.
+          En la web un tour no describe la app — señala el botón de verdad en la pantalla de verdad
+          y espera a que lo pulses. La página se queda donde está, iluminada alrededor del único
+          control que importa, con una frase que dice por qué es ese.
+        </p>
+        <p>
+          Hay nueve: una primera colonia desde una cuenta vacía, las pegatinas QR, registrar sin
+          cobertura, las trampas para avispas asiáticas, el año apícola, los tratamientos, compartir
+          un colmenar, tus propios campos de revisión, y la trashumancia. Cada función lleva una
+          pequeña <strong>?</strong> ámbar junto a su título que empieza el tour correspondiente, y{' '}
+          <strong>Ajustes → Tours guiados</strong> los lista todos. Ninguno se gasta por haberlo
+          visto: vuelve a empezarlo un año después, tantas veces como quieras.
+        </p>
+        <p>
+          Un tour nunca te atrapa. Escape lo deja, cada paso tiene una salida, y si el control que
+          busca no está en la pantalla lo dice, en vez de oscurecer la página alrededor de nada.
+        </p>
+        <p>
+          En las apps de iPhone y Android el recorrido sigue siendo el breve deslizable tras el
+          primer inicio de sesión, que presenta los códigos QR, las revisiones, las estadísticas,
+          los recordatorios y el rastreador de avispa asiática. Sáltalo cuando quieras y vuelve a
+          verlo en <strong>Ajustes → Mostrar de nuevo el recorrido</strong>.
         </p>
       </section>
 
