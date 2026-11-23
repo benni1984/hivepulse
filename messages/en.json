@@ -1510,6 +1510,10 @@
     "doneAgain": "Rate another region"
   },
   "tour": {
-    "showMe": "Show me"
+    "showMe": "Show me",
+    "listTitle": "Guided tours",
+    "listIntro": "Each one points at the real button on the real screen and waits for you to press it. Start any of them whenever you like — nothing here runs only once.",
+    "listStart": "Start",
+    "listDone": "seen"
   }
 }

@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useDocumentTitle } from '@/lib/useDocumentTitle';
+import TourList from '@/components/TourList';
 import { useRouter } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
 import {
@@ -441,6 +442,12 @@ export default function ProfilePage() {
           </form>
         </div>
       )}
+
+      {/* ── Guided tours ───────────────────────────────────────────────
+          Here, and not at the top: somebody opens Settings to change something, and finds the
+          tours on the way past. The apps put them in the same place, between the region and the
+          danger zone. */}
+      <TourList />
 
       {/* ── Danger zone ─────────────────────────────────────────────── */}
       <div className="dash-profile-danger">

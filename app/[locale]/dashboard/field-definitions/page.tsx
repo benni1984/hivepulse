@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import DashboardShell from '@/components/DashboardShell';
+import TourHint from '@/components/TourHint';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import {
   getUserFieldDefs, createUserFieldDef, updateUserFieldDef, deleteUserFieldDef,
@@ -125,9 +126,9 @@ export default function FieldDefinitionsPage() {
   return (
     <DashboardShell>
       <div className="dash-page-header">
-        <h1 className="dash-page-title">{t('fieldDefs.title')}</h1>
+        <h1 className="dash-page-title">{t('fieldDefs.title')} <TourHint tour="custom-fields" /></h1>
         {!showCreate && (
-          <button className="dash-new-btn" onClick={() => { setShowCreate(true); setCreateMsg(null); }}>
+          <button className="dash-new-btn" data-tour="field-new" onClick={() => { setShowCreate(true); setCreateMsg(null); }}>
             {t('fieldDefs.new')}
           </button>
         )}
@@ -168,6 +169,7 @@ export default function FieldDefinitionsPage() {
               <div className="dash-form-group">
                 <label htmlFor="fielddef-create-type">{t('fieldDefs.type')}</label>
                 <select id="fielddef-create-type"
+                  data-tour="field-type"
                   className="dash-profile-select"
                   value={createForm.type}
                   onChange={e => setCreateForm(f => ({ ...f, type: e.target.value as FieldType }))}

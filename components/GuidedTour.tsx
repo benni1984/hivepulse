@@ -1,9 +1,10 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocale } from 'next-intl';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
 import { pick, tourById, type Tour, type TourStep } from '@/lib/tours';
+import { TourContext, markTourDone, pathMatches } from '@/components/TourContext';
 
 /**
  * A tour that points at the real control and waits for the real click (#449).
@@ -30,40 +31,6 @@ const FIND_INTERVAL_MS = 100;
 /** Breathing room between the lit control and the dark, in pixels. */
 const PADDING = 6;
 
-interface TourState {
-  start: (id: string) => void;
-  stop: () => void;
-  activeId: string | null;
-}
-
-const TourContext = createContext<TourState>({ start: () => {}, stop: () => {}, activeId: null });
-
-export function useTour(): TourState {
-  return useContext(TourContext);
-}
-
-/** Which tours this browser has finished. Per-viewer convenience, so localStorage is right. */
-const DONE_KEY = 'hivepulse_tours_done';
-
-export function tourIsDone(id: string): boolean {
-  try {
-    const raw = localStorage.getItem(DONE_KEY);
-    return raw ? (JSON.parse(raw) as string[]).includes(id) : false;
-  } catch {
-    return false; // private window, blocked storage — offering a tour again is harmless.
-  }
-}
-
-function markDone(id: string): void {
-  try {
-    const raw = localStorage.getItem(DONE_KEY);
-    const done = raw ? (JSON.parse(raw) as string[]) : [];
-    if (!done.includes(id)) localStorage.setItem(DONE_KEY, JSON.stringify([...done, id]));
-  } catch {
-    // Nothing to do. A tour shown twice is a smaller problem than a crash.
-  }
-}
-
 function find(anchor: string): HTMLElement | null {
   return document.querySelector<HTMLElement>(`[data-tour="${anchor}"]`);
 }
@@ -71,12 +38,20 @@ function find(anchor: string): HTMLElement | null {
 export function TourProvider({ children }: { children: React.ReactNode }) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [index, setIndex] = useState(0);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const start = useCallback((id: string) => {
-    if (!tourById(id)) return;
+    const tour = tourById(id);
+    if (!tour) return;
+    // Take them to where the first step lives. Without this, a tour started from the list in
+    // Settings opens on the "the control for this step is not on this screen" card — which is
+    // honest, and useless: the list is the one place where every tour starts somewhere else.
+    const first = tour.steps[0]?.path;
+    if (first && !pathMatches(first, pathname)) router.push(first.replace(/\*$/, ''));
     setIndex(0);
     setActiveId(id);
-  }, []);
+  }, [router, pathname]);
 
   const stop = useCallback(() => setActiveId(null), []);
 
@@ -91,7 +66,7 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
           index={index}
           onNext={() => {
             if (index + 1 >= tour.steps.length) {
-              markDone(tour.id);
+              markTourDone(tour.id);
               setActiveId(null);
             } else {
               setIndex(index + 1);

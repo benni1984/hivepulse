@@ -7,6 +7,7 @@ import { routing } from '@/i18n/routing';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import AosInit from '@/components/AosInit';
+import { TourProvider } from '@/components/GuidedTour';
 import 'aos/dist/aos.css';
 import '@/web/fonts.css';
 import '@/web/icons.css';
@@ -50,9 +51,16 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body>
         <NextIntlClientProvider messages={messages}>
-          <Nav locale={locale} />
-          {children}
-          <Footer />
+          {/*
+            The tour provider sits above the nav and the footer, not inside the dashboard, so a
+            tour can walk from the apiary list to an apiary to a colony — and out to the public
+            hornet tracker, whose traps are the subject of one of them (#449).
+          */}
+          <TourProvider>
+            <Nav locale={locale} />
+            {children}
+            <Footer />
+          </TourProvider>
         </NextIntlClientProvider>
         <AosInit />
         {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (

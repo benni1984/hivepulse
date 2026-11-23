@@ -1510,6 +1510,10 @@
     "doneAgain": "Eine andere Region bewerten"
   },
   "tour": {
-    "showMe": "Zeig es mir"
+    "showMe": "Zeig es mir",
+    "listTitle": "Geführte Touren",
+    "listIntro": "Jede zeigt auf den echten Knopf auf dem echten Bildschirm und wartet, bis du ihn drückst. Starte jede, wann du willst — hier läuft nichts nur einmal.",
+    "listStart": "Starten",
+    "listDone": "gesehen"
   }
 }

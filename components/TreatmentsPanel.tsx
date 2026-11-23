@@ -6,6 +6,7 @@ import {
   type PlannedTreatment,
 } from '@/lib/api';
 import { formatDay } from '@/lib/dates';
+import TourHint from '@/components/TourHint';
 
 function inDays(days: number): string {
   const d = new Date();
@@ -109,9 +110,11 @@ export default function TreatmentsPanel({ type, id }: { type: 'hive' | 'apiary';
   return (
     <div style={{ marginTop: 32 }} data-testid="treatments-panel">
       <div className="dash-page-header">
-        <h2 className="dash-section-title" style={{ margin: 0 }}>{t('treatments.title')}</h2>
+        <h2 className="dash-section-title" style={{ margin: 0 }}>
+          {t('treatments.title')} <TourHint tour="treatments" />
+        </h2>
         {!showForm && (
-          <button className="dash-home-btn" onClick={() => setShowForm(true)}>{t('treatments.plan')}</button>
+          <button className="dash-home-btn" data-tour="treatment-plan" onClick={() => setShowForm(true)}>{t('treatments.plan')}</button>
         )}
       </div>
       <p className="dash-card-meta">{t(type === 'hive' ? 'treatments.introHive' : 'treatments.introApiary')}</p>
@@ -147,7 +150,7 @@ export default function TreatmentsPanel({ type, id }: { type: 'hive' | 'apiary';
             <input id={`treatment-note-${id}`} type="text" maxLength={2000} value={note} onChange={e => setNote(e.target.value)} />
           </div>
           <div className="dash-form-actions">
-            <button className="dash-share-btn" type="submit" disabled={saving || !product.trim() || !dueOn}>
+            <button className="dash-share-btn" type="submit" data-tour="treatment-save" disabled={saving || !product.trim() || !dueOn}>
               {saving ? '…' : t('treatments.save')}
             </button>
             <button className="dash-share-cancel" type="button" onClick={() => setShowForm(false)}>{t('treatments.cancel')}</button>

@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { tourById } from '@/lib/tours';
-import { useTour } from '@/components/GuidedTour';
+import { useTour } from '@/components/TourContext';
 
 /**
  * A small amber "?" that starts one tour, droppable next to any feature's heading.

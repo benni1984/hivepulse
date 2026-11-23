@@ -17,6 +17,7 @@ import {
   type Apiary, type Hive, type ApiaryStats, type FieldDefinition, type FieldType, type FieldTarget,
 } from '@/lib/api';
 import { moodPct } from '@/lib/mood';
+import TourHint from '@/components/TourHint';
 
 const HIVE_TYPES = ['langstroth', 'dadant', 'top_bar', 'warre', 'other'] as const;
 
@@ -336,7 +337,9 @@ export default function ApiaryPage() {
 
           {/* ── Hive list + create ───────────────────────────────── */}
           <div className="dash-page-header" style={{ marginTop: 8 }}>
-            <h2 className="dash-section-title" style={{ margin: 0 }}>{t('apiary.hives')}</h2>
+            <h2 className="dash-section-title" style={{ margin: 0 }}>
+              {t('apiary.hives')} <TourHint tour="moves" />
+            </h2>
             <span className="dash-row-actions">
               {stats && stats.inspections_total > 0 && (
                 <>
@@ -345,7 +348,7 @@ export default function ApiaryPage() {
                 </>
               )}
               {isOwner && hives.length > 0 && !showMove && (
-                <button className="dash-row-btn" onClick={() => setShowMove(true)}>{t('moves.title')}</button>
+                <button className="dash-row-btn" data-tour="move-hives" onClick={() => setShowMove(true)}>{t('moves.title')}</button>
               )}
               {!showCreateHive && canEdit && (
                 <button className="dash-new-btn" onClick={openCreateHive} data-tour="new-hive">{t('apiary.newHive')}</button>

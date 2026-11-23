@@ -223,7 +223,7 @@ export default function MoveHivesPanel({
       </div>
 
       <div className="dash-form-actions">
-        <button className="dash-share-btn" type="submit" disabled={!ready || submitting}>
+        <button className="dash-share-btn" type="submit" data-tour="move-submit" disabled={!ready || submitting}>
           {submitting ? '…' : t('moves.submit', { count: selected.size })}
         </button>
         <button className="dash-share-cancel" type="button" onClick={onCancel}>{t('moves.cancel')}</button>

@@ -1510,6 +1510,10 @@
     "doneAgain": "Oceń inny region"
   },
   "tour": {
-    "showMe": "Pokaż mi"
+    "showMe": "Pokaż mi",
+    "listTitle": "Przewodniki",
+    "listIntro": "Każdy wskazuje prawdziwy przycisk na prawdziwym ekranie i czeka, aż go naciśniesz. Uruchom dowolny, kiedy chcesz — nic tutaj nie dzieje się tylko raz.",
+    "listStart": "Zacznij",
+    "listDone": "widziane"
   }
 }
