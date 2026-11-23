@@ -1510,6 +1510,10 @@
     "doneAgain": "Valorar otra región"
   },
   "tour": {
-    "showMe": "Muéstramelo"
+    "showMe": "Muéstramelo",
+    "listTitle": "Tours guiados",
+    "listIntro": "Cada uno señala el botón de verdad en la pantalla de verdad y espera a que lo pulses. Empieza cualquiera cuando quieras — aquí nada ocurre solo una vez.",
+    "listStart": "Empezar",
+    "listDone": "visto"
   }
 }

@@ -89,7 +89,7 @@ export default function QrBatchDetailPage() {
             </div>
             {dlError && <div className="dash-error-banner" style={{ marginTop: 12 }}>{dlError}</div>}
             <div style={{ marginTop: 16 }}>
-              <button className="dash-submit-btn" onClick={handleDownload} disabled={downloading}>
+              <button className="dash-submit-btn" data-tour="qr-batch-pdf" onClick={handleDownload} disabled={downloading}>
                 {downloading ? '…' : t('qrBatches.downloadPdf')}
               </button>
             </div>

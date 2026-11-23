@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { createShare, deleteShare, getShares, type Share } from '@/lib/api';
+import TourHint from '@/components/TourHint';
 
 /**
  * Who works on an apiary or a hive together with its owner, and the form to invite somebody.
@@ -54,7 +55,7 @@ export default function SharingPanel({ type, id }: { type: 'apiary' | 'hive'; id
 
   return (
     <div style={{ marginTop: 32 }} data-testid="sharing-panel">
-      <h2 className="dash-section-title">{t('sharing.title')}</h2>
+      <h2 className="dash-section-title">{t('sharing.title')} <TourHint tour="sharing" /></h2>
       <p className="dash-card-meta">{t(type === 'apiary' ? 'sharing.introApiary' : 'sharing.introHive')}</p>
 
       {message && (
@@ -94,6 +95,7 @@ export default function SharingPanel({ type, id }: { type: 'apiary' | 'hive'; id
           <label htmlFor={`share-email-${id}`}>{t('sharing.emailLabel')}</label>
           <input
             id={`share-email-${id}`}
+            data-tour="sharing-email"
             type="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
@@ -101,7 +103,7 @@ export default function SharingPanel({ type, id }: { type: 'apiary' | 'hive'; id
           />
         </div>
         <div className="dash-form-actions">
-          <button className="dash-share-btn" type="submit" disabled={inviting || !email.trim()}>
+          <button className="dash-share-btn" type="submit" data-tour="sharing-invite" disabled={inviting || !email.trim()}>
             {inviting ? '…' : t('sharing.invite')}
           </button>
         </div>

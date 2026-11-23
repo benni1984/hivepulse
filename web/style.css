@@ -2331,6 +2331,27 @@ button.hornets-action-card { width: 100%; }
 }
 .tour-hint:hover { background: var(--amber-tint); }
 
+/* The list of every tour, in Settings. The point of it is that a tour is not a thing that
+   happened once, so it reads as a list of offers and not as a progress bar. */
+.dash-tour-list { list-style: none; margin: 12px 0 0; padding: 0; }
+.dash-tour-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 0; border-top: 1px solid var(--border);
+}
+.dash-tour-row:first-child { border-top: 0; }
+.dash-tour-row-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dash-tour-row-title { font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.dash-tour-row .dash-row-btn { margin-left: auto; flex: 0 0 auto; }
+.dash-tour-done {
+  background: var(--amber-wash); color: var(--amber-ink); border: 1px solid var(--amber-border);
+  border-radius: 999px; padding: 1px 8px; font-size: .72rem; font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .dash-tour-row { align-items: flex-start; flex-wrap: wrap; }
+  .dash-tour-row .dash-row-btn { margin-left: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tour-shade, .tour-ring, .tour-card { transition: none; }
 }

@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import { Link } from '@/i18n/navigation';
 import DashboardShell from '@/components/DashboardShell';
+import TourHint from '@/components/TourHint';
 import { useDashboardReady } from '@/hooks/useDashboardAuth';
 import { getQrBatches, createQrBatch, deleteQrBatch, type QrBatchSummary } from '@/lib/api';
 
@@ -59,9 +60,9 @@ export default function QrBatchesPage() {
   return (
     <DashboardShell>
       <div className="dash-page-header">
-        <h1 className="dash-page-title">{t('qrBatches.title')}</h1>
+        <h1 className="dash-page-title">{t('qrBatches.title')} <TourHint tour="qr-codes" /></h1>
         {!showCreate && (
-          <button className="dash-new-btn" onClick={() => { setShowCreate(true); setMessage(null); }}>
+          <button className="dash-new-btn" data-tour="qr-new-batch" onClick={() => { setShowCreate(true); setMessage(null); }}>
             {t('qrBatches.new')}
           </button>
         )}
@@ -80,6 +81,7 @@ export default function QrBatchesPage() {
             <div className="dash-form-group">
               <label htmlFor="qr-batch-count">{t('qrBatches.count')}</label>
               <input id="qr-batch-count"
+                data-tour="qr-batch-count"
                 type="number"
                 min={1}
                 max={50}
@@ -90,7 +92,7 @@ export default function QrBatchesPage() {
               />
             </div>
             <div className="dash-form-actions">
-              <button className="dash-submit-btn" type="submit" disabled={creating}>
+              <button className="dash-submit-btn" type="submit" data-tour="qr-batch-create" disabled={creating}>
                 {creating ? '…' : t('qrBatches.createBtn')}
               </button>
               <button className="dash-cancel-btn" type="button" onClick={() => setShowCreate(false)}>
@@ -117,13 +119,14 @@ export default function QrBatchesPage() {
               </tr>
             </thead>
             <tbody>
-              {batches.map(b => (
+              {batches.map((b, i) => (
                 <tr key={b.id}>
                   <td>{new Date(b.created_at).toLocaleDateString()}</td>
                   <td>{b.count}</td>
                   <td>{b.linked_count} / {b.count}</td>
                   <td>
-                    <Link href={`/dashboard/qr-batches/${b.id}`} className="dash-row-btn">
+                    <Link href={`/dashboard/qr-batches/${b.id}`} className="dash-row-btn"
+                      data-tour={i === 0 ? 'qr-batch-open' : undefined}>
                       {t('qrBatches.view')}
                     </Link>
                     {/* A batch with a code on a hive would be refused, so the button is not offered. */}

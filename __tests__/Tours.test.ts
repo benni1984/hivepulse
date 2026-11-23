@@ -31,8 +31,16 @@ function sourceFiles(dir: string): string[] {
 const sources = ROOTS.flatMap(r => sourceFiles(join(process.cwd(), r)))
   .map(f => readFileSync(f, 'utf8'));
 
+/**
+ * A literal `data-tour="x"`, or the one other form that a list leaves open:
+ * `data-tour={i === 0 ? 'x' : undefined}`, which marks the first row of a table rather than
+ * claiming the tour points at all ten of them. Anything looser than these two would stop the
+ * check from catching the thing it is here for — an anchor that no longer exists.
+ */
 function anchorExists(anchor: string): boolean {
-  return sources.some(src => src.includes(`data-tour="${anchor}"`));
+  const literal = `data-tour="${anchor}"`;
+  const inExpression = new RegExp(`data-tour=\\{[^}\n]*'${anchor}'`);
+  return sources.some(src => src.includes(literal) || inExpression.test(src));
 }
 
 describe('guided tours', () => {

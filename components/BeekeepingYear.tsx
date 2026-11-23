@@ -139,7 +139,7 @@ export default function BeekeepingYear() {
           {t('calendar.viewList')}
         </button>
         <button type="button" aria-pressed={view === 'ribbon'} onClick={() => setView('ribbon')}
-                data-testid="year-view-ribbon">
+                data-tour="year-ribbon" data-testid="year-view-ribbon">
           {t('calendar.viewRibbon')}
         </button>
       </div>
@@ -162,7 +162,7 @@ export default function BeekeepingYear() {
       {view === 'ribbon' && (
         <p className="dash-card-meta dash-cal-rate">
           {t('calendar.rateHint')}{' '}
-          <Link href="/year-feedback" className="dash-cal-rate-link">{t('calendar.rateLink')}</Link>
+          <Link href="/year-feedback" className="dash-cal-rate-link" data-tour="year-rate">{t('calendar.rateLink')}</Link>
         </p>
       )}
 

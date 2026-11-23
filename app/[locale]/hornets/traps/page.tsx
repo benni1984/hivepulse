@@ -12,6 +12,7 @@ import {
   type HornetTrapNearby,
 } from '@/lib/api';
 import { todayLocal } from '@/lib/dates';
+import TourHint from '@/components/TourHint';
 
 type Mode = 'home' | 'nearby' | 'search' | 'register' | 'trapDetail';
 
@@ -162,7 +163,7 @@ export default function HornetTrapsPage() {
       <section className="hornets-hero hornets-hero-compact">
         <div className="hornets-hero-inner">
           <span className="hornets-tag">{t('tag')}</span>
-          <h1>{t('traps.title')}</h1>
+          <h1>{t('traps.title')} <TourHint tour="hornets" /></h1>
           <p className="hornets-subtitle">{t('traps.subtitle')}</p>
         </div>
       </section>
@@ -200,6 +201,7 @@ export default function HornetTrapsPage() {
 
             <button
               className="hornets-action-card"
+              data-tour="trap-new"
               onClick={() => { setMode('register'); setError(''); setSuccess(''); setNewTrap(null); }}
               style={cardStyle('#eff6ff', '#2563eb')}
             >
@@ -278,7 +280,7 @@ export default function HornetTrapsPage() {
             <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <label style={labelStyle}>
                 {t('traps.name')}
-                <input className="hornets-input" value={regName} onChange={e => setRegName(e.target.value)} placeholder={t('traps.namePlaceholder')} required />
+                <input className="hornets-input" data-tour="trap-name" value={regName} onChange={e => setRegName(e.target.value)} placeholder={t('traps.namePlaceholder')} required />
               </label>
 
               <label style={labelStyle}>
@@ -302,7 +304,7 @@ export default function HornetTrapsPage() {
                 <input className="hornets-input" value={regOwner} onChange={e => setRegOwner(e.target.value)} placeholder={t('report.namePlaceholder')} />
               </label>
 
-              <button className="hornets-submit-btn" type="submit" disabled={loading}>
+              <button className="hornets-submit-btn" type="submit" data-tour="trap-register" disabled={loading}>
                 {loading ? '…' : t('traps.submit')}
               </button>
             </form>
@@ -368,7 +370,7 @@ export default function HornetTrapsPage() {
                   {t('traps.date')}
                   <input className="hornets-input" type="date" value={logDate} max={todayLocal()} onChange={e => setLogDate(e.target.value)} required />
                 </label>
-                <button className="hornets-submit-btn" type="submit" disabled={logLoading} style={{ alignSelf: 'flex-end' }}>
+                <button className="hornets-submit-btn" type="submit" data-tour="trap-catch" disabled={logLoading} style={{ alignSelf: 'flex-end' }}>
                   {logLoading ? '…' : t('traps.logSubmit')}
                 </button>
               </form>

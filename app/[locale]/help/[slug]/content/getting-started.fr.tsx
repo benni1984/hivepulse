@@ -110,11 +110,31 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
         </div>
       </section>
       <section className="help-section">
-        <h2 className="help-section-title">La visite guidée dans les applications</h2>
+        <h2 className="help-section-title">Visites guidées</h2>
         <p>
-          À votre première connexion à l'application iPhone ou Android, une courte visite à faire défiler présente
-          les QR codes, les visites, les statistiques, les rappels et le suivi des frelons. Passez-la quand vous voulez
-          et relancez-la plus tard depuis <strong>Paramètres → Revoir la visite guidée</strong>.
+          Sur le site, une visite ne décrit pas l’application — elle pointe le vrai bouton sur le
+          vrai écran et attend que vous appuyiez. La page reste où elle est, éclairée autour de la
+          seule commande qui compte, avec une phrase disant pourquoi c’est celle-là.
+        </p>
+        <p>
+          Il y en a neuf : une première colonie à partir d’un compte vide, les autocollants QR,
+          l’enregistrement sans réseau, les pièges à frelons, l’année apicole, les traitements, le
+          partage d’un rucher, vos propres champs de visite, et la transhumance. Chaque
+          fonctionnalité porte un petit <strong>?</strong> ambre à côté de son titre qui lance la
+          visite correspondante, et <strong>Paramètres → Visites guidées</strong> les liste toutes.
+          Aucune n’est épuisée par le fait d’avoir été vue : relancez-la un an plus tard, autant de
+          fois que vous voulez.
+        </p>
+        <p>
+          Une visite ne vous piège jamais. Échap la quitte, chaque étape a une sortie, et si la
+          commande cherchée n’est pas à l’écran, elle le dit au lieu d’assombrir la page autour de
+          rien.
+        </p>
+        <p>
+          Dans les applications iPhone et Android, la visite reste la courte, à faire défiler après
+          la première connexion, qui présente les QR codes, les visites, les statistiques, les
+          rappels et le suivi du frelon asiatique. Passez-la quand vous voulez et relancez-la depuis{' '}
+          <strong>Paramètres → Revoir la visite guidée</strong>.
         </p>
       </section>
 

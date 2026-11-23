@@ -1510,6 +1510,10 @@
     "doneAgain": "Évaluer une autre région"
   },
   "tour": {
-    "showMe": "Montrez-moi"
+    "showMe": "Montrez-moi",
+    "listTitle": "Visites guidées",
+    "listIntro": "Chacune pointe le vrai bouton sur le vrai écran et attend que vous appuyiez. Lancez-les quand vous voulez — rien ici ne se joue une seule fois.",
+    "listStart": "Lancer",
+    "listDone": "vue"
   }
 }
