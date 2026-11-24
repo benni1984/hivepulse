@@ -196,10 +196,11 @@ struct HPStatPill: View {
 /// Applies `.tourAnchor` only where there is one, so a control with no tour stays untouched.
 struct OptionalTourAnchor: ViewModifier {
     let id: String?
+    var observesTap: Bool = true
 
     func body(content: Content) -> some View {
         if let id {
-            content.tourAnchor(id)
+            content.tourAnchor(id, observesTap: observesTap)
         } else {
             content
         }

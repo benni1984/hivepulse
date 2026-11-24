@@ -126,6 +126,9 @@ fun Modifier.tourAnchor(id: String): Modifier = composed {
     // `composed` and not `@Composable`: a modifier has to be usable wherever a modifier goes,
     // including argument lists that are not themselves a composable scope.
     val controller = LocalTourController.current ?: return@composed Modifier
+    // A control that has left the screen must leave the map with it, or the overlay lights a
+    // rectangle where a button used to be -- and a `NAVIGATES` step would never end.
+    DisposableEffect(id) { onDispose { controller.anchors.remove(id) } }
     Modifier
         .onGloballyPositioned { controller.anchors[id] = it.boundsInRoot() }
         .pointerInput(id) {
@@ -169,6 +172,14 @@ private fun TourOverlay(controller: TourController, tour: Tour, step: TourStep) 
     var lost by remember(step.anchor, controller.index) { mutableStateOf(false) }
 
     BackHandler { controller.stop() }
+
+    // A NAVIGATES step ends when its control is gone: it points at a row that opens another
+    // screen, and the iPhone cannot watch for the tap on one of those at all.
+    var seen by remember(step.anchor, controller.index) { mutableStateOf(rect != null) }
+    LaunchedEffect(rect != null) {
+        if (rect != null) seen = true
+        else if (seen && step.advance == TourAdvance.NAVIGATES) controller.next()
+    }
 
     // The anchor may still be on its way: a route change, a list still loading, a form not opened
     // yet. Give it a moment, then say so rather than dimming at nothing.

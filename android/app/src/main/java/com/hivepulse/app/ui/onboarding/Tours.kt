@@ -27,6 +27,13 @@ enum class TourAdvance {
     CLICK,
 
     /**
+     * The step ends when the control is gone, because the only way that happens is that it was
+     * used. For a row that opens another screen: watching for the tap on one of those costs the
+     * iPhone its navigation, so both apps take the same way out and read alike.
+     */
+    NAVIGATES,
+
+    /**
      * A small "next" for a step that only explains something and has nothing to tap. Used
      * sparingly: a tour made of these is the carousel again, and `ToursTest` forbids one.
      */
@@ -90,7 +97,7 @@ val TOURS: List<Tour> = listOf(
             TourStep(TourAnchors.NEW_APIARY, R.string.tour_first_steps_step1, route = "apiary_list"),
             TourStep(TourAnchors.APIARY_NAME, R.string.tour_first_steps_step2, TourAdvance.MANUAL),
             TourStep(TourAnchors.APIARY_SAVE, R.string.tour_first_steps_step3),
-            TourStep(TourAnchors.APIARY_OPEN, R.string.tour_first_steps_step4),
+            TourStep(TourAnchors.APIARY_OPEN, R.string.tour_first_steps_step4, TourAdvance.NAVIGATES),
             TourStep(TourAnchors.NEW_HIVE, R.string.tour_first_steps_step5),
         ),
     ),

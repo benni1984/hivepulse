@@ -24,21 +24,29 @@ final class TourUITests: XCTestCase {
         return app
     }
 
-    private func openSettings(_ app: XCUIApplication) {
+    /// Settings, then the one row that opens the tours — they have a screen of their own, so
+    /// that nine rows with a sentence each do not push the danger zone off the end of Settings.
+    private func openTheTourList(_ app: XCUIApplication) {
         let settings = app.tabBars.buttons.element(boundBy: 4)
         XCTAssertTrue(settings.waitForExistence(timeout: 20),
                       "no settings tab\n\(app.debugDescription)")
         settings.tap()
+
+        let link = app.buttons["guidedToursLink"]
+        for _ in 0..<8 where !link.exists { app.swipeUp(velocity: .slow) }
+        XCTAssertTrue(link.waitForExistence(timeout: 10),
+                      "no way into the tours from Settings\n\(app.debugDescription)")
+        link.tap()
     }
 
     func testEveryTourIsOfferedInSettings() throws {
         // The half the carousel could not be: all of them, by name, startable, for ever.
         let app = launch()
-        openSettings(app)
+        openTheTourList(app)
 
         let first = app.buttons["startTour-first-steps"]
         XCTAssertTrue(first.waitForExistence(timeout: 20),
-                      "the tour list is not in Settings\n\(app.debugDescription)")
+                      "the tour list did not open\n\(app.debugDescription)")
 
         for id in ["offline", "qr-codes", "hornets", "year", "treatments",
                    "sharing", "custom-fields", "moves"] {
@@ -51,11 +59,11 @@ final class TourUITests: XCTestCase {
 
     func testStartingATourLightsAControlAndCanBeLeft() throws {
         let app = launch()
-        openSettings(app)
+        openTheTourList(app)
 
         let start = app.buttons["startTour-first-steps"]
         XCTAssertTrue(start.waitForExistence(timeout: 20),
-                      "the tour list is not in Settings\n\(app.debugDescription)")
+                      "the tour list did not open\n\(app.debugDescription)")
         start.tap()
 
         // It takes the beekeeper to the tab the first step lives on by itself: the list in
@@ -78,11 +86,11 @@ final class TourUITests: XCTestCase {
         // land on a shade and the form would never open — which is exactly the bug the four
         // rectangles on the website exist to avoid.
         let app = launch()
-        openSettings(app)
+        openTheTourList(app)
 
         let start = app.buttons["startTour-first-steps"]
         XCTAssertTrue(start.waitForExistence(timeout: 20),
-                      "the tour list is not in Settings\n\(app.debugDescription)")
+                      "the tour list did not open\n\(app.debugDescription)")
         start.tap()
 
         let newApiary = app.buttons["newApiaryButton"]

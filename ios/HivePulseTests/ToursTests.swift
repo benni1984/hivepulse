@@ -95,7 +95,7 @@ final class ToursTests: XCTestCase {
         // The whole point is to point at a control and wait. A tour of nothing but `.manual`
         // steps is the carousel we are replacing, wearing an overlay.
         for tour in Tours.all where tour.steps.count > 1 {
-            let real = tour.steps.filter { $0.advance == .tap }.count
+            let real = tour.steps.filter { $0.advance != .manual }.count
             XCTAssertGreaterThan(real, 0, "\(tour.id) is all \"next\" steps")
         }
     }

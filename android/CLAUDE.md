@@ -194,7 +194,8 @@ generated from the website's file. `ToursTest` pins every anchor against the sou
 
 The first successful sign-in routes to the apiary list and starts `first-steps` on top of it;
 `OnboardingStore.hasSeenGuidedTour` remembers that it has run, `finishedTours` holds the marks in
-the list in Settings (a mark, not a lock — the start button stays). **UI tests that sign in and
+the list in Settings (a mark, not a lock — the start button stays). That list is
+`TourListScreen` on a route of its own, reached by one row in Settings. **UI tests that sign in and
 expect "My Apiaries" must set `onboardingStore.hasSeenGuidedTour = true` in their setup rule**
 (see `LoginScreenTest`); `TourScreenTest` covers the tour itself.
 

@@ -131,7 +131,8 @@ languages; `TourUITests` covers the overlay. The amber create button carries its
 
 After the first successful sign-in `AuthViewModel.showGuidedTour` now starts `first-steps` on the
 apiary list instead of presenting a cover over it; `OnboardingStore.finishedTours` holds the marks
-in the list in Settings (a mark, not a lock). **UI tests that sign in or register and expect the
+in the list in Settings (a mark, not a lock). That list is `TourListView`, pushed from one row
+in Settings (`guidedToursLink`). **UI tests that sign in or register and expect the
 apiary list must pass `-guidedTourSeen YES`** (see `RegisterUITests`).
 
 ## Pattern: Handler Order

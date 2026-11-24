@@ -79,7 +79,7 @@ class ToursTest {
         // is the carousel we are replacing, wearing an overlay.
         for (tour in TOURS) {
             if (tour.steps.size <= 1) continue
-            val real = tour.steps.count { it.advance == TourAdvance.CLICK }
+            val real = tour.steps.count { it.advance != TourAdvance.MANUAL }
             assertTrue("${tour.id} is all \"next\" steps", real > 0)
         }
     }

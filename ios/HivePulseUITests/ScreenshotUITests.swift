@@ -85,10 +85,15 @@ final class ScreenshotUITests: XCTestCase {
         let app = launch(["-resetKeychain", "-mockAuthenticated", "-guidedTourSeen", "YES"])
         XCTAssertTrue(app.tabBars.buttons[label("tab.settings")].waitForExistence(timeout: 10))
         app.tabBars.buttons[label("tab.settings")].tap()
+        let link = app.buttons["guidedToursLink"]
+        for _ in 0..<8 where !link.exists { app.swipeUp(velocity: .slow) }
+        XCTAssertTrue(link.waitForExistence(timeout: 10),
+                      "no way into the tours from Settings\n\(app.debugDescription)")
+        link.tap()
+
         let start = app.buttons["startTour-first-steps"]
-        for _ in 0..<8 where !start.exists { app.swipeUp(velocity: .slow) }
         XCTAssertTrue(start.waitForExistence(timeout: 10),
-                      "the tour list is not in Settings\n\(app.debugDescription)")
+                      "the tour list did not open\n\(app.debugDescription)")
         snap("13-guided-tour-welcome", app)
 
         start.tap()

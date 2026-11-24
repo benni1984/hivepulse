@@ -309,6 +309,19 @@ first sign-in now lands on the apiary list with `first-steps` running on top of 
 the button that ends "No apiaries yet". `OnboardingStore.finishedTours` holds the marks, which
 are marks and not locks.
 
+**On the phones the list is a screen of its own** (`TourListScreen.kt`, `TourListView.swift`),
+reached by one row in Settings between help and diagnostics — the place `CLAUDE.md` gives the
+tour in the settings order. It was a section inside Settings first, and nine rows with a sentence
+each pushed reminders, region, export and the danger zone off the end of a phone. The website
+keeps its list inline, because a desktop page has the room.
+
+**A step that points at a row which opens another screen is `.navigates`**, and its anchor does
+not watch for the tap: on a SwiftUI `NavigationLink` a `TapGesture` — simultaneous or not —
+competes with the link's own and the navigation stops happening, which cost every test that opens
+an apiary before CI caught it. Such a step ends when its control is gone, which is the same thing
+the website's `advance: 'route'` does. Android clears an anchor when it leaves the composition,
+so a vanished control cannot leave a lit rectangle behind.
+
 ## Navigation (the same on iPhone and Android)
 
 Tabs: Apiaries, Scan, Hornets, Members, Settings. Apiary list toolbar: statistics, QR batches, map of

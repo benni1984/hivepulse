@@ -18,6 +18,10 @@ import Foundation
 enum TourAdvance {
     /// The step ends when the beekeeper taps *that* control. The default, and the point.
     case tap
+    /// The step ends when the control is gone, because the only way that happens is that it was
+    /// used. For a row that pushes another screen: a `TapGesture` on a `NavigationLink` competes
+    /// with the link's own and the navigation stops happening.
+    case navigates
     /// A small "next" for a step that only explains something. Used sparingly: a tour made of
     /// these is the carousel again, and `ToursTests` forbids one.
     case manual
@@ -92,7 +96,8 @@ enum Tours {
                 TourStep(anchor: TourAnchors.newApiary, textKey: "tour.firstSteps.step1", tab: .apiaries),
                 TourStep(anchor: TourAnchors.apiaryName, textKey: "tour.firstSteps.step2", advance: .manual),
                 TourStep(anchor: TourAnchors.apiarySave, textKey: "tour.firstSteps.step3"),
-                TourStep(anchor: TourAnchors.apiaryOpen, textKey: "tour.firstSteps.step4"),
+                TourStep(anchor: TourAnchors.apiaryOpen, textKey: "tour.firstSteps.step4",
+                         advance: .navigates),
                 TourStep(anchor: TourAnchors.newHive, textKey: "tour.firstSteps.step5"),
             ]
         ),

@@ -44,7 +44,6 @@ import javax.inject.Inject
 import com.hivepulse.app.data.api.SubscriptionOut
 import com.hivepulse.app.data.api.grantsAccess
 import com.hivepulse.app.data.repository.SubscriptionRepository
-import com.hivepulse.app.ui.onboarding.TourList
 
 data class SettingsState(
     val user: UserOut? = null,
@@ -187,7 +186,7 @@ fun SettingsScreen(
     onAdminClick: () -> Unit = {},
     onCustomFieldsClick: () -> Unit = {},
     onSupporterClick: () -> Unit = {},
-    onStartTour: (String) -> Unit = {},
+    onToursClick: () -> Unit = {},
     vm: SettingsViewModel = hiltViewModel(),
     regionVm: com.hivepulse.app.ui.calendar.RegionViewModel = hiltViewModel(),
 ) {
@@ -623,7 +622,12 @@ fun SettingsScreen(
                 ) {
                     Text(stringResource(R.string.action_feedback))
                 }
-                TourList(onStart = onStartTour)
+                OutlinedButton(
+                    onClick  = onToursClick,
+                    modifier = Modifier.fillMaxWidth().testTag("guidedToursButton")
+                ) {
+                    Text(stringResource(R.string.tour_list_title))
+                }
                 // What is new, and the full list of features: the same page on every platform.
                 OutlinedButton(
                     onClick = {

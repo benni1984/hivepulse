@@ -79,8 +79,11 @@ struct ApiaryListView: View {
                             ApiaryRow(apiary: apiary)
                         }
                         // Only the first row: pointing at all of them would say nothing.
+                        // Only the first row, and bounds only: a gesture here would break the
+                        // link (see `tourAnchor`).
                         .modifier(OptionalTourAnchor(
-                            id: apiary.id == apiaryVM.apiaries.first?.id ? TourAnchors.apiaryOpen : nil))
+                            id: apiary.id == apiaryVM.apiaries.first?.id ? TourAnchors.apiaryOpen : nil,
+                            observesTap: false))
                         // Only the owner deletes: the server would refuse anybody else.
                         .deleteDisabled(!apiary.isOwner)
                     }

@@ -80,11 +80,16 @@ class TourScreenTest {
     @get:Rule(order = 2)
     val composeRule = createAndroidComposeRule<MainActivity>()
 
-    private fun openSettings() {
+    /** Settings, then the one row that opens the tours — they have a screen of their own. */
+    private fun openTheTourList() {
         composeRule.waitUntil(timeoutMillis = 10_000) {
             composeRule.onAllNodesWithText("Settings").fetchSemanticsNodes().isNotEmpty()
         }
         composeRule.onNodeWithText("Settings").performClick()
+        composeRule.waitUntil(timeoutMillis = 10_000) {
+            composeRule.onAllNodesWithTag("guidedToursButton").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithTag("guidedToursButton").performScrollTo().performClick()
         composeRule.waitUntil(timeoutMillis = 10_000) {
             composeRule.onAllNodesWithTag("tourList").fetchSemanticsNodes().isNotEmpty()
         }
@@ -93,8 +98,8 @@ class TourScreenTest {
     @Test
     fun everyTourIsOfferedInSettings() {
         // The half the carousel could not be: all of them, by name, startable, for ever.
-        openSettings()
-        composeRule.onNodeWithTag("tourList").performScrollTo().assertIsDisplayed()
+        openTheTourList()
+        composeRule.onNodeWithTag("tourList").assertIsDisplayed()
         for (id in listOf("first-steps", "offline", "qr-codes", "hornets", "year")) {
             composeRule.onNodeWithTag("startTour-$id").assertExists()
         }
@@ -102,8 +107,8 @@ class TourScreenTest {
 
     @Test
     fun startingATourLightsTheRealControlOnTheRealScreen() {
-        openSettings()
-        composeRule.onNodeWithTag("startTour-first-steps").performScrollTo().performClick()
+        openTheTourList()
+        composeRule.onNodeWithTag("startTour-first-steps").performClick()
 
         // It navigates to the apiary list itself: the list in Settings is the one place where
         // every tour starts somewhere else.
@@ -115,8 +120,8 @@ class TourScreenTest {
 
     @Test
     fun theRealTapIsWhatMovesTheTourOn() {
-        openSettings()
-        composeRule.onNodeWithTag("startTour-first-steps").performScrollTo().performClick()
+        openTheTourList()
+        composeRule.onNodeWithTag("startTour-first-steps").performClick()
         // The overlay appears the moment the tour starts, which is *before* the navigation to
         // the apiary list has finished. Waiting for the button itself is what says the screen
         // underneath has arrived.
@@ -147,7 +152,7 @@ class TourScreenTest {
     @Test
     fun aTourCanBeLeftAtAnyStep() {
         // Never trap them: every step shows a way out.
-        openSettings()
+        openTheTourList()
         composeRule.onNodeWithTag("startTour-offline").performScrollTo().performClick()
         composeRule.waitUntil(timeoutMillis = 10_000) {
             composeRule.onAllNodesWithTag("tourCard").fetchSemanticsNodes().isNotEmpty()

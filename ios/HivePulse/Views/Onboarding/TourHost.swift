@@ -39,12 +39,29 @@ extension View {
     /// The tap is observed with a simultaneous gesture and never consumed, which is this
     /// platform's equivalent of the website's capture-phase listener: the engine learns that the
     /// control was pressed without standing between the finger and the button.
-    func tourAnchor(_ id: String) -> some View {
+    ///
+    /// **Except on a `NavigationLink`**, where a `TapGesture` — simultaneous or not — competes
+    /// with the link's own and the navigation stops happening. That is not a tour bug a test
+    /// would report as one: every test that opens an apiary fails instead, which is how this was
+    /// found. A row like that is a `.navigates` step and passes `observesTap: false`; the engine
+    /// then takes the control's *disappearance* as the tap, which is the only way it can go.
+    func tourAnchor(_ id: String, observesTap: Bool = true) -> some View {
         self
             .anchorPreference(key: TourAnchorKey.self, value: .bounds) { [id: $0] }
-            .simultaneousGesture(
-                TapGesture().onEnded { TourController.shared.tapped(id) }
-            )
+            .modifier(TourTapObserver(id: id, enabled: observesTap))
+    }
+}
+
+private struct TourTapObserver: ViewModifier {
+    let id: String
+    let enabled: Bool
+
+    func body(content: Content) -> some View {
+        if enabled {
+            content.simultaneousGesture(TapGesture().onEnded { TourController.shared.tapped(id) })
+        } else {
+            content
+        }
     }
 }
 
@@ -112,6 +129,9 @@ struct TourHost<Content: View>: View {
     private let findTimeout: TimeInterval = 2.5
 
     @State private var lost = false
+    /// Whether the current step's control has been on screen yet — a `.navigates` step ends when
+    /// it has been and then is not.
+    @State private var seen = false
 
     var body: some View {
         content()
@@ -180,11 +200,21 @@ struct TourHost<Content: View>: View {
                 }
             }
         }
+        // A `.navigates` step ends when its control is gone: it points at a row that pushes
+        // another screen, and on such a row the engine cannot watch for the tap itself.
+        .onChange(of: rect != nil) { _, present in
+            if present {
+                seen = true
+            } else if seen && step.advance == .navigates {
+                controller.next()
+            }
+        }
         // Only the branch above reads `lost`, and that branch only exists while the anchor has
         // not reported itself -- so this can simply time out. If the control arrives first, the
         // lit branch takes over and nobody ever sees the sentence.
         .task(id: "\(step.anchor)-\(controller.index)") {
             lost = false
+            seen = rect != nil
             try? await Task.sleep(nanoseconds: UInt64(findTimeout * 1_000_000_000))
             lost = true
         }

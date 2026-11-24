@@ -21,6 +21,7 @@ import com.hivepulse.app.ui.stats.OverviewStatsScreen
 import com.hivepulse.app.ui.supporter.SupporterScreen
 import javax.inject.Inject
 import com.hivepulse.app.ui.onboarding.LocalTourController
+import com.hivepulse.app.ui.onboarding.TourListScreen
 
 object Routes {
     const val LOGIN              = "login"
@@ -54,6 +55,7 @@ object Routes {
     const val HIVE_MOVES         = "hive_moves/{hiveId}"
     const val MOVES_OVERVIEW     = "moves_overview"
     const val BEEKEEPING_YEAR    = "beekeeping_year"
+    const val TOURS              = "tours"
     const val TREATMENTS         = "treatments/{type}/{id}"
 }
 
@@ -264,7 +266,17 @@ fun HivePulseNavGraph(
                 onAdminClick = { navController.navigate(Routes.ADMIN) },
                 onCustomFieldsClick = { navController.navigate("field_definitions?apiaryId=") },
                 onSupporterClick = { navController.navigate(Routes.SUPPORTER) },
-                onStartTour = { tourController?.start(it) }
+                onToursClick = { navController.navigate(Routes.TOURS) }
+            )
+        }
+        composable(Routes.TOURS) {
+            TourListScreen(
+                onBack = { navController.popBackStack() },
+                onStart = { id ->
+                    // Out of Settings first: every tour points at a control somewhere else.
+                    navController.popBackStack()
+                    tourController?.start(id)
+                },
             )
         }
         composable(Routes.ADMIN) {

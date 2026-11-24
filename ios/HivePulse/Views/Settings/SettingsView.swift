@@ -229,9 +229,11 @@ struct SettingsView: View {
                     Label(NSLocalizedString("action.releaseNotes", comment: ""), systemImage: "list.bullet.rectangle")
                 }
                 .accessibilityIdentifier("releaseNotesLink")
+                NavigationLink(destination: TourListView()) {
+                    Label(NSLocalizedString("tour.listTitle", comment: ""), systemImage: "sparkles")
+                }
+                .accessibilityIdentifier("guidedToursLink")
             }
-
-            TourListView { TourController.shared.start($0) }
 
             // MARK: - Diagnostics
             // The version a tester reads out, and proof that crash reporting actually leaves
