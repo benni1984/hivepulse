@@ -240,14 +240,26 @@ def login():
 
 
 def skip_guided_tour(timeout=15):
+    """Close the tour the first sign-in starts (#449).
+
+    **Look for the tour, not for the absence of it.** This used to find the apiary list and
+    return, because the carousel was a screen of its own and the list behind it meant the tour
+    was over. The tour now runs *on* the apiary list, so the list is in the dump the whole time
+    and that test said "gone" while the tour was up. Its caption card is a real view and takes
+    the taps meant for whatever is behind it.
+
+    `tour_skip` belonged to the carousel and no longer exists in `strings.xml`; the button is
+    `tour_close`.
+    """
     deadline = time.time() + timeout
     while time.time() < deadline:
         dump = A.get_ui_dump()
+        close = label_in(dump, "tour_close")
+        if close:
+            A.tap_node(dump, text=close)
+            time.sleep(1)
+            continue  # and look again: closing one step must not be mistaken for being done
         if label_in(dump, "screen_apiaries"):
-            return
-        skip = label_in(dump, "tour_skip")
-        if skip:
-            A.tap_node(dump, text=skip)
             return
         time.sleep(1)
 

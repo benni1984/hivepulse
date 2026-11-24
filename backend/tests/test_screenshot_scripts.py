@@ -414,3 +414,38 @@ def test_the_email_form_link_is_tapped_until_the_form_is_actually_open():
             f"{name}: giving up quietly only moves the complaint downstream, where it names "
             f"the wrong control"
         )
+
+
+def test_the_scripts_close_the_tour_instead_of_looking_for_the_carousel():
+    """The tour runs *on* the apiary list now, not instead of it (#449).
+
+    Both scripts used to find the apiary list and conclude the tour was over, because the
+    carousel had been a screen of its own. Once the tour became an overlay the list was in the
+    dump the whole time, so that test said "gone" while the tour was up — and its caption card,
+    being a real view, swallowed the taps meant for what was behind it. The smoke test then died
+    at "Timed out waiting for: 'Inspections'", a screen it never reached.
+
+    So: look for the tour first, and close it by the button that exists.
+    """
+    strings = (ROOT / "android/app/src/main/res/values/strings.xml").read_text(encoding="utf-8")
+    assert 'name="tour_close"' in strings, "the button the scripts tap has to exist"
+    assert 'name="tour_skip"' not in strings, "the carousel's button is gone; nothing may want it"
+
+    for name, helper in (
+        ("scripts/android-screenshots.py", "def skip_guided_tour_if_shown("),
+        ("scripts/android-store-screenshots.py", "def skip_guided_tour("),
+    ):
+        script = (ROOT / name).read_text(encoding="utf-8")
+        body = script[script.index(helper):]
+        body = body[:body.index("\n\n\n")]
+        code = body[body.index('"""', body.index('"""') + 3):]  # past the docstring
+
+        assert "tour_close" in code or "TOUR_CLOSE" in code, f"{name}: closes nothing"
+        assert "tour_skip" not in code and 'text="Skip"' not in code, (
+            f"{name}: still reaching for the carousel's button"
+        )
+        # The apiary list is visible *underneath* the tour, so finding it proves nothing until
+        # the tour has been dealt with. Order is the whole fix.
+        assert code.index("tour_close" if "tour_close" in code else "TOUR_CLOSE") < code.index(
+            "screen_apiaries" if "screen_apiaries" in code else "My Apiaries"
+        ), f"{name}: checks for the apiary list before the tour, which is what broke"

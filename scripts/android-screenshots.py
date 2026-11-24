@@ -317,15 +317,30 @@ def install_and_launch():
 
 # ── Login ─────────────────────────────────────────────────────────────────────
 
+TOUR_CLOSE = "Close tour"
+
+
 def skip_guided_tour_if_shown(timeout=15):
-    """The first sign-in on a fresh install shows the guided tour -- skip it so screenshots start on My Apiaries."""
+    """The first sign-in on a fresh install starts the guided tour -- close it (#449).
+
+    **Look for the tour, not for the absence of it.** This used to find "My Apiaries" and return,
+    because the carousel was a screen of its own and the apiary list behind it meant the tour was
+    over. The tour now runs *on* the apiary list: the list is in the dump the whole time, so that
+    test said "gone" while the tour was plainly up. The caption card is a real view that takes
+    the taps meant for whatever is behind it, and the run then died further down at
+    "Timed out waiting for: 'Inspections'" -- a screen it never reached because a card was in the
+    way.
+
+    The button is "Close tour" now; "Skip" belonged to the carousel and no longer exists.
+    """
     deadline = time.time() + timeout
     while time.time() < deadline:
         dump = get_ui_dump()
+        if f'text="{TOUR_CLOSE}"' in dump:
+            tap_node(dump, text=TOUR_CLOSE)
+            time.sleep(1)
+            continue  # and look again: closing one step must not be mistaken for being done
         if "My Apiaries" in dump:
-            return
-        if 'text="Skip"' in dump:
-            tap_node(dump, text="Skip")
             return
         time.sleep(1)
 
