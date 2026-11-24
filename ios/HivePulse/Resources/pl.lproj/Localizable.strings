@@ -328,23 +328,7 @@
 "overview.rowFormat" = "%1$d rodzin · %2$d przeglądów";
 
 /* Guided tour */
-"tour.skip" = "Pomiń";
-"tour.next" = "Dalej";
-"tour.getStarted" = "Zaczynamy";
 "action.releaseNotes" = "Informacje o wersjach";
-"tour.showAgain" = "Pokaż przewodnik ponownie";
-"tour.welcome.title" = "Witaj w HivePulse";
-"tour.welcome.body" = "Twój dziennik rodzin w kieszeni. Oto krótki przegląd tego, co HivePulse robi dla ciebie.";
-"tour.qr.title" = "Każda rodzina jednym skanem";
-"tour.qr.body" = "Zakładaj pasieki, przyklej wydrukowany kod QR na każdym ulu i zeskanuj go, aby od razu otworzyć daną rodzinę, bez szukania na listach w pasiece.";
-"tour.inspections.title" = "Przeglądy w kilka sekund";
-"tour.inspections.body" = "Zapisuj matkę, czerw, Varroa, temperament i więcej kilkoma dotknięciami. Własne pola obejmą wszystko inne, co chcesz śledzić.";
-"tour.stats.title" = "Wykrywaj problemy wcześnie";
-"tour.stats.body" = "Trendy Varroa, czerwiu i wagi dla każdej rodziny oraz przegląd wszystkich pasiek pokazują od razu, które rodziny wymagają uwagi.";
-"tour.reminders.title" = "Żaden przegląd nie umknie";
-"tour.reminders.body" = "Ustaw odstęp i sezon, a HivePulse przypomni ci powiadomieniem push lub e-mailem, gdy przyjdzie czas na przegląd.";
-"tour.hornets.title" = "Chroń swój region";
-"tour.hornets.body" = "Zgłaszaj obserwacje szerszenia azjatyckiego i gniazda, zarządzaj pułapkami i oglądaj dane o zdrowiu społeczności w swoim regionie.";
 
 /* Community heatmap (members) */
 "heatmap.title" = "Regionalna mapa zdrowia";
@@ -628,3 +612,54 @@
 "supporter.notice" = "Abonament";
 "supporter.settings.active" = "Dziękujemy za wspieranie HivePulse.";
 "supporter.settings.inactive" = "Tyle rodzin pszczelich, ile masz, cała historia i regionalna mapa zdrowia.";
+
+/* Guided tours (#449) */
+"tour.next" = "Dalej";
+"tour.close" = "Zakończ przewodnik";
+"tour.skipStep" = "Pomiń ten krok";
+"tour.lost" = "Element tego kroku nie znajduje się na tym ekranie. Otwórz ekran, do którego należy, albo zakończ przewodnik.";
+"tour.listTitle" = "Przewodniki";
+"tour.listIntro" = "Każdy wskazuje prawdziwy przycisk na prawdziwym ekranie i czeka, aż go naciśniesz. Uruchom dowolny, kiedy chcesz — nic tutaj nie dzieje się tylko raz.";
+"tour.listStart" = "Zacznij";
+"tour.listDone" = "widziane";
+"tour.firstSteps.title" = "Twoja pierwsza rodzina";
+"tour.firstSteps.summary" = "Od pustego konta do pierwszego zapisanego przeglądu.";
+"tour.firstSteps.step1" = "Pasieka to miejsce, w którym stoją twoje rodziny — ogród, sad, zbocze. Zacznij od jednej.";
+"tour.firstSteps.step2" = "Nadaj jej nazwę, której użyjesz na głos. Będziesz ją czytać w deszczu.";
+"tour.firstSteps.step3" = "Zapisz. Wszystko inne wisi na pasiece.";
+"tour.firstSteps.step4" = "Otwórz ją. Rodziny mieszkają wewnątrz pasieki.";
+"tour.firstSteps.step5" = "Dodaj rodzinę. Nie potrzebujesz do tego wydrukowanego kodu QR — naklejka to skrót do rodziny, która już istnieje, a nie warunek jej utworzenia.";
+"tour.offline.title" = "Działa bez zasięgu";
+"tour.offline.summary" = "Jedyna rzecz, której nie da się odkryć patrząc, i ta, która liczy się w pasiece.";
+"tour.offline.step1" = "Zapisz go tutaj, a trafi najpierw do telefonu, a potem zostanie wysłany. Bez zasięgu czeka, oznaczony na liście jako „Czeka na wysłanie”, i rusza, gdy tylko pojawi się połączenie. Nic nie przepada, jeśli w trakcie wizyty wyjdziesz z zasięgu — i właśnie dlatego ten ekran działa tak, jak działa.";
+"tour.qrCodes.title" = "Naklejki QR i do czego służą";
+"tour.qrCodes.summary" = "Arkusz naklejek, wydrukowany raz, i rodzina jest na jedno skanowanie przez resztę swojego życia.";
+"tour.qrCodes.step1" = "Partie kodów QR są tutaj, na pasku listy pasiek. Partia to arkusz naklejek; kody muszą istnieć, zanim będą mogły oznaczać rodzinę.";
+"tour.qrCodes.step2" = "Utwórz ją. Weź więcej naklejek, niż masz rodzin — zapasowy arkusz w szopie nic nie kosztuje, a naklejka, której nikt jeszcze nie zeskanował, nie należy do żadnej rodziny. Arkusz drukujesz przez serwis; tutaj powstają kody.";
+"tour.qrCodes.step3" = "I po to właśnie są. Zakładka Skanuj od razu otwiera aparat — przyłóż go do naklejki, a ta rodzina się otworzy. Bez listy, bez szukania, z jedną wolną ręką. Naklejka, której nikt jeszcze nie zeskanował, zostanie zaproponowana następnej rodzinie, którą utworzysz.";
+"tour.hornets.title" = "Pułapka i co się z nią robi codziennie";
+"tour.hornets.summary" = "Zarejestrować nazwaną pułapkę, a potem zapisywać, co złowiła. Jedna liczba dziennie to cała praca.";
+"tour.hornets.step1" = "Tropiciel szerszeni ma własną zakładkę. Chodzi o Vespa velutina, szerszenia azjatyckiego — nie o szerszenia europejskiego, który jest chroniony i nie należy do pułapki.";
+"tour.hornets.step2" = "Pułapka to tutaj Twoja prawdziwa pułapka, w jednym miejscu, z nazwą. Zarejestruj ją raz.";
+"tour.hornets.step3" = "Nazwa, którą rozpoznasz po ciemku — „za szopą”, nie „pułapka 2”. Położenie liczy się bardziej niż nazwa: mapa jest warta tyle, ile współrzędne na niej.";
+"tour.hornets.step4" = "Zarejestruj ją. Dostajesz do niej ośmioznakowy kod — tak wracasz do tej pułapki z innego urządzenia, bez konta.";
+"tour.year.title" = "Rok pasieczny, przesunięty na Twój region";
+"tour.year.summary" = "Co kiedy się dzieje i dlaczego daty na zboczu nie są takie same jak w dolinie.";
+"tour.year.step1" = "Rok pasieczny jest tutaj. Co kiedy się dzieje — a daty na zboczu nie są takie same jak w dolinie, dlatego są przesunięte na Twój region.";
+"tour.year.step2" = "A daty się przesuwają. Sezon, który przyszedł trzy tygodnie wcześniej, nie jest błędem kalendarza, lecz tym rokiem — dlatego kalendarz pyta, tutaj, i przesuwa regionalne daty, gdy dość pszczelarzy w jednym miejscu powie to samo.";
+"tour.treatments.title" = "Zabiegi, których nie musisz pamiętać";
+"tour.treatments.summary" = "Zaplanować jeden z terminem, odhaczyć, gdy wykonany — dokumentacja pisze się sama.";
+"tour.treatments.step1" = "Zabiegi należą do pasieki, a nie do jednej rodziny, bo tak naprawdę leczy się warrozę. Są na pasku pasieki.";
+"tour.treatments.step2" = "Zaplanuj zabieg: co i na kiedy. Należy do całej pasieki, bo tak naprawdę leczy się warrozę — nie rodzina po rodzinie.";
+"tour.sharing.title" = "Wpuścić kogoś innego do pasieki";
+"tour.sharing.summary" = "Zaproszenie e-mailem i co ta druga osoba może potem zrobić.";
+"tour.sharing.step1" = "Pasiekę można udostępnić z jej paska. Kogo wpuścisz, ten ją widzi i zapisuje w niej przeglądy; nie może jej usunąć, a Ty możesz w każdej chwili odebrać dostęp.";
+"tour.sharing.step2" = "Zaproś ją. Widzi tę pasiekę i zapisuje w niej przeglądy; nie może jej usunąć, a Ty możesz tu odebrać dostęp w każdej chwili.";
+"tour.customFields.title" = "Zapisać to, o czym ta aplikacja nie pomyślała";
+"tour.customFields.summary" = "Twoje własne pole w każdym przeglądzie, w potrzebnej Ci postaci.";
+"tour.customFields.step1" = "Nikt nie odgadnie, co zapisujesz. Twoje własne pola są tutaj — partia miodu pitnego, podkarmianie, charakter matki.";
+"tour.customFields.step2" = "Nikt nie odgadnie, co zapisujesz. Partia miodu pitnego, podkarmianie, charakter matki — utwórz pole samodzielnie.";
+"tour.moves.title" = "Wędrówka rodzin i dlaczego warto to zapisać";
+"tour.moves.summary" = "Przenieść kilka rodzin do innej pasieki naraz i zachować, gdzie były.";
+"tour.moves.step1" = "Rodziny podróżują — na rzepak, na wrzos, z miejsca, które przestało nim być. Przenieś je tutaj, zamiast edytować każdą rodzinę po kolei.";
+"tour.moves.step2" = "A mapa wędrówek, na pasku listy pasiek, rysuje potem linie: gdzie rodzina stała i kiedy, zostaje zachowane, byś rok później wciąż wiedział, czy wyjazd na wrzos się opłacił.";

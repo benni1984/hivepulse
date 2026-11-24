@@ -293,11 +293,34 @@ announce itself (`aria-live`, the target in the focus order).
 seen without spending it, and takes you to the page a tour begins on before starting it. The
 provider sits in the locale layout, not the dashboard's, because the hornet trap is a public page.
 
-**The apps still have the old swipeable tour** after the first sign-in (`GuidedTourScreen`,
-`OnboardingStore.hasSeenGuidedTour`). Replacing it with this engine is Compose and SwiftUI work:
-there is no DOM, so the engine has to collect the target's on-screen coordinates
-(`onGloballyPositioned` / an anchor preference) and draw over them. The step definitions and the
-wording carry over; the engines cannot.
+**The apps have the same nine**, with their own engines, because there is no DOM in Compose or
+SwiftUI: the target reports its own position (`Modifier.tourAnchor` via `onGloballyPositioned` on
+Android, `.tourAnchor` via an `anchorPreference` on the iPhone) and the overlay draws over the
+rectangle it is handed. Android cuts the hole with one `Canvas` and `BlendMode.Clear`, the iPhone
+with a `reverseMask`; neither needs the website's four rectangles, because a Compose node with no
+pointer input and a SwiftUI view with `allowsHitTesting(false)` are not in the hit-test path at
+all. `Tours.kt` and `Tours.swift` mirror `lib/tours.ts` line for line, and their strings are
+generated from it, so the three cannot drift apart — ten steps are worded differently on a phone
+because the phone has a different control there (a toolbar icon, the Scan tab), and that is the
+only difference. `ToursTest` and `ToursTests` pin the anchors, the order and all five languages.
+
+**The carousel is gone** from both: `GuidedTourScreen`, `GuidedTourView` and their tests. The
+first sign-in now lands on the apiary list with `first-steps` running on top of it, pointing at
+the button that ends "No apiaries yet". `OnboardingStore.finishedTours` holds the marks, which
+are marks and not locks.
+
+**On the phones the list is a screen of its own** (`TourListScreen.kt`, `TourListView.swift`),
+reached by one row in Settings between help and diagnostics — the place `CLAUDE.md` gives the
+tour in the settings order. It was a section inside Settings first, and nine rows with a sentence
+each pushed reminders, region, export and the danger zone off the end of a phone. The website
+keeps its list inline, because a desktop page has the room.
+
+**A step that points at a row which opens another screen is `.navigates`**, and its anchor does
+not watch for the tap: on a SwiftUI `NavigationLink` a `TapGesture` — simultaneous or not —
+competes with the link's own and the navigation stops happening, which cost every test that opens
+an apiary before CI caught it. Such a step ends when its control is gone, which is the same thing
+the website's `advance: 'route'` does. Android clears an anchor when it leaves the composition,
+so a vanished control cannot leave a lit rectangle behind.
 
 ## Navigation (the same on iPhone and Android)
 

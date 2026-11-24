@@ -327,23 +327,7 @@
 "overview.rowFormat" = "%1$d Völker · %2$d Kontrollen";
 
 /* Guided tour */
-"tour.skip" = "Überspringen";
-"tour.next" = "Weiter";
-"tour.getStarted" = "Los geht’s";
 "action.releaseNotes" = "Release Notes";
-"tour.showAgain" = "Tour erneut ansehen";
-"tour.welcome.title" = "Willkommen bei HivePulse";
-"tour.welcome.body" = "Dein Stockbuch für die Hosentasche. Hier ein kurzer Überblick, was HivePulse für dich erledigt.";
-"tour.qr.title" = "Jedes Volk per Scan";
-"tour.qr.body" = "Lege Bienenstände an, klebe einen gedruckten QR-Code auf jedes Volk und scanne ihn, um es sofort zu öffnen — ohne am Stand durch Listen zu suchen.";
-"tour.inspections.title" = "Kontrollen in Sekunden";
-"tour.inspections.body" = "Erfasse Königin, Brut, Varroa, Stimmung und mehr mit wenigen Tipps. Eigene Felder ergänzen alles, was du sonst noch festhalten willst.";
-"tour.stats.title" = "Probleme früh erkennen";
-"tour.stats.body" = "Varroa-, Brut- und Gewichtsverläufe je Volk und eine Übersicht über alle Bienenstände zeigen auf einen Blick, welche Völker Aufmerksamkeit brauchen.";
-"tour.reminders.title" = "Keine Kontrolle mehr vergessen";
-"tour.reminders.body" = "Lege Intervall und Saison fest — HivePulse erinnert dich per Push oder E-Mail, wenn Kontrollen fällig sind.";
-"tour.hornets.title" = "Schütze deine Region";
-"tour.hornets.body" = "Melde Sichtungen und Nester der Asiatischen Hornisse, verwalte deine Fallen und sieh Gesundheitsdaten der Community für deine Region.";
 
 /* Community heatmap (members) */
 "heatmap.title" = "Regionale Gesundheitskarte";
@@ -627,3 +611,54 @@
 "supporter.notice" = "Abo";
 "supporter.settings.active" = "Danke, dass du HivePulse unterstützt.";
 "supporter.settings.inactive" = "So viele Völker, wie du hast, die ganze Historie und die regionale Gesundheitskarte.";
+
+/* Guided tours (#449) */
+"tour.next" = "Weiter";
+"tour.close" = "Tour beenden";
+"tour.skipStep" = "Schritt überspringen";
+"tour.lost" = "Das Bedienelement für diesen Schritt ist auf diesem Bildschirm nicht da. Öffne den Bildschirm, zu dem es gehört, oder beende die Tour.";
+"tour.listTitle" = "Geführte Touren";
+"tour.listIntro" = "Jede zeigt auf den echten Knopf auf dem echten Bildschirm und wartet, bis du ihn drückst. Starte jede, wann du willst — hier läuft nichts nur einmal.";
+"tour.listStart" = "Starten";
+"tour.listDone" = "gesehen";
+"tour.firstSteps.title" = "Dein erstes Volk";
+"tour.firstSteps.summary" = "Von einem leeren Konto zur ersten festgehaltenen Kontrolle.";
+"tour.firstSteps.step1" = "Ein Bienenstand ist ein Ort, an dem deine Völker stehen — ein Garten, eine Streuobstwiese, eine Stelle am Hang. Fang mit einem an.";
+"tour.firstSteps.step2" = "Gib ihm den Namen, den du laut benutzen würdest. Du wirst ihn im Regen lesen.";
+"tour.firstSteps.step3" = "Speichern. Alles Weitere hängt an einem Bienenstand.";
+"tour.firstSteps.step4" = "Öffne ihn. Die Völker liegen innerhalb eines Bienenstandes.";
+"tour.firstSteps.step5" = "Lege ein Volk an. Dafür brauchst du keinen gedruckten QR-Code — der Aufkleber ist eine Abkürzung zu einem Volk, das es schon gibt, keine Voraussetzung dafür.";
+"tour.offline.title" = "Es funktioniert ohne Netz";
+"tour.offline.summary" = "Das Einzige, was man durch Hinsehen nicht herausfindet — und das, worauf es am Bienenstand ankommt.";
+"tour.offline.step1" = "Halte sie hier fest, und sie wird zuerst auf das Telefon geschrieben und dann gesendet. Ohne Netz wartet sie, in der Liste als „Wartet auf Upload“ markiert, und geht, sobald es wieder Verbindung gibt. Es geht nichts verloren, wenn du mitten im Besuch aus dem Funkloch läufst — und genau deshalb arbeitet dieser Bildschirm so.";
+"tour.qrCodes.title" = "QR-Aufkleber, und wofür sie gut sind";
+"tour.qrCodes.summary" = "Ein Blatt Aufkleber, einmal gedruckt, und ein Volk ist für den Rest seines Lebens einen Scan entfernt.";
+"tour.qrCodes.step1" = "Die QR-Batches liegen hier oben, in der Leiste der Bienenstandsliste. Ein Batch ist ein Blatt Aufkleber; die Codes müssen existieren, bevor sie ein Volk bedeuten können.";
+"tour.qrCodes.step2" = "Lege eines an. Nimm mehr Aufkleber, als du Völker hast — ein Reserveblatt im Schuppen kostet nichts, und ein Aufkleber, den noch niemand gescannt hat, gehört zu keinem Volk. Das Blatt druckst du über die Webseite; hier entstehen die Codes.";
+"tour.qrCodes.step3" = "Und dafür sind sie da. Der Scan-Reiter öffnet sofort die Kamera — halte sie an einen Aufkleber, und dieses Volk geht auf. Keine Liste, kein Suchen, eine Hand frei. Ein Aufkleber, den noch niemand gescannt hat, wird dem nächsten Volk angeboten, das du anlegst.";
+"tour.hornets.title" = "Eine Falle, und was man täglich mit ihr macht";
+"tour.hornets.summary" = "Eine benannte Falle anmelden, dann festhalten, was sie gefangen hat. Eine Zahl am Tag ist die ganze Arbeit.";
+"tour.hornets.step1" = "Der Hornissen-Tracker hat einen eigenen Reiter. Es geht um Vespa velutina, die Asiatische Hornisse — nicht um die Europäische Hornisse, die geschützt ist und nicht in eine Falle gehört.";
+"tour.hornets.step2" = "Eine Falle ist hier eine echte Falle von dir, an einem Ort, mit einem Namen. Melde sie einmal an.";
+"tour.hornets.step3" = "Ein Name, den du im Dunkeln unterscheiden kannst — „hinter dem Schuppen“, nicht „Falle 2“. Der Standort ist wichtiger als der Name: die Karte ist nur so nützlich wie die Koordinaten auf ihr.";
+"tour.hornets.step4" = "Melde sie an. Du bekommst dazu einen achtstelligen Code — damit erreichst du diese Falle von einem anderen Gerät wieder, ohne Konto.";
+"tour.year.title" = "Das Bienenjahr, auf deine Region verschoben";
+"tour.year.summary" = "Was wann passiert, und warum die Daten am Hang nicht die gleichen sind wie im Tal.";
+"tour.year.step1" = "Das Bienenjahr liegt hier oben. Was wann passiert — und die Daten sind am Hang nicht dieselben wie im Tal, deshalb sind sie auf deine Region verschoben.";
+"tour.year.step2" = "Und die Daten wandern. Eine Saison, die drei Wochen früher kam, ist kein Fehler im Kalender, sondern dieses Jahr — deshalb fragt der Kalender, hier, und verschiebt die regionalen Daten, sobald genug Imker an einem Ort dasselbe gesagt haben.";
+"tour.treatments.title" = "Behandlungen, die du nicht erinnern musst";
+"tour.treatments.summary" = "Eine mit Fälligkeitsdatum planen, abhaken, wenn sie erledigt ist — die Dokumentation schreibt sich selbst.";
+"tour.treatments.step1" = "Behandlungen gehören zum Bienenstand, nicht zu einem Volk, denn so wird gegen Varroa tatsächlich behandelt. Sie liegen in der Leiste des Bienenstandes.";
+"tour.treatments.step2" = "Plane eine Behandlung: was, und bis wann. Sie gehört zum ganzen Bienenstand, denn so wird gegen Varroa tatsächlich behandelt — nicht Volk für Volk.";
+"tour.sharing.title" = "Jemand anderen auf den Bienenstand lassen";
+"tour.sharing.summary" = "Eine Einladung per E-Mail — und was der andere dann darf.";
+"tour.sharing.step1" = "Ein Bienenstand lässt sich teilen, über seine Leiste. Wen du hereinlässt, der sieht ihn und hält darin Kontrollen fest; löschen kann er ihn nicht, und du kannst den Zugang jederzeit zurücknehmen.";
+"tour.sharing.step2" = "Lade sie ein. Sie sieht diesen Bienenstand und hält darin Kontrollen fest; löschen kann sie ihn nicht, und du kannst den Zugang hier jederzeit zurücknehmen.";
+"tour.customFields.title" = "Aufschreiben, woran diese App nicht gedacht hat";
+"tour.customFields.summary" = "Ein eigenes Feld in jeder Kontrolle, in der Form, in der du es brauchst.";
+"tour.customFields.step1" = "Niemand kann erraten, was du erfasst. Deine eigenen Felder liegen hier — Met-Ansatz, Futtergabe, das Temperament der Königin.";
+"tour.customFields.step2" = "Niemand kann erraten, was du erfasst. Met-Ansatz, Futtergabe, das Temperament der Königin — lege das Feld selbst an.";
+"tour.moves.title" = "Völker wandern, und warum das festgehalten gehört";
+"tour.moves.summary" = "Mehrere Völker auf einmal auf einen anderen Bienenstand bringen — und behalten, wo sie gewesen sind.";
+"tour.moves.step1" = "Völker wandern — in den Raps, in die Heide, von einem Standplatz weg, der keiner mehr ist. Bring sie hier um, statt jedes Volk einzeln zu bearbeiten.";
+"tour.moves.step2" = "Und die Wanderkarte, in der Leiste der Bienenstandsliste, zeichnet danach die Linien: wo ein Volk stand und wann, bleibt erhalten — damit du ein Jahr später noch weißt, ob die Heidewanderung etwas gebracht hat.";

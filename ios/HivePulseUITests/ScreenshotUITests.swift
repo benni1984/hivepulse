@@ -78,21 +78,27 @@ final class ScreenshotUITests: XCTestCase {
         snap("12-qr-batch-pdf-preview", app)
     }
 
+    /// The tour is no longer six pages of its own; it is an overlay on the real screen (#449).
+    /// So the two pictures are the list of tours in Settings and one tour running on the apiary
+    /// list, pointing at the amber button.
     func test_capture_guided_tour() {
         let app = launch(["-resetKeychain", "-mockAuthenticated", "-guidedTourSeen", "YES"])
         XCTAssertTrue(app.tabBars.buttons[label("tab.settings")].waitForExistence(timeout: 10))
         app.tabBars.buttons[label("tab.settings")].tap()
-        let showAgain = app.buttons["showGuidedTourButton"]
-        for _ in 0..<8 where !showAgain.exists { app.swipeUp(velocity: .slow) }
-        XCTAssertTrue(showAgain.waitForExistence(timeout: 10))
-        showAgain.tap()
+        let link = app.buttons["guidedToursLink"]
+        for _ in 0..<8 where !link.exists { app.swipeUp(velocity: .slow) }
+        XCTAssertTrue(link.waitForExistence(timeout: 10),
+                      "no way into the tours from Settings\n\(app.debugDescription)")
+        link.tap()
 
-        XCTAssertTrue(app.staticTexts[label("tour.welcome.title")].waitForExistence(timeout: 10))
+        let start = app.buttons["startTour-first-steps"]
+        XCTAssertTrue(start.waitForExistence(timeout: 10),
+                      "the tour list did not open\n\(app.debugDescription)")
         snap("13-guided-tour-welcome", app)
 
-        // The tour has its own wording ("tour.next"); in Polish it differs from "action.next".
-        app.buttons[label("tour.next")].tap()
-        XCTAssertTrue(app.staticTexts[label("tour.qr.title")].waitForExistence(timeout: 10))
+        start.tap()
+        XCTAssertTrue(app.staticTexts["tourText"].waitForExistence(timeout: 10),
+                      "the tour did not start\n\(app.debugDescription)")
         sleep(1)
         snap("14-guided-tour-qr", app)
     }

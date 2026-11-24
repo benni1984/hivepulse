@@ -10,6 +10,7 @@ final class OnboardingStore {
     static let key = "guidedTourSeen"
     static let firstLaunchKey = "firstLaunchAt"
     static let feedbackAskedKey = "feedbackAsked"
+    static let toursDoneKey = "toursFinished"
 
     /// Long enough to have something to say. Somebody who has recorded nothing has no opinion
     /// yet, and a question on the first screen is the application talking about itself before it
@@ -25,6 +26,21 @@ final class OnboardingStore {
     var hasSeenGuidedTour: Bool {
         get { defaults.bool(forKey: Self.key) }
         set { defaults.set(newValue, forKey: Self.key) }
+    }
+
+    /// Which tours this device has been through (#449).
+    ///
+    /// Seen is not spent: this only puts a mark beside a tour in the list in Settings, and the
+    /// start button stays. Somebody who watched the QR tour a year ago and has forgotten what a
+    /// batch is for must be able to watch it again, which is the whole difference between this
+    /// and the carousel it replaced.
+    var finishedTours: Set<String> {
+        get { Set(defaults.stringArray(forKey: Self.toursDoneKey) ?? []) }
+        set { defaults.set(Array(newValue).sorted(), forKey: Self.toursDoneKey) }
+    }
+
+    func markTourFinished(_ id: String) {
+        finishedTours.insert(id)
     }
 
     /// Seconds since 1970, or 0 when this device has not been counted yet.

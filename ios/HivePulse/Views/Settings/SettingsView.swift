@@ -224,17 +224,15 @@ struct SettingsView: View {
                     Label(NSLocalizedString("action.feedback", comment: ""), systemImage: "envelope")
                 }
                 .accessibilityIdentifier("feedbackLink")
-                Button {
-                    authVM.replayGuidedTour()
-                } label: {
-                    Label(NSLocalizedString("tour.showAgain", comment: ""), systemImage: "sparkles")
-                }
-                .accessibilityIdentifier("showGuidedTourButton")
                 // What is new, and the full list of features: the same page on every platform.
                 Link(destination: URL(string: "https://hivepulse.multihead.de/\(locale)/release-notes")!) {
                     Label(NSLocalizedString("action.releaseNotes", comment: ""), systemImage: "list.bullet.rectangle")
                 }
                 .accessibilityIdentifier("releaseNotesLink")
+                NavigationLink(destination: TourListView()) {
+                    Label(NSLocalizedString("tour.listTitle", comment: ""), systemImage: "sparkles")
+                }
+                .accessibilityIdentifier("guidedToursLink")
             }
 
             // MARK: - Diagnostics

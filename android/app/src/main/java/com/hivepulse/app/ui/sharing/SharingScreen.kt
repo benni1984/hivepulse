@@ -21,6 +21,8 @@ import com.hivepulse.app.R
 import com.hivepulse.app.data.api.IncomingShareOut
 import com.hivepulse.app.data.api.ShareOut
 import com.hivepulse.app.ui.common.ErrorBanner
+import com.hivepulse.app.ui.onboarding.tourAnchor
+import com.hivepulse.app.ui.onboarding.TourAnchors
 
 /**
  * Who works on an apiary or a hive together with its owner, and the form to invite somebody.
@@ -69,7 +71,8 @@ fun SharingScreen(onBack: () -> Unit, vm: SharingViewModel = hiltViewModel()) {
                 Button(
                     onClick = { vm.invite(email) { email = "" } },
                     enabled = !state.isInviting && SharingViewModel.looksLikeAnEmail(email),
-                    modifier = Modifier.testTag("inviteButton"),
+                    modifier = Modifier.testTag("inviteButton")
+                        .tourAnchor(TourAnchors.SHARING_INVITE),
                 ) {
                     if (state.isInviting) CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
                     else Text(stringResource(R.string.sharing_invite))

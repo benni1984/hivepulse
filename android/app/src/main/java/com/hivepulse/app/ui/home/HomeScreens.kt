@@ -33,6 +33,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.ui.text.input.KeyboardType
 import com.hivepulse.app.ui.common.openSavedPdf
+import com.hivepulse.app.ui.onboarding.tourAnchor
+import com.hivepulse.app.ui.onboarding.TourAnchors
 
 private val Good = Color(0xFF166534)
 private val Warn = Color(0xFFB45309)
@@ -295,7 +297,12 @@ fun TreatmentsScreen(onBack: () -> Unit, vm: TreatmentsViewModel = hiltViewModel
                 )
             }
             item {
-                Button(onClick = vm::plan, enabled = state.canPlan, modifier = Modifier.fillMaxWidth().testTag("treatmentPlan")) {
+                Button(
+                    onClick = vm::plan,
+                    enabled = state.canPlan,
+                    modifier = Modifier.fillMaxWidth().testTag("treatmentPlan")
+                        .tourAnchor(TourAnchors.TREATMENT_PLAN),
+                ) {
                     if (state.isSaving) CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
                     else Text(stringResource(R.string.treatments_plan))
                 }

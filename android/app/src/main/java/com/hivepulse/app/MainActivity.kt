@@ -33,11 +33,16 @@ import com.hivepulse.app.ui.theme.HivePulseTheme
 import com.hivepulse.app.R
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import com.hivepulse.app.ui.onboarding.tourAnchor
+import com.hivepulse.app.ui.onboarding.TourHost
+import com.hivepulse.app.ui.onboarding.TourAnchors
+import com.hivepulse.app.data.local.OnboardingStore
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     @Inject lateinit var tokenStore: TokenStore
+    @Inject lateinit var onboardingStore: OnboardingStore
     @Inject lateinit var sessionEvents: SessionEvents
 
     // Android 12 and older have no language per app; there it is applied here.
@@ -57,7 +62,6 @@ class MainActivity : ComponentActivity() {
                 val isMembersSection = currentRoute == Routes.MEMBERS
                 val isSettingsSection = currentRoute == Routes.SETTINGS
                 val isScanSection    = currentRoute == Routes.QR_SCAN
-                val isGuidedTour     = currentRoute.startsWith("guided_tour")
 
                 // The session can end while the app is open: after thirty days the server stops
                 // accepting the refresh token, and until #467 that showed as an alert about
@@ -73,9 +77,18 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
+                TourHost(
+                    onNavigate = { route ->
+                        navController.navigate(route) {
+                            launchSingleTop = true
+                            popUpTo(navController.graph.startDestinationId) { saveState = true }
+                        }
+                    },
+                    onFinished = { onboardingStore.markTourFinished(it) },
+                ) {
                 Scaffold(
                     bottomBar = {
-                        if (!isGuidedTour) NavigationBar(
+                        NavigationBar(
                             containerColor = Forest900,
                             contentColor   = Color.White,
                         ) {
@@ -111,7 +124,7 @@ class MainActivity : ComponentActivity() {
                                 icon   = { Icon(Icons.Default.QrCodeScanner, contentDescription = null) },
                                 label  = { Text(stringResource(R.string.tab_scan_short)) },
                                 colors = itemColors,
-                                modifier = Modifier.testTag("scanTab"),
+                                modifier = Modifier.testTag("scanTab").tourAnchor(TourAnchors.SCAN_TAB),
                             )
                             NavigationBarItem(
                                 selected = isHornetSection,
@@ -124,6 +137,7 @@ class MainActivity : ComponentActivity() {
                                 icon   = { Icon(painterResource(R.drawable.ic_hornet), contentDescription = null) },
                                 label  = { Text(stringResource(R.string.tab_hornets)) },
                                 colors = itemColors,
+                                modifier = Modifier.tourAnchor(TourAnchors.HORNETS_TAB),
                             )
                             NavigationBarItem(
                                 selected = isMembersSection,
@@ -158,6 +172,7 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         modifier      = Modifier.padding(innerPadding),
                     )
+                }
                 }
             }
         }

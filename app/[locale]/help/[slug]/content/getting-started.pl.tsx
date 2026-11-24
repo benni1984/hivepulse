@@ -129,10 +129,12 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           szukanego elementu nie ma na ekranie, mówi to, zamiast przygaszać stronę wokół niczego.
         </p>
         <p>
-          W aplikacjach na iPhone’a i Androida przewodnik to nadal ten krótki, do przewijania po
-          pierwszym logowaniu, przedstawiający kody QR, przeglądy, statystyki, przypomnienia
-          i tropiciela szerszenia azjatyckiego. Pomiń go, kiedy chcesz, i przywołaj z{' '}
-          <strong>Ustawienia → Pokaż przewodnik ponownie</strong>.
+          Aplikacje na iPhone’a i Androida mają tych samych dziewięć i działają tak samo: ekran
+          przygasa wokół jednego prawdziwego elementu i czeka, aż go dotkniesz. Pierwsze otwarcie
+          aplikacji nie zastępuje już listy pasiek pokazem slajdów — ląduje na liście pasiek, a
+          pierwszy krok wskazuje bursztynowy przycisk.{' '}
+          <strong>Ustawienia → Przewodniki</strong> wymieniają tam również wszystkie dziewięć, a
+          uruchomienie któregoś zabiera Cię najpierw na ekran, na którym się zaczyna.
         </p>
       </section>
 

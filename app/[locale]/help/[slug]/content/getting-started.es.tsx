@@ -129,10 +129,12 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           busca no está en la pantalla lo dice, en vez de oscurecer la página alrededor de nada.
         </p>
         <p>
-          En las apps de iPhone y Android el recorrido sigue siendo el breve deslizable tras el
-          primer inicio de sesión, que presenta los códigos QR, las revisiones, las estadísticas,
-          los recordatorios y el rastreador de avispa asiática. Sáltalo cuando quieras y vuelve a
-          verlo en <strong>Ajustes → Mostrar de nuevo el recorrido</strong>.
+          Las apps de iPhone y Android tienen los mismos nueve, y funcionan igual: la pantalla se
+          oscurece alrededor de un control de verdad y espera a que lo pulses. Abrir la app por
+          primera vez ya no sustituye la lista de colmenares por una presentación — aterriza en la
+          lista de colmenares, y el primer paso señala el botón ámbar.{' '}
+          <strong>Ajustes → Tours guiados</strong> los lista todos allí también, y empezar uno te
+          lleva primero a la pantalla en la que arranca.
         </p>
       </section>
 

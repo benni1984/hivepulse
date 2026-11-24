@@ -53,7 +53,7 @@ class LoginScreenTest {
         override fun before() {
             hiltRule.inject()
             tokenStore.clear()
-            onboardingStore.hasSeenGuidedTour = true  // the tour has its own test (GuidedTourScreenTest)
+            onboardingStore.hasSeenGuidedTour = true  // the tour has its own test (TourScreenTest)
         }
     }
 

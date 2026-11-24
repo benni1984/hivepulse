@@ -63,7 +63,8 @@ struct ApiaryDetailView: View {
         // Making a hive by hand, as the web has it: a sticker is not needed to start. Not for somebody who was
         // given single hives of this apiary: the server would refuse.
         .hpFloatingButton(NSLocalizedString("action.newHive", comment: ""), identifier: "newHiveButton",
-                          isVisible: apiary.canEdit) {
+                          isVisible: apiary.canEdit,
+                          tourAnchor: TourAnchors.newHive) {
             showAddHive = true
         }
         .toolbar {
@@ -75,6 +76,7 @@ struct ApiaryDetailView: View {
                     }
                     .accessibilityLabel(NSLocalizedString("moves.title", comment: ""))
                     .accessibilityIdentifier("moveHivesButton")
+                    .tourAnchor(TourAnchors.moveHives)
                 }
                 if apiary.isOwner {
                     NavigationLink(destination: SharingView(target: .apiary(apiary.id), isHive: false)) {
@@ -82,6 +84,7 @@ struct ApiaryDetailView: View {
                     }
                     .accessibilityLabel(NSLocalizedString("sharing.title", comment: ""))
                     .accessibilityIdentifier("shareApiaryButton")
+                    .tourAnchor(TourAnchors.shareApiary)
                 }
                 // Somebody who has single hives of it cannot edit the apiary around them.
                 if apiary.canEdit {
@@ -90,11 +93,13 @@ struct ApiaryDetailView: View {
                     }
                     .accessibilityLabel(NSLocalizedString("treatments.title", comment: ""))
                     .accessibilityIdentifier("apiaryTreatmentsButton")
+                    .tourAnchor(TourAnchors.treatments)
                     NavigationLink(destination: FieldDefinitionsView(apiaryId: apiary.id)) {
                         Image(systemName: "slider.horizontal.3")
                     }
                     .accessibilityLabel(NSLocalizedString("fielddefs.apiaryTitle", comment: ""))
                     .accessibilityIdentifier("apiaryFieldsButton")
+                    .tourAnchor(TourAnchors.customFields)
                     Button { showEdit = true } label: {
                         Image(systemName: "pencil")
                     }

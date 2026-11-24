@@ -45,6 +45,8 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.compose.runtime.LaunchedEffect
+import com.hivepulse.app.ui.onboarding.tourAnchor
+import com.hivepulse.app.ui.onboarding.TourAnchors
 
 data class HiveDetailState(
     val hive: HiveOut? = null,
@@ -165,7 +167,8 @@ fun HiveDetailScreen(
                 text           = { Text(newInspectionLabel) },
                 containerColor = Amber500,
                 contentColor   = MaterialTheme.colorScheme.onPrimary,
-                modifier       = Modifier.semantics { contentDescription = newInspectionLabel },
+                modifier       = Modifier.semantics { contentDescription = newInspectionLabel }
+                    .tourAnchor(TourAnchors.NEW_INSPECTION),
             )
         }
     ) { padding ->

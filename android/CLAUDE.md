@@ -125,11 +125,11 @@ Screenshots live in `public/docs/screenshots/android-*.png`.
 
 ## Unit Tests — all passing
 
-AuthViewModelTest, AuthRepositoryTest, ApiaryViewModelTest, ApiaryRepositoryTest, HiveRepositoryTest, HiveDetailViewModelTest, InspectionRepositoryTest, InspectionFormViewModelTest, QrBatchRepositoryTest, StatsRepositoryTest, QRViewModelTest, SettingsViewModelTest, SupporterViewModelTest, FeedbackPromptRuleTest, HornetMapCameraTest, DtoTest
+AuthViewModelTest, AuthRepositoryTest, ApiaryViewModelTest, ApiaryRepositoryTest, HiveRepositoryTest, HiveDetailViewModelTest, InspectionRepositoryTest, InspectionFormViewModelTest, QrBatchRepositoryTest, StatsRepositoryTest, QRViewModelTest, SettingsViewModelTest, SupporterViewModelTest, FeedbackPromptRuleTest, HornetMapCameraTest, ToursTest, DtoTest
 
 ## UI / Instrumented Tests — all passing
 
-LoginScreenTest, RegisterScreenTest, ApiaryScreenTest, ApiaryWithDataTest, HiveDetailScreenTest, InspectionFormScreenTest, QRBatchListScreenTest, SettingsScreenTest, SupporterScreenTest, FeedbackPromptScreenTest, FeedbackPromptEmptyScreenTest, HornetMapScreenTest
+LoginScreenTest, RegisterScreenTest, ApiaryScreenTest, ApiaryWithDataTest, HiveDetailScreenTest, InspectionFormScreenTest, QRBatchListScreenTest, SettingsScreenTest, SupporterScreenTest, FeedbackPromptScreenTest, FeedbackPromptEmptyScreenTest, HornetMapScreenTest, TourScreenTest
 
 ## IMPORTANT: MockK Exception Rule
 
@@ -184,7 +184,20 @@ Replace the entire network stack:
 
 ## Guided Tour
 
-The first successful sign-in or registration on a device routes to `GuidedTourScreen` (`guided_tour?fromSettings=false`) instead of the apiary list; `OnboardingStore.hasSeenGuidedTour` remembers it. Settings has "Show guided tour again". **UI tests that sign in and expect "My Apiaries" must set `onboardingStore.hasSeenGuidedTour = true` in their setup rule** (see `LoginScreenTest`); `GuidedTourScreenTest` covers the tour itself.
+The tour points at the real control and waits for the real tap (#449). `TourHost` wraps the whole
+`Scaffold` in `MainActivity` — above the `NavHost` *and* the bottom bar, so a step can point at a
+tab — and `Modifier.tourAnchor(TourAnchors.X)` marks a target. The press is observed in the
+**initial** pointer pass and never consumed, so the control underneath stays a control.
+
+`Tours.kt` mirrors `lib/tours.ts` and `Tours.swift`: same nine, same order, same words, strings
+generated from the website's file. `ToursTest` pins every anchor against the source.
+
+The first successful sign-in routes to the apiary list and starts `first-steps` on top of it;
+`OnboardingStore.hasSeenGuidedTour` remembers that it has run, `finishedTours` holds the marks in
+the list in Settings (a mark, not a lock — the start button stays). That list is
+`TourListScreen` on a route of its own, reached by one row in Settings. **UI tests that sign in and
+expect "My Apiaries" must set `onboardingStore.hasSeenGuidedTour = true` in their setup rule**
+(see `LoginScreenTest`); `TourScreenTest` covers the tour itself.
 
 ## Waiting for Async Results
 

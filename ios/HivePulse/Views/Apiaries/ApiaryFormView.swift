@@ -39,6 +39,7 @@ struct ApiaryFormView: View {
             Form {
                 Section(NSLocalizedString("section.details", comment: "")) {
                     TextField(NSLocalizedString("field.name", comment: ""), text: $name)
+                        .tourAnchor(TourAnchors.apiaryName)
                     TextField(NSLocalizedString("field.description", comment: ""), text: $description, axis: .vertical)
                         .lineLimit(3)
                 }
@@ -88,6 +89,7 @@ struct ApiaryFormView: View {
                         Task { await save() }
                     }
                     .disabled(name.isEmpty || isSaving)
+                    .tourAnchor(TourAnchors.apiarySave)
                 }
             }
             .onAppear {

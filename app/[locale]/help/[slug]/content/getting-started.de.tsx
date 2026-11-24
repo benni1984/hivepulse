@@ -130,10 +130,12 @@ export default function GettingStartedContent({ Screenshot }: { Screenshot: type
           nichts abzudunkeln.
         </p>
         <p>
-          In der iPhone- und Android-App ist die Tour weiterhin die kurze zum Durchwischen nach der
-          ersten Anmeldung, die QR-Codes, Kontrollen, Statistiken, Erinnerungen und den
-          Hornissen-Tracker vorstellt. Du kannst sie jederzeit überspringen und unter{' '}
-          <strong>Einstellungen → Tour erneut anzeigen</strong> zurückholen.
+          Die iPhone- und die Android-App haben dieselben neun, und sie arbeiten gleich: der
+          Bildschirm dunkelt um ein echtes Bedienelement ab und wartet, bis du es antippst. Das
+          erste Öffnen ersetzt die Bienenstandsliste nicht mehr durch eine Diaschau — es landet
+          auf der Bienenstandsliste, und der erste Schritt zeigt auf den bernsteinfarbenen Knopf.
+          <strong>Einstellungen → Geführte Touren</strong> listet dort ebenfalls alle neun, und
+          wer eine startet, wird zuerst auf den Bildschirm gebracht, auf dem sie anfängt.
         </p>
       </section>
 

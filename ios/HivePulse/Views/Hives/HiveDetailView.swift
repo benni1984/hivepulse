@@ -115,7 +115,8 @@ struct HiveDetailView: View {
                     .accessibilityIdentifier("hiveStatsButton")
             }
         }
-        .hpFloatingButton(NSLocalizedString("action.newInspection", comment: ""), identifier: "newInspectionButton") {
+        .hpFloatingButton(NSLocalizedString("action.newInspection", comment: ""), identifier: "newInspectionButton",
+                          tourAnchor: TourAnchors.newInspection) {
             showAddInspection = true
         }
         .task { await inspectionVM.load(hiveId: hive.id) }

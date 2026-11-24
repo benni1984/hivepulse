@@ -127,7 +127,11 @@ extension View {
 
     /// The amber "create something" button at the bottom right, as on Android (a floating action button with a
     /// label). Every screen that creates something has this one instead of a plus in the toolbar.
+    /// `tourAnchor` marks this button as something a guided tour can point at (#449). Every
+    /// "create" in this app is this button, so the anchor belongs here and not at five call
+    /// sites.
     func hpFloatingButton(_ title: String, identifier: String, isVisible: Bool = true,
+                          tourAnchor: String? = nil,
                           action: @escaping () -> Void) -> some View {
         self
             // Leaves room under the button for the last row.
@@ -148,6 +152,7 @@ extension View {
                         .shadow(color: .black.opacity(0.2), radius: 4, y: 2)
                 }
                 .padding(16)
+                .modifier(OptionalTourAnchor(id: tourAnchor))
                 .accessibilityIdentifier(identifier)
                 }
             }
@@ -185,5 +190,19 @@ struct HPStatPill: View {
                 .foregroundColor(.hpStone900)
         }
         .hpCard(padding: 12)
+    }
+}
+
+/// Applies `.tourAnchor` only where there is one, so a control with no tour stays untouched.
+struct OptionalTourAnchor: ViewModifier {
+    let id: String?
+    var observesTap: Bool = true
+
+    func body(content: Content) -> some View {
+        if let id {
+            content.tourAnchor(id, observesTap: observesTap)
+        } else {
+            content
+        }
     }
 }

@@ -26,6 +26,7 @@ struct MainTabView: View {
             .tint(.hpAmberDark)
             .tabItem {
                 Label(NSLocalizedString("tab.scan", comment: ""), systemImage: "qrcode.viewfinder")
+                    .tourAnchor(TourAnchors.scanTab)
             }
             .tag(1)
 
@@ -37,6 +38,7 @@ struct MainTabView: View {
                     Image(uiImage: HornetIcon.tabImage)
                 }
             }
+            .tourAnchor(TourAnchors.hornetsTab)
             .tag(2)
 
             NavigationStack {

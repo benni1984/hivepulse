@@ -10,6 +10,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.hivepulse.app.R
 import com.hivepulse.app.data.api.isOwner
+import com.hivepulse.app.ui.onboarding.tourAnchor
+import com.hivepulse.app.ui.onboarding.TourAnchors
 
 @Composable
 fun ApiaryFormDialog(
@@ -32,7 +34,8 @@ fun ApiaryFormDialog(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(value = name, onValueChange = { name = it },
                     label = { Text(stringResource(R.string.field_name)) },
-                    singleLine = true, modifier = Modifier.fillMaxWidth())
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth().tourAnchor(TourAnchors.APIARY_NAME))
                 OutlinedTextField(value = description, onValueChange = { description = it },
                     label = { Text(stringResource(R.string.field_description)) },
                     modifier = Modifier.fillMaxWidth())
@@ -56,7 +59,8 @@ fun ApiaryFormDialog(
         confirmButton = {
             TextButton(
                 onClick  = { onConfirm(name, description.ifBlank { null }, null, null, address.ifBlank { null }, isPublic) },
-                enabled  = name.isNotBlank()
+                enabled  = name.isNotBlank(),
+                modifier = Modifier.tourAnchor(TourAnchors.APIARY_SAVE),
             ) { Text(stringResource(R.string.action_save)) }
         },
         dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) } }

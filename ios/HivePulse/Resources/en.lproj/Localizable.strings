@@ -328,23 +328,7 @@
 "overview.rowFormat" = "%1$d hives · %2$d inspections";
 
 /* Guided tour */
-"tour.skip" = "Skip";
-"tour.next" = "Next";
-"tour.getStarted" = "Get started";
 "action.releaseNotes" = "Release notes";
-"tour.showAgain" = "Show guided tour again";
-"tour.welcome.title" = "Welcome to HivePulse";
-"tour.welcome.body" = "Your hive log in your pocket. Here is a quick look at what HivePulse does for you.";
-"tour.qr.title" = "Every hive at a scan";
-"tour.qr.body" = "Create apiaries, stick a printed QR code on each hive and scan it to open that hive instantly — no searching through lists at the apiary.";
-"tour.inspections.title" = "Inspections in seconds";
-"tour.inspections.body" = "Record queen, brood, varroa, mood and more in a few taps. Custom fields cover anything else you want to track.";
-"tour.stats.title" = "Spot problems early";
-"tour.stats.body" = "Varroa, brood and weight trends per hive and an overview of all your apiaries show at a glance which colonies need attention.";
-"tour.reminders.title" = "Never miss an inspection";
-"tour.reminders.body" = "Set your interval and season — HivePulse reminds you by push notification or email when hives are due.";
-"tour.hornets.title" = "Protect your region";
-"tour.hornets.body" = "Report Asian hornet sightings and nests, manage your traps and see community health data for your region.";
 
 /* Community heatmap (members) */
 "heatmap.title" = "Regional Health Map";
@@ -628,3 +612,54 @@
 "supporter.notice" = "Subscription";
 "supporter.settings.active" = "Thank you for supporting HivePulse.";
 "supporter.settings.inactive" = "As many colonies as you keep, the whole history, and the regional health map.";
+
+/* Guided tours (#449) */
+"tour.next" = "Next";
+"tour.close" = "Close tour";
+"tour.skipStep" = "Skip this step";
+"tour.lost" = "The control for this step is not on this screen. Open the screen it belongs to, or leave the tour.";
+"tour.listTitle" = "Guided tours";
+"tour.listIntro" = "Each one points at the real button on the real screen and waits for you to press it. Start any of them whenever you like — nothing here runs only once.";
+"tour.listStart" = "Start";
+"tour.listDone" = "seen";
+"tour.firstSteps.title" = "Your first colony";
+"tour.firstSteps.summary" = "From an empty account to a recorded inspection.";
+"tour.firstSteps.step1" = "An apiary is a place where your colonies stand — a garden, an orchard, a spot on a hill. Start with one.";
+"tour.firstSteps.step2" = "Give it the name you would use out loud. You will be reading it in the rain.";
+"tour.firstSteps.step3" = "Save it. Everything else hangs off an apiary.";
+"tour.firstSteps.step4" = "Open it. The colonies live inside an apiary.";
+"tour.firstSteps.step5" = "Add a colony. You do not need a printed QR code for this — the sticker is a shortcut to a colony that already exists, not a requirement for making one.";
+"tour.offline.title" = "It works without a signal";
+"tour.offline.summary" = "The one thing you cannot find out by looking, and the one that matters at the apiary.";
+"tour.offline.step1" = "Record it here and it is written to the phone first, then sent. With no signal it waits, marked “Waiting to upload” in the list, and goes as soon as there is a connection. Nothing is lost if you walk out of range in the middle of a visit — which is the whole reason this screen works the way it does.";
+"tour.qrCodes.title" = "QR stickers, and what they are for";
+"tour.qrCodes.summary" = "A sheet of stickers, printed once, and a colony is one scan away for the rest of its life.";
+"tour.qrCodes.step1" = "The QR batches live up here, in the apiary list’s toolbar. A batch is a sheet of stickers; the codes have to exist before they can mean a colony.";
+"tour.qrCodes.step2" = "Make one. Take more stickers than you have colonies — a spare sheet in the shed costs nothing, and a sticker nobody has scanned yet belongs to no colony. You print the sheet from the website; this is where the codes come from.";
+"tour.qrCodes.step3" = "And this is what they are for. The Scan tab opens the camera straight away — hold it at a sticker and that colony opens. No list, no searching, one hand free. A sticker nobody has scanned yet is offered to the next colony you make.";
+"tour.hornets.title" = "A trap, and what you do with it daily";
+"tour.hornets.summary" = "Register a named trap, then log what it caught. One number a day is the whole job.";
+"tour.hornets.step1" = "The hornet tracker has its own tab. It is about Vespa velutina, the Asian hornet — not the European hornet, which is protected and does not belong in a trap.";
+"tour.hornets.step2" = "A trap here is a physical trap of yours, in one place, with a name. Register it once.";
+"tour.hornets.step3" = "A name you can tell apart in the dark — “behind the shed”, not “trap 2”. The position matters more than the name: the map is only as useful as the coordinates on it.";
+"tour.hornets.step4" = "Register it. You get an eight-character code with it — that is how you reach this trap again from another device, without an account.";
+"tour.year.title" = "The beekeeping year, shifted to your region";
+"tour.year.summary" = "What happens when, and why the dates are not the same on a hill as in a valley.";
+"tour.year.step1" = "The beekeeping year lives up here. What happens when — and the dates are not the same on a hill as in a valley, which is why they are shifted to your region.";
+"tour.year.step2" = "And the dates move. A season that came three weeks early is not an error in the calendar, it is this year — so the calendar asks, here, and shifts the regional dates once enough beekeepers in one place have said the same thing.";
+"tour.treatments.title" = "Treatments you will not have to remember";
+"tour.treatments.summary" = "Plan one with a due date, tick it off when it is done, and the record writes itself.";
+"tour.treatments.step1" = "Treatments belong to the apiary, not to one colony, because that is how varroa treatment is actually done. They are in the apiary’s toolbar.";
+"tour.treatments.step2" = "Plan a treatment: what, and by when. It belongs to the whole apiary, because that is how varroa treatment is actually done — not one colony at a time.";
+"tour.sharing.title" = "Letting somebody else see the apiary";
+"tour.sharing.summary" = "An invitation by email, and what the other person may then do.";
+"tour.sharing.step1" = "An apiary can be shared, from its toolbar. Whoever you let in sees it and records inspections in it; they cannot delete it, and you can take the access back at any time.";
+"tour.sharing.step2" = "Invite them. They see this apiary and record inspections in it; they cannot delete it, and you can take the access back here at any time.";
+"tour.customFields.title" = "Writing down what this app did not think of";
+"tour.customFields.summary" = "Your own field on every inspection, in the shape you need it.";
+"tour.customFields.step1" = "Nobody can guess what you record. Your own fields are here — mead batch, feed given, the queen’s temper.";
+"tour.customFields.step2" = "Nobody can guess what you record. Mead batch, feed given, the queen’s temper — make the field yourself.";
+"tour.moves.title" = "Moving colonies, and why it is worth recording";
+"tour.moves.summary" = "Move several colonies to another apiary at once, and keep where they have been.";
+"tour.moves.step1" = "Colonies travel — to the rape, to the heather, to a hive stand that stopped being the right one. Move them here rather than editing each colony in turn.";
+"tour.moves.step2" = "And the map of moves, in the apiary list’s toolbar, draws the lines afterwards: where a colony stood and when is kept, so a year later you can still tell whether that heather trip was worth it.";

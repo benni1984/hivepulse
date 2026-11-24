@@ -327,23 +327,7 @@
 "overview.rowFormat" = "%1$d ruches · %2$d visites";
 
 /* Guided tour */
-"tour.skip" = "Passer";
-"tour.next" = "Suivant";
-"tour.getStarted" = "C’est parti";
 "action.releaseNotes" = "Notes de version";
-"tour.showAgain" = "Revoir la visite guidée";
-"tour.welcome.title" = "Bienvenue sur HivePulse";
-"tour.welcome.body" = "Votre carnet de ruches dans la poche. Voici un aperçu rapide de ce que HivePulse fait pour vous.";
-"tour.qr.title" = "Chaque ruche en un scan";
-"tour.qr.body" = "Créez vos ruchers, collez un QR code imprimé sur chaque ruche et scannez-le pour l’ouvrir aussitôt — sans chercher dans des listes au rucher.";
-"tour.inspections.title" = "Des visites en quelques secondes";
-"tour.inspections.body" = "Notez reine, couvain, varroa, humeur et plus encore en quelques gestes. Les champs personnalisés couvrent tout le reste.";
-"tour.stats.title" = "Repérez les problèmes tôt";
-"tour.stats.body" = "Les évolutions du varroa, du couvain et du poids par ruche et une vue d’ensemble de tous vos ruchers montrent d’un coup d’œil quelles colonies ont besoin d’attention.";
-"tour.reminders.title" = "Ne manquez plus aucune visite";
-"tour.reminders.body" = "Définissez l’intervalle et la saison — HivePulse vous rappelle par notification push ou e-mail quand des ruches sont à visiter.";
-"tour.hornets.title" = "Protégez votre région";
-"tour.hornets.body" = "Signalez les observations et les nids de frelons asiatiques, gérez vos pièges et consultez les données de santé de la communauté pour votre région.";
 
 /* Community heatmap (members) */
 "heatmap.title" = "Carte de santé régionale";
@@ -626,3 +610,54 @@
 "supporter.notice" = "Abonnement";
 "supporter.settings.active" = "Merci de soutenir HivePulse.";
 "supporter.settings.inactive" = "Autant de ruches que vous en avez, tout l’historique et la carte sanitaire régionale.";
+
+/* Guided tours (#449) */
+"tour.next" = "Suivant";
+"tour.close" = "Quitter la visite";
+"tour.skipStep" = "Passer cette étape";
+"tour.lost" = "La commande de cette étape n’est pas sur cet écran. Ouvrez l’écran auquel elle appartient, ou quittez la visite.";
+"tour.listTitle" = "Visites guidées";
+"tour.listIntro" = "Chacune pointe le vrai bouton sur le vrai écran et attend que vous appuyiez. Lancez-les quand vous voulez — rien ici ne se joue une seule fois.";
+"tour.listStart" = "Lancer";
+"tour.listDone" = "vue";
+"tour.firstSteps.title" = "Votre première colonie";
+"tour.firstSteps.summary" = "D’un compte vide à une première visite enregistrée.";
+"tour.firstSteps.step1" = "Un rucher est un endroit où se trouvent vos colonies — un jardin, un verger, un coin de coteau. Commencez par un.";
+"tour.firstSteps.step2" = "Donnez-lui le nom que vous emploieriez à voix haute. Vous le lirez sous la pluie.";
+"tour.firstSteps.step3" = "Enregistrez. Tout le reste dépend d’un rucher.";
+"tour.firstSteps.step4" = "Ouvrez-le. Les colonies vivent dans un rucher.";
+"tour.firstSteps.step5" = "Ajoutez une colonie. Pas besoin de QR code imprimé pour cela — l’autocollant est un raccourci vers une colonie existante, pas une condition pour en créer une.";
+"tour.offline.title" = "Ça marche sans réseau";
+"tour.offline.summary" = "La seule chose qu’on ne découvre pas en regardant, et celle qui compte au rucher.";
+"tour.offline.step1" = "Enregistrez-la ici et elle est d’abord écrite sur le téléphone, puis envoyée. Sans réseau elle attend, marquée « En attente d’envoi » dans la liste, et part dès qu’il y a une connexion. Rien n’est perdu si vous sortez de portée en pleine visite — c’est toute la raison du fonctionnement de cet écran.";
+"tour.qrCodes.title" = "Les autocollants QR, et à quoi ils servent";
+"tour.qrCodes.summary" = "Une planche d’autocollants, imprimée une fois, et une ruche est à un scan de distance pour le reste de sa vie.";
+"tour.qrCodes.step1" = "Les lots de QR codes se trouvent ici, dans la barre de la liste des ruchers. Un lot est une planche d’autocollants ; les codes doivent exister avant de pouvoir désigner une ruche.";
+"tour.qrCodes.step2" = "Créez-en un. Prenez plus d’autocollants que vous n’avez de ruches — une planche de réserve dans la cabane ne coûte rien, et un autocollant que personne n’a scanné n’appartient à aucune ruche. La planche s’imprime depuis le site ; c’est ici que naissent les codes.";
+"tour.qrCodes.step3" = "Et voilà à quoi ils servent. L’onglet Scan ouvre la caméra immédiatement — approchez-la d’un autocollant et cette ruche s’ouvre. Pas de liste, pas de recherche, une main libre. Un autocollant que personne n’a scanné est proposé à la prochaine ruche que vous créez.";
+"tour.hornets.title" = "Un piège, et ce qu’on en fait chaque jour";
+"tour.hornets.summary" = "Enregistrer un piège nommé, puis noter ce qu’il a pris. Un chiffre par jour, c’est tout le travail.";
+"tour.hornets.step1" = "Le suivi des frelons a son propre onglet. Il s’agit de Vespa velutina, le frelon asiatique — pas du frelon européen, qui est protégé et n’a rien à faire dans un piège.";
+"tour.hornets.step2" = "Un piège ici est un piège réel qui vous appartient, à un endroit, avec un nom. Enregistrez-le une fois.";
+"tour.hornets.step3" = "Un nom que vous distinguez dans le noir — « derrière la cabane », pas « piège 2 ». La position compte plus que le nom : la carte ne vaut que ce que valent ses coordonnées.";
+"tour.hornets.step4" = "Enregistrez-le. Vous recevez un code de huit caractères — c’est ainsi que vous retrouvez ce piège depuis un autre appareil, sans compte.";
+"tour.year.title" = "L’année apicole, décalée vers votre région";
+"tour.year.summary" = "Ce qui se passe quand, et pourquoi les dates ne sont pas les mêmes sur un coteau et dans une vallée.";
+"tour.year.step1" = "L’année apicole se trouve ici. Ce qui se passe quand — et les dates ne sont pas les mêmes sur un coteau et dans une vallée, c’est pourquoi elles sont décalées vers votre région.";
+"tour.year.step2" = "Et les dates bougent. Une saison arrivée trois semaines plus tôt n’est pas une erreur du calendrier, c’est cette année — alors le calendrier demande, ici, et décale les dates régionales dès que suffisamment d’apiculteurs d’un même endroit ont dit la même chose.";
+"tour.treatments.title" = "Des traitements que vous n’aurez pas à retenir";
+"tour.treatments.summary" = "En planifier un avec une échéance, le cocher quand c’est fait, et la traçabilité s’écrit d’elle-même.";
+"tour.treatments.step1" = "Les traitements appartiennent au rucher, pas à une seule ruche, car c’est ainsi qu’on traite réellement contre varroa. Ils sont dans la barre du rucher.";
+"tour.treatments.step2" = "Planifiez un traitement : quoi, et pour quand. Il appartient au rucher entier, car c’est ainsi qu’on traite réellement contre varroa — pas ruche par ruche.";
+"tour.sharing.title" = "Laisser quelqu’un d’autre voir le rucher";
+"tour.sharing.summary" = "Une invitation par courriel, et ce que l’autre peut alors faire.";
+"tour.sharing.step1" = "Un rucher se partage depuis sa barre d’outils. Celui que vous laissez entrer le voit et y enregistre des visites ; il ne peut pas le supprimer, et vous pouvez reprendre l’accès à tout moment.";
+"tour.sharing.step2" = "Invitez-la. Elle voit ce rucher et y enregistre des visites ; elle ne peut pas le supprimer, et vous pouvez reprendre l’accès ici à tout moment.";
+"tour.customFields.title" = "Noter ce que cette application n’a pas prévu";
+"tour.customFields.summary" = "Votre propre champ sur chaque visite, dans la forme dont vous avez besoin.";
+"tour.customFields.step1" = "Personne ne peut deviner ce que vous notez. Vos propres champs sont ici — cuvée d’hydromel, nourrissement, caractère de la reine.";
+"tour.customFields.step2" = "Personne ne peut devenir ce que vous notez. Cuvée d’hydromel, nourrissement, caractère de la reine — créez le champ vous-même.";
+"tour.moves.title" = "Transhumer des ruches, et pourquoi cela se note";
+"tour.moves.summary" = "Déplacer plusieurs ruches vers un autre rucher d’un coup, et garder où elles ont été.";
+"tour.moves.step1" = "Les ruches voyagent — au colza, à la bruyère, loin d’un emplacement qui n’en est plus un. Déplacez-les ici plutôt que de modifier chaque ruche l’une après l’autre.";
+"tour.moves.step2" = "Et la carte des transhumances, dans la barre de la liste des ruchers, en trace ensuite les lignes : où une ruche se trouvait et quand est conservé, pour qu’un an plus tard vous sachiez encore si la transhumance à la bruyère valait la peine.";

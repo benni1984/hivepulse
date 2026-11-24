@@ -22,6 +22,8 @@ import com.hivepulse.app.data.api.QrBatchSummary
 import com.hivepulse.app.ui.common.ErrorBanner
 import com.hivepulse.app.ui.common.LoadingScreen
 import com.hivepulse.app.ui.theme.Amber500
+import com.hivepulse.app.ui.onboarding.tourAnchor
+import com.hivepulse.app.ui.onboarding.TourAnchors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,7 +51,8 @@ fun QRBatchListScreen(
                 text           = { Text(newBatchLabel) },
                 containerColor = Amber500,
                 contentColor   = MaterialTheme.colorScheme.onPrimary,
-                modifier       = Modifier.semantics { contentDescription = newBatchLabel },
+                modifier       = Modifier.semantics { contentDescription = newBatchLabel }
+                    .tourAnchor(TourAnchors.NEW_QR_BATCH),
             )
         }
     ) { padding ->

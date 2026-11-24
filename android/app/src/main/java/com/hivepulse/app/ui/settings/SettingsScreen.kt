@@ -186,7 +186,7 @@ fun SettingsScreen(
     onAdminClick: () -> Unit = {},
     onCustomFieldsClick: () -> Unit = {},
     onSupporterClick: () -> Unit = {},
-    onGuidedTourClick: () -> Unit = {},
+    onToursClick: () -> Unit = {},
     vm: SettingsViewModel = hiltViewModel(),
     regionVm: com.hivepulse.app.ui.calendar.RegionViewModel = hiltViewModel(),
 ) {
@@ -623,10 +623,10 @@ fun SettingsScreen(
                     Text(stringResource(R.string.action_feedback))
                 }
                 OutlinedButton(
-                    onClick  = onGuidedTourClick,
-                    modifier = Modifier.fillMaxWidth()
+                    onClick  = onToursClick,
+                    modifier = Modifier.fillMaxWidth().testTag("guidedToursButton")
                 ) {
-                    Text(stringResource(R.string.action_show_tour))
+                    Text(stringResource(R.string.tour_list_title))
                 }
                 // What is new, and the full list of features: the same page on every platform.
                 OutlinedButton(

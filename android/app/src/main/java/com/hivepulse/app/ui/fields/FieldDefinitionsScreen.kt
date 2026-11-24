@@ -41,6 +41,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.hivepulse.app.ui.onboarding.tourAnchor
+import com.hivepulse.app.ui.onboarding.TourAnchors
 
 enum class FieldMessage { CREATED, SAVED }
 
@@ -180,7 +182,8 @@ fun FieldDefinitionsScreen(
                 text           = { Text(newFieldLabel) },
                 containerColor = Amber500,
                 contentColor   = MaterialTheme.colorScheme.onPrimary,
-                modifier       = Modifier.semantics { contentDescription = newFieldLabel },
+                modifier       = Modifier.semantics { contentDescription = newFieldLabel }
+                    .tourAnchor(TourAnchors.FIELD_NEW),
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
