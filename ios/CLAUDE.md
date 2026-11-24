@@ -129,6 +129,17 @@ strings generated from the website's file. `ToursTests` pins the anchors, the or
 languages; `TourUITests` covers the overlay. The amber create button carries its anchor through
 `hpFloatingButton(tourAnchor:)`, so all five call sites get it from one place.
 
+**A step pointing at a row that pushes another screen is `.navigates`, and its anchor does not
+watch for the tap.** A `TapGesture` on a `NavigationLink` — simultaneous or not — competes with
+the link's own and the navigation stops happening; that cost every test which opens an apiary
+before CI caught it. Such a step ends when its control is gone instead.
+
+**The caption card carries no identifier of its own.** One on the card's stack is not a container
+element with that name: SwiftUI stamps it onto every child and overwrites `tourText` and
+`tourStop`, so `app.otherElements["tourCard"]` finds nothing while the card is plainly on screen.
+Tests ask for `tourText`, `tourNext` and `tourStop`. Same trap as an identifier on a stack hiding
+its buttons.
+
 After the first successful sign-in `AuthViewModel.showGuidedTour` now starts `first-steps` on the
 apiary list instead of presenting a cover over it; `OnboardingStore.finishedTours` holds the marks
 in the list in Settings (a mark, not a lock). That list is `TourListView`, pushed from one row

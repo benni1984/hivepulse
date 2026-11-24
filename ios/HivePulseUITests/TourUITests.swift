@@ -68,7 +68,9 @@ final class TourUITests: XCTestCase {
 
         // It takes the beekeeper to the tab the first step lives on by itself: the list in
         // Settings is the one place where every tour starts somewhere else.
-        let card = app.otherElements["tourCard"]
+        // The caption, not the card: an identifier on the card's stack is stamped onto each of
+        // its children rather than making one container element (see `TourHost.card`).
+        let card = app.staticTexts["tourText"]
         XCTAssertTrue(card.waitForExistence(timeout: 10),
                       "no tour card after starting\n\(app.debugDescription)")
 

@@ -249,8 +249,10 @@ struct TourHost<Content: View>: View {
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(radius: 12, y: 4)
-        .accessibilityIdentifier("tourCard")
-        .accessibilityElement(children: .contain)
+        // No identifier on the card itself. One here does not make a container element with that
+        // name — it is stamped onto every child instead, overwriting `tourText` and `tourStop`
+        // and leaving nothing for `app.otherElements` to find. The same trap as putting an
+        // identifier on a stack and losing its buttons; a test asks for `tourText`.
     }
 }
 

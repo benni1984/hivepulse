@@ -97,7 +97,7 @@ final class ScreenshotUITests: XCTestCase {
         snap("13-guided-tour-welcome", app)
 
         start.tap()
-        XCTAssertTrue(app.otherElements["tourCard"].waitForExistence(timeout: 10),
+        XCTAssertTrue(app.staticTexts["tourText"].waitForExistence(timeout: 10),
                       "the tour did not start\n\(app.debugDescription)")
         sleep(1)
         snap("14-guided-tour-qr", app)
