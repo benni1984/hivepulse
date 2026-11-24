@@ -472,3 +472,53 @@ def test_the_help_script_waits_for_the_login_screen_before_it_demands_the_link()
     assert "dismiss_blocking_system_dialog" in waiter, (
         "the launcher's ANR dialog covers our screen while the app is healthy (#551)"
     )
+
+
+def test_the_link_is_looked_for_before_the_login_button():
+    """Order again, and the same shape as the tour (#564).
+
+    Asking "is the login button there?" before dealing with the link that hides the form reads
+    as "already open" in four of the five store languages, because the login label is a
+    substring of something else on that screen: of the link itself in French, Spanish and
+    Polish, and of the subtitle in German. English escapes by a capital letter — "Sign In" is
+    not inside "Sign in with an email address instead" — so the wrong order passes in English
+    and kills everything else on "Editable field 0 not found", a form nobody had opened.
+    """
+    for name, toggle, login in (
+        ("scripts/android-store-screenshots.py",
+         'label_in(dump, "action_sign_in_with_email")', 'label_in(dump, "action_login")'),
+        ("scripts/android-screenshots.py", "EMAIL_TOGGLE in dump", '"Sign In" in dump'),
+    ):
+        script = (ROOT / name).read_text(encoding="utf-8")
+        body = script[script.index("def reveal_email_form("):]
+        body = body[:body.index("\n\n\n")]
+        code = body[body.index('"""', body.index('"""') + 3):]
+
+        assert code.index(toggle) < code.index(login), (
+            f"{name}: the login label can be on screen while the form is still hidden, so the "
+            f"link has to be looked for first"
+        )
+
+
+def test_the_login_label_really_is_a_substring_in_those_languages():
+    """The fixture behind the test above, so nobody 'tidies' the order back (#564).
+
+    If a future wording made these independent, the order would stop mattering and the comment
+    explaining it would start lying. Then this fails and says so.
+    """
+    import re
+
+    caught = []
+    for folder in ("values-fr", "values-es", "values-pl"):
+        text = (ROOT / "android/app/src/main/res" / folder / "strings.xml").read_text(encoding="utf-8")
+
+        def value(key: str) -> str:
+            return re.search(rf'<string name="{key}">(.*?)</string>', text, re.S).group(1)
+
+        if value("action_login") in value("action_sign_in_with_email"):
+            caught.append(folder)
+
+    assert caught == ["values-fr", "values-es", "values-pl"], (
+        f"only {caught} still contain the login label inside the link — if that changed on "
+        f"purpose, the comments in reveal_email_form need rewriting, not the order"
+    )

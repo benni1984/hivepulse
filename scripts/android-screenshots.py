@@ -392,11 +392,15 @@ def reveal_email_form(timeout=12):
     seen_toggle = False
     while time.time() < deadline:
         dump = get_ui_dump()
-        if "Sign In" in dump:
-            return  # No provider on offer: the form is already open.
+        # The link first, always — see the note in android-store-screenshots.py. This script runs
+        # in English, where "Sign In" happens not to be inside "Sign in with an email address
+        # instead", so the wrong order survives here by a capital letter. The store script's four
+        # other languages were not so lucky, and the two have to read alike anyway.
         if EMAIL_TOGGLE in dump:
             seen_toggle = True
             break
+        if "Sign In" in dump:
+            return  # No link anywhere: the form is already open.
         time.sleep(1)
 
     if not seen_toggle:

@@ -157,11 +157,19 @@ def reveal_email_form(timeout=12, attempts=4):
     toggle = None
     while time.time() < deadline:
         dump = A.get_ui_dump()
-        if label_in(dump, "action_login"):
-            return  # No provider on offer: the form is already open and nothing is tucked away.
+        # **The link first, always.** Asking "is the login button there?" before dealing with the
+        # link reads as "the form is already open" in four of the five languages, because the
+        # login label is a substring of something else on that screen: of the link itself in
+        # French ("Se connecter avec une adresse e-mail"), Spanish and Polish, and of the
+        # subtitle in German ("Anmelden, um deine Völker zu verwalten"). English escapes only by
+        # a capital letter — "Sign In" is not inside "Sign in with an email address instead" —
+        # which is exactly why the English run passed while the other four died further down on
+        # "Editable field 0 not found": a form nobody had opened.
         toggle = label_in(dump, "action_sign_in_with_email")
         if toggle:
             break
+        if label_in(dump, "action_login"):
+            return  # No link anywhere: the form is already open and nothing is tucked away.
         time.sleep(1)
 
     if not toggle:
