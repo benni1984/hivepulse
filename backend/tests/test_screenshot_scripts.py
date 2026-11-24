@@ -385,3 +385,32 @@ def test_dismissing_gives_the_time_back_instead_of_spending_an_attempt():
 
     assert "deadline = max(deadline" in launch, "the deadline has to move when a dialog is gone"
     assert "continue" in launch, "and the poll resumes rather than falling through to a sleep"
+
+
+def test_the_email_form_link_is_tapped_until_the_form_is_actually_open():
+    """A tap that did not land must not read like one that did (#564).
+
+    Both scripts used to tap the link once, sleep a second and return. The next wait then sat
+    for a minute on a login button that was never coming, and the run died sixty seconds and
+    one control away from the truth — "action_login never appeared", when what had happened was
+    that a tap went beside a link the emulator had not finished laying out. Five of these jobs
+    run at once; it took whichever two runners were slowest that morning, which is why it read
+    as a language problem and was not one.
+    """
+    for name, opened in (
+        ("scripts/android-store-screenshots.py", 'label_in(A.get_ui_dump(), "action_login")'),
+        ("scripts/android-screenshots.py", '"Sign In" in get_ui_dump()'),
+    ):
+        script = (ROOT / name).read_text(encoding="utf-8")
+        body = script[script.index("def reveal_email_form("):]
+        body = body[:body.index("\n\n\n")]
+
+        assert "for attempt in range(" in body, f"{name}: one tap is not a retry"
+        assert opened in body, (
+            f"{name}: the retry has to look for the form it opened, or it is a sleep with a "
+            f"loop around it"
+        )
+        assert "raise TimeoutError" in body, (
+            f"{name}: giving up quietly only moves the complaint downstream, where it names "
+            f"the wrong control"
+        )

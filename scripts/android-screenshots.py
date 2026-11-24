@@ -340,15 +340,44 @@ def reveal_email_form(timeout=12):
     instead", so waiting for "Sign In" timed out and failed every run of this job. The link
     only appears once the app has asked the server which providers it accepts, so poll for it
     for a while; when there is no provider the form is already open and nothing is tapped.
+
+    **Tap, look, tap again** (#564). This tapped once, slept a second and believed itself
+    finished, and a tap that did not land was then indistinguishable from one that did: the next
+    wait sat on a "Sign In" that was never coming and the run died one control away from the
+    truth. The store captures lost two of their five locales to it at a time, and which two
+    changed from run to run.
     """
     deadline = time.time() + timeout
+    seen_toggle = False
     while time.time() < deadline:
         dump = get_ui_dump()
+        if "Sign In" in dump:
+            return  # No provider on offer: the form is already open.
         if EMAIL_TOGGLE in dump:
-            tap_node(dump, text=EMAIL_TOGGLE)
-            time.sleep(1)
-            return
+            seen_toggle = True
+            break
         time.sleep(1)
+
+    if not seen_toggle:
+        raise TimeoutError(
+            f"neither the login form nor the link to it ({EMAIL_TOGGLE!r}) "
+            f"appeared within {timeout}s"
+        )
+
+    for attempt in range(1, 5):
+        dump = get_ui_dump()
+        if EMAIL_TOGGLE not in dump:
+            return  # Gone from the screen: the form is open, or opening.
+        tap_node(dump, text=EMAIL_TOGGLE)
+        # Short, because this is a check and not the wait: the caller has a long one.
+        for _ in range(6):
+            time.sleep(1)
+            if "Sign In" in get_ui_dump():
+                if attempt > 1:
+                    print(f"  the email form opened on attempt {attempt}", flush=True)
+                return
+
+    raise TimeoutError(f"the email form did not open after 4 taps on {EMAIL_TOGGLE!r}")
 
 
 def login():
