@@ -317,20 +317,61 @@ def install_and_launch():
 
 # ── Login ─────────────────────────────────────────────────────────────────────
 
+TOUR_CLOSE = "Close tour"
+
+
 def skip_guided_tour_if_shown(timeout=15):
-    """The first sign-in on a fresh install shows the guided tour -- skip it so screenshots start on My Apiaries."""
+    """The first sign-in on a fresh install starts the guided tour -- close it (#449).
+
+    **Look for the tour, not for the absence of it.** This used to find "My Apiaries" and return,
+    because the carousel was a screen of its own and the apiary list behind it meant the tour was
+    over. The tour now runs *on* the apiary list: the list is in the dump the whole time, so that
+    test said "gone" while the tour was plainly up. The caption card is a real view that takes
+    the taps meant for whatever is behind it, and the run then died further down at
+    "Timed out waiting for: 'Inspections'" -- a screen it never reached because a card was in the
+    way.
+
+    The button is "Close tour" now; "Skip" belonged to the carousel and no longer exists.
+    """
     deadline = time.time() + timeout
     while time.time() < deadline:
         dump = get_ui_dump()
+        if f'text="{TOUR_CLOSE}"' in dump:
+            tap_node(dump, text=TOUR_CLOSE)
+            time.sleep(1)
+            continue  # and look again: closing one step must not be mistaken for being done
         if "My Apiaries" in dump:
-            return
-        if 'text="Skip"' in dump:
-            tap_node(dump, text="Skip")
             return
         time.sleep(1)
 
 
 EMAIL_TOGGLE = "Sign in with an email address instead"
+
+
+def wait_for_the_login_screen(timeout=90):
+    """Wait until the app is really showing the sign-in screen.
+
+    A cold emulator with a freshly installed release APK takes far longer to get there than
+    `reveal_email_form` is willing to wait — and that function raises now rather than returning
+    quietly (#564). Strictness without patience in front of it only moves the failure earlier:
+    the first run after that change died on "neither the login form nor the link to it appeared
+    within 12s" while the app was still starting.
+
+    The patience belongs here, where it can also clear the launcher's "isn't responding" dialog,
+    which covers our screen while the app is perfectly healthy underneath it (#551).
+    """
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        dump = get_ui_dump()
+        if "Sign In" in dump or EMAIL_TOGGLE in dump:
+            return
+        dismissed = dismiss_blocking_system_dialog(dump)
+        if dismissed:
+            print(f"  dismissed a system dialog: {dismissed!r}", flush=True)
+            deadline = max(deadline, time.time() + 60)
+            continue
+        time.sleep(1)
+    raise TimeoutError(f"the app never showed its sign-in screen within {timeout}s")
 
 
 def reveal_email_form(timeout=12):
@@ -340,15 +381,44 @@ def reveal_email_form(timeout=12):
     instead", so waiting for "Sign In" timed out and failed every run of this job. The link
     only appears once the app has asked the server which providers it accepts, so poll for it
     for a while; when there is no provider the form is already open and nothing is tapped.
+
+    **Tap, look, tap again** (#564). This tapped once, slept a second and believed itself
+    finished, and a tap that did not land was then indistinguishable from one that did: the next
+    wait sat on a "Sign In" that was never coming and the run died one control away from the
+    truth. The store captures lost two of their five locales to it at a time, and which two
+    changed from run to run.
     """
     deadline = time.time() + timeout
+    seen_toggle = False
     while time.time() < deadline:
         dump = get_ui_dump()
+        if "Sign In" in dump:
+            return  # No provider on offer: the form is already open.
         if EMAIL_TOGGLE in dump:
-            tap_node(dump, text=EMAIL_TOGGLE)
-            time.sleep(1)
-            return
+            seen_toggle = True
+            break
         time.sleep(1)
+
+    if not seen_toggle:
+        raise TimeoutError(
+            f"neither the login form nor the link to it ({EMAIL_TOGGLE!r}) "
+            f"appeared within {timeout}s"
+        )
+
+    for attempt in range(1, 5):
+        dump = get_ui_dump()
+        if EMAIL_TOGGLE not in dump:
+            return  # Gone from the screen: the form is open, or opening.
+        tap_node(dump, text=EMAIL_TOGGLE)
+        # Short, because this is a check and not the wait: the caller has a long one.
+        for _ in range(6):
+            time.sleep(1)
+            if "Sign In" in get_ui_dump():
+                if attempt > 1:
+                    print(f"  the email form opened on attempt {attempt}", flush=True)
+                return
+
+    raise TimeoutError(f"the email form did not open after 4 taps on {EMAIL_TOGGLE!r}")
 
 
 def login():
@@ -360,6 +430,7 @@ def login():
         return
 
     print("Logging in…", flush=True)
+    wait_for_the_login_screen()
     reveal_email_form()
     wait_for("Sign In", timeout=30)
     time.sleep(1.5)  # let fields finish rendering

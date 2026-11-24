@@ -137,21 +137,59 @@ def wait_for_label(key: str, timeout: int = 30) -> str:
     raise TimeoutError(f"{key} ({S(key)!r}) never appeared within {timeout}s")
 
 
-def reveal_email_form(timeout=12):
+def reveal_email_form(timeout=12, attempts=4):
     """Open the email form when the login screen tucks it behind a link.
 
     Same reason as in android-screenshots.py: with Google sign-in on offer, the form sits
     behind "Sign in with an email address instead", in the language under capture.
+
+    **Tap, look, tap again** (#564). This tapped once, slept a second and believed itself
+    finished, and a tap that did not land was then indistinguishable from one that did: the next
+    wait sat for a minute on a button that was never coming, and the run died with
+    "action_login never appeared within 60s" sixty seconds away from the truth. On a loaded
+    emulator the link is in the dump before it has settled where it will finally sit, so the tap
+    goes beside it — five of these jobs run at once, and it takes whichever two runners are
+    slowest that morning.
+
+    Returns once the form is open, which is the only thing the caller cares about.
     """
     deadline = time.time() + timeout
+    toggle = None
     while time.time() < deadline:
         dump = A.get_ui_dump()
+        if label_in(dump, "action_login"):
+            return  # No provider on offer: the form is already open and nothing is tucked away.
         toggle = label_in(dump, "action_sign_in_with_email")
         if toggle:
-            A.tap_node(dump, text=toggle)
-            time.sleep(1)
-            return
+            break
         time.sleep(1)
+
+    if not toggle:
+        # Failing here says what is wrong. Returning silently only moved the complaint one wait
+        # downstream, where it named the wrong control.
+        raise TimeoutError(
+            f"neither the login form nor the link to it "
+            f"({S('action_sign_in_with_email')!r}) appeared within {timeout}s"
+        )
+
+    for attempt in range(1, attempts + 1):
+        dump = A.get_ui_dump()
+        found = label_in(dump, "action_sign_in_with_email")
+        if not found:
+            # Gone from the screen: the form is open, or opening.
+            return
+        A.tap_node(dump, text=found)
+        # Short, because this is a check and not the wait: the caller has a long one.
+        for _ in range(6):
+            time.sleep(1)
+            if label_in(A.get_ui_dump(), "action_login"):
+                if attempt > 1:
+                    print(f"  the email form opened on attempt {attempt}", flush=True)
+                return
+
+    raise TimeoutError(
+        f"the email form did not open after {attempts} taps on {toggle!r}"
+    )
 
 
 def login():
@@ -202,14 +240,26 @@ def login():
 
 
 def skip_guided_tour(timeout=15):
+    """Close the tour the first sign-in starts (#449).
+
+    **Look for the tour, not for the absence of it.** This used to find the apiary list and
+    return, because the carousel was a screen of its own and the list behind it meant the tour
+    was over. The tour now runs *on* the apiary list, so the list is in the dump the whole time
+    and that test said "gone" while the tour was up. Its caption card is a real view and takes
+    the taps meant for whatever is behind it.
+
+    `tour_skip` belonged to the carousel and no longer exists in `strings.xml`; the button is
+    `tour_close`.
+    """
     deadline = time.time() + timeout
     while time.time() < deadline:
         dump = A.get_ui_dump()
+        close = label_in(dump, "tour_close")
+        if close:
+            A.tap_node(dump, text=close)
+            time.sleep(1)
+            continue  # and look again: closing one step must not be mistaken for being done
         if label_in(dump, "screen_apiaries"):
-            return
-        skip = label_in(dump, "tour_skip")
-        if skip:
-            A.tap_node(dump, text=skip)
             return
         time.sleep(1)
 
