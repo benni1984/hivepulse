@@ -449,3 +449,26 @@ def test_the_scripts_close_the_tour_instead_of_looking_for_the_carousel():
         assert code.index("tour_close" if "tour_close" in code else "TOUR_CLOSE") < code.index(
             "screen_apiaries" if "screen_apiaries" in code else "My Apiaries"
         ), f"{name}: checks for the apiary list before the tour, which is what broke"
+
+
+def test_the_help_script_waits_for_the_login_screen_before_it_demands_the_link():
+    """Strictness needs patience in front of it (#564).
+
+    `reveal_email_form` raises now instead of returning quietly, which is right — but the
+    silence used to be what gave a cold emulator its extra half minute, and removing it without
+    putting the waiting somewhere else only made the run die earlier, on "neither the login form
+    nor the link to it appeared within 12s" while the app was still starting.
+    """
+    script = (ROOT / "scripts/android-screenshots.py").read_text(encoding="utf-8")
+    body = script[script.index("def login():"):]
+    body = body[:body.index("\n\n\n")]
+
+    assert body.index("wait_for_the_login_screen()") < body.index("reveal_email_form()"), (
+        "the app has to be on the sign-in screen before anything insists on the link"
+    )
+
+    waiter = script[script.index("def wait_for_the_login_screen("):]
+    waiter = waiter[:waiter.index("\n\n\n")]
+    assert "dismiss_blocking_system_dialog" in waiter, (
+        "the launcher's ANR dialog covers our screen while the app is healthy (#551)"
+    )

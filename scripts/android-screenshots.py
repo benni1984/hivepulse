@@ -348,6 +348,32 @@ def skip_guided_tour_if_shown(timeout=15):
 EMAIL_TOGGLE = "Sign in with an email address instead"
 
 
+def wait_for_the_login_screen(timeout=90):
+    """Wait until the app is really showing the sign-in screen.
+
+    A cold emulator with a freshly installed release APK takes far longer to get there than
+    `reveal_email_form` is willing to wait — and that function raises now rather than returning
+    quietly (#564). Strictness without patience in front of it only moves the failure earlier:
+    the first run after that change died on "neither the login form nor the link to it appeared
+    within 12s" while the app was still starting.
+
+    The patience belongs here, where it can also clear the launcher's "isn't responding" dialog,
+    which covers our screen while the app is perfectly healthy underneath it (#551).
+    """
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        dump = get_ui_dump()
+        if "Sign In" in dump or EMAIL_TOGGLE in dump:
+            return
+        dismissed = dismiss_blocking_system_dialog(dump)
+        if dismissed:
+            print(f"  dismissed a system dialog: {dismissed!r}", flush=True)
+            deadline = max(deadline, time.time() + 60)
+            continue
+        time.sleep(1)
+    raise TimeoutError(f"the app never showed its sign-in screen within {timeout}s")
+
+
 def reveal_email_form(timeout=12):
     """Open the email form when the login screen tucks it behind a link.
 
@@ -404,6 +430,7 @@ def login():
         return
 
     print("Logging in…", flush=True)
+    wait_for_the_login_screen()
     reveal_email_form()
     wait_for("Sign In", timeout=30)
     time.sleep(1.5)  # let fields finish rendering
