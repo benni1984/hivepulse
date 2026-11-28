@@ -1246,5 +1246,43 @@ class SubscriptionOut(BaseModel):
     hive_limit: Optional[int] = None
 
 
+
+# ── Beta programme ────────────────────────────────────────────────────────────────────────
+
+class BetaSignupIn(BaseModel):
+    """Somebody asking to be let onto a store test.
+
+    The address is the **store account** -- a Google account or an Apple ID -- and is not
+    looked up against the users table: a tester normally has no HivePulse account yet, and
+    that is the whole point of the page.
+
+    Nothing here is stored. These fields exist to make the resulting e-mail useful enough to
+    act on without a reply: which track, which phone, and anything the person wanted to say.
+    """
+
+    email: EmailStr
+    platform: Literal["android", "ios"]
+    name: Optional[str] = Field(default=None, max_length=80)
+    device: Optional[str] = Field(default=None, max_length=80)
+    note: Optional[str] = Field(default=None, max_length=500)
+
+    @model_validator(mode="after")
+    def clean(self) -> "BetaSignupIn":
+        # A field that held only spaces is an empty field, and should not print as a blank
+        # line in the mail that comes out of this.
+        for field in ("name", "device", "note"):
+            value = getattr(self, field)
+            if value is not None:
+                collapsed = " ".join(value.split())
+                setattr(self, field, collapsed or None)
+        return self
+
+
+class BetaSignupOut(BaseModel):
+    """Only ever ``True``: a send that failed is a 503, not a ``False`` somebody has to notice."""
+
+    received: bool = True
+
+
 # Resolve forward references
 TokenResponse.model_rebuild()

@@ -100,6 +100,10 @@ class Settings(BaseSettings):
     apple_private_key: str = ""
     resend_api_key: str = ""        # Resend API key — reset emails logged to stdout when empty
     app_base_url: str = "https://hivepulse.multihead.de"  # used to build password-reset links
+    #: Where `/beta` sends somebody who wants onto a store test. A setting and not a constant
+    #: because the person who runs the test programme may change; the page shows the same
+    #: address, so the two have to be able to move together.
+    beta_signup_email: str = "hivepulse@multihead.de"
     # Error reporting — see docs/crash-reporting-setup.md. Inert while empty.
     sentry_dsn: str = ""
     release: str = ""              # commit sha, so a report points at the code that failed

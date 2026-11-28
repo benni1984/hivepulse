@@ -10,6 +10,7 @@ from app.database import Base, SessionLocal, engine
 from app.validation import validation_error_handler
 from app.routers import auth, users, field_definitions, apiaries, qr_batches, hives, inspections, stats, public, export
 from app.routers import admin, beekeeping_year, home, hornets, moves, notifications, public_year, shares, treatments, subscriptions
+from app.routers import beta
 
 
 @asynccontextmanager
@@ -90,3 +91,4 @@ app.include_router(notifications.router, prefix=PREFIX)
 app.include_router(beekeeping_year.router, prefix=PREFIX)
 app.include_router(public_year.router, prefix=PREFIX)
 app.include_router(admin.router, prefix=PREFIX)
+app.include_router(beta.router, prefix=PREFIX)
