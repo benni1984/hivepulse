@@ -15,6 +15,15 @@ MESSAGES = {
         "es": "Esto forma parte de la suscripci\u00f3n Supporter.",
         "pl": "To cz\u0119\u015b\u0107 abonamentu Supporter.",
     },
+    # Deliberately does not name the mailbox: it is a setting (`beta_signup_email`) and the page
+    # that shows this message shows the address beside it, so one place to change is enough.
+    "BETA_SIGNUP_FAILED": {
+        "en": "Your message could not be sent. Please write to us directly instead — the address is below.",
+        "fr": "Votre message n’a pas pu être envoyé. Écrivez-nous directement — l’adresse est ci-dessous.",
+        "de": "Deine Nachricht konnte nicht gesendet werden. Schreib uns bitte direkt — die Adresse steht darunter.",
+        "es": "No se ha podido enviar tu mensaje. Escríbenos directamente: la dirección está debajo.",
+        "pl": "Nie udało się wysłać Twojej wiadomości. Napisz do nas bezpośrednio — adres znajdziesz poniżej.",
+    },
     "INVALID_CREDENTIALS": {
         "en": "Invalid email or password.",
         "fr": "Email ou mot de passe invalide.",
