@@ -5,6 +5,11 @@ vi.mock('next-intl/server', () => ({
   getTranslations: async () => (key: string) => key,
 }));
 
+// The page now embeds the signup form, which is a client component and reads its own strings.
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key,
+}));
+
 const links = vi.hoisted(() => ({
   current: { android: '', ios: '', email: 'hivepulse@multihead.de' },
 }));
@@ -86,6 +91,10 @@ describe('the beta texts', () => {
     'expectTitle', 'expect1', 'expect2', 'expect3', 'expect4',
     'feedbackTitle', 'feedbackBody', 'feedbackSubject', 'feedbackHint',
     'dataTitle', 'dataBody',
+    // The signup form (#568). Every label, or a reader meets an untranslated key.
+    'formTitle', 'formLead', 'formEmail', 'formEmailHint', 'formPlatform',
+    'formPlatformAndroid', 'formPlatformIos', 'formName', 'formDevice', 'formNote',
+    'formSubmit', 'formSending', 'formSent', 'formOrMail', 'formError',
   ];
 
   it('exist in all five languages', () => {
@@ -113,8 +122,9 @@ describe('the beta texts', () => {
       // meets "App not available". The page has to say so rather than let people find out.
       const note = container.querySelector('[data-testid="android-invitation-note"]');
       expect(note).not.toBeNull();
-      expect(note!.querySelector('a[href^="mailto:"]')?.getAttribute('href'))
-        .toContain('hivepulse@multihead.de');
+      // The note used to end in a mailto link. It now ends in a sentence pointing at the form
+      // below it (#568), so what has to exist is the form, not a link inside this paragraph.
+      expect(container.querySelector('[data-testid="beta-signup-form"]')).not.toBeNull();
     });
 
     it('is absent when there is no Android link', async () => {

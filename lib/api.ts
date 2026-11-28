@@ -1550,3 +1550,31 @@ export async function syncSubscription(): Promise<Subscription> {
   return res.json();
 }
 
+
+// ── The beta programme ───────────────────────────────────────────────────────────────────
+//
+// Public, and the one call on the site made by somebody who has no account yet — which is the
+// point of it: a closed test on Google Play only admits accounts put on the list beforehand,
+// so the address has to reach a human before the opt-in link does anything (#568).
+
+export interface BetaSignupInput {
+  /** The store account: a Google account for Android, an Apple ID for iPhone. */
+  email: string;
+  platform: 'android' | 'ios';
+  name?: string;
+  device?: string;
+  note?: string;
+}
+
+/**
+ * Asks to be added to a store test. The server stores nothing — it sends one mail — so there
+ * is no record to come back for and nothing to show afterwards but a thank-you.
+ */
+export async function submitBetaSignup(data: BetaSignupInput): Promise<void> {
+  const res = await fetch(`${BASE}/beta/signup`, {
+    method: 'POST',
+    headers: jsonHeaders(),
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) await failure(res, 'Could not send the request');
+}
