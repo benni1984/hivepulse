@@ -35,8 +35,9 @@ validation answered before the dependency ran; a client refreshing on 401 sailed
 18. [Hornet Tracker](#hornet-tracker)
 19. [Admin](#admin)
 20. [Subscriptions](#subscriptions)
-21. [Object Reference](#object-reference)
-22. [Error Codes](#error-codes)
+21. [Beta Programme](#beta-programme)
+22. [Object Reference](#object-reference)
+23. [Error Codes](#error-codes)
 
 ---
 
@@ -2830,6 +2831,73 @@ the right answer. `PUT /admin/users/{id}/supporter` is unchanged and writes a `m
 
 ---
 
+## Beta Programme
+
+Public — no `Authorization` header. One endpoint, used by `/beta` on the website to recruit the
+twelve testers Google requires for a closed test before a new developer may publish at all.
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/beta/signup` | Ask to be added to a store test. Sends one e-mail; stores nothing. |
+
+---
+
+### POST `/beta/signup`
+
+**Nothing is written to the database.** The server builds one e-mail from the body, sends it to
+the address that runs the test programme, and forgets the request. That is the whole endpoint,
+and it is why the privacy policy needs no new paragraph: there is no record to keep, export or
+delete.
+
+It exists because a closed test on Google Play only admits accounts that were put on the tester
+list beforehand — everybody else opens the opt-in link and is told the app is not available. The
+address has to reach a human before the link can work.
+
+**Request**
+
+```json
+{
+  "email": "tester@gmail.com",
+  "platform": "android",
+  "name": "Camille",
+  "device": "Pixel 7a",
+  "note": "Je tiens 12 ruches en Alsace."
+}
+```
+
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| `email` | string | yes | The **store account**: a Google account for Android, an Apple ID for iPhone. Validated as an address; not checked against the users table, because a tester usually has no HivePulse account yet. |
+| `platform` | `android` \| `ios` | yes | Which test track is meant. |
+| `name` | string | no | Max 80 characters. |
+| `device` | string | no | Max 80 characters. Which phone, so a report can be placed. |
+| `note` | string | no | Max 500 characters. |
+
+**Response 200**
+
+```json
+{ "received": true }
+```
+
+**Errors**
+
+| Code | HTTP | When |
+|------|------|------|
+| `VALIDATION_ERROR` | 422 | Address is not an address, a field is too long, `platform` is neither value |
+| `RATE_LIMITED` | 429 | More than 3 submissions an hour from one client, or more than 40 an hour in total |
+| `BETA_SIGNUP_FAILED` | 503 | The e-mail could not be sent |
+
+The 503 is deliberate. Elsewhere `utils/mail.py` swallows a failed send, because the thing the
+caller asked for has already been stored and must not look broken over a mail provider's bad
+minute. Here nothing is stored, so the mail **is** the request: answering "thanks" when it did
+not go out would cost exactly the tester the page exists to find. The message names the address
+to write to instead.
+
+The global cap is counted on a fixed identity rather than the client IP, so the mailbox is
+protected no matter how many addresses the requests come from.
+
+---
+
 ## Object Reference
 
 ### Enums
@@ -2877,6 +2945,7 @@ the right answer. `PUT /admin/users/{id}/supporter` is unchanged and writes a `m
 | `SHARE_ALREADY_EXISTS` | 409 | That address already has this invitation or access |
 | `SHARE_WITH_SELF` | 400 | The address belongs to the caller |
 | `EMAIL_ALREADY_REGISTERED` | 409 | — |
+| `BETA_SIGNUP_FAILED` | 503 | The beta signup e-mail could not be sent |
 | `VALIDATION_ERROR` | 422 | Request body failed validation (details in `error.fields`) |
 | `QR_BATCH_LIMIT_EXCEEDED` | 422 | Requested count > 50 |
 | `HORNET_SIGHTING_NOT_FOUND` | 404 | — |
